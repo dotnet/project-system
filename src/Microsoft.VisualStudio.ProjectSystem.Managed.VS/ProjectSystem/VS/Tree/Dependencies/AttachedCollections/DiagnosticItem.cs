@@ -2,12 +2,12 @@
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
-    /// Models a diagnostic message attached to a package reference in the dependencies tree.
+    /// Backing object for library (package/project) diagnostic nodes in the dependencies tree.
     /// </summary>
     internal sealed class DiagnosticItem : AttachedCollectionItemBase
     {

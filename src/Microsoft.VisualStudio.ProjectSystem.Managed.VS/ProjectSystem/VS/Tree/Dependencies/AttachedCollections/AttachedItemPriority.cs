@@ -12,6 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </remarks>
     internal static class AttachedItemPriority
     {
-        public const int Diagnostic = 1;
+        // Not all of these can be siblings.
+
+        public const int Diagnostic               = 100;
+        public const int Package                  = 200;
+        public const int Project                  = 300;
+        public const int CompileTimeAssemblyGroup = 400;
+        public const int FrameworkAssemblyGroup   = 500;
     }
 }

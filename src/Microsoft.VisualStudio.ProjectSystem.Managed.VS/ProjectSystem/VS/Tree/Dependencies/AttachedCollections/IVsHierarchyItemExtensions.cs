@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         private static Regex? s_targetFlagsRegex;
         private static Regex? s_packageFlagsRegex;
+        private static Regex? s_projectFlagsRegex;
 
         /// <summary>
         /// Detects the target configuration dimension associated with a given hierarchy item in the dependencies tree, if
@@ -74,6 +75,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
             packageId = default;
             packageVersion = default;
+            return false;
+        }
+
+        /// <summary>
+        /// Detects the project associated with a given hierarchy item in the dependencies tree, if
+        /// that node represents a project reference.
+        /// </summary>
+        /// <param name="item">The item to test.</param>
+        /// <param name="projectId">The detected project ID, if found.</param>
+        /// <returns><see langword="true"/> if project ID was found, otherwise <see langword="false"/>.</returns>
+        public static bool TryGetProjectDetails(
+            this IVsHierarchyItem item,
+            [NotNullWhen(returnValue: true)] out string? projectId)
+        {
+            s_projectFlagsRegex ??= new Regex(@"^(?=.*\b" + nameof(DependencyTreeFlags.ProjectDependency) + @"\b)(?=.*\$ID:(?<id>[^ ]+)\b).*$", RegexOptions.Compiled);
+
+            if (item.TryGetFlagsString(out string? flagsString))
+            {
+                Match match = s_projectFlagsRegex.Match(flagsString);
+                if (match.Success)
+                {
+                    projectId = match.Groups["id"].Value;
+                    return true;
+                }
+            }
+
+            projectId = default;
             return false;
         }
 

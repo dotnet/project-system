@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio
         public static StringComparer ItemTypes => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TargetNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer FrameworkIdentifiers => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer LibraryNames => StringComparer.Ordinal;
         public static StringComparer EnvironmentVariables => StringComparer.OrdinalIgnoreCase;
         public static StringComparer TelemetryEventNames => StringComparer.Ordinal;
         public static StringComparer NamedExports => StringComparer.OrdinalIgnoreCase;
@@ -63,6 +64,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison ItemTypes => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TargetNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison FrameworkIdentifiers => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison LibraryNames => StringComparison.Ordinal;
         public static StringComparison EnvironmentVariables => StringComparison.OrdinalIgnoreCase;
         public static StringComparison TelemetryEventNames => StringComparison.Ordinal;
         public static StringComparison NamedExports => StringComparison.OrdinalIgnoreCase;

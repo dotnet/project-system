@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         }
 
         [Export(typeof(IDependenciesTreeAttachedCollectionSourceProvider))]
-        [AppliesTo(ProjectCapability.DependenciesTree)] // TODO condition on PackageReferences?
+        [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.PackageReferences)]
         private sealed class PackageProvider : AssetsFileProviderBase
         {
             private readonly JoinableTaskContext _joinableTaskContext;
@@ -61,6 +61,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             {
                 return hierarchyItem.TryGetPackageDetails(out string? packageId, out string? packageVersion)
                     ? new PackageReferenceAttachedCollectionSource(hierarchyItem, target, packageId, packageVersion, dataSource, _joinableTaskContext)
+                    : null;
+            }
+        }
+
+        [Export(typeof(IDependenciesTreeAttachedCollectionSourceProvider))]
+        [AppliesTo(ProjectCapability.DependenciesTree + " & " + ProjectCapabilities.ProjectReferences)]
+        private sealed class ProjectProvider : AssetsFileProviderBase
+        {
+            private readonly JoinableTaskContext _joinableTaskContext;
+
+            [ImportingConstructor]
+            public ProjectProvider(JoinableTaskContext joinableTaskContext)
+                : base(DependencyTreeFlags.ProjectDependency)
+                    => _joinableTaskContext = joinableTaskContext;
+
+            protected override IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
+            {
+                return hierarchyItem.TryGetProjectDetails(out string? projectId)
+                    ? new ProjectReferenceAttachedCollectionSource(hierarchyItem, target, projectId, dataSource, _joinableTaskContext)
                     : null;
             }
         }

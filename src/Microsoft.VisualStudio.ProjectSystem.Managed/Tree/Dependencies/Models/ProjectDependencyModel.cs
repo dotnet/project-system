@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 path,
                 originalItemSpec,
-                flags: s_flagCache.Get(isResolved, isImplicit),
+                flags: s_flagCache.Get(isResolved, isImplicit) + ProjectTreeFlags.Create("$ID:" + System.IO.Path.GetFileNameWithoutExtension(path)),
                 isResolved,
                 isImplicit,
                 properties)

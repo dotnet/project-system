@@ -10,40 +10,37 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
-    /// Implements <see cref="IAttachedCollectionSource"/> for package reference nodes in the dependencies tree.
+    /// Implements <see cref="IAttachedCollectionSource"/> for project reference nodes in the dependencies tree.
     /// </summary>
-    internal sealed class PackageReferenceAttachedCollectionSource : AssetsFileAttachedCollectionSourceBase
+    internal sealed class ProjectReferenceAttachedCollectionSource : AssetsFileAttachedCollectionSourceBase
     {
         private readonly string? _target;
-        private readonly string _packageId;
-        private readonly string _version;
+        private readonly string _projectId;
 
-        public PackageReferenceAttachedCollectionSource(
+        public ProjectReferenceAttachedCollectionSource(
             IVsHierarchyItem hierarchyItem,
             string? target,
-            string packageId,
-            string version,
+            string projectId,
             IAssetsFileDependenciesDataSource dataSource,
             JoinableTaskContext joinableTaskContext)
             : base(hierarchyItem, dataSource, joinableTaskContext)
         {
             _target = target;
-            _packageId = packageId;
-            _version = version;
+            _projectId = projectId;
         }
 
         protected override IEnumerable<object>? UpdateItems(AssetsFileDependenciesSnapshot snapshot)
         {
             List<object>? items = null;
 
-            ProcessLogMessages(ref items, snapshot, _target, _packageId);
+            ProcessLogMessages(ref items, snapshot, _target, _projectId);
 
-            if (snapshot.TryGetDependencies(_packageId, _version, _target, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
+            if (snapshot.TryGetDependencies(_projectId, version: null, _target, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
             {
                 ProcessLibraryReferences(ref items, snapshot, dependencies, _target);
             }
 
-            if (snapshot.TryGetPackage(_packageId, _version, _target, out AssetsFileTargetLibrary? library))
+            if (snapshot.TryGetProject(_projectId, _target, out AssetsFileTargetLibrary? library))
             {
                 ProcessLibraryContent(ref items, library);
             }
