@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Rule Name="BuildPropertyPage"
+      Description="General"
+      DisplayName="Build"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+
+  <Rule.Categories>
+    <Category Name="General"
+              Description="General"
+              DisplayName="General" />
+
+    <Category Name="ErrorsAndWarnings"
+              Description="Errors and warnings"
+              DisplayName="Errors and warnings" />
+
+    <Category Name="Output"
+              Description="Output"
+              DisplayName="Output" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <StringProperty Name="DefineConstants"
+                  DisplayName="Conditional compilation symbols"
+                  Category="General" />
+
+  <EnumProperty Name="PlatformTarget"
+                DisplayName="Platform target"
+                Category="General">
+    <EnumValue Name="AnyCPU"
+               DisplayName="Any CPU" />
+    <EnumValue Name="x64"
+               DisplayName="x64" />
+    <EnumValue Name="x86"
+               DisplayName="x86" />
+  </EnumProperty>
+
+  <EnumProperty Name="Nullable"
+                DisplayName="Nullable"
+                Category="General" >
+    <EnumValue Name="disable"
+               DisplayName="Disable" />
+    <EnumValue Name="enable"
+               DisplayName="Enable" />
+    <EnumValue Name="warnings"
+               DisplayName="Warnings" />
+    <EnumValue Name="annotations"
+               DisplayName="Annotations" />
+  </EnumProperty>
+
+  <BoolProperty Name="AllowUnsafeBlocks"
+                DisplayName="Allow unsafe code"
+                Category="General" />
+
+  <BoolProperty Name="Optimize"
+                DisplayName="Optimize code"
+                Category="General" />
+
+  <EnumProperty Name="WarningLevel"
+                DisplayName="Warning level"
+                Category="ErrorsAndWarnings">
+    <EnumValue Name="0"
+               DisplayName="0" />
+    <EnumValue Name="1"
+               DisplayName="1" />
+    <EnumValue Name="2"
+               DisplayName="2" />
+    <EnumValue Name="3"
+               DisplayName="3" />
+    <EnumValue Name="4"
+               DisplayName="4" />
+  </EnumProperty>
+
+  <StringProperty Name="NoWarn"
+                  DisplayName="Suppress warnings"
+                  Category="ErrorsAndWarnings" />
+
+  <EnumProperty Name="TreatWarningsAsErrors"
+                DisplayName="Treat warnings as errors"
+                Category="ErrorsAndWarnings" >
+    <EnumValue Name="false"
+               DisplayName="None" />
+    <EnumValue Name="true"
+               DisplayName="All" />
+  </EnumProperty>
+
+  <StringProperty Name="WarningsAsErrors"
+                  DisplayName="Specific warnings"
+                  Category="ErrorsAndWarnings" />
+
+  <StringProperty Name="OutputPath"
+                  DisplayName="Output path"
+                  Category="Output"
+                  Subtype="file"/>
+
+  <StringProperty Name="DocumentationFile"
+                  DisplayName="XML documentation file path"
+                  Category="Output"
+                  Subtype="file"/>
+</Rule>
