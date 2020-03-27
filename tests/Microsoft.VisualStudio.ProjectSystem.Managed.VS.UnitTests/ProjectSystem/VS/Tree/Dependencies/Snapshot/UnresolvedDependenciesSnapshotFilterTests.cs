@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Xunit;
 
@@ -14,9 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
             var resolvedDependency   = new TestDependency { Id = "dependency", Resolved = true  };
 
-            var builder = new IDependency[] { resolvedDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new Dictionary<string, IDependency>
+            {
+                { resolvedDependency.Id, resolvedDependency }
+            };
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
@@ -39,9 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
 
-            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var dependencyById = new Dictionary<string, IDependency>();
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 
@@ -64,9 +67,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             var resolvedDependency = new TestDependency { Id = "dependency", Resolved = true };
 
-            var builder = ImmutableDictionary<string, IDependency>.Empty.ToBuilder();
+            var dependencyById = new Dictionary<string, IDependency>();
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new UnresolvedDependenciesSnapshotFilter();
 

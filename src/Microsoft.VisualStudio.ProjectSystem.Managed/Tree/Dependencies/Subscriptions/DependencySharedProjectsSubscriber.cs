@@ -90,9 +90,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
             }
 
             IEnumerable<string> sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
-            var currentSharedImportNodePaths = targetedSnapshot.DependencyById
-                .Where(pair => pair.Value.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
-                .Select(pair => pair.Value.Path)
+            var currentSharedImportNodePaths = targetedSnapshot.Dependencies
+                .Where(pair => pair.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
+                .Select(pair => pair.Path)
                 .ToList();
 
             var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);

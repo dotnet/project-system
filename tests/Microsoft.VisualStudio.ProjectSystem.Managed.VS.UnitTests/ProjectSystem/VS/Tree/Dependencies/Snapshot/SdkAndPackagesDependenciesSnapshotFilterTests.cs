@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Xunit;
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => d.Id);
 
             var context = new AddDependencyContext(builder);
 
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => d.Id);
 
             var context = new AddDependencyContext(builder);
 
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => d.Id);
 
             var context = new AddDependencyContext(builder);
 
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => d.Id);
 
             var context = new RemoveDependencyContext(builder);
 

@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         {
             var groupedByProviderType = new Dictionary<string, List<IDependency>>(StringComparers.DependencyProviderTypes);
 
-            foreach ((_, IDependency dependency) in targetedSnapshot.DependencyById)
+            foreach (IDependency dependency in targetedSnapshot.Dependencies)
             {
                 if (!dependency.Visible)
                 {

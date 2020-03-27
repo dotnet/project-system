@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
 using Xunit;
 
@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ProviderType = providerType
             };
 
-            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 OriginalItemSpec = "originalItemSpec2"
             };
 
-            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -129,9 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Caption = $"{caption} (originalItemSpec2)" // caption already includes alias
             };
 
-            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
@@ -182,9 +182,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
 
             // TODO test a longer suffix here -- looks like the implementation might not handle it correctly
 
-            var builder = new IDependency[] { dependency, otherDependency }.ToImmutableDictionary(d => d.Id).ToBuilder();
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
 
-            var context = new AddDependencyContext(builder);
+            var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
