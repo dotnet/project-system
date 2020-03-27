@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -163,25 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             return new RestoreData(
                 restoreInfo.ProjectAssetsFilePath,
-                GetLastWriteTimeUtc(restoreInfo.ProjectAssetsFilePath), succeeded: succeeded);
-        }
-
-        private DateTime GetLastWriteTimeUtc(string path)
-        {
-            Assumes.NotNullOrEmpty(path);
-
-            try
-            {
-                return _fileSystem.LastFileWriteTimeUtc(path);
-            }
-            catch (IOException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
-
-            return DateTime.MinValue;
+                _fileSystem.GetLastFileWriteTimeOrMinValueUtc(restoreInfo.ProjectAssetsFilePath), succeeded: succeeded);
         }
 
         public Task LoadAsync()

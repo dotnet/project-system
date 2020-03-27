@@ -26,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 if (!_timestampCache.TryGetValue(path, out DateTime time))
                 {
-                    if (!_fileSystem.FileExists(path))
+                    if (!_fileSystem.TryGetLastFileWriteTimeUtc(path, out DateTime? newTime))
                     {
                         return null;
                     }
 
-                    time = _fileSystem.LastFileWriteTimeUtc(path);
+                    time = newTime.Value;
                     _timestampCache[path] = time;
                 }
 
