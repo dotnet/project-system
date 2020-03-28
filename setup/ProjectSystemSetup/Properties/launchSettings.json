@@ -39,7 +39,7 @@
     "Start VS Online Server": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
-      "commandLineArgs": "C:\\Users\\metrevin\\source\\repos\\NexusTest\\NexusTest.sln /rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /server",
+      "commandLineArgs": "<path_to_folder_or_solution> /rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /server",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
