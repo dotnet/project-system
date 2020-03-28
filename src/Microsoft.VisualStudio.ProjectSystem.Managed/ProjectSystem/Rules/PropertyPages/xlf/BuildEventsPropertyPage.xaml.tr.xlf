@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../BuildEventsPropertyPage.xaml">
+    <body>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>Run the post-build event</source>
+        <target state="new">Run the post-build event</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>On successful build</source>
+        <target state="new">On successful build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the build updates the project output</source>
+        <target state="new">When the build updates the project output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|BuildEventsPropertyPage|Description">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|BuildEventsPropertyPage|DisplayName">
+        <source>Build Events</source>
+        <target state="new">Build Events</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuild|DisplayName">
+        <source>Post-build event command line</source>
+        <target state="new">Post-build event command line</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuild|DisplayName">
+        <source>Pre-build event command line</source>
+        <target state="new">Pre-build event command line</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
