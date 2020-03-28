@@ -153,6 +153,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\BuildEventsPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
   </ItemGroup>
 
   <!-- Items -->
