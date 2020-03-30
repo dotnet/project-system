@@ -1,10 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Runtime.Versioning;
 using NuGet.VisualStudio;
 
@@ -13,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [Export(typeof(ITargetFrameworkProvider))]
     internal sealed class TargetFrameworkProvider : ITargetFrameworkProvider
     {
-        private readonly IVsFrameworkCompatibility _nuGetComparer;
         private readonly IVsFrameworkParser _nuGetFrameworkParser;
 
         /// <summary>
@@ -23,11 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private ImmutableDictionary<string, ITargetFramework> _targetFrameworkByName = ImmutableDictionary.Create<string, ITargetFramework>(StringComparer.Ordinal);
 
         [ImportingConstructor]
-        public TargetFrameworkProvider(
-            IVsFrameworkCompatibility nugetComparer,
-            IVsFrameworkParser nugetFrameworkParser)
+        public TargetFrameworkProvider(IVsFrameworkParser nugetFrameworkParser)
         {
-            _nuGetComparer = nugetComparer;
             _nuGetFrameworkParser = nugetFrameworkParser;
         }
 
@@ -84,33 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // Note: catching all exceptions and return a generic TargetFramework for given shortOrFullName
                 return new TargetFramework(shortOrFullName);
             }
-        }
-
-        public ITargetFramework? GetNearestFramework(
-            ITargetFramework? targetFramework,
-            IEnumerable<ITargetFramework>? otherFrameworks)
-        {
-            if (targetFramework?.FrameworkName == null || otherFrameworks == null)
-            {
-                return null;
-            }
-
-            var others = otherFrameworks.Where(other => other.FrameworkName != null).ToList();
-
-            if (others.Count == 0)
-            {
-                return null;
-            }
-
-            FrameworkName? nearestFrameworkName = _nuGetComparer.GetNearest(
-                targetFramework.FrameworkName, others.Select(x => x.FrameworkName));
-
-            if (nearestFrameworkName == null)
-            {
-                return null;
-            }
-
-            return others.FirstOrDefault((other, nearest) => nearest.Equals(other.FrameworkName), nearestFrameworkName);
         }
     }
 }
