@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 }
                 catch (Exception)
                 {
-                    // DTE COM calls can fail for any number of valid reasions.
+                    // DTE COM calls can fail for any number of valid reasons.
                     continue;
                 }
 
