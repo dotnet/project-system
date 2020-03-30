@@ -18,10 +18,6 @@ pr:
     - master
     - dev*
     - feature/*
-  paths:
-    exclude: # don't trigger the CI if only a doc file was changed
-    - docs/*
-    - README.md
 
 jobs:
 - template: unit-tests-template.yml
