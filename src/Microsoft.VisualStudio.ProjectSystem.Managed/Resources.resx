@@ -178,4 +178,9 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
   <data name="WindowsAuth" xml:space="preserve">
     <value>Windows Authentication</value>
   </data>
+  <data name="ProjectLoadedWithWrongProjectType" xml:space="preserve">
+    <value>The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</value>
+  </data>
 </root>
