@@ -1,9 +1,7 @@
-' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Strict On
 Option Explicit On
-
-Imports Microsoft.VisualStudio.Shell
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
@@ -13,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '   exposed via the IVsBuildEventCommandLineDialogService interface.
     '--------------------------------------------------------------------------
     <CLSCompliant(False)>
-    <ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service")>
     Friend NotInheritable Class BuildEventCommandLineDialogService
         Implements Interop.IVsBuildEventCommandLineDialogService
 
