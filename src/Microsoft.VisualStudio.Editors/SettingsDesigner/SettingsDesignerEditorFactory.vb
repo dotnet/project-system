@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     ''' </summary>
     <Guid(SettingsDesignerEditorFactory.EditorGuidString),
     ProvideView(LogicalView.Designer, "Design"),
-    ProvideEditorExtension(GetType(SettingsDesignerEditorFactory), ".settings", 30)>
+    ProvideEditorExtension(GetType(SettingsDesignerEditorFactory), ".settings", &H30)>
     Friend NotInheritable Class SettingsDesignerEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
 

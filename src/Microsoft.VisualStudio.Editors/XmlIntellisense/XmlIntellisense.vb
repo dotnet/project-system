@@ -29,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
     '   thread.
     '--------------------------------------------------------------------------
     <ClassInterface(ClassInterfaceType.None)>
-    <Shell.ProvideService(GetType(IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service")>
     Friend NotInheritable Class XmlIntellisenseService
         Implements IXmlIntellisenseService
 

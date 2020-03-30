@@ -5,7 +5,6 @@ Option Explicit On
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
     '''   and Microsoft.VisualStudio.Editors.vbexpress.vrg_33310.ddr.
     ''' </remarks>
     <CLSCompliant(False)>
-    <ProvideService(GetType(Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service")>
     Friend Class VBReferenceChangedService
         Implements Interop.IVbReferenceChangedService
 
