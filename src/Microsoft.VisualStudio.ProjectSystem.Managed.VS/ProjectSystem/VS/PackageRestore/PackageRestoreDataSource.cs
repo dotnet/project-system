@@ -162,9 +162,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             if (projectAssetsFilePath.Length == 0)
                 return new RestoreData(string.Empty, DateTime.MinValue, succeeded: false);
 
+            DateTime lastWriteTime = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(projectAssetsFilePath);
+
             return new RestoreData(
                 projectAssetsFilePath,
-                _fileSystem.GetLastFileWriteTimeOrMinValueUtc(projectAssetsFilePath), succeeded: succeeded);
+                lastWriteTime,
+                succeeded: succeeded && lastWriteTime != DateTime.MinValue);
         }
 
         public Task LoadAsync()
