@@ -23,7 +23,7 @@
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"
-                HasConfigurationCondition="False" />
+                HasConfigurationCondition="True" />
   </Rule.DataSource>
 
   <StringProperty Name="DefineConstants"
@@ -44,6 +44,9 @@
   <EnumProperty Name="Nullable"
                 DisplayName="Nullable"
                 Category="General" >
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
     <EnumValue Name="disable"
                DisplayName="Disable" />
     <EnumValue Name="enable"
