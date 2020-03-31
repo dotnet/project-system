@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
     internal class DesignTimeInputsFileWatcher : ProjectValueDataSourceBase<string[]>, IVsFreeThreadedFileChangeEvents2, IDesignTimeInputsFileWatcher
     {
+        private readonly UnconfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
@@ -49,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                            IVsService<SVsFileChangeEx, IVsAsyncFileChangeEx> fileChangeService)
              : base(unconfiguredProjectServices, synchronousDisposal: false, registerDataSource: false)
         {
+            _project = project;
             _threadingService = threadingService;
             _designTimeInputsDataSource = designTimeInputsDataSource;
             _fileChangeService = fileChangeService;
@@ -80,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
-            _actionBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputs);
+            _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputs, _project);
 
             _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkTo(_actionBlock, DataflowOption.PropagateCompletion);
 

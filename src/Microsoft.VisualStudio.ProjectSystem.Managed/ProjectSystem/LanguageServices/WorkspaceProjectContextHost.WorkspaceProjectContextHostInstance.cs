@@ -83,11 +83,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     // think we're still "in progress" in the case of an empty change
                     _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
+                        _project.UnconfiguredProject,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()),
 
                     _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
+                        _project.UnconfiguredProject,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules())
                 };

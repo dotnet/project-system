@@ -863,7 +863,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             if (_debugProfileProviderLink == null)
             {
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
-                _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(OnLaunchSettingsChanged);
+                _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(
+                    OnLaunchSettingsChanged,
+                    Project);
 
                 // We need to get the set of UI providers, if any.
                 InitializeUIProviders();

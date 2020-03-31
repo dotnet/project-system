@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
-                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
+                ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockFactory.CreateActionBlock(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync), _project);
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
                 _projectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
