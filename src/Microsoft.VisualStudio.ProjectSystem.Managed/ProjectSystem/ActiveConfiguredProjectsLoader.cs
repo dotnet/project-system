@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
             _tasksService = tasksService;
-            _targetBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged);
+            _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged, project);
         }
 
         [ProjectAutoLoad(ProjectLoadCheckpoint.ProjectInitialCapabilitiesEstablished)]
