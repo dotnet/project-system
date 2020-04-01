@@ -12,6 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         /// </summary>
         string ProjectEvaluationRule { get; }
 
-        void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger);
+        void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, IProjectLogger logger);
     }
 }

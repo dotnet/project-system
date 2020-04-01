@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
-        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
