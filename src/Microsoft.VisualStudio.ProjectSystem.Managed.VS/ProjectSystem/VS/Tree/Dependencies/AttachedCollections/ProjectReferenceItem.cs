@@ -40,8 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override ImageMoniker IconMoniker => ManagedImageMonikers.Application;
 
-        public override ImageMoniker ExpandedIconMoniker => IconMoniker;
-
         public override object? GetBrowseObject() => new BrowseObject(_library);
 
         public IAttachedCollectionSource? ContainsAttachedCollectionSource { get; private set; }
