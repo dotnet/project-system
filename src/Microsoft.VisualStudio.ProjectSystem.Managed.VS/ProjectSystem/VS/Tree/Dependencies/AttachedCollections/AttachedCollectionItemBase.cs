@@ -44,10 +44,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private static readonly HashSet<Type> s_supportedPatterns = new HashSet<Type>
         {
             typeof(ITreeDisplayItem),
-            typeof(IBrowsablePattern),
+            typeof(IBrowsablePattern)
         };
 
-        protected AttachedCollectionItemBase(string name) => Text = name;
+        protected AttachedCollectionItemBase(string name)
+        {
+            Requires.NotNullOrWhiteSpace(name, nameof(name));
+
+            Text = name;
+        }
 
         public string Text { get; }
 
@@ -108,6 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             public MaterializedAttachedCollectionSource(object sourceItem, IEnumerable? items)
             {
+                Requires.NotNull(sourceItem, nameof(sourceItem));
+
                 SourceItem = sourceItem;
                 Items = items;
             }

@@ -22,7 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public static PackageAssemblyGroupItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, PackageAssemblyGroupType groupType, ImmutableArray<string> paths)
         {
-            Requires.Argument(!paths.IsEmpty, nameof(paths), "May not be empty");
+            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(library, nameof(library));
+            Requires.Argument(!paths.IsDefaultOrEmpty, nameof(paths), "May not be default or empty");
 
             var item = new PackageAssemblyGroupItem(groupType, snapshot, library);
             item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, paths);
@@ -31,6 +33,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public static PackageAssemblyGroupItem CreateWithContainedByItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, PackageAssemblyGroupType groupType, IEnumerable containedByItems)
         {
+            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(library, nameof(library));
+            Requires.NotNull(containedByItems, nameof(containedByItems));
+
             var item = new PackageAssemblyGroupItem(groupType, snapshot, library);
             item.ContainedByAttachedCollectionSource = new MaterializedAttachedCollectionSource(item, containedByItems);
             return item;

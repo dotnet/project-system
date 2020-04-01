@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         /// </summary>
         public AssetsFileDependenciesSnapshot UpdateFromAssetsFile(string path)
         {
+            Requires.NotNull(path, nameof(path));
+
             try
             {
                 // Parse the file
@@ -166,6 +168,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
         public bool TryGetDependencies(string libraryName, string? version, string? target, out ImmutableArray<AssetsFileTargetLibrary> dependencies)
         {
+            Requires.NotNull(libraryName, nameof(libraryName));
+
             if (!TryGetTarget(target, out AssetsFileTarget? targetData))
             {
                 dependencies = default;
@@ -207,6 +211,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
         public bool TryGetPackage(string packageId, string version, string? target, [NotNullWhen(returnValue: true)] out AssetsFileTargetLibrary? assetsFileLibrary)
         {
+            Requires.NotNull(packageId, nameof(packageId));
+            Requires.NotNull(version, nameof(version));
+
             if (!TryGetTarget(target, out AssetsFileTarget? targetData))
             {
                 assetsFileLibrary = default;

@@ -35,6 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected AssetsFileAttachedCollectionSourceBase(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext)
         {
+            Requires.NotNull(hierarchyItem, nameof(hierarchyItem));
+            Requires.NotNull(dataSource, nameof(dataSource));
+            Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
+
             _hierarchyItem = hierarchyItem;
 
             IsUpdatingHasItems = true;
