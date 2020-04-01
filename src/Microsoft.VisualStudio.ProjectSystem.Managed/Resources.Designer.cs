@@ -205,6 +205,17 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The project file &apos;{0}&apos; cannot be opened. 
+        ///
+        ///This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type..
+        /// </summary>
+        internal static string ProjectLoadedWithWrongProjectType {
+            get {
+                return ResourceManager.GetString("ProjectLoadedWithWrongProjectType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Projects.
         /// </summary>
         internal static string ProjectsNodeName {

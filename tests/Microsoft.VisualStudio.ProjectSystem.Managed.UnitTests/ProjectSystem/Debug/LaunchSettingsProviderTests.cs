@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
             Assert.True(await provider.SettingsFileHasChangedAsyncTest());
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
 
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
 
             // Last Write time should be set
-            Assert.Equal(moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
+            Assert.Equal(moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
 
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
@@ -425,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Write new file, but set the timestamp to match
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 

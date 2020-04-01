@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio
 
         public StringFormat(string format, object?[] arguments)
         {
+            Requires.Range(arguments.Length > 3, nameof(arguments), "Must contain at least three items");
             Format = format;
             Argument1 = null;
             Argument2 = null;

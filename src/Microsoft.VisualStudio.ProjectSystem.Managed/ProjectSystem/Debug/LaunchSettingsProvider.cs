@@ -354,7 +354,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc;
+            if (_fileSystem.TryGetLastFileWriteTimeUtc(fileName, out DateTime? writeTime))
+            {
+                return writeTime != LastSettingsFileSyncTimeUtc;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -453,7 +458,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+            LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             return launchSettingsData;
         }
 
@@ -508,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+                LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             }
             finally
             {
@@ -593,7 +598,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc)
+                if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {

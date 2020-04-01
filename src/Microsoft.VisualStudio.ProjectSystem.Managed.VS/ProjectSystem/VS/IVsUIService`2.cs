@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal interface IVsUIService<TService, TInterface> : IVsUIService<TInterface>
         where TService : class
         where TInterface : class?
-
     {
     }
 }

@@ -1,11 +1,9 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.Windows.Forms
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.AddImports
-    <ProvideService(GetType(IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service")>
     Friend Class AddImportsDialogService
         Implements IVBAddImportsDialogService
 

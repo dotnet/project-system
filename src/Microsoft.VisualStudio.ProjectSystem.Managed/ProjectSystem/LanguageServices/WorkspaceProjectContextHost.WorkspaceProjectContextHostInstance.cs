@@ -69,9 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
 
-                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-
-                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
+                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
 
                 _disposables = new DisposableBag
                 {
