@@ -165,11 +165,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 finally
                 {
                     context.EndBatch();
+
+                    NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
 
                 await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, cancellationToken);
-
-                NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)
