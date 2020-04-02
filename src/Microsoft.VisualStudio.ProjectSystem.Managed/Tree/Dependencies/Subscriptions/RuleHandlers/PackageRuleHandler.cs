@@ -142,14 +142,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     return false;
                 }
 
+                // Before 16.7 (SDK 3.1.4xx) ResolvedPackageReference items (from PreprocessPackageDependenciesDesignTime) would return
+                // packages for all targets in a DTB, where the target could be identified by the ItemSpec (for example:
+                // ".NETFramework,Version=v4.8/MetadataExtractor/2.2.0"). We would then filter the ones we weren't interested in.
+                // From 16.7 we no longer return items from other target frameworks during DTB, and we remove the target prefix from ItemSpec.
+                // In order to not break scenarios where 16.7+ runs using an older SDK, we need to identify which ItemSpec format is used,
+                // and maintain filtering logic.
                 int slashIndex = itemSpec.IndexOf('/');
-                string? targetFrameworkName = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
-
-                if (targetFrameworkName == null ||
-                    targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                if (slashIndex != -1 && itemSpec.IndexOf('/', slashIndex + 1) != -1)
                 {
-                    dependencyModel = default;
-                    return false;
+                    // ItemSpec contains more than one '/'. It's the old format and we must apply filtering.
+                    string targetFrameworkName = s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+
+                    if (targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                    {
+                        dependencyModel = default;
+                        return false;
+                    }
                 }
 
                 string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
