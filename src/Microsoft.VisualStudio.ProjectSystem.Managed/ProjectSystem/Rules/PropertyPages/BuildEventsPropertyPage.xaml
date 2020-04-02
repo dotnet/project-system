@@ -8,23 +8,23 @@
 
   <Rule.DataSource>
     <DataSource Persistence="ProjectFile"
-                    SourceOfDefaultValue="AfterContext"
-                    HasConfigurationCondition="False" />
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
   </Rule.DataSource>
 
   <StringProperty Name="PreBuild"
-                    DisplayName="Pre-build event command line"/>
+                  DisplayName="Pre-build event command line" />
 
   <StringProperty Name="PostBuild"
-                    DisplayName="Post-build event command line" />
+                  DisplayName="Post-build event command line" />
 
   <EnumProperty Name="RunPostBuildEvent"
-                  DisplayName="Run the post-build event">
+                DisplayName="Run the post-build event">
     <EnumValue Name="Always"
-                   DisplayName="Always" />
+               DisplayName="Always" />
     <EnumValue Name="OnBuildSuccess"
-                   DisplayName="On successful build" />
+               DisplayName="On successful build" />
     <EnumValue Name="OnOutputUpdated"
-                   DisplayName="When the build updates the project output" />
+               DisplayName="When the build updates the project output" />
   </EnumProperty>
 </Rule>
