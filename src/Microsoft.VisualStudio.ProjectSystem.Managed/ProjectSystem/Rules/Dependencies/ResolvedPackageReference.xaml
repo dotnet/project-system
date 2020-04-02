@@ -25,11 +25,6 @@
     </StringListProperty.DataSource>
   </StringListProperty>
 
-  <StringProperty Name="Description"
-                  Description="Dependency description."
-                  DisplayName="Description"
-                  ReadOnly="True" />
-
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
                   DisplayName="ExcludeAssets">
@@ -40,14 +35,6 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-
-  <StringProperty Name="FrameworkName"
-                  ReadOnly="True"
-                  Visible="False" />
-
-  <StringProperty Name="FrameworkVersion"
-                  ReadOnly="True"
-                  Visible="False" />
 
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
@@ -114,14 +101,6 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-
-  <StringProperty Name="RuntimeIdentifier"
-                  ReadOnly="True"
-                  Visible="False" />
-
-  <StringProperty Name="TargetFramework"
-                  ReadOnly="True"
-                  Visible="False" />
 
   <StringProperty Name="Type"
                   ReadOnly="True"

@@ -22,16 +22,6 @@
         <target state="translated">套件屬性</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">說明</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">相依性描述。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">版本</target>

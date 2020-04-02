@@ -22,16 +22,6 @@
         <target state="translated">Свойства пакета</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Description|DisplayName">
-        <source>Description</source>
-        <target state="translated">Описание</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|Description|Description">
-        <source>Dependency description.</source>
-        <target state="translated">Описание зависимости.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Версия</target>
