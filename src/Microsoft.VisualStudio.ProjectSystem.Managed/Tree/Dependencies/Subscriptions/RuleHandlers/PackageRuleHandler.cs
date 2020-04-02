@@ -129,30 +129,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
 
-                if (!StringComparers.PropertyLiteralValues.Equals(dependencyType, "package"))
+                if (dependencyType != null)
                 {
-                    // Other types handled via assets file
-                    // TODO filter in DTB targets and remove the 'Type' metadata altogether
-                    dependencyModel = default;
-                    return false;
-                }
+                    // LEGACY MODE
+                    //
+                    // In 16.7 (SDK 3.1.4xx) the format of ResolvedPackageReference items was changed in task PreprocessPackageDependenciesDesignTime.
+                    //
+                    // If we observe "Type" metadata then we are running with an older SDK and need to preserve some
+                    // legacy behaviour to avoid breaking the dependencies node too much. Transitive dependencies will
+                    // not be displayed, but we should be able to provide an equivalent experience for top-level items.
 
-                // Before 16.7 (SDK 3.1.4xx) ResolvedPackageReference items (from PreprocessPackageDependenciesDesignTime) would return
-                // packages for all targets in a DTB, where the target could be identified by the ItemSpec (for example:
-                // ".NETFramework,Version=v4.8/MetadataExtractor/2.2.0"). We would then filter the ones we weren't interested in.
-                // From 16.7 we no longer return items from other target frameworks during DTB, and we remove the target prefix from ItemSpec.
-                // In order to not break scenarios where 16.7+ runs using an older SDK, we need to identify which ItemSpec format is used,
-                // and maintain filtering logic.
-                int slashIndex = itemSpec.IndexOf('/');
-                if (slashIndex != -1 && itemSpec.IndexOf('/', slashIndex + 1) != -1)
-                {
-                    // ItemSpec contains more than one '/'. It's the old format and we must apply filtering.
-                    string targetFrameworkName = s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
-
-                    if (_targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                    if (!StringComparers.PropertyLiteralValues.Equals(dependencyType, "Package"))
                     {
+                        // Legacy behaviour included items of various types. We now only accept "Package".
                         dependencyModel = default;
                         return false;
+                    }
+
+                    // Legacy behaviour was to return packages for all targets, even though we have a build per-target.
+                    // The package's target was prefixed to its ItemSpec (for example: ".NETFramework,Version=v4.8/MetadataExtractor/2.3.0").
+                    // We would then filter out items for the wrong target here.
+                    //
+                    // From 16.7 we no longer return items from other target frameworks during DTB, and we remove the target prefix from ItemSpec.
+                    //
+                    // This code preserves filtering logic when processing legacy items.
+                    int slashIndex = itemSpec.IndexOf('/');
+                    if (slashIndex != -1)
+                    {
+                        string targetFrameworkName = s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+
+                        if (_targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                        {
+                            // Item is not for the correct target
+                            dependencyModel = default;
+                            return false;
+                        }
                     }
                 }
 

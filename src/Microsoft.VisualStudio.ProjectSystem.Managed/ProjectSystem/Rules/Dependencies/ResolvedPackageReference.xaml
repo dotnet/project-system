@@ -102,6 +102,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <!-- NOTE since 16.7 the SDK only returns "Package" items, however we keep this field to allow filtering in the case a user explicitly uses an older SDK version -->
   <StringProperty Name="Type"
                   ReadOnly="True"
                   Visible="False" />
