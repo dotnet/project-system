@@ -14,17 +14,6 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringListProperty Name="Dependencies"
-                      Separator=";"
-                      Visible="false">
-    <StringListProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  ItemType="PackageReference"
-                  Persistence="ResolvedReference"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringListProperty.DataSource>
-  </StringListProperty>
-
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
                   DisplayName="ExcludeAssets">
@@ -61,10 +50,6 @@
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
-
-  <BoolProperty Name="IsTopLevelDependency"
-                ReadOnly="True"
-                Visible="False" />
 
   <StringProperty Name="Name"
                   ReadOnly="True"
