@@ -56,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.After.GetProjectItemProperties(addedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Added(dependencyModel);
@@ -77,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.After.GetProjectItemProperties(changedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
@@ -99,7 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
@@ -110,13 +107,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private static readonly InternPool<string> s_targetFrameworkInternPool = new InternPool<string>(StringComparer.Ordinal);
 
-        private static bool TryCreatePackageDependencyModel(
+        private bool TryCreatePackageDependencyModel(
             string itemSpec,
             bool isResolved,
             IImmutableDictionary<string, string> properties,
             Func<string, bool>? isEvaluatedItemSpec,
             ITargetFramework targetFramework,
-            ITargetFrameworkProvider targetFrameworkProvider,
             [NotNullWhen(returnValue: true)] out PackageDependencyModel? dependencyModel)
         {
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
@@ -129,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // We have design-time build data
 
                 Requires.NotNull(targetFramework, nameof(targetFramework));
-                Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
                 Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
 
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
@@ -154,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     // ItemSpec contains more than one '/'. It's the old format and we must apply filtering.
                     string targetFrameworkName = s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
 
-                    if (targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                    if (_targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
                     {
                         dependencyModel = default;
                         return false;
