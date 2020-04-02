@@ -127,6 +127,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 Requires.NotNull(targetFramework, nameof(targetFramework));
                 Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
 
+                string? name = properties.GetStringProperty(ProjectItemMetadata.Name);
+
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
 
                 if (dependencyType != null)
@@ -165,24 +167,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                             return false;
                         }
                     }
-                }
 
-                string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
+                    // Name metadata is required in 16.7. Legacy behaviour uses ItemSpec as a fallback.
+                    name ??= itemSpec;
+                }
+                else
+                {
+                    if (Strings.IsNullOrEmpty(name))
+                    {
+                        // This should not happen as Name is required in PreprocessPackageDependenciesDesignTime from 16.7
+                        dependencyModel = default;
+                        return false;
+                    }
+                }
 
                 bool isTopLevel = isImplicitlyDefined || isEvaluatedItemSpec(name);
 
                 if (!isTopLevel)
                 {
+                    // We no longer accept non-top-level dependencies from DTB data. See note above about legacy mode support.
                     dependencyModel = default;
                     return false;
                 }
 
-                string originalItemSpec = isTopLevel ? name : itemSpec;
-
                 dependencyModel = new PackageDependencyModel(
                     itemSpec,
-                    originalItemSpec,
-                    name,
+                    originalItemSpec: name,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: true,
                     isImplicitlyDefined,
@@ -198,7 +208,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 dependencyModel = new PackageDependencyModel(
                     itemSpec,
                     originalItemSpec: itemSpec,
-                    name: itemSpec,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: false,
                     isImplicitlyDefined,

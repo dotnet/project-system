@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
-        public override string Name { get; }
+        public override string Name => OriginalItemSpec;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
@@ -35,7 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         public PackageDependencyModel(
             string path,
             string originalItemSpec,
-            string name,
             string version,
             bool isResolved,
             bool isImplicit,
@@ -44,16 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             : base(
                 path,
                 originalItemSpec,
-                flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{name}").Add($"$VER:{version}"),
+                flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{originalItemSpec}").Add($"$VER:{version}"),
                 isResolved,
                 isImplicit,
                 properties,
                 isVisible)
         {
-            Requires.NotNullOrEmpty(name, nameof(name));
-
-            Name = name;
-            Caption = string.IsNullOrEmpty(version) ? name : $"{name} ({version})";
+            Caption = string.IsNullOrEmpty(version) ? originalItemSpec : $"{originalItemSpec} ({version})";
         }
     }
 }
