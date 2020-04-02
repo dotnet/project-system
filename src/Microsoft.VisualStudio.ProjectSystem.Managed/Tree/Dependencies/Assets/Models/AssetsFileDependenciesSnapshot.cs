@@ -284,5 +284,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 return false;
             }
         }
+
+        public override string ToString() => $"{DataByTarget.Count} target{(DataByTarget.Count == 1 ? "" : "s")}";
     }
 }

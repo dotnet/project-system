@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 {
@@ -87,6 +88,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
 
             return _dependentsByLibrary.TryGetValue(libraryName, out dependents);
+        }
+
+        public override string ToString()
+        {
+            var s = new StringBuilder();
+            s.Append("Target \"").Append(Target).Append("\" ");
+            s.Append(LibraryByName.Count).Append(LibraryByName.Count == 1 ? " library (" : " libraries (");
+            s.Append(_topLevelDependencies?.Count ?? 0).Append(" top level) ");
+            s.Append(Logs.Length).Append(Logs.Length == 1 ? " log" : " logs");
+            return s.ToString();
         }
     }
 }

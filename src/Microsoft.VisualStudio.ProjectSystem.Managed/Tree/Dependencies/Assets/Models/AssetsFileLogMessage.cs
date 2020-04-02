@@ -33,5 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 && other.Message == Message
                 && other.LibraryId == LibraryId;
         }
+
+        public override string ToString() => $"{Level} {Code} ({LibraryId}) {Message}";
     }
 }
