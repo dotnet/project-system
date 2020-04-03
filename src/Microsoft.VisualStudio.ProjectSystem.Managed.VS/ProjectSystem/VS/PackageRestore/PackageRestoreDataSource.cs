@@ -154,15 +154,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private RestoreData CreateRestoreData(ProjectRestoreInfo restoreInfo, bool succeeded)
         {
+            string projectAssetsFilePath = restoreInfo.ProjectAssetsFilePath;
+
             // Restore service gives us a guarantee that the assets file
             // will contain *at least* the changes that we pushed to it.
 
-            if (restoreInfo.ProjectAssetsFilePath.Length == 0)
+            if (projectAssetsFilePath.Length == 0)
                 return new RestoreData(string.Empty, DateTime.MinValue, succeeded: false);
 
+            DateTime lastWriteTime = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(projectAssetsFilePath);
+
             return new RestoreData(
-                restoreInfo.ProjectAssetsFilePath,
-                _fileSystem.GetLastFileWriteTimeOrMinValueUtc(restoreInfo.ProjectAssetsFilePath), succeeded: succeeded);
+                projectAssetsFilePath,
+                lastWriteTime,
+                succeeded: succeeded && lastWriteTime != DateTime.MinValue);
         }
 
         public Task LoadAsync()

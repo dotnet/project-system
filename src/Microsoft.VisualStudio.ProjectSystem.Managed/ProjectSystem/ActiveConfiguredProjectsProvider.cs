@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
 
-            if (projects == null || projects.Objects.Count == 0)
+            if (projects == null || projects.Objects.Length == 0)
             {
                 return null;
             }
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
             }
 
-            ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Count);
+            ImmutableArray<ConfiguredProject>.Builder builder = ImmutableArray.CreateBuilder<ConfiguredProject>(configurations.Objects.Length);
 
             foreach (ProjectConfiguration configuration in configurations.Objects)
             {
