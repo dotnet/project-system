@@ -75,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             ImmutableDictionary<string, AssetsFileTarget>.Builder dataByTarget = ImmutableDictionary.CreateBuilder<string, AssetsFileTarget>(StringComparers.FrameworkIdentifiers); // TODO review comparer here -- should it be ignore case?
 
-            var topLevelDependenciesByTarget = lockFile.PackageSpec.TargetFrameworks.ToDictionary(
-                targetFramework => targetFramework.FrameworkName.DotNetFrameworkName,
-                targetFramework => targetFramework.Dependencies.Select(dep => dep.Name).ToHashSet());
+            var topLevelDependenciesByTarget = lockFile.ProjectFileDependencyGroups.ToDictionary(
+                dependencyGroup => dependencyGroup.FrameworkName,
+                dependencyGroup => dependencyGroup.Dependencies.Select(ParseLibraryNameFromDependencyGroupString).ToHashSet());
 
             foreach (LockFileTarget lockFileTarget in lockFile.Targets)
             {
@@ -102,6 +102,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             DataByTarget = dataByTarget.ToImmutable();
             return;
+
+            static string ParseLibraryNameFromDependencyGroupString(string dependency)
+            {
+                // "MyLibrary >= 1.0.0"
+                int spaceIndex = dependency.IndexOf(' ');
+                if (spaceIndex != -1)
+                    return dependency.Substring(0, spaceIndex);
+                return dependency;
+            }
 
             static ImmutableArray<AssetsFileLogMessage> ParseLogMessages(LockFile lockFile, AssetsFileTarget previousTarget, string target)
             {
