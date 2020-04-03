@@ -227,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                             }
 
                             uint itemId = (uint)libraryNode.Identity.ToInt32();
-                            hierarchyItem = _hierarchyItemManager.GetHierarchyItem(projectVsServices.VsHierarchy, itemId);
+                            hierarchyItem = _hierarchyItemManager.GetHierarchyItem(projectVsServices!.VsHierarchy, itemId);
                             return true;
                         }
                     }
