@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Finds a tree node by its flags. If there many nodes that satisfy flags, returns first.
+        /// Finds the first child node having <paramref name="flags"/>, or <see langword="null"/> if no child matches.
         /// </summary>
-        internal static IProjectTree? GetSubTreeNode(this IProjectTree self, ProjectTreeFlags flags)
+        internal static IProjectTree? FindChildWithFlags(this IProjectTree self, ProjectTreeFlags flags)
         {
             foreach (IProjectTree child in self.Children)
             {

@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNode)
                 ? root
-                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNode);
+                : root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
                 .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
