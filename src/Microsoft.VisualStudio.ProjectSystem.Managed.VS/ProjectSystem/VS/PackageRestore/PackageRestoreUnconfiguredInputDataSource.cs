@@ -125,15 +125,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             if (hasConflicts)
             {
-                ReportDataSourceUserFault(
-                    new Exception(string.Format(
+                ReportUserFault(string.Format(
                         CultureInfo.CurrentCulture,
                         VSResources.Restore_PropertyWithInconsistentValues,
                         propertyName,
                         propertyValue,
-                        update.ProjectConfiguration)),
-                    ProjectFaultSeverity.LimitedFunctionality,
-                    ContainingProject);
+                        update.ProjectConfiguration));
             }
 
             return propertyValue;
@@ -184,10 +181,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 // them so that they only appear in one TFM.
                 if (!RestoreComparer.ReferenceItems.Equals(existingReference, reference))
                 {
-                    ReportDataSourceUserFault(
-                        new Exception(string.Format(CultureInfo.CurrentCulture, VSResources.Restore_DuplicateToolReferenceItems, existingReference.Name)),
-                        ProjectFaultSeverity.LimitedFunctionality,
-                        ContainingProject);
+                    ReportUserFault(string.Format(
+                        CultureInfo.CurrentCulture, 
+                        VSResources.Restore_DuplicateToolReferenceItems, 
+                        existingReference.Name));
                 }
 
                 return false;
@@ -200,10 +197,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             if (framework.TargetFrameworkMoniker.Length == 0)
             {
-                ReportDataSourceUserFault(
-                    new Exception(string.Format(CultureInfo.CurrentCulture, VSResources.Restore_EmptyTargetFrameworkMoniker, projectConfiguration.Name)),
-                    ProjectFaultSeverity.LimitedFunctionality,
-                    ContainingProject);
+                ReportUserFault(string.Format(
+                    CultureInfo.CurrentCulture, 
+                    VSResources.Restore_EmptyTargetFrameworkMoniker, 
+                    projectConfiguration.Name));
 
                 return false;
             }
@@ -216,6 +213,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
             return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project.Services, dataSource);
+        }
+
+        private void ReportUserFault(string message)
+        {
+            try
+            {
+                throw new Exception(message);
+            }
+            catch (Exception ex)
+            {
+                ReportDataSourceUserFault(
+                  ex,
+                  ProjectFaultSeverity.LimitedFunctionality,
+                  ContainingProject);
+            }
         }
     }
 }
