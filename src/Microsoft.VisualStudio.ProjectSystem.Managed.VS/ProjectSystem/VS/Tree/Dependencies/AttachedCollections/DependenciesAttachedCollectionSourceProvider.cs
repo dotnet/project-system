@@ -38,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     if (hierarchyItem.TryGetFlagsString(out string? flagsString))
                     {
-                        // TODO only call providers for top-level dependencies
                         foreach (Lazy<IDependenciesTreeAttachedCollectionSourceProvider, IOrderPrecedenceMetadataView> provider in Providers)
                         {
                             if (provider.Value.FlagsDetector.Matches(flagsString))
@@ -52,6 +51,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     // Tree items which are themselves sources are delegated to, avoiding the need for more providers
                     return containsAttachedItems.ContainsAttachedCollectionSource;
+                }
+            }
+            else if (relationshipName == KnownRelationships.ContainedBy)
+            {
+                if (item is IContainedByAttachedItems containedByAttachedItems)
+                {
+                    // Tree items which are themselves sources are delegated to, avoiding the need for more providers
+                    return containedByAttachedItems.ContainedByAttachedCollectionSource;
                 }
             }
 

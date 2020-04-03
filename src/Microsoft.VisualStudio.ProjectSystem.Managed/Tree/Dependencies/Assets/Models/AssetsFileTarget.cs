@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 {
@@ -24,15 +26,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         /// </summary>
         public ImmutableDictionary<string, AssetsFileTargetLibrary> LibraryByName { get; }
 
-        public AssetsFileTarget(string target, ImmutableArray<AssetsFileLogMessage> logs, ImmutableDictionary<string, AssetsFileTargetLibrary> libraryByName)
+        /// <summary>
+        /// Gets the names of the top-level dependencies of this target.
+        /// </summary>
+        private readonly HashSet<string>? _topLevelDependencies;
+
+        /// <summary>
+        /// Lazily populated cache of back-references in the dependencies graph, mapping libraries to their ancestor(s).
+        /// Created by <see cref="TryGetDependents"/>, which is used during computation of Solution Explorer search results.
+        /// </summary>
+        private Dictionary<string, ImmutableArray<AssetsFileTargetLibrary>>? _dependentsByLibrary;
+
+        public AssetsFileTarget(string target, HashSet<string>? topLevelDependencies, ImmutableArray<AssetsFileLogMessage> logs, ImmutableDictionary<string, AssetsFileTargetLibrary> libraryByName)
         {
             Requires.NotNullOrWhiteSpace(target, nameof(target));
             Requires.Argument(!logs.IsDefault, nameof(logs), "Must not be default");
             Requires.NotNull(libraryByName, nameof(libraryByName));
             
             Target = target;
+            _topLevelDependencies = topLevelDependencies;
             Logs = logs;
             LibraryByName = libraryByName;
+        }
+
+        /// <summary>
+        /// Gets whether <paramref name="library"/> is a top-level dependency of the project.
+        /// </summary>
+        public bool IsTopLevel(AssetsFileTargetLibrary library) => _topLevelDependencies != null && _topLevelDependencies.Contains(library.Name);
+
+        /// <summary>
+        /// Gets the set of dependents (parents) of <paramref name="libraryName"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if dependents were found, otherwise <see langword="false"/>.</returns>
+        public bool TryGetDependents(string libraryName, out ImmutableArray<AssetsFileTargetLibrary> dependents)
+        {
+            // Defer construction of dependents collection until needed. It's only needed for Solution Explorer search.
+            if (_dependentsByLibrary == null)
+            {
+                var dependentsByLibrary = new Dictionary<string, ImmutableArray<AssetsFileTargetLibrary>.Builder>(LibraryByName.Count);
+
+                foreach ((_, AssetsFileTargetLibrary library) in LibraryByName)
+                {
+                    foreach (string dependency in library.Dependencies)
+                    {
+                        GetBuilder(dependency).Add(library);
+                    }
+                }
+
+                _dependentsByLibrary = dependentsByLibrary.ToDictionary(pair => pair.Key, pair => pair.Value.ToImmutable());
+
+                ImmutableArray<AssetsFileTargetLibrary>.Builder GetBuilder(string library)
+                {
+                    if (!dependentsByLibrary.TryGetValue(library, out ImmutableArray<AssetsFileTargetLibrary>.Builder builder))
+                    {
+                        dependentsByLibrary[library] = builder = ImmutableArray.CreateBuilder<AssetsFileTargetLibrary>();
+                    }
+
+                    return builder;
+                }
+            }
+
+            return _dependentsByLibrary.TryGetValue(libraryName, out dependents);
         }
     }
 }

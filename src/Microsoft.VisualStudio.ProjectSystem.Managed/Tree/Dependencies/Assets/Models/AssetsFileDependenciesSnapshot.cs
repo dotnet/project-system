@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         /// </summary>
         private static readonly LockFileFormat s_lockFileFormat = new LockFileFormat();
 
-        private readonly ImmutableDictionary<string, AssetsFileTarget> _dataByTarget;
+        public ImmutableDictionary<string, AssetsFileTarget> DataByTarget { get; }
 
         /// <summary>
         /// The <c>packageFolders</c> array from the assets file. The first is the 'user package folder',
@@ -62,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         {
             if (lockFile == null)
             {
-                _dataByTarget = ImmutableDictionary<string, AssetsFileTarget>.Empty;
+                DataByTarget = ImmutableDictionary<string, AssetsFileTarget>.Empty;
                 return;
             }
 
@@ -72,6 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             ImmutableDictionary<string, AssetsFileTarget>.Builder dataByTarget = ImmutableDictionary.CreateBuilder<string, AssetsFileTarget>(StringComparers.FrameworkIdentifiers); // TODO review comparer here -- should it be ignore case?
 
+            var topLevelDependenciesByTarget = lockFile.PackageSpec.TargetFrameworks.ToDictionary(
+                targetFramework => targetFramework.FrameworkName.DotNetFrameworkName,
+                targetFramework => targetFramework.Dependencies.Select(dep => dep.Name).ToHashSet());
+
             foreach (LockFileTarget lockFileTarget in lockFile.Targets)
             {
                 if (lockFileTarget.RuntimeIdentifier != null)
@@ -80,17 +85,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                     continue;
                 }
 
-                previous._dataByTarget.TryGetValue(lockFileTarget.Name, out AssetsFileTarget? previousTarget);
+                previous.DataByTarget.TryGetValue(lockFileTarget.Name, out AssetsFileTarget? previousTarget);
+
+                topLevelDependenciesByTarget.TryGetValue(lockFileTarget.Name, out HashSet<string>? topLevelDependencies);
 
                 dataByTarget.Add(
                     lockFileTarget.Name,
                     new AssetsFileTarget(
                         lockFileTarget.Name,
+                        topLevelDependencies,
                         ParseLogMessages(lockFile, previousTarget, lockFileTarget.Name),
                         ParseLibraries(lockFileTarget)));
             }
 
-            _dataByTarget = dataByTarget.ToImmutable();
+            DataByTarget = dataByTarget.ToImmutable();
             return;
 
             static ImmutableArray<AssetsFileLogMessage> ParseLogMessages(LockFile lockFile, AssetsFileTarget previousTarget, string target)
@@ -218,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
         private bool TryGetTarget(string? target, [NotNullWhen(returnValue: true)] out AssetsFileTarget? targetData)
         {
-            if (_dataByTarget.Count == 0)
+            if (DataByTarget.Count == 0)
             {
                 targetData = default;
                 return false;
@@ -226,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             if (target == null)
             {
-                if (_dataByTarget.Count != 1)
+                if (DataByTarget.Count != 1)
                 {
                     // This is unexpected
                     System.Diagnostics.Debug.Fail("No target known, yet more than one target exists");
@@ -234,9 +242,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                     return false;
                 }
 
-                targetData = _dataByTarget.First().Value;
+                targetData = DataByTarget.First().Value;
             }
-            else if (!_dataByTarget.TryGetValue(target, out targetData))
+            else if (!DataByTarget.TryGetValue(target, out targetData))
             {
                 targetData = default;
                 return false;
