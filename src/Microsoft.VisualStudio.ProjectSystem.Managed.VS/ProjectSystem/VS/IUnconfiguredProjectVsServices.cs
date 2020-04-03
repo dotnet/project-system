@@ -20,5 +20,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Gets <see cref="IVsProject4"/> provided by the <see cref="UnconfiguredProject"/>.
         /// </summary>
         IVsProject4 VsProject { get; }
+
+        /// <summary>
+        ///     Gets <see cref="IPhysicalProjectTree"/> provided by the <see cref="UnconfiguredProject"/>.
+        /// </summary>
+        IPhysicalProjectTree ProjectTree { get; }
     }
 }
