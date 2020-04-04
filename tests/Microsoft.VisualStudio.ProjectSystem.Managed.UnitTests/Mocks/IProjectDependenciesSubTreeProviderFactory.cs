@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectDependenciesSubTreeProviderFactory
     {

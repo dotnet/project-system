@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView;
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class MockIDependenciesTreeServices : IDependenciesTreeServices
     {

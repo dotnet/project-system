@@ -10,6 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IProjectCatalogSnapshotFactory
     {
+        public static IProjectCatalogSnapshot Create()
+        {
+            return Mock.Of<IProjectCatalogSnapshot>();
+        }
+
         public static IProjectCatalogSnapshot CreateWithDefaultMapping(IImmutableList<IItemType> itemTypes)
         {
             var projectCatalogSnapshot = new Mock<IProjectCatalogSnapshot>();

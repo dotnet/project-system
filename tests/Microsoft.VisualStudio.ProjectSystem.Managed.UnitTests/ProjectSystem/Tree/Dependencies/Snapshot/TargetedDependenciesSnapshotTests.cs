@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -89,10 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var previousCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, previousCatalogs);
 
-            var updatedCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
             var resolved = new TestDependencyModel
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -508,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -589,7 +589,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
