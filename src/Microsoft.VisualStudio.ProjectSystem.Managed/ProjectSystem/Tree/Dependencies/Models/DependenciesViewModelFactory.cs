@@ -2,8 +2,10 @@
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     [Export(typeof(IDependenciesViewModelFactory))]
     [AppliesTo(ProjectCapability.DependenciesTree)]

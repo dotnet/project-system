@@ -3,10 +3,11 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {

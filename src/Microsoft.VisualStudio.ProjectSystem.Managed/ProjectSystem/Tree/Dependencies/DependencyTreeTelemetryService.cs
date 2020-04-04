@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// Model for creating telemetry events when dependency tree is updated.

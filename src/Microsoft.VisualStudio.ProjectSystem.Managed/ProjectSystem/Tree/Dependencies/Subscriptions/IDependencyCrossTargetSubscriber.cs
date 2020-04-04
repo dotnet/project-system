@@ -5,9 +5,10 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     /// <summary>
     ///     Implementations subscribe to project data sources, and produce project dependency data.

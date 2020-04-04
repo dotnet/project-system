@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     public sealed class DependenciesSnapshotTests
     {
@@ -42,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public void Constructor()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
 
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(projectPath, catalogs, targetFramework);
@@ -77,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public void FromChanges_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
             var targetFrameworks = ImmutableArray<ITargetFramework>.Empty.Add(targetFramework);
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(projectPath, catalogs, targetFramework);
@@ -106,8 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         public void FromChanges_CatalogsChanged()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
-            var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
-            var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
+            var updatedCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
             var targetFrameworks = ImmutableArray<ITargetFramework>.Empty.Add(targetFramework);
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(projectPath, previousCatalogs, targetFramework);
@@ -143,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string previousProjectPath = @"c:\somefolder\someproject\a.csproj";
             const string newProjectPath = @"c:\somefolder\someproject\b.csproj";
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(previousProjectPath, catalogs, targetFramework);
 

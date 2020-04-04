@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     internal partial class SDKVersionTelemetryServiceComponent
     {

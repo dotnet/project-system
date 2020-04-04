@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView

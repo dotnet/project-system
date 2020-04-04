@@ -4,9 +4,11 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal sealed class TargetDependencyViewModel : IDependencyViewModel
     {

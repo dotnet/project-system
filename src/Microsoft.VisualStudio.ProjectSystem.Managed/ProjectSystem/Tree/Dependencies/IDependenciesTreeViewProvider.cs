@@ -3,9 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// Abstraction that helps to build different views for Dependencies node contents.

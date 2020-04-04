@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// For maintaining light state about dependency tree to generate telemetry

@@ -3,7 +3,7 @@
 using System;
 using Microsoft.VisualStudio.Imaging.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// Represents the set of icons associated with a particular dependency.

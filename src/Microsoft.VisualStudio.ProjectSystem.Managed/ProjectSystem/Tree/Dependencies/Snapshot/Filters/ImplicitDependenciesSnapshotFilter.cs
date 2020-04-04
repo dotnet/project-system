@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
     /// Changes explicit, resolved dependencies to implicit if they are not present in the set of known project item specs.

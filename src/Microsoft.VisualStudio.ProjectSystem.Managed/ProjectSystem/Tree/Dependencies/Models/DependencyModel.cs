@@ -4,8 +4,9 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal abstract partial class DependencyModel : IDependencyModel
     {

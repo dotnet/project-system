@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 {
     /// <summary>
     /// Immutable map of configured project to target framework.

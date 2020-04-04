@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 {
     /// <summary>
     ///     Creates <see cref="AggregateCrossTargetProjectContext"/> instances based on the 

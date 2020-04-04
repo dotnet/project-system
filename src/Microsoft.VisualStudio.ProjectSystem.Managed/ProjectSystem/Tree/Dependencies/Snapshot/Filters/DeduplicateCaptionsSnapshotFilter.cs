@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
     /// Deduplicates captions of top-level dependencies from the same provider. This is done by

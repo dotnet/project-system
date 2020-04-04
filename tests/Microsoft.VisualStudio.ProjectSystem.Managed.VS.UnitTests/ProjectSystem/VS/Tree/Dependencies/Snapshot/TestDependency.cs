@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal sealed class TestDependency : IDependency

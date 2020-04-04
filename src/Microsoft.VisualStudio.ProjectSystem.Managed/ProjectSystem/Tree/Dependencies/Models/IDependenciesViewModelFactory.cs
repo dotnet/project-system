@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Imaging.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal interface IDependenciesViewModelFactory
     {

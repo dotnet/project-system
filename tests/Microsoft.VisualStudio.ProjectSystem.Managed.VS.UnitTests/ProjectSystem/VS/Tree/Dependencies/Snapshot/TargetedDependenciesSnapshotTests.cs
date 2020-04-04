@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     public sealed class TargetedDependenciesSnapshotTests
     {
@@ -30,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var snapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -50,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
@@ -67,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
@@ -87,10 +89,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
-            var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, previousCatalogs);
 
-            var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
+            var updatedCatalogs = VS.IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 projectPath,
@@ -119,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
             var resolved = new TestDependencyModel
@@ -197,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -248,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -311,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -376,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 ExpandedIcon = KnownMonikers.Uninstall
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -506,7 +508,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,
@@ -587,7 +589,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var catalogs = VS.IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 projectPath,
                 targetFramework,

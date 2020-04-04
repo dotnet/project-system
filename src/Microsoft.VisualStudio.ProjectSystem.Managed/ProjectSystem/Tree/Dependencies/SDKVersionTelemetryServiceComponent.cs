@@ -3,7 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Telemetry;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// For maintaining light state about the SDK version used in a project

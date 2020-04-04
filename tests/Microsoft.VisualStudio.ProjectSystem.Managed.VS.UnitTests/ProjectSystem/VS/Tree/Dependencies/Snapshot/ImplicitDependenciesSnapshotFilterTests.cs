@@ -3,10 +3,12 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     public sealed class ImplicitDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
     {
