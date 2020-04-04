@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 #nullable disable
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.TreeView
+namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class TestProjectTree : IProjectTree
     {
