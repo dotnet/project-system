@@ -38,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             Name = library.Name;
             Version = library.Version.ToNormalizedString();
             Type = type;
-            
-            // TODO use each dependency's version range in caption
-            // TODO use each dependency's include/exclude in browse object
+
+            // TODO use each dependency's version range in caption (won't have parity with top-level item unless we update caption or change SDK to return this information)
+            // TODO use each dependency's include/exclude in browse object (won't have parity with top-level item until we rethink browse objects for them)
             Dependencies = library.Dependencies.Select(dep => dep.Id).ToImmutableArray();
 
             CompileTimeAssemblies = library.CompileTimeAssemblies
