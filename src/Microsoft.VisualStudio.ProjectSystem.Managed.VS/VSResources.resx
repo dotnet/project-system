@@ -284,6 +284,48 @@ In order to debug this project, add an executable project to this solution which
   <data name="PackageCompileTimeAssemblyGroupName" xml:space="preserve">
     <value>Compile Time Assemblies</value>
   </data>
+  <data name="PackageContentFilesGroupName" xml:space="preserve">
+    <value>Content Files</value>
+  </data>
+  <data name="PackageContentFileBrowseObjectClassName" xml:space="preserve">
+    <value>Content File</value>
+  </data>
+  <data name="PackageContentFilePathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="PackageContentFilePathDescription" xml:space="preserve">
+    <value>The content file's path.</value>
+  </data>
+  <data name="PackageContentFileOutputPathDisplayName" xml:space="preserve">
+    <value>Output Path</value>
+  </data>
+  <data name="PackageContentFileOutputPathDescription" xml:space="preserve">
+    <value>The content file's output path.</value>
+  </data>
+  <data name="PackageContentFilePPOutputPathDisplayName" xml:space="preserve">
+    <value>Preprocessed Output Path</value>
+  </data>
+  <data name="PackageContentFilePPOutputPathDescription" xml:space="preserve">
+    <value>The content file's preprocessed output path.</value>
+  </data>
+  <data name="PackageContentFileCodeLanguageDisplayName" xml:space="preserve">
+    <value>Code Language</value>
+  </data>
+  <data name="PackageContentFileCodeLanguageDescription" xml:space="preserve">
+    <value>Controls whether this file should be included in the referencing project based on that project's language.</value>
+  </data>
+  <data name="PackageContentFileBuildActionDisplayName" xml:space="preserve">
+    <value>Build Action</value>
+  </data>
+  <data name="PackageContentFileBuildActionDescription" xml:space="preserve">
+    <value>The content file's build action.</value>
+  </data>
+  <data name="PackageContentFileCopyToOutputDisplayName" xml:space="preserve">
+    <value>Copy to Output</value>
+  </data>
+  <data name="PackageContentFileCopyToOutputDescription" xml:space="preserve">
+    <value>Whether the content file is copied to the output directory during build.</value>
+  </data>
   <data name="PackageFrameworkAssemblyGroupName" xml:space="preserve">
     <value>Framework Assemblies</value>
   </data>

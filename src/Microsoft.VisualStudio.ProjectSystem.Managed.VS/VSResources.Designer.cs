@@ -376,6 +376,132 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content File.
+        /// </summary>
+        internal static string PackageContentFileBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("PackageContentFileBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The content file&apos;s build action..
+        /// </summary>
+        internal static string PackageContentFileBuildActionDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFileBuildActionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Action.
+        /// </summary>
+        internal static string PackageContentFileBuildActionDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFileBuildActionDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controls whether this file should be included in the referencing project based on that project&apos;s language..
+        /// </summary>
+        internal static string PackageContentFileCodeLanguageDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFileCodeLanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code Language.
+        /// </summary>
+        internal static string PackageContentFileCodeLanguageDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFileCodeLanguageDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Whether the content file is copied to the output directory during build..
+        /// </summary>
+        internal static string PackageContentFileCopyToOutputDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFileCopyToOutputDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy to Output.
+        /// </summary>
+        internal static string PackageContentFileCopyToOutputDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFileCopyToOutputDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The content file&apos;s output path..
+        /// </summary>
+        internal static string PackageContentFileOutputPathDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFileOutputPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output Path.
+        /// </summary>
+        internal static string PackageContentFileOutputPathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFileOutputPathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The content file&apos;s path..
+        /// </summary>
+        internal static string PackageContentFilePathDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFilePathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string PackageContentFilePathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFilePathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The content file&apos;s preprocessed output path..
+        /// </summary>
+        internal static string PackageContentFilePPOutputPathDescription {
+            get {
+                return ResourceManager.GetString("PackageContentFilePPOutputPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preprocessed Output Path.
+        /// </summary>
+        internal static string PackageContentFilePPOutputPathDisplayName {
+            get {
+                return ResourceManager.GetString("PackageContentFilePPOutputPathDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content Files.
+        /// </summary>
+        internal static string PackageContentFilesGroupName {
+            get {
+                return ResourceManager.GetString("PackageContentFilesGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Framework Assemblies.
         /// </summary>
         internal static string PackageFrameworkAssemblyGroupName {

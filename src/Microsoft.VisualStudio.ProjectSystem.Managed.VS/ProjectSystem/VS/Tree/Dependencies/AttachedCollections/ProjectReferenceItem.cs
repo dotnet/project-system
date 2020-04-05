@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     {
         private readonly AssetsFileTargetLibrary _library;
 
-        public static ProjectReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+        public static ProjectReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target, IFileIconProvider fileIconProvider)
         {
             var item = new ProjectReferenceItem(library);
-            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target);
+            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target, fileIconProvider);
             return item;
         }
 
@@ -51,14 +51,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             private readonly AssetsFileDependenciesSnapshot _snapshot;
             private readonly AssetsFileTargetLibrary _library;
             private readonly string? _target;
+            private readonly IFileIconProvider _fileIconProvider;
             private IEnumerable? _items;
 
-            public ContainsCollectionSource(ProjectReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+            public ContainsCollectionSource(ProjectReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target, IFileIconProvider fileIconProvider)
             {
                 SourceItem = sourceItem;
                 _snapshot = snapshot;
                 _library = library;
                 _target = target;
+                _fileIconProvider = fileIconProvider;
             }
 
             public object? SourceItem { get; }
@@ -75,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         if (_snapshot.TryGetDependencies(_library.Name, _library.Version, _target, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
                         {
                             ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(dependencies.Length);
-                            builder.AddRange(dependencies.Select(dep => PackageReferenceItem.CreateWithContainsItems(_snapshot, dep, _target)));
+                            builder.AddRange(dependencies.Select(dep => PackageReferenceItem.CreateWithContainsItems(_snapshot, dep, _target, _fileIconProvider)));
                             _items = builder.MoveToImmutable();
                         }
                         else

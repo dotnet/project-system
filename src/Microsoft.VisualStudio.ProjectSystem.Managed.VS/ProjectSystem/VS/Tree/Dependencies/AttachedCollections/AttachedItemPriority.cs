@@ -19,5 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public const int Project                  = 300;
         public const int CompileTimeAssemblyGroup = 400;
         public const int FrameworkAssemblyGroup   = 500;
+        public const int ContentFilesGroup        = 600;
     }
 }
