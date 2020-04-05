@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -35,6 +35,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected AssetsFileAttachedCollectionSourceBase(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext)
         {
+            Requires.NotNull(hierarchyItem, nameof(hierarchyItem));
+            Requires.NotNull(dataSource, nameof(dataSource));
+            Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
+
             _hierarchyItem = hierarchyItem;
 
             IsUpdatingHasItems = true;
@@ -101,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                     if (log.LibraryId == libraryId)
                     {
                         items ??= new List<object>();
-                        items.Add(new DiagnosticItem(log));
+                        items.Add(DiagnosticItem.Create(log));
                     }
                 }
             }
@@ -117,8 +121,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                     items.Add(
                         dependency.Type switch
                         {
-                            AssetsFileLibraryType.Package => new PackageReferenceItem(dependency, target, snapshot),
-                            AssetsFileLibraryType.Project => new ProjectReferenceItem(dependency, target, snapshot),
+                            AssetsFileLibraryType.Package => PackageReferenceItem.CreateWithContainsItems(snapshot, dependency, target),
+                            AssetsFileLibraryType.Project => ProjectReferenceItem.CreateWithContainsItems(snapshot, dependency, target),
                             _ => throw Assumes.NotReachable()
                         });
                 }
@@ -130,13 +134,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             if (!library.CompileTimeAssemblies.IsEmpty)
             {
                 items ??= new List<object>();
-                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, library.CompileTimeAssemblies, snapshot, library));
+                items.Add(PackageAssemblyGroupItem.CreateWithContainsItems(snapshot, library, PackageAssemblyGroupType.CompileTime, library.CompileTimeAssemblies));
             }
 
             if (!library.FrameworkAssemblies.IsEmpty)
             {
                 items ??= new List<object>();
-                items.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.Framework, library.FrameworkAssemblies, snapshot, library));
+                items.Add(PackageAssemblyGroupItem.CreateWithContainsItems(snapshot, library, PackageAssemblyGroupType.Framework, library.FrameworkAssemblies));
             }
         }
 

@@ -12,18 +12,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// <summary>
     /// Backing object for transitive package reference nodes in the dependencies tree.
     /// </summary>
-    internal sealed class PackageReferenceItem : AttachedCollectionItemBase, IContainsAttachedItems, IAttachedCollectionSource
+    internal sealed class PackageReferenceItem : AttachedCollectionItemBase, IContainsAttachedItems, IContainedByAttachedItems
     {
         private readonly AssetsFileTargetLibrary _library;
-        private readonly string? _configuration;
         private readonly AssetsFileDependenciesSnapshot _snapshot;
-        private IEnumerable? _items;
 
-        public PackageReferenceItem(AssetsFileTargetLibrary library, string? configuration, AssetsFileDependenciesSnapshot snapshot)
+        public static PackageReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+        {
+            var item = new PackageReferenceItem(library, snapshot);
+            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target);
+            return item;
+        }
+
+        public static PackageReferenceItem CreateWithContainedByItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, IEnumerable items)
+        {
+            var item = new PackageReferenceItem(library, snapshot);
+            item.ContainedByAttachedCollectionSource = new MaterializedAttachedCollectionSource(item, items);
+            return item;
+        }
+
+        private PackageReferenceItem(AssetsFileTargetLibrary library, AssetsFileDependenciesSnapshot snapshot)
             : base($"{library.Name} ({library.Version})")
         {
             _library = library;
-            _configuration = configuration;
             _snapshot = snapshot;
         }
 
@@ -31,46 +42,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override ImageMoniker IconMoniker => ManagedImageMonikers.NuGetGrey;
 
-        public override ImageMoniker ExpandedIconMoniker => IconMoniker;
-
         public override object? GetBrowseObject() => new BrowseObject(_library, _snapshot);
 
-        public IAttachedCollectionSource ContainsAttachedCollectionSource => this;
+        public IAttachedCollectionSource? ContainsAttachedCollectionSource { get; private set; }
 
-        bool IAttachedCollectionSource.HasItems => !_library.Dependencies.IsEmpty || !_library.CompileTimeAssemblies.IsEmpty;
+        public IAttachedCollectionSource? ContainedByAttachedCollectionSource { get; private set; }
 
-        IEnumerable IAttachedCollectionSource.Items
+        private sealed class ContainsCollectionSource : IAttachedCollectionSource
         {
-            get
+            private readonly AssetsFileDependenciesSnapshot _snapshot;
+            private readonly AssetsFileTargetLibrary _library;
+            private readonly string? _target;
+            private IEnumerable? _items;
+
+            public ContainsCollectionSource(PackageReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
             {
-                // NOTE any change to the construction of these items must be reflected in the implementation of HasItems
-                if (_items == null)
+                SourceItem = sourceItem;
+                _snapshot = snapshot;
+                _library = library;
+                _target = target;
+            }
+
+            public object? SourceItem { get; }
+
+            public bool HasItems => !_library.Dependencies.IsEmpty || !_library.CompileTimeAssemblies.IsEmpty;
+
+            public IEnumerable Items
+            {
+                get
                 {
-                    if (_snapshot.TryGetDependencies(_library.Name, _library.Version, _configuration, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
+                    // NOTE any change to the construction of these items must be reflected in the implementation of HasItems
+                    if (_items == null)
                     {
-                        int length = _library.CompileTimeAssemblies.IsEmpty ? dependencies.Length : dependencies.Length + 1;
-                        
-                        ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(length);
-                        builder.AddRange(dependencies.Select(dep => new PackageReferenceItem(dep, _configuration, _snapshot)));
-                        
-                        if (!_library.CompileTimeAssemblies.IsEmpty)
+                        if (_snapshot.TryGetDependencies(_library.Name, _library.Version, _target, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
                         {
-                            builder.Add(new PackageAssemblyGroupItem(PackageAssemblyGroupType.CompileTime, _library.CompileTimeAssemblies, _snapshot, _library));
+                            int length = _library.CompileTimeAssemblies.IsEmpty ? dependencies.Length : dependencies.Length + 1;
+
+                            ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(length);
+                            builder.AddRange(dependencies.Select(dep => CreateWithContainsItems(_snapshot, dep, _target)));
+
+                            if (!_library.CompileTimeAssemblies.IsEmpty)
+                            {
+                                builder.Add(PackageAssemblyGroupItem.CreateWithContainsItems(_snapshot, _library, PackageAssemblyGroupType.CompileTime, _library.CompileTimeAssemblies));
+                            }
+
+                            _items = builder.MoveToImmutable();
                         }
+                        else
+                        {
+                            _items = Enumerable.Empty<object>();
+                        }
+                    }
 
-                        _items = builder.MoveToImmutable();
-                    }
-                    else
-                    {
-                        _items = Enumerable.Empty<object>();
-                    }
+                    return _items;
                 }
-
-                return _items;
             }
         }
-
-        object? IAttachedCollectionSource.SourceItem => null;
 
         private sealed class BrowseObject : BrowseObjectBase
         {

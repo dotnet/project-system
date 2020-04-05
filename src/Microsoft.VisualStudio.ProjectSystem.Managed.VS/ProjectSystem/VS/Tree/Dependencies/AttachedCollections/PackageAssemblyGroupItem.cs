@@ -3,9 +3,7 @@
 using System.Collections;
 using System.Collections.Immutable;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
 using Microsoft.VisualStudio.Shell;
@@ -15,25 +13,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// <summary>
     /// Backing object for named group of assemblies within the dependencies tree.
     /// </summary>
-    internal sealed class PackageAssemblyGroupItem : AttachedCollectionItemBase, IContainsAttachedItems, IAttachedCollectionSource
+    internal sealed class PackageAssemblyGroupItem : AttachedCollectionItemBase, IContainsAttachedItems, IContainedByAttachedItems
     {
         private readonly PackageAssemblyGroupType _groupType;
-        private readonly ImmutableArray<string> _paths;
-        private readonly AssetsFileDependenciesSnapshot _snapshot;
-        private readonly AssetsFileTargetLibrary _library;
-        private IEnumerable? _items;
 
-        public PackageAssemblyGroupItem(PackageAssemblyGroupType groupType, ImmutableArray<string> paths, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library)
+        internal AssetsFileDependenciesSnapshot Snapshot { get; }
+        internal AssetsFileTargetLibrary Library { get; }
+
+        public static PackageAssemblyGroupItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, PackageAssemblyGroupType groupType, ImmutableArray<string> paths)
+        {
+            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(library, nameof(library));
+            Requires.Argument(!paths.IsDefaultOrEmpty, nameof(paths), "May not be default or empty");
+
+            var item = new PackageAssemblyGroupItem(groupType, snapshot, library);
+            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, paths);
+            return item;
+        }
+
+        public static PackageAssemblyGroupItem CreateWithContainedByItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, PackageAssemblyGroupType groupType, IEnumerable containedByItems)
+        {
+            Requires.NotNull(snapshot, nameof(snapshot));
+            Requires.NotNull(library, nameof(library));
+            Requires.NotNull(containedByItems, nameof(containedByItems));
+
+            var item = new PackageAssemblyGroupItem(groupType, snapshot, library);
+            item.ContainedByAttachedCollectionSource = new MaterializedAttachedCollectionSource(item, containedByItems);
+            return item;
+        }
+
+        private PackageAssemblyGroupItem(PackageAssemblyGroupType groupType, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library)
             : base(GetGroupLabel(groupType))
         {
-            Requires.Argument(!paths.IsEmpty, nameof(paths), "May not be empty");
             Requires.NotNull(snapshot, nameof(snapshot));
             Requires.NotNull(library, nameof(library));
 
             _groupType = groupType;
-            _paths = paths;
-            _snapshot = snapshot;
-            _library = library;
+            Snapshot = snapshot;
+            Library = library;
         }
 
         private static string GetGroupLabel(PackageAssemblyGroupType groupType)
@@ -55,66 +72,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override ImageMoniker IconMoniker => ManagedImageMonikers.ReferenceGroup;
 
-        public override ImageMoniker ExpandedIconMoniker => ManagedImageMonikers.ReferenceGroup;
-
         public override object? GetBrowseObject() => null;
 
-        public object? SourceItem => null;
-        
-        public bool HasItems => true;
-        
-        public IEnumerable Items => _items ??= _paths.Select(path => new PackageAssemblyItem(path, this)).ToList();
+        public IAttachedCollectionSource? ContainsAttachedCollectionSource { get; private set; }
 
-        public IAttachedCollectionSource ContainsAttachedCollectionSource => this;
+        public IAttachedCollectionSource? ContainedByAttachedCollectionSource { get; private set; }
 
-        private sealed class PackageAssemblyItem : AttachedCollectionItemBase
+        private sealed class ContainsCollectionSource : IAttachedCollectionSource
         {
-            private readonly string _path;
             private readonly PackageAssemblyGroupItem _groupItem;
+            private readonly ImmutableArray<string> _paths;
+            private IEnumerable? _items;
 
-            public PackageAssemblyItem(string path, PackageAssemblyGroupItem groupItem)
-                : base(Path.GetFileName(path))
+            public ContainsCollectionSource(PackageAssemblyGroupItem groupItem, ImmutableArray<string> paths)
             {
-                _path = path;
                 _groupItem = groupItem;
+                _paths = paths;
             }
 
-            // All siblings are assemblies, so no prioritization needed (sort alphabetically)
-            public override int Priority => 0;
+            public object? SourceItem => _groupItem;
 
-            public override ImageMoniker IconMoniker => KnownMonikers.Reference;
+            public bool HasItems => true;
 
-            public override object? GetBrowseObject() => new BrowseObject(this);
-
-            private sealed class BrowseObject : BrowseObjectBase
-            {
-                private readonly PackageAssemblyItem _assembly;
-
-                public BrowseObject(PackageAssemblyItem library) => _assembly = library;
-
-                public override string GetComponentName() => _assembly.Text;
-
-                public override string GetClassName() => VSResources.PackageAssemblyBrowseObjectClassName;
-
-                [BrowseObjectDisplayName(nameof(VSResources.PackageAssemblyNameDisplayName))]
-                [BrowseObjectDescription(nameof(VSResources.PackageAssemblyNameDescription))]
-                public string Name => _assembly.Text;
-
-                [BrowseObjectDisplayName(nameof(VSResources.PackageAssemblyPathDisplayName))]
-                [BrowseObjectDescription(nameof(VSResources.PackageAssemblyPathDescription))]
-                public string? Path
-                {
-                    get
-                    {
-                        PackageAssemblyGroupItem groupItem = _assembly._groupItem;
-                        AssetsFileTargetLibrary library = groupItem._library;
-
-                        return groupItem._snapshot.TryResolvePackagePath(library.Name, library.Version, out string? fullPath)
-                            ? System.IO.Path.GetFullPath(System.IO.Path.Combine(fullPath, _assembly._path))
-                            : null;
-                    }
-                }
-            }
+            public IEnumerable Items => _items ??= _paths.Select(path => new PackageAssemblyItem(path, _groupItem)).ToList();
         }
     }
 }

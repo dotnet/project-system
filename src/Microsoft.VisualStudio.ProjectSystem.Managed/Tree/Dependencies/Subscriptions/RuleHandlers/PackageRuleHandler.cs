@@ -56,7 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.After.GetProjectItemProperties(addedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Added(dependencyModel);
@@ -77,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.After.GetProjectItemProperties(changedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
@@ -99,7 +97,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
                 isEvaluatedItemSpec,
                 targetFramework,
-                _targetFrameworkProvider,
                 out PackageDependencyModel? dependencyModel))
             {
                 changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
@@ -110,13 +107,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
         private static readonly InternPool<string> s_targetFrameworkInternPool = new InternPool<string>(StringComparer.Ordinal);
 
-        private static bool TryCreatePackageDependencyModel(
+        private bool TryCreatePackageDependencyModel(
             string itemSpec,
             bool isResolved,
             IImmutableDictionary<string, string> properties,
             Func<string, bool>? isEvaluatedItemSpec,
             ITargetFramework targetFramework,
-            ITargetFrameworkProvider targetFrameworkProvider,
             [NotNullWhen(returnValue: true)] out PackageDependencyModel? dependencyModel)
         {
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
@@ -129,45 +125,74 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 // We have design-time build data
 
                 Requires.NotNull(targetFramework, nameof(targetFramework));
-                Requires.NotNull(targetFrameworkProvider, nameof(targetFrameworkProvider));
                 Requires.NotNull(isEvaluatedItemSpec!, nameof(isEvaluatedItemSpec));
+
+                string? name = properties.GetStringProperty(ProjectItemMetadata.Name);
 
                 string? dependencyType = properties.GetStringProperty(ProjectItemMetadata.Type);
 
-                if (!StringComparers.PropertyLiteralValues.Equals(dependencyType, "package"))
+                if (dependencyType != null)
                 {
-                    // Other types handled via assets file
-                    // TODO filter in DTB targets and remove the 'Type' metadata altogether
-                    dependencyModel = default;
-                    return false;
+                    // LEGACY MODE
+                    //
+                    // In 16.7 (SDK 3.1.4xx) the format of ResolvedPackageReference items was changed in task PreprocessPackageDependenciesDesignTime.
+                    //
+                    // If we observe "Type" metadata then we are running with an older SDK and need to preserve some
+                    // legacy behaviour to avoid breaking the dependencies node too much. Transitive dependencies will
+                    // not be displayed, but we should be able to provide an equivalent experience for top-level items.
+
+                    if (!StringComparers.PropertyLiteralValues.Equals(dependencyType, "Package"))
+                    {
+                        // Legacy behaviour included items of various types. We now only accept "Package".
+                        dependencyModel = default;
+                        return false;
+                    }
+
+                    // Legacy behaviour was to return packages for all targets, even though we have a build per-target.
+                    // The package's target was prefixed to its ItemSpec (for example: ".NETFramework,Version=v4.8/MetadataExtractor/2.3.0").
+                    // We would then filter out items for the wrong target here.
+                    //
+                    // From 16.7 we no longer return items from other target frameworks during DTB, and we remove the target prefix from ItemSpec.
+                    //
+                    // This code preserves filtering logic when processing legacy items.
+                    int slashIndex = itemSpec.IndexOf('/');
+                    if (slashIndex != -1)
+                    {
+                        string targetFrameworkName = s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
+
+                        if (_targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                        {
+                            // Item is not for the correct target
+                            dependencyModel = default;
+                            return false;
+                        }
+                    }
+
+                    // Name metadata is required in 16.7. Legacy behaviour uses ItemSpec as a fallback.
+                    name ??= itemSpec;
                 }
-
-                int slashIndex = itemSpec.IndexOf('/');
-                string? targetFrameworkName = slashIndex == -1 ? null : s_targetFrameworkInternPool.Intern(itemSpec.Substring(0, slashIndex));
-
-                if (targetFrameworkName == null ||
-                    targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
+                else
                 {
-                    dependencyModel = default;
-                    return false;
+                    if (Strings.IsNullOrEmpty(name))
+                    {
+                        // This should not happen as Name is required in PreprocessPackageDependenciesDesignTime from 16.7
+                        dependencyModel = default;
+                        return false;
+                    }
                 }
-
-                string name = properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec;
 
                 bool isTopLevel = isImplicitlyDefined || isEvaluatedItemSpec(name);
 
                 if (!isTopLevel)
                 {
+                    // We no longer accept non-top-level dependencies from DTB data. See note above about legacy mode support.
                     dependencyModel = default;
                     return false;
                 }
 
-                string originalItemSpec = isTopLevel ? name : itemSpec;
-
                 dependencyModel = new PackageDependencyModel(
                     itemSpec,
-                    originalItemSpec,
-                    name,
+                    originalItemSpec: name,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: true,
                     isImplicitlyDefined,
@@ -183,7 +208,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 dependencyModel = new PackageDependencyModel(
                     itemSpec,
                     originalItemSpec: itemSpec,
-                    name: itemSpec,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: false,
                     isImplicitlyDefined,

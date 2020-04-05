@@ -12,57 +12,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// <summary>
     /// Backing object for transitive project reference nodes in the dependencies tree.
     /// </summary>
-    internal sealed class ProjectReferenceItem : AttachedCollectionItemBase, IContainsAttachedItems, IAttachedCollectionSource
+    internal sealed class ProjectReferenceItem : AttachedCollectionItemBase, IContainsAttachedItems, IContainedByAttachedItems
     {
         private readonly AssetsFileTargetLibrary _library;
-        private readonly string? _configuration;
-        private readonly AssetsFileDependenciesSnapshot _snapshot;
-        private IEnumerable? _items;
 
-        public ProjectReferenceItem(AssetsFileTargetLibrary library, string? configuration, AssetsFileDependenciesSnapshot snapshot)
+        public static ProjectReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+        {
+            var item = new ProjectReferenceItem(library);
+            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target);
+            return item;
+        }
+
+        public static ProjectReferenceItem CreateWithContainedByItems(AssetsFileTargetLibrary library, IEnumerable containedByItems)
+        {
+            var item = new ProjectReferenceItem(library);
+            item.ContainedByAttachedCollectionSource = new MaterializedAttachedCollectionSource(item, containedByItems);
+            return item;
+        }
+
+        private ProjectReferenceItem(AssetsFileTargetLibrary library)
             : base(library.Name)
         {
             _library = library;
-            _configuration = configuration;
-            _snapshot = snapshot;
         }
 
         public override int Priority => AttachedItemPriority.Project;
 
         public override ImageMoniker IconMoniker => ManagedImageMonikers.Application;
 
-        public override ImageMoniker ExpandedIconMoniker => IconMoniker;
-
         public override object? GetBrowseObject() => new BrowseObject(_library);
 
-        public IAttachedCollectionSource ContainsAttachedCollectionSource => this;
+        public IAttachedCollectionSource? ContainsAttachedCollectionSource { get; private set; }
 
-        bool IAttachedCollectionSource.HasItems => !_library.Dependencies.IsEmpty;
+        public IAttachedCollectionSource? ContainedByAttachedCollectionSource { get; private set; }
 
-        IEnumerable IAttachedCollectionSource.Items
+        private sealed class ContainsCollectionSource : IAttachedCollectionSource
         {
-            get
-            {
-                // NOTE any change to the construction of these items must be reflected in the implementation of HasItems
-                if (_items == null)
-                {
-                    if (_snapshot.TryGetDependencies(_library.Name, _library.Version, _configuration, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
-                    {
-                        ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(dependencies.Length);
-                        builder.AddRange(dependencies.Select(dep => new PackageReferenceItem(dep, _configuration, _snapshot)));
-                        _items = builder.MoveToImmutable();
-                    }
-                    else
-                    {
-                        _items = Enumerable.Empty<object>();
-                    }
-                }
+            private readonly AssetsFileDependenciesSnapshot _snapshot;
+            private readonly AssetsFileTargetLibrary _library;
+            private readonly string? _target;
+            private IEnumerable? _items;
 
-                return _items;
+            public ContainsCollectionSource(ProjectReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+            {
+                SourceItem = sourceItem;
+                _snapshot = snapshot;
+                _library = library;
+                _target = target;
+            }
+
+            public object? SourceItem { get; }
+
+            public bool HasItems => !_library.Dependencies.IsEmpty;
+
+            public IEnumerable Items
+            {
+                get
+                {
+                    // NOTE any change to the construction of these items must be reflected in the implementation of HasItems
+                    if (_items == null)
+                    {
+                        if (_snapshot.TryGetDependencies(_library.Name, _library.Version, _target, out ImmutableArray<AssetsFileTargetLibrary> dependencies))
+                        {
+                            ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(dependencies.Length);
+                            builder.AddRange(dependencies.Select(dep => PackageReferenceItem.CreateWithContainsItems(_snapshot, dep, _target)));
+                            _items = builder.MoveToImmutable();
+                        }
+                        else
+                        {
+                            _items = Enumerable.Empty<object>();
+                        }
+                    }
+
+                    return _items;
+                }
             }
         }
-
-        object? IAttachedCollectionSource.SourceItem => null;
 
         private sealed class BrowseObject : BrowseObjectBase
         {

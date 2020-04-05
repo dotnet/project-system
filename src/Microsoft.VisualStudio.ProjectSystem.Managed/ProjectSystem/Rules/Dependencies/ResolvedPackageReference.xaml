@@ -14,17 +14,6 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
-  <StringListProperty Name="Dependencies"
-                      Separator=";"
-                      Visible="false">
-    <StringListProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  ItemType="PackageReference"
-                  Persistence="ResolvedReference"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringListProperty.DataSource>
-  </StringListProperty>
-
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
                   DisplayName="ExcludeAssets">
@@ -62,10 +51,6 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <BoolProperty Name="IsTopLevelDependency"
-                ReadOnly="True"
-                Visible="False" />
-
   <StringProperty Name="Name"
                   ReadOnly="True"
                   DisplayName="Name" />
@@ -102,6 +87,7 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <!-- NOTE since 16.7 the SDK only returns "Package" items, however we keep this field to allow filtering in the case a user explicitly uses an older SDK version -->
   <StringProperty Name="Type"
                   ReadOnly="True"
                   Visible="False" />

@@ -1,19 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
     /// Backing object for library (package/project) diagnostic nodes in the dependencies tree.
     /// </summary>
-    internal sealed class DiagnosticItem : AttachedCollectionItemBase
+    internal sealed class DiagnosticItem : AttachedCollectionItemBase, IContainedByAttachedItems
     {
         private readonly AssetsFileLogMessage _log;
 
-        public DiagnosticItem(AssetsFileLogMessage log)
+        public static DiagnosticItem Create(AssetsFileLogMessage log) => new DiagnosticItem(log);
+
+        public static DiagnosticItem CreateWithContainedByItems(AssetsFileLogMessage log, IEnumerable containedByItems)
+        {
+            var item = new DiagnosticItem(log);
+            item.ContainedByAttachedCollectionSource = new MaterializedAttachedCollectionSource(item, containedByItems);
+            return item;
+        }
+
+        private DiagnosticItem(AssetsFileLogMessage log)
             : base(log.Message)
         {
             _log = log;
@@ -29,6 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         };
 
         public override object GetBrowseObject() => new BrowseObject(_log);
+
+        public IAttachedCollectionSource? ContainedByAttachedCollectionSource { get; private set; }
 
         private sealed class BrowseObject : BrowseObjectBase
         {
