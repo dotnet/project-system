@@ -50,6 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 .ToImmutableArray(); // TODO do we want to use the 'properties' here? maybe for browse object
 
             FrameworkAssemblies = library.FrameworkAssemblies.ToImmutableArray();
+
+            ContentFiles = library.ContentFiles.Select(file => new AssetsFileTargetLibraryContentFile(file)).ToImmutableArray();
         }
 
         public string Name { get; }
@@ -58,6 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         public ImmutableArray<string> Dependencies { get; }
         public ImmutableArray<string> FrameworkAssemblies { get; }
         public ImmutableArray<string> CompileTimeAssemblies { get; }
+        public ImmutableArray<AssetsFileTargetLibraryContentFile> ContentFiles { get; }
 
         public override string ToString() => $"{Type} {Name} ({Version}) {Dependencies.Length} {(Dependencies.Length == 1 ? "dependency" : "dependencies")}";
     }
