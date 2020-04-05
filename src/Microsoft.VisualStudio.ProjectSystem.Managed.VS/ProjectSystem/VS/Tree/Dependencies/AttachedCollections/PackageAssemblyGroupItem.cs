@@ -72,8 +72,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override ImageMoniker IconMoniker => ManagedImageMonikers.ReferenceGroup;
 
-        public override object? GetBrowseObject() => null;
-
         public IAttachedCollectionSource? ContainsAttachedCollectionSource { get; private set; }
 
         public IAttachedCollectionSource? ContainedByAttachedCollectionSource { get; private set; }
