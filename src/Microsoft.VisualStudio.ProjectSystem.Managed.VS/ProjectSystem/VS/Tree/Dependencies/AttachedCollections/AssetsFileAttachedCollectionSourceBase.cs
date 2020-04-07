@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly IVsHierarchyItem _hierarchyItem;
+        private readonly IFileIconProvider _fileIconProvider;
         private ReplaceableCollection? _items;
 
         public bool IsUpdatingHasItems { get; private set; }
@@ -33,13 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public IEnumerable? Items => _items;
         public object SourceItem => _hierarchyItem;
 
-        protected AssetsFileAttachedCollectionSourceBase(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext)
+        protected AssetsFileAttachedCollectionSourceBase(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext, IFileIconProvider fileIconProvider)
         {
             Requires.NotNull(hierarchyItem, nameof(hierarchyItem));
             Requires.NotNull(dataSource, nameof(dataSource));
             Requires.NotNull(joinableTaskContext, nameof(joinableTaskContext));
 
             _hierarchyItem = hierarchyItem;
+            _fileIconProvider = fileIconProvider;
 
             IsUpdatingHasItems = true;
 
@@ -111,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
         }
 
-        protected static void ProcessLibraryReferences(ref List<object>? items, AssetsFileDependenciesSnapshot snapshot, in ImmutableArray<AssetsFileTargetLibrary> dependencies, string? target)
+        protected void ProcessLibraryReferences(ref List<object>? items, AssetsFileDependenciesSnapshot snapshot, in ImmutableArray<AssetsFileTargetLibrary> dependencies, string? target)
         {
             if (!dependencies.IsEmpty)
             {
@@ -121,15 +123,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                     items.Add(
                         dependency.Type switch
                         {
-                            AssetsFileLibraryType.Package => PackageReferenceItem.CreateWithContainsItems(snapshot, dependency, target),
-                            AssetsFileLibraryType.Project => ProjectReferenceItem.CreateWithContainsItems(snapshot, dependency, target),
+                            AssetsFileLibraryType.Package => PackageReferenceItem.CreateWithContainsItems(snapshot, dependency, target, _fileIconProvider),
+                            AssetsFileLibraryType.Project => ProjectReferenceItem.CreateWithContainsItems(snapshot, dependency, target, _fileIconProvider),
                             _ => throw Assumes.NotReachable()
                         });
                 }
             }
         }
 
-        protected static void ProcessLibraryContent(ref List<object>? items, AssetsFileTargetLibrary library, AssetsFileDependenciesSnapshot snapshot)
+        protected void ProcessLibraryContent(ref List<object>? items, AssetsFileTargetLibrary library, AssetsFileDependenciesSnapshot snapshot)
         {
             if (!library.CompileTimeAssemblies.IsEmpty)
             {
@@ -141,6 +143,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             {
                 items ??= new List<object>();
                 items.Add(PackageAssemblyGroupItem.CreateWithContainsItems(snapshot, library, PackageAssemblyGroupType.Framework, library.FrameworkAssemblies));
+            }
+
+            if (!library.ContentFiles.IsEmpty)
+            {
+                items ??= new List<object>();
+                items.Add(PackageContentFilesGroupItem.CreateWithContainsItems(_fileIconProvider, library.ContentFiles));
             }
         }
 

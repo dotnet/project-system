@@ -17,10 +17,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly AssetsFileTargetLibrary _library;
         private readonly AssetsFileDependenciesSnapshot _snapshot;
 
-        public static PackageReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+        public static PackageReferenceItem CreateWithContainsItems(AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target, IFileIconProvider fileIconProvider)
         {
             var item = new PackageReferenceItem(library, snapshot);
-            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target);
+            item.ContainsAttachedCollectionSource = new ContainsCollectionSource(item, snapshot, library, target, fileIconProvider);
             return item;
         }
 
@@ -53,19 +53,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             private readonly AssetsFileDependenciesSnapshot _snapshot;
             private readonly AssetsFileTargetLibrary _library;
             private readonly string? _target;
+            private readonly IFileIconProvider _fileIconProvider;
             private IEnumerable? _items;
 
-            public ContainsCollectionSource(PackageReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target)
+            public ContainsCollectionSource(PackageReferenceItem sourceItem, AssetsFileDependenciesSnapshot snapshot, AssetsFileTargetLibrary library, string? target, IFileIconProvider fileIconProvider)
             {
                 SourceItem = sourceItem;
                 _snapshot = snapshot;
                 _library = library;
                 _target = target;
+                _fileIconProvider = fileIconProvider;
             }
 
             public object? SourceItem { get; }
 
-            public bool HasItems => !_library.Dependencies.IsEmpty || !_library.CompileTimeAssemblies.IsEmpty;
+            public bool HasItems => !_library.Dependencies.IsEmpty || !_library.CompileTimeAssemblies.IsEmpty || !_library.ContentFiles.IsEmpty;
 
             public IEnumerable Items
             {
@@ -79,11 +81,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                             int length = _library.CompileTimeAssemblies.IsEmpty ? dependencies.Length : dependencies.Length + 1;
 
                             ImmutableArray<object>.Builder builder = ImmutableArray.CreateBuilder<object>(length);
-                            builder.AddRange(dependencies.Select(dep => CreateWithContainsItems(_snapshot, dep, _target)));
+                            builder.AddRange(dependencies.Select(dep => CreateWithContainsItems(_snapshot, dep, _target, _fileIconProvider)));
 
                             if (!_library.CompileTimeAssemblies.IsEmpty)
                             {
                                 builder.Add(PackageAssemblyGroupItem.CreateWithContainsItems(_snapshot, _library, PackageAssemblyGroupType.CompileTime, _library.CompileTimeAssemblies));
+                            }
+
+                            if (!_library.ContentFiles.IsEmpty)
+                            {
+                                builder.Add(PackageContentFilesGroupItem.CreateWithContainsItems(_fileIconProvider, _library.ContentFiles));
                             }
 
                             _items = builder.MoveToImmutable();

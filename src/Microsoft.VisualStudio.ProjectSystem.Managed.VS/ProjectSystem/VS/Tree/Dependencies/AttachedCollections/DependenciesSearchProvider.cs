@@ -36,16 +36,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly JoinableTaskContext _joinableTaskContext;
         private readonly IVsHierarchyItemManager _hierarchyItemManager;
         private readonly IProjectServiceAccessor _projectServiceAccessor;
+        private readonly IFileIconProvider _fileIconProvider;
 
         [ImportingConstructor]
         public DependenciesSearchProvider(
             JoinableTaskContext joinableTaskContext,
             IVsHierarchyItemManager hierarchyItemManager,
-            IProjectServiceAccessor projectServiceAccessor)
+            IProjectServiceAccessor projectServiceAccessor,
+            IFileIconProvider fileIconProvider)
         {
             _joinableTaskContext = joinableTaskContext;
             _hierarchyItemManager = hierarchyItemManager;
             _projectServiceAccessor = projectServiceAccessor;
+            _fileIconProvider = fileIconProvider;
         }
 
         public void Search(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
@@ -126,6 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                         SearchAssemblies(library, library.CompileTimeAssemblies, PackageAssemblyGroupType.CompileTime);
                         SearchAssemblies(library, library.FrameworkAssemblies, PackageAssemblyGroupType.Framework);
+                        SearchContentFiles(library);
                     }
 
                     foreach (AssetsFileLogMessage log in data.Logs)
@@ -158,6 +162,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                             foreach (string match in matches)
                             {
                                 context.SubmitResult(new PackageAssemblyItem(match, groupItem));
+                            }
+                        }
+                    }
+
+                    void SearchContentFiles(AssetsFileTargetLibrary library)
+                    {
+                        List<AssetsFileTargetLibraryContentFile>? matches = null;
+
+                        foreach (AssetsFileTargetLibraryContentFile contentFile in library.ContentFiles)
+                        {
+                            if (context.IsMatch(contentFile.Path))
+                            {
+                                matches ??= new List<AssetsFileTargetLibraryContentFile>();
+                                matches.Add(contentFile);
+                            }
+                        }
+
+                        if (matches != null)
+                        {
+                            var groupItem = PackageContentFilesGroupItem.CreateWithContainedByItems(snapshot, library, containedByItems: new[] { GetOrCreateLibraryItem(library) });
+
+                            foreach (AssetsFileTargetLibraryContentFile match in matches)
+                            {
+                                context.SubmitResult(new PackageContentFileItem(_fileIconProvider, groupItem, match));
                             }
                         }
                     }

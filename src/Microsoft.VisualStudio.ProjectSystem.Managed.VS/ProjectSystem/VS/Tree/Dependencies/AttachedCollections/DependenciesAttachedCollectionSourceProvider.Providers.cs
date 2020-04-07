@@ -51,16 +51,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private sealed class PackageProvider : AssetsFileProviderBase
         {
             private readonly JoinableTaskContext _joinableTaskContext;
+            private readonly IFileIconProvider _fileIconProvider;
 
             [ImportingConstructor]
-            public PackageProvider(JoinableTaskContext joinableTaskContext)
+            public PackageProvider(JoinableTaskContext joinableTaskContext, IFileIconProvider fileIconProvider)
                 : base(DependencyTreeFlags.PackageDependency)
-                    => _joinableTaskContext = joinableTaskContext;
+            {
+                _joinableTaskContext = joinableTaskContext;
+                _fileIconProvider = fileIconProvider;
+            }
 
             protected override IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
             {
                 return hierarchyItem.TryGetPackageDetails(out string? packageId, out string? packageVersion)
-                    ? new PackageReferenceAttachedCollectionSource(hierarchyItem, target, packageId, packageVersion, dataSource, _joinableTaskContext)
+                    ? new PackageReferenceAttachedCollectionSource(hierarchyItem, target, packageId, packageVersion, dataSource, _joinableTaskContext, _fileIconProvider)
                     : null;
             }
         }
@@ -70,16 +74,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private sealed class ProjectProvider : AssetsFileProviderBase
         {
             private readonly JoinableTaskContext _joinableTaskContext;
+            private readonly IFileIconProvider _fileIconProvider;
 
             [ImportingConstructor]
-            public ProjectProvider(JoinableTaskContext joinableTaskContext)
+            public ProjectProvider(JoinableTaskContext joinableTaskContext, IFileIconProvider fileIconProvider)
                 : base(DependencyTreeFlags.ProjectDependency)
-                    => _joinableTaskContext = joinableTaskContext;
+            {
+                _joinableTaskContext = joinableTaskContext;
+                _fileIconProvider = fileIconProvider;
+            }
 
             protected override IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
             {
                 return hierarchyItem.TryGetProjectDetails(out string? projectId)
-                    ? new ProjectReferenceAttachedCollectionSource(hierarchyItem, target, projectId, dataSource, _joinableTaskContext)
+                    ? new ProjectReferenceAttachedCollectionSource(hierarchyItem, target, projectId, dataSource, _joinableTaskContext, _fileIconProvider)
                     : null;
             }
         }

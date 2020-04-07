@@ -24,8 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             string packageId,
             string version,
             IAssetsFileDependenciesDataSource dataSource,
-            JoinableTaskContext joinableTaskContext)
-            : base(hierarchyItem, dataSource, joinableTaskContext)
+            JoinableTaskContext joinableTaskContext,
+            IFileIconProvider fileIconProvider)
+            : base(hierarchyItem, dataSource, joinableTaskContext, fileIconProvider)
         {
             _target = target;
             _packageId = packageId;

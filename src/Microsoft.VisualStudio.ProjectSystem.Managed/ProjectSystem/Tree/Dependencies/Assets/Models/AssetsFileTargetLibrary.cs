@@ -38,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             Name = library.Name;
             Version = library.Version.ToNormalizedString();
             Type = type;
-            
-            // TODO use each dependency's version range in caption
-            // TODO use each dependency's include/exclude in browse object
+
+            // TODO use each dependency's version range in caption (won't have parity with top-level item unless we update caption or change SDK to return this information)
+            // TODO use each dependency's include/exclude in browse object (won't have parity with top-level item until we rethink browse objects for them)
             Dependencies = library.Dependencies.Select(dep => dep.Id).ToImmutableArray();
 
             CompileTimeAssemblies = library.CompileTimeAssemblies
@@ -50,6 +50,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 .ToImmutableArray(); // TODO do we want to use the 'properties' here? maybe for browse object
 
             FrameworkAssemblies = library.FrameworkAssemblies.ToImmutableArray();
+
+            // TODO filter by code language as well (requires knowing project language): https://github.com/dotnet/NuGet.BuildTasks/blob/5244c490a425353ac12445567d87d674ae118836/src/Microsoft.NuGet.Build.Tasks/ResolveNuGetPackageAssets.cs#L572-L575
+            ContentFiles = library.ContentFiles
+                .Where(file => !NuGetUtils.IsPlaceholderFile(file.Path))
+                .Select(file => new AssetsFileTargetLibraryContentFile(file))
+                .ToImmutableArray();
         }
 
         public string Name { get; }
@@ -58,6 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         public ImmutableArray<string> Dependencies { get; }
         public ImmutableArray<string> FrameworkAssemblies { get; }
         public ImmutableArray<string> CompileTimeAssemblies { get; }
+        public ImmutableArray<AssetsFileTargetLibraryContentFile> ContentFiles { get; }
 
         public override string ToString() => $"{Type} {Name} ({Version}) {Dependencies.Length} {(Dependencies.Length == 1 ? "dependency" : "dependencies")}";
     }
