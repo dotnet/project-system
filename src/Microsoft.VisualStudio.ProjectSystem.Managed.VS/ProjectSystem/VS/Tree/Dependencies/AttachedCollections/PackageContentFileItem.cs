@@ -19,17 +19,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly AssetsFileTargetLibraryContentFile _contentFile;
 
         public PackageContentFileItem(IFileIconProvider fileIconProvider, PackageContentFilesGroupItem groupItem, AssetsFileTargetLibraryContentFile contentFile)
-            : base(contentFile.Path)
+            : base(GetProcessedContentFilePath(contentFile.Path))
         {
             _fileIconProvider = fileIconProvider;
             _groupItem = groupItem;
             _contentFile = contentFile;
         }
 
+        private static string GetProcessedContentFilePath(string rawPath)
+        {
+            // Content file paths always start with "contentFiles/" so remove it from display strings
+            const string Prefix = "contentFiles/";
+            return rawPath.StartsWith(Prefix) ? rawPath.Substring(Prefix.Length) : rawPath;
+        }
+
         // All siblings are content files, so no prioritization needed (sort alphabetically)
         public override int Priority => 0;
 
-        public override ImageMoniker IconMoniker => _fileIconProvider.GetFileExtensionImageMoniker(_contentFile.Path);
+        public override ImageMoniker IconMoniker => _fileIconProvider.GetFileExtensionImageMoniker(Text);
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 
