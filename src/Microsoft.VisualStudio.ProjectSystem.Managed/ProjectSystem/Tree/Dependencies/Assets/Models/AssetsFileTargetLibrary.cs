@@ -51,7 +51,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             FrameworkAssemblies = library.FrameworkAssemblies.ToImmutableArray();
 
-            ContentFiles = library.ContentFiles.Select(file => new AssetsFileTargetLibraryContentFile(file)).ToImmutableArray();
+            // TODO filter by code language as well (requires knowing project language): https://github.com/dotnet/NuGet.BuildTasks/blob/5244c490a425353ac12445567d87d674ae118836/src/Microsoft.NuGet.Build.Tasks/ResolveNuGetPackageAssets.cs#L572-L575
+            ContentFiles = library.ContentFiles
+                .Where(file => !NuGetUtils.IsPlaceholderFile(file.Path))
+                .Select(file => new AssetsFileTargetLibraryContentFile(file))
+                .ToImmutableArray();
         }
 
         public string Name { get; }
