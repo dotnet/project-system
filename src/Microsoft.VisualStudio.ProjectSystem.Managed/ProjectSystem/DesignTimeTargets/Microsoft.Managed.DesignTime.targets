@@ -232,6 +232,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralBrowseObject.xaml">
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
