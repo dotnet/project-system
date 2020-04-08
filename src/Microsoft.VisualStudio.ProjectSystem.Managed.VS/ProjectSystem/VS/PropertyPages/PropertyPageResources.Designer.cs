@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class PropertyPageResources {
+    internal class PropertyPageResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources", typeof(PropertyPageResources).Assembly);
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        public static string AddBtn {
+        internal static string AddBtn {
             get {
                 return ResourceManager.GetString("AddBtn", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to All files.
         /// </summary>
-        public static string AllFiles {
+        internal static string AllFiles {
             get {
                 return ResourceManager.GetString("AllFiles", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Application arguments:.
         /// </summary>
-        public static string ApplicationArguments {
+        internal static string ApplicationArguments {
             get {
                 return ResourceManager.GetString("ApplicationArguments", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Arguments to be passed to the application.
         /// </summary>
-        public static string ApplicationArgumentsWatermark {
+        internal static string ApplicationArgumentsWatermark {
             get {
                 return ResourceManager.GetString("ApplicationArgumentsWatermark", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Authentication mode:.
         /// </summary>
-        public static string AuthenticationMode {
+        internal static string AuthenticationMode {
             get {
                 return ResourceManager.GetString("AuthenticationMode", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Browse....
         /// </summary>
-        public static string BrowseBtn {
+        internal static string BrowseBtn {
             get {
                 return ResourceManager.GetString("BrowseBtn", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
-        public static string CancelBtn {
+        internal static string CancelBtn {
             get {
                 return ResourceManager.GetString("CancelBtn", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Return to the debug property page with no changes.
         /// </summary>
-        public static string CancelBtnHelpText {
+        internal static string CancelBtnHelpText {
             get {
                 return ResourceManager.GetString("CancelBtnHelpText", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Checking enables a textbox to specify an absolute or relative URl.
         /// </summary>
-        public static string chkLaunchBrowserHelpText {
+        internal static string chkLaunchBrowserHelpText {
             get {
                 return ResourceManager.GetString("chkLaunchBrowserHelpText", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Enable native code debugging.
         /// </summary>
-        public static string chkNativeCodeDebuggingText {
+        internal static string chkNativeCodeDebuggingText {
             get {
                 return ResourceManager.GetString("chkNativeCodeDebuggingText", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Enable remote debugging.
         /// </summary>
-        public static string chkRemoteDebugEnabledHelpText {
+        internal static string chkRemoteDebugEnabledHelpText {
             get {
                 return ResourceManager.GetString("chkRemoteDebugEnabledHelpText", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Enable SQL Server debugging.
         /// </summary>
-        public static string chkSqlCodeDebuggingText {
+        internal static string chkSqlCodeDebuggingText {
             get {
                 return ResourceManager.GetString("chkSqlCodeDebuggingText", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Debug.
         /// </summary>
-        public static string DebugPropertyPageTitle {
+        internal static string DebugPropertyPageTitle {
             get {
                 return ResourceManager.GetString("DebugPropertyPageTitle", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        public static string DeleteBtn {
+        internal static string DeleteBtn {
             get {
                 return ResourceManager.GetString("DeleteBtn", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Delete the current profile and change to the next available profile.
         /// </summary>
-        public static string DeleteBtnHelpText {
+        internal static string DeleteBtnHelpText {
             get {
                 return ResourceManager.GetString("DeleteBtnHelpText", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Duplicate Key.
         /// </summary>
-        public static string DuplicateKey {
+        internal static string DuplicateKey {
             get {
                 return ResourceManager.GetString("DuplicateKey", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Environment variables:.
         /// </summary>
-        public static string EnvironmentVariables {
+        internal static string EnvironmentVariables {
             get {
                 return ResourceManager.GetString("EnvironmentVariables", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Key.
         /// </summary>
-        public static string EnvVariableNameWatermark {
+        internal static string EnvVariableNameWatermark {
             get {
                 return ResourceManager.GetString("EnvVariableNameWatermark", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
-        public static string EnvVariableValueWatermark {
+        internal static string EnvVariableValueWatermark {
             get {
                 return ResourceManager.GetString("EnvVariableValueWatermark", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to The errors on the page must be corrected prior to saving your changes..
         /// </summary>
-        public static string ErrorsMustBeCorrectedPriorToSaving {
+        internal static string ErrorsMustBeCorrectedPriorToSaving {
             get {
                 return ResourceManager.GetString("ErrorsMustBeCorrectedPriorToSaving", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Executable:.
         /// </summary>
-        public static string Executable {
+        internal static string Executable {
             get {
                 return ResourceManager.GetString("Executable", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Executable files.
         /// </summary>
-        public static string ExecutableFiles {
+        internal static string ExecutableFiles {
             get {
                 return ResourceManager.GetString("ExecutableFiles", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Path to the executable to run.
         /// </summary>
-        public static string ExecutablePathWatermark {
+        internal static string ExecutablePathWatermark {
             get {
                 return ResourceManager.GetString("ExecutablePathWatermark", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Find....
         /// </summary>
-        public static string FindBtn {
+        internal static string FindBtn {
             get {
                 return ResourceManager.GetString("FindBtn", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to The host name is invalid..
         /// </summary>
-        public static string InvalidHostName {
+        internal static string InvalidHostName {
             get {
                 return ResourceManager.GetString("InvalidHostName", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Launch:.
         /// </summary>
-        public static string Launch {
+        internal static string Launch {
             get {
                 return ResourceManager.GetString("Launch", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Launch browser:.
         /// </summary>
-        public static string LaunchURL {
+        internal static string LaunchURL {
             get {
                 return ResourceManager.GetString("LaunchURL", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Absolute or relative URL.
         /// </summary>
-        public static string LaunchUrlWatermark {
+        internal static string LaunchUrlWatermark {
             get {
                 return ResourceManager.GetString("LaunchUrlWatermark", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Name cannot be empty..
         /// </summary>
-        public static string NameCannotBeEmpty {
+        internal static string NameCannotBeEmpty {
             get {
                 return ResourceManager.GetString("NameCannotBeEmpty", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string NameHeader {
+        internal static string NameHeader {
             get {
                 return ResourceManager.GetString("NameHeader", resourceCulture);
             }
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to New....
         /// </summary>
-        public static string NewBtn {
+        internal static string NewBtn {
             get {
                 return ResourceManager.GetString("NewBtn", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Open the new profile dialog.
         /// </summary>
-        public static string NewBtnHelpText {
+        internal static string NewBtnHelpText {
             get {
                 return ResourceManager.GetString("NewBtnHelpText", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to New profile.
         /// </summary>
-        public static string NewProfileCaption {
+        internal static string NewProfileCaption {
             get {
                 return ResourceManager.GetString("NewProfileCaption", resourceCulture);
             }
@@ -360,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to newProfile.
         /// </summary>
-        public static string NewProfileSeedName {
+        internal static string NewProfileSeedName {
             get {
                 return ResourceManager.GetString("NewProfileSeedName", resourceCulture);
             }
@@ -369,7 +369,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
-        public static string OKBtn {
+        internal static string OKBtn {
             get {
                 return ResourceManager.GetString("OKBtn", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Create the profile and return to the debug property page with the new profile selected.
         /// </summary>
-        public static string OKBtnHelpText {
+        internal static string OKBtnHelpText {
             get {
                 return ResourceManager.GetString("OKBtnHelpText", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Profile:.
         /// </summary>
-        public static string Profile {
+        internal static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
             }
@@ -396,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Executable.
         /// </summary>
-        public static string ProfileKindExecutableName {
+        internal static string ProfileKindExecutableName {
             get {
                 return ResourceManager.GetString("ProfileKindExecutableName", resourceCulture);
             }
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to IIS Express.
         /// </summary>
-        public static string ProfileKindIISExpressName {
+        internal static string ProfileKindIISExpressName {
             get {
                 return ResourceManager.GetString("ProfileKindIISExpressName", resourceCulture);
             }
@@ -414,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
-        public static string ProfileKindNoActionName {
+        internal static string ProfileKindNoActionName {
             get {
                 return ResourceManager.GetString("ProfileKindNoActionName", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Project.
         /// </summary>
-        public static string ProfileKindProjectName {
+        internal static string ProfileKindProjectName {
             get {
                 return ResourceManager.GetString("ProfileKindProjectName", resourceCulture);
             }
@@ -432,7 +432,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Profile name:.
         /// </summary>
-        public static string ProfileName {
+        internal static string ProfileName {
             get {
                 return ResourceManager.GetString("ProfileName", resourceCulture);
             }
@@ -441,7 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to That profile name is invalid or there is an existing profile with the same name..
         /// </summary>
-        public static string ProfileNameInvalid {
+        internal static string ProfileNameInvalid {
             get {
                 return ResourceManager.GetString("ProfileNameInvalid", resourceCulture);
             }
@@ -450,7 +450,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to You must specify a profile name..
         /// </summary>
-        public static string ProfileNameRequired {
+        internal static string ProfileNameRequired {
             get {
                 return ResourceManager.GetString("ProfileNameRequired", resourceCulture);
             }
@@ -459,7 +459,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Use remote m_achine:.
         /// </summary>
-        public static string RemoteDebug {
+        internal static string RemoteDebug {
             get {
                 return ResourceManager.GetString("RemoteDebug", resourceCulture);
             }
@@ -468,7 +468,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Remote machine host name.
         /// </summary>
-        public static string RemoteDebugMachineWatermark {
+        internal static string RemoteDebugMachineWatermark {
             get {
                 return ResourceManager.GetString("RemoteDebugMachineWatermark", resourceCulture);
             }
@@ -477,7 +477,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to You must specify a remote machine&apos;s host name..
         /// </summary>
-        public static string RemoteHostNameRequired {
+        internal static string RemoteHostNameRequired {
             get {
                 return ResourceManager.GetString("RemoteHostNameRequired", resourceCulture);
             }
@@ -486,7 +486,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Remove.
         /// </summary>
-        public static string RemoveBtn {
+        internal static string RemoveBtn {
             get {
                 return ResourceManager.GetString("RemoveBtn", resourceCulture);
             }
@@ -495,7 +495,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Value cannot be empty..
         /// </summary>
-        public static string ValueCannotBeEmpty {
+        internal static string ValueCannotBeEmpty {
             get {
                 return ResourceManager.GetString("ValueCannotBeEmpty", resourceCulture);
             }
@@ -504,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
-        public static string ValueHeader {
+        internal static string ValueHeader {
             get {
                 return ResourceManager.GetString("ValueHeader", resourceCulture);
             }
@@ -513,7 +513,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Working directory:.
         /// </summary>
-        public static string WorkingDirectory {
+        internal static string WorkingDirectory {
             get {
                 return ResourceManager.GetString("WorkingDirectory", resourceCulture);
             }
@@ -522,7 +522,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         /// <summary>
         ///   Looks up a localized string similar to Absolute path to working directory.
         /// </summary>
-        public static string WorkingDirectoryWatermark {
+        internal static string WorkingDirectoryWatermark {
             get {
                 return ResourceManager.GetString("WorkingDirectoryWatermark", resourceCulture);
             }
