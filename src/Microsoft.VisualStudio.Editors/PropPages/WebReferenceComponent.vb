@@ -38,7 +38,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeName() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 
@@ -64,7 +66,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Set
                 Dim prop As EnvDTE.[Property] = GetItemProperty(NameOf(UrlBehavior))
                 If prop IsNot Nothing Then
-                    prop.Value = CInt(value)
+                    prop.Value = CInt(Value)
                     _page.OnWebReferencePropertyChanged(Me)
                 Else
                     Debug.Fail("Why we can not find UrlBehavior")
@@ -73,7 +75,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeUrlBehavior() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 
@@ -107,7 +111,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeWebReferenceURL() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 
