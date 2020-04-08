@@ -99,7 +99,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override void Dispose(bool disposing)
         {
-            _disposables.Dispose();
+            try
+            {
+                _disposables.Dispose();
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
         }
 
         internal void ProcessFileChangeNotification(IProjectVersionedValue<string[]> arg)
