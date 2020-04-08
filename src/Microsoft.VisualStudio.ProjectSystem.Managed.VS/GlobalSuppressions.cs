@@ -19,3 +19,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Usage", "CA2215:Dispose methods should call base class dispose", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreService.DisposeCoreAsync(System.Boolean)~System.Threading.Tasks.Task")]
 
 [assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "https://github.com/dotnet/roslyn/issues/41531", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.get_Extender(System.String)~System.Object")]
+
+[assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "https://github.com/dotnet/roslyn-analyzers/issues/3295", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsChangeTracker.Initialize")]
+[assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "https://github.com/dotnet/roslyn-analyzers/issues/3295", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsFileWatcher.Initialize")]
