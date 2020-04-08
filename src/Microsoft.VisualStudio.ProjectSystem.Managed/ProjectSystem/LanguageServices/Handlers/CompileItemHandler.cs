@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
+        private static bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
         {
             string previousLink = previousMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
             string currentLink = currentMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
