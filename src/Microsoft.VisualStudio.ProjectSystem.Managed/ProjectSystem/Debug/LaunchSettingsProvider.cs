@@ -386,19 +386,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Gets the active profile based on the property changes
-        /// </summary>
-        protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
-        {
-            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) &&
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
-            {
-                return activeProfile;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Creates the initial set of settings based on the file on disk
         /// </summary>
         protected async Task<LaunchSettingsData> GetLaunchSettingsAsync()
