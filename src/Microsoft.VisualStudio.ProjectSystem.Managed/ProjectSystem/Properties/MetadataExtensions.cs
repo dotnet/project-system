@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return true;
             }
 
-            stringValue = default;
+            stringValue = null;
             return false;
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns>The boolean value if found and successfully parsed as a boolean, otherwise <see langword="null"/>.</returns>
         public static bool? GetBoolProperty(this IImmutableDictionary<string, string> properties, string key)
         {
-            return properties.TryGetBoolProperty(key, out bool value) ? value : default(bool?);
+            return properties.TryGetBoolProperty(key, out bool value) ? value : (bool?)null;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <typeparam name="T">The enum type.</typeparam>
         public static T? GetEnumProperty<T>(this IImmutableDictionary<string, string> properties, string key) where T : struct, Enum
         {
-            return properties.TryGetEnumProperty(key, out T value) ? value : default(T?);
+            return properties.TryGetEnumProperty(key, out T value) ? value : (T?)null;
         }
     }
 }

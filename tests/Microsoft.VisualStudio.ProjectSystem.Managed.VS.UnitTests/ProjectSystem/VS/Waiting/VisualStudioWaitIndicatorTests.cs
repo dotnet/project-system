@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     throw new OperationCanceledException();
                 }
 
-                return Task.FromResult(default(object));
+                return Task.FromResult((object?)null);
             });
             Assert.Null(result);
         }
