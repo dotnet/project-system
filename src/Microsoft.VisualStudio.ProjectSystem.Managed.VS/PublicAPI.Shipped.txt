@@ -1,8 +1,8 @@
 #nullable enable
-const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Executable = "Executable" -> string
-const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.IISExpress = "IISExpress" -> string
-const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.NoAction = "NoAction" -> string
-const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Project = "Project" -> string
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Executable = "Executable" -> string!
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.IISExpress = "IISExpress" -> string!
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.NoAction = "NoAction" -> string!
+const Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.ProfileCommandNames.Project = "Project" -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__id.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.__project.get -> object!
@@ -240,51 +240,9 @@ Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetObjects(ui
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.SetPageSite(Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite! pPageSite) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.Show(uint nCmdShow) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPage.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[]! pMsg) -> int
-Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher
 Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusAttacher() -> void
 static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.GetProfileNameDialog.DialogCaption.get -> string!
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AddBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.AllFiles.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArguments.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ApplicationArgumentsWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.BrowseBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.CancelBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.get -> System.Globalization.CultureInfo
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Culture.set -> void
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DebugPropertyPageTitle.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DeleteBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DuplicateKey.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvironmentVariables.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableNameWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.EnvVariableValueWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Executable.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutableFiles.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ExecutablePathWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Launch.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchURL.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.LaunchUrlWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NameCannotBeEmpty.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NameHeader.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewProfileCaption.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewProfileSeedName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.OKBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.Profile.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindExecutableName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindIISExpressName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindNoActionName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileKindProjectName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileNameInvalid.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ProfileNameRequired.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoveBtn.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ResourceManager.get -> System.Resources.ResourceManager
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueCannotBeEmpty.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark.get -> string
 static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.GetFocus(System.Windows.DependencyObject! d) -> bool
 static Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.SetFocus(System.Windows.DependencyObject! d, bool value) -> void
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Utilities.FocusAttacher.FocusProperty -> System.Windows.DependencyProperty!

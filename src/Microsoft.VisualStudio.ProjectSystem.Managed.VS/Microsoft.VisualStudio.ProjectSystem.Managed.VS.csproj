@@ -238,7 +238,7 @@
   <ItemGroup>
     <None Include="**\*.xlf" />
     <EmbeddedResource Update="ProjectSystem\VS\PropertyPages\PropertyPageResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PropertyPageResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
