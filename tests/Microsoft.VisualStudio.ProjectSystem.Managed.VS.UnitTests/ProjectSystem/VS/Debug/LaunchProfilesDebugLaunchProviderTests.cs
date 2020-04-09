@@ -52,17 +52,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public void GetDebugEngineForFrameworkTests()
-        {
-
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, LaunchProfilesDebugLaunchProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, LaunchProfilesDebugLaunchProvider.GetManagedDebugEngineForFramework(".NetStandard"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, LaunchProfilesDebugLaunchProvider.GetManagedDebugEngineForFramework(".NetCore"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, LaunchProfilesDebugLaunchProvider.GetManagedDebugEngineForFramework(".NetCoreApp"));
-            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, LaunchProfilesDebugLaunchProvider.GetManagedDebugEngineForFramework(".NETFramework"));
-        }
-
-        [Fact]
         public async Task CanLaunchAsyncTests()
         {
             var provider = CreateInstance();

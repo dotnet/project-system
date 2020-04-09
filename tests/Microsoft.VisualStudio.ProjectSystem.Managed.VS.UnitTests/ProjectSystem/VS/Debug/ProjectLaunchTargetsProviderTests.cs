@@ -609,6 +609,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(expected, ProjectLaunchTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
         }
 
+        [Fact]
+        public void GetDebugEngineForFrameworkTests()
+        {
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetStandard"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetCore"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetCoreApp"));
+            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NETFramework"));
+        }
+
         private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
