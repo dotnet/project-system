@@ -65,65 +65,75 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task CanLaunchAsyncTests()
         {
-            var configuredProjectMoq = new Mock<ConfiguredProject>();
-            var debugger = new LaunchProfilesDebugLaunchProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object, vsDebuggerService: null!);
+            var provider = CreateInstance();
 
-            bool result = await debugger.CanLaunchAsync(DebugLaunchOptions.NoDebug);
+            bool result = await provider.CanLaunchAsync(DebugLaunchOptions.NoDebug);
             Assert.True(result);
-            result = await debugger.CanLaunchAsync(0);
+            result = await provider.CanLaunchAsync(0);
             Assert.True(result);
         }
 
         [Fact]
         public void GetLaunchTargetsProviderForProfileTests()
         {
-            var debugger = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
-            Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
-            Assert.Null(debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
+            var provider = CreateInstance();
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
+            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsyncCorrectProvider()
         {
-            var debugger = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "IISExpress" };
-            var result = await debugger.QueryDebugTargetsAsync(0);
+            var result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_webProviderSettings, result);
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Docker" };
-            result = await debugger.QueryDebugTargetsAsync(0);
+            result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_dockerProviderSettings, result);
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Project" };
-            result = await debugger.QueryDebugTargetsAsync(0);
+            result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_exeProviderSettings, result);
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoLaunchProfile_Throws()
         {
-            var debugger = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
             _activeProfile = null;
 
             await Assert.ThrowsAsync<Exception>(() =>
             {
-                return debugger.QueryDebugTargetsAsync(0);
+                return provider.QueryDebugTargetsAsync(0);
             });
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
-            var debugger = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
             _activeProfile = new LaunchProfile() { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
 
             await Assert.ThrowsAsync<Exception>(() =>
             {
-                return debugger.QueryDebugTargetsAsync(0);
+                return provider.QueryDebugTargetsAsync(0);
             });
+        }
+
+        private LaunchProfilesDebugLaunchProvider CreateInstance()
+        {
+            var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, vsDebuggerService: null!);
+
+            provider.ProfileLaunchTargetsProviders.Add(_mockWebProvider.Object);
+            provider.ProfileLaunchTargetsProviders.Add(_mockDockerProvider.Object);
+            provider.ProfileLaunchTargetsProviders.Add(_mockExeProvider.Object);
+
+            return provider;
         }
     }
 }

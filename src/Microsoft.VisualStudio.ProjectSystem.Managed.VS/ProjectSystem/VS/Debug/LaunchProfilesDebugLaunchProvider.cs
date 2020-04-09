@@ -26,9 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
 
-        /// <summary>
-        /// Constructors. Unit test one is 2nd
-        /// </summary>
         [ImportingConstructor]
         public LaunchProfilesDebugLaunchProvider(
             ConfiguredProject configuredProject, 
@@ -44,21 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                                                                                                                     configuredProject.UnconfiguredProject);
         }
 
-        public LaunchProfilesDebugLaunchProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
-                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers,
-                                       IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
-            : base(configuredProject)
-        {
-            ProfileLaunchTargetsProviders = providers;
-            _vsDebuggerService = vsDebuggerService;
-            _launchSettingsProvider = launchSettingsProvider;
-        }
-
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
+        public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
 
         /// <summary>
         /// Called by CPS to determine whether we can launch
