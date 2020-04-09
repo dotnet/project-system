@@ -49,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
 
         private readonly ImplicitProjectCheck _importPathCheck = new ImplicitProjectCheck();
+        private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
 
@@ -58,11 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         [ImportingConstructor]
         internal ImportTreeProvider(
             IProjectThreadingService threadingService,
+            UnconfiguredProject project,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
             IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
             UnconfiguredProject unconfiguredProject)
             : base(threadingService, unconfiguredProject, useDisplayOrdering: true)
         {
+            _project = project;
             _projectSubscriptionService = projectSubscriptionService;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
@@ -158,12 +161,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 linkOptions: DataflowOption.PropagateCompletion));
 
                         ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>> actionBlock =
-                            DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>>(
+                            DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>>(
                                 SyncTree,
-                                new ExecutionDataflowBlockOptions
-                                {
-                                    NameFormat = "Import Tree Action: {1}"
-                                });
+                                _project,
+                                nameFormat: "Import Tree Action: {1}");
 
                         using (TrySuppressExecutionContextFlow())
                         {

@@ -4,7 +4,10 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -113,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="unconfiguredProject">
         ///     The unconfigured project which the delegate operates on, if applicable. Can be <see langword="null"/>.
         /// </param>
-        /// <param name="faultSeverity">
+        /// <param name="severity">
         ///     Suggests to the user how severe the fault is if the delegate throws.
         /// </param>
         /// <param name="options">
@@ -123,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this IProjectThreadingService threadingService,
             Func<Task> asyncAction,
             UnconfiguredProject? unconfiguredProject,
-            ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
@@ -134,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 options &= ~ForkOptions.CancelOnUnload;
             }
 
-            threadingService.Fork(asyncAction, factory: null, unconfiguredProject: unconfiguredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: faultSeverity, options: options);
+            threadingService.Fork(asyncAction, factory: null, unconfiguredProject: unconfiguredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: severity, options: options);
         }
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="configuredProject">
         ///     The configured project which the delegate operates on, if applicable. Can be <see langword="null"/>.
         /// </param>
-        /// <param name="faultSeverity">
+        /// <param name="severity">
         ///     Suggests to the user how severe the fault is if the delegate throws.
         /// </param>
         /// <param name="options">
@@ -160,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this IProjectThreadingService threadingService,
             Func<Task> asyncAction,
             ConfiguredProject? configuredProject,
-            ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             ForkOptions options = ForkOptions.Default)
         {
             Requires.NotNull(threadingService, nameof(threadingService));
@@ -171,7 +174,58 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 options &= ~ForkOptions.CancelOnUnload;
             }
 
-            threadingService.Fork(asyncAction, factory: null, configuredProject: configuredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: faultSeverity, options: options);
+            threadingService.Fork(asyncAction, factory: null, configuredProject: configuredProject, watsonReportSettings: s_defaultReportSettings, faultSeverity: severity, options: options);
+        }
+
+        /// <summary>
+        ///     Attaches error handling to a block so that if it throws an unhandled exception,
+        ///     the error will be reported to the user.
+        /// </summary>
+        /// <param name="faultHandlerService">
+        ///     The <see cref="IProjectFaultHostHandler"/> that should handle the fault.
+        /// </param>
+        /// <param name="block">
+        ///     The block to attach error handling to.
+        /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable. Can be <see langword="null"/>.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of the failure.
+        /// </param>
+        public static Task RegisterFaultHandler(
+            this IProjectFaultHandlerService faultHandlerService,
+            IDataflowBlock block,
+            UnconfiguredProject? project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable)
+        {
+            Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
+            Requires.NotNull(block, nameof(block));
+
+            return block.Completion.ContinueWith(_ => 
+            {
+                var dataSourceException = new AggregateException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.DataFlowFaults,
+                        block.ToString(),
+                        block.Completion.Exception),
+                    block.Completion.Exception);
+
+                try
+                {
+                    throw dataSourceException;
+                }
+                catch (AggregateException ex)
+                {
+                    dataSourceException = ex;
+                }
+
+                return faultHandlerService.ReportFaultAsync(dataSourceException, project, severity);
+            },
+            CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
         }
     }
 }

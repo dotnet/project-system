@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             // Create an action block process the design time delta
-            _deltaActionBlock = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(ProcessDataflowChanges);
+            _deltaActionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(ProcessDataflowChanges, _project);
 
             _changeTrackerLink = _changeTracker.SourceBlock.LinkTo(_deltaActionBlock, DataflowOption.PropagateCompletion);
 

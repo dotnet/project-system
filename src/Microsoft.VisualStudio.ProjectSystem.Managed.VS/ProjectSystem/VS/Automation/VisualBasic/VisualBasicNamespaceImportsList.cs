@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed, IEnumerable<string>
     {
+        private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
 
         private readonly object _lock = new object();
@@ -24,8 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             .Add(NamespaceImport.SchemaName);
 
         [ImportingConstructor]
-        public VisualBasicNamespaceImportsList(IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+        public VisualBasicNamespaceImportsList(
+            UnconfiguredProject project,
+            IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
         {
+            _project = project;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
@@ -167,7 +171,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         {
             //set up a subscription to listen for namespace import changes
             _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
-                target: OnNamespaceImportChanged,
+                OnNamespaceImportChanged,
+                _project,
                 ruleNames: s_namespaceImportRule);
         }
 

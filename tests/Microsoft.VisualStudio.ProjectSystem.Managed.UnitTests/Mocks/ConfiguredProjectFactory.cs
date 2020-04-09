@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.Setup(c => c.Capabilities).Returns(capabilities!);
             mock.Setup(c => c.ProjectConfiguration).Returns(projectConfiguration!);
             mock.Setup(c => c.Services).Returns(services!);
-            mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject!);
+            mock.SetupGet(c => c.UnconfiguredProject).Returns(unconfiguredProject! ?? UnconfiguredProjectFactory.Create());
             return mock.Object;
         }
 
