@@ -36,9 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchSettingsProvider = launchSettingsProvider;
             _vsDebuggerService = vsDebuggerService;
 
-            // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
-            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                    configuredProject.UnconfiguredProject);
+            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
         }
 
         /// <summary>
