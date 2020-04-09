@@ -36,14 +36,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchSettingsProvider = launchSettingsProvider;
             _vsDebuggerService = vsDebuggerService;
 
-            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
+            LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
         }
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
-        public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
+        public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> LaunchTargetsProviders { get; }
 
         /// <summary>
         /// Called by CPS to determine whether we can launch
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
         {
             // We search through the imports in order to find the one which supports the profile
-            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
+            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
             {
                 if (provider.Value.SupportsProfile(profile))
                 {

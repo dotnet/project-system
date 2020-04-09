@@ -129,9 +129,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, vsDebuggerService: null!);
 
-            provider.ProfileLaunchTargetsProviders.Add(_mockWebProvider.Object);
-            provider.ProfileLaunchTargetsProviders.Add(_mockDockerProvider.Object);
-            provider.ProfileLaunchTargetsProviders.Add(_mockExeProvider.Object);
+            provider.LaunchTargetsProviders.Add(_mockWebProvider.Object);
+            provider.LaunchTargetsProviders.Add(_mockDockerProvider.Object);
+            provider.LaunchTargetsProviders.Add(_mockExeProvider.Object);
 
             return provider;
         }
