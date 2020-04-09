@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
+    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(
+        public ProjectLaunchTargetsProvider(
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices,
             ConfiguredProject project,
             IDebugTokenReplacer tokenReplacer,
