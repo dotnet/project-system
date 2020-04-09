@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                 DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<T>>(
                     e => OnProjectChangedAsync(configuredProject, e.Value),
                     configuredProject.UnconfiguredProject,
-                    nameFormat);
+                    nameFormat: nameFormat);
 
             _subscriptions ??= new DisposableBag();
 

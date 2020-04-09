@@ -84,12 +84,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
                         _project.UnconfiguredProject,
+                        ProjectFaultSeverity.LimitedFunctionality,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()),
 
                     _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
                         _project.UnconfiguredProject,
+                        ProjectFaultSeverity.LimitedFunctionality,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules())
                 };

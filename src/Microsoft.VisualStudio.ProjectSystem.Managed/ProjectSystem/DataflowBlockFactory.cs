@@ -16,14 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Provides a dataflow block that invokes a provided <see cref="Action{T}"/> delegate for every data element received.
         /// </summary>
-        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Action<TInput> target, UnconfiguredProject project, string? nameFormat = null, bool skipIntermediateInputData = false)
+        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Action<TInput> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
         {
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
             ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 
-            RegisterFaultHandler(block, project);
+            RegisterFaultHandler(block, project, severity);
 
             return block;
         }
@@ -31,23 +31,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <summary>
         ///     Provides a dataflow block that invokes a provided <see cref="Func{T, TResult}"/> delegate for every data element received.
         /// </summary>
-        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Func<TInput, Task> target, UnconfiguredProject project, string? nameFormat = null, bool skipIntermediateInputData = false)
+        public static ITargetBlock<TInput> CreateActionBlock<TInput>(Func<TInput, Task> target, UnconfiguredProject project, ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable, string? nameFormat = null, bool skipIntermediateInputData = false)
         {
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
             ITargetBlock<TInput> block = DataflowBlockSlim.CreateActionBlock(target, nameFormat, skipIntermediateInputData: skipIntermediateInputData);
 
-            RegisterFaultHandler(block, project);
+            RegisterFaultHandler(block, project, severity);
 
             return block;
         }
 
-        private static void RegisterFaultHandler(IDataflowBlock block, UnconfiguredProject project)
+        private static void RegisterFaultHandler(IDataflowBlock block, UnconfiguredProject project, ProjectFaultSeverity severity)
         {
             IProjectFaultHandlerService faultHandlerService = project.Services.FaultHandler;
 
-            Task faultTask = faultHandlerService.RegisterFaultHandler(block, project);
+            Task faultTask = faultHandlerService.RegisterFaultHandler(block, project, severity);
 
             // We don't actually care about the result of reporting the fault if one occurs
             faultHandlerService.Forget(faultTask, project);

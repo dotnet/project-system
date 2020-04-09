@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                             ITargetBlock<SnapshotChangedEventArgs> actionBlock = DataflowBlockFactory.CreateActionBlock<SnapshotChangedEventArgs>(
                                 OnDependenciesSnapshotChangedAsync,
                                 _project,
-                                "DependenciesProjectTreeProviderSource {1}",
+                                nameFormat: "DependenciesProjectTreeProviderSource {1}",
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }

@@ -27,6 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="project">
         ///     The project related to the failure, if applicable.
         /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -49,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
             UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             params string[] ruleNames)
         {
@@ -56,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -77,6 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="project">
         ///     The project related to the failure, if applicable.
         /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -99,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
             UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
@@ -106,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -156,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -176,6 +184,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </param>
         /// <param name="project">
         ///     The project related to the failure, if applicable.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
         /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
@@ -199,6 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target,
             UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
@@ -206,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -217,6 +229,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
         ///     that can process messages, propagating completion and faults.
         /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
         /// <returns>
         ///     An <see cref="IDisposable"/> that, upon calling Dispose, will unlink the source from the target.
         /// </returns>
@@ -240,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion);
         }
 
@@ -271,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion);
         }
 
