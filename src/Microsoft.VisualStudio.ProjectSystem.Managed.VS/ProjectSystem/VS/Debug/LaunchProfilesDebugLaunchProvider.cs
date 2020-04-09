@@ -22,14 +22,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
+        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
+        private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
+
         /// <summary>
         /// Constructors. Unit test one is 2nd
         /// </summary>
         [ImportingConstructor]
-        public LaunchProfilesDebugLaunchProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
+        public LaunchProfilesDebugLaunchProvider(
+            ConfiguredProject configuredProject, 
+            ILaunchSettingsProvider launchSettingsProvider, 
+            IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
-            LaunchSettingsProvider = launchSettingsProvider;
+            _launchSettingsProvider = launchSettingsProvider;
             _vsDebuggerService = vsDebuggerService;
 
             // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
@@ -44,21 +51,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             ProfileLaunchTargetsProviders = providers;
             _vsDebuggerService = vsDebuggerService;
-            LaunchSettingsProvider = launchSettingsProvider;
+            _launchSettingsProvider = launchSettingsProvider;
         }
-
-        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
         private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
-
-        private ILaunchSettingsProvider LaunchSettingsProvider { get; }
-
-        // Tracks the last launched provider so we can forward calls to IDeployedProjectItemMappingProvider
-        public IDebugProfileLaunchTargetsProvider? LastLaunchProvider { get; private set; }
 
         /// <summary>
         /// Called by CPS to determine whether we can launch
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000);
+            ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(5000);
             ILaunchProfile? activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile);
             }
 
-            LastLaunchProvider = launchProvider;
+            _lastLaunchProvider = launchProvider;
             return launchSettings;
         }
 
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
 
-            ILaunchProfile? activeProfile = LaunchSettingsProvider.ActiveProfile;
+            ILaunchProfile? activeProfile = _launchSettingsProvider.ActiveProfile;
 
             Assumes.NotNull(activeProfile);
 
@@ -349,7 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string? localPath)
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
-            if (LastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
+            if (_lastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }
