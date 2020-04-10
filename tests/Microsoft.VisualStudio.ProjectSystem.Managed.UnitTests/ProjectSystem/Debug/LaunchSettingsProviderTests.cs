@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
 
             Assert.True(await provider.SettingsFileHasChangedAsyncTest());
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
 
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             await provider.SaveSettingsToDiskAsyncTest(testSettings.Object);
 
             // Last Write time should be set
-            Assert.Equal(moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
+            Assert.Equal(moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile), provider.LastSettingsFileSyncTimeTest);
 
             // Check disk contents
             Assert.Equal(JsonStringWithWebSettings, moqFS.ReadAllText(provider.LaunchSettingsFile), ignoreLineEndingDifferences: true);
@@ -425,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Write new file, but set the timestamp to match
             moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
-            provider.LastSettingsFileSyncTimeTest = moqFS.LastFileWriteTimeUtc(provider.LaunchSettingsFile);
+            provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 

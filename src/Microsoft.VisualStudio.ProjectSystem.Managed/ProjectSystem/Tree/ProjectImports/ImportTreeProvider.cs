@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -181,10 +181,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                         void SyncTree(IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>> e)
                         {
-                            if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot) &&
-                                snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                            if (e.Value.Item2.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot snapshot))
                             {
-                                _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
+                                {
+                                    _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                                }
+
+                                if (snapshot.Properties.TryGetValue(ConfigurationGeneral.NuGetPackageFoldersProperty, out string nuGetPackageFolders))
+                                {
+                                    _importPathCheck.NuGetPackageFolders = nuGetPackageFolders;
+                                }
                             }
 
                             _ = SubmitTreeUpdateAsync(

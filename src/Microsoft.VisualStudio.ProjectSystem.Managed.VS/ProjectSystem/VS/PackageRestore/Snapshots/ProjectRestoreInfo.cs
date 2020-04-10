@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using NuGet.SolutionRestoreManager;
 
@@ -10,6 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo2
     {
+        // If additional fields/properties are added to this class, please update RestoreHasher
+
         public ProjectRestoreInfo(string msbuildProjectExtensionsPath, string projectAssetsFilePath, string originalTargetFrameworks, IVsTargetFrameworks2 targetFrameworks, IVsReferenceItems toolReferences)
         {
             MSBuildProjectExtensionsPath = msbuildProjectExtensionsPath;
@@ -20,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         }
 
         public string MSBuildProjectExtensionsPath { get; }
+
         public string ProjectAssetsFilePath { get; }
 
         public string OriginalTargetFrameworks { get; }

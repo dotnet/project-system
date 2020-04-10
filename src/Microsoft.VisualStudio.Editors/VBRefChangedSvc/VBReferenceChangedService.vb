@@ -1,11 +1,10 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Strict On
 Option Explicit On
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.VBRefChangedSvc
     '''   and Microsoft.VisualStudio.Editors.vbexpress.vrg_33310.ddr.
     ''' </remarks>
     <CLSCompliant(False)>
-    <ProvideService(GetType(Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service")>
     Friend Class VBReferenceChangedService
         Implements Interop.IVbReferenceChangedService
 

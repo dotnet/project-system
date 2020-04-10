@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 ' Public API and cannot be changed
 <Assembly: CodeAnalysis.SuppressMessage("Design", "CA1058:Types should not extend certain base types", Justification:="Public API and cannot be changed.", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.Package.InternalException")>
@@ -407,6 +407,7 @@
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData")>
+<Assembly: CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.InternalCreateEditorInstance(System.String,System.Object,System.Object@,System.Object@,System.String@,System.Guid@,System.Boolean@)")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl._sizingLabel")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider._view")>
 <Assembly: CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl._hostingPanel")>
@@ -453,3 +454,4 @@
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Title")>
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.Name")>
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.SerializedProperty.IsEntireComponentObject")>
+

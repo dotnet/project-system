@@ -1,18 +1,6 @@
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.get -> VSLangProj165.AuthenticationMode
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties
-Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.get -> string
+Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.set -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjectConfigurationProperties
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.CancelBtnHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.DeleteBtnHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.InvalidHostName.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.NewBtnHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.OKBtnHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteDebug.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteDebugMachineWatermark.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.RemoteHostNameRequired.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkLaunchBrowserHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkNativeCodeDebuggingText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkRemoteDebugEnabledHelpText.get -> string
-static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkSqlCodeDebuggingText.get -> string

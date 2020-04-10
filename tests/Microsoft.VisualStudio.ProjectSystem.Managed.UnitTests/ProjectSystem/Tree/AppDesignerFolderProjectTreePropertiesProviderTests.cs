@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -321,13 +321,13 @@ Root (flags: {ProjectRoot})
         Folder (flags: {FileSystemEntity Folder})
 ", @"
 Root (flags: {ProjectRoot})
-    Properties (flags: {FileSystemEntity Folder AppDesignerFolder BubbleUp}), Icon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}
+    Properties (flags: {FileSystemEntity Folder AppDesignerFolder BubbleUp}), Icon: {259567C1-AA6B-46BF-811C-C145DD9F3B48 28}
         Folder (flags: {FileSystemEntity Folder})
 ")]
         public void ChangePropertyValues_TreeWithAppDesignerFolder_SetsIconToAppDesignerFolder(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.AppDesignerFolder, new ProjectImageMoniker(new Guid("AE27A6B0-E345-4288-96DF-5EAF394EE369"), 1));
+            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.AppDesignerFolder, new ProjectImageMoniker(new Guid("259567C1-AA6B-46BF-811C-C145DD9F3B48"), 28));
             var propertiesProvider = CreateInstance(imageProvider, designerService);
 
             var inputTree = ProjectTreeParser.Parse(input);
@@ -343,13 +343,13 @@ Root (flags: {ProjectRoot})
         Folder (flags: {FileSystemEntity Folder})
 ", @"
 Root (flags: {ProjectRoot})
-    Properties (flags: {FileSystemEntity Folder AppDesignerFolder BubbleUp}), ExpandedIcon: {AE27A6B0-E345-4288-96DF-5EAF394EE369 1}
+    Properties (flags: {FileSystemEntity Folder AppDesignerFolder BubbleUp}), ExpandedIcon: {259567C1-AA6B-46BF-811C-C145DD9F3B48 29}
         Folder (flags: {FileSystemEntity Folder})
 ")]
         public void ChangePropertyValues_TreeWithAppDesignerFolder_SetsExpandedIconToExpandedAppDesignerFolder(string input, string expected)
         {
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
-            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ExpandedAppDesignerFolder, new ProjectImageMoniker(new Guid("AE27A6B0-E345-4288-96DF-5EAF394EE369"), 1));
+            var imageProvider = IProjectImageProviderFactory.ImplementGetProjectImage(ProjectImageKey.ExpandedAppDesignerFolder, new ProjectImageMoniker(new Guid("259567C1-AA6B-46BF-811C-C145DD9F3B48"), 29));
             var propertiesProvider = CreateInstance(imageProvider, designerService);
 
             var inputTree = ProjectTreeParser.Parse(input);

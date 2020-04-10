@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly IWaitIndicator _waitService;
         private readonly IRefactorNotifyService _refactorNotifyService;
+        private readonly IVsOnlineServices _vsOnlineServices;
 
         [ImportingConstructor]
         internal Renamer(IUnconfiguredProjectVsServices projectVsServices,
@@ -40,7 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                          IUserNotificationServices userNotificationServices,
                          IRoslynServices roslynServices,
                          IWaitIndicator waitService,
-                         IRefactorNotifyService refactorNotifyService)
+                         IRefactorNotifyService refactorNotifyService,
+                         IVsOnlineServices vsOnlineServices)
         {
             _projectVsServices = projectVsServices;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
@@ -51,6 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _roslynServices = roslynServices;
             _waitService = waitService;
             _refactorNotifyService = refactorNotifyService;
+            _vsOnlineServices = vsOnlineServices;
         }
 
         public void HandleRename(string oldFilePath, string newFilePath)
@@ -65,6 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         internal async Task HandleRenameAsync(string oldFilePath, string newFilePath)
         {
+            // Do not offer to rename the file in VS Online scenarios.
+            if (_vsOnlineServices.ConnectedToVSOnline)
+            {
+                return;
+            }
+
             // Do not offer to rename types if the user changes the file extensions
             if (!oldFilePath.EndsWith(Path.GetExtension(newFilePath), StringComparisons.Paths))
             {
@@ -136,11 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 IEnumerable<ProjectChanges> changes = renamedSolution.GetChanges(solution).GetProjectChanges();
 
-                DTE? dte = _dte.Value;
-
-                Assumes.Present(dte);
-
-                using var _ = UndoScope.Create(dte, renameOperationName);
+                using var _ = UndoScope.Create(_dte.Value, renameOperationName);
 
                 // Notify other VS features that symbol is about to be renamed
                 NotifyBeforeRename(newName, rqName, changes);

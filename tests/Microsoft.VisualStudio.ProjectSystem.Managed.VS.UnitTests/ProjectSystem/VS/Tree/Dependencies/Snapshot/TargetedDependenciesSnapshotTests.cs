@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -68,23 +68,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void FromChanges_NullChanges_Throws()
+        public void FromChanges_NoChanges()
         {
             const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
 
-            Assert.Throws<ArgumentNullException>(
-                "changes",
-                () => TargetedDependenciesSnapshot.FromChanges(
-                    projectPath,
-                    previousSnapshot,
-                    null!,
-                    catalogs,
-                    ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                    new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                    null));
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                previousSnapshot,
+                changes: null,
+                catalogs,
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.Same(previousSnapshot, snapshot);
+        }
+
+        [Fact]
+        public void FromChanges_CatalogChanged()
+        {
+            const string projectPath = @"c:\somefolder\someproject\a.csproj";
+            var targetFramework = new TargetFramework("tfm1");
+            var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, previousCatalogs);
+
+            var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                projectPath,
+                previousSnapshot,
+                changes: null,
+                updatedCatalogs,
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            Assert.Same(projectPath, snapshot.ProjectPath);
+            Assert.Same(updatedCatalogs, snapshot.Catalogs);
+            AssertEx.SequenceSame(previousSnapshot.TopLevelDependencies, snapshot.TopLevelDependencies);
+            Assert.Same(previousSnapshot.DependenciesWorld, snapshot.DependenciesWorld);
+            Assert.False(snapshot.HasReachableVisibleUnresolvedDependency);
+            Assert.Empty(snapshot.DependenciesWorld);
+            Assert.Empty(snapshot.TopLevelDependencies);
         }
 
         [Fact]

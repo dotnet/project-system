@@ -1,4 +1,4 @@
-<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project>
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="$(IsTestProject)">true</BannedSymbolsOptOut>
@@ -23,7 +23,7 @@
     <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
     <PackageReference Include="MicroBuild.Core.Sentinel" ExcludeAssets="All" />
     <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="All"/>
-    <PackageReference Include="Microsoft.Net.Compilers" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <PackageReference Include="XliffTasks" />
     <PackageReference Include="RoslynTools.SignTool" />
     <PackageReference Include="RoslynTools.RepoToolset" ExcludeAssets="all" />
@@ -46,6 +46,8 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
 
     <!-- MSBuild -->
@@ -62,8 +64,6 @@
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
     <PackageReference Include="StreamJsonRpc" />
 
-    <PackageReference Include="Microsoft.ServiceHub.Framework" />
-
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsUnitTestProject)' == 'true'" >
@@ -71,8 +71,8 @@
     <PackageReference Include="xunit.analyzers" />
     <PackageReference Include="xunit.assert" />
     <PackageReference Include="xunit.extensibility.core" />
-    <PackageReference Include="xunit.runner.console" />
-    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="xunit.runner.console" GeneratePathProperty="true" />
+    <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 </Project>

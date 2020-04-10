@@ -1,8 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 
@@ -15,6 +16,8 @@ namespace Microsoft.VisualStudio.IO
     [Export(typeof(IFileSystem))]
     internal class Win32FileSystem : IFileSystem
     {
+        private static readonly DateTime s_minFileTime = DateTime.FromFileTimeUtc(0);
+
         public Stream Create(string path)
         {
             return File.Create(path);
@@ -58,9 +61,35 @@ namespace Microsoft.VisualStudio.IO
             File.WriteAllBytes(path, bytes);
         }
 
-        public DateTime LastFileWriteTimeUtc(string path)
+        public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
         {
-            return File.GetLastWriteTimeUtc(path);
+            if (TryGetLastFileWriteTimeUtc(path, out DateTime? result))
+            {
+                return result.Value;
+            }
+
+            return DateTime.MinValue;
+        }
+
+        public bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result)
+        {
+            try
+            {
+                result = File.GetLastWriteTimeUtc(path);
+                if (result != s_minFileTime)
+                {
+                    return true;
+                }
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
+
+            result = null;
+            return false;
         }
 
         public long FileLength(string path)

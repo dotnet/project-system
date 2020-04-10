@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -82,10 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private Project? TryGetProjectFromPath(string projectPath)
         {
-            DTE? dte = _dte.Value;
-            Assumes.NotNull(dte);
-
-            foreach (Project project in dte.Solution.Projects)
+            foreach (Project project in _dte.Value.Solution.Projects)
             {
                 string? fullName;
                 try
@@ -94,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 }
                 catch (Exception)
                 {
-                    // DTE COM calls can fail for any number of valid reasions.
+                    // DTE COM calls can fail for any number of valid reasons.
                     continue;
                 }
 
@@ -109,10 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
 
         private IVsHierarchy? TryGetIVsHierarchy(Project project)
         {
-            IVsSolution? solution = _solution.Value;
-            Assumes.Present(solution);
-
-            if (solution.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
+            if (_solution.Value.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
             {
                 return projectHierarchy;
             }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             void LogTelemetry(bool cancelled)
             {
-                compileStopWatch.Stop();
+                compileStopWatch!.Stop();
                 _telemetryService.PostProperties(TelemetryEventName.TempPEProcessQueue, new[]
                 {
                     ( TelemetryPropertyName.TempPECompileCount,        (object)compileCount),
@@ -282,28 +282,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private bool CompilationNeeded(HashSet<string> files, string outputFileName)
         {
-            if (!_fileSystem.FileExists(outputFileName))
+            if (!_fileSystem.TryGetLastFileWriteTimeUtc(outputFileName, out DateTime? outputDateTime))
+                return true; // File does not exist
+            
+            foreach (string file in files)
             {
-                return true;
+                DateTime fileDateTime = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(file);
+                if (fileDateTime > outputDateTime)
+                    return true;
             }
-
-            try
-            {
-                DateTime outputDateTime = _fileSystem.LastFileWriteTimeUtc(outputFileName);
-
-                foreach (string file in files)
-                {
-                    DateTime fileDateTime = _fileSystem.LastFileWriteTimeUtc(file);
-                    if (fileDateTime > outputDateTime)
-                        return true;
-                }
-            }
-            // if we can't read the file time of the output file, then we presumably can't compile to it either, so returning false is appropriate.
-            // if we can't read the file time of an input file, then we presumably can't read from it to compile either, so returning false is appropriate
-            catch (IOException)
-            { }
-            catch (UnauthorizedAccessException)
-            { }
 
             return false;
         }

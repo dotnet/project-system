@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models;
@@ -17,10 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
                 unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
 
-            var model = new SubTreeRootDependencyModel(
+            var flag = ProjectTreeFlags.Create("Foo");
+
+            var model = new DependencyGroupModel(
                 "myProvider",
                 "myRoot",
-                iconSet);
+                iconSet,
+                flag);
 
             Assert.Equal("myProvider", model.ProviderType);
             Assert.Equal("myRoot", model.Path);
@@ -31,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.AboutBox, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.AbsolutePosition, model.UnresolvedExpandedIcon);
-            Assert.Equal(DependencyTreeFlags.SubTreeRootNode, model.Flags);
+            Assert.Equal(flag + ProjectTreeFlags.VirtualFolder + DependencyTreeFlags.DependencyGroup, model.Flags);
         }
     }
 }

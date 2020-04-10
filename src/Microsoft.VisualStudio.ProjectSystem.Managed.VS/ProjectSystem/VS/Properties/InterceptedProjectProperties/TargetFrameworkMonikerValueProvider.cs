@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private readonly IUnconfiguredProjectVsServices _unconfiguredProjectVsServices;
         private readonly ProjectProperties _properties;
         private readonly IVsFrameworkParser _frameworkParser;
-
-        private const string _targetFrameworkProperty = "TargetFramework";
 
         [ImportingConstructor]
         public TargetFrameworkMonikerValueProvider(IUnconfiguredProjectVsServices unconfiguredProjectVsServices, ProjectProperties properties, IVsFrameworkParser frameworkParser)
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             else if (!string.IsNullOrEmpty(currentTargetFramework))
             {
                 var frameworkName = new FrameworkName(unevaluatedPropertyValue);
-                await defaultProperties.SetPropertyValueAsync(_targetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName));
+                await defaultProperties.SetPropertyValueAsync(ConfigurationGeneral.TargetFrameworkProperty, _frameworkParser.GetShortFrameworkName(frameworkName));
             }
             else
             {

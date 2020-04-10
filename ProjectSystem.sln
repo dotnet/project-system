@@ -41,6 +41,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "docs", "docs\docs.shproj", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.shproj", "{02578366-DFA9-4827-93F7-08E2AE5CE6A4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client", "src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.csproj", "{90F64FB6-87AA-4841-A272-AD363608E17B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests.csproj", "{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{02578366-dfa9-4827-93f7-08e2ae5ce6a4}*SharedItemsImports = 13
@@ -52,7 +56,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		Description = The C# and Visual Basic project system for Visual Studio 2017.
+		Description = The .NET project system for Visual Studio.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9FBD7EF2-9449-486D-9FDD-FA56160AA8BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -107,6 +111,14 @@ Global
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C16993CC-6063-4447-AE16-BE671AFDE08A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F64FB6-87AA-4841-A272-AD363608E17B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F64FB6-87AA-4841-A272-AD363608E17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F64FB6-87AA-4841-A272-AD363608E17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F64FB6-87AA-4841-A272-AD363608E17B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +138,8 @@ Global
 		{892500A5-BF6B-4FD5-A7B9-5EEA20EB775F} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{C16993CC-6063-4447-AE16-BE671AFDE08A} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{02578366-DFA9-4827-93F7-08E2AE5CE6A4} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
+		{90F64FB6-87AA-4841-A272-AD363608E17B} = {1FF0293B-6808-4BB1-8370-1FE222986654}
+		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}

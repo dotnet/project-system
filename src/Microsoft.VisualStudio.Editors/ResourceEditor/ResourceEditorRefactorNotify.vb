@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Explicit On
 Option Strict On
@@ -6,7 +6,6 @@ Option Compare Binary
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.Interop
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
 
@@ -20,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' </summary>
     <CLSCompliant(False),
     Guid("0407F754-C199-403e-B89B-1D8E1FF3DC79"),
-    ProvideService(GetType(ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
     ProvideRefactorNotify(GetType(ResourceEditorRefactorNotify), ".resx", "E24C65DC-7377-472b-9ABA-BC803B73C61A")>
     Friend NotInheritable Class ResourceEditorRefactorNotify
         Implements IVsRefactorNotify

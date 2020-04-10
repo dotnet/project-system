@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
 using System.Linq;
@@ -12,6 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal static class RestoreBuilder
     {
+        public static readonly IVsTargetFrameworks2 EmptyTargetFrameworks = new TargetFrameworks(Enumerable.Empty<IVsTargetFrameworkInfo3>());
+        public static readonly IVsReferenceItems EmptyReferences = new ReferenceItems(Enumerable.Empty<IVsReferenceItem>());
+
         /// <summary>
         ///     Converts an immutable dictionary of rule snapshot data into an <see cref="IVsProjectRestoreInfo"/> instance.
         /// </summary>
@@ -22,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectRuleSnapshot packageDownloads = update.GetSnapshotOrEmpty(CollectedPackageDownload.SchemaName);
             IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(ProjectReference.SchemaName);
             IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(PackageReference.SchemaName);
+            IProjectRuleSnapshot packageVersions = update.GetSnapshotOrEmpty(CollectedPackageVersion.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 
             // For certain project types such as UWP, "TargetFrameworkMoniker" != the moniker that restore uses
@@ -29,12 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             if (targetMoniker.Length == 0)
                 targetMoniker = properties.GetPropertyOrEmpty(NuGetRestore.TargetFrameworkMonikerProperty);
 
-            IVsTargetFrameworkInfo2 frameworkInfo = new TargetFrameworkInfo(
+            IVsTargetFrameworkInfo3 frameworkInfo = new TargetFrameworkInfo(
                 targetMoniker,
                 ToReferenceItems(frameworkReferences.Items),
                 ToReferenceItems(packageDownloads.Items),
                 ToReferenceItems(projectReferences.Items),
                 ToReferenceItems(packageReferences.Items),
+                ToReferenceItems(packageVersions.Items),
                 ToProjectProperties(properties));
 
             return new ProjectRestoreInfo(

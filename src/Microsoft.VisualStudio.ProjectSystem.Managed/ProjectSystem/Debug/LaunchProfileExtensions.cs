@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -8,6 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string SqlDebuggingProperty = "sqlDebugging";
         public const string RemoteDebugEnabledProperty = "remoteDebugEnabled";
         public const string RemoteDebugMachineProperty = "remoteDebugMachine";
+        public const string RemoteAuthenticationModeProperty = "authenticationMode";
 
         public static bool IsInMemoryObject(this object persistObject)
         {
@@ -61,6 +62,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             if (profile.OtherSettings != null
                 && profile.OtherSettings.TryGetValue(RemoteDebugMachineProperty, out object value)
                 && value is string s)
+            {
+                return s;
+            }
+
+            return null;
+        }
+
+        public static string? RemoteAuthenticationMode(this ILaunchProfile profile)
+        {
+            if (profile?.OtherSettings != null
+               && profile.OtherSettings.TryGetValue(RemoteAuthenticationModeProperty, out object value)
+               && value is string s)               
             {
                 return s;
             }

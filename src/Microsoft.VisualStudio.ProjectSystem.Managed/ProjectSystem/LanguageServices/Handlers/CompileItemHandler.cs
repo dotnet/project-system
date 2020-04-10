@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.After.Items, isActiveContext, logger);
+            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, isActiveContext, logger);
         }
 
         public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
-        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -86,6 +86,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             logger.WriteLine("Removing source file '{0}'", fullPath);
             Context.RemoveSourceFile(fullPath);
+        }
+
+        protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger)
+        {
+            if (LinkMetadataChanged(previousMetadata, currentMetadata))
+            {
+                logger.WriteLine("Removing and then re-adding source file '{0}' to <Link> metadata changes", fullPath);
+                RemoveFromContext(fullPath, logger);
+                AddToContext(fullPath, currentMetadata, isActiveContext, logger);
+            }
+        }
+
+        private static bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
+        {
+            string previousLink = previousMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
+            string currentLink = currentMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
+
+            return previousLink != currentLink;
         }
 
         protected override void HandleItemRename(string fullPathBefore, string fullPathAfter, IProjectLogger logger)

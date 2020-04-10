@@ -57,6 +57,11 @@
         <target state="translated">Assemblys de framework</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Contient tous les assemblys nécessaires à la publication d'un projet .NET Core.</target>
@@ -65,6 +70,15 @@
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
         <target state="translated">Éléments de publication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectLoadedWithWrongProjectType">
+        <source>The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
+        <target state="new">The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -94,6 +108,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">Il existe déjà un fichier ou un dossier nommé '{0}' à cet emplacement sur le disque. Choisissez un autre nom.
 
 Si ce fichier ou dossier n'apparaît pas dans l'Explorateur de solutions, cela signifie qu'il ne fait pas partie de votre projet. Pour voir les fichiers qui existent sur le disque mais qui ne font pas partie du projet, sélectionnez Afficher tous les fichiers dans le menu Projet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

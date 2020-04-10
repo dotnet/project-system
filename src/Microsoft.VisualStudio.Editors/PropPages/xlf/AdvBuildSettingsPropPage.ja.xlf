@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
-        <source>Chec&amp;k for arithmetic overflow/underflow</source>
-        <target state="translated">演算のオーバーフローおよびアンダーフローのチェック(&amp;K)</target>
+        <source>Chec&amp;k for arithmetic overflow</source>
+        <target state="translated">算術オーバーフローのチェック(&amp;K)</target>
         <note />
       </trans-unit>
       <trans-unit id="lnkLabel.Text">

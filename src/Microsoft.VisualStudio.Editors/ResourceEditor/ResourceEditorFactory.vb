@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Explicit On
 Option Strict On
@@ -21,8 +21,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     <CLSCompliant(False),
     Guid("ff4d6aca-9352-4a5f-821e-f4d6ebdcab11"),
     Shell.ProvideView(Shell.LogicalView.Designer, "Design"),
-    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resw", 48),
-    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resx", 48)>
+    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resw", &H30),
+    Shell.ProvideEditorExtension(GetType(ResourceEditorFactory), ".resx", &H30)>
     Friend NotInheritable Class ResourceEditorFactory
         Inherits DesignerFramework.BaseEditorFactory
         Implements IVsTrackProjectDocumentsEvents2

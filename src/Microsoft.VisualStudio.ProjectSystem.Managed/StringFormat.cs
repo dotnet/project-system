@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Globalization;
@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio
 
         public StringFormat(string format, object?[] arguments)
         {
+            Requires.Range(arguments.Length > 3, nameof(arguments), "Must contain at least three items");
             Format = format;
             Argument1 = null;
             Argument2 = null;

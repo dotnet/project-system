@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections;
@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using DialogResult = System.Windows.Forms.DialogResult;
@@ -45,6 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private ICommand _browseExecutableCommand;
         private ICommand _newProfileCommand;
         private ICommand _deleteProfileCommand;
+        private ICommand _findRemoteMachineCommand;
+        private IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         public DebugPageViewModel()
         {
@@ -77,6 +80,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
 
                 return _projectThreadingService;
+            }
+        }
+
+        private IRemoteDebuggerAuthenticationService RemoteDebuggerAuthenticationService
+        {
+            get
+            {
+                if (_remoteDebuggerAuthenticationService == null)
+                {
+                    _remoteDebuggerAuthenticationService = Project.Services.ExportProvider.GetExportedValue<IRemoteDebuggerAuthenticationService>();
+                }
+
+                return _remoteDebuggerAuthenticationService;
             }
         }
 
@@ -265,6 +281,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public IEnumerable<IRemoteAuthenticationProvider> RemoteAuthenticationProviders => RemoteDebuggerAuthenticationService.GetRemoteAuthenticationModes();
+
+        public IRemoteAuthenticationProvider RemoteAuthenticationProvider
+        {
+            get
+            {
+                string remoteAuthenticationMode = GetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationModeProperty, "");
+                return RemoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
+            }
+            set
+            {
+                if (TrySetOtherProperty(LaunchProfileExtensions.RemoteAuthenticationModeProperty, value.Name, ""))
+                {
+                    OnPropertyChanged(nameof(RemoteAuthenticationProvider));
+                }
+            }
+        }
+
+        public bool HasAuthenticationProviders => RemoteAuthenticationProviders.Any();
+
         public bool HasLaunchOption
         {
             get
@@ -321,6 +357,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 value is T b)
             {
                 return b;
+            }
+            else if (value is string s &&
+                TypeDescriptor.GetConverter(typeof(T)) is TypeConverter converter &&
+                converter.CanConvertFrom(typeof(string)))
+            {
+                try
+                {
+                    if (converter.ConvertFromString(s) is T o)
+                    {
+                        return o;
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignore bad data in the json file and just let them have the default value
+                }
             }
 
             return defaultValue;
@@ -534,6 +586,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             }
         }
 
+        public ICommand FindRemoteMachineCommand
+        {
+            get
+            {
+                return LazyInitializer.EnsureInitialized(ref _findRemoteMachineCommand, () =>
+                new DelegateCommand(state =>
+                {
+                    string remoteDebugMachine = RemoteDebugMachine;
+                    IRemoteAuthenticationProvider remoteAuthenticationProvider = RemoteAuthenticationProvider;
+                    if (RemoteDebuggerAuthenticationService.ShowRemoteDiscoveryDialog(ref remoteDebugMachine, ref remoteAuthenticationProvider))
+                    {
+                        RemoteDebugMachine = remoteDebugMachine;
+                        RemoteAuthenticationProvider = remoteAuthenticationProvider;
+                    }
+                }));
+            }
+        }
+
         public ICommand BrowseExecutableCommand
         {
             get
@@ -690,6 +760,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 OnPropertyChanged(nameof(WorkingDirectory));
                 OnPropertyChanged(nameof(RemoteDebugEnabled));
                 OnPropertyChanged(nameof(RemoteDebugMachine));
+                OnPropertyChanged(nameof(RemoteAuthenticationProvider));
 
                 UpdateLaunchTypes();
 
@@ -867,7 +938,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                     OnLaunchSettingsChanged,
                     Project);
 
-                // We need to get the set of UI providers, if any.
                 InitializeUIProviders();
             }
         }

@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.Composition;
@@ -24,7 +25,23 @@ namespace Microsoft.VisualStudio.IO
         void WriteAllText(string path, string content);
         void WriteAllText(string path, string content, Encoding encoding);
         void WriteAllBytes(string path, byte[] bytes);
-        DateTime LastFileWriteTimeUtc(string path);
+
+
+        /// <summary>
+        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to, 
+        ///     or <see cref="DateTime.MinValue"/> if the path does not exist or is not accessible.
+        /// </summary>
+        DateTime GetLastFileWriteTimeOrMinValueUtc(string path);
+
+        /// <summary>
+        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to, 
+        ///     indicating if the path exists and is accessible.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if <paramref name="path"/> exists and is accessible; otherwise, <see langword="false"/>.
+        /// </returns>
+        bool TryGetLastFileWriteTimeUtc(string path, [NotNullWhen(true)]out DateTime? result);
+
         long FileLength(string filename);
 
         bool DirectoryExists(string path);

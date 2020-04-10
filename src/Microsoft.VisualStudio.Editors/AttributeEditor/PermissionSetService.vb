@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Strict On
 Option Explicit On
@@ -8,7 +8,6 @@ Imports System.Security.Permissions
 Imports System.Xml
 
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
     '   exposed via the IVbPermissionSetService interface.
     '--------------------------------------------------------------------------
     <CLSCompliant(False)>
-    <ProvideService(GetType(Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service")>
     Friend NotInheritable Class PermissionSetService
         Implements Interop.IVbPermissionSetService
 

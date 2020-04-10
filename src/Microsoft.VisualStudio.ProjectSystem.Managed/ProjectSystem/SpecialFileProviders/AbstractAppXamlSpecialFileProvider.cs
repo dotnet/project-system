@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,11 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return node;
         }
 
-        private IProjectTree? FindAppXamlFile(IProjectTree root)
+        private static IProjectTree? FindAppXamlFile(IProjectTree root)
         {
             foreach (IProjectItemTree item in root.GetSelfAndDescendentsBreadthFirst().OfType<IProjectItemTree>())
             {
-                if (StringComparers.ItemTypes.Equals(item.Item?.ItemType, ApplicationDefinition.SchemaName))
+                if (StringComparers.ItemTypes.Equals(item.Item?.ItemType, "ApplicationDefinition"))
                 {
                     return item;
                 }

@@ -1,4 +1,4 @@
-﻿<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\import\VisualStudio.props" />
   <PropertyGroup>
@@ -196,6 +196,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Resource Include="Resources\Icons\PropertiesFolderClosed_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons\PropertiesFolderOpened_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
     <Resource Include="Resources\Icons\ApplicationPrivate_16x.png" />
     <Resource Include="Resources\Icons\ApplicationWarning_16x.png" />
     <Resource Include="Resources\Icons\CodeInformationPrivate_16x.png" />
@@ -224,6 +232,8 @@
     <Resource Include="Resources\Icons\ProjectImports_16x.png" />
     <Resource Include="Resources\Icons\TargetFile_16x.png" />
     <Resource Include="Resources\Icons\TargetFilePrivate_16x.png" />
+    <Resource Include="Resources\Icons\PropertiesFolderClosed_16x.png" />
+    <Resource Include="Resources\Icons\PropertiesFolderOpened_16x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="**\*.xlf" />

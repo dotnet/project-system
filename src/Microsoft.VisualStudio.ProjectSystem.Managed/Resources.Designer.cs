@@ -169,6 +169,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Authentication.
+        /// </summary>
+        internal static string NoAuth {
+            get {
+                return ResourceManager.GetString("NoAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contains all the assemblies needed when publishing a .NET Core project..
         /// </summary>
         internal static string OutputGroupPublishItemsDescription {
@@ -192,6 +201,17 @@ namespace Microsoft.VisualStudio {
         internal static string PackagesNodeName {
             get {
                 return ResourceManager.GetString("PackagesNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The project file &apos;{0}&apos; cannot be opened. 
+        ///
+        ///This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type..
+        /// </summary>
+        internal static string ProjectLoadedWithWrongProjectType {
+            get {
+                return ResourceManager.GetString("ProjectLoadedWithWrongProjectType", resourceCulture);
             }
         }
         
@@ -221,6 +241,15 @@ namespace Microsoft.VisualStudio {
         internal static string SpecialFileProvider_FileOrFolderAlreadyExists {
             get {
                 return ResourceManager.GetString("SpecialFileProvider_FileOrFolderAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Authentication.
+        /// </summary>
+        internal static string WindowsAuth {
+            get {
+                return ResourceManager.GetString("WindowsAuth", resourceCulture);
             }
         }
     }

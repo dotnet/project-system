@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly ProjectProperties _properties;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
+        private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         [ImportingConstructor]
         public ConsoleDebugTargetsProvider(
@@ -49,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveDebugFrameworkServices activeDebugFramework,
             ProjectProperties properties,
             IProjectThreadingService threadingService,
-            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger)
+            IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _properties = properties;
             _threadingService = threadingService;
             _debugger = debugger;
+            _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         }
 
         private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
@@ -356,6 +359,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (resolvedProfile.IsRemoteDebugEnabled())
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
+
+                string remoteAuthenticationMode = resolvedProfile.RemoteAuthenticationMode();
+                if (!Strings.IsNullOrEmpty(remoteAuthenticationMode))
+                {
+                    IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
+                    if (remoteAuthenticationProvider != null)
+                    {
+                        settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
+                    }
+                }
             }
 
             return settings;

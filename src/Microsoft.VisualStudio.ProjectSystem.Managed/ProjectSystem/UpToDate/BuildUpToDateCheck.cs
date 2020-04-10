@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 
@@ -22,28 +23,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
     {
-        private const string CopyToOutputDirectory = "CopyToOutputDirectory";
-        private const string PreserveNewest = "PreserveNewest";
-        private const string Always = "Always";
         private const string Link = "Link";
-
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
+        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName);
-
-        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ResolvedCompilationReference.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
-
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Union(ReferenceSchemas)
-            .Union(UpToDateSchemas);
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
@@ -112,6 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
+                _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema>>>(OnChanged, _configuredProject.UnconfiguredProject),
                 linkOptions: DataflowOption.PropagateCompletion);
 
@@ -125,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return Task.CompletedTask;
         }
 
-        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema>> e)
+        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>> e)
         {
             lock (_stateLock)
             {
@@ -143,6 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     sourceItemsUpdate: e.Value.Item2,
                     projectSnapshot: snapshot,
                     projectItemSchema: e.Value.Item4,
+                    projectCatalogSnapshot: e.Value.Item5,
                     configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
             }
         }
@@ -241,6 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
+                if (earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
+                {
+                    return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                }
+
                 foreach ((string input, bool isRequired) in inputs)
                 {
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
@@ -319,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.ResolvedAnalyzerReferencePaths.Count != 0)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                    foreach (string input in state.ResolvedAnalyzerReferencePaths)
+                    foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
                         yield return (Path: input, IsRequired: true);
@@ -650,6 +648,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
                 _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
+            }
+
+            public void SetLastAdditionalDependentFileTimesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
+            {
+                _check._state = _check._state.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
             }
         }
 

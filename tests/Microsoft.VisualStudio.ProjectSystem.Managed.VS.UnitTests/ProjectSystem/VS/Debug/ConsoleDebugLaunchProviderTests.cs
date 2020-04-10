@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -667,7 +667,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
-            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger));
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
+
+            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
         }
     }
 }

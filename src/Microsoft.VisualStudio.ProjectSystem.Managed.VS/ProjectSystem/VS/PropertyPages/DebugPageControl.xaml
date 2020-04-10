@@ -52,6 +52,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
             <!-- Launch profile -->
@@ -336,10 +337,64 @@
                     </MultiBinding>
                 </local:WatermarkTextBox.IsEnabled>
             </local:WatermarkTextBox>
+            <Button
+                Grid.Row="6"
+                Grid.Column="2"
+                x:Uid="btnFindRemoteMachine"
+                x:Name="btnFindRemoteMachine"
+                MinHeight="23"
+                MinWidth="80"
+                Margin="5.8,4,0,5"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{x:Static local:PropertyPageResources.FindBtn}"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                Command="{Binding FindRemoteMachineCommand}">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="RemoteDebugEnabled" Mode="OneWay"/>
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Label
+                Grid.Row="7"
+                Content="{x:Static Member=local:PropertyPageResources.AuthenticationMode}" 
+                Margin="4,4,3,5"
+                VerticalAlignment="Center"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+            />
+            <ComboBox
+                Grid.Row="7"
+                Grid.Column="1"
+                MinWidth="200"
+                MinHeight="23"
+                Margin="5,7,2,6"
+                VerticalAlignment="Center"
+                DisplayMemberPath="Name"
+                VerticalContentAlignment="Center"
+                Visibility="{Binding Path=SupportsRemoteDebug, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                ItemsSource="{Binding Path=RemoteAuthenticationProviders, Mode=OneWay}"
+                SelectedValue="{Binding Path=RemoteAuthenticationProvider}"
+                AutomationProperties.Name="{x:Static Member=local:PropertyPageResources.AuthenticationMode}">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="AutomationProperties.Name" Value="{Binding Path=Name}"/>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="RemoteDebugEnabled" Mode="OneWay"/>
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                        <Binding Path="HasAuthenticationProviders" Mode="OneWay" />
+                    </MultiBinding>
+                </ComboBox.IsEnabled>
+            </ComboBox>
 
             <!-- Environment variables -->
             <Label 
-                Grid.Row="7"
+                Grid.Row="8"
                 x:Uid="envVarsLabel"
                 Margin="4,4,3,0"
                 IsTabStop="False"
@@ -348,7 +403,7 @@
                 Content="{x:Static Member=local:PropertyPageResources.EnvironmentVariables}"/>
             <DataGrid
                 x:Name="dataGridEnvironmentVariables"
-                Grid.Row="7"
+                Grid.Row="8"
                 Grid.Column="1"
                 Background="White"
                 Margin="5,4,2,4"
@@ -428,7 +483,7 @@
                     </local:EnvironmentDataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="7" Grid.Column="2" 
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="6,20,0,0" Grid.Row="8" Grid.Column="2" 
                         Visibility="{Binding Path=SupportsEnvironmentVariables, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                 <Button 
                     x:Uid="AddEnvironmentVariableButton" 
@@ -462,7 +517,7 @@
 
             <!-- Native code debugging -->
             <CheckBox 
-                Grid.Row="8"
+                Grid.Row="9"
                 Grid.Column="0"
                 x:Uid="chkNativeCodeDebugging"
                 x:Name="chkNativeCodeDebugging"
@@ -476,7 +531,7 @@
             
             <!-- SQL debugging -->
             <CheckBox
-                Grid.Row="9"
+                Grid.Row="10"
                 Grid.Column="0"
                 x:Uid="chkSqlCodeDebugging"
                 x:Name="chkSqlCodeDebugging"
@@ -489,7 +544,7 @@
                 Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}"/>
             
             <!-- Where the custom control is placed for the active provider -->
-            <ContentPresenter Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
+            <ContentPresenter Grid.Row="11" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>

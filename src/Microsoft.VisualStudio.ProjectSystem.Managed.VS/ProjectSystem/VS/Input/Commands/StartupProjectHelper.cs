@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -37,19 +37,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         public ImmutableArray<T> GetExportFromDotNetStartupProjects<T>(string capabilityMatch) where T : class
         {
-            DTE? dte = _dte.Value;
-            Assumes.Present(dte);
-
-            if (dte.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
+            if (_dte.Value.Solution.SolutionBuild.StartupProjects is Array startupProjects && startupProjects.Length > 0)
             {
-                IVsSolution? solution = _solution.Value;
-                Assumes.Present(solution);
-
                 var results = PooledArray<T>.GetInstance();
 
                 foreach (string projectName in startupProjects)
                 {
-                    solution.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
+                    _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
 
                     if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
                     {

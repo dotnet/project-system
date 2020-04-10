@@ -12,6 +12,11 @@
         <target state="translated">애플리케이션에 전달할 인수</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationMode">
+        <source>Authentication mode:</source>
+        <target state="new">Authentication mode:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
         <target state="translated">디버그</target>
@@ -40,6 +45,11 @@
       <trans-unit id="ExecutablePathWatermark">
         <source>Path to the executable to run</source>
         <target state="translated">실행할 실행 파일 경로</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">

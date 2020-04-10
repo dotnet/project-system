@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -132,11 +132,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
 
-            if (changes != null)
-            {
-                // Notify subscribers of a change in dependency data
-                RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogSnapshot);
-            }
+            // Notify subscribers of a change in dependency data.
+            // NOTE even if changes is null, it's possible the catalog has changed. If we don't take the newer
+            // catalog we end up retaining a reference to an old catalog, which in turn retains an old project
+            // instance which can be very large.
+            RaiseDependenciesChanged(targetFrameworkToUpdate, changes, currentAggregateContext, catalogSnapshot);
 
             // Record all the rules that have occurred
             _treeTelemetryService.ObserveTargetFrameworkRules(targetFrameworkToUpdate, projectUpdate.ProjectChanges.Keys);

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             return new TestProjectTree
             {
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             return new TestProjectTree
             {

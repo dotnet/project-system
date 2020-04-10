@@ -1,8 +1,7 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
 {
@@ -21,18 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(TargetedDependenciesSnapshot snapshot)
+        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasReachableVisibleUnresolvedDependency)
         {
-            return new TargetDependencyViewModel(snapshot);
+            return new TargetDependencyViewModel(targetFramework, hasReachableVisibleUnresolvedDependency);
         }
 
-        public IDependencyViewModel? CreateRootViewModel(string providerType, bool hasUnresolvedDependency)
+        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasReachableVisibleUnresolvedDependency)
         {
             IProjectDependenciesSubTreeProvider? provider = GetProvider();
 
             IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
-            return dependencyModel?.ToViewModel(hasUnresolvedDependency);
+            return dependencyModel?.ToViewModel(hasReachableVisibleUnresolvedDependency);
 
             IProjectDependenciesSubTreeProvider? GetProvider()
             {
@@ -42,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Models
             }
         }
 
-        public ImageMoniker GetDependenciesRootIcon(bool hasUnresolvedDependencies)
+        public ImageMoniker GetDependenciesRootIcon(bool hasReachableVisibleUnresolvedDependency)
         {
-            return hasUnresolvedDependencies
+            return hasReachableVisibleUnresolvedDependency
                 ? ManagedImageMonikers.ReferenceGroupWarning
                 : ManagedImageMonikers.ReferenceGroup;
         }

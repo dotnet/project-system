@@ -1,9 +1,8 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectLogger _logger;
-        private IVsProjectRestoreInfo2? _latestValue;
+        private byte[]? _latestHash;
         private bool _enabled;
 
         [ImportingConstructor]
@@ -115,12 +114,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> RestoreCoreAsync(ProjectRestoreInfo restoreInfo)
         {
-            // Restore service always does work regardless of whether the value we pass them to actually
-            // contains changes, only nominate if there are any.
-            if (RestoreComparer.RestoreInfos.Equals(_latestValue, restoreInfo))
+            // Restore service always does work regardless of whether the value we pass 
+            // them to actually contains changes, only nominate if there are any.
+            byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
+
+            if (_latestHash != null && Enumerable.SequenceEqual(hash, _latestHash))
                 return true;
 
-            _latestValue = restoreInfo;
+            _latestHash = hash;
 
             JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
             {
@@ -153,33 +154,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private RestoreData CreateRestoreData(ProjectRestoreInfo restoreInfo, bool succeeded)
         {
+            string projectAssetsFilePath = restoreInfo.ProjectAssetsFilePath;
+
             // Restore service gives us a guarantee that the assets file
             // will contain *at least* the changes that we pushed to it.
 
-            if (restoreInfo.ProjectAssetsFilePath.Length == 0)
+            if (projectAssetsFilePath.Length == 0)
                 return new RestoreData(string.Empty, DateTime.MinValue, succeeded: false);
 
+            DateTime lastWriteTime = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(projectAssetsFilePath);
+
             return new RestoreData(
-                restoreInfo.ProjectAssetsFilePath,
-                GetLastWriteTimeUtc(restoreInfo.ProjectAssetsFilePath), succeeded: succeeded);
-        }
-
-        private DateTime GetLastWriteTimeUtc(string path)
-        {
-            Assumes.NotNullOrEmpty(path);
-
-            try
-            {
-                return _fileSystem.LastFileWriteTimeUtc(path);
-            }
-            catch (IOException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
-
-            return DateTime.MinValue;
+                projectAssetsFilePath,
+                lastWriteTime,
+                succeeded: succeeded && lastWriteTime != DateTime.MinValue);
         }
 
         public Task LoadAsync()

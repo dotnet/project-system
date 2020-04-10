@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -25,12 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string LaunchProfiles = nameof(LaunchProfiles);
         public const string OpenProjectFile = nameof(OpenProjectFile);
         public const string HandlesOwnReload = ProjectCapabilities.HandlesOwnReload;
-        public const string ReferenceManagerAssemblies = nameof(ReferenceManagerAssemblies);
-        public const string ReferenceManagerBrowse = nameof(ReferenceManagerBrowse);
-        public const string ReferenceManagerCOM = nameof(ReferenceManagerCOM);
-        public const string ReferenceManagerProjects = nameof(ReferenceManagerProjects);
-        public const string ReferenceManagerSharedProjects = nameof(ReferenceManagerSharedProjects);
-        public const string ReferenceManagerWinRT = nameof(ReferenceManagerWinRT);
         public const string Pack = nameof(Pack); // Keep this in sync with Microsoft.VisualStudio.Editors.ProjectCapability.Pack
         public const string PackageReferences = ProjectCapabilities.PackageReferences;
         public const string PreserveFormatting = nameof(PreserveFormatting);

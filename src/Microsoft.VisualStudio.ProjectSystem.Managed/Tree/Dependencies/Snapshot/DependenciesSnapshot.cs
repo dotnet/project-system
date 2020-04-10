@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -24,10 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// For each target framework in <paramref name="changes"/>, applies the corresponding
-        /// <see cref="IDependenciesChanges"/> to <paramref name="previousSnapshot"/> in order to produce
-        /// and return an updated <see cref="DependenciesSnapshot"/> object.
-        /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
+        /// Updates the <see cref="TargetedDependenciesSnapshot"/> corresponding to <paramref name="changedTargetFramework"/>,
+        /// returning either:
+        /// <list type="bullet">
+        ///   <item>An updated <see cref="DependenciesSnapshot"/> object, or</item>
+        ///   <item>the immutable <paramref name="previousSnapshot"/> if no changes were made.</item>
+        /// </list>
         /// </summary>
         /// <remarks>
         /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
@@ -38,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             string projectPath,
             DependenciesSnapshot previousSnapshot,
             ITargetFramework changedTargetFramework,
-            IDependenciesChanges changes,
+            IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<ITargetFramework> targetFrameworks,
             ITargetFramework? activeTargetFramework,
@@ -49,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot
             Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
-            Requires.NotNull(changes, nameof(changes));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 

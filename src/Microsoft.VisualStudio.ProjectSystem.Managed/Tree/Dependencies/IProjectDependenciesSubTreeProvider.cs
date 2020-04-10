@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string ProviderType { get; }
 
         /// <summary>
-        /// Returns the root node for this provider's dependency nodes.
+        /// Returns the root (group) node for this provider's dependency nodes.
         /// </summary>
         /// <remarks>
         /// Despite the method's name, implementations may return the same instance for repeated

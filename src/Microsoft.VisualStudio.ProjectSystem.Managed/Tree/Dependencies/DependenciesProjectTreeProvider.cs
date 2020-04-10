@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
             // Get the list of shared import nodes.
             IEnumerable<IProjectTree> sharedImportNodes = nodes.Where(node =>
-                    node.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
+                    node.Flags.Contains(DependencyTreeFlags.SharedProjectDependency));
 
             // Get the list of normal reference Item Nodes (this excludes any shared import nodes).
             IEnumerable<IProjectTree> referenceItemNodes = nodes.Except(sharedImportNodes);
@@ -367,7 +367,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     Caption = Resources.DependenciesNodeName,
                     Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
                     ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    Flags = DependencyTreeFlags.DependenciesRootNodeFlags
+                    Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
+                          + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
+                          + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
+                          + DependencyTreeFlags.DependenciesRootNode
                 };
 
                 // Allow property providers to perform customization.
@@ -479,7 +482,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             // Note that all the parameters are specified so we can force this call to an
             // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
@@ -504,7 +507,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             return NewTree(
                 caption: caption,

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -84,6 +84,23 @@ namespace Microsoft.VisualStudio
                     yield return element;
                 }
             }
+        }
+
+        /// <summary>
+        /// Specialisation of <see cref="System.Linq.Enumerable.Any{TSource}(IEnumerable{TSource})"/>
+        /// that avoids allocation when the sequence is statically known to be an array.
+        /// </summary>
+        public static bool Any<T>(this T[] array, Func<T, bool> predicate)
+        {
+            foreach (T item in array)
+            {
+                if (predicate(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

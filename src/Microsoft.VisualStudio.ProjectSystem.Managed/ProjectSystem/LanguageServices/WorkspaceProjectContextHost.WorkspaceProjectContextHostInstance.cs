@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Immutable;
@@ -69,9 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
 
-                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-
-                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
+                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
 
                 _disposables = new DisposableBag
                 {
@@ -154,7 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 context.StartBatch();
 
-                bool isBatchEnded = false;
                 try
                 {
                     bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
@@ -167,20 +165,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                     }
-
-                    context.EndBatch();
-                    await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, isActiveContext, cancellationToken);
-                    isBatchEnded = true;
                 }
                 finally
                 {
-                    if (!isBatchEnded)
-                    {
-                        context.EndBatch();
-                    }
+                    context.EndBatch();
+
+                    NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
 
-                NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
+                await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, cancellationToken);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)

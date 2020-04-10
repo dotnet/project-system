@@ -1,4 +1,4 @@
-﻿' Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
@@ -35,7 +35,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeNamespace() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 
@@ -81,7 +83,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeServiceReferenceURL() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 

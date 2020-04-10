@@ -83,3 +83,6 @@ T:Microsoft.VisualStudio.Shell.ThreadHelper;Import JoinableTaskContext if inside
 
 T:Microsoft.VisualStudio.ProjectSystem.Properties.StandardRuleDataflowLinkOptions;Use DataflowOption.WithRuleNames to avoid boilerplate initialization
 T:System.Threading.Tasks.Dataflow.DataflowLinkOptions;Use DataflowOption.PropagateCompletion to avoid boilerplate initialization
+
+M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposed.Initialize();Did you mean EnsureInitialized?
+M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposedAsync.InitializeCoreAsync(System.Threading.CancellationToken);Did you mean InitializeAsync(CancellationToken)?

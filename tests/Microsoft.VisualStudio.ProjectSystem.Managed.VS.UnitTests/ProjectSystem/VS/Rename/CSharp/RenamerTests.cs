@@ -1,9 +1,10 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
 using Moq;
 using Xunit;
@@ -26,8 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -49,8 +51,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         {
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
+
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task Rename_Symbol_Should_ExitEarlyInVSOnlineAsync()
+        {
+            string sourceCode = "class Foo { }";
+            string oldFilePath = "Foo.cs";
+            string newFilePath = "Bar.cs";
+
+            var userNotificationServices = IUserNotificationServicesFactory.Create();
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineService = IVsOnlineServicesFactory.Create(online: true);
+
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);

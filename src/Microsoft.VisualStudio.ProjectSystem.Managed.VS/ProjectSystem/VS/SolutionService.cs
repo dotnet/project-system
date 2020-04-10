@@ -1,5 +1,6 @@
-﻿// Copyright(c) Microsoft.All Rights Reserved.Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <inheritdoc cref="ISolutionService"/>
     [Export(typeof(ISolutionService))]
     [Export(typeof(IPackageService))]
-    internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService
+    internal sealed class SolutionService : ISolutionService, IVsSolutionEvents, IVsPrioritizedSolutionEvents, IPackageService, IDisposable
     {
         private readonly JoinableTaskContext _context;
         private IVsSolution? _solution;

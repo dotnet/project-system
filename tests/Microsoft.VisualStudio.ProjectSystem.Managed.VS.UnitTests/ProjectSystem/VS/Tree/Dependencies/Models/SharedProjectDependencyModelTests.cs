@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
@@ -36,11 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(KnownMonikers.SharedProject, model.ExpandedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
-            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectFlags));
+            Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectDependency));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.SharedProjectFlags +
+                DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,

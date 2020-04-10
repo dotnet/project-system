@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe((text) => { wasCalled = true; });
             var logger = CreateDisabledLogger(pane);
 
-            logger.WriteLine("Text", new object[] { });
+            logger.WriteLine("Text", 1, 2, 3, 4);
 
             Assert.False(wasCalled);
         }
@@ -158,10 +158,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         }
 
         [Theory] // Format               Arguments                                          Expected
-        [InlineData("",                  new object?[] { null },                             "")]
-        [InlineData("{0}",               new object?[] { null },                             "")]
-        [InlineData("{0}{1}",            new object?[] { null, null },                       "")]
-        [InlineData("{0}{1}{2}",         new object?[] { null, null, null },                 "")]
         [InlineData("{0}{1}{2}{3}",      new object?[] { null, null, null, null },           "")]
         [InlineData("{0} {1} {2} {3}!",  new object?[] { "Why", "Hello", "Again", "World"},  "Why Hello Again World!")]
         public void WriteLine5_WhenEnabled_LogsToOutputPane(string format, object?[] arguments, string expected)
@@ -174,6 +170,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
             logger.WriteLine(format, arguments);
 
             Assert.Equal(expected + Environment.NewLine, result);
+        }
+
+        [Theory] // Arguments
+        [InlineData(new object[] { new object?[] { null }             })]
+        [InlineData(new object[] { new object?[] { null, null }       })]
+        [InlineData(new object[] { new object?[] { null, null, null } })]
+        public void WriteLine_ThrowsWhenArrayPassedWithFewerThanFourElements(object?[] arguments)
+        {
+            var pane = IVsOutputWindowPaneFactory.ImplementOutputStringThreadSafe(_ => throw Assumes.NotReachable());
+            var logger = CreateEnabledLogger(pane);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => logger.WriteLine("", arguments));
         }
 
         [Fact]

@@ -12,6 +12,11 @@
         <target state="translated">Argumenty předávané aplikaci</target>
         <note />
       </trans-unit>
+      <trans-unit id="AuthenticationMode">
+        <source>Authentication mode:</source>
+        <target state="new">Authentication mode:</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
         <target state="translated">Ladit</target>
@@ -40,6 +45,11 @@
       <trans-unit id="ExecutablePathWatermark">
         <source>Path to the executable to run</source>
         <target state="translated">Cesta ke spouštěnému souboru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FindBtn">
+        <source>Find...</source>
+        <target state="new">Find...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">

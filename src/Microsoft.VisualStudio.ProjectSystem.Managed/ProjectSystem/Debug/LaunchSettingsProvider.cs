@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -354,7 +354,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc;
+            if (_fileSystem.TryGetLastFileWriteTimeUtc(fileName, out DateTime? writeTime))
+            {
+                return writeTime != LastSettingsFileSyncTimeUtc;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -378,19 +383,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             _broadcastBlock?.Post(newSnapshot);
-        }
-
-        /// <summary>
-        /// Gets the active profile based on the property changes
-        /// </summary>
-        protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
-        {
-            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) &&
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
-            {
-                return activeProfile;
-            }
-            return null;
         }
 
         /// <summary>
@@ -453,7 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+            LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             return launchSettingsData;
         }
 
@@ -508,7 +500,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+                LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             }
             finally
             {
@@ -593,7 +585,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc)
+                if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {

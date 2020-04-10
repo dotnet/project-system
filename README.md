@@ -1,4 +1,4 @@
-# C#, F# and Visual Basic project system
+# The .NET Project System for Visual Studio
 
 |Release|Unit Tests (Debug)|Unit Tests (Release)| Localization | Coverage (Debug)
 |---|:--:|:--:|:--:|:--:|
@@ -9,35 +9,34 @@
 
 [![Join the chat at https://gitter.im/dotnet/project-system](https://badges.gitter.im/dotnet/project-system.svg)](https://gitter.im/dotnet/project-system?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This repository contains the new C#, F# and Visual Basic project system that has been rewritten on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem). In [Visual Studio 2017](https://www.visualstudio.com/vs/), this project system is used by default for Shared Projects (C# and Visual Basic), and .NET Core (C#, F# and Visual Basic) project types, however, [long term](docs/repo/roadmap.md) it will be the basis of all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](https://github.com/dotnet/project-system/blob/master/docs/feature-comparison.md).
+This repository contains the new .NET Project System that has been rewritten on top of the [Common Project System (CPS)](https://github.com/microsoft/vsprojectsystem). In Visual Studio 2017 and [Visual Studio 2019](https://www.visualstudio.com/vs/), this project system is used by default for Shared Projects (C# and Visual Basic), and .NET Core (C#, F# and Visual Basic) project types, however, [long term](docs/repo/roadmap.md) it will be the basis of all C#, F# and Visual Basic project types. For a list of feature differences between the project systems, see [Feature Comparison](https://github.com/dotnet/project-system/blob/master/docs/feature-comparison.md).
 
-The existing C# and Visual Basic project systems (csproj.dll and msvbprj.dll), which first shipped back in Visual Studio.net nearly 15 years ago, have served us well but are:
+The legacy C# and Visual Basic project systems (csproj.dll and msvbprj.dll) first shipped with Visual Studio .NET in 2002. They have served us well but are:
 
 - Native and COM-based
 - Single threaded and bound to the UI thread
 - Hard to extend outside of aggregation via the use of `<ProjectTypeGuids>` and [sub types (flavors)](https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/project-types)
-- Tied to Visual Studio
+- Separate implementations for C# and Visual Basic projects
 
-The new C#, F# and Visual Basic project system is:
+The new .NET Project System is:
 
 - Managed and managed-interface based
 - Multi-threaded, scalable, and responsive
-- Easy to extend via the use of the  Managed Extensibility Framework (MEF) and composable. Many parties, including 3rd parties, can contribute to a single project system
-- Hostable outside of Visual Studio
+- Easy to extend and compose via the Managed Extensibility Framework (MEF). Many parties, including 3rd parties, can contribute to a single project system.
+- A single implementation for C#, F# and Visual Basic projects
 
 ## What is a project system?
-A project system sits between a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Almost all interaction that occurs with files contained in a project file, happens through the project system.
+A project system sits between a project file on disk (for example, .csproj and .vbproj) and various Visual Studio features including, but not limited to, Solution Explorer, designers, the debugger, language services, build and deployment. Almost all interaction that occurs with files contained in a project file happens through the project system.
 
-There are many technologies that come together to make up the .NET project system:
+There are many technologies that come together to make up the .NET Project System:
 
 - [MSBuild](https://github.com/microsoft/msbuild) provides the build engine and file format.
-- [SDK](https://github.com/dotnet/sdk) provides the MSBuild tasks and targets needed to build .NET projects.
+- [SDK](https://github.com/dotnet/sdk) provides the command-line interface for building, running and interacting with .NET projects, along with the necessary MSBuild tasks and targets.
 - [Common Project System](https://github.com/microsoft/vsprojectsystem) provides the base building blocks for the project system including (but not limited to) project tree, build and debugger coordination and Visual Studio integration.
 - [Roslyn](https://github.com/dotnet/roslyn) provides C# and Visual Basic language support including compilers, IntelliSense, refactorings, analyzers and code fixes.
 - [Visual F# tools](https://github.com/Microsoft/visualfsharp) provides F# language support.
-- [CLI](https://github.com/dotnet/cli) is the .NET command-line interface for building, running and interacting with .NET projects.
 
-![image](https://cloud.githubusercontent.com/assets/1103906/24277819/d1e48eba-1093-11e7-811f-ae5debcc1e6c.png)
+![image](docs/repo/images/solution-explorer.png)
 
 ## How do I engage and contribute?
 We welcome you to try things out, [file issues](https://github.com/dotnet/project-system/issues), make feature requests and join us in design conversations. If you are looking for something to work on, take a look at our [help wanted issues](https://github.com/dotnet/project-system/issues?q=is%3Aopen+is%3Aissue+label%3A%22Help+Wanted%22) for a great place to start. Also be sure to check out our [contributing guide](CONTRIBUTING.md).

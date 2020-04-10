@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                     {
                         IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasReachableVisibleUnresolvedDependency);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -161,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 return null;
             }
 
-            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNodeFlags)
+            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNode)
                 ? root
-                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNodeFlags);
+                : root.GetSubTreeNode(DependencyTreeFlags.DependenciesRootNode);
 
             return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
                 .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateRootViewModel(
+                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
                     targetedSnapshot.CheckForUnresolvedDependencies(providerType));
 
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
                 // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
                 // map this node to graph node and GraphProvider would be never called.
                 // Only IProjectItemTree can have this flag
-                filteredFlags = filteredFlags.Except(DependencyTreeFlags.BaseReferenceFlags);
+                filteredFlags = filteredFlags.Except(ProjectTreeFlags.Reference);
 
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,

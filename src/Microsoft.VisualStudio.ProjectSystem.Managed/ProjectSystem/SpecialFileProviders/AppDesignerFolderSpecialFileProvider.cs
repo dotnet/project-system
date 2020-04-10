@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
 using System.IO;
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return (string?)await general.FolderName.GetValueAsync();
         }
 
-        private IProjectTree? FindAppDesignerFolder(IProjectTree root)
+        private static IProjectTree? FindAppDesignerFolder(IProjectTree root)
         {
             return root.GetSelfAndDescendentsBreadthFirst()
                        .FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));

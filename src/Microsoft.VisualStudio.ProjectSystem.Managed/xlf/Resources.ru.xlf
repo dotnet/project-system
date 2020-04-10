@@ -57,6 +57,11 @@
         <target state="translated">Сборки платформы</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Содержит все сборки, необходимые при публикации проекта .NET Core.</target>
@@ -65,6 +70,15 @@
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
         <target state="translated">Элементы для публикации</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectLoadedWithWrongProjectType">
+        <source>The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
+        <target state="new">The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -94,6 +108,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">Файл или папка с именем "{0}" уже существуют в этом расположении на диске. Выберите другое имя.
 
 Если этот файл или папка не отображаются в обозревателе решений, то они сейчас не являются элементом проекта. Чтобы просмотреть файлы, которые есть на диске, но не включены в проект, выберите пункт "Показать все файлы" в меню "Проект".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

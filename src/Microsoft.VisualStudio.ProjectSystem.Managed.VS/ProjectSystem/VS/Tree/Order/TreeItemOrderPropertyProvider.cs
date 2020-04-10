@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Collections.Generic;
@@ -106,7 +106,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 return _orderedMap.TryGetValue(propertyContext.ItemName, out displayOrder);
             }
 
-            return propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
+            return propertyContext.Metadata != null &&
+                propertyContext.Metadata.TryGetValue(FullPathProperty, out string fullPath) &&
                 _orderedMap.TryGetValue(fullPath, out displayOrder);
         }
 

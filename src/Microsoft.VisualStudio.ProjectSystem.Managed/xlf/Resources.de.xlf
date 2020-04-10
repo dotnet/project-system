@@ -57,6 +57,11 @@
         <target state="translated">Frameworkassemblys</target>
         <note />
       </trans-unit>
+      <trans-unit id="NoAuth">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
         <target state="translated">Enthält alle Assemblys, die beim Veröffentlichen eines .NET Core-Projekts erforderlich sind.</target>
@@ -65,6 +70,15 @@
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
         <target state="translated">Veröffentlichungselemente</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectLoadedWithWrongProjectType">
+        <source>The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
+        <target state="new">The project file '{0}' cannot be opened. 
+
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -94,6 +108,11 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
         <target state="translated">Eine Datei oder ein Ordner namens "{0}" ist auf dem Datenträger an diesem Speicherort bereits vorhanden. Wählen Sie einen anderen Namen aus.
 
 Wenn diese Datei oder dieser Ordner nicht im Projektmappen-Explorer angezeigt wird, gehört sie/er momentan nicht zum Projekt. Wählen Sie im Menü "Projekt" die Option "Alle Dateien anzeigen" aus, um Dateien anzuzeigen, die sich zwar auf der Festplatte, aber nicht im Projekt befinden.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuth">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

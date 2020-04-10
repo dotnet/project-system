@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -14,11 +14,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         private static readonly Guid s_projectOutputWindowPaneGuid = new Guid("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
 
         private readonly IProjectThreadingService _threadingService;
-        private readonly IVsUIService<IVsOutputWindow> _outputWindow;
+        private readonly IVsUIService<IVsOutputWindow?> _outputWindow;
         private readonly AsyncLazy<IVsOutputWindowPane?> _outputWindowPane;
 
         [ImportingConstructor]
-        public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsUIService<SVsOutputWindow, IVsOutputWindow> outputWindow)
+        public ProjectOutputWindowPaneProvider(IProjectThreadingService threadingService, IVsUIService<SVsOutputWindow, IVsOutputWindow?> outputWindow)
         {
             _threadingService = threadingService;
             _outputWindow = outputWindow;
