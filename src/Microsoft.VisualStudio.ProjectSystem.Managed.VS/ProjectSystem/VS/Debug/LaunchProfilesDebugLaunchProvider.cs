@@ -54,34 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Helper returns the correct debugger engine based on the targeted framework
-        /// </summary>
-        public static Guid GetManagedDebugEngineForFramework(string targetFramework)
-        {
-            // The engine depends on the framework
-            if (IsDotNetCoreFramework(targetFramework))
-            {
-                return DebuggerEngines.ManagedCoreEngine;
-            }
-            else
-            {
-                return DebuggerEngines.ManagedOnlyEngine;
-            }
-        }
-
-        /// <summary>
-        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
-        /// This information should come from the targets file.
-        /// </summary>
-        public static bool IsDotNetCoreFramework(string targetFramework)
-        {
-            const string NetStandardPrefix = ".NetStandard";
-            const string NetCorePrefix = ".NetCore";
-            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
-        }
-
-        /// <summary>
         /// This is called to query the list of debug targets  
         /// </summary>
         public override Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)

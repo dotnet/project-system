@@ -17,7 +17,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    public class ConsoleDebugLaunchProviderTests
+    public class ProjectLaunchTargetsProviderTests
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";
         private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ConsoleDebugTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string? finalArguments);
             Assert.Equal(finalExePath, exeIn);
             Assert.Equal(finalArguments, argsIn);
 
-            ConsoleDebugTargetsProvider.GetExeAndArguments(true, exeIn, argsIn, out finalExePath, out finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsIn, out finalExePath, out finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar & pause\"", finalArguments);
         }
@@ -46,11 +46,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ConsoleDebugTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
 
-            ConsoleDebugTargetsProvider.GetExeAndArguments(false, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsInWithEscapes, out finalExePath, out finalArguments);
             Assert.Equal(exeIn, finalExePath);
             Assert.Equal(argsInWithEscapes, finalArguments);
         }
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ConsoleDebugTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
-            ConsoleDebugTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -606,10 +606,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData("exec ^<>\"C:\\temp&^\\test.dll\"&", "exec ^^^<^>\"C:\\temp&^\\test.dll\"^&")]
         public void ConsoleDebugTargetsProvider_EscapeString_WorksCorrectly(string input, string expected)
         {
-            Assert.Equal(expected, ConsoleDebugTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
+            Assert.Equal(expected, ProjectLaunchTargetsProvider.EscapeString(input, new[] { '^', '<', '>', '&' }));
         }
 
-        private ConsoleDebugTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
+        [Fact]
+        public void GetDebugEngineForFrameworkTests()
+        {
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetStandard"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetCore"));
+            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NetCoreApp"));
+            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NETFramework"));
+        }
+
+        private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
             _mockFS.CreateDirectory(@"c:\test\Project");
@@ -649,7 +659,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return CreateInstance(configuredProject: configuredProject, fileSystem: _mockFS, properties: projectProperties, environment: environment, debugger: debugger);
         }
 
-        private static ConsoleDebugTargetsProvider CreateInstance(
+        private static ProjectLaunchTargetsProvider CreateInstance(
             ConfiguredProject? configuredProject = null,
             IDebugTokenReplacer? tokenReplacer = null,
             IFileSystem? fileSystem = null,
@@ -669,7 +679,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
-            return new ConsoleDebugTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
+            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
         }
     }
 }
