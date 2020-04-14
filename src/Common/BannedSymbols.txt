@@ -56,9 +56,14 @@ M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.Te
 
 M:Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService.Fork(System.Func{System.Threading.Tasks.Task},Microsoft.VisualStudio.Threading.JoinableTaskFactory,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject,Microsoft.VisualStudio.ProjectSystem.ConfiguredProject,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.ForkOptions); Use IProjectThreadingService.RunAndForget to ensure non-fatal watsons are assigned to the correct component
 
-T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToAction/LinkToAsyncAction or DataflowBlockSlim.CreateActionBlock to reduce memory and avoid the overhead of the built-in blocks
+T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToAction/LinkToAsyncAction or DataflowBlockFactory.CreateActionBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.BroadcastBlock`1;Use DataflowBlockSlim.CreateBroadcastBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.TransformManyBlock`2;Use DataflowBlockSlim.CreateTransformManyBlock to reduce memory and avoid the overhead of the built-in blocks
+
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Action{``0},System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Func{``0,System.Threading.Tasks.Task},System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Action{``0},System.String,System.Threading.CancellationToken,System.Boolean);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Func{``0,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken,System.Boolean);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
 
 F:Microsoft.VisualStudio.VSConstants.S_OK;Use HResult.OK or HResult.IsOK
 F:Microsoft.VisualStudio.VSConstants.E_FAIL;Use HResult.Fail or HResult.Failed

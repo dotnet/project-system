@@ -24,6 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="target">
         ///     The <see cref="Action{T}"/> to receive the broadcasts.
         /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -37,17 +43,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
         public static IDisposable LinkToAction(
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+            UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             params string[] ruleNames)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -65,6 +78,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="target">
         ///     The <see cref="Action{T}"/> to receive the broadcasts.
         /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -78,17 +97,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
         public static IDisposable LinkToAction(
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Action<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
+            UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -106,6 +132,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="target">
         ///     The <see cref="Action{T}"/> to receive the broadcasts.
         /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -119,17 +148,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
         public static IDisposable LinkToAsyncAction(
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target,
+            UnconfiguredProject project,
             bool suppressVersionOnlyUpdates = true,
             params string[] ruleNames)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -147,6 +182,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="target">
         ///     The <see cref="Action{T}"/> to receive the broadcasts.
         /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
+        /// <param name="severity">
+        ///     The severity of any failure that occurs.
+        /// </param>
         /// <param name="suppressVersionOnlyUpdates">
         ///    A value indicating whether to prevent messages from propagating to the target
         ///     block if no project changes are include other than an incremented version number.
@@ -160,17 +201,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
         public static IDisposable LinkToAsyncAction(
             this ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> source,
             Func<IProjectVersionedValue<IProjectSubscriptionUpdate>, Task> target,
+            UnconfiguredProject project,
+            ProjectFaultSeverity severity = ProjectFaultSeverity.Recoverable,
             bool suppressVersionOnlyUpdates = true,
             IEnumerable<string>? ruleNames = null)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target),
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, severity),
                                  DataflowOption.PropagateCompletion,
                                  initialDataAsNew: true,
                                  suppressVersionOnlyUpdates: suppressVersionOnlyUpdates,
@@ -181,6 +229,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
         ///     that can process messages, propagating completion and faults.
         /// </summary>
+        /// <param name="source">
+        ///     The broadcasting block that produces the messages.
+        /// </param>
+        /// <param name="target">
+        ///     The <see cref="Action{T}"/> to receive the broadcasts.
+        /// </param>
+        /// <param name="project">
+        ///     The project related to the failure, if applicable.
+        /// </param>
         /// <returns>
         ///     An <see cref="IDisposable"/> that, upon calling Dispose, will unlink the source from the target.
         /// </returns>
@@ -190,13 +247,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAction<T>(this ISourceBlock<T> source, Action<T> target)
+        public static IDisposable LinkToAction<T>(
+            this ISourceBlock<T> source,
+            Action<T> target,
+            UnconfiguredProject project)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target), DataflowOption.PropagateCompletion);
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
+                                 DataflowOption.PropagateCompletion);
         }
 
         /// <summary>
@@ -212,13 +278,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///         -or-
         ///     </para>
         ///     <paramref name="target"/> is <see langword="null"/>.
+        ///     <para>
+        ///         -or-
+        ///     </para>
+        ///     <paramref name="project"/> is <see langword="null"/>.
         /// </exception>
-        public static IDisposable LinkToAsyncAction<T>(this ISourceBlock<T> source, Func<T, Task> target)
+        public static IDisposable LinkToAsyncAction<T>(
+            this ISourceBlock<T> source,
+            Func<T, Task> target,            
+            UnconfiguredProject project)
         {
             Requires.NotNull(source, nameof(source));
             Requires.NotNull(target, nameof(target));
+            Requires.NotNull(project, nameof(project));
 
-            return source.LinkTo(DataflowBlockSlim.CreateActionBlock(target), DataflowOption.PropagateCompletion);
+            return source.LinkTo(DataflowBlockFactory.CreateActionBlock(target, project, ProjectFaultSeverity.Recoverable),
+                                 DataflowOption.PropagateCompletion);
         }
 
         /// <summary>
