@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             base.Initialize();
 
             // Create an action block to process the design time inputs and configuration general changes
-            ITargetBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>> inputsAction = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges);
+            ITargetBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>> inputsAction = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges, _project);
 
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                    cancellationToken: _project.Services.ProjectAsynchronousTasks.UnloadCancellationToken);
 
             // Create an action block to process file change notifications
-            ITargetBlock<IProjectVersionedValue<string[]>> fileWatcherAction = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<string[]>>(ProcessFileChangeNotification);
+            ITargetBlock<IProjectVersionedValue<string[]>> fileWatcherAction = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<string[]>>(ProcessFileChangeNotification, _project);
             IDisposable watcherLink = _fileWatcher.SourceBlock.LinkTo(fileWatcherAction, DataflowOption.PropagateCompletion);
 
             _disposables.Add(projectLink);

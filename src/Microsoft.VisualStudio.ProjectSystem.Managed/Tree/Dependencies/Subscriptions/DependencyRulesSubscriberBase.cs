@@ -80,12 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscription
                     });
 
             ITargetBlock<IProjectVersionedValue<T>> actionBlock =
-                DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<T>>(
+                DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<T>>(
                     e => OnProjectChangedAsync(configuredProject, e.Value),
-                    new ExecutionDataflowBlockOptions
-                    {
-                        NameFormat = nameFormat
-                    });
+                    configuredProject.UnconfiguredProject,
+                    nameFormat: nameFormat);
 
             _subscriptions ??= new DisposableBag();
 
