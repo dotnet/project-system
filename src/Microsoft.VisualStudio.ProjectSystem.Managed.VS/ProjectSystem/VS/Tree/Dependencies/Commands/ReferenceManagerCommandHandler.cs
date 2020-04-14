@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     [ExportCommandGroup(VSConstants.CMDSETID.StandardCommandSet16_string)]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     [Order(ProjectSystem.Order.Default)]
-    internal sealed partial class ReferenceManagerCommandHandler : ICommandGroupHandler
+    internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
     {
         public const int CmdidAddAssemblyReference       = 0x200;
         public const int CmdidAddComReference            = 0x201;
