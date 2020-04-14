@@ -56,11 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         {
             string? identifier = GetReferenceProviderIdentifier(commandId);
 
-            // Other known provider GUIDs:
-            //
-            // - VSConstants.FileReferenceProvider_Guid
-            // - VSConstants.ConnectedServiceInstanceReferenceProvider_Guid
-
             if (identifier != null)
             {
                 _referencesUI.ShowReferenceManagerDialog(new Guid(identifier));
@@ -94,6 +89,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 CmdidAddSdkReference => VSConstants.PlatformReferenceProvider_string,
                 _ => null,
             };
+
+            // Other known provider GUIDs:
+            //
+            // - VSConstants.FileReferenceProvider_string
+            // - VSConstants.ConnectedServiceInstanceReferenceProvider_string
         }
     }
 }
