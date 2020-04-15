@@ -700,7 +700,7 @@
     <value>10</value>
   </data>
   <data name="LicenseUrlWarning.Text" xml:space="preserve">
-    <value>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</value>
+    <value>PackageLicenseURL detected but is deprecated. Please change to either an Expression or File.</value>
   </data>
   <data name="LicenseUrlWarning.Visible" type="System.Boolean, mscorlib">
     <value>False</value>

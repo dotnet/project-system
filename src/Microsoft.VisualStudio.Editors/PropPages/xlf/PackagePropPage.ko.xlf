@@ -268,8 +268,8 @@
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
-        <source>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</source>
-        <target state="translated">PackageLicenseURL 속성이 검색되었지만 사용되지 않습니다. 식 또는 파일로 변경하세요.</target>
+        <source>PackageLicenseURL detected but is deprecated. Please change to either an Expression or File.</source>
+        <target state="needs-review-translation">PackageLicenseURL 속성이 검색되었지만 사용되지 않습니다. 식 또는 파일로 변경하세요.</target>
         <note />
       </trans-unit>
     </body>
