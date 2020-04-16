@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.Composition
                 }
             }
 
-            return default;
+            return null;
         }
 
         public static TImport? FirstOrDefaultValue<TImport, TArg>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TArg, bool> predicate, TArg arg) where TImport : class
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.Composition
                 }
             }
 
-            return default;
+            return null;
         }
 
         public static ImmutableArray<T> ToImmutableValueArray<T>(this OrderPrecedenceImportCollection<T> imports)
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.Composition
             return builder.MoveToImmutable();
         }
 
-        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector, IEqualityComparer<TKey>? comparer = default)
+        public static Dictionary<TKey, TImport> ToValueDictionary<TKey, TImport>(this OrderPrecedenceImportCollection<TImport> imports, Func<TImport, TKey> keySelector, IEqualityComparer<TKey>? comparer = null)
         {
             var dictionary = new Dictionary<TKey, TImport>(comparer);
 

@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.Telemetry
         private static async Task<(bool success, TelemetryParameters? result)> CreateComponentAndGetResult(Guid guid, string? version = null)
         {
             bool success = false;
-            TelemetryParameters? result = default;
+            TelemetryParameters? result = null;
             void onTelemetryLogged(TelemetryParameters callParameters)
             {
                 success = true;

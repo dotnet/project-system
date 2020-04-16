@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return node;
         }
 
-        private IProjectTree? FindAppXamlFile(IProjectTree root)
+        private static IProjectTree? FindAppXamlFile(IProjectTree root)
         {
             foreach (IProjectItemTree item in root.GetSelfAndDescendentsBreadthFirst().OfType<IProjectItemTree>())
             {

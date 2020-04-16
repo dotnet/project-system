@@ -35,7 +35,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeNamespace() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 
@@ -81,7 +83,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Property
 
         ' Prevent using Bold Font in the property grid (the same style as other reference)
+#Disable Warning CA1822 ' Mark members as static
         Private Function ShouldSerializeServiceReferenceURL() As Boolean
+#Enable Warning CA1822
             Return False
         End Function
 

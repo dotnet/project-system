@@ -431,6 +431,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             _subscriptions.Add(
                 subscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                     action,
+                    _commonServices.Project,
                     ruleNames: ConfigurationGeneral.SchemaName));
         }
     }

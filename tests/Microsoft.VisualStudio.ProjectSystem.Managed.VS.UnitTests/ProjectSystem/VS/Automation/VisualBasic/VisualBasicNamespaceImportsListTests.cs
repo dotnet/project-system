@@ -2,21 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     public class VisualBasicNamespaceImportsListTests
     {
-        [Fact]
-        public void Constructor_NotNull()
-        {
-            var list = new VisualBasicNamespaceImportsList(Mock.Of<IActiveConfiguredProjectSubscriptionService>());
-
-            Assert.NotNull(list);
-        }
-
         [Fact]
         public void UnderlyingListBasedPropertiesTest()
         {

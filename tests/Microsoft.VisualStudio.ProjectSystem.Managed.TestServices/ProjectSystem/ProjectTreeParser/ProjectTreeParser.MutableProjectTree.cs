@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return subtree != null;
             }
 
-            public IProjectTree SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null, ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = default, ProjectTreeFlags? flags = default, IProjectPropertiesContext? context = null, IPropertySheet? propertySheet = null, bool? isLinked = default, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
+            public IProjectTree SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null, ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext? context = null, IPropertySheet? propertySheet = null, bool? isLinked = null, bool resetFilePath = false, bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
             {
                 if (caption != null)
                     Caption = caption;

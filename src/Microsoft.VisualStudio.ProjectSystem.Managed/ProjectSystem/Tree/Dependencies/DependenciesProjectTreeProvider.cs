@@ -48,6 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         private readonly CancellationSeries _treeUpdateCancellationSeries = new CancellationSeries();
         private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
+        private readonly UnconfiguredProject _project;
         private readonly IProjectAccessor _projectAccessor;
         private readonly IDependencyTreeTelemetryService _treeTelemetryService;
 
@@ -65,6 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         [ImportingConstructor]
         public DependenciesProjectTreeProvider(
             IProjectThreadingService threadingService,
+            UnconfiguredProject project,
             IProjectAccessor projectAccessor,
             UnconfiguredProject unconfiguredProject,
             DependenciesSnapshotProvider dependenciesSnapshotProvider,
@@ -82,6 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             _dependenciesSnapshotProvider = dependenciesSnapshotProvider;
             _tasksService = tasksService;
+            _project = project;
             _projectAccessor = projectAccessor;
             _treeTelemetryService = treeTelemetryService;
 
@@ -347,9 +350,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                                 },
                                 initialTreeCancellationToken);
 
-                            ITargetBlock<SnapshotChangedEventArgs> actionBlock = DataflowBlockSlim.CreateActionBlock<SnapshotChangedEventArgs>(
+                            ITargetBlock<SnapshotChangedEventArgs> actionBlock = DataflowBlockFactory.CreateActionBlock<SnapshotChangedEventArgs>(
                                 OnDependenciesSnapshotChangedAsync,
-                                "DependenciesProjectTreeProviderSource {1}",
+                                _project,
+                                nameFormat: "DependenciesProjectTreeProviderSource {1}",
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }
@@ -480,7 +484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             // Note that all the parameters are specified so we can force this call to an
             // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
@@ -505,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectImageMoniker? icon = null,
             ProjectImageMoniker? expandedIcon = null,
             bool visible = true,
-            ProjectTreeFlags? flags = default)
+            ProjectTreeFlags? flags = null)
         {
             return NewTree(
                 caption: caption,

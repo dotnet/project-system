@@ -13,7 +13,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     language: "VisualBasic",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.VisualBasic,
-    DisableAsynchronousProjectTreeLoad = true)]
+    DisableAsynchronousProjectTreeLoad = true,
+    PossibleProjectExtensions = "vbproj",
+    NewProjectRequireNewFolderVsTemplate = true)]
 [assembly: ProvideDiffSupportedContentType(".vbproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".vbproj")] // Use the XML editor
 
@@ -26,7 +28,9 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     language: "FSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.FSharp,
-    DisableAsynchronousProjectTreeLoad = true)]
+    DisableAsynchronousProjectTreeLoad = true,
+    PossibleProjectExtensions = "fsproj",
+    NewProjectRequireNewFolderVsTemplate = true)]
 [assembly: ProvideDiffSupportedContentType(".fsproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".fsproj")] // Use the XML editor
 
@@ -39,6 +43,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     language: "CSharp",
     resourcePackageGuid: ManagedProjectSystemPackage.PackageGuid,
     Capabilities = ProjectTypeCapabilities.CSharp,
-    DisableAsynchronousProjectTreeLoad = true)]
+    DisableAsynchronousProjectTreeLoad = true,
+    PossibleProjectExtensions = "csproj",
+    NewProjectRequireNewFolderVsTemplate = true)]
 [assembly: ProvideDiffSupportedContentType(".csproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".csproj")] // Use the XML editor
