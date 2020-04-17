@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             {
                 ProjectImageKey.AppDesignerFolder => s_iconClosed,
                 ProjectImageKey.ExpandedAppDesignerFolder => s_iconOpened,
-                _ => default
+                _ => null
             };
         }
     }

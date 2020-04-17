@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return (string?)await general.FolderName.GetValueAsync();
         }
 
-        private IProjectTree? FindAppDesignerFolder(IProjectTree root)
+        private static IProjectTree? FindAppDesignerFolder(IProjectTree root)
         {
             return root.GetSelfAndDescendentsBreadthFirst()
                        .FirstOrDefault(child => child.Flags.HasFlag(ProjectTreeFlags.Common.AppDesignerFolder));

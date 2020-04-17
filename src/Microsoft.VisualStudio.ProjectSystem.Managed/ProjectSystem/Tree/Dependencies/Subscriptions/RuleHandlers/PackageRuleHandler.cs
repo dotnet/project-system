@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     if (!StringComparers.PropertyLiteralValues.Equals(dependencyType, "Package"))
                     {
                         // Legacy behaviour included items of various types. We now only accept "Package".
-                        dependencyModel = default;
+                        dependencyModel = null;
                         return false;
                     }
 
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                         if (_targetFrameworkProvider.GetTargetFramework(targetFrameworkName)?.Equals(targetFramework) != true)
                         {
                             // Item is not for the correct target
-                            dependencyModel = default;
+                            dependencyModel = null;
                             return false;
                         }
                     }
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     if (Strings.IsNullOrEmpty(name))
                     {
                         // This should not happen as Name is required in PreprocessPackageDependenciesDesignTime from 16.7
-                        dependencyModel = default;
+                        dependencyModel = null;
                         return false;
                     }
                 }
@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 if (!isTopLevel)
                 {
                     // We no longer accept non-top-level dependencies from DTB data. See note above about legacy mode support.
-                    dependencyModel = default;
+                    dependencyModel = null;
                     return false;
                 }
 

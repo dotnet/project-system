@@ -1,4 +1,3 @@
-#nullable enable
 Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_CLEAN = 4 -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_DIRTY = 1 -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Const Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageSite.PROPPAGESTATUS_VALIDATE = 2 -> Integer (forwarded, contained in Microsoft.VisualStudio.AppDesigner)

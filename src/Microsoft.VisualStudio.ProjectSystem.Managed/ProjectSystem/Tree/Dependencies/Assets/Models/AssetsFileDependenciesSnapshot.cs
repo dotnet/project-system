@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             if (!TryGetTarget(target, out AssetsFileTarget? targetData))
             {
-                assetsFileLibrary = default;
+                assetsFileLibrary = null;
                 return false;
             }
 
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 return true;
             }
 
-            assetsFileLibrary = default;
+            assetsFileLibrary = null;
             return false;
         }
 
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
         {
             if (DataByTarget.Count == 0)
             {
-                targetData = default;
+                targetData = null;
                 return false;
             }
 
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
                 {
                     // This is unexpected
                     System.Diagnostics.Debug.Fail("No target known, yet more than one target exists");
-                    targetData = default;
+                    targetData = null;
                     return false;
                 }
 
@@ -262,7 +262,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
             else if (!DataByTarget.TryGetValue(target, out targetData))
             {
-                targetData = default;
+                targetData = null;
                 return false;
             }
 
@@ -276,7 +276,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
 
             if (_packageFolders.IsEmpty)
             {
-                fullPath = default;
+                fullPath = null;
                 return false;
             }
 
@@ -289,7 +289,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
             catch
             {
-                fullPath = default;
+                fullPath = null;
                 return false;
             }
         }

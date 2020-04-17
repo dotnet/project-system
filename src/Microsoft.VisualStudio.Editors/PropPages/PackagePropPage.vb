@@ -539,7 +539,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return GetRelativePath(correctDirectory + "\", Path.GetFullPath(fileName))
         End Function
 
-        Private Function RelativeToAbsolutePath(relativePath As String) As String
+        Private Shared Function RelativeToAbsolutePath(relativePath As String) As String
             If relativePath Is Nothing Then
                 Return Nothing
             End If

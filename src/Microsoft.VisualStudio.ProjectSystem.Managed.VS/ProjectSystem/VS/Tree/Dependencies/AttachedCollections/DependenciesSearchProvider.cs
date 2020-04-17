@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                             if (libraryNode == null)
                             {
                                 System.Diagnostics.Debug.Fail("Could not find tree item for library: " + library.Name);
-                                hierarchyItem = default!;
+                                hierarchyItem = null!;
                                 return false;
                             }
 

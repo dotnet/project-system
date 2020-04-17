@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public IEnumerable? Items => _items;
         public object SourceItem => _hierarchyItem;
 
-        protected AssetsFileAttachedCollectionSourceBase(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext, IFileIconProvider fileIconProvider)
+        protected AssetsFileAttachedCollectionSourceBase(UnconfiguredProject unconfiguredProject, IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, JoinableTaskContext joinableTaskContext, IFileIconProvider fileIconProvider)
         {
             Requires.NotNull(hierarchyItem, nameof(hierarchyItem));
             Requires.NotNull(dataSource, nameof(dataSource));
@@ -78,7 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                         IsUpdatingHasItems = false;
                         PropertyChanged?.Invoke(this, s_isUpdatingItemsPropertyChangedEventArgs);
                     }
-                });
+                },
+                unconfiguredProject);
 
             Assumes.False(hierarchyItem.IsDisposed);
             hierarchyItem.PropertyChanged += OnItemPropertyChanged;

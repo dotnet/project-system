@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
+        private readonly UnconfiguredProject _project;
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
@@ -36,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
+            _project = project;
             _startupProjectsListService = startupProjectsListService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
@@ -56,7 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assumes.False(_projectGuid == Guid.Empty);
 
             _subscription = _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
-                target: OnProjectChangedAsync);
+                target: OnProjectChangedAsync,
+                _project);
         }
 
         protected override Task DisposeCoreAsync(bool initialized)
@@ -69,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? e = null)
+        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? _ = null)
         {
             bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
 

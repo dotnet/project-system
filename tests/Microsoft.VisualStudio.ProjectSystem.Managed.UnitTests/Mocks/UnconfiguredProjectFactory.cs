@@ -16,10 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static UnconfiguredProject Create(IProjectThreadingService threadingService)
         {
-            var unconfiguredProjectServices = UnconfiguredProjectServicesFactory.Create(threadingService);
-            var project = new Mock<UnconfiguredProject>();
-            project.Setup(u => u.Services)
-                   .Returns(unconfiguredProjectServices);
+            var project = CreateDefault(threadingService);
 
             return project.Object;
         }
@@ -33,6 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var service = IProjectServiceFactory.Create();
 
             var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
+
+            unconfiguredProjectServices.SetupGet<object?>(u => u.FaultHandler)
+                                       .Returns(IProjectFaultHandlerServiceFactory.Create());
+
             unconfiguredProjectServices.SetupGet<object?>(u => u.HostObject)
                                        .Returns(hostObject);
 
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             unconfiguredProjectServices.Setup(u => u.ProjectAsynchronousTasks)
                                        .Returns(projectAsynchronousTasksService!);
 
-            var project = new Mock<UnconfiguredProject>();
+            var project = CreateDefault();
             project.Setup(u => u.ProjectService)
                                .Returns(service);
 
@@ -71,25 +72,35 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static UnconfiguredProject CreateWithUnconfiguredProjectAdvanced()
         {
-            var mock = new Mock<UnconfiguredProject>();
+            var mock = CreateDefault();
             mock.As<UnconfiguredProjectAdvanced>();
             return mock.Object;
         }
 
         public static UnconfiguredProject ImplementGetEncodingAsync(Func<Task<Encoding>> encoding)
         {
-            var mock = new Mock<UnconfiguredProject>();
+            var mock = CreateDefault();
             mock.Setup(u => u.GetFileEncodingAsync()).Returns(encoding);
             return mock.Object;
         }
 
         public static UnconfiguredProject ImplementLoadConfiguredProjectAsync(Func<ProjectConfiguration, Task<ConfiguredProject>> action)
         {
-            var mock = new Mock<UnconfiguredProject>();
+            var mock = CreateDefault();
             mock.Setup(p => p.LoadConfiguredProjectAsync(It.IsAny<ProjectConfiguration>()))
                 .Returns(action);
 
             return mock.Object;
+        }
+
+        private static Mock<UnconfiguredProject> CreateDefault(IProjectThreadingService? threadingService = null)
+        {
+            var unconfiguredProjectServices = UnconfiguredProjectServicesFactory.Create(threadingService);
+            var project = new Mock<UnconfiguredProject>();
+            project.Setup(u => u.Services)
+                   .Returns(unconfiguredProjectServices);
+
+            return project;
         }
     }
 }
