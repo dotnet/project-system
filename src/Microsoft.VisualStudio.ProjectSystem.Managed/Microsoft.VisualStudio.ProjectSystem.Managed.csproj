@@ -161,6 +161,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml.cs">
+      <DependentUpon>ParentDebugPropertyPage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
   </ItemGroup>
 
   <!-- Items -->
