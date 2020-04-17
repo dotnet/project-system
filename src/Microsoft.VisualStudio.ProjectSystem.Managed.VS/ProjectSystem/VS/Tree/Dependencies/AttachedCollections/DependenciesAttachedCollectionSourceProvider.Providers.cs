@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 // Find the data source
                 IAssetsFileDependenciesDataSource? dataSource = unconfiguredProject?.Services.ExportProvider.GetExportedValueOrDefault<IAssetsFileDependenciesDataSource>();
 
-                if (dataSource == null)
+                if (unconfiguredProject == null || dataSource == null)
                 {
                     return null;
                 }
@@ -40,10 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 // Target will be null if project is not multi-targeting
                 hierarchyItem.TryFindTarget(out string? target);
 
-                return TryCreateSource(hierarchyItem, dataSource, target);
+                return TryCreateSource(unconfiguredProject, hierarchyItem, dataSource, target);
             }
 
-            protected abstract IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target);
+            protected abstract IAttachedCollectionSource? TryCreateSource(UnconfiguredProject unconfiguredProject, IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target);
         }
 
         [Export(typeof(IDependenciesTreeAttachedCollectionSourceProvider))]
@@ -61,10 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 _fileIconProvider = fileIconProvider;
             }
 
-            protected override IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
+            protected override IAttachedCollectionSource? TryCreateSource(UnconfiguredProject unconfiguredProject, IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
             {
                 return hierarchyItem.TryGetPackageDetails(out string? packageId, out string? packageVersion)
-                    ? new PackageReferenceAttachedCollectionSource(hierarchyItem, target, packageId, packageVersion, dataSource, _joinableTaskContext, _fileIconProvider)
+                    ? new PackageReferenceAttachedCollectionSource(unconfiguredProject, hierarchyItem, target, packageId, packageVersion, dataSource, _joinableTaskContext, _fileIconProvider)
                     : null;
             }
         }
@@ -84,10 +84,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 _fileIconProvider = fileIconProvider;
             }
 
-            protected override IAttachedCollectionSource? TryCreateSource(IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
+            protected override IAttachedCollectionSource? TryCreateSource(UnconfiguredProject unconfiguredProject, IVsHierarchyItem hierarchyItem, IAssetsFileDependenciesDataSource dataSource, string? target)
             {
                 return hierarchyItem.TryGetProjectDetails(out string? projectId)
-                    ? new ProjectReferenceAttachedCollectionSource(hierarchyItem, target, projectId, dataSource, _joinableTaskContext, _fileIconProvider)
+                    ? new ProjectReferenceAttachedCollectionSource(unconfiguredProject, hierarchyItem, target, projectId, dataSource, _joinableTaskContext, _fileIconProvider)
                     : null;
             }
         }

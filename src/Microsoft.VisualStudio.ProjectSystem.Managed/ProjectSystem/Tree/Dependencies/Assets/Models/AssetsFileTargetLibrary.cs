@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Assets.Models
             }
             else
             {
-                library = default;
+                library = null;
                 return false;
             }
 

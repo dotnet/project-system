@@ -18,13 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly string _projectId;
 
         public ProjectReferenceAttachedCollectionSource(
+            UnconfiguredProject unconfiguredProject,
             IVsHierarchyItem hierarchyItem,
             string? target,
             string projectId,
             IAssetsFileDependenciesDataSource dataSource,
             JoinableTaskContext joinableTaskContext,
             IFileIconProvider fileIconProvider)
-            : base(hierarchyItem, dataSource, joinableTaskContext, fileIconProvider)
+            : base(unconfiguredProject, hierarchyItem, dataSource, joinableTaskContext, fileIconProvider)
         {
             _target = target;
             _projectId = projectId;

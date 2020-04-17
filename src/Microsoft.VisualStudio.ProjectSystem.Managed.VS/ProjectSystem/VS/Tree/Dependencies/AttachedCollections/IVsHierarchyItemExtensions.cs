@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 }
             }
 
-            packageId = default;
-            packageVersion = default;
+            packageId = null;
+            packageVersion = null;
             return false;
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 }
             }
 
-            projectId = default;
+            projectId = null;
             return false;
         }
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 return true;
             }
 
-            flagsString = default;
+            flagsString = null;
             return false;
         }
     }

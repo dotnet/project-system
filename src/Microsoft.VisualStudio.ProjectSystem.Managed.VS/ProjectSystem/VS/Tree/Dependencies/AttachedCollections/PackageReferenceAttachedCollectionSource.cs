@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly string _version;
 
         public PackageReferenceAttachedCollectionSource(
+            UnconfiguredProject unconfiguredProject,
             IVsHierarchyItem hierarchyItem,
             string? target,
             string packageId,
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             IAssetsFileDependenciesDataSource dataSource,
             JoinableTaskContext joinableTaskContext,
             IFileIconProvider fileIconProvider)
-            : base(hierarchyItem, dataSource, joinableTaskContext, fileIconProvider)
+            : base(unconfiguredProject, hierarchyItem, dataSource, joinableTaskContext, fileIconProvider)
         {
             _target = target;
             _packageId = packageId;
