@@ -26,11 +26,12 @@ namespace Microsoft.VisualStudio.Setup
         {
             var rootPath = RepoUtil.FindRepoRootPath();
 
+            var commonFilesFileName = "CommonFiles.swr";
             var swrPath = Path.Combine(
                 rootPath,
                 "setup",
                 "Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles",
-                "CommonFiles.swr");
+                commonFilesFileName);
 
             var setupFilesByCulture = ReadSwrFiles(swrPath)
                 .Select(ParseSwrFile)
@@ -76,7 +77,7 @@ namespace Microsoft.VisualStudio.Setup
                 }
             }
 
-            Assert.False(guilty, "See test output for details");
+            Assert.False(guilty, $"There are setup errors in {commonFilesFileName}. See test output for details.");
 
             return;
 
