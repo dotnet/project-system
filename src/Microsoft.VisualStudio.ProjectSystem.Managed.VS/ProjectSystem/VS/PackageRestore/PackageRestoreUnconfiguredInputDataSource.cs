@@ -52,9 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectValueDataSource<IConfigurationGroup<ConfiguredProject>> activeConfiguredProjectsSource = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource;
             disposables.Add(activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion));
 
+            // Dataflow from two configurations can depend on a same unconfigured level data source, and processes it at a different speed.
+            // Introduce a forward-only block to prevent regressions in versions.
+            var forwardOnlyBlock = ProjectDataSources.CreateDataSourceVersionForwardOnlyFilteringBlock<IReadOnlyCollection<PackageRestoreConfiguredInput>>();
+            disposables.Add(restoreConfiguredInputSource.SourceBlock.LinkTo(forwardOnlyBlock, DataflowOption.PropagateCompletion));
+
             // Transform all restore data -> combined restore data
-            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = restoreConfiguredInputSource.SourceBlock
-                                                                                                .TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
+            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = forwardOnlyBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
             disposables.Add(mergeBlock);
 
             // Set the link up so that we publish changes to target block
