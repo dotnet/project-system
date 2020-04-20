@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Moq;
 
@@ -10,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IPropertyPagesCatalogProviderFactory
     {
-        public static IPropertyPagesCatalogProvider Create(Dictionary<string, IPropertyPagesCatalog> catalogsByContext, IPropertyPagesCatalog memoryOnlyCatalog)
+        public static IPropertyPagesCatalogProvider Create(Dictionary<string, IPropertyPagesCatalog> catalogsByContext, IPropertyPagesCatalog? memoryOnlyCatalog = null)
         {
             var catalogProvider = new Mock<IPropertyPagesCatalogProvider>();
             catalogProvider
@@ -18,8 +19,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 .ReturnsAsync(catalogsByContext.ToImmutableDictionary());
 
             catalogProvider
-                .Setup(o => o.GetMemoryOnlyCatalog(It.IsAny<string>()))
-                .Returns(memoryOnlyCatalog);
+                .Setup(o => o.GetCatalogAsync(It.IsAny<string>(), CancellationToken.None))
+                .Returns((string name, CancellationToken token) => Task.FromResult(catalogsByContext[name]));
+
+            if (memoryOnlyCatalog != null)
+            {
+                catalogProvider
+                    .Setup(o => o.GetMemoryOnlyCatalog(It.IsAny<string>()))
+                    .Returns(memoryOnlyCatalog);
+            }
 
             return catalogProvider.Object;
         }

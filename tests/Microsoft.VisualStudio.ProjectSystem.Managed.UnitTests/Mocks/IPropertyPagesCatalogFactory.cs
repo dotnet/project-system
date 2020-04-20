@@ -20,6 +20,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                        return rule;
                    });
 
+            catalog.Setup(o => o.GetPropertyPagesSchemas())
+                .Returns(() => rulesBySchemaName.Keys);
+
+            catalog.Setup(o => o.GetSchema(It.IsAny<string>()))
+                .Returns((string name) => rulesBySchemaName.TryGetValue(name, out IRule rule) ? rule.Schema : null);
+
             return catalog.Object;
         }
 
