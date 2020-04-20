@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">Przepływ danych systemu projektu „{0}” został zamknięty z powodu wyjątku: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Bez uwierzytelniania</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -76,9 +76,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+        <target state="translated">Nie można otworzyć pliku projektu „{0}”. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
+Ten projekt został załadowany przy użyciu nieprawidłowego typu projektu, prawdopodobnie z powodu zmiany nazwy rozszerzenia projektu poza programem Visual Studio. Usuń i dodaj ponownie projekt, aby w rozwiązaniu został użyty odpowiedni typ projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ Jeśli ten plik lub folder nie jest wyświetlany w Eksploratorze rozwiązań, to
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Uwierzytelnianie systemu Windows</target>
         <note />
       </trans-unit>
     </body>

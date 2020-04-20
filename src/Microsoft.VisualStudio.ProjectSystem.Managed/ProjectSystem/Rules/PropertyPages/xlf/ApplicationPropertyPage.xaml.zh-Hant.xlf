@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">一般</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">一般</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">資源</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">資源</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
-        <target state="new">Startup object</target>
+        <target state="translated">啟始物件</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
         <source>Target framework</source>
-        <target state="new">Target framework</target>
+        <target state="translated">目標 Framework</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
         <source>Manifest</source>
-        <target state="new">Manifest</target>
+        <target state="translated">資訊清單</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output type</source>
-        <target state="new">Output type</target>
+        <target state="translated">輸出類型</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
         <source>Embed manifest with default settings</source>
-        <target state="new">Embed manifest with default settings</target>
+        <target state="translated">用預設設定嵌入資訊清單</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
         <source>Create application without a manifest</source>
-        <target state="new">Create application without a manifest</target>
+        <target state="translated">建立無資訊清單應用程式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
-        <target state="new">Console Application</target>
+        <target state="translated">主控台應用程式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Library|DisplayName">
         <source>Class Library</source>
-        <target state="new">Class Library</target>
+        <target state="translated">類別庫</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="new">Windows Application</target>
+        <target state="translated">Windows 應用程式</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">一般</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
         <source>Application</source>
-        <target state="new">Application</target>
+        <target state="translated">應用程式</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">圖示</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly name</source>
-        <target state="new">Assembly name</target>
+        <target state="translated">組件名稱</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
-        <target state="new">Default namespace</target>
+        <target state="translated">預設命名空間</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">資源檔案</target>
         <note />
       </trans-unit>
     </body>
