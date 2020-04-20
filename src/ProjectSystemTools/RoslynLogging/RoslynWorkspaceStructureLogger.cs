@@ -159,26 +159,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits -- this is fine since it's a Roslyn API
                     var compilation = project.GetCompilationAsync(threadedWaitCallback.CancellationToken).Result;
 #pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
-                    var compilationReferencesElement = new XElement("compilationReferences");
-                    projectElement.Add(compilationReferencesElement);
 
-                    foreach (var reference in compilation.References)
+                    if (compilation != null)
                     {
-                        compilationReferencesElement.Add(CreateElementForPortableExecutableReference(reference));
-                    }
+                        var compilationReferencesElement = new XElement("compilationReferences");
+                        projectElement.Add(compilationReferencesElement);
 
-                    projectElement.Add(CreateElementForCompilation(compilation));
+                        foreach (var reference in compilation.References)
+                        {
+                            compilationReferencesElement.Add(CreateElementForPortableExecutableReference(reference));
+                        }
 
-                    // Dump all diagnostics
-                    var diagnosticsElement = new XElement("diagnostics");
-                    projectElement.Add(diagnosticsElement);
+                        projectElement.Add(CreateElementForCompilation(compilation));
 
-                    foreach (var diagnostic in compilation.GetDiagnostics(threadedWaitCallback.CancellationToken))
-                    {
-                        diagnosticsElement.Add(
-                            new XElement("diagnostic",
-                                new XAttribute("severity", diagnostic.Severity.ToString()),
-                                diagnostic.GetMessage()));
+                        // Dump all diagnostics
+                        var diagnosticsElement = new XElement("diagnostics");
+                        projectElement.Add(diagnosticsElement);
+
+                        foreach (var diagnostic in compilation.GetDiagnostics(threadedWaitCallback.CancellationToken))
+                        {
+                            diagnosticsElement.Add(
+                                new XElement("diagnostic",
+                                    new XAttribute("severity", diagnostic.Severity.ToString()),
+                                    diagnostic.GetMessage()));
+                        }
                     }
 
                     projectsProcessed++;
