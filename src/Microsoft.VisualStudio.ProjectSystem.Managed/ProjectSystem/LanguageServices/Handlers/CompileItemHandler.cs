@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             ApplyProjectBuild(version, difference, isActiveContext, logger);
         }
 
-        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
+        private static bool LinkMetadataChanged(IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata)
         {
             string previousLink = previousMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);
             string currentLink = currentMetadata.GetValueOrDefault(Compile.LinkProperty, string.Empty);

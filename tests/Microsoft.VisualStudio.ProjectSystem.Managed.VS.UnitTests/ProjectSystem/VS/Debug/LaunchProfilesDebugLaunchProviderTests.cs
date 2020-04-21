@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
-    public class ProjectDebuggerProviderTests
+    public class LaunchProfilesDebugLaunchProviderTests
     {
         private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
         private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         // Set this to have ILaunchSettingsProvider return this profile (null by default)
         private ILaunchProfile? _activeProfile;
 
-        public ProjectDebuggerProviderTests()
+        public LaunchProfilesDebugLaunchProviderTests()
         {
             _mockWebProvider.Setup(x => x.SupportsProfile(It.IsAny<ILaunchProfile>())).Returns<ILaunchProfile>((p) => p.CommandName == "IISExpress");
             _mockWebProvider.Setup(x => x.QueryDebugTargetsAsync(It.IsAny<DebugLaunchOptions>(), It.IsAny<ILaunchProfile>())).Returns<DebugLaunchOptions, ILaunchProfile>((o, p) => { return Task.FromResult((IReadOnlyList<IDebugLaunchSettings>)_webProviderSettings); });
@@ -52,78 +52,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public void GetDebugEngineForFrameworkTests()
-        {
-
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandardApp"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetStandard"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCore"));
-            Assert.Equal(DebuggerEngines.ManagedCoreEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NetCoreApp"));
-            Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectDebuggerProvider.GetManagedDebugEngineForFramework(".NETFramework"));
-        }
-
-        [Fact]
         public async Task CanLaunchAsyncTests()
         {
-            var configuredProjectMoq = new Mock<ConfiguredProject>();
-            var debugger = new ProjectDebuggerProvider(configuredProjectMoq.Object, new Mock<ILaunchSettingsProvider>().Object, vsDebuggerService: null!);
+            var provider = CreateInstance();
 
-            bool result = await debugger.CanLaunchAsync(DebugLaunchOptions.NoDebug);
+            bool result = await provider.CanLaunchAsync(DebugLaunchOptions.NoDebug);
             Assert.True(result);
-            result = await debugger.CanLaunchAsync(0);
+            result = await provider.CanLaunchAsync(0);
             Assert.True(result);
         }
 
         [Fact]
         public void GetLaunchTargetsProviderForProfileTests()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
-            Assert.Equal(_mockWebProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object, debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
-            Assert.Null(debugger.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
+            var provider = CreateInstance();
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
+            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsyncCorrectProvider()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "IISExpress" };
-            var result = await debugger.QueryDebugTargetsAsync(0);
+            var result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_webProviderSettings, result);
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Docker" };
-            result = await debugger.QueryDebugTargetsAsync(0);
+            result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_dockerProviderSettings, result);
 
             _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Project" };
-            result = await debugger.QueryDebugTargetsAsync(0);
+            result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_exeProviderSettings, result);
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoLaunchProfile_Throws()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
             _activeProfile = null;
 
             await Assert.ThrowsAsync<Exception>(() =>
             {
-                return debugger.QueryDebugTargetsAsync(0);
+                return provider.QueryDebugTargetsAsync(0);
             });
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
-            var debugger = new ProjectDebuggerProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, _launchProviders, vsDebuggerService: null!);
+            var provider = CreateInstance();
             _activeProfile = new LaunchProfile() { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
 
             await Assert.ThrowsAsync<Exception>(() =>
             {
-                return debugger.QueryDebugTargetsAsync(0);
+                return provider.QueryDebugTargetsAsync(0);
             });
+        }
+
+        private LaunchProfilesDebugLaunchProvider CreateInstance()
+        {
+            var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, vsDebuggerService: null!);
+
+            provider.LaunchTargetsProviders.Add(_mockWebProvider.Object);
+            provider.LaunchTargetsProviders.Add(_mockDockerProvider.Object);
+            provider.LaunchTargetsProviders.Add(_mockExeProvider.Object);
+
+            return provider;
         }
     }
 }

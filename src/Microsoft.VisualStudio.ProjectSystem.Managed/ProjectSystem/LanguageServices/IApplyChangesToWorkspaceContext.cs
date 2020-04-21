@@ -105,6 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, CancellationToken cancellationToken);
     }
 }

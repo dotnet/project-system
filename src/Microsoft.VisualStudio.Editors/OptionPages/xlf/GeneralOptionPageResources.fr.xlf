@@ -37,6 +37,16 @@
         <target state="translated">Contrôles de mise à jour</target>
         <note />
       </trans-unit>
+      <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
+        <source>Ignore solution and project settings</source>
+        <target state="new">Ignore solution and project settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="General_NestingSettings_Title">
+        <source>File Nesting Settings</source>
+        <target state="new">File Nesting Settings</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

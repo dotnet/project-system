@@ -27,20 +27,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private const string DefaultSetName = "";
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
-        private static ImmutableHashSet<string> ReferenceSchemas => ImmutableStringHashSet.EmptyOrdinal
+        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ConfigurationGeneral.SchemaName)
             .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName);
-
-        private static ImmutableHashSet<string> UpToDateSchemas => ImmutableStringHashSet.EmptyOrdinal
+            .Add(ResolvedCompilationReference.SchemaName)
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
             .Add(UpToDateCheckBuilt.SchemaName);
-
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Union(ReferenceSchemas)
-            .Union(UpToDateSchemas);
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
@@ -110,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged),
+                target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
                 linkOptions: DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
@@ -240,6 +234,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
+                if (earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
+                {
+                    return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                }
+
                 foreach ((string input, bool isRequired) in inputs)
                 {
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
@@ -318,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.ResolvedAnalyzerReferencePaths.Count != 0)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                    foreach (string input in state.ResolvedAnalyzerReferencePaths)
+                    foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
                     {
                         log.Verbose("    '{0}'", input);
                         yield return (Path: input, IsRequired: true);
@@ -649,6 +648,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
                 _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
+            }
+
+            public void SetLastAdditionalDependentFileTimesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
+            {
+                _check._state = _check._state.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
             }
         }
 

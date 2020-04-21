@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         ///     Gets the service object associated with <typeparamref name="T"/>.
         /// </summary>
+        /// <remarks>
+        ///     Must be called from the UI thread.
+        /// </remarks>
         /// <exception cref="COMException">
         ///     This property was not accessed from the UI thread.
         /// </exception>

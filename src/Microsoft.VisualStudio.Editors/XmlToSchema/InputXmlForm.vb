@@ -180,7 +180,7 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Try
         End Sub
 
-        Private Function GetXmlTextReaderWithDtdProcessingProhibited(element As String) As XmlTextReader
+        Private Shared Function GetXmlTextReaderWithDtdProcessingProhibited(element As String) As XmlTextReader
             ' Required by Fxcop rule CA3054 - DoNotAllowDTDXmlTextReader
             Return New XmlTextReader(element) With {
                 .DtdProcessing = DtdProcessing.Prohibit

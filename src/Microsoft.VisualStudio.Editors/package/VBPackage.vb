@@ -38,6 +38,12 @@ Namespace Microsoft.VisualStudio.Editors
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
     ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, False, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
+    ProvideService(GetType(ResourceEditor.ResourceEditorRefactorNotify), ServiceName:="ResX RefactorNotify Service"),
+    ProvideService(GetType(AddImports.IVBAddImportsDialogService), ServiceName:="Add Imports Dialog Service"),
+    ProvideService(GetType(XmlIntellisense.IXmlIntellisenseService), ServiceName:="Vb Xml Intellisense Service"),
+    ProvideService(GetType(VBAttributeEditor.Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service"),
+    ProvideService(GetType(Interop.IVsBuildEventCommandLineDialogService), ServiceName:="Vb Build Event Command Line Dialog Service"),
+    ProvideService(GetType(VBRefChangedSvc.Interop.IVbReferenceChangedService), ServiceName:="VB Project Reference Changed Service"),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_SETTINGSDESIGNER_CommandUIString, 1200, AllowNavKeyBinding:=False),
     ProvideKeyBindingTable(Constants.MenuConstants.GUID_RESXEditorCommandUIString, 1100, AllowNavKeyBinding:=False),
     CLSCompliant(False)

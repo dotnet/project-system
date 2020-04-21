@@ -207,7 +207,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
         ''' <param name="value"></param>
-        Protected Function GetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
+        Protected Shared Function GetTargetFrameworkMoniker(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
             Dim currentTarget As TargetFrameworkMoniker = CType(CType(control, ComboBox).SelectedItem, TargetFrameworkMoniker)
             If currentTarget IsNot Nothing Then
                 value = currentTarget.Moniker

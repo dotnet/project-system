@@ -138,4 +138,10 @@
   <data name="General_FastUpToDateCheck_Title" xml:space="preserve">
     <value>Up to Date Checks</value>
   </data>
+  <data name="General_NestingIgnoreSolutionAndProjectProfiles" xml:space="preserve">
+    <value>Ignore solution and project settings</value>
+  </data>
+  <data name="General_NestingSettings_Title" xml:space="preserve">
+    <value>File Nesting Settings</value>
+  </data>
 </root>

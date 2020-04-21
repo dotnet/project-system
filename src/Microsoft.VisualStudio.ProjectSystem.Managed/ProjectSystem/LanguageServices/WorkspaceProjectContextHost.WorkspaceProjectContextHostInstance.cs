@@ -69,9 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _applyChangesToWorkspaceContext = _applyChangesToWorkspaceContextFactory.CreateExport();
                 _applyChangesToWorkspaceContext.Value.Initialize(_contextAccessor.Context);
 
-                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
-
-                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(_project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
+                _evaluationProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".Evaluation");
+                _projectBuildProgressRegistration = _dataProgressTrackerService.RegisterForIntelliSense(this, _project, nameof(WorkspaceProjectContextHostInstance) + ".ProjectBuild");
 
                 _disposables = new DisposableBag
                 {
@@ -83,11 +82,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     // think we're still "in progress" in the case of an empty change
                     _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: true),
+                        _project.UnconfiguredProject,
+                        ProjectFaultSeverity.LimitedFunctionality,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()),
 
                     _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
                         target: e => OnProjectChangedAsync(e, evaluation: false),
+                        _project.UnconfiguredProject,
+                        ProjectFaultSeverity.LimitedFunctionality,
                         suppressVersionOnlyUpdates: false,
                         ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules())
                 };
@@ -150,7 +153,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 context.StartBatch();
 
-                bool isBatchEnded = false;
                 try
                 {
                     bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
@@ -163,20 +165,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     {
                         await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
                     }
-
-                    context.EndBatch();
-                    await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, isActiveContext, cancellationToken);
-                    isBatchEnded = true;
                 }
                 finally
                 {
-                    if (!isBatchEnded)
-                    {
-                        context.EndBatch();
-                    }
+                    context.EndBatch();
+
+                    NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
 
-                NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
+                await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, cancellationToken);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)

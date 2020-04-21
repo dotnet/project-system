@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ConsoleDebugTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
+    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
 
         [ImportingConstructor]
-        public ConsoleDebugTargetsProvider(
+        public ProjectLaunchTargetsProvider(
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices,
             ConfiguredProject project,
             IDebugTokenReplacer tokenReplacer,
@@ -478,7 +478,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
             string framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier");
 
-            return ProjectDebuggerProvider.GetManagedDebugEngineForFramework(framework);
+            return GetManagedDebugEngineForFramework(framework);
         }
 
         /// <summary>
@@ -595,6 +595,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             return finalBuilder.ToStringAndFree();
+        }
+
+        /// <summary>
+        /// Helper returns the correct debugger engine based on the targeted framework
+        /// </summary>
+        internal static Guid GetManagedDebugEngineForFramework(string targetFramework)
+        {
+            // The engine depends on the framework
+            if (IsDotNetCoreFramework(targetFramework))
+            {
+                return DebuggerEngines.ManagedCoreEngine;
+            }
+            else
+            {
+                return DebuggerEngines.ManagedOnlyEngine;
+            }
+        }
+
+        /// <summary>
+        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
+        /// This information should come from the targets file.
+        /// </summary>
+        private static bool IsDotNetCoreFramework(string targetFramework)
+        {
+            const string NetStandardPrefix = ".NetStandard";
+            const string NetCorePrefix = ".NetCore";
+            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
+                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
         }
 
         private enum StringState

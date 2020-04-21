@@ -8,7 +8,6 @@ Imports System.Security.Permissions
 Imports System.Xml
 
 Imports Microsoft.Build.Tasks.Deployment.ManifestUtilities
-Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.VBAttributeEditor
     '   exposed via the IVbPermissionSetService interface.
     '--------------------------------------------------------------------------
     <CLSCompliant(False)>
-    <ProvideService(GetType(Interop.IVbPermissionSetService), ServiceName:="Vb Permission Set Service")>
     Friend NotInheritable Class PermissionSetService
         Implements Interop.IVbPermissionSetService
 

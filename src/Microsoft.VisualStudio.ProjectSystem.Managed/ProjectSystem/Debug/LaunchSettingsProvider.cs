@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // The use of AsyncLazy with dataflow can allow state stored in the execution context to leak through. The downstream affect is
                 // calls to say, get properties, may fail. To avoid this, we capture the execution context here, and it will be reapplied when
                 // we get new subscription data from the dataflow.
-                ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockSlim.CreateActionBlock(
-                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync));
+                ITargetBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>> projectChangesBlock = DataflowBlockFactory.CreateActionBlock(
+                            DataflowUtilities.CaptureAndApplyExecutionContext<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectCapabilitiesSnapshot>>>(ProjectRuleBlock_ChangedAsync), _project, ProjectFaultSeverity.LimitedFunctionality);
                 StandardRuleDataflowLinkOptions evaluationLinkOptions = DataflowOption.WithRuleNames(ProjectDebugger.SchemaName);
 
                 _projectRuleSubscriptionLink = ProjectDataSources.SyncLinkTo(
@@ -354,7 +354,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            return !_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc;
+            if (_fileSystem.TryGetLastFileWriteTimeUtc(fileName, out DateTime? writeTime))
+            {
+                return writeTime != LastSettingsFileSyncTimeUtc;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -378,19 +383,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             _broadcastBlock?.Post(newSnapshot);
-        }
-
-        /// <summary>
-        /// Gets the active profile based on the property changes
-        /// </summary>
-        protected string GetActiveProfile(IProjectSubscriptionUpdate projectSubscriptionUpdate)
-        {
-            if (projectSubscriptionUpdate.CurrentState.TryGetValue(ProjectDebugger.SchemaName, out IProjectRuleSnapshot ruleSnapshot) &&
-                ruleSnapshot.Properties.TryGetValue(ProjectDebugger.ActiveDebugProfileProperty, out string activeProfile))
-            {
-                return activeProfile;
-            }
-            return null;
         }
 
         /// <summary>
@@ -453,7 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // Remember the time we are sync'd to
-            LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+            LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             return launchSettingsData;
         }
 
@@ -508,7 +500,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _fileSystem.WriteAllText(fileName, jsonString);
 
                 // Update the last write time
-                LastSettingsFileSyncTimeUtc = _fileSystem.LastFileWriteTimeUtc(fileName);
+                LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);
             }
             finally
             {
@@ -593,7 +585,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // Only do something if the file is truly different than what we synced. Here, we want to
                 // throttle.
-                if (!_fileSystem.FileExists(fileName) || _fileSystem.LastFileWriteTimeUtc(fileName) != LastSettingsFileSyncTimeUtc)
+                if (_fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName) != LastSettingsFileSyncTimeUtc)
                 {
                     return FileChangeScheduler.ScheduleAsyncTask(token =>
                     {
