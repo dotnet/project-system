@@ -38,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
-        <source>PackageIconUrl detected but is deprecated. Use PackageIcon instead.</source>
-        <target state="translated">Wykryto element PackageIconUrl, ale jest on przestarzały. Użyj zamiast niego elementu PackageIcon.</target>
+        <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
+        <target state="needs-review-translation">Wykryto element PackageIconUrl, ale jest on przestarzały. Użyj zamiast niego elementu PackageIcon.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -268,7 +268,7 @@
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
-        <source>PackageLicenseURL detected but is deprecated. Please change to either an Expression or File.</source>
+        <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
         <target state="needs-review-translation">Wykryto właściwość PackageLicenseURL, ale została ona oznaczona jako przestarzała. Zmień wartość na wyrażenie lub plik.</target>
         <note />
       </trans-unit>
