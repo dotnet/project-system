@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="translated">Fujo de datos del sistema de proyectos "{0}" cerrado debido a una excepción: {1}</target>
+        <target state="translated">Flujo de datos del sistema de proyectos "{0}" cerrado debido a una excepción: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
