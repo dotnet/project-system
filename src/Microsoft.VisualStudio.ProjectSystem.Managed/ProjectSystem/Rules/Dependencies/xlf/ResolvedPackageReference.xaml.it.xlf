@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
-        <target state="new">Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</target>
+        <target state="translated">Indica se generare una proprietà MSBuild con il percorso della directory radice del pacchetto. Il nome di proprietà generato è in formato 'Pkg[IDpacchetto]', dove '[IDpacchetto]' è l'ID del pacchetto in cui gli eventuali punti ('.') sono stati sostituiti da caratteri di sottolineatura ('_').</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate path property</source>
-        <target state="new">Generate path property</target>
+        <target state="translated">Genera la proprietà Path</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">

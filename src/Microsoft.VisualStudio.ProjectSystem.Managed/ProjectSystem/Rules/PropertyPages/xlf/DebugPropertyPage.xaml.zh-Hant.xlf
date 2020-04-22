@@ -4,72 +4,72 @@
     <body>
       <trans-unit id="Category|CommandLine|Description">
         <source>Command Line</source>
-        <target state="new">Command Line</target>
+        <target state="translated">命令列</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|CommandLine|DisplayName">
         <source>Command Line</source>
-        <target state="new">Command Line</target>
+        <target state="translated">命令列</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">一般</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">一般</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|ActiveLaunchProfile|DisplayName">
         <source>Profile</source>
-        <target state="new">Profile</target>
+        <target state="translated">設定檔</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|LaunchTarget|DisplayName">
         <source>Launch</source>
-        <target state="new">Launch</target>
+        <target state="translated">啟動</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
-        <target state="new">Debug</target>
+        <target state="translated">偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|DisplayName">
         <source>Debug</source>
-        <target state="new">Debug</target>
+        <target state="translated">偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="new">Command line arguments to pass to the executable.</target>
+        <target state="translated">要傳遞至可執行檔的命令列引數。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
+        <target state="translated">命令列引數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="new">Path to the executable to run.</target>
+        <target state="translated">要執行之可執行檔的路徑。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="new">Executable</target>
+        <target state="translated">可執行檔</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="new">Path to the working directory where the process will be started.</target>
+        <target state="translated">要啟動處理序之工作目錄的路徑。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="new">Working directory</target>
+        <target state="translated">工作目錄</target>
         <note />
       </trans-unit>
     </body>

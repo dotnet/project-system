@@ -4,167 +4,167 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
-        <target state="new">Allow unsafe code</target>
+        <target state="translated">Разрешить небезопасный код</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
-        <target state="new">Optimize code</target>
+        <target state="translated">Оптимизировать код</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Errors and warnings</source>
-        <target state="new">Errors and warnings</target>
+        <target state="translated">Ошибки и предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
         <source>Errors and warnings</source>
-        <target state="new">Errors and warnings</target>
+        <target state="translated">Ошибки и предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Output</source>
-        <target state="new">Output</target>
+        <target state="translated">Выходные данные</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
-        <target state="new">Output</target>
+        <target state="translated">Выходные данные</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
-        <target state="new">Nullable</target>
+        <target state="translated">Допускающий значение NULL</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
-        <target state="new">Platform target</target>
+        <target state="translated">Целевая платформа</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
+        <target state="translated">Обрабатывать предупреждения как ошибки</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
-        <target state="new">Warning level</target>
+        <target state="translated">Уровень предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
         <source>Annotations</source>
-        <target state="new">Annotations</target>
+        <target state="translated">Заметки</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.disable|DisplayName">
         <source>Disable</source>
-        <target state="new">Disable</target>
+        <target state="translated">Отключить</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.enable|DisplayName">
         <source>Enable</source>
-        <target state="new">Enable</target>
+        <target state="translated">Включить</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.warnings|DisplayName">
         <source>Warnings</source>
-        <target state="new">Warnings</target>
+        <target state="translated">Предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
         <source>Any CPU</source>
-        <target state="new">Any CPU</target>
+        <target state="translated">Любой ЦП</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
         <source>x64</source>
-        <target state="new">x64</target>
+        <target state="translated">x64</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
         <source>x86</source>
-        <target state="new">x86</target>
+        <target state="translated">x86</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TreatWarningsAsErrors.false|DisplayName">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Нет</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|TreatWarningsAsErrors.true|DisplayName">
         <source>All</source>
-        <target state="new">All</target>
+        <target state="translated">Все</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
-        <target state="new">0</target>
+        <target state="translated">0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
         <source>1</source>
-        <target state="new">1</target>
+        <target state="translated">1</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
         <source>2</source>
-        <target state="new">2</target>
+        <target state="translated">2</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
         <source>3</source>
-        <target state="new">3</target>
+        <target state="translated">3</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
         <source>4</source>
-        <target state="new">4</target>
+        <target state="translated">4</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Сборка</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
-        <target state="new">Conditional compilation symbols</target>
+        <target state="translated">Символы условной компиляции</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
-        <target state="new">XML documentation file path</target>
+        <target state="translated">Путь к файлу XML-документации</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
-        <target state="new">Suppress warnings</target>
+        <target state="translated">Отключить предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output path</source>
-        <target state="new">Output path</target>
+        <target state="translated">Выходной путь</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Specific warnings</source>
-        <target state="new">Specific warnings</target>
+        <target state="translated">Указанные предупреждения</target>
         <note />
       </trans-unit>
     </body>

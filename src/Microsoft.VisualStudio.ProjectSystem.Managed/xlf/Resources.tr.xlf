@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">Proje sistem veri akışı '{0}', bir özel durum nedeniyle kapatıldı: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Kimlik Doğrulama Yok</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -76,9 +76,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+        <target state="needs-review-translation">'{0}' proje dosyası açılamıyor. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
+Bu proje, proje uzantısının Visual Studio dışında yeniden adlandırılması nedeniyle yanlış proje türü kullanılarak yüklenmiş. Çözümün doğru proje türünü seçmesi için projeyi kaldırın ve yeniden ekleyin.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ Bu dosya veya klasör Çözüm Gezgini'nde görünmüyorsa şu anda projenizin b
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Windows Kimlik Doğrulaması</target>
         <note />
       </trans-unit>
     </body>

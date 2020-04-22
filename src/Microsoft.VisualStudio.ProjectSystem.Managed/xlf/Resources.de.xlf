@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">Projektsystem-Datenfluss "{0}" aufgrund einer Ausnahme geschlossen: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Keine Authentifizierung</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -76,9 +76,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+        <target state="needs-review-translation">Die Projektdatei "{0}" kann nicht geöffnet werden. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
+Dieses Projekt wurde unter Verwendung des falschen Projekttyps geladen, wahrscheinlich als Ergebnis der Umbenennung der Projekterweiterung außerhalb von Visual Studio. Entfernen Sie das Projekt, und fügen Sie es neu zu, damit die Projektmappe den richtigen Projekttyp auswählt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ Wenn diese Datei oder dieser Ordner nicht im Projektmappen-Explorer angezeigt wi
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Windows-Authentifizierung</target>
         <note />
       </trans-unit>
     </body>
