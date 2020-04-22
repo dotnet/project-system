@@ -20,45 +20,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     [ExportDebugger(ProjectDebugger.SchemaName)]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class ProjectDebuggerProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
+    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
-        /// <summary>
-        /// Constructors. Unit test one is 2nd
-        /// </summary>
-        [ImportingConstructor]
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider, IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
-            : base(configuredProject)
-        {
-            LaunchSettingsProvider = launchSettingsProvider;
-            _vsDebuggerService = vsDebuggerService;
-
-            // We want it sorted so that higher numbers come first (is the default for these collections but explicitly expressed here)
-            ProfileLaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
-                                                                                                                    configuredProject.UnconfiguredProject);
-        }
-
-        public ProjectDebuggerProvider(ConfiguredProject configuredProject, ILaunchSettingsProvider launchSettingsProvider,
-                                       OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> providers,
-                                       IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
-            : base(configuredProject)
-        {
-            ProfileLaunchTargetsProviders = providers;
-            _vsDebuggerService = vsDebuggerService;
-            LaunchSettingsProvider = launchSettingsProvider;
-        }
-
         private readonly IVsService<IVsDebugger4> _vsDebuggerService;
+        private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
+
+        [ImportingConstructor]
+        public LaunchProfilesDebugLaunchProvider(
+            ConfiguredProject configuredProject, 
+            ILaunchSettingsProvider launchSettingsProvider, 
+            IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
+            : base(configuredProject)
+        {
+            _launchSettingsProvider = launchSettingsProvider;
+            _vsDebuggerService = vsDebuggerService;
+
+            LaunchTargetsProviders = new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(projectCapabilityCheckProvider: configuredProject.UnconfiguredProject);
+        }
 
         /// <summary>
         /// Import the LaunchTargetProviders which know how to run profiles
         /// </summary>
         [ImportMany]
-        private OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> ProfileLaunchTargetsProviders { get; }
-
-        private ILaunchSettingsProvider LaunchSettingsProvider { get; }
-
-        // Tracks the last launched provider so we can forward calls to IDeployedProjectItemMappingProvider
-        public IDebugProfileLaunchTargetsProvider? LastLaunchProvider { get; private set; }
+        public OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> LaunchTargetsProviders { get; }
 
         /// <summary>
         /// Called by CPS to determine whether we can launch
@@ -66,34 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
         {
             return TplExtensions.TrueTask;
-        }
-
-        /// <summary>
-        /// Helper returns the correct debugger engine based on the targeted framework
-        /// </summary>
-        public static Guid GetManagedDebugEngineForFramework(string targetFramework)
-        {
-            // The engine depends on the framework
-            if (IsDotNetCoreFramework(targetFramework))
-            {
-                return DebuggerEngines.ManagedCoreEngine;
-            }
-            else
-            {
-                return DebuggerEngines.ManagedOnlyEngine;
-            }
-        }
-
-        /// <summary>
-        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
-        /// This information should come from the targets file.
-        /// </summary>
-        public static bool IsDotNetCoreFramework(string targetFramework)
-        {
-            const string NetStandardPrefix = ".NetStandard";
-            const string NetCorePrefix = ".NetCore";
-            return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
-                   targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
         }
 
         /// <summary>
@@ -112,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            ILaunchSettings currentProfiles = await LaunchSettingsProvider.WaitForFirstSnapshot(5000);
+            ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(5000);
             ILaunchProfile? activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile
@@ -135,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 launchSettings = await launchProvider.QueryDebugTargetsAsync(launchOptions, activeProfile);
             }
 
-            LastLaunchProvider = launchProvider;
+            _lastLaunchProvider = launchProvider;
             return launchSettings;
         }
 
@@ -145,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
         {
             // We search through the imports in order to find the one which supports the profile
-            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in ProfileLaunchTargetsProviders)
+            foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
             {
                 if (provider.Value.SupportsProfile(profile))
                 {
@@ -163,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             IReadOnlyList<IDebugLaunchSettings> targets = await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
 
-            ILaunchProfile? activeProfile = LaunchSettingsProvider.ActiveProfile;
+            ILaunchProfile? activeProfile = _launchSettingsProvider.ActiveProfile;
 
             Assumes.NotNull(activeProfile);
 
@@ -349,7 +306,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public bool TryGetProjectItemPathFromDeployedPath(string deployedPath, out string? localPath)
         {
             // Just delegate to the last provider. It needs to figure out how best to map the items
-            if (LastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
+            if (_lastLaunchProvider is IDeployedProjectItemMappingProvider deployedItemMapper)
             {
                 return deployedItemMapper.TryGetProjectItemPathFromDeployedPath(deployedPath, out localPath);
             }

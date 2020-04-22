@@ -85,6 +85,7 @@
   <ItemGroup Condition="'$(DefineCommonManagedCapabilities)' == 'true'">
     <ProjectCapability Include="UseFileGlobs"/>
     <ProjectCapability Include="DynamicDependentFile"/>
+    <ProjectCapability Include="ConfigurableFileNesting" />
 
     <!-- DependenciesTree capability lights up a Dependencies tree node and its sub node providers-->
     <ProjectCapability Include="DependenciesTree" />
