@@ -7,7 +7,7 @@ We use the same coding style conventions as outlined in [.NET Framework Coding S
 - **DO** put one type per file, including nested types. Files containing a nested type, should follow the `Parent.NestedType.cs` convention. Generic types should follow the ``GenericWithOneTypeParameter`1.cs``, ``GenericWithTwoTypeParameters`2.cs`` convention. If you have a single generic type,`GeneraticWithOneTypeParameter.cs` is acceptable.
 - **DO NOT** use regions.
 - **DO** sort members in classes in the following order; fields, constructors, events, properties and then methods.
-- **DO** flavor private fields over private properties.
+- **DO** favor private fields over private properties.
 - **DO** case internal fields as `PascalCased` not `_camelCased`.
 
 The majority of the guidelines, where possible, are enforced via the [.editorconfig](https://github.com/dotnet/project-system/blob/master/.editorconfig) in the root the repository.
@@ -20,25 +20,25 @@ The majority of the guidelines, where possible, are enforced via the [.editorcon
 
 ## VS APIs
 
-- **DO** flavor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
+- **DO** favor `IVsUIService<T>` and `IVsUIService<TService, TInterface>` over usage of `IServiceProvider`.
   
 `IVsUIService` enforces UI thread access which prevents accidental RPC calls from a background thread.
   
-- **DO** flavor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
+- **DO** favor `IVsService<T>` and `IVsService<TService, TInterface>` over usage of `IAsyncServiceProvider`.
   
 `IVsService` ensures casts are performed on the UI thread which prevents accidental RPC calls from a background thread.
 
-- **DO** flavor `HResult` over `VSConstants` and raw constants.
+- **DO** favor `HResult` over `VSConstants` and raw constants.
 
-- **DO** flavor `HierarchyId` over `VSConstants.VSITEMID` and raw constants.
+- **DO** favor `HierarchyId` over `VSConstants.VSITEMID` and raw constants.
 
 ## Tests
 
-- **DO** flavor a single Assert per unit test.
+- **DO** favor a single Assert per unit test.
 
 - **DO** use the `Method_Setup_Behavior` naming style for unit tests, for example, `GetProperty_NullAsName_ThrowsArgument` or `CalculateValues_WhenDisposed_ReturnsNull`.
 
-- **DO** flavor static `CreateInstance` for creating the object under test versus directly calling the constructor
+- **DO** favor static `CreateInstance` for creating the object under test versus directly calling the constructor
 
 This reduces the amount of refactoring/fixup needed when adding a new import to a service.
 
