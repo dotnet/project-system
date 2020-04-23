@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
@@ -61,33 +61,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             Assert.Equal("B", list.Item(2));
         }
 
-        [Fact]
-        public void UpdateNamespaceImportListTest()
+        [Theory]
+        [InlineData(new string[0],                       new [] { "A", "B", "C", "D" }      , new [] { "A", "B", "C", "D" }, new string[0]       )] // Initial add
+        [InlineData(new [] { "A", "B", "C", "D" },       new [] { "A", "B", "C" }           , new string[0],                 new [] { "D" }      )] // Remove from the end
+        [InlineData(new [] { "A", "B", "C" },            new [] { "B", "C" }                , new string[0],                 new [] { "A" }      )] // Remove from the beginning
+        [InlineData(new [] { "B", "C" },                 new [] { "A", "B", "C" }           , new [] { "A" },                new string[0]       )] // Add at the beginning
+        [InlineData(new [] { "A", "B", "C" },            new [] { "A", "B", "C", "E" }      , new [] { "E" },                new string[0]       )] // Add at the end
+        [InlineData(new [] { "A", "B", "C", "E"},        new [] { "A", "B", "C", "D", "E" } , new [] { "D" },                new string[0]       )] // Add in the middle
+        [InlineData(new [] { "A", "B", "C", "D", "E" },  new [] { "A", "B", "D", "E" }      , new string[0],                 new [] { "C" }      )] // Remove from the middle
+        [InlineData(new [] { "A", "B", "D", "E" },       new [] { "B", "C", "E", "F" }      , new [] { "C", "F" },           new [] { "A", "D" } )] // Addition and deletion in jumbled order with the same no of elements as before
+        
+        public void UpdateNamespaceImportListTest(string[] initialState, string[] updateToApply, string[] expectedAdded, string[] expectedRemoved)
         {
-            IEnumerable<(string[] names, string[] expected)> updates = new[]
-            {
-                (new [] { "A", "B", "C", "D" },      new [] { "A", "B", "C", "D" }),      // Initial add
-                (new [] { "A", "B", "C" },           new [] { "A", "B", "C" }),           // Remove from the end
-                (new [] { "B", "C" },                new [] { "B", "C" }),                // Remove from the beginning
-                (new [] { "A", "B", "C" },           new [] { "A", "B", "C" }),           // Add at the beginning
-                (new [] { "A", "B", "C", "E" },      new [] { "A", "B", "C", "E" }),      // Add at the end
-                (new [] { "A", "B", "C", "D", "E" }, new [] { "A", "B", "C", "D", "E" }), // Add in the middle
-                (new [] { "A", "B", "D", "E" },      new [] { "A", "B", "D", "E" }),      // Remove from the middle
-                (new [] { "F", "C", "B", "E" },      new [] { "B", "C", "E", "F" }),      // Addition and deletion in jumbled order with the same no of elements as before
-            };
+            var list = VisualBasicNamespaceImportsListFactory.CreateInstance(initialState);
+            
+            var json = ConstructNamespaceImportChangeJson(updateToApply);
+            var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(json);
 
-            var list = VisualBasicNamespaceImportsListFactory.CreateInstance();
+            list.TestApply(projectSubscriptionUpdate);
 
-            foreach (var (names, expected) in updates)
-            {
-                var json = ConstructNamespaceImportChangeJson(names);
-                var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(json);
-                var projectVersionedValue = IProjectVersionedValueFactory.Create(projectSubscriptionUpdate);
-
-                list.OnNamespaceImportChanged(projectVersionedValue);
-
-                Assert.Equal(expected, list);
-            }
+            // Updates represent the final state, so they are the expected list too
+            Assert.Equal(updateToApply.OrderBy(s=>s), list.OrderBy(s=>s));
+            Assert.Equal(expectedAdded.OrderBy(s=>s), list.ImportsAdded.OrderBy(s=>s));
+            Assert.Equal(expectedRemoved.OrderBy(s=>s), list.ImportsRemoved.OrderBy(s=>s));
 
             return;
 

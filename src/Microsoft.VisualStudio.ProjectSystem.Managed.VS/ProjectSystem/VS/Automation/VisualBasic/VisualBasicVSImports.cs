@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(Imports))]
     [Export(typeof(ImportsEvents))]
+    [Export(typeof(VisualBasicVSImports))]
     [AppliesTo(ProjectCapability.VisualBasic)]
     [Order(Order.Default)]
     internal class VisualBasicVSImports : ConnectionPointContainer,
@@ -68,8 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                         project.AddItem(ImportItemTypeName, bstrImport);
                     });
                 });
-
-                OnImportAdded(bstrImport);
             }
             else
             {
@@ -118,8 +117,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                 });
 
                 Assumes.NotNull(importRemoved);
-
-                OnImportRemoved(importRemoved);
             }
             else if (index is string)
             {
