@@ -75,8 +75,8 @@
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">无法打开项目文件“{0}”。
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
+        <target state="translated">无法打开项目文件“{0}”。
 
 此项目是使用错误的项目类型加载的，可能是由于在 Visual Studio 之外重命名了项目扩展。请移除该项目，然后重新添加，使解决方案选择正确的项目类型。</target>
         <note />
