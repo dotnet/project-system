@@ -148,7 +148,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         internal void ProcessDataflowChanges(IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
         {
             DesignTimeInputs inputs = input.Value.Item1;
-            IProjectChangeDescription configChanges = input.Value.Item2.ProjectChanges[ConfigurationGeneral.SchemaName];
+
+            if (!input.Value.Item2.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription configChanges))
+            {
+                // If this isn't an update we can deal with, just ignore it
+                return;
+            }
 
             // This can't change while we're running, but let's use a local so you don't have to take my word for it
             DesignTimeInputsDelta? previousState = _currentState;
@@ -187,17 +192,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             string tempPEOutputPath;
-            // Make sure we have the up to date output path
-            string basePath = configChanges.After.Properties[ConfigurationGeneral.ProjectDirProperty];
-            string objPath = configChanges.After.Properties[ConfigurationGeneral.IntermediateOutputPathProperty];
+            // Make sure we have the up to date output path. If either of these don't exist, they will be null and we'll handle the ArgumentException below
+            string basePath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.ProjectDirProperty);
+            string objPath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.IntermediateOutputPathProperty);
             try
             {
                 tempPEOutputPath = Path.Combine(basePath, objPath, "TempPE");
             }
             catch (ArgumentException)
             {
-                // if the path is bad, then we presume we wouldn't be able to act on any files anyway
-                // so we can just clear _latestDesignTimeInputs to ensure file changes aren't processed, and return.
+                // if the path is bad, or we couldn't get part of it, then we presume we wouldn't be able to act on any files
+                // so we can just clear _currentState to ensure file changes aren't processed, and return.
                 // If the path is ever fixed this block will trigger again and all will be right with the world.
                 _currentState = null;
                 return;
