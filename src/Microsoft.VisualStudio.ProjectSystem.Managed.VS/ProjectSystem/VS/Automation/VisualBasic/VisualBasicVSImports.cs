@@ -106,13 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     });
                 });
             }
-            else if (index is string)
-            {
-                throw new ArgumentException(string.Format("{0} - Namespace is not present ", index), nameof(index));
-            }
             else
             {
-                throw new ArgumentException(string.Format("{0} - index is neither an Int nor a String", index), nameof(index));
+                throw new ArgumentException(string.Format("{0} - index is neither an Int nor a String, or the Namepsace was not found", index), nameof(index));
             }
         }
 
