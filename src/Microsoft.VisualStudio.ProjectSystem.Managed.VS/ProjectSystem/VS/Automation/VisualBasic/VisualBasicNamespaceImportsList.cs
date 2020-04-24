@@ -82,11 +82,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             return Task.CompletedTask;
         }
 
-        protected override Task ApplyAsync(IProjectVersionedValue<ImmutableList<string>> value)
+        protected override async Task ApplyAsync(IProjectVersionedValue<ImmutableList<string>> value)
         {
+            await JoinableFactory.SwitchToMainThreadAsync();
+
             ImmutableList<string> current = AppliedValue?.Value ?? ImmutableList<string>.Empty;
             ImmutableList<string> input = value.Value;
-            
+
             IEnumerable<string> removed = current.Except(input);
             IEnumerable<string> added = input.Except(current);
 
@@ -106,8 +108,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                     imports.OnImportAdded(import);
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         protected override Task<IProjectVersionedValue<ImmutableList<string>>> PreprocessAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> input, IProjectVersionedValue<ImmutableList<string>>? previousOutput)
