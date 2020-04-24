@@ -54,6 +54,7 @@ Generate NuGet package on build                                             |   
 Add Service Reference                                                       | ●        | 
 Add Web Reference                                                           | ●        | 
 Add Data Source                                                             | ●        | 16.4
+Settings Designer                                                           | ●        | ● | Added support for .NET Core 3.0 in 16.7
 DataSet Designer                                                            | ●        |
 "Initialize Interactive Window with Project"                                | ●        | ● | Only when targeting .NET Framework.
 Class Diagrams                                                              | ●        | ●
