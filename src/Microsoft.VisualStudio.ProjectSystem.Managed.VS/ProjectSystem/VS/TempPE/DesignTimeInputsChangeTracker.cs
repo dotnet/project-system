@@ -152,6 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             if (!input.Value.Item2.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription configChanges))
             {
                 // If this isn't an update we can deal with, just ignore it
+                _currentState = null;
                 return;
             }
 
