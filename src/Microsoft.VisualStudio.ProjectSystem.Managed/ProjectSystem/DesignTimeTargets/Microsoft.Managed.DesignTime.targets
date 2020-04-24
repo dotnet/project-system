@@ -110,7 +110,7 @@
     <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
-    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' "/>
 
     <!-- Publish capability enables the Publish command for the Project -->
     <ProjectCapability Include="Publish"/>
