@@ -78,45 +78,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         public void Remove(object index)
         {
-            bool intIndexPresent = index is int indexInt && _importsList.IsPresent(indexInt);
-            bool stringIndexPresent = index is string removeImport && _importsList.IsPresent(removeImport);
-
-            if (intIndexPresent || stringIndexPresent)
+            string? importToRemove = null;
+            if (index is int indexInt && _importsList.IsPresent(indexInt))
             {
-                string? importRemoved = null;
+                importToRemove = _importsList.Item(indexInt);
+            }
+            else if (index is string removeImport && _importsList.IsPresent(removeImport))
+            {
+                importToRemove = removeImport;
+            }
+
+            if (importToRemove != null)
+            {
                 _threadingService.ExecuteSynchronously(() =>
                 {
                     return _projectAccessor.OpenProjectForWriteAsync(ConfiguredProject, project =>
                     {
-                        Microsoft.Build.Evaluation.ProjectItem importProjectItem;
-                        if (index is string removeImport1)
-                        {
-                            importProjectItem = project.GetItems(ImportItemTypeName)
-                                                       .First(i => string.Equals(removeImport1, i.EvaluatedInclude, StringComparisons.ItemNames));
-                        }
-                        else if (index is int indexInt1)
-                        {
-                            importProjectItem = project.GetItems(ImportItemTypeName)
-                                                       .OrderBy(i => i.EvaluatedInclude)
-                                                       .ElementAt(indexInt1 - 1);
-                        }
-                        else
-                        {
-                            // Cannot reach this point, since index has to be Int or String
-                            throw Assumes.NotReachable();
-                        }
+                        Microsoft.Build.Evaluation.ProjectItem importProjectItem = project.GetItems(ImportItemTypeName)
+                                                                                          .First(i => string.Equals(importToRemove, i.EvaluatedInclude, StringComparisons.ItemNames));
 
                         if (importProjectItem.IsImported)
                         {
-                            throw new ArgumentException(string.Format(VSResources.ImportsFromTargetCannotBeDeleted, index.ToString()), nameof(index));
+                            throw new ArgumentException(string.Format(VSResources.ImportsFromTargetCannotBeDeleted, importToRemove), nameof(index));
                         }
 
-                        importRemoved = importProjectItem.EvaluatedInclude;
                         project.RemoveItem(importProjectItem);
                     });
                 });
-
-                Assumes.NotNull(importRemoved);
             }
             else if (index is string)
             {
