@@ -13,6 +13,10 @@
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
   </Rule.DataSource>
+  
+  <StringProperty Name="Aliases"
+                  Description="Aliases for the assembly references coming from this PackageReference."
+                  DisplayName="Aliases" />
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
