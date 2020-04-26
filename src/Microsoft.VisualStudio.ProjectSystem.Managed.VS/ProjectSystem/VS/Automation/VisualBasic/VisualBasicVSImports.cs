@@ -62,12 +62,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         {
             if (!_importsList.IsPresent(bstrImport))
             {
-                _threadingService.ExecuteSynchronously(() =>
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    return _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProjectVSServices.Project, project =>
+                    await _projectAccessor.OpenProjectXmlForWriteAsync(_unconfiguredProjectVSServices.Project, project =>
                     {
                         project.AddItem(ImportItemTypeName, bstrImport);
                     });
+
+                    await _importsList.ReceiveLatestSnapshotAsync();
                 });
             }
             else
@@ -90,9 +92,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
             if (importToRemove != null)
             {
-                _threadingService.ExecuteSynchronously(() =>
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    return _projectAccessor.OpenProjectForWriteAsync(ConfiguredProject, project =>
+                    await _projectAccessor.OpenProjectForWriteAsync(ConfiguredProject, project =>
                     {
                         Microsoft.Build.Evaluation.ProjectItem importProjectItem = project.GetItems(ImportItemTypeName)
                                                                                           .First(i => string.Equals(importToRemove, i.EvaluatedInclude, StringComparisons.ItemNames));
@@ -104,6 +106,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
                         project.RemoveItem(importProjectItem);
                     });
+
+                    await _importsList.ReceiveLatestSnapshotAsync();
                 });
             }
             else

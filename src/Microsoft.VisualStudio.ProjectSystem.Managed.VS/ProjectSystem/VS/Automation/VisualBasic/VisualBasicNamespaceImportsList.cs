@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
@@ -38,6 +39,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         [Import(typeof(VisualBasicVSImports))]
         internal Lazy<VisualBasicVSImports>? VSImports { get; set; }
+
+        /// <summary>
+        /// Get the global project collection version number, so we can make sure we are waiting for the latest build after a dependent project is updated.
+        /// </summary>
+        [Import(ContractNames.MSBuild.GlobalProjectCollectionGlobalProperties, typeof(IProjectGlobalPropertiesProvider))]
+        private IProjectGlobalPropertiesProvider GlobalProjectCollectionWatcher { get; set; } = null!;
 
         private void TryInitialize()
         {
@@ -131,6 +138,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         }
 
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        /// <summary>
+        /// Receive latest snapshot from project subscription service.
+        /// </summary>
+        /// <returns>returns a task, which the caller could await for</returns>
+        internal async Task<IProjectVersionedValue<ImmutableList<string>>> ReceiveLatestSnapshotAsync()
+        {
+            await InitializeAsync();
+            while (true)
+            {
+                try
+                {
+                    var minimumRequiredDataSourceVersions = ActiveConfiguredProjectProvider.ActiveConfiguredProject.CreateVersionRequirement(allowMissingData: false).ToBuilder();
+
+                    IComparable? latestProjectCollectionVersion = GlobalProjectCollectionWatcher.DataSourceVersion;
+                    minimumRequiredDataSourceVersions.Add(
+                        ProjectDataSources.GlobalProjectCollectionGlobalProperties,
+                        new ProjectVersionRequirement(latestProjectCollectionVersion!, allowMissingData: true));
+
+                    return await ApplyAsync(minimumRequiredDataSourceVersions.ToImmutable(), default);
+                }
+                catch (ActiveProjectConfigurationChangedException)
+                {
+                    // The active project config has changed since we started.  Recalculate the data source versions
+                    // we need and start waiting over again.
+                }
+            }
+        }
 
         // lIndex is One-based index
         internal string Item(int lIndex)

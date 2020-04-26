@@ -47,6 +47,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
+        /// Contracts used by CPS exports of MSBuild objects.
+        /// </summary>
+        internal static class MSBuild
+        {
+            /// <summary>
+            /// The contract name on the IProjectGlobalPropertiesProvider export that publishes all the global properties on the GlobalProjectCollection.
+            /// </summary>
+            internal const string GlobalProjectCollectionGlobalProperties = Prefix + "GlobalProjectCollection.GlobalProperties";
+        }
+
+        /// <summary>
         /// Contracts used by tree providers.
         /// </summary>
         internal static class ProjectTreeProviders
