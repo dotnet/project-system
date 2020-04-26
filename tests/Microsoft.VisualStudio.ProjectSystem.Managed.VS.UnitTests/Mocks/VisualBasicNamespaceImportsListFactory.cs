@@ -52,12 +52,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
                 var result = PreprocessAsync(projectVersionedValue, null);
 
-                ApplyAsync(result.Result);
+                _ = ApplyAsync(result.Result);
             }
 
             internal void TestApply(string[] list)
             {
-                ApplyAsync(IProjectVersionedValueFactory.Create(ImmutableList.CreateRange(list)));
+                _ = ApplyAsync(IProjectVersionedValueFactory.Create(ImmutableList.CreateRange(list)));
             }
         }
 
