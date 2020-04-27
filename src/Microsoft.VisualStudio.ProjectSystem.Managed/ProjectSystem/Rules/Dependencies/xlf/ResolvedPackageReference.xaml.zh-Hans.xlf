@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
         <source>Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</source>
-        <target state="new">Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'.</target>
+        <target state="translated">指示是否要使用包的根目录的位置生成 MSBuild 属性。所生成的属性名称采用 "Pkg[PackageID]" 的形式，其中 "[PackageID]" 是包的 ID，且所有句点 "." 均替换为下划线 "_"。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate path property</source>
-        <target state="new">Generate path property</target>
+        <target state="translated">生成路径属性</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">

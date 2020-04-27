@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Authentication mode:</source>
-        <target state="new">Authentication mode:</target>
+        <target state="translated">身份验证模式:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>Find...</source>
-        <target state="new">Find...</target>
+        <target state="translated">查找:</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">

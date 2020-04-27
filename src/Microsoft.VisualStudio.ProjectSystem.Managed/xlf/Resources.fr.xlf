@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">Le flux de données '{0}' du système de projet s'est fermé en raison d'une exception : {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Aucune authentification</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -75,10 +75,10 @@
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
+        <target state="translated">Impossible d'ouvrir le fichier projet '{0}'. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
+Ce projet a été chargé à l'aide d'un type de projet incorrect, probablement à la suite du renommage de l'extension de projet en dehors de Visual Studio. Supprimez et lisez le projet pour que la solution prenne le bon type de projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ Si ce fichier ou dossier n'apparaît pas dans l'Explorateur de solutions, cela s
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Authentification Windows</target>
         <note />
       </trans-unit>
     </body>
