@@ -12,6 +12,16 @@
         <target state="translated">패키지 속성</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Aliases|Description">
+        <source>Aliases for the assembly references coming from this PackageReference.</source>
+        <target state="new">Aliases for the assembly references coming from this PackageReference.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="new">Aliases</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">버전</target>
