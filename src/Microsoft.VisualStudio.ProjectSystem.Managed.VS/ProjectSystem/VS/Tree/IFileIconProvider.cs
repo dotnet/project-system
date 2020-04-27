@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
     /// Provides icons for files based on their file names.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne, Provider = ProjectSystemContractProvider.Private)]
-    internal interface IFileIconProvider
+    public interface IFileIconProvider
     {
         /// <summary>
         /// Gets the icon associated with <paramref name="path"/>'s extension.

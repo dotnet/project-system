@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
     internal static class MefExtensions
     {
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             Lazy<T, IAppliesToMetadataView> lazy = exportProvider
                 .GetExports<T, IAppliesToMetadataView>()
                 .SingleOrDefault(export => export.Metadata.AppliesTo(capabilitiesScope));
-            
+
             return lazy == null ? default : lazy.Value;
         }
     }

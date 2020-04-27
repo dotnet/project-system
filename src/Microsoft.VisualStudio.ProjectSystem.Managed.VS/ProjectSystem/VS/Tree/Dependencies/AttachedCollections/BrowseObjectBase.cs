@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// right from it)
     /// </summary>
     [ComVisible(true)]
-    internal abstract class BrowseObjectBase : ICustomTypeDescriptor
+    public abstract class BrowseObjectBase : ICustomTypeDescriptor
     {
 #pragma warning disable CA1822
         [Browsable(false)]
@@ -27,23 +27,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public abstract string GetClassName();
 
-        public AttributeCollection GetAttributes() => TypeDescriptor.GetAttributes(this, true);
+        AttributeCollection ICustomTypeDescriptor.GetAttributes() => TypeDescriptor.GetAttributes(this, true);
 
-        public EventDescriptor GetDefaultEvent() => TypeDescriptor.GetDefaultEvent(this, true);
+        EventDescriptor ICustomTypeDescriptor.GetDefaultEvent() => TypeDescriptor.GetDefaultEvent(this, true);
 
-        public PropertyDescriptor GetDefaultProperty() => TypeDescriptor.GetDefaultProperty(this, true);
+        PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty() => TypeDescriptor.GetDefaultProperty(this, true);
 
-        public object GetEditor(Type editorBaseType) => TypeDescriptor.GetEditor(this, editorBaseType, true);
+        object ICustomTypeDescriptor.GetEditor(Type editorBaseType) => TypeDescriptor.GetEditor(this, editorBaseType, true);
 
-        public EventDescriptorCollection GetEvents() => TypeDescriptor.GetEvents(this, true);
+        EventDescriptorCollection ICustomTypeDescriptor.GetEvents() => TypeDescriptor.GetEvents(this, true);
 
-        public EventDescriptorCollection GetEvents(Attribute[] attributes) => TypeDescriptor.GetEvents(this, attributes, true);
+        EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes) => TypeDescriptor.GetEvents(this, attributes, true);
 
-        public object GetPropertyOwner(PropertyDescriptor pd) => this;
+        object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd) => this;
 
-        public PropertyDescriptorCollection GetProperties() => GetProperties(null);
+        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties() => ((ICustomTypeDescriptor)this).GetProperties(null);
 
-        public PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
+        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[]? attributes)
         {
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(this, attributes, true);
 
@@ -57,6 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return new PropertyDescriptorCollection(newList);
         }
 
-        public virtual TypeConverter GetConverter() => TypeDescriptor.GetConverter(this, true);
+        TypeConverter ICustomTypeDescriptor.GetConverter() => TypeDescriptor.GetConverter(this, true);
     }
 }

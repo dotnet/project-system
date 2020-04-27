@@ -1,12 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -14,18 +14,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Base class for attached items in the dependencies tree in Solution Explorer.
     /// </summary>
     /// <remarks>
-    /// Subclasses should implement one or both of:
-    /// <list type="bullet">
-    ///     <item><see cref="IContainsAttachedItems"/> if, when expanded by the user, the item may have children.</item>
-    ///     <item><see cref="IContainedByAttachedItems"/> if the item may appear in search results.</item>
-    /// </list>
+    /// Subclasses should probably derive from <see cref="RelatableItemBase"/>.
     /// </remarks>
-    internal abstract class AttachedCollectionItemBase
+    public abstract class AttachedCollectionItemBase
         : ITreeDisplayItem,
           ITreeDisplayItemWithImages,
           IPrioritizedComparable,
           IInteractionPatternProvider,
-          IBrowsablePattern
+          IBrowsablePattern,
+          INotifyPropertyChanged
     {
         // Other patterns we may wish to utilise in future are:
         //
@@ -47,14 +44,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             typeof(IBrowsablePattern)
         };
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private string _text;
+
         protected AttachedCollectionItemBase(string name)
         {
             Requires.NotNullOrWhiteSpace(name, nameof(name));
 
-            Text = name;
+            _text = name;
         }
 
-        public string Text { get; }
+        public string Text
+        {
+            get => _text;
+            protected set
+            {
+                if (_text != value)
+                {
+                    _text = value;
+                    RaisePropertyChanged(KnownEventArgs.TextPropertyChanged);
+                }
+            }
+        }
 
         public abstract int Priority { get; }
 
@@ -73,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public virtual string? StateToolTipText => null;
 
         // Return null means ToolTipText is displayed only when the item's label is truncated
-        public object? ToolTipContent => null;
+        public virtual object? ToolTipContent => null;
 
         public string ToolTipText => Text;
 
@@ -81,17 +93,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public virtual object? GetBrowseObject() => null;
 
-        public TPattern? GetPattern<TPattern>() where TPattern : class
+        TPattern IInteractionPatternProvider.GetPattern<TPattern>() where TPattern : class
         {
+#pragma warning disable CS8603 // Possible null reference return. (https://github.com/dotnet/roslyn/issues/43619)
             if (s_supportedPatterns.Contains(typeof(TPattern)))
             {
                 return this as TPattern;
             }
 
             return null;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
-        public int CompareTo(object obj)
+        public virtual int CompareTo(object obj)
         {
             if (obj is ITreeDisplayItem item)
             {
@@ -102,26 +116,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return 0;
         }
 
-        public override string ToString() => Text;
-
-        /// <summary>
-        /// Simple implementation of <see cref="IAttachedCollectionSource"/> that provides an existing
-        /// set of items (i.e. not lazily constructed), expected to be used primarily for
-        /// <see cref="KnownRelationships.ContainedBy"/> queries of search result item's parentage.
-        /// </summary>
-        protected sealed class MaterializedAttachedCollectionSource : IAttachedCollectionSource
+        protected void RaisePropertyChanged(PropertyChangedEventArgs e)
         {
-            public MaterializedAttachedCollectionSource(object sourceItem, IEnumerable? items)
-            {
-                Requires.NotNull(sourceItem, nameof(sourceItem));
-
-                SourceItem = sourceItem;
-                Items = items;
-            }
-
-            public object SourceItem { get; }
-            public bool HasItems => Items != null;
-            public IEnumerable? Items { get; }
+            PropertyChanged?.Invoke(this, e);
         }
+
+        public override string ToString() => Text;
     }
 }
