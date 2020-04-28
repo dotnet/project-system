@@ -2,8 +2,9 @@
 
 using System;
 using System.Resources;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.NuGet
 {
     /// <summary>
     /// Specifies a localized description for a property or event.
