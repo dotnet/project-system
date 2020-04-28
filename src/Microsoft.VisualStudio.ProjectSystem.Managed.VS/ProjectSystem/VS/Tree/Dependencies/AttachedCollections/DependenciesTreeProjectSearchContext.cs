@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Threading;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -52,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 if (targetNode == null)
                 {
-                    Report.Fail("Should not fail to find the target node.");
+                    TraceUtilities.TraceError("Should not fail to find the target node.");
                     return null;
                 }
 

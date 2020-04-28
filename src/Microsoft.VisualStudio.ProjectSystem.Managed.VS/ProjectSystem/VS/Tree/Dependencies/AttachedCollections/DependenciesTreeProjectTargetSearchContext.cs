@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -62,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 if (containedByRelations.IsEmpty)
                 {
                     // We should never have a scenario where an item type does not have a parent.
-                    Report.Fail($"No IRelation exports exist that provide parent (ContainedBy) items for type {childItem.GetType()}.");
+                    TraceUtilities.TraceError($"No IRelation exports exist that provide parent (ContainedBy) items for type {childItem.GetType()}.");
                     return;
                 }
 

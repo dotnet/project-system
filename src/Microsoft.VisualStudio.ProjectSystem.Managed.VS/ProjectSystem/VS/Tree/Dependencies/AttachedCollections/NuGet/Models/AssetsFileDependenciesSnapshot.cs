@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using NuGet.Packaging;
 using NuGet.ProjectModel;
 
@@ -160,7 +161,7 @@ namespace Microsoft.VisualStudio.NuGet.Models
                 if (DataByTarget.Count != 1)
                 {
                     // This is unexpected
-                    Report.Fail("No target specified, yet more than one target exists");
+                    TraceUtilities.TraceError("No target specified, yet more than one target exists");
                     targetData = null;
                     return false;
                 }
