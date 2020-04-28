@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.Copyright = New System.Windows.Forms.TextBox()
             Me.PackageLicenseLabel = New System.Windows.Forms.Label()
             Me.LicenseLineLabel = New System.Windows.Forms.Label()
-            Me.LicenseUrlWarning = New System.Windows.Forms.TextBox()
+            Me.LicenseUrlWarning = New Microsoft.VisualStudio.Editors.PropertyPages.FixedWidthTextBox()
             Me.ExpressionLabel = New System.Windows.Forms.Label()
             Me.ExpressionLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.LicenseExpressionRadioButton = New System.Windows.Forms.RadioButton()
@@ -75,7 +75,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FileVersionMinorTextBox = New System.Windows.Forms.TextBox()
             Me.FileVersionMajorTextBox = New System.Windows.Forms.TextBox()
             Me.PackageIconLineLabel = New System.Windows.Forms.Label()
-            Me.PackageIconUrlWarning = New System.Windows.Forms.TextBox()
+            Me.PackageIconUrlWarning = New Microsoft.VisualStudio.Editors.PropertyPages.FixedWidthTextBox()
             Me.LicenseLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
             Me.OrLabel = New System.Windows.Forms.Label()
             Me.TableLayoutPanel.SuspendLayout()
@@ -532,7 +532,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents FileVersionMajorTextBox As Windows.Forms.TextBox
         Friend WithEvents AssemblyFileVersionLabel As Windows.Forms.Label
         Friend WithEvents LicenseLineLabel As System.Windows.Forms.Label
-        Friend WithEvents LicenseUrlWarning As System.Windows.Forms.TextBox
+        Friend WithEvents LicenseUrlWarning As FixedWidthTextBox
 
         Friend WithEvents LicenseLayoutPanel As Windows.Forms.TableLayoutPanel
         Friend WithEvents ExpressionLayoutPanel As Windows.Forms.TableLayoutPanel
@@ -551,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents LicenseBrowseButton As System.Windows.Forms.Button
         Friend WithEvents IconFileBrowseButton As Windows.Forms.Button
         Friend WithEvents PackageIconLineLabel As Windows.Forms.Label
-        Friend WithEvents PackageIconUrlWarning As Windows.Forms.TextBox
+        Friend WithEvents PackageIconUrlWarning As FixedWidthTextBox
     End Class
 
 End Namespace
