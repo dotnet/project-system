@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.NuGet
         public BrowseObjectDescriptionAttribute(string key) : base(key)
         {}
 
+        // TODO move these resources to NuGet too
         protected override ResourceManager ResourceManager => VSResources.ResourceManager;
     }
 }
