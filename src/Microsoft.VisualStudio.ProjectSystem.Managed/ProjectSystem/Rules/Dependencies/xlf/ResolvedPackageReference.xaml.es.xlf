@@ -22,6 +22,16 @@
         <target state="translated">Propiedades de paquete</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to assembly references contained in this package.</source>
+        <target state="new">A comma-delimited list of aliases to assembly references contained in this package.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="new">Aliases</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Versión</target>

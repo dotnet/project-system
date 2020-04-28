@@ -12,12 +12,12 @@
         <target state="translated">Paketeigenschaften</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Aliases|Description">
-        <source>Aliases for the assembly references coming from this PackageReference.</source>
-        <target state="new">Aliases for the assembly references coming from this PackageReference.</target>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to assembly references contained in this package.</source>
+        <target state="new">A comma-delimited list of aliases to assembly references contained in this package.</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|Aliases|DisplayName">
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
         <target state="new">Aliases</target>
         <note />

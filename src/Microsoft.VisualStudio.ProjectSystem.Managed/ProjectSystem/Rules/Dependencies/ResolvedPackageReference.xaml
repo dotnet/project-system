@@ -14,6 +14,18 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
+  <StringListProperty Name="Aliases"
+                      Description="A comma-delimited list of aliases to assembly references contained in this package."
+                      DisplayName="Aliases"
+                      Separator="," >
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="PackageReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
   <StringListProperty Name="Dependencies"
                       Separator=";"
                       Visible="false">
