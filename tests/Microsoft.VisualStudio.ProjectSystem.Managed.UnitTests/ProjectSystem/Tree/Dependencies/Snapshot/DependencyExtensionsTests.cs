@@ -62,24 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
         }
 
-        [Theory]
-        [InlineData(AnalyzerRuleHandler.ProviderTypeString,  false)]
-        [InlineData(AssemblyRuleHandler.ProviderTypeString,  false)]
-        [InlineData(ComRuleHandler.ProviderTypeString,       false)]
-        [InlineData(FrameworkRuleHandler.ProviderTypeString, false)]
-        [InlineData(PackageRuleHandler.ProviderTypeString,   false)]
-        [InlineData(ProjectRuleHandler.ProviderTypeString,   true)]
-        [InlineData(SdkRuleHandler.ProviderTypeString,       false)]
-        public void IsProject(string providerType, bool isProject)
-        {
-            var dependency = new TestDependency
-            {
-                ProviderType = providerType
-            };
-
-            Assert.Equal(isProject, dependency.IsProject());
-        }
-
         [Fact]
         public void HasSameTarget()
         {
