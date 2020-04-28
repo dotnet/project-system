@@ -35,6 +35,7 @@
       <Button guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100" type="Button">
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>AllowClientRole</CommandFlag>
         <Strings>
           <ButtonText>Edit Project File</ButtonText>
           <CommandName>SolutionExplorer.Project.Edit</CommandName>
@@ -43,7 +44,7 @@
         </Strings>
       </Button>
     </Buttons>
-  
+
   </Commands>
 
   <CommandPlacements>
@@ -51,13 +52,13 @@
     <CommandPlacement guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
       <Parent guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" />
     </CommandPlacement>
-  
+
   </CommandPlacements>
 
   <Symbols>
     <!-- This is our managed package guid. -->
     <GuidSymbol name="PackageGuidString" value="{AE74FDFC-B9CE-4948-9E2F-F443B5BE8D37}" />
-  
+
     <!-- Guid and IDs for our commands and groups -->
     <GuidSymbol name="guidManagedProjectSystemClientProjectCommandSet" value="{28C12D02-11CB-437D-B84D-9CEA7A5333A3}">
       <IDSymbol name="cmdidEditProjectFile" value="0x0100" />
