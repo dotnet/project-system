@@ -57,6 +57,51 @@
         <target state="new">Warning Level</target>
         <note />
       </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
+        <source>The framework assembly's assembly name.</source>
+        <target state="new">The framework assembly's assembly name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
+        <source>Assembly Name</source>
+        <target state="new">Assembly Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
+        <source>The assembly version of the framework assembly.</source>
+        <target state="new">The assembly version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
+        <source>Assembly Version</source>
+        <target state="new">Assembly Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
+        <source>Framework Assembly</source>
+        <target state="new">Framework Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDescription">
+        <source>The file version of the framework assembly.</source>
+        <target state="new">The file version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
+        <source>File Version</source>
+        <target state="new">File Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDescription">
+        <source>Path of the framework assembly.</source>
+        <target state="new">Path of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - 匯入來自目標檔案。此項匯入無法移除。</target>
