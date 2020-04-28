@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 throw new ArgumentOutOfRangeException(nameof(index), index, "Invalid index.");
             }
-            set => throw new InvalidOperationException();
+            set => throw new NotSupportedException();
         }
 
         int IList.IndexOf(object value)
@@ -176,14 +176,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         bool IList.Contains(object value) => value is IRelatableItem item && _spans.Any(span => span.Items?.Contains(item) == true);
 
-        void ICollection.CopyTo(Array array, int index) => throw new InvalidOperationException();
-        object ICollection.SyncRoot => throw new InvalidOperationException();
+        void ICollection.CopyTo(Array array, int index) => throw new NotSupportedException();
+        object ICollection.SyncRoot => throw new NotSupportedException();
         bool ICollection.IsSynchronized => false;
-        int IList.Add(object value) => throw new InvalidOperationException();
-        void IList.Clear() => throw new InvalidOperationException();
-        void IList.Insert(int index, object value) => throw new InvalidOperationException();
-        void IList.Remove(object value) => throw new InvalidOperationException();
-        void IList.RemoveAt(int index) => throw new InvalidOperationException();
+        int IList.Add(object value) => throw new NotSupportedException();
+        void IList.Clear() => throw new NotSupportedException();
+        void IList.Insert(int index, object value) => throw new NotSupportedException();
+        void IList.Remove(object value) => throw new NotSupportedException();
+        void IList.RemoveAt(int index) => throw new NotSupportedException();
         bool IList.IsReadOnly => true;
         bool IList.IsFixedSize => true;
     }
