@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         UnconfiguredProject UnconfiguredProject { get; }
 
         /// <summary>
-        /// The set of target frameworks exposed by this project.
+        /// Gets the set of target frameworks exposed by this project.
         /// </summary>
         ImmutableArray<string> TargetFrameworks { get; }
 

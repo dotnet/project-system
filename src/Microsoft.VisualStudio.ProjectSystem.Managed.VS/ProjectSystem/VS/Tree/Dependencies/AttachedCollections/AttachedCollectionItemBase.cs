@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         // - IDragDropTargetPattern
         // - ISupportDisposalNotification
         // - IRenamePattern
+        // - IPivotItemProviderPattern
         // - We also see requests for IVsHierarchyItem
         //
         // NOTE we don't have to support ITreeDisplayItemWithImages -- it's covered by ITreeDisplayItem
