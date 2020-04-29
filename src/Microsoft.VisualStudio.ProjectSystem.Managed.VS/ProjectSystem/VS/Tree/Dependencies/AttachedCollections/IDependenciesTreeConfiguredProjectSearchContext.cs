@@ -5,15 +5,15 @@ using System.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
     /// <summary>
-    /// Provides services for a specific target in a given search operation.
+    /// Provides services for a specific project configuration in a given search operation.
     /// </summary>
     /// <remarks>
-    /// Instances of this type are obtained via <see cref="IDependenciesTreeProjectSearchContext.ForTarget"/>.
+    /// Instances of this type are obtained via <see cref="IDependenciesTreeProjectSearchContext.ForConfiguredProjectAsync"/>.
     /// </remarks>
-    public interface IDependenciesTreeProjectTargetSearchContext
+    public interface IDependenciesTreeConfiguredProjectSearchContext
     {
         /// <summary>
-        /// Gets a token that aborts the search operation if cancelled.
+        /// Gets a token that signals cancellation of the ongoing search operation.
         /// </summary>
         CancellationToken CancellationToken { get; }
 

@@ -94,30 +94,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 return Task.WhenAll(_projectServiceAccessor.GetProjectService().LoadedUnconfiguredProjects.Select(SearchProjectAsync));
             }
 
-            Task SearchProjectAsync(UnconfiguredProject unconfiguredProject)
+            async Task SearchProjectAsync(UnconfiguredProject unconfiguredProject)
             {
                 IUnconfiguredProjectVsServices? projectVsServices = unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
+                IActiveConfigurationGroupService? configurationGroupService = unconfiguredProject.Services.ExportProvider.GetExportedValue<IActiveConfigurationGroupService>();
                 IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
-                if (projectVsServices == null || dependenciesNode == null)
+                if (projectVsServices != null &&
+                    dependenciesNode != null &&
+                    configurationGroupService is IActiveConfigurationGroupService2 activeConfigurationGroupService)
                 {
-                    return Task.CompletedTask;
+                    IConfigurationGroup<ConfiguredProject> configuredProjects = await activeConfigurationGroupService.GetActiveLoadedConfiguredProjectGroupAsync();
+
+                    var projectContext = new DependenciesTreeProjectSearchContext(context, unconfiguredProject, dependenciesNode, _hierarchyItemManager, projectVsServices, _relationProvider);
+
+                    // Search providers concurrently
+                    await Task.WhenAll(_providers.Select(provider => provider.SearchAsync(projectContext)));
                 }
-
-                var targets = new List<string>();
-
-                foreach (ConfiguredProject configuredProject in projectVsServices.Project.LoadedConfiguredProjects)
-                {
-                    if (configuredProject.ProjectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string target))
-                    {
-                        targets.Add(target);
-                    }
-                }
-
-                var projectContext = new DependenciesTreeProjectSearchContext(context, unconfiguredProject, targets.ToImmutableArray(), dependenciesNode, _hierarchyItemManager, projectVsServices, _relationProvider);
-
-                // Search providers concurrently
-                return Task.WhenAll(_providers.Select(provider => provider.SearchAsync(projectContext)));
             }
         }
     }

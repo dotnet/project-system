@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -42,9 +43,23 @@ namespace Microsoft.VisualStudio.NuGet
 
             AssetsFileDependenciesSnapshot snapshot = (await dataSource.GetLatestVersionAsync(context.UnconfiguredProject.Services.DataSourceRegistry, cancellationToken: context.CancellationToken)).Value;
 
+            if (!(context.UnconfiguredProject.Services.ExportProvider.GetExportedValue<IActiveConfigurationGroupService>() is IActiveConfigurationGroupService3 activeConfigurationGroupService))
+            {
+                return;
+            }
+
+            IConfigurationGroup<ConfiguredProject> configuredProjects = await activeConfigurationGroupService.GetActiveLoadedConfiguredProjectGroupAsync();
+
             foreach ((_, AssetsFileTarget target) in snapshot.DataByTarget)
             {
-                IDependenciesTreeProjectTargetSearchContext? targetContext = context.ForTarget(target.Target);
+                ConfiguredProject? configuredProject = await FindConfiguredProjectAsync(target.Target);
+
+                if (configuredProject == null)
+                {
+                    continue;
+                }
+
+                IDependenciesTreeConfiguredProjectSearchContext? targetContext = await context.ForConfiguredProjectAsync(configuredProject);
 
                 if (targetContext == null)
                 {
@@ -72,6 +87,38 @@ namespace Microsoft.VisualStudio.NuGet
                 SearchLogMessages();
 
                 continue;
+
+                async Task<ConfiguredProject?> FindConfiguredProjectAsync(string targetName)
+                {
+                    foreach (ConfiguredProject configuredProject in configuredProjects)
+                    {
+                        if (configuredProject.Services.ProjectSubscription == null)
+                        {
+                            continue;
+                        }
+
+                        IProjectSubscriptionUpdate subscriptionUpdate = (await configuredProject.Services.ProjectSubscription.ProjectRuleSource.GetLatestVersionAsync(configuredProject, cancellationToken: context.CancellationToken)).Value;
+
+                        if (subscriptionUpdate.CurrentState.TryGetValue(NuGetRestore.SchemaName, out ProjectSystem.Properties.IProjectRuleSnapshot nuGetRestoreSnapshot) &&
+                            nuGetRestoreSnapshot.Properties.TryGetValue(NuGetRestore.NuGetTargetMonikerProperty, out string nuGetTargetMoniker) &&
+                            StringComparer.OrdinalIgnoreCase.Equals(nuGetTargetMoniker, targetName))
+                        {
+                            // Assets file 'target' string matches the configure project's NuGetTargetMoniker property value
+                            return configuredProject;
+                        }
+
+                        if (subscriptionUpdate.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out ProjectSystem.Properties.IProjectRuleSnapshot configurationGeneralSnapshot) &&
+                                 configurationGeneralSnapshot.Properties.TryGetValue(ConfigurationGeneral.TargetFrameworkMonikerProperty, out string targetFrameworkMoniker) &&
+                                 StringComparer.OrdinalIgnoreCase.Equals(targetFrameworkMoniker, targetName))
+                        {
+                            // Assets file 'target' string matches the configure project's TargetFrameworkMoniker property value
+                            return configuredProject;
+                        }
+                    }
+
+                    // No project found
+                    return null;
+                }
 
                 void SearchAssemblies(AssetsFileTargetLibrary library, ImmutableArray<string> assemblies, PackageAssemblyGroupType groupType)
                 {

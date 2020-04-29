@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
-    internal sealed class DependenciesTreeProjectTargetSearchContext : IDependenciesTreeProjectTargetSearchContext
+    internal sealed class DependenciesTreeConfiguredProjectSearchContext : IDependenciesTreeConfiguredProjectSearchContext
     {
         private readonly DependenciesTreeSearchContext _inner;
         private readonly IVsHierarchyItemManager _hierarchyItemManager;
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private readonly IRelationProvider _relationProvider;
         private readonly IProjectTree _targetRootNode;
 
-        public DependenciesTreeProjectTargetSearchContext(
+        public DependenciesTreeConfiguredProjectSearchContext(
             DependenciesTreeSearchContext inner,
             IProjectTree targetRootNode,
             IVsHierarchyItemManager hierarchyItemManager,

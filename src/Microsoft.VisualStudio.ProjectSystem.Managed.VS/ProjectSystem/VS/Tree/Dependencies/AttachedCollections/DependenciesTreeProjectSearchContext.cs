@@ -1,7 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Shell;
 
@@ -21,12 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public UnconfiguredProject UnconfiguredProject { get; }
 
-        public ImmutableArray<string> TargetFrameworks { get; }
-
         public DependenciesTreeProjectSearchContext(
             DependenciesTreeSearchContext outer,
             UnconfiguredProject unconfiguredProject,
-            ImmutableArray<string> targetFrameworks,
             IProjectTree dependenciesNode,
             IVsHierarchyItemManager hierarchyItemManager,
             IUnconfiguredProjectVsServices projectVsServices,
@@ -34,7 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             _inner = outer;
             UnconfiguredProject = unconfiguredProject;
-            TargetFrameworks = targetFrameworks;
             _dependenciesNode = dependenciesNode;
             _hierarchyItemManager = hierarchyItemManager;
             _projectVsServices = projectVsServices;
@@ -43,13 +40,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public CancellationToken CancellationToken => _inner.CancellationToken;
 
-        public IDependenciesTreeProjectTargetSearchContext? ForTarget(string targetFramework)
+        public async Task<IDependenciesTreeConfiguredProjectSearchContext?> ForConfiguredProjectAsync(ConfiguredProject configuredProject, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+
             IProjectTree targetRootNode;
 
-            if (TargetFrameworks.Length > 1)
+            if (_dependenciesNode.FindChildWithFlags(DependencyTreeFlags.TargetNode) == null)
             {
-                IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + targetFramework));
+                // Tree does not show any target nodes
+                targetRootNode = _dependenciesNode;
+            }
+            else
+            {
+                if (configuredProject.Services.ProjectSubscription == null)
+                {
+                    return null;
+                }
+
+                IProjectSubscriptionUpdate subscriptionUpdate = (await configuredProject.Services.ProjectSubscription.ProjectRuleSource.GetLatestVersionAsync(configuredProject, cancellationToken: cancellationToken)).Value;
+
+                if (!subscriptionUpdate.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot) ||
+                    !configurationGeneralSnapshot.Properties.TryGetValue(ConfigurationGeneral.TargetFrameworkMonikerProperty, out string tfm))
+                {
+                    return null;
+                }
+
+                IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + tfm));
 
                 if (targetNode == null)
                 {
@@ -59,12 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
                 targetRootNode = targetNode;
             }
-            else
-            {
-                targetRootNode = _dependenciesNode;
-            }
 
-            return new DependenciesTreeProjectTargetSearchContext(_inner, targetRootNode, _hierarchyItemManager, _projectVsServices, _relationProvider);
+            return new DependenciesTreeConfiguredProjectSearchContext(_inner, targetRootNode, _hierarchyItemManager, _projectVsServices, _relationProvider);
         }
     }
 }
