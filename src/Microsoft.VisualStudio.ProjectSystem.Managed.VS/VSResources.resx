@@ -263,10 +263,10 @@ In order to debug this project, add an executable project to this solution which
   <data name="DiagnosticCodeDescription" xml:space="preserve">
     <value>The diagnostic's identifying code.</value>
   </data>
-  <data name="DiagnosticLibraryDisplayName" xml:space="preserve">
+  <data name="DiagnosticLibraryNameDisplayName" xml:space="preserve">
     <value>Library</value>
   </data>
-  <data name="DiagnosticLibraryDescription" xml:space="preserve">
+  <data name="DiagnosticLibraryNameDescription" xml:space="preserve">
     <value>The name of the package or project this diagnostic applies to.</value>
   </data>
   <data name="DiagnosticLevelDisplayName" xml:space="preserve">

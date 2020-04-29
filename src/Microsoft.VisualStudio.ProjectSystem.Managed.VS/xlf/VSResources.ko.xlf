@@ -27,12 +27,12 @@
         <target state="new">Level</target>
         <note />
       </trans-unit>
-      <trans-unit id="DiagnosticLibraryDescription">
+      <trans-unit id="DiagnosticLibraryNameDescription">
         <source>The name of the package or project this diagnostic applies to.</source>
         <target state="new">The name of the package or project this diagnostic applies to.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DiagnosticLibraryDisplayName">
+      <trans-unit id="DiagnosticLibraryNameDisplayName">
         <source>Library</source>
         <target state="new">Library</target>
         <note />

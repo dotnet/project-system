@@ -70,8 +70,8 @@ namespace Microsoft.VisualStudio.NuGet
             [BrowseObjectDescription(nameof(VSResources.DiagnosticCodeDescription))]
             public string Code => _item.Log.Code.ToString();
 
-            [BrowseObjectDisplayName(nameof(VSResources.DiagnosticLibraryDisplayName))]
-            [BrowseObjectDescription(nameof(VSResources.DiagnosticLibraryDescription))]
+            [BrowseObjectDisplayName(nameof(VSResources.DiagnosticLibraryNameDisplayName))]
+            [BrowseObjectDescription(nameof(VSResources.DiagnosticLibraryNameDescription))]
             public string LibraryName => _item.Log.LibraryName;
 
             [BrowseObjectDisplayName(nameof(VSResources.DiagnosticLevelDisplayName))]
