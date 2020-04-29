@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -15,7 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// combo box (which shows ComponentName in bold and ClassName in regular to the
     /// right from it)
     /// </summary>
-    [ComVisible(true)]
     public abstract class BrowseObjectBase : ICustomTypeDescriptor
     {
 #pragma warning disable CA1822
