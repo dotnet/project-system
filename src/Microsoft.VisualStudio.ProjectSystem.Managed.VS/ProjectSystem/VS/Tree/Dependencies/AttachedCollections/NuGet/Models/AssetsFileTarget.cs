@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Microsoft.VisualStudio.NuGet.Models
 {
@@ -76,7 +77,7 @@ namespace Microsoft.VisualStudio.NuGet.Models
                     }
                 }
 
-                _dependentsByLibrary = dependentsByLibrary.ToDictionary(pair => pair.Key, pair => pair.Value.ToImmutable());
+                Volatile.Write(ref _dependentsByLibrary, dependentsByLibrary.ToDictionary(pair => pair.Key, pair => pair.Value.ToImmutable()));
 
                 ImmutableArray<AssetsFileTargetLibrary>.Builder GetBuilder(string library)
                 {
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.NuGet.Models
                 }
             }
 
-            return _dependentsByLibrary.TryGetValue(libraryName, out dependents);
+            return _dependentsByLibrary!.TryGetValue(libraryName, out dependents);
         }
 
         public bool TryGetDependencies(string libraryName, string? version, out ImmutableArray<AssetsFileTargetLibrary> dependencies)
