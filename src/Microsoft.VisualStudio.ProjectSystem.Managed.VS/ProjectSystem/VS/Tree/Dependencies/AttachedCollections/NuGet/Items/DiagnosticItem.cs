@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.NuGet.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
+using LogLevel = NuGet.Common.LogLevel;
 
 namespace Microsoft.VisualStudio.NuGet
 {
@@ -31,8 +32,8 @@ namespace Microsoft.VisualStudio.NuGet
 
         public override ImageMoniker IconMoniker => Log.Level switch
         {
-            global::NuGet.Common.LogLevel.Error => KnownMonikers.StatusError,
-            global::NuGet.Common.LogLevel.Warning => KnownMonikers.StatusWarning,
+            LogLevel.Error => KnownMonikers.StatusError,
+            LogLevel.Warning => KnownMonikers.StatusWarning,
             _ => KnownMonikers.StatusInformation
         };
 
@@ -80,7 +81,7 @@ namespace Microsoft.VisualStudio.NuGet
 
             [BrowseObjectDisplayName(nameof(VSResources.DiagnosticWarningLevelDisplayName))]
             [BrowseObjectDescription(nameof(VSResources.DiagnosticWarningLevelDescription))]
-            public string WarningLevel => _item.Log.Level == global::NuGet.Common.LogLevel.Warning ? _item.Log.WarningLevel.ToString() : "";
+            public string WarningLevel => _item.Log.Level == LogLevel.Warning ? _item.Log.WarningLevel.ToString() : "";
         }
     }
 }
