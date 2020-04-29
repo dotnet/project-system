@@ -93,6 +93,10 @@ namespace Microsoft.VisualStudio.NuGet.Models
             return _dependentsByLibrary!.TryGetValue(libraryName, out dependents);
         }
 
+        /// <summary>
+        /// Gets the set of dependencies (children) of <paramref name="libraryName"/>, optionally restricted by <paramref name="version"/>.
+        /// </summary>
+        /// <returns><see langword="true"/> if dependencies were found, otherwise <see langword="false"/>.</returns>
         public bool TryGetDependencies(string libraryName, string? version, out ImmutableArray<AssetsFileTargetLibrary> dependencies)
         {
             if (!LibraryByName.TryGetValue(libraryName, out AssetsFileTargetLibrary library))
