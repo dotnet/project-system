@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.NuGet
 
                 SearchLogMessages();
 
-                return;
+                continue;
 
                 void SearchAssemblies(AssetsFileTargetLibrary library, ImmutableArray<string> assemblies, PackageAssemblyGroupType groupType)
                 {
