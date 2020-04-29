@@ -21,12 +21,9 @@ namespace Microsoft.VisualStudio.NuGet
     internal abstract class AssetsFileTopLevelDependenciesCollectionSourceProvider<TIdentity, TItem> : DependenciesAttachedCollectionSourceProviderBase
         where TItem : class, IRelatableItem
     {
-        private readonly JoinableTaskContext _joinableTaskContext;
-
-        protected AssetsFileTopLevelDependenciesCollectionSourceProvider(ProjectTreeFlags flags, JoinableTaskContext joinableTaskContext)
+        protected AssetsFileTopLevelDependenciesCollectionSourceProvider(ProjectTreeFlags flags)
             : base(flags)
         {
-            _joinableTaskContext = joinableTaskContext;
         }
 
         protected abstract bool TryGetIdentity(string flagsString, out TIdentity identity);
@@ -44,8 +41,6 @@ namespace Microsoft.VisualStudio.NuGet
             IRelationProvider relationProvider,
             [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource)
         {
-            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be on main thread");
-
             if (!TryGetIdentity(flagsString, out TIdentity identity))
             {
                 containsCollectionSource = null;
@@ -62,6 +57,10 @@ namespace Microsoft.VisualStudio.NuGet
                 containsCollectionSource = null;
                 return false;
             }
+
+            IProjectThreadingService projectThreadingService = unconfiguredProject.Services.ThreadingPolicy;
+
+            projectThreadingService.VerifyOnUIThread();
 
             // Items for top-level dependencies do not appear in the tree directly. They "shadow" hierarchy items
             // for purposes of bridging between the hierarchy items (top-level dependencies) and attached items (transitive
@@ -85,13 +84,13 @@ namespace Microsoft.VisualStudio.NuGet
                                 item = CreateItem(targetData, library);
                                 if (AggregateContainsRelationCollection.TryCreate(item, relationProvider, out collection))
                                 {
-                                    await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+                                    await projectThreadingService.JoinableTaskContext.Factory.SwitchToMainThreadAsync();
                                     collectionSource.SetCollection(collection);
                                 }
                             }
                             else if (TryUpdateItem(item, targetData, library) && collection != null)
                             {
-                                await _joinableTaskContext.Factory.SwitchToMainThreadAsync();
+                                await projectThreadingService.JoinableTaskContext.Factory.SwitchToMainThreadAsync();
                                 collection.OnStateUpdated();
                             }
                         }

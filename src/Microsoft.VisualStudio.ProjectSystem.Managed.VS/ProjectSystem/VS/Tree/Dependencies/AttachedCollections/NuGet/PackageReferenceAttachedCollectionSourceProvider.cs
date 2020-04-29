@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.NuGet.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.NuGet
@@ -18,8 +17,8 @@ namespace Microsoft.VisualStudio.NuGet
     internal sealed class PackageReferenceAttachedCollectionSourceProvider : AssetsFileTopLevelDependenciesCollectionSourceProvider<(string Name, string Version), PackageReferenceItem>
     {
         [ImportingConstructor]
-        public PackageReferenceAttachedCollectionSourceProvider(JoinableTaskContext joinableTaskContext)
-            : base(DependencyTreeFlags.PackageDependency, joinableTaskContext)
+        public PackageReferenceAttachedCollectionSourceProvider()
+            : base(DependencyTreeFlags.PackageDependency)
         {
         }
 
