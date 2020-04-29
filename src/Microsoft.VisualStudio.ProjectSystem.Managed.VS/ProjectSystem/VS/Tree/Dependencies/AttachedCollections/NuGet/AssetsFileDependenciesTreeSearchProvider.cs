@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.NuGet
 
                     DiagnosticItem? CreateLogItem(AssetsFileLogMessage log)
                     {
-                        if (target.LibraryByName.TryGetValue(log.LibraryId, out AssetsFileTargetLibrary library))
+                        if (target.LibraryByName.TryGetValue(log.LibraryName, out AssetsFileTargetLibrary library))
                         {
                             return new DiagnosticItem(target, library, log);
                         }

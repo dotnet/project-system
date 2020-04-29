@@ -16,14 +16,14 @@ namespace Microsoft.VisualStudio.NuGet.Models
             Level = logMessage.Level;
             WarningLevel = logMessage.WarningLevel;
             Message = logMessage.Message;
-            LibraryId = logMessage.LibraryId;
+            LibraryName = logMessage.LibraryId;
         }
 
         public NuGetLogCode Code { get; }
         public LogLevel Level { get; }
         public WarningLevel WarningLevel { get; }
         public string Message { get; }
-        public string LibraryId { get; }
+        public string LibraryName { get; }
 
         public bool Equals(IAssetsLogMessage other)
         {
@@ -31,9 +31,9 @@ namespace Microsoft.VisualStudio.NuGet.Models
                 && other.Level == Level
                 && other.WarningLevel == WarningLevel
                 && other.Message == Message
-                && other.LibraryId == LibraryId;
+                && other.LibraryId == LibraryName;
         }
 
-        public override string ToString() => $"{Level} {Code} ({LibraryId}) {Message}";
+        public override string ToString() => $"{Level} {Code} ({LibraryName}) {Message}";
     }
 }
