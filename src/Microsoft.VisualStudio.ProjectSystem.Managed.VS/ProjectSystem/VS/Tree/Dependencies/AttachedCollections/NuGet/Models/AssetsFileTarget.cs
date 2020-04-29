@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.NuGet.Models
     internal sealed class AssetsFileTarget
     {
         /// <summary>
-        /// Gets the target name, such as <c>.NETFramework,Version=v4.8</c> or <c>.NETStandard,Version=v1.3</c>.
+        /// Gets the target framework moniker, such as <c>.NETFramework,Version=v4.8</c> or <c>.NETStandard,Version=v1.3</c>.
         /// </summary>
-        public string Target { get; }
+        public string TargetFrameworkMoniker { get; }
 
         /// <summary>
         /// Gets diagnostic messages for this target. Often empty.
@@ -45,14 +45,14 @@ namespace Microsoft.VisualStudio.NuGet.Models
         /// </summary>
         private readonly Dictionary<(string LibraryName, string? Version), ImmutableArray<AssetsFileTargetLibrary>> _dependenciesByNameAndVersion = new Dictionary<(string LibraryName, string? Version), ImmutableArray<AssetsFileTargetLibrary>>();
 
-        public AssetsFileTarget(AssetsFileDependenciesSnapshot snapshot, string target, ImmutableArray<AssetsFileLogMessage> logs, ImmutableDictionary<string, AssetsFileTargetLibrary> libraryByName)
+        public AssetsFileTarget(AssetsFileDependenciesSnapshot snapshot, string targetFrameworkMoniker, ImmutableArray<AssetsFileLogMessage> logs, ImmutableDictionary<string, AssetsFileTargetLibrary> libraryByName)
         {
             Requires.NotNull(snapshot, nameof(snapshot));
-            Requires.NotNullOrWhiteSpace(target, nameof(target));
+            Requires.NotNullOrWhiteSpace(targetFrameworkMoniker, nameof(targetFrameworkMoniker));
             Requires.Argument(!logs.IsDefault, nameof(logs), "Must not be default");
             Requires.NotNull(libraryByName, nameof(libraryByName));
 
-            Target = target;
+            TargetFrameworkMoniker = targetFrameworkMoniker;
             _snapshot = snapshot;
             Logs = logs;
             LibraryByName = libraryByName;
@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.NuGet.Models
         public override string ToString()
         {
             var s = new StringBuilder();
-            s.Append("Target \"").Append(Target).Append("\" ");
+            s.Append("Target \"").Append(TargetFrameworkMoniker).Append("\" ");
             s.Append(LibraryByName.Count).Append(LibraryByName.Count == 1 ? " library" : " libraries");
             s.Append(Logs.Length).Append(Logs.Length == 1 ? " log" : " logs");
             return s.ToString();
