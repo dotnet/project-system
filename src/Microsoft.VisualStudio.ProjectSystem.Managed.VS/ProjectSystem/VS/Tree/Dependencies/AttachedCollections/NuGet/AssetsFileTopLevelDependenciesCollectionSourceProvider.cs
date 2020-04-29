@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.NuGet
             IRelationProvider relationProvider,
             [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource)
         {
+            Assumes.True(_joinableTaskContext.IsOnMainThread, "Must be on main thread");
+
             if (!TryGetIdentity(flagsString, out TIdentity identity))
             {
                 containsCollectionSource = null;
