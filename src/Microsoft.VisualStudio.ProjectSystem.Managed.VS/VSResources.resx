@@ -267,7 +267,7 @@ In order to debug this project, add an executable project to this solution which
     <value>Library</value>
   </data>
   <data name="DiagnosticLibraryDescription" xml:space="preserve">
-    <value>The level this diagnostic applies to.</value>
+    <value>The name of the package or project this diagnostic applies to.</value>
   </data>
   <data name="DiagnosticLevelDisplayName" xml:space="preserve">
     <value>Level</value>

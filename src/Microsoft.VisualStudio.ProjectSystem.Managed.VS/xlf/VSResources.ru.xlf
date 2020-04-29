@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DiagnosticLibraryDescription">
-        <source>The level this diagnostic applies to.</source>
-        <target state="new">The level this diagnostic applies to.</target>
+        <source>The name of the package or project this diagnostic applies to.</source>
+        <target state="new">The name of the package or project this diagnostic applies to.</target>
         <note />
       </trans-unit>
       <trans-unit id="DiagnosticLibraryDisplayName">
