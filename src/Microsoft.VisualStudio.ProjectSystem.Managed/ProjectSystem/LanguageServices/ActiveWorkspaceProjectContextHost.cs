@@ -17,12 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal class ActiveWorkspaceProjectContextHost : IActiveWorkspaceProjectContextHost
     {
         private readonly ActiveConfiguredProject<IWorkspaceProjectContextHost> _activeHost;
+        private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
         [ImportingConstructor]
-        public ActiveWorkspaceProjectContextHost(ActiveConfiguredProject<IWorkspaceProjectContextHost> activeHost, IUnconfiguredProjectTasksService tasksService)
+        public ActiveWorkspaceProjectContextHost(
+            ActiveConfiguredProject<IWorkspaceProjectContextHost> activeHost,
+            IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
+            IUnconfiguredProjectTasksService tasksService)
         {
             _activeHost = activeHost;
+            _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _tasksService = tasksService;
         }
 
@@ -33,7 +38,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // Wait until that has been determined before we publish the wrong configuration.
             await _tasksService.PrioritizedProjectLoadedInHost.WithCancellation(cancellationToken);
 
-            await _activeHost.Value.PublishAsync(cancellationToken);
+            while (true)
+            {
+                CancellationToken activeConfigChangedToken = _activeConfiguredProjectProvider.ConfigurationActiveCancellationToken;
+
+                using var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(activeConfigChangedToken, cancellationToken);
+
+                try
+                {
+                    await _activeHost.Value.PublishAsync(tokenSource.Token);
+                    return;
+                }
+                catch (OperationCanceledException) when (activeConfigChangedToken.IsCancellationRequested)
+                {
+                }
+            } 
         }
 
         public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)
