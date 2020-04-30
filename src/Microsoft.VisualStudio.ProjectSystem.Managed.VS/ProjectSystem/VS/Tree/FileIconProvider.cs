@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
 
         public ImageMoniker GetFileExtensionImageMoniker(string path)
         {
+            Requires.NotNull(path, nameof(path));
+
             string extension = Path.GetExtension(path);
 
             return ImmutableInterlocked.GetOrAdd(ref _imageMonikerByExtensions, extension, GetImageMoniker, path);

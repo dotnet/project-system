@@ -22,7 +22,7 @@
   <ItemGroup>
 
     <!-- Toolset -->
-    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />    
+    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />
     <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" />
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.19380.4" />
@@ -88,7 +88,7 @@
     <PackageReference Update="EnvDTE80"                                                               Version="8.0.1" />
     <PackageReference Update="EnvDTE90"                                                               Version="9.0.1" />
     <PackageReference Update="StreamJsonRpc"                                                          Version="2.3.81" />
-    
+
     <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
     <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
     <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
@@ -98,7 +98,7 @@
          Microsoft.VisualStudio.Utilities depends on System.Threading.Tasks.Dataflow but
          doesn't declare the dependency. The build then complains about "conflicts between
          different versions of 'System.Threading.Tasks.Dataflow' that could not be
-         resolved". By explicitly bringing in the dependency we ensure that the proper 
+         resolved". By explicitly bringing in the dependency we ensure that the proper
          version of the assembly is available. -->
     <PackageReference Update="System.Threading.Tasks.Dataflow"                                        Version="4.9.0" />
 
@@ -126,8 +126,8 @@
     <!-- NuGet -->
     <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6554" />
     <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6554" />
-    <PackageReference Update="NuGet.ProjectModel"                                                     Version="5.6.0-preview.2.6554" />
-    <PackageReference Update="NuGet.Common"                                                           Version="5.6.0-preview.2.6554" />
+    <PackageReference Update="NuGet.ProjectModel"                                                     Version="5.7.0-preview.1.6568" />
+    <PackageReference Update="NuGet.Common"                                                           Version="5.7.0-preview.1.6568" />
 
     <!-- MSBuild -->
     <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>
@@ -154,7 +154,7 @@
     <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
-    
+
   </ItemGroup>
-  
+
 </Project>

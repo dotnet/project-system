@@ -75,3 +75,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.ValueHeader")]
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectoryWatermark")]
 [assembly: SuppressMessage("ApiDesign", "RS0041:Public members should not use oblivious types", Justification = "Generated Code", Scope = "member", Target = "~P:Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.WorkingDirectory")]
+
+[assembly: SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase")]

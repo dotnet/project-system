@@ -142,20 +142,20 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The level this diagnostic applies to..
+        ///   Looks up a localized string similar to The name of the package or project this diagnostic applies to..
         /// </summary>
-        internal static string DiagnosticLibraryDescription {
+        internal static string DiagnosticLibraryNameDescription {
             get {
-                return ResourceManager.GetString("DiagnosticLibraryDescription", resourceCulture);
+                return ResourceManager.GetString("DiagnosticLibraryNameDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Library.
         /// </summary>
-        internal static string DiagnosticLibraryDisplayName {
+        internal static string DiagnosticLibraryNameDisplayName {
             get {
-                return ResourceManager.GetString("DiagnosticLibraryDisplayName", resourceCulture);
+                return ResourceManager.GetString("DiagnosticLibraryNameDisplayName", resourceCulture);
             }
         }
         

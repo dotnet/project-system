@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Immutable snapshot of all project dependencies across all target frameworks.
+    /// Immutable snapshot of all top-level project dependencies across all target frameworks.
     /// </summary>
     internal sealed class DependenciesSnapshot
     {

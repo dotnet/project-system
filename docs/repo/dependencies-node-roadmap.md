@@ -2,7 +2,10 @@
 
 This document describes, at a high level, the design and implementation of the Dependencies node with pointers to the important types.
 
-Let's start at the top and work our way down. There are two fundamentally different paths that dependency information takes from the Project System to Solution Explorer. Direct dependencies go through CPS, whereas transitive dependencies generally go through graph node providers.
+Let's start at the top and work our way down. There are two fundamentally different types of dependency for our purposes, and they are handled separately:
+
+1. Top-level dependencies &mdash; these are the direct dependencies of the project and as such are only a single level deep.
+2. Transitive dependencies &mdash; these are dependencies that are brough in via top-level dependencies, and may be nested arbitrarily deep. For a typical project, the majority of items in its dependency graph fall into this category.
 
 ## Overview
 
@@ -16,9 +19,9 @@ Components wishing to add items to the project tree must implement and export th
 
 ### The Project System View of Dependencies
 
-Internally every individual dependency (both direct and transitive) is represented as an [`IDependency`][IDependency].
+Internally every top-level dependency is represented as an [`IDependency`][IDependency].
 
-All the [`IDependency`][IDependency]s for a given target framework in a given project are collected together into a [`TargetedDependenciesSnapshot`][TargetedDependenciesSnapshot]. All of those for a given project are, in turn, collected into a [`DependenciesSnapshot`][DependenciesSnapshot].
+All [`IDependency`][IDependency]s for a given target framework in a given project are collected together into a [`TargetedDependenciesSnapshot`][TargetedDependenciesSnapshot]. All of those for a given project are, in turn, collected into a [`DependenciesSnapshot`][DependenciesSnapshot].
 
 The [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] is responsible for providing access to the current [`DependenciesSnapshot`][DependenciesSnapshot] and firing events when the snapshot has changed.
 
@@ -26,7 +29,7 @@ Much of the code for the Dependencies node is concerned with creating [`IDepende
 
 ## CPS/Project System Interaction
 
-In general, items _directly_ referenced by the project file (e.g., through `Reference`, `ProjectReference`, and `Analyzer` items in the project file) are represented with `IProjectTree` nodes as opposed to `GraphNodes`. This makes it possible for them to be represented in the project's `IVsHierarchy` and, crucially, makes it easier to code the sorts of interactions users expect for these items. For example, a user should be able to right-click on an assembly reference and remove it, or modify the properties of an assembly reference.
+Top-level dependencies (e.g., `Reference`, `PackageReference`, `ProjectReference`, and `Analyzer` items in the project file) are represented with `IProjectTree` nodes. This makes it possible for them to be represented in the project's `IVsHierarchy` and, crucially, makes it easier to code the sorts of interactions users expect for these items. For example, a user should be able to right-click on an assembly reference and remove it, or modify the properties of an assembly reference.
 
 > Aside: There are exceptions to this. In practice analyzers are not directly referenced but rather brought in as part of a NuGet package. We still represent all analyzers as `IProjectTree` items directly under the "Analyzers" node. This makes it much easier for the C#/VB language service to add nodes for each diagnostic underneath the analyzer's node, and it makes it easy for the user to find so they can check the severity of the diagnostic and potentially change it using the context menu.
 
@@ -49,10 +52,7 @@ The [`DependencyRulesSubscriber`][DependencyRulesSubscriber] (implementing [`IDe
 
 Each project has an instance of [`DependenciesSnapshotProvider`][DependenciesSnapshotProvider] that holds the latest `DependenciesSnapshot` object. It imports `IDependencyCrossTargetSubscriber` implementations (such as `DependencyRulesSubscriber`) and subscribes to their `DependenciesChanged` events. When these events fire, the current snapshot is combined with changes to produce a new snapshot. That snapshot is then propagated via the `DependenciesSnapshotProvider.SnapshotChanged` event.
 
-This `SnapshotChanged` event is then handled by:
-
-- [`DependenciesProjectTreeProvider`][DependenciesProjectTreeProvider] to update the tree, and
-- [`AggregateDependenciesSnapshotProvider`][AggregateDependenciesSnapshotProvider] which fires a solution-level `SnapshotChanged` event (useful for P2P references and graph updates, for example.)
+This `SnapshotChanged` event is then handled by [`DependenciesProjectTreeProvider`][DependenciesProjectTreeProvider] to update the tree.
 
 ### Translating snapshots to trees
 
@@ -60,15 +60,13 @@ Most of the work of translating [`IDependency`][IDependency]s to `IProjectTree`s
 
 The [`DependenciesTreeViewProvider`][DependenciesTreeViewProvider] traverses down the existing `IProjectTree` and the new [`DependenciesSnapshot`][DependenciesSnapshot] in parallel, starting from the Dependencies node itself and proceeding on to target framework, groupings, and then the individual top-level dependencies. Along the way it incrementally generates new `IProjectTree`s as it finds dependencies that have been updated, added, or removed.
 
-> Aside: The `IProjectTree` nodes are intentionally updated from top to bottom as it prevents the Solution Explorer from collapsing expanded nodes during the update. At the very least this would be visually distracting to the user.
-
 [`IDependency`][IDependency]s are not translated directly into `IProjectTree`s. They are first converted to [`IDependencyViewModel`][IDependencyViewModel]s and those in turn become the `IProjectTree`s. This makes it a little easier to create the `IProjectTree`s for targets and groups (e.g. the Assemblies, NuGet, Projects, etc. nodes) which are not themselves [`IDependency`][IDependency]s. In some cases a [`IDependencyModel`][IDependencyModel] may be converted directly to a [`IDependencyViewModel`][IDependencyViewModel].
 
 ### Identifiers
 
 #### `IDependencyModel` Identifiers
 
-Instances of [`IDependencyModel`][IDependencyModel]'s produced by an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] must have an `Id` propety that's unique to that provider and that project.
+Instances of [`IDependencyModel`][IDependencyModel]s produced by an [`IProjectDependenciesSubTreeProvider`][IProjectDependenciesSubTreeProvider] must have an `Id` propety that's unique to that provider and that project.
 
 For dependencies obtained via MSBuild evaluations (Packages, Assemblies, etc...) the `Id` is just the `OriginalItemSpec`.
 
@@ -77,6 +75,58 @@ For dependencies obtained via MSBuild evaluations (Packages, Assemblies, etc...)
 Once a dependency model is integrated into a dependencies snapshot as an [`IDependency`][IDependency], its `Id` will be constructed from the target framework, provider type and model ID. For example: `netstandard2.0/nugetdependency/newtonsoft.json`
 
 This allows the ID to be unique within both the provider and the target framework.
+
+## Transitive Dependencies
+
+The above snapshots only contain top-level dependencies. In practice, these represent a small percentage of the total number of items in a project's dependency graph. For performance reasons, we defer obtaining and retaining data about transitive dependencies until the user expands enough of Solution Explorer for them to become visible, or performs a search in Solution Explorer.
+
+Transitive dependencies are 'attached' to the tree via a series of APIs we'll call `IAttachedCollection` APIs. These are the low-level APIs upon which view of hierarchy items is implemented (along with the less common graph nodes, a.k.a. progression nodes). These allow lazily populating tree items and provide a lot of control over presentation and interaction patterns for these nodes.
+
+However implementing `IAttachedCollection` APIs is quite involved, especially if you want to support Solution Explorer search.
+
+The Project System provides a higher-level system for building the transitive dependencies graph. There are two key concepts, _Items_ and _Relations_. Let's look at each in turn.
+
+### Items
+
+Items are modelled via `IRelatableItem`. Each kind of item in a project's dependency tree has its own item type.
+
+The easiest way to define an item is to derive from `RelatableItemBase` which in turn derives from `AttachedCollectionItemBase`.
+
+- `RelatableImemBase` makes it easier to implement `IRelatableItem` correctly, implementing much of the required protocol and exposing abstract/virtual members for customising behaviour.
+
+- `AttachedCollectionItemBase` exposes presentation and interaction members for the item such as its `Text`, icons (`IconMoniker`, `ExpandedIconMoniker`, `OverlayIconMoniker`, `StateIconMoniker`), `FontStyle`, `FontWeight`, `ToolTipText`, browse objects (for Visual Studio's _Properties_ pane) and so forth. Derivations may expose additional patterns such as `IInvocationPattern` for double-click logic, `IContextMenuPattern` for context menus, `IDragDropSourcePattern`/`IDragDropTargetPattern` for drag/drop, and so on.
+
+A typical item implementation will derive from `AttachedCollectionItemBase`, define properties for the item's state, and override presentation members to specify icons, browse objects and so forth.
+
+Item state is important as we will see when we talk about relations.
+
+### Relations
+
+Relations are modelled via `IRelation` and represent bi-directional linkages between items in the tree.
+
+The easiest way to define a relation is to derive from `RelationBase<TParent, TChild>`. This offers an extra level of type safety over `IRelation`.
+
+A relation may be between two different kinds of item (e.g. a _package_ contains a _compile-time assembly_) or even two items of the same kind (e.g. a _package_ contains a reference to another _package_).
+
+A relation that understands an item can contribute to the collection of its children or parents. Such a relation is also used to update the collection of materialized children whenever a parent's state is modified (which can be applied recursively down the tree).
+
+When a relation is computing the children or parents of an item it will require adequate state to be available on the source item. This will factor into the design of the items and their backing data. Relations are MEF exports, so they may import additional parts for use in their implementation.
+
+When the user expands Dependencies tree items in Solution Explorer, relations are used to lazily produce the children to show beneath that item.
+
+Use of relations to determine an item's parents comes into play when searching, which we will look at next.
+
+### Search
+
+When the user performs a search within Solution Explorer, it is unlikly that the entire dependency graph has been materialised. Therefore, in order to search we need an additional mechanism that doesn't rely on materialised items.
+
+Extensions that add transitive dependencies to the tree via the above items/relations should also implement `IDependenciesTreeSearchProvider` to support search in Solution Explorer. The implementation should look at the underlying data source and produce any items that match the user's search.
+
+Each search operation runs with an `IDependenciesTreeProjectSearchContext` which exposes a `CancellationToken`, the `UnconfiguredProject`, and allows creating a per-target `IDependenciesTreeProjectTargetSearchContext` via which results may be submitted.
+
+Implementations should check for cancellation periodically, as a modification to the user's search string or reaching the maximum number of results will both result in cancellation.
+
+As hinted above, relations are used to construct the lineage of ancestor items for any submitted search result items. This is the reason that relations must be bi-directional. The ancestral lineage must connect at some point with a top-level dependency's `IVsHierarchyItem` in order for the search result to be visible. This will happen automatically via `IRelatableItem.TryGetProjectNode`. If an extension provides top-level dependencies, it should override `RelatableItemBase.TryGetProjectNode` on the corresponding item type to provide this connection.
 
 ## Extensibility Model
 
@@ -89,7 +139,6 @@ Project flavors can extend the Dependencies node with additional sub-trees. To d
 The _Web Tools Extensions_ project is a good example of a project flavor that does this.
 
 
-[AggregateCrossTargetProjectContext]:     /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/AggregateCrossTargetProjectContext.cs "AggregateCrossTargetProjectContext.cs"
 [IDependenciesRuleHandler]:               /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/CrossTarget/IDependenciesRuleHandler.cs "IDependenciesRuleHandler.cs"
 [DependenciesProjectTreeProvider]:        /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/DependenciesProjectTreeProvider.cs "DependenciesProjectTreeProvider.cs"
 [DependenciesTreeViewProvider]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/DependenciesTreeViewProvider.cs "DependenciesTreeViewProvider.cs"
@@ -97,10 +146,8 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IDependenciesTreeViewProvider]:          /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IDependenciesTreeViewProvider.cs "IDependenciesTreeViewProvider.cs"
 [IProjectDependenciesSubTreeProvider]:    /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/IProjectDependenciesSubTreeProvider.cs "IProjectDependenciesSubTreeProvider.cs"
 [IDependencyViewModel]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Models/IDependencyViewModel.cs "IDependencyViewModel.cs"
-[AggregateDependenciesSnapshotProvider]:  /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/AggregateDependenciesSnapshotProvider.cs "AggregateDependenciesSnapshotProvider.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
 [IDependenciesSnapshotFilter]:            /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/Filters/IDependenciesSnapshotFilter.cs "IDependenciesSnapshotFilter.cs"
-[IAggregateDependenciesSnapshotProvider]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IAggregateDependenciesSnapshotProvider.cs "IAggregateDependenciesSnapshotProvider.cs"
 [DependenciesSnapshot]:                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/DependenciesSnapshot.cs "DependenciesSnapshot.cs"
 [IDependency]:                            /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/IDependency.cs "IDependency.cs"
 [TargetedDependenciesSnapshot]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/Snapshot/TargetedDependenciesSnapshot.cs "TargetedDependenciesSnapshot.cs"

@@ -291,7 +291,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // Deeper levels will be attached items with additional info, not direct dependencies
             // specified in the project file.
 
-            return _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
+            IProjectTree? projectTree = _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
+            return projectTree;
         }
 
         /// <summary>
