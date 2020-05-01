@@ -13,10 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         #region Factories and internal constructor
 
-        public static TargetedDependenciesSnapshot CreateEmpty(string projectPath, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public static TargetedDependenciesSnapshot CreateEmpty(ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             return new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray<IDependency>.Empty);
@@ -28,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </summary>
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static TargetedDependenciesSnapshot FromChanges(
-            string projectPath,
             TargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
@@ -36,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs)
         {
-            Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
             Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
@@ -76,14 +73,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // Also factor in any changes to path/framework/catalogs
             anyChanges =
                 anyChanges ||
-                !StringComparers.Paths.Equals(projectPath, previousSnapshot.ProjectPath) ||
                 !targetFramework.Equals(previousSnapshot.TargetFramework) ||
                 !Equals(catalogs, previousSnapshot.Catalogs);
 
             if (anyChanges)
             {
                 return new TargetedDependenciesSnapshot(
-                    projectPath,
                     targetFramework,
                     catalogs,
                     dependencyById.ToImmutableValueArray());
@@ -126,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             void Add(AddDependencyContext context, IDependencyModel dependencyModel)
             {
                 // Create the unfiltered dependency
-                IDependency? dependency = new Dependency(dependencyModel, targetFramework, projectPath);
+                IDependency? dependency = new Dependency(dependencyModel, targetFramework);
 
                 context.Reset();
 
@@ -165,16 +160,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         // Internal, for test use -- normal code should use the factory methods
         internal TargetedDependenciesSnapshot(
-            string projectPath,
             ITargetFramework targetFramework,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependency> dependencies)
         {
-            Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.Argument(!dependencies.IsDefault, nameof(dependencies), "Cannot be default.");
 
-            ProjectPath = projectPath;
             TargetFramework = targetFramework;
             Catalogs = catalogs;
             Dependencies = dependencies;
@@ -183,11 +175,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         #endregion
-
-        /// <summary>
-        /// Path to project containing this snapshot.
-        /// </summary>
-        public string ProjectPath { get; }
 
         /// <summary>
         /// <see cref="ITargetFramework" /> for which project has dependencies contained in this snapshot.
@@ -234,6 +221,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return false;
         }
 
-        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies - {ProjectPath}";
+        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies";
     }
 }

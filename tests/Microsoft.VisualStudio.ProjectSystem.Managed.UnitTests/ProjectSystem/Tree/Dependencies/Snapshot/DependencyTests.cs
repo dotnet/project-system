@@ -16,35 +16,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public void Dependency_Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             var targetFramework = new TargetFramework("tfm");
-            var containingProjectPath = @"c:\SomePath\SomeProject.csproj";
 
             Assert.Throws<ArgumentNullException>("dependencyModel", () =>
             {
-                new Dependency(null!, targetFramework, containingProjectPath);
+                new Dependency(null!, targetFramework);
             });
 
             Assert.Throws<ArgumentNullException>("ProviderType", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = null!, Id = "Id" };
-                new Dependency(dependencyModel, targetFramework, containingProjectPath);
+                new Dependency(dependencyModel, targetFramework);
             });
 
             Assert.Throws<ArgumentNullException>("Id", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = null! };
-                new Dependency(dependencyModel, targetFramework, containingProjectPath);
+                new Dependency(dependencyModel, targetFramework);
             });
 
             Assert.Throws<ArgumentNullException>("targetFramework", () =>
             {
                 var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "id" };
-                new Dependency(dependencyModel, null!, containingProjectPath);
-            });
-
-            Assert.Throws<ArgumentNullException>("containingProjectPath", () =>
-            {
-                var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "id" };
-                new Dependency(dependencyModel, targetFramework: targetFramework, containingProjectPath: null!);
+                new Dependency(dependencyModel, null!);
             });
         }
 
@@ -57,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Id = "mymodel"
             };
 
-            var dependency = new Dependency(mockModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(mockModel, new TargetFramework("tfm1"));
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(string.Empty, dependency.Name);
@@ -97,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework("Tfm1");
 
-            var dependency = new Dependency(mockModel, targetFramework, @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(mockModel, targetFramework);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(mockModel.Name, dependency.Name);
@@ -122,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "xxx", Id = modelId };
 
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.cspoj");
+            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"));
 
             Assert.Equal(dependencyModel.ProviderType, dependency.ProviderType);
             Assert.Equal(expectedId, dependency.Id);
@@ -137,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = modelId };
             var targetFramework = new TargetFramework("tfm");
 
-            var dependency = new Dependency(dependencyModel, targetFramework, @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(dependencyModel, targetFramework);
 
             Assert.Equal(dependencyModel.ProviderType, dependency.ProviderType);
             Assert.Equal(expectedId, dependency.Id);
@@ -148,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
 
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj");
+            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm1"));
             var flags = ProjectTreeFlags.Create("TestFlag");
 
             var newDependency = dependency.SetProperties(
@@ -166,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
 
-            var dependency = (new Dependency(dependencyModel, new TargetFramework("tfm1"), @"C:\Foo\Project.csproj"))
+            var dependency = (new Dependency(dependencyModel, new TargetFramework("tfm1")))
                 .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
             var dependencyWithUpdatedIconSet = dependency.SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
@@ -177,14 +170,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void WhenCreatingADependencyFromAnotherDependency_ExistingIconSetInstanceIsReused()
         {
-            var projectPath = @"C:\Foo\Project.csproj";
-
             var dependencyModel = new TestableDependencyModel(
-                    projectPath,
+                    "Path",
                     "ItemSpec",
                     iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
-            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm2"), projectPath);
+            var dependency = new Dependency(dependencyModel, new TargetFramework("tfm2"));
 
             Assert.Same(dependencyModel.IconSet, dependency.IconSet);
         }
@@ -227,8 +218,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var targetFramework = new TargetFramework("Tfm1");
 
-            var dependency1 = new Dependency(model1, targetFramework, @"C:\Foo\Project.csproj");
-            var dependency2 = new Dependency(model2, targetFramework, @"C:\Foo\Project.csproj");
+            var dependency1 = new Dependency(model1, targetFramework);
+            var dependency2 = new Dependency(model2, targetFramework);
 
             Assert.Same(dependency1.IconSet, dependency2.IconSet);
         }

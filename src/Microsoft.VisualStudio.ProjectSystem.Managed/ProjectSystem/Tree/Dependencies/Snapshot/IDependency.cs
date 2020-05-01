@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Represents internal immutable dependency entity that is stored in immutable 
+    /// Represents internal immutable dependency entity that is stored in immutable
     /// snapshot <see cref="TargetedDependenciesSnapshot"/>.
     /// </summary>
     internal interface IDependency
@@ -15,11 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// Target framework of the snapshot dependency belongs to
         /// </summary>
         ITargetFramework TargetFramework { get; }
-
-        /// <summary>
-        /// Get the full path of the dependency, if relevant, otherwise, <see cref="string.Empty"/>.
-        /// </summary>
-        string FullPath { get; }
 
         /// <summary>
         /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).

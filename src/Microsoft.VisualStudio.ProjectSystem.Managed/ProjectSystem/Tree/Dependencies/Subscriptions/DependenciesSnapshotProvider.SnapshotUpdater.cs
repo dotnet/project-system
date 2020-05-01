@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             private DependenciesSnapshot _currentSnapshot;
             private int _isDisposed;
 
-            public SnapshotUpdater(IUnconfiguredProjectCommonServices commonServices, CancellationToken unloadCancellationToken)
+            public SnapshotUpdater(IProjectThreadingService projectThreadingService, CancellationToken unloadCancellationToken)
             {
                 // Initial snapshot is empty.
-                _currentSnapshot = DependenciesSnapshot.CreateEmpty(commonServices.Project.FullPath);
+                _currentSnapshot = DependenciesSnapshot.Empty;
 
                 // Updates will be published via Dataflow.
                 _source = DataflowBlockSlim.CreateBroadcastBlock<SnapshotChangedEventArgs>("DependenciesSnapshot {1}", skipIntermediateInputData: true);
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 // Updates are debounced to conflate rapid updates and reduce frequency of tree updates downstream.
                 _debounce = new TaskDelayScheduler(
                     TimeSpan.FromMilliseconds(250),
-                    commonServices.ThreadingService,
+                    projectThreadingService,
                     unloadCancellationToken);
             }
 
