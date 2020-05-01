@@ -226,9 +226,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </summary>
         /// <param name="dependencyId">Unique id for dependency to be found.</param>
         /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
-        public IDependency? FindDependency(string dependencyId)
+        public IDependency? FindDependency(string? dependencyId)
         {
-            if (string.IsNullOrEmpty(dependencyId))
+            if (Strings.IsNullOrEmpty(dependencyId))
             {
                 return null;
             }
