@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // Arrange
             var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
 
-            var snapshot = DependenciesSnapshot.CreateEmpty();
+            var snapshot = DependenciesSnapshot.Empty;
 
             // Act
             var resultTree = await CreateProvider().BuildTreeAsync(dependenciesRoot, snapshot);

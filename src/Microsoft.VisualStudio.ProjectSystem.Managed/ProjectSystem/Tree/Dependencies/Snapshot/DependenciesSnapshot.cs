@@ -16,12 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         #region Factories and private constructor
 
-        public static DependenciesSnapshot CreateEmpty()
-        {
-            return new DependenciesSnapshot(
-                activeTargetFramework: TargetFramework.Empty,
-                dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
-        }
+        public static DependenciesSnapshot Empty { get; } = new DependenciesSnapshot(
+            activeTargetFramework: TargetFramework.Empty,
+            dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
 
         /// <summary>
         /// Updates the <see cref="TargetedDependenciesSnapshot"/> corresponding to <paramref name="changedTargetFramework"/>,
