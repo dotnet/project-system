@@ -218,6 +218,34 @@ In order to debug this project, add an executable project to this solution which
   <data name="Renaming_Type_from_0_to_1" xml:space="preserve">
     <value>Renaming Type from '{0}' to '{1}'</value>
   </data>
+  <data name="FrameworkAssemblyBrowseObjectClassName" xml:space="preserve">
+    <value>Framework Assembly</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyNameDisplayName" xml:space="preserve">
+    <value>Assembly Name</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyNameDescription" xml:space="preserve">
+    <value>The framework assembly's assembly name.</value>
+  </data>
+  <data name="FrameworkAssemblyPathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="FrameworkAssemblyPathDescription" xml:space="preserve">
+    <value>Path of the framework assembly.</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyVersionDisplayName" xml:space="preserve">
+    <value>Assembly Version</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyVersionDescription" xml:space="preserve">
+    <value>The assembly version of the framework assembly.</value>
+  </data>
+  <data name="FrameworkAssemblyFileVersionDisplayName" xml:space="preserve">
+    <value>File Version</value>
+  </data>
+  <data name="FrameworkAssemblyFileVersionDescription" xml:space="preserve">
+    <value>The file version of the framework assembly.</value>
+  </data>
+  <!-- Assets file dependency resources below here (being moved to NuGet soon) -->
   <data name="PackageReferenceBrowseObjectClassName" xml:space="preserve">
     <value>Package Reference</value>
   </data>

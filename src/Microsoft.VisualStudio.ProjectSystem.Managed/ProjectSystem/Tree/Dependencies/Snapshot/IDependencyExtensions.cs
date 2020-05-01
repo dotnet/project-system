@@ -3,7 +3,6 @@
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
@@ -59,14 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return string.IsNullOrEmpty(self.Path)
                 ? string.Equals(self.Id, id, StringComparisons.DependencyTreeIds)
                 : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
-        }
-
-        /// <summary>
-        /// Returns true if given dependency is a project.
-        /// </summary>
-        public static bool IsProject(this IDependency self)
-        {
-            return StringComparers.DependencyProviderTypes.Equals(self.ProviderType, ProjectRuleHandler.ProviderTypeString);
         }
 
         /// <summary>
