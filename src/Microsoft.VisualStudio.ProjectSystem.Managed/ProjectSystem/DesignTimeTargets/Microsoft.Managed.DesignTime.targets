@@ -354,16 +354,22 @@
     </PropertyPageSchema>
   </ItemGroup>
 
-  <!-- List of external files that trigger re-evaluation & design-time builds when they are modified -->
+  <!-- List of external files that trigger re-evaluation & design-time builds when they are added or removed, or edited -->
   <ItemGroup>
-    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" />   <!-- NuGet assets file -->
+    
+    <!-- NuGet assets file -->
+    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" ContentSensitive="true" />   
+  
+    <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits  -->
+    <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />   
+  
   </ItemGroup>
 
   <!-- Find all potential locations of "global.json" starting from the Solution directory and walking backwards -->
   <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' == 'true' and '$(SolutionDir)' != ''">
     <_GlobalJsonStartingDir Include="$(SolutionDir)" />
     <_PotentialContainingGlobalJsonDir Include="@(_GlobalJsonStartingDir->GetPathsOfAllDirectoriesAbove())" />
-    <AdditionalDesignTimeBuildInput Include="@(_PotentialContainingGlobalJsonDir->Combine('global.json'))" />
+    <AdditionalDesignTimeBuildInput Include="@(_PotentialContainingGlobalJsonDir->Combine('global.json'))" ContentSensitive="true" />
   </ItemGroup>
 
   <!--
