@@ -136,9 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 // Remove any extra target frameworks
                 if (builder.Count != targetFrameworks.Length)
                 {
-                    // NOTE We need "ToList" here as "Except" is lazy, and attempts to remove from the builder
-                    // while iterating will throw "Collection was modified"
-                    IEnumerable<ITargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks).ToList();
+                    IEnumerable<ITargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks);
 
                     foreach (ITargetFramework targetFramework in targetFrameworksToRemove)
                     {

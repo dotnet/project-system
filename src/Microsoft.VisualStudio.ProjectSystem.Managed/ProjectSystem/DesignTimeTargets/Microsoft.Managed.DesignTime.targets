@@ -21,11 +21,19 @@
     <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">Exe;WinExe;Library</SupportedOutputTypes>
     <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
     
-    <!-- When using SDK-style projects, opt out of AssemblyFolderEx ("Extensions") tab under Assemblies category in Reference Manager -->
-    <AssemblyReferenceTabs Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
-    
     <!-- Tells CPS which target to run for the Package solution build type -->
     <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(AssemblyReferenceTabs)' == '' And '$(UsingMicrosoftNETSdk)' == 'true'">
+    
+    <!-- You cannot choose individual framework assemblies in .NET Core/.NET Standard, and AssemblyFoldersEx
+         is not supported, so completely opt out of the Assembly category in Reference Manager by default. -->
+    <AssemblyReferenceTabs>0</AssemblyReferenceTabs>
+    
+    <!-- However, .NET Framework supports choosing individual framework assemblies, so opt into that tab  -->
+    <AssemblyReferenceTabs Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">TAB_ASSEMBLY_FRAMEWORK</AssemblyReferenceTabs>
+  
   </PropertyGroup>
 
 
@@ -110,7 +118,7 @@
     <ProjectCapability Include="COMReferences" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or ('$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(_TargetFrameworkVersionWithoutV)' >= '3.0')" />
 
     <!-- Settings page capability -->
-    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+    <ProjectCapability Include="AppSettings" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' Or '$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true' "/>
 
     <!-- Publish capability enables the Publish command for the Project -->
     <ProjectCapability Include="Publish"/>

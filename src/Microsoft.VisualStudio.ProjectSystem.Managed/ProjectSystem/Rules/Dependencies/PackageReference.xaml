@@ -14,6 +14,11 @@
                 SourceType="TargetResults" />
   </Rule.DataSource>
 
+  <StringListProperty Name="Aliases"
+                      Description="A comma-delimited list of aliases to assembly references contained in this package."
+                      DisplayName="Aliases"
+                      Separator="," />
+
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
                   DisplayName="Excluded assets" />

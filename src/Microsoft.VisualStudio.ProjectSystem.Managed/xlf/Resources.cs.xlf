@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">Tok systémových dat projektu {0} se uzavřel z důvodu výjimky: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">Bez ověřování</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -75,10 +75,10 @@
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
+        <target state="needs-review-translation">Soubor projektu {0} se nedá otevřít. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
+Tento projekt se načetl pomocí nesprávného typu projektu, pravděpodobně v důsledku přejmenování přípony projektu mimo Visual Studio. Aby řešení vybralo správný typ projektu, odeberte a znovu přidejte projekt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ Nezobrazuje-li se tento soubor nebo složka v Průzkumníkovi řešení, není m
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Ověřování systému Windows</target>
         <note />
       </trans-unit>
     </body>

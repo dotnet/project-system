@@ -181,7 +181,7 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
   <data name="ProjectLoadedWithWrongProjectType" xml:space="preserve">
     <value>The project file '{0}' cannot be opened. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</value>
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</value>
   </data>
   <data name="DataFlowFaults" xml:space="preserve">
     <value>Project system data flow '{0}' closed because of an exception: {1}.</value>

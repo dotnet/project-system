@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     internal class StartupProjectRegistrar : OnceInitializedOnceDisposedAsync
     {
         private readonly UnconfiguredProject _project;
+        private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
@@ -24,12 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private Guid _projectGuid;
         private IDisposable? _subscription;
 
-        /// <remarks>
-        /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
-        /// </remarks>
         [ImportingConstructor]
         public StartupProjectRegistrar(
             UnconfiguredProject project,
+            IUnconfiguredProjectTasksService projectTasksService,
             IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
@@ -38,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         : base(threadingService.JoinableTaskContext)
         {
             _project = project;
+            _projectTasksService = projectTasksService;
             _startupProjectsListService = startupProjectsListService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
@@ -72,22 +72,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return Task.CompletedTask;
         }
 
-        internal async Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? _ = null)
+        internal Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate>? _ = null)
         {
-            bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
-
-            IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
-
-            if (isDebuggable)
+            return _projectTasksService.LoadedProjectAsync(async () =>
             {
-                // If we're already registered, the service no-ops
-                startupProjectsListService.AddProject(ref _projectGuid);
-            }
-            else
-            {
-                // If we're already unregistered, the service no-ops
-                startupProjectsListService.RemoveProject(ref _projectGuid);
-            }
+                bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
+
+                IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
+
+                if (isDebuggable)
+                {
+                    // If we're already registered, the service no-ops
+                    startupProjectsListService.AddProject(ref _projectGuid);
+                }
+                else
+                {
+                    // If we're already unregistered, the service no-ops
+                    startupProjectsListService.RemoveProject(ref _projectGuid);
+                }
+            });
         }
 
         [Export]

@@ -700,7 +700,7 @@
     <value>10</value>
   </data>
   <data name="LicenseUrlWarning.Text" xml:space="preserve">
-    <value>PackageLicenseURL property was detected, but it has been deprecated. Please change to either an Expression or File.</value>
+    <value>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</value>
   </data>
   <data name="LicenseUrlWarning.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -719,6 +719,9 @@
   </data>
   <data name="ExpressionLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
+  </data>
+  <data name="ExpressionLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="ExpressionLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1870,7 +1873,7 @@
     <value>10</value>
   </data>
   <data name="PackageIconUrlWarning.Text" xml:space="preserve">
-    <value>PackageIconUrl detected but is deprecated. Use PackageIcon instead.</value>
+    <value>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</value>
   </data>
   <data name="PackageIconUrlWarning.Visible" type="System.Boolean, mscorlib">
     <value>False</value>

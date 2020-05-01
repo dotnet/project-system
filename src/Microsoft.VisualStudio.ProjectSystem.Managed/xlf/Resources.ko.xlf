@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
+        <target state="translated">프로젝트 시스템 데이터 흐름 '{0}'이(가) {1} 예외로 인해 닫혔습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="new">No Authentication</target>
+        <target state="translated">인증 안 함</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
@@ -75,10 +75,10 @@
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</source>
-        <target state="new">The project file '{0}' cannot be opened. 
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
+        <target state="needs-review-translation">프로젝트 파일 '{0}'을(를) 열 수 없습니다. 
 
-This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type.</target>
+이 프로젝트는 Visual Studio 외부에서 프로젝트 확장명의 이름을 바꾼 결과로 잘못된 프로젝트 형식을 사용하여 로드된 것 같습니다. 솔루션에서 올바른 프로젝트 형식을 선택하도록 프로젝트를 제거했다가 다시 추가하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
@@ -112,7 +112,7 @@ If this file or folder does not appear in Solution Explorer, then it is not curr
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="new">Windows Authentication</target>
+        <target state="translated">Windows 인증</target>
         <note />
       </trans-unit>
     </body>
