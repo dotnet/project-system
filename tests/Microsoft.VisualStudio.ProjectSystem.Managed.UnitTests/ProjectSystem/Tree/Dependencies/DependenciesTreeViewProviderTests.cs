@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // Arrange
             var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
 
-            var snapshot = DependenciesSnapshot.CreateEmpty(ProjectPath);
+            var snapshot = DependenciesSnapshot.CreateEmpty();
 
             // Act
             var resultTree = await CreateProvider().BuildTreeAsync(dependenciesRoot, snapshot);
@@ -806,7 +806,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
                 var targetedSnapshot = new TargetedDependenciesSnapshot(
-                    "ProjectPath",
                     tfm,
                     catalogs,
                     dependencies.ToImmutableArray());
@@ -815,7 +814,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
 
             return new DependenciesSnapshot(
-                ProjectPath,
                 testData[0].tfm,
                 dependenciesByTarget.ToImmutableDictionary());
         }

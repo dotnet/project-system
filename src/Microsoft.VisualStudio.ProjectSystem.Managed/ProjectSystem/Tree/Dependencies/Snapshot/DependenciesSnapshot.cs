@@ -16,10 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         #region Factories and private constructor
 
-        public static DependenciesSnapshot CreateEmpty(string projectPath)
+        public static DependenciesSnapshot CreateEmpty()
         {
             return new DependenciesSnapshot(
-                projectPath,
                 activeTargetFramework: TargetFramework.Empty,
                 dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
         }
@@ -38,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </remarks>
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static DependenciesSnapshot FromChanges(
-            string projectPath,
             DependenciesSnapshot previousSnapshot,
             ITargetFramework changedTargetFramework,
             IDependenciesChanges? changes,
@@ -49,7 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs)
         {
-            Requires.NotNullOrWhiteSpace(projectPath, nameof(projectPath));
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
@@ -59,13 +56,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             if (!builder.TryGetValue(changedTargetFramework, out TargetedDependenciesSnapshot previousTargetedSnapshot))
             {
-                previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, changedTargetFramework, catalogs);
+                previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(changedTargetFramework, catalogs);
             }
 
             bool builderChanged = false;
 
             var newTargetedSnapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousTargetedSnapshot,
                 changes,
                 catalogs,
@@ -87,7 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 // Dependencies-by-target-framework has changed
                 return new DependenciesSnapshot(
-                    projectPath,
                     activeTargetFramework,
                     builder.ToImmutable());
             }
@@ -96,16 +91,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 // The active target framework changed
                 return new DependenciesSnapshot(
-                    projectPath,
-                    activeTargetFramework,
-                    previousSnapshot.DependenciesByTargetFramework);
-            }
-
-            if (projectPath != previousSnapshot.ProjectPath)
-            {
-                // The project path changed
-                return new DependenciesSnapshot(
-                    projectPath,
                     activeTargetFramework,
                     previousSnapshot.DependenciesByTargetFramework);
             }
@@ -128,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 {
                     if (!builder.ContainsKey(targetFramework))
                     {
-                        builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs));
+                        builder.Add(targetFramework, TargetedDependenciesSnapshot.CreateEmpty(targetFramework, catalogs));
                         builderChanged = true;
                     }
                 }
@@ -163,11 +148,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 diff.Added.Select(
                     added => new KeyValuePair<ITargetFramework, TargetedDependenciesSnapshot>(
                         added,
-                        TargetedDependenciesSnapshot.CreateEmpty(ProjectPath, added, null))));
+                        TargetedDependenciesSnapshot.CreateEmpty(added, null))));
 
             if (activeChanged || !ReferenceEquals(map, DependenciesByTargetFramework))
             {
-                return new DependenciesSnapshot(ProjectPath, activeTargetFramework, map);
+                return new DependenciesSnapshot(activeTargetFramework, map);
             }
 
             return this;
@@ -175,11 +160,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         // Internal, for test use -- normal code should use the factory methods
         internal DependenciesSnapshot(
-            string projectPath,
             ITargetFramework activeTargetFramework,
             ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
-            Requires.NotNullOrEmpty(projectPath, nameof(projectPath));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
@@ -191,20 +174,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
             }
 
-            ProjectPath = projectPath;
             ActiveTargetFramework = activeTargetFramework;
             DependenciesByTargetFramework = dependenciesByTargetFramework;
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets the full path to the project file whose dependencies this snapshot contains.
-        /// </summary>
-        /// <remarks>
-        /// Cannot be null or empty.
-        /// </remarks>
-        public string ProjectPath { get; }
 
         /// <summary>
         /// Gets the active target framework for project.
@@ -246,6 +220,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return null;
         }
 
-        public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")} - {ProjectPath}";
+        public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")}";
     }
 }

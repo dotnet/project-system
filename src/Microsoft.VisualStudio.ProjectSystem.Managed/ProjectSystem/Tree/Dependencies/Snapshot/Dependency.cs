@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
-using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Text;
@@ -11,18 +10,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework, string containingProjectPath)
+        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
             Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNullOrEmpty(containingProjectPath, nameof(containingProjectPath));
 
             TargetFramework = targetFramework;
 
             _modelId = dependencyModel.Id;
-            _containingProjectPath = containingProjectPath;
 
             ProviderType = dependencyModel.ProviderType;
             Name = dependencyModel.Name ?? string.Empty;
@@ -88,9 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             _id = dependency._id;
             _modelId = dependency._modelId;
-            _fullPath = dependency._fullPath;
             TargetFramework = dependency.TargetFramework;
-            _containingProjectPath = dependency._containingProjectPath;
             ProviderType = dependency.ProviderType;
             Name = dependency.Name;
             OriginalItemSpec = dependency.OriginalItemSpec;
@@ -114,8 +109,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </summary>
         private readonly string _modelId;
         private string? _id;
-        private readonly string _containingProjectPath;
-        private string? _fullPath;
 
         public string Id => _id ??= GetID(TargetFramework, ProviderType, _modelId);
 
@@ -123,24 +116,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string Name { get; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
-
-        public string FullPath
-        {
-            get
-            {
-                // Avoid calculating this unless absolutely needed as 
-                // we have a lot of Dependency instances floating around
-                return _fullPath ??= GetFullPath();
-
-                string GetFullPath()
-                {
-                    if (string.IsNullOrEmpty(OriginalItemSpec) || ManagedPathHelper.IsRooted(OriginalItemSpec))
-                        return OriginalItemSpec ?? string.Empty;
-
-                    return ManagedPathHelper.TryMakeRooted(_containingProjectPath, OriginalItemSpec);
-                }
-            }
-        }
 
         public string SchemaName { get; }
 

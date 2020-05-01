@@ -17,11 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         ITargetFramework TargetFramework { get; }
 
         /// <summary>
-        /// Get the full path of the dependency, if relevant, otherwise, <see cref="string.Empty"/>.
-        /// </summary>
-        string FullPath { get; }
-
-        /// <summary>
         /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).
         /// </summary>
         DependencyIconSet IconSet { get; }

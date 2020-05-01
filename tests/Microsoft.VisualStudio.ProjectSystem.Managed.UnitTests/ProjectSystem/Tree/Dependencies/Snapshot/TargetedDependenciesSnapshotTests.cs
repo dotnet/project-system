@@ -17,28 +17,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            var path = "path";
             var tfm = TargetFramework.Any;
             var deps = ImmutableArray<IDependency>.Empty;
 
-            Assert.Throws<ArgumentNullException>("projectPath",       () => new TargetedDependenciesSnapshot(null!, tfm,   null, deps));
-            Assert.Throws<ArgumentNullException>("targetFramework",   () => new TargetedDependenciesSnapshot(path,  null!, null, deps));
+            Assert.Throws<ArgumentNullException>("targetFramework", () => new TargetedDependenciesSnapshot(null!, null, deps));
+            Assert.Throws<ArgumentException>("dependencies",        () => new TargetedDependenciesSnapshot(tfm,   null, default));
         }
 
         [Fact]
         public void Constructor()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var snapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray<IDependency>.Empty);
 
-            Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
@@ -49,13 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void CreateEmpty()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
 
-            var snapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+            var snapshot = TargetedDependenciesSnapshot.CreateEmpty(targetFramework, catalogs);
 
-            Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
@@ -66,13 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_NoChanges()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(targetFramework, catalogs);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes: null,
                 catalogs,
@@ -86,15 +78,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_CatalogChanged()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
             var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, previousCatalogs);
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(targetFramework, previousCatalogs);
 
             var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes: null,
                 updatedCatalogs,
@@ -103,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(updatedCatalogs, snapshot.Catalogs);
             Assert.Equal(previousSnapshot.Dependencies.Length, snapshot.Dependencies.Length);
             for (int i = 0; i < previousSnapshot.Dependencies.Length; i++)
@@ -117,11 +106,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_AddingToEmpty()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(projectPath, targetFramework, catalogs);
+            var previousSnapshot = TargetedDependenciesSnapshot.CreateEmpty(targetFramework, catalogs);
 
             var resolved = new TestDependencyModel
             {
@@ -151,10 +139,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Added(resolved);
             changes.Added(unresolved);
 
-            const string updatedProjectPath = "updatedProjectPath";
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                updatedProjectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -163,7 +149,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 null);
 
             Assert.NotSame(previousSnapshot, snapshot);
-            Assert.Same(updatedProjectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
             Assert.True(snapshot.HasVisibleUnresolvedDependency);
             AssertEx.CollectionLength(snapshot.Dependencies, 2);
@@ -174,8 +159,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
-
             var targetFramework = new TargetFramework("tfm1");
 
             var dependency1 = new TestDependency
@@ -200,7 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependency1, dependency2));
@@ -211,7 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var snapshotFilter = new TestDependenciesSnapshotFilter();
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -226,7 +207,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var dependency1 = new TestDependency
@@ -251,7 +231,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependency1, dependency2));
@@ -265,7 +244,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 .BeforeRemoveReject(@"tfm1\xxx\dependency1", addOrUpdate: addedOnRemove);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -278,7 +256,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
 
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
-            Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
             AssertEx.CollectionLength(snapshot.Dependencies, 3);
             Assert.Contains(addedOnRemove, snapshot.Dependencies);
@@ -287,7 +264,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var dependency1 = new TestDependency
@@ -314,7 +290,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependency1));
@@ -326,7 +301,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 .BeforeAddReject(@"tfm1\xxx\newdependency1");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -342,7 +316,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_ReportedChangesAfterBeforeAddFilterDeclinedChange()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var dependency1 = new TestDependency
@@ -379,7 +352,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependency1, dependency2));
@@ -393,7 +365,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 .BeforeAddReject(@"tfm1\xxx\newdependency1", addOrUpdate: filterAddedDependency);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -406,7 +377,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
 
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
-            Assert.Same(previousSnapshot.ProjectPath, snapshot.ProjectPath);
             Assert.Same(previousSnapshot.Catalogs, snapshot.Catalogs);
 
             AssertEx.CollectionLength(snapshot.Dependencies, 3);
@@ -418,7 +388,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_RemovedAndAddedChanges()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var dependency1 = new TestDependency
@@ -509,7 +478,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependency1, dependency2, dependencyRemoved1));
@@ -527,7 +495,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 .BeforeRemoveAccept(@"tfm1\xxx\Removeddependency1", dependencyInsteadRemoved1);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
@@ -540,7 +507,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotSame(previousSnapshot, snapshot);
 
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
-            Assert.Same(projectPath, snapshot.ProjectPath);
             Assert.Same(catalogs, snapshot.Catalogs);
             AssertEx.CollectionLength(snapshot.Dependencies, 5);
             Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"tfm1\xxx\dependency1");
@@ -553,7 +519,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void FromChanges_UpdatesLevelDependencies()
         {
-            const string projectPath = @"c:\somefolder\someproject\a.csproj";
             var targetFramework = new TargetFramework("tfm1");
 
             var dependencyPrevious = new TestDependency
@@ -590,7 +555,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
-                projectPath,
                 targetFramework,
                 catalogs,
                 ImmutableArray.Create<IDependency>(dependencyPrevious));
@@ -602,7 +566,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     .BeforeAddAccept(@"tfm1\xxx\dependency1", dependencyUpdated);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                projectPath,
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,

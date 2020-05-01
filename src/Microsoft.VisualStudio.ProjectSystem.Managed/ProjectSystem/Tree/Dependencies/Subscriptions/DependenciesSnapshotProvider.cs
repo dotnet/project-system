@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             _context = new ContextTracker(targetFrameworkProvider, commonServices, contextProvider, activeProjectConfigurationRefreshService);
 
-            _snapshot = new SnapshotUpdater(commonServices, tasksService.UnloadCancellationToken);
+            _snapshot = new SnapshotUpdater(commonServices.ThreadingService, tasksService.UnloadCancellationToken);
 
             _disposables = new DisposableBag { _snapshot, _contextUpdateGate };
         }
@@ -278,7 +278,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(
-                    _commonServices.Project.FullPath,
                     previousSnapshot,
                     changedTargetFramework,
                     changes,
