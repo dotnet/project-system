@@ -101,8 +101,7 @@
     -->
     <ProjectCapability Include="
                           AssemblyReferences;
-                          ProjectReferences;
-                          SharedProjectReferences;
+                          ProjectReferences;                          
                           WinRTReferences;
                           OutputGroups;
                           AllTargetOutputGroups;
