@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Flags = dependencyModel.Flags;
 
             // Just in case custom providers don't do it, add corresponding flags for Resolved state.
-            // This is needed for tree update logic to track if tree node changing state from unresolved 
+            // This is needed for tree update logic to track if tree node changing state from unresolved
             // to resolved or vice-versa (it helps to decide if we need to remove it or update in-place
             // in the tree to avoid flicks).
             if (Resolved)
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         #region IDependency
 
         /// <summary>
-        /// Id unique for a particular provider. We append target framework and provider type to it, 
+        /// Id unique for a particular provider. We append target framework and provider type to it,
         /// to get a unique id for the whole snapshot.
         /// </summary>
         private readonly string _modelId;
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             get
             {
                 // For generic node types we do set correct, known item types, however for custom nodes
-                // provided by third party extensions we can not guarantee that item type will be known. 
+                // provided by third party extensions we can not guarantee that item type will be known.
                 // Thus always set predefined itemType for all custom nodes.
                 // TODO: generate specific xaml rule for generic Dependency nodes
                 // tracking issue: https://github.com/dotnet/project-system/issues/1102
