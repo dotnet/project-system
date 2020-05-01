@@ -6,62 +6,76 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 {
     [Export(typeof(VisualBasicNamespaceImportsList))]
     [AppliesTo(ProjectCapability.VisualBasic)]
-    internal class VisualBasicNamespaceImportsList : OnceInitializedOnceDisposed, IEnumerable<string>
+    internal class VisualBasicNamespaceImportsList : UnconfiguredProjectHostBridge<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<ImmutableList<string>>, IProjectVersionedValue<ImmutableList<string>>>, IEnumerable<string>
     {
-        private readonly UnconfiguredProject _project;
-        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
-
-        private readonly object _lock = new object();
-        private readonly List<string> _list = new List<string>();
-        private IDisposable? _namespaceImportSubscriptionLink;
-
         private static readonly ImmutableHashSet<string> s_namespaceImportRule = Empty.OrdinalIgnoreCaseStringSet
             .Add(NamespaceImport.SchemaName);
+
+        private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+
+        /// <summary>
+        /// For unit testing purposes, to avoid having to mock all of CPS
+        /// </summary>
+        internal bool SkipInitialization { get; set; }
 
         [ImportingConstructor]
         public VisualBasicNamespaceImportsList(
             UnconfiguredProject project,
+            IProjectThreadingService threadingService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService)
+            : base(threadingService.JoinableTaskContext)
         {
-            _project = project;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
         }
 
-        /// <summary>
-        /// For testing purpose only
-        /// </summary>
-#pragma warning disable CS8618 // Non-nullable field '_activeConfiguredProjectSubscriptionService' is uninitialized
-        internal VisualBasicNamespaceImportsList()
-#pragma warning restore CS8618 // Non-nullable field '_activeConfiguredProjectSubscriptionService' is uninitialized
-        {
-        }
+        [Import(typeof(VisualBasicVSImports))]
+        internal Lazy<VisualBasicVSImports>? VSImports { get; set; }
 
         /// <summary>
-        /// For testing purpose only
+        /// Get the global project collection version number, so we can make sure we are waiting for the latest build after a dependent project is updated.
         /// </summary>
-        internal void SetList(IEnumerable<string> list)
+        [Import(ContractNames.MSBuild.GlobalProjectCollectionGlobalProperties, typeof(IProjectGlobalPropertiesProvider))]
+        private IProjectGlobalPropertiesProvider GlobalProjectCollectionWatcher { get; set; } = null!;
+
+        private void TryInitialize()
         {
-            _list.Clear();
-            _list.AddRange(list);
+            if (!SkipInitialization)
+            {
+                Initialize();
+            }
         }
 
-        internal int Count => _list.Count;
+        internal int Count
+        {
+            get
+            {
+                TryInitialize();
+
+                Assumes.NotNull(AppliedValue);
+
+                return AppliedValue.Value.Count;
+            }
+        }
 
         /// <summary>
         /// Returns an enumerator for the list of imports.
         /// </summary>
         public IEnumerator<string> GetEnumerator()
         {
-            lock (_lock)
-            {
-                return _list.ToList().GetEnumerator();
-            }
+            TryInitialize();
+
+            Assumes.NotNull(AppliedValue);
+
+            return AppliedValue.Value.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -70,49 +84,85 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         [AppliesTo(ProjectCapability.VisualBasic)]
         internal Task OnProjectFactoryCompletedAsync()
         {
-            EnsureInitialized();
+            TryInitialize();
+
             return Task.CompletedTask;
         }
 
-        internal void OnNamespaceImportChanged(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
+        protected override async Task ApplyAsync(IProjectVersionedValue<ImmutableList<string>> value)
         {
-            IProjectChangeDescription projectChange = e.Value.ProjectChanges[NamespaceImport.SchemaName];
+            await JoinableFactory.SwitchToMainThreadAsync();
 
-            if (projectChange.Difference.AnyChanges)
+            ImmutableList<string> current = AppliedValue?.Value ?? ImmutableList<string>.Empty;
+            ImmutableList<string> input = value.Value;
+
+            IEnumerable<string> removed = current.Except(input);
+            IEnumerable<string> added = input.Except(current);
+
+            AppliedValue = value;
+
+            VisualBasicVSImports? imports = VSImports?.Value;
+
+            if (imports != null)
             {
-                lock (_lock)
+                foreach (string import in removed)
                 {
-                    IOrderedEnumerable<string> sortedItems = projectChange.After.Items.Keys.OrderBy(s => s, StringComparers.ItemNames);
-                    int newListCount = sortedItems.Count();
-                    int oldListCount = _list.Count;
+                    imports.OnImportRemoved(import);
+                }
 
-                    int trackingIndex = 0;
+                foreach (string import in added)
+                {
+                    imports.OnImportAdded(import);
+                }
+            }
+        }
 
-                    while (trackingIndex < oldListCount && trackingIndex < newListCount)
-                    {
-                        string incomingItem = sortedItems.ElementAt(trackingIndex);
-                        if (string.Equals(_list[trackingIndex], incomingItem, StringComparisons.ItemNames))
-                        {
-                            trackingIndex++;
-                            continue;
-                        }
+        protected override Task<IProjectVersionedValue<ImmutableList<string>>> PreprocessAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> input, IProjectVersionedValue<ImmutableList<string>>? previousOutput)
+        {
+            IProjectChangeDescription projectChange = input.Value.ProjectChanges[NamespaceImport.SchemaName];
 
-                        _list[trackingIndex] = incomingItem;
-                        trackingIndex++;
-                    }
+            return Task.FromResult<IProjectVersionedValue<ImmutableList<string>>>(
+                new ProjectVersionedValue<ImmutableList<string>>(
+                    projectChange.After.Items.Keys.ToImmutableList(),
+                    input.DataSourceVersions));
+        }
 
-                    if (oldListCount == newListCount)
-                    {
-                        return;
-                    }
-                    else if (oldListCount < newListCount)
-                    {
-                        _list.AddRange(sortedItems.Skip(trackingIndex));
-                    }
-                    else
-                    {
-                        _list.RemoveRange(trackingIndex, oldListCount - trackingIndex);
-                    }
+        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> targetBlock)
+        {
+            JoinUpstreamDataSources(_activeConfiguredProjectSubscriptionService.ProjectRuleSource);
+
+            //set up a subscription to listen for namespace import changes
+            return _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkTo(targetBlock,
+                linkOptions: DataflowOption.PropagateCompletion,
+                ruleNames: s_namespaceImportRule);
+        }
+
+        protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        /// <summary>
+        /// Receive latest snapshot from project subscription service.
+        /// </summary>
+        /// <returns>returns a task, which the caller could await for</returns>
+        internal async Task<IProjectVersionedValue<ImmutableList<string>>> ReceiveLatestSnapshotAsync()
+        {
+            await InitializeAsync();
+            while (true)
+            {
+                try
+                {
+                    var minimumRequiredDataSourceVersions = ActiveConfiguredProjectProvider.ActiveConfiguredProject.CreateVersionRequirement(allowMissingData: false).ToBuilder();
+
+                    IComparable? latestProjectCollectionVersion = GlobalProjectCollectionWatcher.DataSourceVersion;
+                    minimumRequiredDataSourceVersions.Add(
+                        ProjectDataSources.GlobalProjectCollectionGlobalProperties,
+                        new ProjectVersionRequirement(latestProjectCollectionVersion!, allowMissingData: true));
+
+                    return await ApplyAsync(minimumRequiredDataSourceVersions.ToImmutable(), default);
+                }
+                catch (ActiveProjectConfigurationChangedException)
+                {
+                    // The active project config has changed since we started.  Recalculate the data source versions
+                    // we need and start waiting over again.
                 }
             }
         }
@@ -125,15 +175,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                 throw new ArgumentException(string.Format("{0} - Index value is less than One.", lIndex), nameof(lIndex));
             }
 
-            lock (_lock)
-            {
-                if (lIndex > _list.Count)
-                {
-                    throw new ArgumentException(string.Format("{0} - Index value is greater than the length of the namespace import list.", lIndex), nameof(lIndex));
-                }
+            TryInitialize();
 
-                return _list[lIndex - 1];
+            Assumes.NotNull(AppliedValue);
+
+            ImmutableList<string> list = AppliedValue.Value;
+
+            if (lIndex > list.Count)
+            {
+                throw new ArgumentException(string.Format("{0} - Index value is greater than the length of the namespace import list.", lIndex), nameof(lIndex));
             }
+
+            return list[lIndex - 1];
         }
 
         internal bool IsPresent(int indexInt)
@@ -143,15 +196,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                 throw new ArgumentException(string.Format("{0} - Index value is less than One.", indexInt), nameof(indexInt));
             }
 
-            lock (_lock)
-            {
-                if (indexInt > _list.Count)
-                {
-                    throw new ArgumentException(string.Format("{0} - Index value is greater than the length of the namespace import list.", indexInt), nameof(indexInt));
-                }
+            TryInitialize();
 
-                return true;
+            Assumes.NotNull(AppliedValue);
+
+            if (indexInt > AppliedValue.Value.Count)
+            {
+                throw new ArgumentException(string.Format("{0} - Index value is greater than the length of the namespace import list.", indexInt), nameof(indexInt));
             }
+
+            return true;
         }
 
         internal bool IsPresent(string bstrImport)
@@ -161,24 +215,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                 throw new ArgumentException("The string cannot be null or empty", nameof(bstrImport));
             }
 
-            lock (_lock)
-            {
-                return _list.Any(l => string.Equals(bstrImport, l, StringComparisons.ItemNames));
-            }
-        }
+            TryInitialize();
 
-        protected override void Initialize()
-        {
-            //set up a subscription to listen for namespace import changes
-            _namespaceImportSubscriptionLink = _activeConfiguredProjectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAction(
-                OnNamespaceImportChanged,
-                _project,
-                ruleNames: s_namespaceImportRule);
-        }
+            Assumes.NotNull(AppliedValue);
 
-        protected override void Dispose(bool disposing)
-        {
-            _namespaceImportSubscriptionLink?.Dispose();
+            return AppliedValue.Value.Any(l => string.Equals(bstrImport, l, StringComparisons.ItemNames));
         }
     }
 }

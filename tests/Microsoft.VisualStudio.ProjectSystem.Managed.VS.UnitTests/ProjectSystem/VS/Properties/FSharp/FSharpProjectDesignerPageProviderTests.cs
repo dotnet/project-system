@@ -27,7 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
                FSharpProjectDesignerPage.BuildEvents,
                FSharpProjectDesignerPage.Debug,
                FSharpProjectDesignerPage.Package,
-               FSharpProjectDesignerPage.ReferencePaths
+               FSharpProjectDesignerPage.ReferencePaths,
+               FSharpProjectDesignerPage.Signing
             );
 
             Assert.Equal(expected, result);

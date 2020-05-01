@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
 
         public Task<IReadOnlyCollection<IPageMetadata>> GetPagesAsync()
         {
-            var builder = PooledArray<IPageMetadata>.GetInstance(capacity: 6);
+            var builder = PooledArray<IPageMetadata>.GetInstance(capacity: 7);
 
             builder.Add(FSharpProjectDesignerPage.Application);
             builder.Add(FSharpProjectDesignerPage.Build);
@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.FSharp
             }
 
             builder.Add(FSharpProjectDesignerPage.ReferencePaths);
+            builder.Add(FSharpProjectDesignerPage.Signing);
 
             return Task.FromResult<IReadOnlyCollection<IPageMetadata>>(builder.ToImmutableAndFree());
         }

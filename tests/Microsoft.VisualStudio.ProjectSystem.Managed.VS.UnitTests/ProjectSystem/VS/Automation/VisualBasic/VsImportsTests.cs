@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
                                 Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
-                                new VisualBasicNamespaceImportsList());
+                                VisualBasicNamespaceImportsListFactory.CreateInstance());
 
             Assert.NotNull(vsimports);
         }
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
                                 Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
                                 Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
-                                Mock.Of<VisualBasicNamespaceImportsList>());
+                                VisualBasicNamespaceImportsListFactory.CreateInstance());
 
             Assert.Equal(dte, vsimports.DTE);
             Assert.Equal(project, vsimports.ContainingProject);

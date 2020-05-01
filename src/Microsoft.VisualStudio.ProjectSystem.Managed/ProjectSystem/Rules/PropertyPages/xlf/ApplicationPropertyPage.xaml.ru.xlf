@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
-        <target state="new">Startup object</target>
+        <target state="translated">Автоматически запускаемый объект</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
         <source>Target framework</source>
-        <target state="new">Target framework</target>
+        <target state="translated">Целевая платформа</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
         <source>Manifest</source>
-        <target state="new">Manifest</target>
+        <target state="translated">Манифест</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output type</source>
-        <target state="new">Output type</target>
+        <target state="translated">Тип вывода</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
         <source>Embed manifest with default settings</source>
-        <target state="new">Embed manifest with default settings</target>
+        <target state="translated">Внедрить манифест с настройками по умолчанию</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
         <source>Create application without a manifest</source>
-        <target state="new">Create application without a manifest</target>
+        <target state="translated">Создать приложение без манифеста</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
         <source>Console Application</source>
-        <target state="new">Console Application</target>
+        <target state="translated">Консольное приложение</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Library|DisplayName">
         <source>Class Library</source>
-        <target state="new">Class Library</target>
+        <target state="translated">Библиотека классов</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
-        <target state="new">Windows Application</target>
+        <target state="translated">Приложение Windows</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Общие</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
         <source>Application</source>
-        <target state="new">Application</target>
+        <target state="translated">Приложение</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">Значок</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly name</source>
-        <target state="new">Assembly name</target>
+        <target state="translated">Имя сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
-        <target state="new">Default namespace</target>
+        <target state="translated">Пространство имен по умолчанию</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">Файл ресурсов</target>
         <note />
       </trans-unit>
     </body>

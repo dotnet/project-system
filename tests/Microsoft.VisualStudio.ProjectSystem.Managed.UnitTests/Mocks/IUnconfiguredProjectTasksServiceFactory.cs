@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static IUnconfiguredProjectTasksService Create()
         {
-            return Mock.Of<IUnconfiguredProjectTasksService>();
+            return ImplementLoadedProjectAsync(func => func());
         }
 
         public static IUnconfiguredProjectTasksService ImplementPrioritizedProjectLoadedInHost(Func<Task> action)
