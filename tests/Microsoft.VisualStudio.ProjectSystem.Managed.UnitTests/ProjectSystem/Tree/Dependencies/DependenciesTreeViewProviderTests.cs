@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
@@ -15,8 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     public sealed class DependenciesTreeViewProviderTests
     {
-        private const string ProjectPath = @"c:\myfolder\mysubfolder\myproject.csproj";
-
         private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
         private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
 
@@ -570,11 +567,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public void WhenFindByPathAndNullNode_ShouldDoNothing()
         {
             // Arrange
-            var projectFolder = Path.GetDirectoryName(ProjectPath);
             var provider = CreateProvider();
 
             // Act
-            var resultTree = provider.FindByPath(null, Path.Combine(projectFolder, @"somenode"));
+            var resultTree = provider.FindByPath(null, "SomePath");
 
             // Assert
             Assert.Null(resultTree);
@@ -584,12 +580,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public void WhenFindByPathAndNotDependenciesRoot_ShouldDoNothing()
         {
             // Arrange
-            var projectFolder = Path.GetDirectoryName(ProjectPath);
             var provider = CreateProvider();
             var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
 
             // Act
-            var resultTree = provider.FindByPath(dependenciesRoot, Path.Combine(projectFolder, @"somenode"));
+            var resultTree = provider.FindByPath(dependenciesRoot, "SomePath");
 
             // Assert
             Assert.Null(resultTree);
@@ -658,8 +653,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public void WhenFindByPathAndRelativeNodePath_ShouldNotFind()
         {
             // Arrange
-            var projectFolder = Path.GetDirectoryName(ProjectPath);
-
             var provider = CreateProvider();
 
             var dependenciesRoot = new TestProjectTree
@@ -708,7 +701,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             };
 
             // Act
-            var resultTree = provider.FindByPath(dependenciesRoot, Path.Combine(projectFolder, @"level3Child32"));
+            var resultTree = provider.FindByPath(dependenciesRoot, "SomePath\\level3Child32");
 
             // Assert
             Assert.Null(resultTree);
@@ -718,8 +711,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldNotFind()
         {
             // Arrange
-            var projectFolder = Path.GetDirectoryName(ProjectPath);
-
             var provider = CreateProvider();
 
             var projectRoot = new TestProjectTree
@@ -775,7 +766,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             };
 
             // Act
-            var result = provider.FindByPath(projectRoot, Path.Combine(projectFolder, @"level3Child32"));
+            var result = provider.FindByPath(projectRoot, "SomePath\\level3Child32");
 
             // Assert
             Assert.Null(result);
@@ -792,8 +783,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 createRootViewModel: rootModels,
                 createTargetViewModel: targetModels);
 
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(
-                project: UnconfiguredProjectFactory.Create(filePath: ProjectPath));
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create();
 
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
