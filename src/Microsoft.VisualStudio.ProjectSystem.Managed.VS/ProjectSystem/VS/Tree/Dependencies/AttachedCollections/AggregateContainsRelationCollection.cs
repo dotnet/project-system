@@ -34,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         }
 
         private event NotifyCollectionChangedEventHandler? CollectionChanged;
+        private event EventHandler? HasItemsChanged;
 
         private readonly AggregateContainsRelationCollectionSpan[] _spans;
         private readonly IRelatableItem _item;
@@ -55,12 +56,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             if (_isMaterialized)
             {
-                int baseIndex = 0;
+                int beforeCount = 0;
+                int afterCount = 0;
+
                 foreach (AggregateContainsRelationCollectionSpan span in _spans)
                 {
-                    span.BaseIndex = baseIndex;
+                    beforeCount += span.Items?.Count ?? 0;
+                    span.BaseIndex = afterCount;
                     span.Relation.UpdateContainsCollection(parent: _item, span);
-                    baseIndex += span.Items?.Count ?? 0;
+                    afterCount += span.Items?.Count ?? 0;
+                }
+
+                if ((beforeCount == 0) != (afterCount == 0))
+                {
+                    HasItemsChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -69,6 +78,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             add => CollectionChanged += value;
             remove => CollectionChanged -= value;
+        }
+
+        event EventHandler IAggregateRelationCollection.HasItemsChanged
+        {
+            add => HasItemsChanged += value;
+            remove => HasItemsChanged -= value;
         }
 
         bool IAggregateRelationCollection.HasItems
