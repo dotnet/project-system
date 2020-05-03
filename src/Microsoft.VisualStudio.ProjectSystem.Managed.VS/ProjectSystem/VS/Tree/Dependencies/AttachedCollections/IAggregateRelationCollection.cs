@@ -1,7 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections;
 using System.Windows.Data;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -27,6 +29,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </remarks>
     public interface IAggregateRelationCollection : IList
     {
+        /// <summary>
+        /// Raised whenever <see cref="HasItems"/> changes.
+        /// </summary>
+        /// <remarks>
+        /// Used by <see cref="AggregateRelationCollectionSource"/> to trigger changes to its
+        /// <see cref="IAttachedCollectionSource.HasItems"/> property.
+        /// </remarks>
+        event EventHandler HasItemsChanged;
+
         /// <summary>
         /// Gets whether this collection contains items. The return value can be computed without materializing items.
         /// This allows expansion indicators to be displayed correctly without actually instantiating items.

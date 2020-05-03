@@ -6,6 +6,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigura
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjectConfigurationProperties
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.OnStateUpdated() -> void
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItemsChanged -> System.EventHandler!
 static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.TryCreate(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parentItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? collection) -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.UpdateContainsItems<TData, TItem>(System.Collections.Generic.IEnumerable<TData>! sources, System.Func<TData, TItem!, int>! comparer, System.Func<TData, TItem!, bool>! update, System.Func<TData, TItem!>! factory) -> void

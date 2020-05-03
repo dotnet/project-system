@@ -28,7 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public AggregateRelationCollectionSource(object sourceItem, IAggregateRelationCollection? collection = null)
         {
             _sourceItem = Requires.NotNull(sourceItem, nameof(sourceItem));
-            _collection = collection;
+
+            if (collection != null)
+            {
+                SetCollection(collection);
+            }
         }
 
         object IAttachedCollectionSource.SourceItem => _sourceItem;
@@ -64,6 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             }
 
             _collection = Requires.NotNull(collection, nameof(collection));
+            _collection.HasItemsChanged += delegate
+            {
+                PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);
+            };
+
             PropertyChanged?.Invoke(this, KnownEventArgs.IsUpdatingItemsPropertyChanged);
             PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);
         }

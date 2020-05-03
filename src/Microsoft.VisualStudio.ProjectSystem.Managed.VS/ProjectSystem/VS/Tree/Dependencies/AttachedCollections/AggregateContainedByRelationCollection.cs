@@ -8,6 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 {
     public sealed class AggregateContainedByRelationCollection : IAggregateRelationCollection
     {
+        /// <summary>
+        /// <see cref="HasItems"/> doesn't change for this collection type.
+        /// </summary>
+        event EventHandler IAggregateRelationCollection.HasItemsChanged { add { } remove { } }
+
         private readonly List<object> _parentItems;
 
         internal AggregateContainedByRelationCollection(List<object> parentItems)
