@@ -159,21 +159,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [ClassData(typeof(ComposablePartDefinitionTestData))]
         public void ExportsMustBeConstructable(Type type)
         {
-            bool isConstructable = false;
+            bool hasParameterlessConstructor = false;
+            int importingConstructors = 0;
             foreach (var constructor in type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
             {
                 if (constructor.GetParameters().Length == 0)
                 {
-                    isConstructable = true;
-                    break;
+                    hasParameterlessConstructor = true;
                 }
                 else if (constructor.GetCustomAttribute<ImportingConstructorAttribute>() != null)
                 {
-                    isConstructable = true;
-                    break;
+                    importingConstructors++;
                 }
             }
-            Assert.True(isConstructable, $"Couldn't find a parameterless constructor or a constructor marked [ImportingConstructor] on {type}");
+            Assert.True(importingConstructors <= 1, "MEF exports cannot have more than one constructor marked [ImportingConstructor]");
+            Assert.True(hasParameterlessConstructor || importingConstructors == 1, "MEF exports must have a parameterless constructor and/or a single constructor marked with [ImportingConstructor]");
         }
 
         [Theory]
