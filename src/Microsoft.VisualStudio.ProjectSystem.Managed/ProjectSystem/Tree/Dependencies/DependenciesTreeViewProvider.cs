@@ -369,11 +369,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             IProjectTree CreateProjectTreeNode()
             {
-                // For IProjectTree remove ProjectTreeFlags.Common.Reference flag, otherwise CPS would fail to
-                // map this node to graph node and GraphProvider would be never called.
-                // Only IProjectItemTree can have this flag
-                filteredFlags = filteredFlags.Except(ProjectTreeFlags.Reference);
-
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
                     filePath,
