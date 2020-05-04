@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         [Theory]
-        [ClassData(typeof(ComposablePartDefinitionTestData))]
+        [ClassData(typeof(AllExportsTestData))]
         public void ExportsMustBeConstructable(Type type)
         {
             bool hasParameterlessConstructor = false;
