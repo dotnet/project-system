@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 
@@ -59,6 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return null;
         }
 
-        IEnumerable<IAttachedRelationship> IAttachedCollectionSourceProvider.GetRelationships(object item) => Enumerable.Empty<IAttachedRelationship>();
+        IEnumerable<IAttachedRelationship> IAttachedCollectionSourceProvider.GetRelationships(object item)
+        {
+            // Unlike RelationAttachedCollectionSourceProviderBase, this method will not be
+            // called for context menus, as the source item is a IVsHierarchyItem in the tree.
+            if (item is IRelatableItem relatableItem)
+            {
+                yield return Relationships.Contains;
+            }
+        }
     }
 }
