@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
+using EnvDTE;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -32,15 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             [NotNullWhen(returnValue: true)] out AggregateRelationCollectionSource? containsCollectionSource)
         {
             if (ErrorHandler.Succeeded(hierarchyItem.HierarchyIdentity.Hierarchy.GetProperty(
-                hierarchyItem.HierarchyIdentity.ItemID, (int)__VSHPROPID.VSHPROPID_BrowseObject, out object browseObject)))
+                hierarchyItem.HierarchyIdentity.ItemID, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectItemObject)))
             {
-                ICustomTypeDescriptor? desc = browseObject as ICustomTypeDescriptor;
-                PropertyDescriptorCollection? props = desc?.GetProperties();
+                var projectItem = projectItemObject as ProjectItem;
+                EnvDTE.Properties? props = projectItem?.Properties;
 
-                if (props?["TargetingPackPath"]?.GetValue(browseObject) is string path &&
-                    props?["OriginalItemSpec"]?.GetValue(browseObject) is string name)
+                if (props?.Item("TargetingPackPath")?.Value is string path &&
+                    props?.Item("OriginalItemSpec")?.Value is string name)
                 {
-                    string? profile = props?["Profile"]?.GetValue(browseObject) as string;
+                    string? profile = props?.Item("Profile").Value as string;
 
                     var framework = new FrameworkReferenceIdentity(path, profile, name);
                     var item = new FrameworkReferenceItem(framework);
