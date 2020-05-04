@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.Composition;
@@ -152,6 +153,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 return appliesTo.Split(new char[] { '&', '|', '(', ')', ' ', '!', }, StringSplitOptions.RemoveEmptyEntries);
             }
+        }
+
+        [Theory]
+        [ClassData(typeof(ComposablePartDefinitionTestData))]
+        public void ExportsMustBeConstructable(Type type)
+        {
+            bool isConstructable = false;
+            foreach (var constructor in type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (constructor.GetParameters().Length == 0)
+                {
+                    isConstructable = true;
+                    break;
+                }
+                else if (constructor.GetCustomAttribute<ImportingConstructorAttribute>() != null)
+                {
+                    isConstructable = true;
+                    break;
+                }
+            }
+            Assert.True(isConstructable, $"Couldn't find a parameterless constructor or a constructor marked [ImportingConstructor] on {type}");
         }
 
         [Theory]
