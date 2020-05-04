@@ -22,12 +22,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
           IPrioritizedComparable,
           IInteractionPatternProvider,
           IBrowsablePattern,
+          IContextMenuPattern,
           INotifyPropertyChanged
     {
         // Other patterns we may wish to utilise in future are:
         //
         // - IInvocationPattern
-        // - IContextMenuPattern
         // - ISupportExpansionEvents
         // - ISupportExpansionState
         // - IDragDropSourcePattern
@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         private static readonly HashSet<Type> s_supportedPatterns = new HashSet<Type>
         {
             typeof(ITreeDisplayItem),
-            typeof(IBrowsablePattern)
+            typeof(IBrowsablePattern),
+            typeof(IContextMenuPattern)
         };
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -93,6 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public bool IsCut => false;
 
         public virtual object? GetBrowseObject() => null;
+
+        IContextMenuController? IContextMenuPattern.ContextMenuController => ContextMenuController;
+
+        protected virtual IContextMenuController? ContextMenuController => null;
 
         TPattern IInteractionPatternProvider.GetPattern<TPattern>() where TPattern : class
         {

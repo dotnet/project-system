@@ -51,6 +51,7 @@ abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColle
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Priority.get -> int
 override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.CompareTo(object! obj) -> int
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ExpandedIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontStyle.get -> System.Windows.FontStyle
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontWeight.get -> System.Windows.FontWeight
