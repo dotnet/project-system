@@ -7,6 +7,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjec
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.OnStateUpdated() -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItemsChanged -> System.EventHandler!
+override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
 static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.TryCreate(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parentItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? collection) -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan.UpdateContainsItems<TData, TItem>(System.Collections.Generic.IEnumerable<TData>! sources, System.Func<TData, TItem!, int>! comparer, System.Func<TData, TItem!, bool>! update, System.Func<TData, TItem!>! factory) -> void
@@ -51,6 +52,7 @@ abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColle
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Priority.get -> int
 override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.CompareTo(object! obj) -> int
+virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ExpandedIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontStyle.get -> System.Windows.FontStyle
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.FontWeight.get -> System.Windows.FontWeight

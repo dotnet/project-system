@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Utilities;
@@ -46,6 +45,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return null;
         }
 
-        public IEnumerable<IAttachedRelationship> GetRelationships(object item) => Enumerable.Empty<IAttachedRelationship>();
+        public IEnumerable<IAttachedRelationship> GetRelationships(object item)
+        {
+            if (item is IRelatableItem relatableItem)
+            {
+                // We always return "Contains" relationship, even if no IRelation exists to produce
+                // those children. Doing so lights up context menu items related to Solution Explorer
+                // scoping.
+                yield return Relationships.Contains;
+
+                if (relatableItem.ContainedByCollection != null)
+                {
+                    yield return Relationships.ContainedBy;
+                }
+            }
+        }
     }
 }

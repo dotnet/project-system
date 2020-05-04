@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Internal.VisualStudio.PlatformUI;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -8,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Base class for <see cref="IRelatableItem"/> implementations. Derives from <see cref="AttachedCollectionItemBase"/>
     /// to include common patterns for attached items.
     /// </summary>
-    public abstract class RelatableItemBase : AttachedCollectionItemBase, IRelatableItem
+    public abstract partial class RelatableItemBase : AttachedCollectionItemBase, IRelatableItem
     {
         private AggregateContainsRelationCollection? _containsCollection;
 
@@ -18,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         }
 
         public abstract object Identity { get; }
+
+        protected override IContextMenuController? ContextMenuController => DefaultContextMenuController.Instance;
 
         AggregateContainsRelationCollection? IRelatableItem.ContainsCollection => _containsCollection;
 
