@@ -25,7 +25,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 string frameworkListPath = Path.Combine(framework.Path, "data", "FrameworkList.xml");
                 var pool = new Dictionary<string, string>(StringComparer.Ordinal);
 
-                var doc = XDocument.Load(frameworkListPath);
+                XDocument doc;
+                try
+                {
+                    doc = XDocument.Load(frameworkListPath);
+                }
+                catch
+                {
+                    return ImmutableArray<FrameworkReferenceAssemblyItem>.Empty;
+                }
+
                 ImmutableArray<FrameworkReferenceAssemblyItem>.Builder results = ImmutableArray.CreateBuilder<FrameworkReferenceAssemblyItem>();
 
                 foreach (XElement file in doc.Root.Elements("File"))
