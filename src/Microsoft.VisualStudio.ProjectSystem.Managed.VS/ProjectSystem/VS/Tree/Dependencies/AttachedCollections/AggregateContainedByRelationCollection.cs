@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
+    /// <summary>
+    /// An immutable collection of "contained-by" (parent) items for an <see cref="IRelatableItem"/>,
+    /// aggregated across it's potentially many <see cref="IRelation"/>s. Eagerly populated. Used as
+    /// part of Solution Explorer search.
+    /// </summary>
     public sealed class AggregateContainedByRelationCollection : IAggregateRelationCollection
     {
         /// <summary>
