@@ -49,10 +49,6 @@
     <PackageReference Include="Microsoft.Build.Tasks.Core" />
     <PackageReference Include="Microsoft.Build.Engine" />
 
-    <!-- NuGet -->
-    <PackageReference Include="NuGet.ProjectModel" />
-    <PackageReference Include="NuGet.Common" />
-    
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
 
