@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.Composition;
@@ -152,6 +153,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 return appliesTo.Split(new char[] { '&', '|', '(', ')', ' ', '!', }, StringSplitOptions.RemoveEmptyEntries);
             }
+        }
+
+        [Theory]
+        [ClassData(typeof(AllExportsTestData))]
+        public void ExportsMustBeConstructable(Type type)
+        {
+            bool hasParameterlessConstructor = false;
+            int importingConstructors = 0;
+            foreach (var constructor in type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (constructor.GetParameters().Length == 0)
+                {
+                    hasParameterlessConstructor = true;
+                }
+                else if (constructor.GetCustomAttribute<ImportingConstructorAttribute>() != null)
+                {
+                    importingConstructors++;
+                }
+            }
+            Assert.True(importingConstructors <= 1, "MEF exports cannot have more than one constructor marked [ImportingConstructor]");
+            Assert.True(hasParameterlessConstructor || importingConstructors == 1, "MEF exports must have a parameterless constructor and/or a single constructor marked with [ImportingConstructor]");
         }
 
         [Theory]

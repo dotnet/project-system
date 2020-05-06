@@ -348,15 +348,6 @@
       <SubType>Designer</SubType>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\PotentialEditorConfigFiles.cs">
-      <DependentUpon>PotentialEditorConfigFiles.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\PotentialEditorConfigFiles.xaml">
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-
     <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>

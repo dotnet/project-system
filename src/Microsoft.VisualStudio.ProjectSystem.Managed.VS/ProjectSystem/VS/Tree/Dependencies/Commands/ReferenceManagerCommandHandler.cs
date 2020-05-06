@@ -19,6 +19,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     [Order(ProjectSystem.Order.Default)]
     internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
     {
+        // WORKAROUND: Until we can consume the new CommandStatus from CPS
+        public const CommandStatus InvisibleOnContextMenu = (CommandStatus)unchecked((int)0x20);
+
         public const int CmdidAddAssemblyReference       = 0x200;
         public const int CmdidAddComReference            = 0x201;
         public const int CmdidAddProjectReference        = 0x202;
@@ -46,6 +49,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 progressiveStatus &= ~CommandStatus.Invisible;
                 progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
+
+                if (items.Count > 1 || !items.First().IsRoot())
+                {   // We only want these commands to be visible for the right-click Project -> Add menu
+
+                    progressiveStatus |= InvisibleOnContextMenu;
+                }
+
                 return new CommandStatusResult(handled: true, commandText, progressiveStatus);
             }
 
