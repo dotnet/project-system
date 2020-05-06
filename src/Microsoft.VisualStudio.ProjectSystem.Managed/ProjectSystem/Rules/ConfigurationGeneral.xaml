@@ -160,6 +160,10 @@
   <StringProperty Name="Platform"
                   Visible="false" />
 
+  <StringProperty Name="ProjectAssetsFile"
+                  ReadOnly="true"
+                  Visible="false" />
+
   <StringProperty Name="ProjectDir"
                   Visible="false" />
 

@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Snapshot;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (hasUnresolvedDependency.HasValue)
             {
-                mock.Setup(x => x.HasReachableVisibleUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
+                mock.Setup(x => x.HasVisibleUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
             }
 
             if (activeTarget != null)

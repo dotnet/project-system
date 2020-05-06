@@ -123,9 +123,6 @@
   <data name="RenameSymbolPrompt" xml:space="preserve">
     <value>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</value>
   </data>
-  <data name="GraphNodeCategoryDependency" xml:space="preserve">
-    <value>Dependency</value>
-  </data>
   <data name="ActiveLaunchProfileNotFound" xml:space="preserve">
     <value>There aren't any active launch profiles configured for this project.</value>
   </data>
@@ -220,5 +217,32 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="Renaming_Type_from_0_to_1" xml:space="preserve">
     <value>Renaming Type from '{0}' to '{1}'</value>
+  </data>
+  <data name="FrameworkAssemblyBrowseObjectClassName" xml:space="preserve">
+    <value>Framework Assembly</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyNameDisplayName" xml:space="preserve">
+    <value>Assembly Name</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyNameDescription" xml:space="preserve">
+    <value>The framework assembly's assembly name.</value>
+  </data>
+  <data name="FrameworkAssemblyPathDisplayName" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="FrameworkAssemblyPathDescription" xml:space="preserve">
+    <value>Path of the framework assembly.</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyVersionDisplayName" xml:space="preserve">
+    <value>Assembly Version</value>
+  </data>
+  <data name="FrameworkAssemblyAssemblyVersionDescription" xml:space="preserve">
+    <value>The assembly version of the framework assembly.</value>
+  </data>
+  <data name="FrameworkAssemblyFileVersionDisplayName" xml:space="preserve">
+    <value>File Version</value>
+  </data>
+  <data name="FrameworkAssemblyFileVersionDescription" xml:space="preserve">
+    <value>The file version of the framework assembly.</value>
   </data>
 </root>

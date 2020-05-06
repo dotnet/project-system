@@ -22,7 +22,7 @@
   <ItemGroup>
 
     <!-- Toolset -->
-    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />    
+    <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />
     <PackageReference Update="RoslynTools.ModifyVsixManifest"                                         Version="$(RoslynToolsModifyVsixManifestVersion)" />
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.19380.4" />
@@ -46,8 +46,6 @@
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21022" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="1.1.4322" />
-    <PackageReference Update="Microsoft.VisualStudio.Diagnostics.PerformanceProvider"                 Version="16.0.28226-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.GraphModel"                                      Version="16.0.28226-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="16.5.29722.127" />
     <PackageReference Update="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime"                 Version="14.3.26930"/>
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50727" />
@@ -90,7 +88,7 @@
     <PackageReference Update="EnvDTE80"                                                               Version="8.0.1" />
     <PackageReference Update="EnvDTE90"                                                               Version="9.0.1" />
     <PackageReference Update="StreamJsonRpc"                                                          Version="2.3.81" />
-    
+
     <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
     <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
     <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
@@ -117,8 +115,8 @@
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.0.0-beta2.final" />
 
     <!-- NuGet -->
-    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6505" />
-    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6505" />
+    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6554" />
+    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6554" />
 
     <!-- MSBuild -->
     <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>
@@ -145,7 +143,7 @@
     <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
-    
+
   </ItemGroup>
-  
+
 </Project>

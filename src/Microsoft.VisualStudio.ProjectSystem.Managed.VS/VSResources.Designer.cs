@@ -142,11 +142,83 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependency.
+        ///   Looks up a localized string similar to The framework assembly&apos;s assembly name..
         /// </summary>
-        internal static string GraphNodeCategoryDependency {
+        internal static string FrameworkAssemblyAssemblyNameDescription {
             get {
-                return ResourceManager.GetString("GraphNodeCategoryDependency", resourceCulture);
+                return ResourceManager.GetString("FrameworkAssemblyAssemblyNameDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assembly Name.
+        /// </summary>
+        internal static string FrameworkAssemblyAssemblyNameDisplayName {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyAssemblyNameDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The assembly version of the framework assembly..
+        /// </summary>
+        internal static string FrameworkAssemblyAssemblyVersionDescription {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyAssemblyVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assembly Version.
+        /// </summary>
+        internal static string FrameworkAssemblyAssemblyVersionDisplayName {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyAssemblyVersionDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Framework Assembly.
+        /// </summary>
+        internal static string FrameworkAssemblyBrowseObjectClassName {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyBrowseObjectClassName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file version of the framework assembly..
+        /// </summary>
+        internal static string FrameworkAssemblyFileVersionDescription {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyFileVersionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Version.
+        /// </summary>
+        internal static string FrameworkAssemblyFileVersionDisplayName {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyFileVersionDisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path of the framework assembly..
+        /// </summary>
+        internal static string FrameworkAssemblyPathDescription {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyPathDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        internal static string FrameworkAssemblyPathDisplayName {
+            get {
+                return ResourceManager.GetString("FrameworkAssemblyPathDisplayName", resourceCulture);
             }
         }
         

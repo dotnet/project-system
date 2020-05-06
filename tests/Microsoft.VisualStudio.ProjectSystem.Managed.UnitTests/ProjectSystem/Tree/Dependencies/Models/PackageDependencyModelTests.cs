@@ -1,0 +1,128 @@
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Xunit;
+
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
+{
+    public class PackageDependencyModelTests
+    {
+        [Fact]
+        public void Resolved()
+        {
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
+
+            var model = new PackageDependencyModel(
+                path: "c:\\myPath",
+                originalItemSpec: "myOriginalItemSpec",
+                version: "myVersion",
+                isResolved: true,
+                isImplicit: false,
+                properties: properties,
+                isVisible: true);
+
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
+            Assert.Equal("c:\\myPath", model.Path);
+            Assert.Equal("myOriginalItemSpec", model.Name);
+            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
+            Assert.Equal("myOriginalItemSpec", model.Id);
+            Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
+            Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
+            Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.True(model.Visible);
+            Assert.True(model.Resolved);
+            Assert.False(model.Implicit);
+            Assert.Equal(properties, model.Properties);
+            Assert.Equal(ManagedImageMonikers.NuGetGrey, model.Icon);
+            Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(
+                DependencyTreeFlags.PackageDependency +
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
+                ProjectTreeFlags.Create("$VER:myVersion"),
+                model.Flags);
+        }
+
+        [Fact]
+        public void Unresolved()
+        {
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
+
+            var model = new PackageDependencyModel(
+                path: "c:\\myPath",
+                originalItemSpec: "myOriginalItemSpec",
+                version: "myVersion",
+                isResolved: false,
+                isImplicit: false,
+                properties: properties,
+                isVisible: true);
+
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
+            Assert.Equal("c:\\myPath", model.Path);
+            Assert.Equal("myOriginalItemSpec", model.Name);
+            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
+            Assert.Equal("myOriginalItemSpec", model.Id);
+            Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
+            Assert.Equal(PackageReference.SchemaName, model.SchemaName);
+            Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.True(model.Visible);
+            Assert.False(model.Resolved);
+            Assert.False(model.Implicit);
+            Assert.Equal(properties, model.Properties);
+            Assert.Equal(ManagedImageMonikers.NuGetGrey, model.Icon);
+            Assert.Equal(ManagedImageMonikers.NuGetGrey, model.ExpandedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(
+                DependencyTreeFlags.PackageDependency +
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
+                ProjectTreeFlags.Create("$VER:myVersion"),
+                model.Flags);
+        }
+
+        [Fact]
+        public void Implicit()
+        {
+            var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
+
+            var model = new PackageDependencyModel(
+                path: "c:\\myPath",
+                originalItemSpec: "myOriginalItemSpec",
+                version: "",
+                isResolved: true,
+                isImplicit: true,
+                properties: properties,
+                isVisible: true);
+
+            Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
+            Assert.Equal("c:\\myPath", model.Path);
+            Assert.Equal("myOriginalItemSpec", model.Name);
+            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
+            Assert.Equal("myOriginalItemSpec", model.Id);
+            Assert.Equal("myOriginalItemSpec", model.Caption);
+            Assert.Equal(ResolvedPackageReference.SchemaName, model.SchemaName);
+            Assert.Equal(PackageReference.PrimaryDataSourceItemType, model.SchemaItemType);
+            Assert.True(model.Visible);
+            Assert.True(model.Resolved);
+            Assert.True(model.Implicit);
+            Assert.Equal(properties, model.Properties);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyPrivate, model.Icon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyPrivate, model.ExpandedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedIcon);
+            Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(
+                DependencyTreeFlags.PackageDependency +
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
+                ProjectTreeFlags.Create("$VER:") -
+                DependencyTreeFlags.SupportsRemove,
+                model.Flags);
+        }
+    }
+}

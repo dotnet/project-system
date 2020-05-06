@@ -2,6 +2,51 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../VSResources.resx">
     <body>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
+        <source>The framework assembly's assembly name.</source>
+        <target state="new">The framework assembly's assembly name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
+        <source>Assembly Name</source>
+        <target state="new">Assembly Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
+        <source>The assembly version of the framework assembly.</source>
+        <target state="new">The assembly version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
+        <source>Assembly Version</source>
+        <target state="new">Assembly Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
+        <source>Framework Assembly</source>
+        <target state="new">Framework Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDescription">
+        <source>The file version of the framework assembly.</source>
+        <target state="new">The file version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
+        <source>File Version</source>
+        <target state="new">File Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDescription">
+        <source>Path of the framework assembly.</source>
+        <target state="new">Path of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - İçeri aktarım hedef dosyadan geliyor. Bu içeri aktarım kaldırılamaz.</target>
@@ -15,11 +60,6 @@
       <trans-unit id="RenameSymbolPrompt">
         <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
         <target state="translated">Bir dosyayı yeniden adlandırıyorsunuz. Bu dosyadaki '{0}' kod öğesine yapılan tüm başvurularda yeniden adlandırma işlemi gerçekleştirmek ister misiniz?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="GraphNodeCategoryDependency">
-        <source>Dependency</source>
-        <target state="translated">Bağımlılık.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActiveLaunchProfileNotFound">

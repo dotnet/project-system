@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
-            FrameworkName = frameworkName;
             FullName = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
             FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
@@ -36,8 +35,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             ShortName = moniker;
             FriendlyName = moniker;
         }
-
-        public FrameworkName? FrameworkName { get; }
 
         public string FullName { get; }
 
