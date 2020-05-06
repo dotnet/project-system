@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                     return "unload until retargets";
 
                 case (uint)__VSPTDPROPID.VSPTDPROPID_ProjectRetargetingTitle:
-                    return "REtargetin";
+                    return "No Desktop Platform selected";
             }
 
             return null;

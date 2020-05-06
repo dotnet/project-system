@@ -12,25 +12,48 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     [Export(typeof(IProjectRetargetHandler))]
+    [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class MissingWindowsDesktopSdkRetarget : IProjectRetargetHandler
+    internal class MissingWindowsDesktopSdkRetarget : IProjectRetargetHandler, IProjectDynamicLoadComponent
     {
         /// <summary>
         /// Wether the retargeting option should always be available, to provide a nice UI to the user, or only when a desktop target is not present, to fix up problems
         /// </summary>
-        private const bool AlwaysProvideRetargetingOption = true;
+        private const bool AlwaysProvideRetargetingOption = false;
 
         private readonly UnconfiguredProject _project;
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectAccessor _projectAccessor;
+        private readonly IProjectThreadingService _threadingService;
         private DesktopPlatformTargetDescription? _targetDescription;
 
         [ImportingConstructor]
-        internal MissingWindowsDesktopSdkRetarget(UnconfiguredProject project, IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService, IProjectAccessor projectAccessor)
+        internal MissingWindowsDesktopSdkRetarget(UnconfiguredProject project, IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService, IProjectAccessor projectAccessor, IProjectThreadingService threadingService)
         {
             _project = project;
             _retargettingService = retargettingService;
             _projectAccessor = projectAccessor;
+            _threadingService = threadingService;
+        }
+
+        public Task LoadAsync()
+        {
+            _threadingService.RunAndForget(async () =>
+            {
+                await _threadingService.SwitchToUIThread();
+
+                var service = await _retargettingService.GetValueAsync();
+
+                IVsHierarchy? hier = _project.Services.HostObject as IVsHierarchy;
+
+                ErrorHandler.ThrowOnFailure(service.CheckForProjectRetarget((uint)__RETARGET_CHECK_OPTIONS.RCO_PROJECT_LOAD, hier));
+            }, (UnconfiguredProject?)null);
+            return Task.CompletedTask;
+        }
+
+        public Task UnloadAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -39,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
             Assumes.NotNull(_targetDescription);
 
-            if (options == RetargetCheckOptions.SolutionRetarget)
+            if ((options & RetargetCheckOptions.ProjectLoad) == RetargetCheckOptions.ProjectLoad)
             {
                 return await _projectAccessor.OpenProjectXmlForReadAsync(_project, root =>
                 {
@@ -53,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             }
             else
             {
-
                 switch (options)
                 {
                     case RetargetCheckOptions.None:
@@ -69,6 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                     case RetargetCheckOptions.ProjectRetarget:
                         break;
                     case RetargetCheckOptions.ProjectReload:
+                        break;
+                    case RetargetCheckOptions.SolutionRetarget:
                         break;
                     default:
                         break;
@@ -95,7 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public async Task RetargetAsync(TextWriter outputLogger, RetargetOptions options, IProjectTargetChange projectTargetChange, string backupLocation)
         {
-            outputLogger.WriteLine("Hello!");
             if (options == RetargetOptions.Backup)
             {
                 outputLogger.WriteLine("Bkacing up to " + backupLocation);
