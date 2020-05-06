@@ -117,8 +117,6 @@
     <!-- NuGet -->
     <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.6.0-preview.2.6554" />
     <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.6.0-preview.2.6554" />
-    <PackageReference Update="NuGet.ProjectModel"                                                     Version="5.7.0-preview.1.6568" />
-    <PackageReference Update="NuGet.Common"                                                           Version="5.7.0-preview.1.6568" />
 
     <!-- MSBuild -->
     <PackageReference Update="Microsoft.Build"                                                        Version="16.4.0"/>
