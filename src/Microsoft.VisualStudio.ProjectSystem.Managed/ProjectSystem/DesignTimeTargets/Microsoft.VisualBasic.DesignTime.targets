@@ -38,7 +38,8 @@
                           VB;
                           Managed;
                           ClassDesigner;
-                          PreventAutomaticMyApplication;" />
+                          PreventAutomaticMyApplication;
+                          SharedProjectReferences;" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">

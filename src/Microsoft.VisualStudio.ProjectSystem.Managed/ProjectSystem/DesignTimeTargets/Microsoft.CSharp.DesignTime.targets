@@ -32,7 +32,8 @@
     <ProjectCapability Include="
                           CSharp;
                           Managed;
-                          ClassDesigner;" />
+                          ClassDesigner;
+                          SharedProjectReferences;" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
