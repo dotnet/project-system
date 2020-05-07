@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// <summary>
     /// Extension methods for <see cref="IVsHierarchyItem"/> that support attached collections.
     /// </summary>
-    internal static class IVsHierarchyItemExtensions
+    public static class IVsHierarchyItemExtensions
     {
         private static Regex? s_targetFlagsRegex;
         private static Regex? s_packageFlagsRegex;

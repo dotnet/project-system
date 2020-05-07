@@ -7,6 +7,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic.VisualBasicProjec
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.OnStateUpdated() -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IAggregateRelationCollection.HasItemsChanged -> System.EventHandler!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions
 override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.RelatableItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
 static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection.TryCreate(Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelatableItem! parentItem, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollection? collection) -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateContainsRelationCollectionSpan
@@ -51,6 +52,12 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.At
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.IconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.Priority.get -> int
 override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ToString() -> string!
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryFindTarget(this Microsoft.VisualStudio.Shell.IVsHierarchyItem! item, out string? target) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryGetFlagsString(this Microsoft.VisualStudio.Shell.IVsHierarchyItem! item, out string? flagsString) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryGetPackageDetails(string! flagsString, out string? packageId, out string? packageVersion) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryGetPackageDetails(this Microsoft.VisualStudio.Shell.IVsHierarchyItem! item, out string? packageId, out string? packageVersion) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryGetProjectDetails(string! flagsString, out string? projectId) -> bool
+static Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IVsHierarchyItemExtensions.TryGetProjectDetails(this Microsoft.VisualStudio.Shell.IVsHierarchyItem! item, out string? projectId) -> bool
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.CompareTo(object! obj) -> int
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ContextMenuController.get -> Microsoft.Internal.VisualStudio.PlatformUI.IContextMenuController?
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.ExpandedIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
