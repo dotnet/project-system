@@ -148,7 +148,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return false;
         }
 
-        public static bool TryGetFlagsString(this IVsHierarchyItem item, [NotNullWhen(returnValue: true)] out string? flagsString)
+        /// <summary>
+        /// Gets the string of space-separated project tree flags stored in the
+        /// <see cref="__VSHPROPID7.VSHPROPID_ProjectTreeCapabilities"/> property of
+        /// <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">The item to retrieve the flags from.</param>
+        /// <param name="flagsString">The resulting string, if found, otherwise <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the flags string was found, otherwise <see langword="false"/>.</returns>
+        public static bool TryGetFlagsString(
+            this IVsHierarchyItem item,
+            [NotNullWhen(returnValue: true)] out string? flagsString)
         {
             IVsHierarchyItemIdentity identity = item.HierarchyIdentity;
 
