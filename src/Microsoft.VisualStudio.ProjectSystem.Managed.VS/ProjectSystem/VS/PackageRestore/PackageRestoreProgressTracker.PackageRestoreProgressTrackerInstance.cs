@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _subscription = ProjectDataSources.SyncLinkTo(
                     _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
                     _dataSource.SourceBlock.SyncLinkOptions(),
-                        DataflowBlockFactory.CreateActionBlock(action, ConfiguredProject.UnconfiguredProject),
+                        DataflowBlockFactory.CreateActionBlock(action, ConfiguredProject.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
                         linkOptions: DataflowOption.PropagateCompletion);
 
                 return Task.CompletedTask;
