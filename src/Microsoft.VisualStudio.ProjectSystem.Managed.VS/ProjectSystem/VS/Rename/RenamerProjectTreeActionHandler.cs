@@ -4,21 +4,21 @@ using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
-using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.Rename;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.OperationProgress;
+using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
     [Order(Order.Default)]
     [Export(typeof(IProjectTreeActionHandler))]
-    [Export(typeof(IFileRenameHandler))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class RenamerProjectTreeActionHandler : ProjectTreeActionHandlerBase, IFileRenameHandler
+    internal partial class RenamerProjectTreeActionHandler : ProjectTreeActionHandlerBase
     {
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
@@ -30,8 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IWaitIndicator _waitService;
         private readonly IRoslynServices _roslynServices;
         private readonly Workspace _workspace;
-        private bool _isLanguageServiceDone;
-        private string _oldFilePath;
+        private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
 
         [ImportingConstructor]
         public RenamerProjectTreeActionHandler(
@@ -44,7 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IWaitIndicator waitService,
             IVsOnlineServices vsOnlineServices,
             IProjectThreadingService threadingService,
-            IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility)
+            IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
+            IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectVsServices = projectVsServices;
@@ -56,75 +56,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _vsOnlineServices = vsOnlineServices;
             _threadingService = threadingService;
             _extensibility = extensibility;
+            _operationProgressService = operationProgressService;
         }
 
-        public void HandleRename(string oldFilePath, string newFilePath)
+        protected virtual async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
         {
-            if (_oldFilePath == oldFilePath)
-            {
-                _isLanguageServiceDone = true;
-            }
+            await base.RenameAsync(context, node, value);
         }
 
         public override async Task RenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
         {
-            Assumes.Present(context);
-            Assumes.Present(node);
-            Assumes.Present(value);
+            Requires.NotNull(context, nameof(Context));
+            Requires.NotNull(node, nameof(node));
+            Requires.NotNullOrEmpty(value, nameof(value));
 
-            _oldFilePath = node.FilePath;
-            string? newNameWithExtension = value;
             // These variables are need to synchronize with Roslyn
-            _isLanguageServiceDone = false;
+            string? oldFilePath = node.FilePath;
+            string newFileWithExtension = value;
 
-            // Do not offer to rename the file in VS Online scenarios.
-            if (_vsOnlineServices.ConnectedToVSOnline)
-            {
-                return;
-            }
-
-            if (await IsAutomationFunction() || node.IsFolder)
+            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline)
             {
                 // Do not display rename Prompt
-                await base.RenameAsync(context, node, value);
+                await CPSRenameAsync(context, node, value);
                 return;
             }
 
             // Get the list of possible actions to execute
-            string oldName = Path.GetFileNameWithoutExtension(_oldFilePath);
+            string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             CodeAnalysis.Project? project = GetCurrentProject();
             if (project is null)
             {
                 return;
             }
 
-            CodeAnalysis.Document? oldDocument = GetDocument(project, _oldFilePath);
+            CodeAnalysis.Document? oldDocument = GetDocument(project, oldFilePath);
             if (oldDocument is null)
             {
                 return;
             }
 
-            var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newNameWithExtension, oldDocument.Folders);
-
-            bool errorsDetected = false;
-            foreach (var action in documentRenameResult.ApplicableActions)
-            {
-                foreach (var error in action.GetErrors())
-                {
-                    errorsDetected = true;
-                }
-            }
-
+            var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
+            bool errorsDetected = !documentRenameResult.ApplicableActions.Select(action => action.GetErrors()).Any();
             // Check errors before applying changes
             if (errorsDetected)
             {
-                string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
+                string failureMessage = GetFailureMessageCannotApply(documentRenameResult);
                 _userNotificationServices.ShowWarning(failureMessage);
                 return;
             }
 
             // Rename the file
-            await base.RenameAsync(context, node, value); // Async process (1 of which updating Roslyn)
+            await CPSRenameAsync(context, node, value);
 
             //Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)
@@ -140,13 +122,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 // TODO - implement PublishAsync() to sync with LanguageService
                 // https://github.com/dotnet/project-system/issues/3425)
                 // await _languageService.PublishAsync(treeVersion);
-                //
-                // Because HandleRename() is called after Roslyn, we can set this 
-                // flag when node.FilePath == HandlRename(FilePath)
-                while (_isLanguageServiceDone == false) ;
+                var stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+                await stageStatus.WaitForCompletionAsync();
 
                 // Apply actions and notify other VS features
-                CodeAnalysis.Solution currentSolution = GetCurrentProject().Solution;
+                CodeAnalysis.Solution? currentSolution = GetCurrentProject()?.Solution;
+                if (currentSolution == null)
+                {
+                    return;
+                }
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
                 (WaitIndicatorResult result, CodeAnalysis.Solution renamedSolution) = _waitService.WaitForAsyncFunctionWithResult(
                                 title: VSResources.Renaming_Type,
@@ -154,14 +138,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                 allowCancel: true,
                                 token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
 
-                _roslynServices.ApplyChangesToSolution(currentSolution.Workspace, renamedSolution);
-                return;
+                // Do not warn the user if the rename was cancelled by the user	
+                if (result.WasCanceled())
+                {
+                    return;
+                }
 
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
+                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, renamedSolution))
+                {
+                    string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
+                    _userNotificationServices.ShowWarning(failureMessage);
+                }
+                return;
             }, _unconfiguredProject);
 
         }
 
-        private async Task<bool> IsAutomationFunction()
+        protected virtual string GetFailureMessageCannotApply(CodeAnalysis.Rename.Renamer.RenameDocumentActionSet? documentRenameResult)
+        {
+            return "Cannot apply " +
+                documentRenameResult?.ApplicableActions.First().GetDescription(CultureInfo.CurrentCulture);
+        }
+
+        protected virtual async Task<bool> IsAutomationFunctionAsync()
         {
             await _threadingService.SwitchToUIThread();
 
@@ -169,21 +169,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return isInAutomationFunction != 0;
         }
 
-        private CodeAnalysis.Project? GetCurrentProject()
-        {
-            foreach (CodeAnalysis.Project proj in _workspace.CurrentSolution.Projects)
-            {
-                if (StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath))
-                {
-                    return proj;
-                }
-            }
+        private CodeAnalysis.Project? GetCurrentProject() =>
+            _workspace.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
 
-            return null;
-        }
 
-        private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project? project, string? filePath) =>
-            (from d in project?.Documents where StringComparers.Paths.Equals(d.FilePath, filePath) select d).FirstOrDefault();
+        private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath) =>
+            project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
 
         private async Task<bool> CheckUserConfirmation(string oldFileName)
         {
@@ -193,7 +184,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
 
-                await _projectVsServices.ThreadingService.SwitchToUIThread();
                 return _userNotificationServices.Confirm(renamePromptMessage);
             }
 

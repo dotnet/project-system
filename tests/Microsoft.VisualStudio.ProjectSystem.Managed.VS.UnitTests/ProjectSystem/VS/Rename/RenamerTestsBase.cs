@@ -1,10 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 //using System;
+using System;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.VisualStudio.LanguageServices;
+using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -44,39 +48,80 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 });
         }
 
+        internal class TestRenamerProjectTreeActionHandler : RenamerProjectTreeActionHandler
+        {
+            public TestRenamerProjectTreeActionHandler(
+                UnconfiguredProject unconfiguredProject,
+                IUnconfiguredProjectVsServices projectVsServices,
+                [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+                IEnvironmentOptions environmentOptions,
+                IUserNotificationServices userNotificationServices,
+                IRoslynServices roslynServices,
+                IWaitIndicator waitService,
+                IVsOnlineServices vsOnlineServices,
+                IProjectThreadingService threadingService,
+                IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
+                IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService) :
+                base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
+                    vsOnlineServices, threadingService, extensibility, operationProgressService)
+            {
+            }
+
+            protected override async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
+            {
+                await Task.CompletedTask;
+            }
+
+            protected override async Task<bool> IsAutomationFunctionAsync()
+            {
+                return await Task.FromResult(false);
+            }
+
+            // This is a workaround to skip the method action.Description() from Roslyn.
+            protected override string GetFailureMessageCannotApply(CodeAnalysis.Rename.Renamer.RenameDocumentActionSet? documentRenameResult)
+            {
+                // TODO - Roslyn to fix https://github.com/dotnet/roslyn/issues/44220
+                return "";
+            }
+        }
+
         internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, IVsOnlineServices vsOnlineServices, string language)
         {
-            using var ws = new AdhocWorkspace();
-            ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), newFilePath, sourceCode, language));
-
             var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
-                    threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
-                    unconfiguredProjectCreator: () => unconfiguredProject);
-            var unconfiguredProjectTasksService = IUnconfiguredProjectTasksServiceFactory.Create();
+                threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
+                unconfiguredProjectCreator: () => unconfiguredProject);
+
+            using var ws = new AdhocWorkspace();
+            ws.AddSolution(InitializeWorkspace(ProjectId.CreateNewId(), oldFilePath, sourceCode, language));
+
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
             var waitIndicator = (new Mock<IWaitIndicator>()).Object;
+            var projectThreadingService = IProjectThreadingServiceFactory.Create();
             var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
-            var projectThreadingService = (new Mock<IProjectThreadingService>().Object);
-            var extensibility = (new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object);
-            var dte = IVsUIServiceFactory.Create<Shell.Interop.SDTE, EnvDTE.DTE>(null!);
+            var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
+            var operationProgressMock = new Mock<IVsService<SVsOperationProgress, IVsOperationProgressStatusService>>().Object;
+            var context = new Mock<IProjectTreeActionHandlerContext>().Object;
 
-            //var renamer = new RenamerProjectTreeActionHandler(unconfiguredProject, 
-            //                                                  projectServices, 
-            //                                                  ws, 
-            //                                                  environmentOptionsFactory, 
-            //                                                  userNotificationServices, 
-            //                                                  roslynServices, 
-            //                                                  waitIndicator, 
-            //                                                  vsOnlineServices, 
-            //                                                  projectThreadingService,
-            //                                                  extensibility);
+            var mockNode = new Mock<IProjectTree>();
+            mockNode.SetupGet(x => x.FilePath).Returns(oldFilePath);
+            mockNode.SetupGet(x => x.IsFolder).Returns(false);
+            var node = mockNode.Object;
 
-//            var context = (new Mock<IProjectTreeActionHandlerContext>().Object);
-//            var node = (new Mock<IProjectTree>().Object);
-//            var value = "NewFilename.cs";
-//            await renamer.RenameAsync(context, node, value);
-//                         .TimeoutAfter(TimeSpan.FromSeconds(1));
+            var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
+                                                              projectServices,
+                                                              ws,
+                                                              environmentOptionsFactory,
+                                                              userNotificationServices,
+                                                              roslynServices,
+                                                              waitIndicator,
+                                                              vsOnlineServices,
+                                                              projectThreadingService,
+                                                              extensibility,
+                                                              operationProgressMock);
+
+            await renamer.RenameAsync(context, node, newFilePath)
+                         .TimeoutAfter(TimeSpan.FromSeconds(1));
         }
     }
 }

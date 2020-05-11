@@ -55,10 +55,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
             Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath));
-            Compilation compilation = await project.GetCompilationAsync();
+            Compilation? compilation = await project.GetCompilationAsync();
 
-            IEntryPointFinderService entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
-            IEnumerable<INamedTypeSymbol> entryPoints = entryPointFinderService.FindEntryPoints(compilation.GlobalNamespace, SearchForEntryPointsInFormsOnly);
+            IEntryPointFinderService? entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();
+            IEnumerable<INamedTypeSymbol>? entryPoints = entryPointFinderService?.FindEntryPoints(compilation?.GlobalNamespace, SearchForEntryPointsInFormsOnly);
             IEnumerable<string> entryPointNames = entryPoints.Select(e => e.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)));
 
             return entryPointNames.Select(name => (IEnumValue)new PageEnumValue(new EnumValue { Name = name, DisplayName = name })).ToArray();
