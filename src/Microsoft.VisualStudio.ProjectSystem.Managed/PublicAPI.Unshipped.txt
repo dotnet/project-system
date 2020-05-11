@@ -41,8 +41,10 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string!
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Application.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformation.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.CodeInformationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Component.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
@@ -52,6 +54,7 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ErrorSmall.g
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Framework.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.FrameworkPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.FrameworkWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Library.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.LibraryWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGrey.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
@@ -59,9 +62,11 @@ static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.NuGetGreyWar
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImports.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.PropertiesFolderClosed.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.PropertiesFolderOpened.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Reference.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroup.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceGroupWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferencePrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
+static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ReferenceWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Sdk.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.SdkWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
