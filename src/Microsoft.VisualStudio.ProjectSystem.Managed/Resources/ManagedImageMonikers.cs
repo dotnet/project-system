@@ -56,10 +56,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker Abbreviation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Abbreviation };
         internal static ImageMoniker AboutBox => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.AboutBox };
         internal static ImageMoniker AbsolutePosition => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.AbsolutePosition };
-        internal static ImageMoniker Application => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Application };
+        public static ImageMoniker Application => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Application };
         internal static ImageMoniker BinaryFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.BinaryFile };
         internal static ImageMoniker Blank => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Blank };
-        internal static ImageMoniker CodeInformation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CodeInformation };
+        public static ImageMoniker CodeInformation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CodeInformation };
         internal static ImageMoniker CSProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CSProjectNode };
         internal static ImageMoniker CSSharedProject => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CSSharedProject };
         internal static ImageMoniker FSFileNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSFileNode };
@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker FSSignatureFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSSignatureFile };
         internal static ImageMoniker GlyphDown => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.GlyphDown };
         internal static ImageMoniker GlyphUp => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.GlyphUp };
-        internal static ImageMoniker Library => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Library };
+        public static ImageMoniker Library => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Library };
         internal static ImageMoniker Path => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Path };
         internal static ImageMoniker PathIcon => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathIcon };
         internal static ImageMoniker PathListBox => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBox };
         internal static ImageMoniker PathListBoxItem => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBoxItem };
         internal static ImageMoniker QuestionMark => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.QuestionMark };
-        internal static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
-        internal static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
+        public static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
+        public static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
         // NOTE SharedProject is defined in both manifests
 //      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
         internal static ImageMoniker Sound => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Sound };
