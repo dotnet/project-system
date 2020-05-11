@@ -5,7 +5,7 @@ using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
-    internal sealed partial class Renamer
+    internal sealed class Renamer
     {
         private sealed class UndoScope : IDisposable
         {
