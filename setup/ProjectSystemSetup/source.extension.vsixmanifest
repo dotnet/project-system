@@ -6,6 +6,7 @@
     <DisplayName>C#, Visual Basic and F# project systems</DisplayName>
     <Description xml:space="preserve">C#, Visual Basic and F# project systems.</Description>
     <PackageId>Microsoft.VisualStudio.ProjectSystem.Managed</PackageId>
+    <AllowClientRole>true</AllowClientRole>
   </Metadata>
   <Installation SystemComponent="true" Experimental="true">
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.Pro" />
