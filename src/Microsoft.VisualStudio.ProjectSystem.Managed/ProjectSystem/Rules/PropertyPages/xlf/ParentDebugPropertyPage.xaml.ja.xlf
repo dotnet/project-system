@@ -12,12 +12,12 @@
         <target state="new">Launch</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|MasterDebugPropertyPage|Description">
+      <trans-unit id="Rule|ParentDebugPropertyPage|Description">
         <source>Debug</source>
         <target state="new">Debug</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|MasterDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ParentDebugPropertyPage|DisplayName">
         <source>Debug</source>
         <target state="new">Debug</target>
         <note />
