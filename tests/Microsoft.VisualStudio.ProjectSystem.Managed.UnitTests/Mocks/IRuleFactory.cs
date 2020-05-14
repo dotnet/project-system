@@ -10,10 +10,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal static class IRuleFactory
     {
-        public static IRule Create(IEnumerable<IProperty>? properties = null,
+        public static IRule Create(
+            string? name = null,
+            string? displayName = null,
+            IEnumerable<IProperty>? properties = null,
             string? pageTemplate = null,
             Dictionary<string, object>? metadata = null)
         {
+            var schema = new Rule();
+
+            schema.Name = name;
+            schema.DisplayName = displayName;
+            schema.Metadata = metadata;
+            schema.PageTemplate = pageTemplate;
+
             var rule = new Mock<IRule>();
 
             if (properties != null)
@@ -24,10 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                         return properties.FirstOrDefault(p => p.Name == propertyName);
                     });
             }
-
-            var schema = new Rule();
-            schema.Metadata = metadata;
-            schema.PageTemplate = pageTemplate;
 
             rule.Setup(o => o.Schema)
                 .Returns(schema);

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 catalog.Add(category.Key,
                             IRuleFactory.Create(
-                                category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
+                                properties: category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
             }
 
             return catalog;
