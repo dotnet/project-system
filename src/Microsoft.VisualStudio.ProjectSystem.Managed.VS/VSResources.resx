@@ -225,7 +225,7 @@ In order to debug this project, add an executable project to this solution which
     <value>Assembly Name</value>
   </data>
   <data name="FrameworkAssemblyAssemblyNameDescription" xml:space="preserve">
-    <value>The framework assembly's assembly name.</value>
+    <value>The name of the framework assembly.</value>
   </data>
   <data name="FrameworkAssemblyPathDisplayName" xml:space="preserve">
     <value>Path</value>

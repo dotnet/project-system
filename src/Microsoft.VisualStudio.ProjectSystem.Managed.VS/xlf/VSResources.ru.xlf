@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="ru" original="../VSResources.resx">
     <body>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
-        <source>The framework assembly's assembly name.</source>
-        <target state="new">The framework assembly's assembly name.</target>
+        <source>The name of the framework assembly.</source>
+        <target state="new">The name of the framework assembly.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">

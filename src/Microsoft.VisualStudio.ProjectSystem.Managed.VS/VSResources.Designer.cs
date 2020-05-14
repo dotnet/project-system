@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The framework assembly&apos;s assembly name..
+        ///   Looks up a localized string similar to The name of the framework assembly..
         /// </summary>
         internal static string FrameworkAssemblyAssemblyNameDescription {
             get {
