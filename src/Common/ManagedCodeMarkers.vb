@@ -11,63 +11,59 @@ Namespace Microsoft.Internal.Performance
         ' Singleton access
         Public Shared ReadOnly Instance As CodeMarkers = New CodeMarkers()
 
-        Private Class NativeMethods
-
-            ' Add a private constructor to prevent compiler from generating a default constructor (FxCop warning CA1812)
-            Private Sub New()
-            End Sub
+        Private Module NativeMethods
 
             ' ********************* Imported Win32 functions *********************
             ' Code markers test function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(TestDllName, EntryPoint:="InitPerf")> _
-            Public Shared Sub TestDllInitPerf(iApp As Integer)
+            Public Sub TestDllInitPerf(iApp As Integer)
             End Sub
 
             <DllImport(TestDllName, EntryPoint:="UnInitPerf")> _
-            Public Shared Sub TestDllUnInitPerf(iApp As Integer)
+            Public Sub TestDllUnInitPerf(iApp As Integer)
             End Sub
 #End If 'Codemarkers_IncludeAppEnum           
 
             <DllImport(TestDllName, EntryPoint:="PerfCodeMarker")>
-            Public Shared Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
+            Public Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
             ' Code markers product function imports
 #If Codemarkers_IncludeAppEnum Then
             <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
-            Public Shared Sub ProductDllInitPerf(iApp As Integer)
+            Public Sub ProductDllInitPerf(iApp As Integer)
             End Sub
 
             <DllImport(ProductDllName, EntryPoint:="UnInitPerf")> _
-            Public Shared Sub ProductDllUnInitPerf(iApp As Integer)
+            Public Sub ProductDllUnInitPerf(iApp As Integer)
             End Sub
 #End If 'Codemarkers_IncludeAppEnum           
 
             <DllImport(ProductDllName, EntryPoint:="PerfCodeMarker")>
-            Public Shared Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
+            Public Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
             End Sub
 
             ' global native method imports
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Shared Function FindAtom(lpString As String) As UShort
+            Public Function FindAtom(lpString As String) As UShort
             End Function
 
 #If Codemarkers_IncludeAppEnum Then
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)> _
-            Public Shared Function AddAtom(lpString As String) As UShort
+            Public Function AddAtom(lpString As String) As UShort
             End Function
 
             <DllImport("kernel32.dll")> _
-            Public Shared Function DeleteAtom(atom As UShort) As UShort
+            Public Function DeleteAtom(atom As UShort) As UShort
             End Function
 #End If 'Codemarkers_IncludeAppEnum                     
 
             <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Shared Function GetModuleHandle(lpString As String) As IntPtr
+            Public Function GetModuleHandle(lpString As String) As IntPtr
             End Function
 
-        End Class 'NativeMethods
+        End Module 'NativeMethods
 
         ' ********************* End of imported Win32 functions *********************
 
