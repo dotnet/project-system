@@ -65,14 +65,6 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Br
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.ExtenderCATID.get -> string!
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.GetClassName() -> string!
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.GetComponentName() -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDescriptionAttributeBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDescriptionAttributeBase.BrowseObjectDescriptionAttributeBase(string! key) -> void
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDescriptionAttributeBase.ResourceManager.get -> System.Resources.ResourceManager!
-override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDescriptionAttributeBase.Description.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDisplayNameAttributeBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDisplayNameAttributeBase.BrowseObjectDisplayNameAttributeBase(string! key) -> void
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDisplayNameAttributeBase.ResourceManager.get -> System.Resources.ResourceManager!
-override Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectDisplayNameAttributeBase.DisplayName.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.DependenciesAttachedCollectionSourceProviderBase(Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags flags) -> void
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.TryCreateCollectionSource(Microsoft.VisualStudio.Shell.IVsHierarchyItem! hierarchyItem, string! flagsString, string? target, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource? containsCollectionSource) -> bool
