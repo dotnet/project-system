@@ -77,6 +77,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
+        public async Task GetProperty_DoesNotFail_WhenAPageHasNoTemplate()
+        {
+            var catalogProvider = GetCatalogAndProviderDataWithMissingTemplateName();
+
+            var provider = new LaunchTargetPropertyPageValueProvider(
+                project: UnconfiguredProjectFactory.Create(
+                    configuredProject: ConfiguredProjectFactory.Create(
+                        services: ConfiguredProjectServicesFactory.Create(
+                            propertyPagesCatalogProvider: catalogProvider))),
+                launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: "BetaCommand"),
+                projectThreadingService: IProjectThreadingServiceFactory.Create());
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: string.Empty, actual: actualValue);
+        }
+
+        [Fact]
         public async Task SetProperty_DoesNothing_WhenThereIsNoPropertyPagesCatalog()
         {
             bool launchSettingsUpdated = false;
@@ -189,6 +207,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     { "BetaPage", betaPage },
                     { "GammaPage", gammaPage }
+                });
+
+            var catalogProvider = IPropertyPagesCatalogProviderFactory.Create(
+                new Dictionary<string, IPropertyPagesCatalog> { { "Project", catalog } });
+
+            return catalogProvider;
+        }
+
+        private static IPropertyPagesCatalogProvider GetCatalogAndProviderDataWithMissingTemplateName()
+        {
+            var pageWithNoTemplate = ProjectSystem.IRuleFactory.Create(
+                pageTemplate: null,
+                metadata: new Dictionary<string, object>
+                {
+                    { "CommandName", "BetaCommand" }
+                });
+
+            var catalog = IPropertyPagesCatalogFactory.Create(
+                new Dictionary<string, IRule>
+                {
+                    { "PageWithNoTemplate", pageWithNoTemplate },
                 });
 
             var catalogProvider = IPropertyPagesCatalogProviderFactory.Create(
