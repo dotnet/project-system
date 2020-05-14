@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, in TimestampCache timestampCache, State state)
+        private bool CheckInputsAndOutputs(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -204,6 +204,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach (string output in outputs)
                 {
+                    token.ThrowIfCancellationRequested();
+
                     DateTime? outputTime = timestampCache.GetTimestampUtc(output);
 
                     if (outputTime == null)
@@ -241,6 +243,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 foreach ((string input, bool isRequired) in inputs)
                 {
+                    token.ThrowIfCancellationRequested();
+
                     DateTime? inputTime = timestampCache.GetTimestampUtc(input);
 
                     if (inputTime == null)
@@ -475,10 +479,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, State state)
+        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
             foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
             {
+                token.ThrowIfCancellationRequested();
+
                 string source = _configuredProject.UnconfiguredProject.MakeRooted(sourceRelative);
                 string destination = _configuredProject.UnconfiguredProject.MakeRooted(destinationRelative);
 
@@ -515,7 +521,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state)
+        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
             IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.CopyIfNewer);
 
@@ -523,6 +529,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             foreach ((string path, string? link, _) in items)
             {
+                token.ThrowIfCancellationRequested();
+
                 string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
                 string filename = Strings.IsNullOrEmpty(link) ? rootedPath : link;
 
@@ -601,10 +609,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // Short-lived cache of timestamp by path
                     var timestampCache = new TimestampCache(_fileSystem);
 
-                    if (!CheckInputsAndOutputs(logger, timestampCache, state) ||
+                    if (!CheckInputsAndOutputs(logger, timestampCache, state, token) ||
                         !CheckMarkers(logger, timestampCache, state) ||
-                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state) ||
-                        !CheckCopiedOutputFiles(logger, timestampCache, state))
+                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state, token) ||
+                        !CheckCopiedOutputFiles(logger, timestampCache, state, token))
                     {
                         return false;
                     }
