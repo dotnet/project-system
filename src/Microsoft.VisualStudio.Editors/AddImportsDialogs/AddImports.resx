@@ -153,7 +153,4 @@
   <data name="AddImportsExtensionMethodsMainFormatString" xml:space="preserve">
     <value>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </value>
   </data>
-  <data name="AddImportsExtensionMethodsSecondaryFormatString" xml:space="preserve">
-    <value></value>
-  </data>
 </root>
