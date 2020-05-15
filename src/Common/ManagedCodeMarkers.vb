@@ -6,66 +6,64 @@ Imports Microsoft.Win32
 
 Namespace Microsoft.Internal.Performance
 
+    Private Module NativeMethods
+
+        ' ********************* Imported Win32 functions *********************
+        ' Code markers test function imports
+#If Codemarkers_IncludeAppEnum Then
+        <DllImport(TestDllName, EntryPoint:="InitPerf")> _
+        Public Sub TestDllInitPerf(iApp As Integer)
+        End Sub
+
+        <DllImport(TestDllName, EntryPoint:="UnInitPerf")> _
+        Public Sub TestDllUnInitPerf(iApp As Integer)
+        End Sub
+#End If 'Codemarkers_IncludeAppEnum           
+
+        <DllImport(TestDllName, EntryPoint:="PerfCodeMarker")>
+        Public Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
+        End Sub
+
+        ' Code markers product function imports
+#If Codemarkers_IncludeAppEnum Then
+        <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
+        Public Sub ProductDllInitPerf(iApp As Integer)
+        End Sub
+
+        <DllImport(ProductDllName, EntryPoint:="UnInitPerf")> _
+        Public Sub ProductDllUnInitPerf(iApp As Integer)
+        End Sub
+#End If 'Codemarkers_IncludeAppEnum           
+
+        <DllImport(ProductDllName, EntryPoint:="PerfCodeMarker")>
+        Public Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
+        End Sub
+
+        ' global native method imports
+        <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
+        Public Function FindAtom(lpString As String) As UShort
+        End Function
+
+#If Codemarkers_IncludeAppEnum Then
+        <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)> _
+        Public Function AddAtom(lpString As String) As UShort
+        End Function
+
+        <DllImport("kernel32.dll")> _
+        Public Function DeleteAtom(atom As UShort) As UShort
+        End Function
+#End If 'Codemarkers_IncludeAppEnum                     
+
+        <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
+        Public Function GetModuleHandle(lpString As String) As IntPtr
+        End Function
+
+    End Module 'NativeMethods
+
     Friend NotInheritable Class CodeMarkers
 
         ' Singleton access
         Public Shared ReadOnly Instance As CodeMarkers = New CodeMarkers()
-
-        Private Module NativeMethods
-
-            ' ********************* Imported Win32 functions *********************
-            ' Code markers test function imports
-#If Codemarkers_IncludeAppEnum Then
-            <DllImport(TestDllName, EntryPoint:="InitPerf")> _
-            Public Sub TestDllInitPerf(iApp As Integer)
-            End Sub
-
-            <DllImport(TestDllName, EntryPoint:="UnInitPerf")> _
-            Public Sub TestDllUnInitPerf(iApp As Integer)
-            End Sub
-#End If 'Codemarkers_IncludeAppEnum           
-
-            <DllImport(TestDllName, EntryPoint:="PerfCodeMarker")>
-            Public Sub TestDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
-            End Sub
-
-            ' Code markers product function imports
-#If Codemarkers_IncludeAppEnum Then
-            <DllImport(ProductDllName, EntryPoint:="InitPerf")> _
-            Public Sub ProductDllInitPerf(iApp As Integer)
-            End Sub
-
-            <DllImport(ProductDllName, EntryPoint:="UnInitPerf")> _
-            Public Sub ProductDllUnInitPerf(iApp As Integer)
-            End Sub
-#End If 'Codemarkers_IncludeAppEnum           
-
-            <DllImport(ProductDllName, EntryPoint:="PerfCodeMarker")>
-            Public Sub ProductDllPerfCodeMarker(nTimerID As Integer, uiLow As UInteger, uiHigh As UInteger)
-            End Sub
-
-            ' global native method imports
-            <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Function FindAtom(lpString As String) As UShort
-            End Function
-
-#If Codemarkers_IncludeAppEnum Then
-            <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)> _
-            Public Function AddAtom(lpString As String) As UShort
-            End Function
-
-            <DllImport("kernel32.dll")> _
-            Public Function DeleteAtom(atom As UShort) As UShort
-            End Function
-#End If 'Codemarkers_IncludeAppEnum                     
-
-            <DllImport("kernel32.dll", CharSet:=CharSet.Unicode)>
-            Public Function GetModuleHandle(lpString As String) As IntPtr
-            End Function
-
-        End Module 'NativeMethods
-
-        ' ********************* End of imported Win32 functions *********************
 
         ' Atom name. This ATOM will be set by the host application when code markers are enabled
         ' in the registry.
