@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../ExecutableDebugPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
+        <source>Properties associated with launching and debugging a specified executable file.</source>
+        <target state="new">Properties associated with launching and debugging a specified executable file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
+        <source>Executable</source>
+        <target state="new">Executable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArguments|Description">
+        <source>Command line arguments to pass to the executable.</source>
+        <target state="new">Command line arguments to pass to the executable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
+        <source>Command line arguments</source>
+        <target state="new">Command line arguments</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExecutablePath|Description">
+        <source>Path to the executable to run.</source>
+        <target state="new">Path to the executable to run.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ExecutablePath|DisplayName">
+        <source>Executable</source>
+        <target state="new">Executable</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WorkingDirectory|Description">
+        <source>Path to the working directory where the process will be started.</source>
+        <target state="new">Path to the working directory where the process will be started.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
+        <source>Working directory</source>
+        <target state="new">Working directory</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
