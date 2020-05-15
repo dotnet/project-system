@@ -50,8 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 progressiveStatus &= ~CommandStatus.Invisible;
                 progressiveStatus |= CommandStatus.Enabled | CommandStatus.Supported;
 
-                if (items.Count > 1 || !items.First().IsRoot())
-                {   // We only want these commands to be visible for the right-click Project -> Add menu
+                if (items.Any(tree => tree.IsFolder))
+                {   // Hide these commands for Folder -> Add
 
                     progressiveStatus |= InvisibleOnContextMenu;
                 }
