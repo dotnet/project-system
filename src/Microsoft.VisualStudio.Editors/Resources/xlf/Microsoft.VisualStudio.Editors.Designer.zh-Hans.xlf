@@ -27,24 +27,9 @@
         <target state="translated">警告</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_PropertyPageControlName">
-        <source>Property Page</source>
-        <target state="translated">属性页</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencesTitle">
         <source>References</source>
         <target state="translated">引用</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VersionTitle">
-        <source>Version</source>
-        <target state="translated">版本</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SigningTitle">
-        <source>Signing</source>
-        <target state="translated">签名</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
@@ -60,21 +45,6 @@
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
         <target state="translated">调试</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_DeployTitle">
-        <source>Deploy</source>
-        <target state="translated">部署</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VdtGeneralTitle">
-        <source>Database</source>
-        <target state="translated">数据库</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Security">
-        <source>Security</source>
-        <target state="translated">安全</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildTitle">
@@ -116,59 +86,14 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
         <target state="translated">&lt;浏览...&gt;</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileNewText">
-        <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;新建...&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileBrowseText">
-        <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt;浏览...&gt;</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
         <target state="translated">(无)</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
-        <source>Active ({0})</source>
-        <target state="translated">活动({0})</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllConfigurations">
-        <source>All Configurations</source>
-        <target state="translated">所有配置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllPlatforms">
-        <source>All Platforms</source>
-        <target state="translated">所有平台</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NotApplicable">
-        <source>N/A</source>
-        <target state="translated">不可用</target>
-        <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_ConfigNotFound_2Args">
-        <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <target state="translated">未能找到平台“{1}”的配置“{0}”。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
         <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectFileTitle">
-        <source>Select File</source>
-        <target state="translated">选择文件</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AddExistingFilesTitle">
@@ -228,19 +153,9 @@ Please select a valid folder path.</source>
         <target state="translated">高级生成设置</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_CompilerWarnings_Title">
-        <source>Compiler Warnings</source>
-        <target state="translated">编译器警告</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencePaths_Title">
         <source>Reference Paths</source>
         <target state="translated">引用路径</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_CompatibleSettings_Title">
-        <source>Compatible Settings</source>
-        <target state="translated">兼容设置</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_Title">
@@ -470,378 +385,6 @@ Changing this setting will reset the settings in all configurations.</source>
         <target state="translated">由应用程序定义</target>
         <note>Authentication modes</note>
       </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Cancel">
-        <source>Cancel</source>
-        <target state="translated">取消</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Calculate">
-        <source>&amp;Calculate Permissions</source>
-        <target state="translated">计算权限(&amp;C)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Stopped">
-        <source>Stopped...</source>
-        <target state="translated">已停止...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Starting">
-        <source>Starting...</source>
-        <target state="translated">正在启动...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Building">
-        <source>Building...</source>
-        <target state="translated">正在生成...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Analyzing">
-        <source>Analyzing...</source>
-        <target state="translated">正在分析...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_AnalyzeFailed">
-        <source>Analyze Failed</source>
-        <target state="translated">分析失败</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Aborting">
-        <source>Aborting...</source>
-        <target state="translated">正在中止...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Cancelling">
-        <source>Canceling...</source>
-        <target state="translated">正在取消...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_InternetZone">
-        <source>Internet</source>
-        <target state="translated">Internet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_LocalIntranetZone">
-        <source>Local Intranet</source>
-        <target state="translated">本地 Intranet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CustomZone">
-        <source>(Custom)</source>
-        <target state="translated">(自定义)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ZoneDefault">
-        <source>(Zone Default)</source>
-        <target state="translated">(区域默认设置)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Included">
-        <source>Include</source>
-        <target state="translated">包括</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Excluded">
-        <source>Exclude</source>
-        <target state="translated">排除</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_FullTrustToolTip">
-        <source>The application will require elevated permissions to run in the selected zone. Click the help link above for more info.</source>
-        <target state="translated">应用程序将需要提升的权限才能在所选区域中运行。请单击上面的帮助链接获取详细信息。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadPermissionToolTip">
-        <source>This permission could not be loaded. Press the delete key to remove it from your project.</source>
-        <target state="translated">未能加载该权限。请按 Delete 键将其从项目中删除。</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderIncluded">
-        <source>Included</source>
-        <target state="translated">包括</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderPermission">
-        <source>Permission</source>
-        <target state="translated">权限</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderSetting">
-        <source>Setting</source>
-        <target state="translated">设置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelText">
-        <source>Specify the code access security permissions that your ClickOnce application requires in order to run. Learn more about code access security...</source>
-        <target state="translated">指定运行 ClickOnce 应用程序所需的代码访问安全权限。了解有关代码访问安全性的更多信息...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelLink">
-        <source>Learn more about code access security...</source>
-        <target state="translated">了解有关代码访问安全性的更多信息...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadDropDownValue">
-        <source>Invalid value</source>
-        <target state="translated">无效值</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SecurityPermissionCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. Mark this permission as "Zone Default" or "Include."</source>
-        <target state="translated">应用程序中必须包含 SecurityPermission，且为其设置了 Execute 标志，否则应用程序将不会运行。将此权限标记为“区域默认设置”或“包括”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ExecuteCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. The Execute flag has been added to the SecurityPermission in your manifest.</source>
-        <target state="translated">应用程序中必须包含 SecurityPermission，且为其设置了 Execute 标志，否则应用程序将不会运行。已在清单中向 SecurityPermission 添加了 Execute 标志。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialog">
-        <source>This application requires full trust to run correctly. Would you like to set this as a full trust application?</source>
-        <target state="translated">此应用程序需要完全信任才能正确运行。是否将其设置为完全信任的应用程序?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialogTitle">
-        <source>Full Trust Required</source>
-        <target state="translated">需要完全信任</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotSaveManifest">
-        <source>An error occurred and the app.manifest file could not be saved.
-Error:</source>
-        <target state="translated">出错，无法保存 app.manifest 文件。
-错误:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotLoadManifest">
-        <source>An error occurred and the app.manifest file could not be loaded. Please remove any changes you have made to the file and reload the Security property page again.</source>
-        <target state="translated">出错，无法加载 app.manifest 文件。请删除已对该文件进行的所有更改，然后重新加载“安全”属性页。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
-        <source>Included</source>
-        <target state="translated">包括</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
-        <source>Not Included</source>
-        <target state="translated">不包括</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
-        <source>Included with warning</source>
-        <target state="translated">包括警告</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailed">
-        <source>Calculating permissions failed.</source>
-        <target state="translated">计算权限失败。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailedCaption">
-        <source>Error</source>
-        <target state="translated">错误</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityAdvancedPage_Title">
-        <source>Advanced Security Settings</source>
-        <target state="translated">高级安全设置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailed">
-        <source>Build Failed.  Click CANCEL and correct the build failure before analyzing again.</source>
-        <target state="translated">生成失败。请单击“取消”并更正生成错误，然后重新分析。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildComplete">
-        <source>Build completed...</source>
-        <target state="translated">生成完毕...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildUnableToStart">
-        <source>Unable to start the build.</source>
-        <target state="translated">无法启动生成。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailedToStart">
-        <source>Serious error.  The build must begin in order to analyze permissions.  It has not started.</source>
-        <target state="translated">错误。必须先开始生成才可以分析权限。生成尚未启动。</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_CustomPermissionSet">
-        <source>(Custom)</source>
-        <target state="translated">(自定义)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Title">
-        <source>Selecting existing key file</source>
-        <target state="translated">选择现有密钥文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Filter">
-        <source>Key Files</source>
-        <target state="translated">密钥文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNew_Title">
-        <source>Create key file</source>
-        <target state="translated">创建密钥文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassWrong">
-        <source>The old password is invalid.</source>
-        <target state="translated">旧密码无效。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassEmpty">
-        <source>Enter the old password.</source>
-        <target state="translated">请输入旧密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassEmpty">
-        <source>Enter a new password.</source>
-        <target state="translated">请输入新密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassMismatch">
-        <source>The new passwords do not match. Enter the password again.</source>
-        <target state="translated">新密码不匹配。请重新输入密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassTooShort">
-        <source>The new password must be at least 6 characters in length. Enter the password again.</source>
-        <target state="translated">新密码的长度必须至少为 6 个字符。请重新输入密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertTitle">
-        <source>Select a Certificate</source>
-        <target state="translated">选择证书</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertStorePrompt">
-        <source>Select a certificate to sign your ClickOnce manifests</source>
-        <target state="translated">选择证书来为 ClickOnce 清单签名</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertFileFilter">
-        <source>Certificate Files</source>
-        <target state="translated">创建文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedTo">
-        <source>Issued To</source>
-        <target state="translated">颁发对象</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedBy">
-        <source>Issued By</source>
-        <target state="translated">发布者</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_Purpose">
-        <source>Intended Purpose</source>
-        <target state="translated">目的</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ExpirationDate">
-        <source>Expiration Date</source>
-        <target state="translated">到期日期</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPassword">
-        <source>The password is invalid.</source>
-        <target state="translated">密码无效。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPasswordTitle">
-        <source>Invalid password</source>
-        <target state="translated">无效密码</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKey">
-        <source>The selected file does not contain a private key. You must choose a certificate that contains a private key.</source>
-        <target state="translated">所选文件未包含私钥。必须选择包含私钥的证书。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKeyTitle">
-        <source>Invalid key</source>
-        <target state="translated">无效密钥</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertCreationError">
-        <source>Certificate Creation Error</source>
-        <target state="translated">证书创建错误</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_AllPurposes">
-        <source>&lt;All&gt;</source>
-        <target state="translated">&lt;全部&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_PasswordMismatch">
-        <source>The passwords do not match.</source>
-        <target state="translated">密码不匹配。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPassword">
-        <source>Enter a password.</source>
-        <target state="translated">请输入密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoConfirm">
-        <source>Confirm the password.</source>
-        <target state="translated">确认密码。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoData">
-        <source>(none)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
-        <source>Enter password to open file</source>
-        <target state="translated">输入密码以打开文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
-        <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">输入密码打开文件 {0}(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
-        <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">为新文件 {0} 输入密码(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
-        <source>The project already contains a file with that name. Choose another certificate file or rename the file in your project.</source>
-        <target state="translated">项目已包含具有该名称的文件。请选择其他证书文件或重命名项目中的文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CouldNotImportFile">
-        <source>The file '{0}' could not be imported: {1}</source>
-        <target state="translated">未能导入文件“{0}”: {1}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNameSuffix">
-        <source>_TemporaryKey.pfx</source>
-        <target state="translated">_TemporaryKey.pfx</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertificateNotCodeSigning">
-        <source>The selected certificate is not valid for code signing. Choose another certificate file.</source>
-        <target state="translated">所选证书对代码签名无效。请另行选择证书文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UndoTransaction">
-        <source>Change property: {0}</source>
-        <target state="translated">更改属性: {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_WindowsApp">
         <source>Windows Application</source>
         <target state="translated">Windows 应用程序</target>
@@ -906,36 +449,6 @@ Error:</source>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
         <source>Dynamic</source>
         <target state="translated">动态</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceNameDescription">
-        <source>Name of the web reference</source>
-        <target state="translated">Web 引用的名称</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorName">
-        <source>URL Behavior</source>
-        <target state="translated">URL 行为</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorDescription">
-        <source>Web reference URL behavior</source>
-        <target state="translated">Web 引用 URL 行为</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlName">
-        <source>Web Reference URL</source>
-        <target state="translated">Web 引用 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlDescription">
-        <source>Web Reference URL</source>
-        <target state="translated">Web 引用 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ReferenceDetail_Title">
-        <source>Reference Properties</source>
-        <target state="translated">引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
@@ -1038,73 +551,6 @@ Error:</source>
         <target state="translated">"输入的资源文件不存在。"</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_Title">
-        <source>Project Designer</source>
-        <target state="translated">项目设计器</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SettingsTabTitle">
-        <source>Settings</source>
-        <target state="translated">设置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ResourceTabTitle">
-        <source>Resources</source>
-        <target state="translated">资源</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoading_Msg">
-        <source>An error occurred trying to load the project properties window.  Close the window and try again.
-{0}</source>
-        <target state="translated">尝试加载项目属性窗口时出错。请关闭窗口并重试。
-{0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoadingPropPage">
-        <source>An error occurred trying to load the page.</source>
-        <target state="translated">尝试加载该页时出错。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">由于从未加载设计器的文档，因此无法显示设计器。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateResx">
-        <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <target state="translated">此项目不包含默认的资源文件。单击此处可进行创建。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateSettings">
-        <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="translated">此项目不包含默认的设置文件。单击此处可进行创建。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_FileNotFound_1Arg">
-        <source>Could not find the file '{0}'.</source>
-        <target state="translated">未能找到文件“{0}”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
-        <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <target state="translated">文件“{0}”已在某个编辑器中打开。请关闭文件并重试。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_AccessibilityName">
-        <source>All Project Designer Pages</source>
-        <target state="translated">所有项目设计器页</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_Tooltip">
-        <source>More Settings</source>
-        <target state="translated">更多设置</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SpecialFileNotSupported">
-        <source>The requested file type is not supported in projects of this type.</source>
-        <target state="translated">此类项目中不支持所请求的文件类型。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_AssemblyName">
         <source>Assembly Name</source>
         <target state="translated">程序集名称</target>
@@ -1140,11 +586,6 @@ Error:</source>
         <target state="translated">程序集 GUID</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_Property_CustomSubMain">
-        <source>Enable application framework</source>
-        <target state="translated">启用应用程序框架</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_StartProgram">
         <source>External Program Path</source>
         <target state="translated">外部程序路径</target>
@@ -1164,26 +605,6 @@ Error:</source>
         <source>Remote Machine Name</source>
         <target state="translated">远程计算机名称</target>
         <note />
-      </trans-unit>
-      <trans-unit id="APPDES_HostingPanelName">
-        <source>Project Designer Page Container</source>
-        <target state="translated">项目设计器页容器</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabButtonDefaultAction">
-        <source>Switch Project Designer Page</source>
-        <target state="translated">切换项目设计器页</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabListDescription">
-        <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <target state="translated">允许在项目设计器的活动页之间进行切换(使用 Ctrl+PageUp 和 Ctrl+PageDown)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_PageName">
-        <source>{0} page:</source>
-        <target state="translated">{0} 页:</target>
-        <note>{0} = sub page name</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerReadOnlyCaption">
         <source>{0} [Read Only]</source>
@@ -1205,11 +626,6 @@ Error:</source>
         <target state="translated">没有用于文件“{0}”的 DesignerService。</target>
         <note>#{0}=file name</note>
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">物理视图名无效。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
         <target state="translated">无法创建文本缓冲区。</target>
@@ -1220,24 +636,9 @@ Error:</source>
         <target state="translated">无 LocalRegistry 服务。</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">替换文本流失败: {0}</target>
-        <note>#exception {0}=err msg</note>
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">缓冲区为只读。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
         <target state="translated">已经在不兼容的编辑器中打开了文件。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">不支持的格式。</target>
         <note />
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
@@ -1259,46 +660,6 @@ Error:</source>
         <source>Microsoft Visual Studio</source>
         <target state="translated">Microsoft Visual Studio</target>
         <note>Error reporting</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidTabSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">请输入 1 到 60 之间的整数。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidIndentSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">请输入 1 到 60 之间的整数。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowEmptyEnvironment">
-        <source>Show empty environment</source>
-        <target state="translated">显示空环境</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpLoadLastLoadedSolution">
-        <source>Load last loaded solution</source>
-        <target state="translated">加载上一次加载的解决方案</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowNewProjectDialogBox">
-        <source>Show New Project dialog box</source>
-        <target state="translated">显示“新建项目”对话框</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowOpenProjectDialogBox">
-        <source>Show Open Project dialog box</source>
-        <target state="translated">显示“打开项目”对话框</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde">
-        <source>Changes in Help Options will not take effect until the environment is restarted.</source>
-        <target state="translated">重新启动环境之后，帮助选项中的更改才会生效。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Project_IllegalDefaultProjectDirectory">
-        <source>The location specified is on an invalid or read-only disk, or contains a device name reserved for the system.</source>
-        <target state="translated">所指定的位置在无效或只读的磁盘上，或者包含为系统保留的设备名。</target>
-        <note />
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
@@ -1516,11 +877,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">注释</target>
         <note>Columns for the "Details" view of the resource editor</note>
       </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Encoding">
-        <source>Text Encoding</source>
-        <target state="translated">文本编码</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
@@ -1571,71 +927,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Other</source>
         <target state="translated">其他</target>
         <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add">
-        <source>&amp;Add</source>
-        <target state="translated">添加(&amp;A)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Remove">
-        <source>&amp;Remove</source>
-        <target state="translated">删除(&amp;R)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views">
-        <source>&amp;Views</source>
-        <target state="translated">视图(&amp;V)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_ExistingFile">
-        <source>&amp;Existing File...</source>
-        <target state="translated">现有文件(&amp;E)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_String">
-        <source>New &amp;String</source>
-        <target state="translated">新字符串(&amp;S)</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image">
-        <source>New &amp;Image</source>
-        <target state="translated">新图像(&amp;I)</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_PNG">
-        <source>&amp;PNG Image...</source>
-        <target state="translated">PNG 图像(&amp;P)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_BMP">
-        <source>&amp;BMP Image...</source>
-        <target state="translated">BMP 图像(&amp;B)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_GIF">
-        <source>&amp;GIF Image...</source>
-        <target state="translated">GIF 图像(&amp;G)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_JPEG">
-        <source>&amp;JPEG Image...</source>
-        <target state="translated">JPEG 图像(&amp;J)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_TIFF">
-        <source>&amp;TIFF Image...</source>
-        <target state="translated">TIFF 图像(&amp;T)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Icon">
-        <source>New I&amp;con...</source>
-        <target state="translated">新建图标(&amp;C)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_TextFile">
-        <source>New &amp;Text File...</source>
-        <target state="translated">新建文本文件(&amp;T)...</target>
-        <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Type_BMP">
         <source>Windows Bitmap</source>
@@ -1801,21 +1092,6 @@ CONSIDER: get this from CodeDom</note>
 #  represent the first part of that filter
 #</note>
       </trans-unit>
-      <trans-unit id="RSE_Btn_Views_List">
-        <source>&amp;List</source>
-        <target state="translated">列表(&amp;L)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Details">
-        <source>&amp;Details</source>
-        <target state="translated">详细信息(&amp;D)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Thumbnail">
-        <source>&amp;Thumbnail</source>
-        <target state="translated">缩略图(&amp;T)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
         <target state="translated">托管资源编辑器</target>
@@ -1861,11 +1137,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">是否仍要继续?</target>
         <note />
       </trans-unit>
-      <trans-unit id="RSE_Dlg_SetCustomTool">
-        <source>Do you want to enable strongly-typed resource generation for this file?</source>
-        <target state="translated">是否为此文件启用强类型资源生成?</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RSE_Task_BadLink_2Args">
         <source>Resource '{0}' could not be loaded because the file to which it is linked could not be found: {1}.</source>
         <target state="translated">由于未能找到资源“{0}”链接到的文件，未能加载该资源: {1}。</target>
@@ -1885,11 +1156,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
         <target state="translated">无法设置此文件的“自定义工具”或“自定义工具命名空间”属性以更改强类型资源生成选项。如果已签入此项目文件，请尝试将它签出。</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
-      </trans-unit>
-      <trans-unit id="RSE_Task_WarningCustomToolNotSet">
-        <source>Double-click here to enable strongly-typed resources for this file.</source>
-        <target state="translated">双击此处可为此文件启用强类型资源。</target>
-        <note />
       </trans-unit>
       <trans-unit id="RSE_Task_InvalidName_1Arg">
         <source>The resource name '{0}' is not a valid identifier.</source>
@@ -1925,11 +1191,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Delete values in {0} cell(s)</source>
         <target state="translated">删除 {0} 个单元格中的值</target>
         <note>{0} = number of cells cleared</note>
-      </trans-unit>
-      <trans-unit id="RSE_CategiesLabel">
-        <source>&amp;Categories:</source>
-        <target state="translated">类别(&amp;C):</target>
-        <note>The label in the menu strip for the combobox that holds the categories of resources to display</note>
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Name">
         <source>Name used to identify the resource in code.</source>
@@ -2200,11 +1461,6 @@ app.config 文件中的新值为“{1}”
         <target state="translated">当前对象是自动生成的，只支持通过“设置设计器”为其重命名。</target>
         <note />
       </trans-unit>
-      <trans-unit id="SD_ERR_RenameNotSupportedForWcfGeneratedCode">
-        <source>The current object is auto-generated by the Wcf Client Generator and cannot be renamed.</source>
-        <target state="translated">当前对象是由 WCF 客户端生成器自动生成的，无法为其重命名。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="SD_ERR_ModifyParamsNotSupported">
         <source>The current object is auto-generated and does not support modifying parameters.</source>
         <target state="translated">当前对象是自动生成的，不支持修改参数。</target>
@@ -2298,16 +1554,6 @@ app.config 文件中的新值为“{1}”
       <trans-unit id="SD_DESCR_GenerateDefaultValueInCode">
         <source>Specifies whether or not the default setting value should be generated in the strongly-typed settings class.</source>
         <target state="translated">指定是否应在强类型设置类中生成默认设置值。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_Group">
-        <source>Specifies the group to which this Settings file belongs.</source>
-        <target state="translated">指定此设置文件所属的组。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_GroupDescription">
-        <source>Description of the group to which this Settings file belongs.</source>
-        <target state="translated">对此设置文件所属组的说明。</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Roaming">
@@ -2442,11 +1688,6 @@ app.config 文件中的新值为“{1}”
         <source>An error occurred trying to load the application definition file for this project.  The file '{0}' could not be parsed.  Please edit the file in the XAML editor to fix the error.</source>
         <target state="translated">尝试加载此项目的应用程序定义文件时出错。未能分析文件“{0}”。请在 XAML 编辑器中编辑此文件以修复错误。</target>
         <note />
-      </trans-unit>
-      <trans-unit id="PPG_WPFApp_CantReadPropertyValue">
-        <source>(Error)</source>
-        <target state="translated">(错误)</target>
-        <note>Used inside UI elements when there is an error (e.g. combobox text)</note>
       </trans-unit>
       <trans-unit id="PPG_Unexpected">
         <source>An unspecified error has occurred.</source>
@@ -2593,24 +1834,9 @@ app.config 文件中的新值为“{1}”
         <target state="translated">Windows 窗体应用程序</target>
         <note>The "Windows Forms" distinguishes it from a WPF application</note>
       </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceNamespaceDescription">
-        <source>Namespace of the service reference.</source>
-        <target state="translated">服务引用的命名空间。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">
         <source>Service Reference Properties</source>
         <target state="translated">服务引用属性</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlDescription">
-        <source>Metadata Location Url</source>
-        <target state="translated">元数据位置 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlName">
-        <source>Metadata Location</source>
-        <target state="translated">元数据位置</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceProperty_MultipleUrlNotSupported">
@@ -2628,25 +1854,10 @@ app.config 文件中的新值为“{1}”
         <target state="translated">签出期间重新加载了一个或多个文件。请重试操作。</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
-        <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <target state="translated">项目已重新加载，此页上的一些更改可能已经丢失。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
-        <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">应用程序将不能在选定区域中运行，因为此操作需要提升的权限。请单击上面的帮助链接获取详细信息。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
         <source>Invalid XML Format: {0}</source>
         <target state="translated">无效的 XML 格式: {0}</target>
         <note>{0} is error description</note>
-      </trans-unit>
-      <trans-unit id="XmlToSchema_XMLSchemaInferenceWizard">
-        <source>XML Schema Inference Wizard</source>
-        <target state="translated">XML 架构推断向导</target>
-        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_Error">
         <source>Error: {0}</source>
@@ -2676,21 +1887,6 @@ app.config 文件中的新值为“{1}”
       <trans-unit id="XmlToSchema_NoProjectSelected">
         <source>No project selected.</source>
         <target state="translated">未选择项目。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ResolveKeySource_InvalidKeyName">
-        <source>Invalid key file name "{0}".</source>
-        <target state="translated">密钥文件名“{0}”无效。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Unable_To_Get_Checksum">
-        <source>Unable to get MD5 checksum for the key file "{0}". {1}.</source>
-        <target state="translated">无法获取密钥文件“{0}”的 MD5 校验和。{1}。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ErrorImportingKey">
-        <source>Error importing key</source>
-        <target state="translated">导入密钥时出错</target>
         <note />
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">
