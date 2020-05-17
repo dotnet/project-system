@@ -4,17 +4,24 @@ using System;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
-    /// <summary>
+    /// <remarks>
+    /// <para>
     /// This is a slightly modified copy of Microsoft.VisualStudio.Shell.LocalizableProperties.
     /// http://index/#Microsoft.VisualStudio.Shell.12.0/LocalizableProperties.cs.html
     /// Unfortunately we can't reuse that class because the GetComponentName method on
     /// it is not virtual, so we can't provide a name string for the VS Property Grid's
     /// combo box (which shows ComponentName in bold and ClassName in regular to the
     /// right from it)
-    /// </summary>
-    public abstract class BrowseObjectBase : ICustomTypeDescriptor
+    /// </para>
+    /// <param>
+    /// PR https://dev.azure.com/devdiv/DevDiv/_git/VS/pullrequest/248337 makes the method
+    /// virtual, so once that update becomes available this type can be removed and
+    /// <see cref="LocalizableProperties"/> used directly in its place.
+    /// </param>
+    /// </remarks>
+    internal abstract class BrowseObjectBase : ICustomTypeDescriptor
     {
 #pragma warning disable CA1822
         [Browsable(false)]
