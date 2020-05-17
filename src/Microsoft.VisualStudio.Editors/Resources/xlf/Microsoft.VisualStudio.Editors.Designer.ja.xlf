@@ -27,24 +27,9 @@
         <target state="translated">警告</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_PropertyPageControlName">
-        <source>Property Page</source>
-        <target state="translated">プロパティ ページ</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencesTitle">
         <source>References</source>
         <target state="translated">参照設定</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VersionTitle">
-        <source>Version</source>
-        <target state="translated">バージョン</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SigningTitle">
-        <source>Signing</source>
-        <target state="translated">署名</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
@@ -60,21 +45,6 @@
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
         <target state="translated">デバッグ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_DeployTitle">
-        <source>Deploy</source>
-        <target state="translated">展開</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VdtGeneralTitle">
-        <source>Database</source>
-        <target state="translated">データベース</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Security">
-        <source>Security</source>
-        <target state="translated">セキュリティ</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildTitle">
@@ -116,59 +86,14 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
         <target state="translated">&lt;参照...&gt;</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(なし)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileNewText">
-        <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;新規...&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileBrowseText">
-        <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt;参照...&gt;</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
         <target state="translated">(なし)</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
-        <source>Active ({0})</source>
-        <target state="translated">アクティブな ({0})</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllConfigurations">
-        <source>All Configurations</source>
-        <target state="translated">すべての構成</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllPlatforms">
-        <source>All Platforms</source>
-        <target state="translated">すべてのプラットフォーム</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NotApplicable">
-        <source>N/A</source>
-        <target state="translated">なし</target>
-        <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_ConfigNotFound_2Args">
-        <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <target state="translated">プラットフォーム '{1}' の構成 '{0}' が見つかりませんでした。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
         <target state="translated">(なし)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectFileTitle">
-        <source>Select File</source>
-        <target state="translated">ファイルの選択</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AddExistingFilesTitle">
@@ -228,19 +153,9 @@ Please select a valid folder path.</source>
         <target state="translated">ビルドの詳細設定</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_CompilerWarnings_Title">
-        <source>Compiler Warnings</source>
-        <target state="translated">コンパイラの警告</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencePaths_Title">
         <source>Reference Paths</source>
         <target state="translated">参照パス</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_CompatibleSettings_Title">
-        <source>Compatible Settings</source>
-        <target state="translated">互換性のある設定</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_Title">
@@ -470,378 +385,6 @@ Changing this setting will reset the settings in all configurations.</source>
         <target state="translated">アプリケーション定義</target>
         <note>Authentication modes</note>
       </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Cancel">
-        <source>Cancel</source>
-        <target state="translated">キャンセル</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Calculate">
-        <source>&amp;Calculate Permissions</source>
-        <target state="translated">アクセス許可の検出(&amp;C)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Stopped">
-        <source>Stopped...</source>
-        <target state="translated">停止しました...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Starting">
-        <source>Starting...</source>
-        <target state="translated">開始しています...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Building">
-        <source>Building...</source>
-        <target state="translated">ビルドしています...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Analyzing">
-        <source>Analyzing...</source>
-        <target state="translated">分析しています...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_AnalyzeFailed">
-        <source>Analyze Failed</source>
-        <target state="translated">分析できませんでした</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Aborting">
-        <source>Aborting...</source>
-        <target state="translated">中止しています...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Cancelling">
-        <source>Canceling...</source>
-        <target state="translated">取り消しています...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_InternetZone">
-        <source>Internet</source>
-        <target state="translated">インターネット</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_LocalIntranetZone">
-        <source>Local Intranet</source>
-        <target state="translated">ローカル イントラネット</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CustomZone">
-        <source>(Custom)</source>
-        <target state="translated">(カスタム)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ZoneDefault">
-        <source>(Zone Default)</source>
-        <target state="translated">(ゾーン既定値)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Included">
-        <source>Include</source>
-        <target state="translated">包含</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Excluded">
-        <source>Exclude</source>
-        <target state="translated">除外</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_FullTrustToolTip">
-        <source>The application will require elevated permissions to run in the selected zone. Click the help link above for more info.</source>
-        <target state="translated">選択されたゾーンでアプリケーションを実行するには、アクセス許可を引き上げる必要があります。詳細については、上のヘルプ リンクをクリックしてください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadPermissionToolTip">
-        <source>This permission could not be loaded. Press the delete key to remove it from your project.</source>
-        <target state="translated">このアクセス許可を読み込めませんでした。プロジェクトからこのアクセス許可を削除するには、Delete キーを押してください。</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderIncluded">
-        <source>Included</source>
-        <target state="translated">含まれている</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderPermission">
-        <source>Permission</source>
-        <target state="translated">アクセス許可</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderSetting">
-        <source>Setting</source>
-        <target state="translated">設定</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelText">
-        <source>Specify the code access security permissions that your ClickOnce application requires in order to run. Learn more about code access security...</source>
-        <target state="translated">ClickOnce アプリケーションの実行に必要なコード アクセス セキュリティのアクセス許可を指定してください。コード アクセス セキュリティに関する詳細の表示...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelLink">
-        <source>Learn more about code access security...</source>
-        <target state="translated">コード アクセス セキュリティに関する詳細の表示...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadDropDownValue">
-        <source>Invalid value</source>
-        <target state="translated">無効な値</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SecurityPermissionCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. Mark this permission as "Zone Default" or "Include."</source>
-        <target state="translated">SecurityPermission が実行フラグ セットと共にアプリケーションに含まれていなければ、アプリケーションは実行されません。このアクセス許可を "ゾーン既定値" または "包含" として設定してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ExecuteCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. The Execute flag has been added to the SecurityPermission in your manifest.</source>
-        <target state="translated">SecurityPermission が実行フラグ セットと共にアプリケーションに含まれていなければ、アプリケーションは実行されません。実行フラグはマニフェスト内の SecurityPermission に追加されました。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialog">
-        <source>This application requires full trust to run correctly. Would you like to set this as a full trust application?</source>
-        <target state="translated">このアプリケーションは、正しく実行されるために完全な信頼の設定を必要とします。完全信頼アプリケーションとして設定しますか?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialogTitle">
-        <source>Full Trust Required</source>
-        <target state="translated">完全信頼が必要です</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotSaveManifest">
-        <source>An error occurred and the app.manifest file could not be saved.
-Error:</source>
-        <target state="translated">エラーが発生したため、app.manifest ファイルを保存できませんでした。
-エラー:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotLoadManifest">
-        <source>An error occurred and the app.manifest file could not be loaded. Please remove any changes you have made to the file and reload the Security property page again.</source>
-        <target state="translated">エラーが発生したため、app.manifest ファイルを読み込めませんでした。このファイルへの変更を削除して、セキュリティ プロパティ ページを再度読み込んでください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
-        <source>Included</source>
-        <target state="translated">含まれている</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
-        <source>Not Included</source>
-        <target state="translated">含まれていない</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
-        <source>Included with warning</source>
-        <target state="translated">含まれるアクセス許可 (警告あり)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailed">
-        <source>Calculating permissions failed.</source>
-        <target state="translated">アクセス許可の計算に失敗しました。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailedCaption">
-        <source>Error</source>
-        <target state="translated">エラー</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityAdvancedPage_Title">
-        <source>Advanced Security Settings</source>
-        <target state="translated">セキュリティの詳細設定</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailed">
-        <source>Build Failed.  Click CANCEL and correct the build failure before analyzing again.</source>
-        <target state="translated">ビルドに失敗しました。[キャンセル] をクリックし、解析を再実行する前にビルドのエラーを修正してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildComplete">
-        <source>Build completed...</source>
-        <target state="translated">ビルドの完了...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildUnableToStart">
-        <source>Unable to start the build.</source>
-        <target state="translated">ビルドを開始できません。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailedToStart">
-        <source>Serious error.  The build must begin in order to analyze permissions.  It has not started.</source>
-        <target state="translated">重大なエラーが発生しました。アクセス許可を解析するために、ビルドを開始しなければなりません。ビルドが開始されていません。</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_CustomPermissionSet">
-        <source>(Custom)</source>
-        <target state="translated">(カスタム)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(なし)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Title">
-        <source>Selecting existing key file</source>
-        <target state="translated">既存のキー ファイルを選択しています。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Filter">
-        <source>Key Files</source>
-        <target state="translated">キー ファイル</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNew_Title">
-        <source>Create key file</source>
-        <target state="translated">キー ファイルの作成</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassWrong">
-        <source>The old password is invalid.</source>
-        <target state="translated">古いパスワードは無効です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassEmpty">
-        <source>Enter the old password.</source>
-        <target state="translated">古いパスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassEmpty">
-        <source>Enter a new password.</source>
-        <target state="translated">新しいパスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassMismatch">
-        <source>The new passwords do not match. Enter the password again.</source>
-        <target state="translated">新しいパスワードが一致しません。もう一度、パスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassTooShort">
-        <source>The new password must be at least 6 characters in length. Enter the password again.</source>
-        <target state="translated">新しいパスワードには、6 文字以上を指定することが必要です。もう一度、パスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertTitle">
-        <source>Select a Certificate</source>
-        <target state="translated">証明書の選択</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertStorePrompt">
-        <source>Select a certificate to sign your ClickOnce manifests</source>
-        <target state="translated">ClickOnce マニフェストに署名する証明書を選択してください</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertFileFilter">
-        <source>Certificate Files</source>
-        <target state="translated">証明書ファイル</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedTo">
-        <source>Issued To</source>
-        <target state="translated">発行先</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedBy">
-        <source>Issued By</source>
-        <target state="translated">発行元</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_Purpose">
-        <source>Intended Purpose</source>
-        <target state="translated">使用目的</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ExpirationDate">
-        <source>Expiration Date</source>
-        <target state="translated">有効期限</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPassword">
-        <source>The password is invalid.</source>
-        <target state="translated">パスワードが無効です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPasswordTitle">
-        <source>Invalid password</source>
-        <target state="translated">無効なパスワード</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKey">
-        <source>The selected file does not contain a private key. You must choose a certificate that contains a private key.</source>
-        <target state="translated">選択されたファイルには秘密キーが含まれていません。秘密キーを含む証明書を選択する必要があります。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKeyTitle">
-        <source>Invalid key</source>
-        <target state="translated">無効なキー</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertCreationError">
-        <source>Certificate Creation Error</source>
-        <target state="translated">証明書の作成エラー</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_AllPurposes">
-        <source>&lt;All&gt;</source>
-        <target state="translated">&lt;すべて&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_PasswordMismatch">
-        <source>The passwords do not match.</source>
-        <target state="translated">パスワードが一致しません。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPassword">
-        <source>Enter a password.</source>
-        <target state="translated">パスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoConfirm">
-        <source>Confirm the password.</source>
-        <target state="translated">パスワードを確認入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoData">
-        <source>(none)</source>
-        <target state="translated">(なし)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
-        <source>Enter password to open file</source>
-        <target state="translated">ファイルを開くためのパスワードを入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
-        <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">ファイル {0} を開くためのパスワードを入力(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
-        <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">新しいファイル {0} のパスワードを入力(&amp;P)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
-        <source>The project already contains a file with that name. Choose another certificate file or rename the file in your project.</source>
-        <target state="translated">プロジェクトには既にその名前のファイルが含まれています。別の証明書ファイルを選択するか、またはプロジェクト内のファイル名を変更してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CouldNotImportFile">
-        <source>The file '{0}' could not be imported: {1}</source>
-        <target state="translated">ファイル '{0}' をインポートできませんでした: {1}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNameSuffix">
-        <source>_TemporaryKey.pfx</source>
-        <target state="translated">_TemporaryKey.pfx</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertificateNotCodeSigning">
-        <source>The selected certificate is not valid for code signing. Choose another certificate file.</source>
-        <target state="translated">選択された証明書はコードの署名には無効です。別の証明書ファイルを選択してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UndoTransaction">
-        <source>Change property: {0}</source>
-        <target state="translated">プロパティの変更: {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_WindowsApp">
         <source>Windows Application</source>
         <target state="translated">Windows アプリケーション</target>
@@ -906,36 +449,6 @@ Error:</source>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
         <source>Dynamic</source>
         <target state="translated">動的</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceNameDescription">
-        <source>Name of the web reference</source>
-        <target state="translated">Web 参照の名前です</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorName">
-        <source>URL Behavior</source>
-        <target state="translated">URL の動作</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorDescription">
-        <source>Web reference URL behavior</source>
-        <target state="translated">Web 参照 URL の動作</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlName">
-        <source>Web Reference URL</source>
-        <target state="translated">Web 参照 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlDescription">
-        <source>Web Reference URL</source>
-        <target state="translated">Web 参照 URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ReferenceDetail_Title">
-        <source>Reference Properties</source>
-        <target state="translated">参照プロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
@@ -1038,73 +551,6 @@ Error:</source>
         <target state="translated">"入力されたリソース ファイルは存在しません。</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_Title">
-        <source>Project Designer</source>
-        <target state="translated">プロジェクト デザイナー</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SettingsTabTitle">
-        <source>Settings</source>
-        <target state="translated">設定</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ResourceTabTitle">
-        <source>Resources</source>
-        <target state="translated">リソース</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoading_Msg">
-        <source>An error occurred trying to load the project properties window.  Close the window and try again.
-{0}</source>
-        <target state="translated">プロジェクト プロパティ ウィンドウを読み込もうとしているときにエラーが発生しました。ウィンドウを閉じて、もう一度試してください。
-{0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoadingPropPage">
-        <source>An error occurred trying to load the page.</source>
-        <target state="translated">ページの読み込み中にエラーが発生しました。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">ドキュメントが読み込まれなかったため、デザイナーを表示できません。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateResx">
-        <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <target state="translated">このプロジェクトには既定のリソース ファイルが含まれていません。ファイルを作成するには、ここをクリックしてください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateSettings">
-        <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="translated">このプロジェクトには既定の設定ファイルが含まれていません。ファイルを作成するには、ここをクリックしてください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_FileNotFound_1Arg">
-        <source>Could not find the file '{0}'.</source>
-        <target state="translated">ファイル '{0}' が見つかりません。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
-        <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <target state="translated">ファイル '{0}' は既にエディターで開かれています。ファイルを閉じて、もう一度操作を行ってください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_AccessibilityName">
-        <source>All Project Designer Pages</source>
-        <target state="translated">すべてのプロジェクト デザイナー ページ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_Tooltip">
-        <source>More Settings</source>
-        <target state="translated">その他の設定</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SpecialFileNotSupported">
-        <source>The requested file type is not supported in projects of this type.</source>
-        <target state="translated">要求されたファイルの種類はこの種類のプロジェクトでサポートされていません。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_AssemblyName">
         <source>Assembly Name</source>
         <target state="translated">アセンブリ名</target>
@@ -1140,11 +586,6 @@ Error:</source>
         <target state="translated">アセンブリ GUID</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_Property_CustomSubMain">
-        <source>Enable application framework</source>
-        <target state="translated">アプリケーション フレームワークを有効にする</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_StartProgram">
         <source>External Program Path</source>
         <target state="translated">外部プログラム パス</target>
@@ -1164,26 +605,6 @@ Error:</source>
         <source>Remote Machine Name</source>
         <target state="translated">リモート コンピューター名</target>
         <note />
-      </trans-unit>
-      <trans-unit id="APPDES_HostingPanelName">
-        <source>Project Designer Page Container</source>
-        <target state="translated">プロジェクト デザイナー ページ コンテナー</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabButtonDefaultAction">
-        <source>Switch Project Designer Page</source>
-        <target state="translated">プロジェクト デザイナー ページの切り替え</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabListDescription">
-        <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <target state="translated">プロジェクト デザイナーのアクティブ ページ間の切り替えを許可します (Ctrl + PageUp キーおよび Ctrl + PageDown キーを使用)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_PageName">
-        <source>{0} page:</source>
-        <target state="translated">{0} ページ:</target>
-        <note>{0} = sub page name</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerReadOnlyCaption">
         <source>{0} [Read Only]</source>
@@ -1205,11 +626,6 @@ Error:</source>
         <target state="translated">ファイル '{0}' に対する DesignerService がありません。</target>
         <note>#{0}=file name</note>
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">無効な物理ビュー名です。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
         <target state="translated">テキスト バッファーを作成できません。</target>
@@ -1220,24 +636,9 @@ Error:</source>
         <target state="translated">LocalRegistry サービスがありません。</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">テキスト ストリームの置換に失敗しました: {0}</target>
-        <note>#exception {0}=err msg</note>
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">バッファーは読み取り専用です。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
         <target state="translated">ファイルは、互換性のないエディターで既に開かれています。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">サポートされていない形式です。</target>
         <note />
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
@@ -1259,46 +660,6 @@ Error:</source>
         <source>Microsoft Visual Studio</source>
         <target state="translated">Microsoft Visual Studio</target>
         <note>Error reporting</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidTabSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">1 から 60 までの整数を入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidIndentSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">1 から 60 までの整数を入力してください。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowEmptyEnvironment">
-        <source>Show empty environment</source>
-        <target state="translated">空の環境の表示</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpLoadLastLoadedSolution">
-        <source>Load last loaded solution</source>
-        <target state="translated">最後に読み込んだソリューションの読み込み</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowNewProjectDialogBox">
-        <source>Show New Project dialog box</source>
-        <target state="translated">[新しいプロジェクト] ダイアログ ボックスの表示</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowOpenProjectDialogBox">
-        <source>Show Open Project dialog box</source>
-        <target state="translated">[プロジェクトを開く] ダイアログ ボックスの表示</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde">
-        <source>Changes in Help Options will not take effect until the environment is restarted.</source>
-        <target state="translated">ヘルプ オプションの変更は、環境が再起動されたときに有効になります。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Project_IllegalDefaultProjectDirectory">
-        <source>The location specified is on an invalid or read-only disk, or contains a device name reserved for the system.</source>
-        <target state="translated">指定されたディスクは無効か、読み取り専用か、またはシステムで予約されたデバイス名を含んでいます。</target>
-        <note />
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
@@ -1516,11 +877,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">コメント</target>
         <note>Columns for the "Details" view of the resource editor</note>
       </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Encoding">
-        <source>Text Encoding</source>
-        <target state="translated">テキストのエンコード</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
@@ -1571,71 +927,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Other</source>
         <target state="translated">その他</target>
         <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add">
-        <source>&amp;Add</source>
-        <target state="translated">追加(&amp;A)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Remove">
-        <source>&amp;Remove</source>
-        <target state="translated">削除(&amp;R)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views">
-        <source>&amp;Views</source>
-        <target state="translated">ビュー(&amp;V)</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_ExistingFile">
-        <source>&amp;Existing File...</source>
-        <target state="translated">既存のファイル(&amp;E)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_String">
-        <source>New &amp;String</source>
-        <target state="translated">新しい文字列(&amp;S)</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image">
-        <source>New &amp;Image</source>
-        <target state="translated">新しいイメージ(&amp;I)</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_PNG">
-        <source>&amp;PNG Image...</source>
-        <target state="translated">PNG イメージ(&amp;P)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_BMP">
-        <source>&amp;BMP Image...</source>
-        <target state="translated">BMP イメージ(&amp;B)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_GIF">
-        <source>&amp;GIF Image...</source>
-        <target state="translated">GIF イメージ(&amp;G)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_JPEG">
-        <source>&amp;JPEG Image...</source>
-        <target state="translated">JPEG イメージ(&amp;J)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_TIFF">
-        <source>&amp;TIFF Image...</source>
-        <target state="translated">TIFF イメージ(&amp;T)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Icon">
-        <source>New I&amp;con...</source>
-        <target state="translated">新しいアイコン(&amp;C)...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_TextFile">
-        <source>New &amp;Text File...</source>
-        <target state="translated">新しいテキスト ファイル(&amp;T)...</target>
-        <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Type_BMP">
         <source>Windows Bitmap</source>
@@ -1801,21 +1092,6 @@ CONSIDER: get this from CodeDom</note>
 #  represent the first part of that filter
 #</note>
       </trans-unit>
-      <trans-unit id="RSE_Btn_Views_List">
-        <source>&amp;List</source>
-        <target state="translated">リスト(&amp;L)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Details">
-        <source>&amp;Details</source>
-        <target state="translated">詳細(&amp;D)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Thumbnail">
-        <source>&amp;Thumbnail</source>
-        <target state="translated">サムネイル(&amp;T)</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
         <target state="translated">マネージド リソース エディター</target>
@@ -1861,11 +1137,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">続行しますか?</target>
         <note />
       </trans-unit>
-      <trans-unit id="RSE_Dlg_SetCustomTool">
-        <source>Do you want to enable strongly-typed resource generation for this file?</source>
-        <target state="translated">このファイルに対して厳密に型指定されたリソースの生成を有効にしますか?</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RSE_Task_BadLink_2Args">
         <source>Resource '{0}' could not be loaded because the file to which it is linked could not be found: {1}.</source>
         <target state="translated">リソース '{0}' は、リンクされたファイルが見つからなかったため、読み込めませんでした: {1}。</target>
@@ -1885,11 +1156,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
         <target state="translated">厳密に型指定されたリソースの生成オプションを変更するためにこのファイルのカスタム ツール、またはカスタム ツールの名前空間プロパティを設定できませんでした。プロジェクト ファイルがチェックインされている場合、チェックアウトしてください。</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
-      </trans-unit>
-      <trans-unit id="RSE_Task_WarningCustomToolNotSet">
-        <source>Double-click here to enable strongly-typed resources for this file.</source>
-        <target state="translated">このファイルに対して厳密に型指定されたリソースを有効にするには、ここをダブルクリックしてください。</target>
-        <note />
       </trans-unit>
       <trans-unit id="RSE_Task_InvalidName_1Arg">
         <source>The resource name '{0}' is not a valid identifier.</source>
@@ -1925,11 +1191,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Delete values in {0} cell(s)</source>
         <target state="translated">{0} 個のセルの値を消去します</target>
         <note>{0} = number of cells cleared</note>
-      </trans-unit>
-      <trans-unit id="RSE_CategiesLabel">
-        <source>&amp;Categories:</source>
-        <target state="translated">カテゴリ(&amp;C):</target>
-        <note>The label in the menu strip for the combobox that holds the categories of resources to display</note>
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Name">
         <source>Name used to identify the resource in code.</source>
@@ -2200,11 +1461,6 @@ app.config ファイルでの新しい値は '{1}' です
         <target state="translated">現在のオブジェクトは自動生成されていて、設定デザイナーによる名前の変更のみサポートしています。</target>
         <note />
       </trans-unit>
-      <trans-unit id="SD_ERR_RenameNotSupportedForWcfGeneratedCode">
-        <source>The current object is auto-generated by the Wcf Client Generator and cannot be renamed.</source>
-        <target state="translated">現在のオブジェクトは、WCF クライアント ジェネレーターにより自動生成されたため、名前を変更できません。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="SD_ERR_ModifyParamsNotSupported">
         <source>The current object is auto-generated and does not support modifying parameters.</source>
         <target state="translated">現在のオブジェクトは自動生成されていて、パラメーターの変更をサポートしていません。</target>
@@ -2298,16 +1554,6 @@ app.config ファイルでの新しい値は '{1}' です
       <trans-unit id="SD_DESCR_GenerateDefaultValueInCode">
         <source>Specifies whether or not the default setting value should be generated in the strongly-typed settings class.</source>
         <target state="translated">既定値を、厳密に型指定された設定クラスで生成するかどうかを指定します。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_Group">
-        <source>Specifies the group to which this Settings file belongs.</source>
-        <target state="translated">この設定ファイルが属するグループを指定します。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_GroupDescription">
-        <source>Description of the group to which this Settings file belongs.</source>
-        <target state="translated">この設定ファイルが属するグループの説明です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Roaming">
@@ -2442,11 +1688,6 @@ app.config ファイルでの新しい値は '{1}' です
         <source>An error occurred trying to load the application definition file for this project.  The file '{0}' could not be parsed.  Please edit the file in the XAML editor to fix the error.</source>
         <target state="translated">このプロジェクトのアプリケーション定義ファイルを読み込むときにエラーが発生しました。ファイル '{0}' を解析できませんでした。XAML エディターでファイルを編集してエラーを修正してください。</target>
         <note />
-      </trans-unit>
-      <trans-unit id="PPG_WPFApp_CantReadPropertyValue">
-        <source>(Error)</source>
-        <target state="translated">(エラー)</target>
-        <note>Used inside UI elements when there is an error (e.g. combobox text)</note>
       </trans-unit>
       <trans-unit id="PPG_Unexpected">
         <source>An unspecified error has occurred.</source>
@@ -2593,24 +1834,9 @@ app.config ファイルでの新しい値は '{1}' です
         <target state="translated">Windows フォーム アプリケーション</target>
         <note>The "Windows Forms" distinguishes it from a WPF application</note>
       </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceNamespaceDescription">
-        <source>Namespace of the service reference.</source>
-        <target state="translated">サービス参照の名前空間。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">
         <source>Service Reference Properties</source>
         <target state="translated">サービス参照プロパティ</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlDescription">
-        <source>Metadata Location Url</source>
-        <target state="translated">メタデータ ロケーション URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlName">
-        <source>Metadata Location</source>
-        <target state="translated">メタデータ ロケーション</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceProperty_MultipleUrlNotSupported">
@@ -2628,25 +1854,10 @@ app.config ファイルでの新しい値は '{1}' です
         <target state="translated">1 つ以上のファイルがチェックアウト時に再読み込みされました。操作を再試行してください。</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
-        <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <target state="translated">プロジェクトが再度読み込まれました。このページに加えられたいくつかの変更が失われた可能性があります。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
-        <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">この引き上げられたアクセス許可が原因で、選択されたゾーンでのアプリケーションの実行は失敗します。詳細については、ヘルプ リンクをクリックしてください。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
         <source>Invalid XML Format: {0}</source>
         <target state="translated">無効な XML 形式: {0}</target>
         <note>{0} is error description</note>
-      </trans-unit>
-      <trans-unit id="XmlToSchema_XMLSchemaInferenceWizard">
-        <source>XML Schema Inference Wizard</source>
-        <target state="translated">XML スキーマ推論ウィザード</target>
-        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_Error">
         <source>Error: {0}</source>
@@ -2676,21 +1887,6 @@ app.config ファイルでの新しい値は '{1}' です
       <trans-unit id="XmlToSchema_NoProjectSelected">
         <source>No project selected.</source>
         <target state="translated">プロジェクトが選択されていません。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ResolveKeySource_InvalidKeyName">
-        <source>Invalid key file name "{0}".</source>
-        <target state="translated">キー ファイル名 "{0}" が無効です。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Unable_To_Get_Checksum">
-        <source>Unable to get MD5 checksum for the key file "{0}". {1}.</source>
-        <target state="translated">キー ファイル "{0}" の MD5 チェックサムを取得できません。 {1}。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ErrorImportingKey">
-        <source>Error importing key</source>
-        <target state="translated">キーのインポート エラーです。</target>
         <note />
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">

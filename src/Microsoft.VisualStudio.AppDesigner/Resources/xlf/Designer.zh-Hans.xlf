@@ -12,11 +12,6 @@
         <target state="translated">此项目不包含默认的设置文件。单击此处可进行创建。</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">由于从未加载设计器的文档，因此无法显示设计器。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
         <target state="translated">文件“{0}”已在某个编辑器中打开。请关闭文件并重试。</target>
@@ -89,35 +84,10 @@
         <target state="translated">项目设计器</target>
         <note />
       </trans-unit>
-      <trans-unit id="CMN_AllFilesFilter">
-        <source>All Files</source>
-        <target state="translated">所有文件</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">缓冲区为只读。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
         <target state="translated">无法创建设计器。 {0}</target>
         <note># {0}=inner exception</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFound">
-        <source>The editor could not get the IVsTextStream for file {0}.</source>
-        <target state="translated">编辑器未能获取文件 {0} 的 IVsTextStream。</target>
-        <note>#exception {0}=filename</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile">
-        <source>The editor could not get the IVsTextStream.</source>
-        <target state="translated">编辑器未能获取 IVsTextStream。</target>
-        <note>#exception (no file name)</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerReadOnlyCaption">
-        <source>{0} [Read Only]</source>
-        <target state="translated">{0} [只读]</target>
-        <note>Attach a readonly to the designer caption {0}=Designer caption</note>
       </trans-unit>
       <trans-unit id="DFX_EditorNoDesignerService">
         <source>No DesignerService for file '{0}'.</source>
@@ -134,30 +104,15 @@
         <target state="translated">已经在不兼容的编辑器中打开了文件。</target>
         <note />
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">物理视图名无效。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_NoLocalRegistry">
         <source>No LocalRegistry service.</source>
         <target state="translated">无 LocalRegistry 服务。</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">不支持的格式。</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
         <target state="translated">签出期间重新加载了一个或多个文件。请重试操作。</target>
         <note />
-      </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">替换文本流失败: {0}</target>
-        <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
@@ -179,16 +134,6 @@
         <target state="translated">参数“{0}”无效</target>
         <note>{0} = name of invalid argument</note>
       </trans-unit>
-      <trans-unit id="General_MissingService">
-        <source>Unable to find service '{0}'.  Ensure that the application is installed correctly.</source>
-        <target state="translated">无法找到服务“{0}”。请确保已正确安装该应用程序。</target>
-        <note>Settings Global-Object-Provider Strings</note>
-      </trans-unit>
-      <trans-unit id="PermissionSet_Requires">
-        <source>Requires:</source>
-        <target state="translated">要求:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
         <target state="translated">活动({0})</target>
@@ -204,74 +149,15 @@
         <target state="translated">所有平台</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ApplicationTitle">
-        <source>Application</source>
-        <target state="translated">应用程序</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ComboBoxSelect_None">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
         <target state="translated">未能找到平台“{1}”的配置“{0}”。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_ApplicationDefined">
-        <source>Application-defined</source>
-        <target state="translated">由应用程序定义</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_Windows">
-        <source>Windows</source>
-        <target state="translated">Windows</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
-        <source>When last form closes</source>
-        <target state="translated">当最后一个窗体关闭时</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
-        <source>When startup form closes</source>
-        <target state="translated">当启动窗体关闭时</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NeutralLanguage_None">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
         <target state="translated">不可用</target>
         <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_OutputPathNotSecure">
-        <source>The output path is not trusted.
-The application may throw security exceptions when it attempts to perform actions which require full trust.
-Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <target state="translated">输出路径不受信任。
-如果应用程序尝试执行需要完全信任的操作，可能会引发安全异常。
-单击“确定”可忽略并继续。单击“取消”可选择其他输出路径。</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PostBuildCommandLineTitle">
-        <source>Post-build Event Command Line</source>
-        <target state="translated">生成后事件命令行</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PreBuildCommandLineTitle">
-        <source>Pre-build Event Command Line</source>
-        <target state="translated">生成前事件命令行</target>
-        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
@@ -288,34 +174,9 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
         <target state="translated">选择文件</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_SelectOutputPathTitle">
-        <source>Select Output Path</source>
-        <target state="translated">选择输出路径</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectReferencePath">
-        <source>Select Reference Path</source>
-        <target state="translated">选择引用路径</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectWorkingDirectoryTitle">
-        <source>Select Working Directory</source>
-        <target state="translated">选择工作目录</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(无)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
         <target state="translated">更改属性: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
-        <source>Failed to generate file: {0}</source>
-        <target state="translated">未能生成文件: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">

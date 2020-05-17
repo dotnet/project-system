@@ -12,11 +12,6 @@
         <target state="translated">Ce projet ne contient pas de fichier de paramètres par défaut.  Cliquez ici pour en créer un.</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">Impossible d'afficher le concepteur, car le document n'a pas pu être chargé.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
         <target state="translated">Le fichier '{0}' est déjà ouvert dans un éditeur.  Fermez le fichier et réessayez.</target>
@@ -89,35 +84,10 @@
         <target state="translated">Concepteur de projets</target>
         <note />
       </trans-unit>
-      <trans-unit id="CMN_AllFilesFilter">
-        <source>All Files</source>
-        <target state="translated">Tous les fichiers</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">La mémoire tampon est en lecture seule.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
         <target state="translated">Impossible de créer le concepteur. {0}</target>
         <note># {0}=inner exception</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFound">
-        <source>The editor could not get the IVsTextStream for file {0}.</source>
-        <target state="translated">L'éditeur n'a pas pu obtenir IVsTextStream pour le fichier {0}.</target>
-        <note>#exception {0}=filename</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile">
-        <source>The editor could not get the IVsTextStream.</source>
-        <target state="translated">L'éditeur n'a pas pu obtenir IVsTextStream.</target>
-        <note>#exception (no file name)</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerReadOnlyCaption">
-        <source>{0} [Read Only]</source>
-        <target state="translated">{0} [Lecture seule]</target>
-        <note>Attach a readonly to the designer caption {0}=Designer caption</note>
       </trans-unit>
       <trans-unit id="DFX_EditorNoDesignerService">
         <source>No DesignerService for file '{0}'.</source>
@@ -134,30 +104,15 @@
         <target state="translated">Le fichier est déjà ouvert dans un éditeur non compatible.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">Nom d'affichage physique non valide.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_NoLocalRegistry">
         <source>No LocalRegistry service.</source>
         <target state="translated">Aucun service LocalRegistry.</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">Format non pris en charge.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
         <target state="translated">Un ou plusieurs fichiers ont été rechargés pendant l'extraction. Réessayez votre opération.</target>
         <note />
-      </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">Échec du remplacement du flux de texte : {0}</target>
-        <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
@@ -179,16 +134,6 @@
         <target state="translated">Argument '{0}' non valide.</target>
         <note>{0} = name of invalid argument</note>
       </trans-unit>
-      <trans-unit id="General_MissingService">
-        <source>Unable to find service '{0}'.  Ensure that the application is installed correctly.</source>
-        <target state="translated">Service '{0}' introuvable.  Vérifiez que l'application est installée correctement.</target>
-        <note>Settings Global-Object-Provider Strings</note>
-      </trans-unit>
-      <trans-unit id="PermissionSet_Requires">
-        <source>Requires:</source>
-        <target state="translated">Nécessite :</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
         <target state="translated">({0}) active</target>
@@ -204,74 +149,15 @@
         <target state="translated">Toutes les plateformes</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ApplicationTitle">
-        <source>Application</source>
-        <target state="translated">Application</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ComboBoxSelect_None">
-        <source>(None)</source>
-        <target state="translated">(Aucun)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
         <target state="translated">Configuration '{0}' introuvable pour la plateforme '{1}'.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_ApplicationDefined">
-        <source>Application-defined</source>
-        <target state="translated">Défini au niveau de l'application</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_Windows">
-        <source>Windows</source>
-        <target state="translated">Windows</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
-        <source>When last form closes</source>
-        <target state="translated">À la fermeture du dernier formulaire</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
-        <source>When startup form closes</source>
-        <target state="translated">À la fermeture du formulaire de démarrage</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NeutralLanguage_None">
-        <source>(None)</source>
-        <target state="translated">(Aucun)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(Aucun)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
         <target state="translated">N/A</target>
         <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_OutputPathNotSecure">
-        <source>The output path is not trusted.
-The application may throw security exceptions when it attempts to perform actions which require full trust.
-Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <target state="translated">Le chemin de sortie n'est pas approuvé.
-L'application risque de générer des exceptions de sécurité pendant l'exécution d'actions qui exigent une confiance totale.
-Cliquez sur OK pour ignorer et continuer. Cliquez sur ANNULER pour choisir un autre chemin de sortie.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PostBuildCommandLineTitle">
-        <source>Post-build Event Command Line</source>
-        <target state="translated">Ligne de commande de l'événement post-build</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PreBuildCommandLineTitle">
-        <source>Pre-build Event Command Line</source>
-        <target state="translated">Ligne de commande de l'événement pré-build</target>
-        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
@@ -288,34 +174,9 @@ Cliquez sur OK pour ignorer et continuer. Cliquez sur ANNULER pour choisir un au
         <target state="translated">Sélectionner le fichier</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_SelectOutputPathTitle">
-        <source>Select Output Path</source>
-        <target state="translated">Sélectionner le chemin de sortie</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectReferencePath">
-        <source>Select Reference Path</source>
-        <target state="translated">Sélectionner le chemin de référence</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectWorkingDirectoryTitle">
-        <source>Select Working Directory</source>
-        <target state="translated">Sélectionner le répertoire de travail</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(Aucun)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
         <target state="translated">Modifier la propriété : {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
-        <source>Failed to generate file: {0}</source>
-        <target state="translated">Échec de génération du fichier : {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">

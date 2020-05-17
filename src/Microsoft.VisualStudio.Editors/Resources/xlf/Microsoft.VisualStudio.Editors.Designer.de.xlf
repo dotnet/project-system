@@ -27,24 +27,9 @@
         <target state="translated">Warnungen</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_PropertyPageControlName">
-        <source>Property Page</source>
-        <target state="translated">Eigenschaftenseite</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencesTitle">
         <source>References</source>
         <target state="translated">Verweise</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VersionTitle">
-        <source>Version</source>
-        <target state="translated">Version</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SigningTitle">
-        <source>Signing</source>
-        <target state="translated">Signierung</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ApplicationTitle">
@@ -60,21 +45,6 @@
       <trans-unit id="PPG_DebugTitle">
         <source>Debug</source>
         <target state="translated">Debuggen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_DeployTitle">
-        <source>Deploy</source>
-        <target state="translated">Bereitstellen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_VdtGeneralTitle">
-        <source>Database</source>
-        <target state="translated">Datenbank</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Security">
-        <source>Security</source>
-        <target state="translated">Sicherheit</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_BuildTitle">
@@ -116,59 +86,14 @@ Klicken Sie auf "OK", um diese Meldung zu ignorieren und den Vorgang fortzusetze
         <target state="translated">&lt;Durchsuchen...&gt;</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(Keine)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileNewText">
-        <source>&lt;New...&gt;</source>
-        <target state="translated">&lt;Neu...&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_KeyFileBrowseText">
-        <source>&lt;Browse...&gt;</source>
-        <target state="translated">&lt;Durchsuchen...&gt;</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ComboBoxSelect_None">
         <source>(None)</source>
         <target state="translated">(Keine)</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
-        <source>Active ({0})</source>
-        <target state="translated">Aktiv ({0})</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllConfigurations">
-        <source>All Configurations</source>
-        <target state="translated">Alle Konfigurationen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_AllPlatforms">
-        <source>All Platforms</source>
-        <target state="translated">Alle Plattformen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NotApplicable">
-        <source>N/A</source>
-        <target state="translated">Nicht zutreffend</target>
-        <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_ConfigNotFound_2Args">
-        <source>Could not find the configuration '{0}' for platform '{1}'.</source>
-        <target state="translated">Die Konfiguration "{0}" für die Plattform "{1}" wurde nicht gefunden.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_NeutralLanguage_None">
         <source>(None)</source>
         <target state="translated">(Keine)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectFileTitle">
-        <source>Select File</source>
-        <target state="translated">Datei auswählen</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AddExistingFilesTitle">
@@ -228,19 +153,9 @@ Wählen Sie einen gültigen Ordnerpfad aus.</target>
         <target state="translated">Erweiterte Buildeinstellungen</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_CompilerWarnings_Title">
-        <source>Compiler Warnings</source>
-        <target state="translated">Compilerwarnungen</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ReferencePaths_Title">
         <source>Reference Paths</source>
         <target state="translated">Verweispfade</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_CompatibleSettings_Title">
-        <source>Compatible Settings</source>
-        <target state="translated">Kompatible Einstellungen</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_AssemblyInfo_Title">
@@ -470,378 +385,6 @@ Wenn diese Einstellung geändert wird, werden die Einstellungen in allen Konfigu
         <target state="translated">Anwendungsdefiniert</target>
         <note>Authentication modes</note>
       </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Cancel">
-        <source>Cancel</source>
-        <target state="translated">Abbrechen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Calculate">
-        <source>&amp;Calculate Permissions</source>
-        <target state="translated">&amp;Berechtigungen berechnen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Stopped">
-        <source>Stopped...</source>
-        <target state="translated">Beendet...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Starting">
-        <source>Starting...</source>
-        <target state="translated">Wird gestartet...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Building">
-        <source>Building...</source>
-        <target state="translated">Buildvorgang wird ausgeführt...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Analyzing">
-        <source>Analyzing...</source>
-        <target state="translated">Wird analysiert...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_AnalyzeFailed">
-        <source>Analyze Failed</source>
-        <target state="translated">Fehler beim Analysieren.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Aborting">
-        <source>Aborting...</source>
-        <target state="translated">Vorgang wird abgebrochen...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_Cancelling">
-        <source>Canceling...</source>
-        <target state="translated">Wird abgebrochen...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_InternetZone">
-        <source>Internet</source>
-        <target state="translated">Internet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_LocalIntranetZone">
-        <source>Local Intranet</source>
-        <target state="translated">Lokales Intranet</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CustomZone">
-        <source>(Custom)</source>
-        <target state="translated">(Benutzerdefiniert)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ZoneDefault">
-        <source>(Zone Default)</source>
-        <target state="translated">(Zonenstandard)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Included">
-        <source>Include</source>
-        <target state="translated">Einschließen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_Excluded">
-        <source>Exclude</source>
-        <target state="translated">Ausschließen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_FullTrustToolTip">
-        <source>The application will require elevated permissions to run in the selected zone. Click the help link above for more info.</source>
-        <target state="translated">Für die Ausführung in der ausgewählten Zone benötigt die Anwendung erweiterte Berechtigungen. Klicken Sie auf den Hilfelink weiter oben, um weitere Informationen zu erhalten.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadPermissionToolTip">
-        <source>This permission could not be loaded. Press the delete key to remove it from your project.</source>
-        <target state="translated">Diese Berechtigung konnte nicht geladen werden. Drücken Sie ENTF, um sie aus Ihrem Projekt zu entfernen.</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderIncluded">
-        <source>Included</source>
-        <target state="translated">Eingeschlossen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderPermission">
-        <source>Permission</source>
-        <target state="translated">Berechtigung</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HeaderSetting">
-        <source>Setting</source>
-        <target state="translated">Einstellung</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelText">
-        <source>Specify the code access security permissions that your ClickOnce application requires in order to run. Learn more about code access security...</source>
-        <target state="translated">Geben Sie die Berechtigungen für die Codezugriffssicherheit an, die zum Ausführen der ClickOnce-Anwendung erforderlich sind. Weitere Informationen zur Codezugriffssicherheit...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_HelpLabelLink">
-        <source>Learn more about code access security...</source>
-        <target state="translated">Weitere Informationen zur Codezugriffssicherheit...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BadDropDownValue">
-        <source>Invalid value</source>
-        <target state="translated">Ungültiger Wert</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SecurityPermissionCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. Mark this permission as "Zone Default" or "Include."</source>
-        <target state="translated">Die SecurityPermission-Berechtigung muss mit festgelegtem Execute-Flag in die Anwendung eingeschlossen werden, damit die Anwendung ausgeführt werden kann. Markieren Sie diese Berechtigung mit "Zonenstandard" oder "Einschließen".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_ExecuteCannotBeExcluded">
-        <source>The SecurityPermission must be included in your application with the Execute flag set or your application will not run. The Execute flag has been added to the SecurityPermission in your manifest.</source>
-        <target state="translated">Die SecurityPermission-Berechtigung muss mit festgelegtem Execute-Flag in die Anwendung eingeschlossen werden, damit die Anwendung ausgeführt werden kann. Das Execute-Flag wurde der SecurityPermission-Berechtigung im Manifest hinzugefügt.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialog">
-        <source>This application requires full trust to run correctly. Would you like to set this as a full trust application?</source>
-        <target state="translated">Für die ordnungsgemäße Ausführung dieser Anwendung ist volle Vertrauenswürdigkeit erforderlich. Möchten Sie sie als Anwendung mit voller Vertrauenswürdigkeit festlegen?</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_SwitchToFullTrustDialogTitle">
-        <source>Full Trust Required</source>
-        <target state="translated">Volle Vertrauenswürdigkeit erforderlich</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotSaveManifest">
-        <source>An error occurred and the app.manifest file could not be saved.
-Error:</source>
-        <target state="translated">Die Datei "app.manifest" konnte aufgrund eines Fehlers nicht gespeichert werden.
-Fehler:</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CouldNotLoadManifest">
-        <source>An error occurred and the app.manifest file could not be loaded. Please remove any changes you have made to the file and reload the Security property page again.</source>
-        <target state="translated">Die Datei "app.manifest" konnte aufgrund eines Fehlers nicht geladen werden. Machen Sie alle Änderungen an der Datei rückgängig, und laden Sie die Seite mit den Sicherheitseigenschaften neu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_CheckAccessibilityName">
-        <source>Included</source>
-        <target state="translated">Eingeschlossen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BlankAccessibilityName">
-        <source>Not Included</source>
-        <target state="translated">Nicht eingeschlossen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_BangAccessibilityName">
-        <source>Included with warning</source>
-        <target state="translated">Eingeschlossen mit Warnung</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailed">
-        <source>Calculating permissions failed.</source>
-        <target state="translated">Fehler beim Berechnen der Berechtigungen.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_PermCalcFailedCaption">
-        <source>Error</source>
-        <target state="translated">Fehler</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityAdvancedPage_Title">
-        <source>Advanced Security Settings</source>
-        <target state="translated">Erweiterte Sicherheitseinstellungen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailed">
-        <source>Build Failed.  Click CANCEL and correct the build failure before analyzing again.</source>
-        <target state="translated">Fehler beim Buildvorgang.  Klicken Sie auf "ABBRECHEN", und beheben Sie vor einer erneuten Analyse den Buildfehler.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildComplete">
-        <source>Build completed...</source>
-        <target state="translated">Buildvorgang abgeschlossen...</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildUnableToStart">
-        <source>Unable to start the build.</source>
-        <target state="translated">Buildvorgang kann nicht gestartet werden.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MgdStatus_BuildFailedToStart">
-        <source>Serious error.  The build must begin in order to analyze permissions.  It has not started.</source>
-        <target state="translated">Schwerwiegender Fehler.  Der Build muss zum Analysieren von Berechtigungen gestartet werden.  Dies ist jedoch nicht erfolgt.</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_CustomPermissionSet">
-        <source>(Custom)</source>
-        <target state="translated">(Benutzerdefiniert)</target>
-        <note>Don't use</note>
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(Keine)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Title">
-        <source>Selecting existing key file</source>
-        <target state="translated">Auswählen einer vorhandenen Schlüsseldatei</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileBrowse_Filter">
-        <source>Key Files</source>
-        <target state="translated">Schlüsseldateien</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNew_Title">
-        <source>Create key file</source>
-        <target state="translated">Schlüsseldatei erstellen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassWrong">
-        <source>The old password is invalid.</source>
-        <target state="translated">Das alte Kennwort ist ungültig.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OldPassEmpty">
-        <source>Enter the old password.</source>
-        <target state="translated">Geben Sie das alte Kennwort ein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassEmpty">
-        <source>Enter a new password.</source>
-        <target state="translated">Geben Sie ein neues Kennwort ein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassMismatch">
-        <source>The new passwords do not match. Enter the password again.</source>
-        <target state="translated">Die neuen Kennwörter stimmen nicht überein. Wiederholen Sie die Kennworteingabe.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NewPassTooShort">
-        <source>The new password must be at least 6 characters in length. Enter the password again.</source>
-        <target state="translated">Das neue Kennwort muss mindestens sechs Zeichen umfassen. Wiederholen Sie die Kennworteingabe.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertTitle">
-        <source>Select a Certificate</source>
-        <target state="translated">Zertifikat auswählen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertStorePrompt">
-        <source>Select a certificate to sign your ClickOnce manifests</source>
-        <target state="translated">Zertifikat zum Signieren der ClickOnce-Manifeste auswählen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_BrowseCertFileFilter">
-        <source>Certificate Files</source>
-        <target state="translated">Zertifikatsdateien</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedTo">
-        <source>Issued To</source>
-        <target state="translated">Ausgestellt für</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_IssuedBy">
-        <source>Issued By</source>
-        <target state="translated">Ausgestellt von</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_Purpose">
-        <source>Intended Purpose</source>
-        <target state="translated">Beabsichtigter Zweck</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ExpirationDate">
-        <source>Expiration Date</source>
-        <target state="translated">Ablaufdatum</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPassword">
-        <source>The password is invalid.</source>
-        <target state="translated">Das Kennwort ist ungültig.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_InvalidPasswordTitle">
-        <source>Invalid password</source>
-        <target state="translated">Ungültiges Kennwort</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKey">
-        <source>The selected file does not contain a private key. You must choose a certificate that contains a private key.</source>
-        <target state="translated">Die ausgewählte Datei enthält keinen privaten Schlüssel. Wählen Sie ein Zertifikat mit einem privaten Schlüssel aus.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPrivateKeyTitle">
-        <source>Invalid key</source>
-        <target state="translated">Ungültiger Schlüssel</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertCreationError">
-        <source>Certificate Creation Error</source>
-        <target state="translated">Zertifikaterstellungsfehler</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_AllPurposes">
-        <source>&lt;All&gt;</source>
-        <target state="translated">&lt;Alle&gt;</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_PasswordMismatch">
-        <source>The passwords do not match.</source>
-        <target state="translated">Die Kennwörter stimmen nicht überein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoPassword">
-        <source>Enter a password.</source>
-        <target state="translated">Geben Sie ein Kennwort ein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoConfirm">
-        <source>Confirm the password.</source>
-        <target state="translated">Bestätigen Sie das Kennwort.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_NoData">
-        <source>(none)</source>
-        <target state="translated">(keine)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordTitle">
-        <source>Enter password to open file</source>
-        <target state="translated">Kennwort zum Öffnen der Datei eingeben</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_OpenExistingKeyPasswordPrompt">
-        <source>Enter &amp;password to open file {0}</source>
-        <target state="translated">&amp;Kennwort eingeben, um Datei {0} zu öffnen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CreateNewKeyPasswordPrompt">
-        <source>Enter &amp;password for new file {0}</source>
-        <target state="translated">&amp;Kennwort für neue Datei {0} eingeben</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_ProjectAlreadyContainsFile">
-        <source>The project already contains a file with that name. Choose another certificate file or rename the file in your project.</source>
-        <target state="translated">Das Projekt enthält bereits eine Datei mit diesem Namen. Wählen Sie eine andere Zertifikatsdatei aus, oder benennen Sie die Datei in Ihrem Projekt um.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CouldNotImportFile">
-        <source>The file '{0}' could not be imported: {1}</source>
-        <target state="translated">Die Datei "{0}" konnte nicht importiert werden: {1}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_KeyFileNameSuffix">
-        <source>_TemporaryKey.pfx</source>
-        <target state="translated">_TemporaryKey.pfx</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_Signing_CertificateNotCodeSigning">
-        <source>The selected certificate is not valid for code signing. Choose another certificate file.</source>
-        <target state="translated">Das ausgewählte Zertifikat ist für das Codesignieren nicht gültig. Wählen Sie eine andere Zertifikatsdatei aus.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UndoTransaction">
-        <source>Change property: {0}</source>
-        <target state="translated">Eigenschaft ändern: {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_WindowsApp">
         <source>Windows Application</source>
         <target state="translated">Windows-Anwendung</target>
@@ -906,36 +449,6 @@ Fehler:</target>
       <trans-unit id="PPG_UrlBehavior_Dynamic">
         <source>Dynamic</source>
         <target state="translated">Dynamisch</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceNameDescription">
-        <source>Name of the web reference</source>
-        <target state="translated">Name des Webverweises</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorName">
-        <source>URL Behavior</source>
-        <target state="translated">URL-Verhalten</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_UrlBehaviorDescription">
-        <source>Web reference URL behavior</source>
-        <target state="translated">Webverweis-URL-Verhalten</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlName">
-        <source>Web Reference URL</source>
-        <target state="translated">Webverweis-URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_WebReferenceUrlDescription">
-        <source>Web Reference URL</source>
-        <target state="translated">Webverweis-URL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ReferenceDetail_Title">
-        <source>Reference Properties</source>
-        <target state="translated">Verweiseigenschaften</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_InvalidCharactersInFilePath">
@@ -1038,73 +551,6 @@ Fehler:</target>
         <target state="translated">"Die eingegebene Ressourcendatei ist nicht vorhanden."</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_Title">
-        <source>Project Designer</source>
-        <target state="translated">Projekt-Designer</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SettingsTabTitle">
-        <source>Settings</source>
-        <target state="translated">Einstellungen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ResourceTabTitle">
-        <source>Resources</source>
-        <target state="translated">Ressourcen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoading_Msg">
-        <source>An error occurred trying to load the project properties window.  Close the window and try again.
-{0}</source>
-        <target state="translated">Fehler beim Laden des Projekteigenschaftenfensters.  Schließen Sie das Fenster, und wiederholen Sie den Vorgang.
-{0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ErrorLoadingPropPage">
-        <source>An error occurred trying to load the page.</source>
-        <target state="translated">Fehler beim Laden der Seite.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">Der Designer kann nicht angezeigt werden, weil das entsprechende Dokument nie geladen wurde.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateResx">
-        <source>This project does not contain a default resources file.  Click here to create one.</source>
-        <target state="translated">Dieses Projekt enthält keine Standardressourcendatei.  Klicken Sie hier, um eine solche Datei zu erstellen.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_ClickHereCreateSettings">
-        <source>This project does not contain a default settings file.  Click here to create one.</source>
-        <target state="translated">Dieses Projekt enthält keine Standardeinstellungsdatei.  Klicken Sie hier, um eine solche Datei zu erstellen.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_FileNotFound_1Arg">
-        <source>Could not find the file '{0}'.</source>
-        <target state="translated">Die Datei "{0}" wurde nicht gefunden.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
-        <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
-        <target state="translated">Die Datei "{0}" ist bereits in einem Editor geöffnet.  Schließen Sie die Datei, und wiederholen Sie den Vorgang.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_AccessibilityName">
-        <source>All Project Designer Pages</source>
-        <target state="translated">Alle Projekt-Designer-Seiten</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_OverflowButton_Tooltip">
-        <source>More Settings</source>
-        <target state="translated">Weitere Einstellungen</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_SpecialFileNotSupported">
-        <source>The requested file type is not supported in projects of this type.</source>
-        <target state="translated">Der angeforderte Dateityp wird in Projekten dieses Typs nicht unterstützt.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_AssemblyName">
         <source>Assembly Name</source>
         <target state="translated">Assemblyname</target>
@@ -1140,11 +586,6 @@ Fehler:</target>
         <target state="translated">Assembly-GUID</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_Property_CustomSubMain">
-        <source>Enable application framework</source>
-        <target state="translated">Anwendungsframework aktivieren</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_Property_StartProgram">
         <source>External Program Path</source>
         <target state="translated">Externer Programmpfad</target>
@@ -1164,26 +605,6 @@ Fehler:</target>
         <source>Remote Machine Name</source>
         <target state="translated">Name des Remotecomputers</target>
         <note />
-      </trans-unit>
-      <trans-unit id="APPDES_HostingPanelName">
-        <source>Project Designer Page Container</source>
-        <target state="translated">Container für Projekt-Designer-Seite</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabButtonDefaultAction">
-        <source>Switch Project Designer Page</source>
-        <target state="translated">Projekt-Designer-Seite wechseln</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_TabListDescription">
-        <source>Allow switching between active pages of the project designer (use Ctrl+PageUp and Ctrl+PageDown)</source>
-        <target state="translated">Wechseln zwischen aktiven Seiten des Projekt-Designers zulassen (mit STRG+PageUp und STRG+PageDown)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="APPDES_PageName">
-        <source>{0} page:</source>
-        <target state="translated">{0}-Seite:</target>
-        <note>{0} = sub page name</note>
       </trans-unit>
       <trans-unit id="DFX_DesignerReadOnlyCaption">
         <source>{0} [Read Only]</source>
@@ -1205,11 +626,6 @@ Fehler:</target>
         <target state="translated">Kein DesignerService für die Datei "{0}".</target>
         <note>#{0}=file name</note>
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">Ungültiger Name für physische Ansicht.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
         <target state="translated">Textpuffer kann nicht erstellt werden.</target>
@@ -1220,24 +636,9 @@ Fehler:</target>
         <target state="translated">Kein LocalRegistry-Dienst.</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">Fehler beim Ersetzen des Textstreams: {0}</target>
-        <note>#exception {0}=err msg</note>
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">Der Puffer ist schreibgeschützt.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_IncompatibleBuffer">
         <source>File is already opened in an incompatible editor.</source>
         <target state="translated">Die Datei ist bereits in einem inkompatiblen Editor geöffnet.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">Nicht unterstütztes Format.</target>
         <note />
       </trans-unit>
       <trans-unit id="DFX_WindowPane_UnknownError">
@@ -1259,46 +660,6 @@ Fehler:</target>
         <source>Microsoft Visual Studio</source>
         <target state="translated">Microsoft Visual Studio</target>
         <note>Error reporting</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidTabSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">Geben Sie eine ganze Zahl zwischen 1 und 60 ein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Editor_InvalidIndentSize">
-        <source>Please enter an integer between 1 and 60.</source>
-        <target state="translated">Geben Sie eine ganze Zahl zwischen 1 und 60 ein.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowEmptyEnvironment">
-        <source>Show empty environment</source>
-        <target state="translated">Leere Umgebung anzeigen</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpLoadLastLoadedSolution">
-        <source>Load last loaded solution</source>
-        <target state="translated">Letzte Projektmappe laden</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowNewProjectDialogBox">
-        <source>Show New Project dialog box</source>
-        <target state="translated">Dialogfeld "Neues Projekt" anzeigen</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_StartUpShowOpenProjectDialogBox">
-        <source>Show Open Project dialog box</source>
-        <target state="translated">Dialogfeld "Projekt öffnen" anzeigen</target>
-        <note>These are items in a combobox (and so they don't need periods)</note>
-      </trans-unit>
-      <trans-unit id="OptionPage_Environment_ShowHelpOptionRequiresRestartOfIde">
-        <source>Changes in Help Options will not take effect until the environment is restarted.</source>
-        <target state="translated">Änderungen bei den Hilfeoptionen werden erst nach einem Neustart der Umgebung wirksam.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="OptionPage_Project_IllegalDefaultProjectDirectory">
-        <source>The location specified is on an invalid or read-only disk, or contains a device name reserved for the system.</source>
-        <target state="translated">Der angegebene Pfad führt zu einem ungültigen oder schreibgeschützten Datenträger oder enthält einen Gerätenamen, der für das System reserviert ist.</target>
-        <note />
       </trans-unit>
       <trans-unit id="PermissionSet_Requires">
         <source>Requires:</source>
@@ -1516,11 +877,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">Kommentieren</target>
         <note>Columns for the "Details" view of the resource editor</note>
       </trans-unit>
-      <trans-unit id="RSE_DetailsCol_Encoding">
-        <source>Text Encoding</source>
-        <target state="translated">Textcodierung</target>
-        <note>Columns for the "Details" view of the resource editor</note>
-      </trans-unit>
       <trans-unit id="RSE_GraphicSizeFormat">
         <source>{0} x {1}</source>
         <target state="translated">{0} x {1}</target>
@@ -1571,71 +927,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Other</source>
         <target state="translated">Sonstiges</target>
         <note>Resource category names (these show up in the category buttons in the ToolStrip at the top of the resource editor)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add">
-        <source>&amp;Add</source>
-        <target state="translated">Hinz&amp;ufügen</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Remove">
-        <source>&amp;Remove</source>
-        <target state="translated">&amp;Entfernen</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views">
-        <source>&amp;Views</source>
-        <target state="translated">&amp;Ansichten</target>
-        <note>Add, Delete and Views button text in the main ToolStrip</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_ExistingFile">
-        <source>&amp;Existing File...</source>
-        <target state="translated">&amp;Vorhandene Datei...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_String">
-        <source>New &amp;String</source>
-        <target state="translated">Neue &amp;Zeichenfolge</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image">
-        <source>New &amp;Image</source>
-        <target state="translated">Neues &amp;Bild</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_PNG">
-        <source>&amp;PNG Image...</source>
-        <target state="translated">&amp;PNG-Bild...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_BMP">
-        <source>&amp;BMP Image...</source>
-        <target state="translated">&amp;BMP-Bild...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_GIF">
-        <source>&amp;GIF Image...</source>
-        <target state="translated">&amp;GIF-Bild...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_JPEG">
-        <source>&amp;JPEG Image...</source>
-        <target state="translated">&amp;JPEG-Bild...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Image_TIFF">
-        <source>&amp;TIFF Image...</source>
-        <target state="translated">&amp;TIFF-Bild...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_Icon">
-        <source>New I&amp;con...</source>
-        <target state="translated">Neues &amp;Symbol...</target>
-        <note>Menu items under the "Add" button</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Add_TextFile">
-        <source>New &amp;Text File...</source>
-        <target state="translated">Neue &amp;Textdatei...</target>
-        <note>Menu items under the "Add" button</note>
       </trans-unit>
       <trans-unit id="RSE_Type_BMP">
         <source>Windows Bitmap</source>
@@ -1801,21 +1092,6 @@ CONSIDER: get this from CodeDom</note>
 #  represent the first part of that filter
 #</note>
       </trans-unit>
-      <trans-unit id="RSE_Btn_Views_List">
-        <source>&amp;List</source>
-        <target state="translated">&amp;Liste</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Details">
-        <source>&amp;Details</source>
-        <target state="translated">&amp;Details</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
-      <trans-unit id="RSE_Btn_Views_Thumbnail">
-        <source>&amp;Thumbnail</source>
-        <target state="translated">&amp;Miniaturansicht</target>
-        <note>Resource editor listview view styles (like changing the view style of a folder in Windows XP)</note>
-      </trans-unit>
       <trans-unit id="RSE_ResourceEditor">
         <source>Managed Resources Editor</source>
         <target state="translated">Editor für verwaltete Ressourcen</target>
@@ -1861,11 +1137,6 @@ CONSIDER: get this from CodeDom</note>
         <target state="translated">Möchten Sie den Vorgang dennoch fortsetzen?</target>
         <note />
       </trans-unit>
-      <trans-unit id="RSE_Dlg_SetCustomTool">
-        <source>Do you want to enable strongly-typed resource generation for this file?</source>
-        <target state="translated">Möchten Sie die Generierung von stark typisierten Ressourcen für diese Datei aktivieren?</target>
-        <note />
-      </trans-unit>
       <trans-unit id="RSE_Task_BadLink_2Args">
         <source>Resource '{0}' could not be loaded because the file to which it is linked could not be found: {1}.</source>
         <target state="translated">Die Ressource "{0}" konnte nicht geladen werden, da die Datei, mit der sie verknüpft ist, nicht gefunden wurde: {1}.</target>
@@ -1885,11 +1156,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Unable to set the Custom Tool or Custom Tool Namespace properties of this file in order to change strongly-typed resource generation options.  If the project file is checked in, try checking it out.</source>
         <target state="translated">Die Eigenschaften für das benutzerdefinierte Tool oder für den Namespace des benutzerdefinierten Tools dieser Datei können nicht festgelegt werden, um Optionen für die stark typisierte Ressourcengenerierung zu ändern.  Falls die Projektdatei eingecheckt ist, checken Sie sie aus.</target>
         <note>One possible source for this error is that source code control checkout failed or was canceled.</note>
-      </trans-unit>
-      <trans-unit id="RSE_Task_WarningCustomToolNotSet">
-        <source>Double-click here to enable strongly-typed resources for this file.</source>
-        <target state="translated">Doppelklicken Sie hier, um für diese Datei stark typisierte Ressourcen zuzulassen.</target>
-        <note />
       </trans-unit>
       <trans-unit id="RSE_Task_InvalidName_1Arg">
         <source>The resource name '{0}' is not a valid identifier.</source>
@@ -1925,11 +1191,6 @@ CONSIDER: get this from CodeDom</note>
         <source>Delete values in {0} cell(s)</source>
         <target state="translated">Werte in {0} Zelle(n) löschen</target>
         <note>{0} = number of cells cleared</note>
-      </trans-unit>
-      <trans-unit id="RSE_CategiesLabel">
-        <source>&amp;Categories:</source>
-        <target state="translated">&amp;Kategorien:</target>
-        <note>The label in the menu strip for the combobox that holds the categories of resources to display</note>
       </trans-unit>
       <trans-unit id="RSE_PropDesc_Name">
         <source>Name used to identify the resource in code.</source>
@@ -2200,11 +1461,6 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
         <target state="translated">Das aktuelle Objekt wurde automatisch generiert und kann nur mithilfe des Einstellungs-Designers umbenannt werden.</target>
         <note />
       </trans-unit>
-      <trans-unit id="SD_ERR_RenameNotSupportedForWcfGeneratedCode">
-        <source>The current object is auto-generated by the Wcf Client Generator and cannot be renamed.</source>
-        <target state="translated">Das aktuelle Objekt wird vom WCF-Clientgenerator automatisch generiert und kann nicht umbenannt werden.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="SD_ERR_ModifyParamsNotSupported">
         <source>The current object is auto-generated and does not support modifying parameters.</source>
         <target state="translated">Das aktuelle Objekt wird automatisch generiert und unterstützt das Ändern von Parametern nicht.</target>
@@ -2298,16 +1554,6 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       <trans-unit id="SD_DESCR_GenerateDefaultValueInCode">
         <source>Specifies whether or not the default setting value should be generated in the strongly-typed settings class.</source>
         <target state="translated">Gibt an, ob der Standardeinstellungswert in der stark typisierten Einstellungsklasse generiert werden soll.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_Group">
-        <source>Specifies the group to which this Settings file belongs.</source>
-        <target state="translated">Gibt die Gruppe an, zu der diese Einstellungsdatei gehört.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SD_DESCR_GroupDescription">
-        <source>Description of the group to which this Settings file belongs.</source>
-        <target state="translated">Beschreibung der Gruppe, zu der diese Einstellungsdatei gehört.</target>
         <note />
       </trans-unit>
       <trans-unit id="SD_DESCR_Roaming">
@@ -2442,11 +1688,6 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
         <source>An error occurred trying to load the application definition file for this project.  The file '{0}' could not be parsed.  Please edit the file in the XAML editor to fix the error.</source>
         <target state="translated">Fehler beim Laden der Anwendungsdefinitionsdatei für dieses Projekt.  Die Datei "{0}" konnte nicht analysiert werden.  Bearbeiten Sie die Datei im XAML-Editor, um den Fehler zu beheben.</target>
         <note />
-      </trans-unit>
-      <trans-unit id="PPG_WPFApp_CantReadPropertyValue">
-        <source>(Error)</source>
-        <target state="translated">(Fehler)</target>
-        <note>Used inside UI elements when there is an error (e.g. combobox text)</note>
       </trans-unit>
       <trans-unit id="PPG_Unexpected">
         <source>An unspecified error has occurred.</source>
@@ -2593,24 +1834,9 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
         <target state="translated">Windows Forms-Anwendung</target>
         <note>The "Windows Forms" distinguishes it from a WPF application</note>
       </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceNamespaceDescription">
-        <source>Namespace of the service reference.</source>
-        <target state="translated">Namespace des Dienstverweises.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">
         <source>Service Reference Properties</source>
         <target state="translated">Dienstverweiseigenschaften</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlDescription">
-        <source>Metadata Location Url</source>
-        <target state="translated">URL des Metadatenspeicherorts</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ServiceReferenceUrlName">
-        <source>Metadata Location</source>
-        <target state="translated">Metadatenspeicherort</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceProperty_MultipleUrlNotSupported">
@@ -2628,25 +1854,10 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
         <target state="translated">Mindestens eine Datei wurde beim Auschecken neu geladen. Wiederholen Sie den Vorgang.</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
-        <source>The project was reloaded, and some changes on this page may have been lost.</source>
-        <target state="translated">Das Projekt wurde neu geladen, und einige Änderungen auf dieser Seite sind möglicherweise verloren gegangen.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SecurityPage_XBAPOutOfTrustZoneToolTip">
-        <source>The application will fail to run in the selected zone because of this requested elevated permission. Click the help link above for more info.</source>
-        <target state="translated">Die Anwendung kann aufgrund dieser angeforderten erweiterten Berechtigung in der ausgewählten Zone nicht ausgeführt werden. Klicken Sie auf den Hilfelink oben, um weitere Informationen zu erhalten.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="XmlToSchema_InvalidXMLFormat">
         <source>Invalid XML Format: {0}</source>
         <target state="translated">Ungültiges XML-Format: {0}</target>
         <note>{0} is error description</note>
-      </trans-unit>
-      <trans-unit id="XmlToSchema_XMLSchemaInferenceWizard">
-        <source>XML Schema Inference Wizard</source>
-        <target state="translated">Assistent für XML-Schemarückschlüsse</target>
-        <note />
       </trans-unit>
       <trans-unit id="XmlToSchema_Error">
         <source>Error: {0}</source>
@@ -2676,21 +1887,6 @@ Möchten Sie den Wert in der SETTINGS-Datei aktualisieren?</target>
       <trans-unit id="XmlToSchema_NoProjectSelected">
         <source>No project selected.</source>
         <target state="translated">Kein Projekt ausgewählt.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ResolveKeySource_InvalidKeyName">
-        <source>Invalid key file name "{0}".</source>
-        <target state="translated">Ungültiger Schlüsseldateiname "{0}".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Unable_To_Get_Checksum">
-        <source>Unable to get MD5 checksum for the key file "{0}". {1}.</source>
-        <target state="translated">Die MD5-Prüfsumme für die Schlüsseldatei "{0}" konnte nicht abgerufen werden. {1}.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="ErrorImportingKey">
-        <source>Error importing key</source>
-        <target state="translated">Fehler beim Importieren des Schlüssels.</target>
         <note />
       </trans-unit>
       <trans-unit id="CSRDlg_MultipleURL">

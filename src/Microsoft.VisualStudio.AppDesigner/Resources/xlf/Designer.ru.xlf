@@ -12,11 +12,6 @@
         <target state="translated">Этот проект не содержит файл параметров по умолчанию.  Щелкните эту ссылку для создания.</target>
         <note />
       </trans-unit>
-      <trans-unit id="APPDES_DesignerLoader_NotDeferred">
-        <source>The designer cannot be shown because the document for it was never loaded.</source>
-        <target state="translated">Невозможно отобразить конструктор, поскольку документ для него никогда не загружался.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="APPDES_EditorAlreadyOpen_1Arg">
         <source>The file '{0}' is already open in an editor.  Please close the file and try again.</source>
         <target state="translated">Файл "{0}" уже открыт в редакторе.  Закройте файл и повторите попытку.</target>
@@ -89,35 +84,10 @@
         <target state="translated">Конструктор проектов</target>
         <note />
       </trans-unit>
-      <trans-unit id="CMN_AllFilesFilter">
-        <source>All Files</source>
-        <target state="translated">Все файлы</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DFX_BufferReadOnly">
-        <source>Buffer is read only.</source>
-        <target state="translated">Буфер доступен только для чтения.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_CreateEditorInstanceFailed_Ex">
         <source>Unable to create the designer.  {0}</source>
         <target state="translated">Невозможно создать конструктор. {0}</target>
         <note># {0}=inner exception</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFound">
-        <source>The editor could not get the IVsTextStream for file {0}.</source>
-        <target state="translated">Редактору не удалось получить IVsTextStream для файла "{0}".</target>
-        <note>#exception {0}=filename</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerLoaderIVsTextStreamNotFoundNoFile">
-        <source>The editor could not get the IVsTextStream.</source>
-        <target state="translated">Редактору не удалось получить IVsTextStream.</target>
-        <note>#exception (no file name)</note>
-      </trans-unit>
-      <trans-unit id="DFX_DesignerReadOnlyCaption">
-        <source>{0} [Read Only]</source>
-        <target state="translated">{0} [только для чтения]</target>
-        <note>Attach a readonly to the designer caption {0}=Designer caption</note>
       </trans-unit>
       <trans-unit id="DFX_EditorNoDesignerService">
         <source>No DesignerService for file '{0}'.</source>
@@ -134,30 +104,15 @@
         <target state="translated">Файл уже открыт в несовместимом редакторе.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DFX_InvalidPhysicalViewName">
-        <source>Invalid physical view name.</source>
-        <target state="translated">Недопустимое имя физического представления.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_NoLocalRegistry">
         <source>No LocalRegistry service.</source>
         <target state="translated">Нет службы LocalRegistry.</target>
         <note>#exception</note>
       </trans-unit>
-      <trans-unit id="DFX_NotSupported">
-        <source>Unsupported format.</source>
-        <target state="translated">Неподдерживаемый формат.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DFX_OneOrMoreFilesReloaded">
         <source>One or more files were reloaded during the checkout. Please retry your operation.</source>
         <target state="translated">Во время извлечения был перезагружен один или несколько файлов. Повторите операцию.</target>
         <note />
-      </trans-unit>
-      <trans-unit id="DFX_ReplaceTextStreamFailed">
-        <source>Replacing text stream failed:{0}</source>
-        <target state="translated">Сбой замены текстового потока: {0}</target>
-        <note>#exception {0}=err msg</note>
       </trans-unit>
       <trans-unit id="DFX_UnableCreateTextBuffer">
         <source>Unable to create text buffer.</source>
@@ -179,16 +134,6 @@
         <target state="translated">Недопустимый аргумент "{0}"</target>
         <note>{0} = name of invalid argument</note>
       </trans-unit>
-      <trans-unit id="General_MissingService">
-        <source>Unable to find service '{0}'.  Ensure that the application is installed correctly.</source>
-        <target state="translated">Не удается найти службу "{0}".  Убедитесь, что приложение установлено правильно.</target>
-        <note>Settings Global-Object-Provider Strings</note>
-      </trans-unit>
-      <trans-unit id="PermissionSet_Requires">
-        <source>Requires:</source>
-        <target state="translated">Требуется:</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ActiveConfigOrPlatformFormatString_1Arg">
         <source>Active ({0})</source>
         <target state="translated">Активн. ({0})</target>
@@ -204,74 +149,15 @@
         <target state="translated">Все платформы</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_ApplicationTitle">
-        <source>Application</source>
-        <target state="translated">Приложение</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_ComboBoxSelect_None">
-        <source>(None)</source>
-        <target state="translated">(Нет)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_ConfigNotFound_2Args">
         <source>Could not find the configuration '{0}' for platform '{1}'.</source>
         <target state="translated">Не удалось найти конфигурацию "{0}" для платформы "{1}".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_ApplicationDefined">
-        <source>Application-defined</source>
-        <target state="translated">Определяется приложением</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_AuthenMode_Windows">
-        <source>Windows</source>
-        <target state="translated">Windows</target>
-        <note>Authentication modes</note>
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_AppExits">
-        <source>When last form closes</source>
-        <target state="translated">Когда закрывается последняя форма</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_MyApplication_StartupMode_FormCloses">
-        <source>When startup form closes</source>
-        <target state="translated">Когда закрывается начальная форма</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NeutralLanguage_None">
-        <source>(None)</source>
-        <target state="translated">(Нет)</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_NonePermissionSet">
-        <source>(None)</source>
-        <target state="translated">(Нет)</target>
         <note />
       </trans-unit>
       <trans-unit id="PPG_NotApplicable">
         <source>N/A</source>
         <target state="translated">Н/Д</target>
         <note>This is used in the platform and configuration comboboxes when showing pages that don't care about the current platform/configuration</note>
-      </trans-unit>
-      <trans-unit id="PPG_OutputPathNotSecure">
-        <source>The output path is not trusted.
-The application may throw security exceptions when it attempts to perform actions which require full trust.
-Click OK to ignore and continue. Click CANCEL to choose a different output path.</source>
-        <target state="translated">Выходной путь не является доверенным.
-При выполнении действий, требующих полного доверия, приложение может создавать исключения системы безопасности.
-Чтобы пропустить и продолжить, нажмите кнопку ОК. Чтобы выбрать другой выходной путь, нажмите кнопку "Отмена".</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PostBuildCommandLineTitle">
-        <source>Post-build Event Command Line</source>
-        <target state="translated">Командная строка события после сборки</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_PreBuildCommandLineTitle">
-        <source>Pre-build Event Command Line</source>
-        <target state="translated">Командная строка события перед сборкой</target>
-        <note />
       </trans-unit>
       <trans-unit id="PPG_ProjectReloadedSomePropertiesMayNotHaveBeenSet">
         <source>The project was reloaded, and some changes on this page may have been lost.</source>
@@ -288,34 +174,9 @@ Click OK to ignore and continue. Click CANCEL to choose a different output path.
         <target state="translated">Выбор файла</target>
         <note />
       </trans-unit>
-      <trans-unit id="PPG_SelectOutputPathTitle">
-        <source>Select Output Path</source>
-        <target state="translated">Выбор пути для вывода</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectReferencePath">
-        <source>Select Reference Path</source>
-        <target state="translated">Выберите путь для ссылки</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_SelectWorkingDirectoryTitle">
-        <source>Select Working Directory</source>
-        <target state="translated">Выбор рабочего каталога</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="PPG_StartupObjectNone">
-        <source>(None)</source>
-        <target state="translated">(Нет)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="PPG_UndoTransaction">
         <source>Change property: {0}</source>
         <target state="translated">Изменить свойство: {0}</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="SingleFileGenerator_FailedToGenerateFile_1Arg">
-        <source>Failed to generate file: {0}</source>
-        <target state="translated">Не удалось создать файл: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="RSE_Err_InternalException">
