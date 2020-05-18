@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.UpToDate;
 using Microsoft.VisualStudio.ProjectSystem.VS.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
@@ -575,7 +574,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public int OnBeforeOpenSolution(string pszSolutionFilename)
         {
-            BuildUpToDateCheck.State.FirstTimeLoaded = false;
             return HResult.OK;
         }
 

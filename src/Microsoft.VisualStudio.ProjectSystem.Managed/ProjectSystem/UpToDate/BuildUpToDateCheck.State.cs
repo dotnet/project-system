@@ -119,8 +119,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
 
-            public static bool FirstTimeLoaded = false;
-
 
             private State()
             {
@@ -221,8 +219,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                                                                           .ToImmutableHashSet();
 
                 bool AdditionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
-                DateTime lastAdditionalDependentFileTimesChangedAtUtc = AdditionalDependentFilesChanged && FirstTimeLoaded ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
-                FirstTimeLoaded = true;
+                DateTime lastAdditionalDependentFileTimesChangedAtUtc =
+                    AdditionalDependentFilesChanged && lastExistingAdditionalDependentFiles.Count != 0 ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
 
                 // The first item in this semicolon-separated list of project files will always be the one
                 // with the newest timestamp. As we are only interested in timestamps on these files, we can
