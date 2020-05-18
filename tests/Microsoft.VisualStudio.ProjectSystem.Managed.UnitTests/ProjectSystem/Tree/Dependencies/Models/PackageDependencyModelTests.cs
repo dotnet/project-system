@@ -42,9 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
-                ProjectTreeFlags.Create("$VER:myVersion"),
+                DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
 
@@ -80,9 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
-                ProjectTreeFlags.Create("$VER:myVersion"),
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
                 model.Flags);
         }
 
@@ -118,9 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") +
-                ProjectTreeFlags.Create("$VER:") -
+                DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);
         }

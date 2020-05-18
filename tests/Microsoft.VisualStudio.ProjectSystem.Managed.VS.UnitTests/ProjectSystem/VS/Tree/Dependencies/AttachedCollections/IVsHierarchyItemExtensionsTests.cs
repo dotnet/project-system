@@ -40,33 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             Assert.Equal(expectedConfiguration, actualConfiguration);
         }
 
-        [Theory]
-        [InlineData("PackageDependency $ID:FooBar $VER:1.2.3", "FooBar", "1.2.3")]
-        [InlineData("PackageDependency $VER:1.2.3 $ID:FooBar", "FooBar", "1.2.3")]
-        [InlineData("$VER:1.2.3 $ID:FooBar PackageDependency", "FooBar", "1.2.3")]
-        [InlineData("PackageDependency $ID:FooBar",            null, null)]
-        [InlineData("PackageDependency $VER:1.2.3",            null, null)]
-        [InlineData("$ID:FooBar $VER:1.2.3",                   null, null)]
-        [InlineData("PackageDependency $ID: $VER:1.2.3",       null, null)]
-        [InlineData("PackageDependency $ID:FooBar $VER:",      null, null)]
-        [InlineData("PACKAGEDEPENDENCY $ID:FooBar $VER:1.2.3", null, null)]
-        [InlineData("PackageDependency $id:FooBar $VER:1.2.3", null, null)]
-        [InlineData("PackageDependency $ID:FooBar $ver:1.2.3", null, null)]
-        [InlineData("",                                        null, null)]
-        public void TryGetPackageDetails(string flagsString, string? expectedId, string? expectedVersion)
-        {
-            Assert.True((expectedId == null) == (expectedVersion == null)); // sanity check on test data
-
-            IVsHierarchyItem item = CreateItemWithFlags(flagsString);
-
-            var result = item.TryGetPackageDetails(out string? actualId, out string? actualVersion);
-
-            Assert.Equal(actualId != null, result);
-            Assert.Equal(actualVersion != null, result);
-            Assert.Equal(expectedId, actualId);
-            Assert.Equal(expectedVersion, actualVersion);
-        }
-
         private static IVsHierarchyItem CreateItemWithFlags(string flagsString)
         {
             var hierarchy = IVsHierarchyFactory.Create();
