@@ -60,11 +60,6 @@ virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollec
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.OverlayIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateIconMoniker.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 virtual Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase.StateToolTipText.get -> string?
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.BrowseObjectBase() -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.ExtenderCATID.get -> string!
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.GetClassName() -> string!
-abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.BrowseObjectBase.GetComponentName() -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.DependenciesAttachedCollectionSourceProviderBase(Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags flags) -> void
 abstract Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.DependenciesAttachedCollectionSourceProviderBase.TryCreateCollectionSource(Microsoft.VisualStudio.Shell.IVsHierarchyItem! hierarchyItem, string! flagsString, string? target, Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.IRelationProvider! relationProvider, out Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AggregateRelationCollectionSource? containsCollectionSource) -> bool
