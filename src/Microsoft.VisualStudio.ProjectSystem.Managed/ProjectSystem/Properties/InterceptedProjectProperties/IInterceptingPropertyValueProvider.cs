@@ -14,16 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Validate and/or transform the given evaluated property value.
         /// </summary>
-        Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties);
+        Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties);
 
         /// <summary>
         /// Validate and/or transform the given unevaluated property value, i.e. "raw" value read from the project file.
         /// </summary>
-        Task<string> OnGetUnevaluatedPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties);
+        Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties);
 
         /// <summary>
         /// Validate and/or transform the given unevaluated property value to be written back to the project file.
         /// </summary>
-        Task<string?> OnSetPropertyValueAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
+        Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
     }
 }

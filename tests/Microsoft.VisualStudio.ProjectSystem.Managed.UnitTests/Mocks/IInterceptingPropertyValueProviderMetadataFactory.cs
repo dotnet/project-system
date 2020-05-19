@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             var mock = new Mock<IInterceptingPropertyValueProviderMetadata>();
 
-            mock.SetupGet(s => s.PropertyName)
-                .Returns(propertyName);
+            mock.SetupGet(s => s.PropertyNames)
+                .Returns(new[] { propertyName });
 
             return mock.Object;
         }

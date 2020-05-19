@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(
+            string propertyName,
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
@@ -37,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(
+            string propertyName,
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)

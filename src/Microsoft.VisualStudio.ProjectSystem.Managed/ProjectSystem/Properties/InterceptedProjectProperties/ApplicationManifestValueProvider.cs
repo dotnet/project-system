@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest 
         /// which is true for the second case and false or non-existent for the third.
         /// </remarks>
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             if (!string.IsNullOrEmpty(evaluatedPropertyValue))
             {
@@ -59,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Sets the application manifest property
         /// </summary>
         public override async Task<string> OnSetPropertyValueAsync(
+            string propertyName,
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string> dimensionalConditions = null)

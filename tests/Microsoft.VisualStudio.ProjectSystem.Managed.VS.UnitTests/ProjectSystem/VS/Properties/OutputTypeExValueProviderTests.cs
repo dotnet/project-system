@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypePropertyValue));
             var provider = new OutputTypeExValueProvider(properties);
 
-            var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, null!);
+            var actualPropertyValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, null!);
             Assert.Equal(expectedMappedValue, actualPropertyValue);
         }
 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                 UnconfiguredProjectFactory.Create(),
                 new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, "InitialValue", setValues));
             var provider = new OutputTypeExValueProvider(properties);
-            await provider.OnSetPropertyValueAsync(incomingValue, null!);
+            await provider.OnSetPropertyValueAsync(string.Empty, incomingValue, null!);
 
             Assert.Equal(setValues.Single(), expectedOutputTypeValue);
         }
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             await Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             {
-                await provider.OnSetPropertyValueAsync("InvalidValue", null!);
+                await provider.OnSetPropertyValueAsync(string.Empty, "InvalidValue", null!);
             });
         }
     }

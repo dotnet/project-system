@@ -27,12 +27,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>.Builder builder = ImmutableDictionary.CreateBuilder<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(StringComparers.PropertyNames);
             foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
             {
-                string propertyName = valueProvider.Metadata.PropertyName;
+                string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
-                // CONSIDER: Allow duplicate intercepting property value providers for same property name.
-                Requires.Argument(!builder.ContainsKey(propertyName), nameof(valueProviders), "Duplicate property value providers for same property name");
+                foreach (var propertyName in propertyNames)
+                {
+                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
-                builder.Add(propertyName, valueProvider);
+                    // CONSIDER: Allow duplicate intercepting property value providers for same property name.
+                    Requires.Argument(!builder.ContainsKey(propertyName), nameof(valueProviders), "Duplicate property value providers for same property name");
+
+                    builder.Add(propertyName, valueProvider);
+                }
             }
 
             _valueProviders = builder.ToImmutable();
@@ -43,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(evaluatedProperty, DelegatedProperties);
+                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
             }
 
             return evaluatedProperty;
@@ -54,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(unevaluatedProperty, DelegatedProperties);
+                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty, DelegatedProperties);
             }
 
             return unevaluatedProperty;
@@ -64,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
             {
-                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
+                unevaluatedPropertyValue = await valueProvider.Value.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }
 
             if (unevaluatedPropertyValue != null)

@@ -85,4 +85,3 @@ Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.g
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritablePersistOption.DoNotPersist.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata
-Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyName.get -> string!

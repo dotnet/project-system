@@ -7,6 +7,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     public interface IInterceptingPropertyValueProviderMetadata
     {
-        string PropertyName { get; }
+#pragma warning disable CA1819 // Properties should not return arrays
+
+        /// <summary>
+        /// Property names handled by the provider.
+        /// This must match <see cref="ExportInterceptingPropertyValueProviderAttribute.PropertyNames" />.
+        /// </summary>
+        string[] PropertyNames { get; }
+
+#pragma warning restore CA1819 // Properties should not return arrays
     }
 }
