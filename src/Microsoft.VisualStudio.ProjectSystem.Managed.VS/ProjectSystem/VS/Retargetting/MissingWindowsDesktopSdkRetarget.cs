@@ -1,9 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -22,8 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectAccessor _projectAccessor;
 
-        private DesktopPlatformTargetDescription? _targetDescription;
-
         [ImportingConstructor]
         internal MissingWindowsDesktopSdkRetarget(ConfiguredProject project,
                                                   IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
@@ -34,17 +30,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             _projectAccessor = projectAccessor;
         }
 
-        public Task<IProjectTargetChange?> CheckAsync(IImmutableDictionary<string, IProjectRuleSnapshot> projectState)
+        public TargetDescriptionBase? Check(IImmutableDictionary<string, IProjectRuleSnapshot> projectState)
         {
             var useWpf = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, "UseWPF", null);
             var useWindowsForms = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, "UseWindowsForms", null);
 
             if (useWpf == null && useWindowsForms == null)
             {
-                return Task.FromResult((IProjectTargetChange?)new ProjectTargetChange(new DesktopPlatformTargetDescription().TargetId));
+                return new DesktopPlatformTargetDescription();
             }
 
-            return Task.FromResult((IProjectTargetChange?)null);
+            return null;
         }
 
         //public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -93,16 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         //    return null;
         //}
 
-        private async Task Initialize()
-        {
-            if (_targetDescription == null)
-            {
-                _targetDescription = new DesktopPlatformTargetDescription();
-                IVsTrackProjectRetargeting2 trackProjectRetageting = await _retargettingService.GetValueAsync();
-                trackProjectRetageting.RegisterProjectTarget(_targetDescription);
-            }
-        }
-
         //public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
         //{
         //    return Task.FromResult((IImmutableList<string>)ImmutableList<string>.Empty.Add(_project.FullPath));
@@ -128,27 +114,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         //         });
         //    }
         //}
-
-
-
-        internal class ProjectTargetChange : IProjectTargetChange
-        {
-            private readonly Guid _targetId;
-
-            public ProjectTargetChange(Guid targetId)
-            {
-                _targetId = targetId;
-            }
-
-            public Guid NewTargetId => _targetId;
-
-            public Guid CurrentTargetId => Guid.Empty;
-
-            public bool ReloadProjectOnSuccess => true;
-
-            public bool UnloadOnFailure => true;
-
-            public bool UnloadOnCancel => true;
-        }
     }
 }

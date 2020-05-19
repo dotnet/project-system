@@ -5,73 +5,68 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
-    internal class DesktopPlatformTargetDescription : IVsProjectTargetDescription2
+    internal class DesktopPlatformTargetDescription : RetargetProjectTargetDescriptionBase
     {
-        private readonly Guid _targetDescriptionId = Guid.NewGuid();
-        private const string RetargetComboBoxProperty = "DesktopPlatform";
+        private readonly Guid _targetDescriptionId = new Guid("08A73DA5-B2C7-4DEF-8E1F-5D7C903ED3A3");
 
-        public DesktopPlatformTargetDescription()
-        {
-        }
-
-        public Guid TargetId
+        public override Guid TargetId
         {
             get { return _targetDescriptionId; }
         }
 
-        public bool Supported
+        public override bool Supported
         {
             get { return true; }
         }
 
-        public uint Order
+        public override uint Order
         {
             get { return 1000; }
         }
 
-        public string DisplayName
+        public override string DisplayName
         {
             get { return "Missing Desktop Platform"; }
         }
 
         public string? NewTargetPlatformName { get; private set; }
 
-        public Array GetRetargetParameters()
+        public override Array GetRetargetParameters()
         {
-            return new[] { RetargetComboBoxProperty };
+            return new[] { "DesktopPlatform" };
         }
 
-        public string GetRetargetParameterDisplayName(string parameter)
+        public override string GetRetargetParameterDisplayName(string parameter)
         {
             return "Platform";
         }
 
-        public Array GetPossibleParameterValues(string parameter)
+        public override Array GetPossibleParameterValues(string parameter)
         {
             return new string[] { "WindowsForms", "WPF" };
         }
 
-        public string GetParameterValue(string parameter)
+        public override string GetParameterValue(string parameter)
         {
             return parameter;
         }
 
-        public void PutParameterValue(string parameter, string pValue)
+        public override void PutParameterValue(string parameter, string pValue)
         {
             NewTargetPlatformName = pValue;
         }
 
-        public string GetValueDisplayName(string parameter, string pValue)
+        public override string GetValueDisplayName(string parameter, string pValue)
         {
             return pValue;
         }
 
-        public void ResetSelectedValues()
+        public override void ResetSelectedValues()
         {
             NewTargetPlatformName = null;
         }
 
-        public object? GetProperty(uint propertyId)
+        public override object? GetProperty(uint propertyId)
         {
             switch (propertyId)
             {
@@ -97,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                     return "No Desktop Platform selected";
             }
 
-            return null;
+            return base.GetProperty(propertyId);
         }
     }
 }
