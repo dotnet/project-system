@@ -145,11 +145,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
-
+    
     <Compile Update="ProjectSystem\Rules\PropertyPages\DebugPropertyPage.xaml.cs">
       <DependentUpon>DebugPropertyPage.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\DebugPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml.cs">
+      <DependentUpon>ExecutableDebugPropertyPage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
@@ -158,6 +166,22 @@
       <DependentUpon>BuildPropertyPage.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml.cs">
+      <DependentUpon>ParentDebugPropertyPage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml.cs">
+      <DependentUpon>ProjectDebugPropertyPage.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
