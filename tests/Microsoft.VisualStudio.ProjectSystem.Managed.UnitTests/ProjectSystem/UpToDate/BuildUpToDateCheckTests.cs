@@ -1096,7 +1096,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
-        public async Task IsUpToDateAsync_True_AdditionalDependentFilesIgnoredWhenCountIsZero()
+        public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastItemsChangedAtUtc()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
@@ -1104,9 +1104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [UpToDateCheckInput.SchemaName] = ItemWithMetadata("Input1", "Set", "Set1"),
             };
 
-            var dependentTime = DateTime.UtcNow.AddMinutes(-5);
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var dependentTime = DateTime.UtcNow.AddMinutes(-3);
             var buildTime = DateTime.UtcNow.AddMinutes(-2);
             var inputTime = DateTime.UtcNow.AddMinutes(-1);
 
