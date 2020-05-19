@@ -382,7 +382,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // See https://github.com/dotnet/project-system/issues/5386
                 DateTime lastItemsChangedAtUtc = itemsChanged && ItemTypes.Count != 0 ? DateTime.UtcNow : LastItemsChangedAtUtc;
 
-                DateTime lastAdditionalDependentFileTimesChangedAtUtc = getLastTimeAdditionalDependentFilesAddedOrRemoved();
+                DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
 
                 return new State(
                     msBuildProjectFullPath,
@@ -406,7 +406,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
 
 
-                DateTime getLastTimeAdditionalDependentFilesAddedOrRemoved()
+                DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
                 {
                     var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
                                                                        .Select(pair => pair.Key)
