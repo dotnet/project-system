@@ -36,6 +36,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
+        public void Constructor_NoThrowIfActiveTargetFrameworkIsEmptyAndNotPresentInDependenciesByTargetFramework()
+        {
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: TargetFramework.Empty,
+                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
+        }
+
+        [Fact]
+        public void Constructor_NoThrowIfActiveTargetFrameworkIsUnsupportedAndNotPresentInDependenciesByTargetFramework()
+        {
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: TargetFramework.Unsupported,
+                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
+        }
+
+        [Fact]
         public void Constructor()
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();

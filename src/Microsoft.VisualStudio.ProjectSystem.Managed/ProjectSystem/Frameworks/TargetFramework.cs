@@ -9,6 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static readonly ITargetFramework Empty = new TargetFramework(string.Empty);
 
         /// <summary>
+        /// The target framework used when a TFM short-name cannot be resolved.
+        /// </summary>
+        public static readonly ITargetFramework Unsupported = new TargetFramework("Unsupported,Version=v0.0");
+
+        /// <summary>
         /// Any represents all TFMs, no need to be localized, used only in internal data.
         /// </summary>
         public static readonly ITargetFramework Any = new TargetFramework("any");
