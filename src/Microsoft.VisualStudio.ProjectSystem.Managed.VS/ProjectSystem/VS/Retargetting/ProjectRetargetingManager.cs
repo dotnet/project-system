@@ -17,20 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     {
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectThreadingService _threadingService;
-        private readonly ISolutionService _solutionService;
-        private ITaskDelayScheduler _taskDelayScheduler;
+        private ITaskDelayScheduler? _taskDelayScheduler;
 
         private ImmutableList<string> _projectsToWaitFor = ImmutableList<string>.Empty;
         private bool _needRetarget = false;
 
         [ImportingConstructor]
         public ProjectRetargetingManager(IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
-                                         IProjectThreadingService threadingService,
-                                         ISolutionService solutionService)
+                                         IProjectThreadingService threadingService)
         {
             _retargettingService = retargettingService;
             _threadingService = threadingService;
-            _solutionService = solutionService;
             _taskDelayScheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), threadingService, default);
         }
 
@@ -64,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 _needRetarget = true;
             }
 
-            if (_projectsToWaitFor.Count == 0 && _needRetarget && _solutionService.IsSolutionOpen && _taskDelayScheduler != null)
+            if (_projectsToWaitFor.Count == 0 && _needRetarget && _taskDelayScheduler != null)
             {
                 _ = _taskDelayScheduler.ScheduleAsyncTask(AllProjectsDoneLoading, default);
             }
