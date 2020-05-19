@@ -165,7 +165,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
-            if (!activeTargetFramework.Equals(TargetFramework.Empty))
+            // We have seen NFEs where the active target framework is unsupported. Skipping validation in such cases is better than faulting the dataflow.
+            if (!activeTargetFramework.Equals(TargetFramework.Empty) && !activeTargetFramework.Equals(TargetFramework.Unsupported))
             {
                 Requires.Argument(
                     dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
