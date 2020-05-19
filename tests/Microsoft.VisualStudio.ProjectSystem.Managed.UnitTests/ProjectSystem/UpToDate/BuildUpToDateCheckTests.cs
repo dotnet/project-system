@@ -1096,6 +1096,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_True_AdditionalDependentFilesIgnoredWhenCountIsZero()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuildDefault"),
+                [UpToDateCheckInput.SchemaName] = ItemWithMetadata("Input1", "Set", "Set1"),
+            };
+
+            var dependentTime = DateTime.UtcNow.AddMinutes(-5);
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
+            var buildTime = DateTime.UtcNow.AddMinutes(-2);
+            var inputTime = DateTime.UtcNow.AddMinutes(-1);
+
+            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
+
+            _fileSystem.AddFile(dependentPath, dependentTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input1", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
+            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
+            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+
+            await SetupAsync(projectSnapshot: projectSnapshot, dependentTimeFiles: new[] { (dependentPath, dependentTime) });
+
+            await AssertUpToDateAsync(
+                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}).",
+                "No build outputs defined in set 'Set1'.");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceRemoved()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
