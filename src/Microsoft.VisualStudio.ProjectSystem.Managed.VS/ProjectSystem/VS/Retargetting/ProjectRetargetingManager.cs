@@ -1,9 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
+using System;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
@@ -11,30 +15,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal class ProjectRetargetingManager : IProjectRetargetingManager
     {
-        private List<string> _errors = new List<string>();
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectThreadingService _threadingService;
+        private readonly ISolutionService _solutionService;
+        private ITaskDelayScheduler _taskDelayScheduler;
+
+        private ImmutableList<string> _projectsToWaitFor = ImmutableList<string>.Empty;
+        private bool _needRetarget = false;
 
         [ImportingConstructor]
         public ProjectRetargetingManager(IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
-                                         IProjectThreadingService threadingService)
+                                         IProjectThreadingService threadingService,
+                                         ISolutionService solutionService)
         {
             _retargettingService = retargettingService;
             _threadingService = threadingService;
+            _solutionService = solutionService;
+            _taskDelayScheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), threadingService, default);
         }
 
-        public Task ReportProjectNeedsRetargetingAsync(string projectFile, IEnumerable<IProjectTargetChange> changes)
+        public void ReportProjectMightRetarget(string projectFile)
         {
-            _errors.Add(projectFile);
+            ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, col =>
+            {
+                if (!col.Contains(projectFile))
+                {
+                    col = col.Add(projectFile);
+                }
 
-            return Task.CompletedTask;
+                return col;
+            });
         }
 
-        public async Task AllProjectsDoneLoading()
+        public void ReportProjectNeedsRetargeting(string projectFile, bool needsRetarget)
         {
+            ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, col =>
+            {
+                if (col.Contains(projectFile))
+                {
+                    col = col.Remove(projectFile);
+                }
+
+                return col;
+            });
+
+            if (needsRetarget)
+            {
+                _needRetarget = true;
+            }
+
+            if (_projectsToWaitFor.Count == 0 && _needRetarget && _solutionService.IsSolutionOpen && _taskDelayScheduler != null)
+            {
+                _ = _taskDelayScheduler.ScheduleAsyncTask(AllProjectsDoneLoading, default);
+            }
+        }
+
+        public async Task AllProjectsDoneLoading(CancellationToken cancellationToken)
+        {
+            _taskDelayScheduler = null;
+
             await _threadingService.SwitchToUIThread();
 
-            IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+            IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync(cancellationToken);
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)__RETARGET_CHECK_OPTIONS.RCO_FIRST_SOLUTION_LOAD));
         }

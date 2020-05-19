@@ -5,14 +5,22 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
-    internal abstract class TargetDescriptionBase : IVsProjectTargetDescription
+    internal abstract class TargetDescriptionBase : IVsProjectTargetDescription2
     {
         public abstract Guid TargetId { get; }
         public abstract string DisplayName { get; }
         public abstract uint Order { get; }
         public abstract bool Supported { get; }
 
-        public virtual object GetProperty(uint prop)
+        public abstract Array GetRetargetParameters();
+        public abstract string GetRetargetParameterDisplayName(string parameter);
+        public abstract Array GetPossibleParameterValues(string parameter);
+        public abstract string GetParameterValue(string parameter);
+        public abstract void PutParameterValue(string parameter, string pValue);
+        public abstract string GetValueDisplayName(string parameter, string pValue);
+        public abstract void ResetSelectedValues();
+
+        public virtual object? GetProperty(uint prop)
         {
             switch ((__VSPTDPROPID)prop)
             {
