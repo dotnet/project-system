@@ -333,8 +333,8 @@ dotnet_diagnostic.RS0024.severity = error
 dotnet_diagnostic.RS0025.severity = error
 dotnet_diagnostic.RS0026.severity = error
 dotnet_diagnostic.RS0027.severity = error
-dotnet_diagnostic.RS0030.severity = error
-dotnet_diagnostic.RS0031.severity = error
+dotnet_diagnostic.RS0030.severity = warning     # Do not use banned APIs
+dotnet_diagnostic.RS0031.severity = error       # The list of banned symbols contains a duplicate
 dotnet_diagnostic.RS0033.severity = none        # Importing constructor should be [Obsolete]
 dotnet_diagnostic.RS0034.severity = none        # Style rule that enforces public MEF constructor marked with [ImportingConstructor]
 

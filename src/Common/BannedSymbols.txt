@@ -86,3 +86,6 @@ T:System.Threading.Tasks.Dataflow.DataflowLinkOptions;Use DataflowOption.Propaga
 
 M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposed.Initialize();Did you mean EnsureInitialized?
 M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposedAsync.InitializeCoreAsync(System.Threading.CancellationToken);Did you mean InitializeAsync(CancellationToken)?
+
+M:System.Diagnostics.Debugger.Break(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
+M:System.Diagnostics.Debugger.Launch(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
