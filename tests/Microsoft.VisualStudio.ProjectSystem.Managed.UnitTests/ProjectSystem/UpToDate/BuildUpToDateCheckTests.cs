@@ -1096,6 +1096,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
+        {
+            await _buildUpToDateCheck.LoadAsync();
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            var dependentTime = DateTime.UtcNow.AddMinutes(-1);
+            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            _fileSystem.AddFile(dependentPath, dependentTime);
+            var dependentTimeFiles = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths).Add(dependentPath, dependentTime);
+
+            // Initial change does NOT set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange(dependentTimeFiles: dependentTimeFiles);
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            // Broadcasting an update with same Additional Dependent Files does NOT set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange(dependentTimeFiles: dependentTimeFiles);
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            // Broadcasting removing Additional Dependent Files DOES set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange();
+
+            Assert.NotEqual(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceRemoved()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>

@@ -116,6 +116,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// Gets the time at which the set of items with non-<see cref="DateTime.MinValue"/> times
             /// in <see cref="AdditionalDependentFileTimes"/> changed (files added or removed).
             /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This property is not updated until after the first query occurs. Until that time it will
+            /// equal <see cref="DateTime.MinValue"/> which represents the fact that we do not know when
+            /// the set of items was last added or removed, so we cannot base any decisions on this data
+            /// property.
+            /// </para>
+            /// </remarks>
             public DateTime LastAdditionalDependentFileTimesChangedAtUtc { get; }
 
             private State()
@@ -205,19 +213,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
                 string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
                 string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
-
-                var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
-                                                                                       .Select(pair => pair.Key)
-                                                                                       .ToImmutableHashSet();
-
-                IImmutableDictionary<string, DateTime> additionalDependentFileTimes = projectSnapshot.AdditionalDependentFileTimes;
-
-                var currentExistingAdditionalDependentFiles = additionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
-                                                                                          .Select(pair => pair.Key)
-                                                                                          .ToImmutableHashSet();
-
-                bool AdditionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
-                DateTime lastAdditionalDependentFileTimesChangedAtUtc = AdditionalDependentFilesChanged ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
 
                 // The first item in this semicolon-separated list of project files will always be the one
                 // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -387,6 +382,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // See https://github.com/dotnet/project-system/issues/5386
                 DateTime lastItemsChangedAtUtc = itemsChanged && ItemTypes.Count != 0 ? DateTime.UtcNow : LastItemsChangedAtUtc;
 
+                DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
+
                 return new State(
                     msBuildProjectFullPath,
                     msBuildProjectDirectory,
@@ -404,9 +401,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     resolvedAnalyzerReferencePaths: resolvedAnalyzerReferencePaths,
                     resolvedCompilationReferencePaths: resolvedCompilationReferencePaths,
                     copyReferenceInputs: copyReferenceInputs,
-                    additionalDependentFileTimes: additionalDependentFileTimes,
+                    additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
+
+
+                DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
+                {
+                    var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
+                                                                       .Select(pair => pair.Key)
+                                                                       .ToImmutableHashSet();
+
+                    var currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
+                                                                        .Where(pair => pair.Value != DateTime.MinValue)
+                                                                        .Select(pair => pair.Key);
+
+                    bool additionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
+
+                    return additionalDependentFilesChanged && lastExistingAdditionalDependentFiles.Count != 0 ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
+                }
 
                 static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)
                 {
