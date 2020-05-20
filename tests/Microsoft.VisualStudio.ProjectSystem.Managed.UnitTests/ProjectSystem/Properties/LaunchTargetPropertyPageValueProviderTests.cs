@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha"),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: string.Empty, actual: actualValue);
         }
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: "AlphaCommand"),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: string.Empty, actual: actualValue);
         }
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: "AlphaCommand"),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: string.Empty, actual: actualValue);
         }
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: "BetaCommand"),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "BetaPage", actual: actualValue);
         }
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 launchSettingsProvider: SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: "BetaCommand"),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: string.Empty, actual: actualValue);
         }
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     updateLaunchSettingsCallback: ls => launchSettingsUpdated = true),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnSetPropertyValueAsync("BetaPage", Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnSetPropertyValueAsync(string.Empty, "BetaPage", Mock.Of<IProjectProperties>());
 
             Assert.Null(actualValue);
             Assert.False(launchSettingsUpdated);
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     updateLaunchSettingsCallback: ls => launchSettingsUpdated = true),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnSetPropertyValueAsync("EpsilonPage", Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnSetPropertyValueAsync(string.Empty, "EpsilonPage", Mock.Of<IProjectProperties>());
 
             Assert.Null(actualValue);
             Assert.False(launchSettingsUpdated);
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     updateLaunchSettingsCallback: ls => newLaunchTarget = ls.ActiveProfile!.CommandName),
                 projectThreadingService: IProjectThreadingServiceFactory.Create());
 
-            var actualValue = await provider.OnSetPropertyValueAsync("GammaPage", Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnSetPropertyValueAsync(string.Empty, "GammaPage", Mock.Of<IProjectProperties>());
 
             Assert.Null(actualValue);
             Assert.Equal(expected: "GammaCommand", actual: newLaunchTarget);
