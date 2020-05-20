@@ -96,8 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 }
 
                 childItem.ContainedByCollection = new AggregateContainedByRelationCollection(allParentItems);
-
-                return;
             }
 
             IRelatableItem DeduplicateItem(IRelatableItem item)

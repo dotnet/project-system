@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected override bool TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(true)] out IProjectTree? projectTree)
         {
+            // TODO implement this to support searching framework reference assemblies
             return base.TryGetProjectNode(targetRootNode, item, out projectTree);
         }
     }

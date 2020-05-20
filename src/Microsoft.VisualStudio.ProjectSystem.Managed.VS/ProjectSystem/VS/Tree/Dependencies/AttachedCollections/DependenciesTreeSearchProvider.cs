@@ -97,15 +97,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             async Task SearchProjectAsync(UnconfiguredProject unconfiguredProject)
             {
                 IUnconfiguredProjectVsServices? projectVsServices = unconfiguredProject.Services.ExportProvider.GetExportedValue<IUnconfiguredProjectVsServices>();
-                IActiveConfigurationGroupService? configurationGroupService = unconfiguredProject.Services.ExportProvider.GetExportedValue<IActiveConfigurationGroupService>();
                 IProjectTree? dependenciesNode = projectVsServices?.ProjectTree.CurrentTree?.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
-                if (projectVsServices != null &&
-                    dependenciesNode != null &&
-                    configurationGroupService is IActiveConfigurationGroupService2 activeConfigurationGroupService)
+                if (projectVsServices != null && dependenciesNode != null)
                 {
-                    IConfigurationGroup<ConfiguredProject> configuredProjects = await activeConfigurationGroupService.GetActiveLoadedConfiguredProjectGroupAsync();
-
                     var projectContext = new DependenciesTreeProjectSearchContext(context, unconfiguredProject, dependenciesNode, _hierarchyItemManager, projectVsServices, _relationProvider);
 
                     // Search providers concurrently
