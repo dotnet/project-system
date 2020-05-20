@@ -1098,21 +1098,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
         {
-            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
-            {
-                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
-            };
-
-            var sourceSnapshot1 = new Dictionary<string, IProjectRuleSnapshotModel>
-            {
-                [Compile.SchemaName] = SimpleItems("ItemPath1")
-            };
-
-            var sourceSnapshot2 = new Dictionary<string, IProjectRuleSnapshotModel>
-            {
-                [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
-            };
-
             await _buildUpToDateCheck.LoadAsync();
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
@@ -1123,7 +1108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var dependentTimeFiles = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths).Add(dependentPath, dependentTime);
 
             // Initial change does NOT set LastAdditionalDependentFileTimesChangedAtUtc
-            BroadcastChange(projectSnapshot, sourceSnapshot1, dependentTimeFiles: dependentTimeFiles);
+            BroadcastChange(dependentTimeFiles: dependentTimeFiles);
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
 
@@ -1133,10 +1118,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
 
             // Broadcasting removing Additional Dependent Files DOES set LastAdditionalDependentFileTimesChangedAtUtc
-            BroadcastChange(projectSnapshot, sourceSnapshot2);
+            BroadcastChange();
 
             Assert.NotEqual(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
-
         }
 
         [Fact]
