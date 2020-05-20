@@ -1096,33 +1096,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
-        public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastItemsChangedAtUtc()
+        public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
             {
-                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuildDefault"),
-                [UpToDateCheckInput.SchemaName] = ItemWithMetadata("Input1", "Set", "Set1"),
+                [UpToDateCheckBuilt.SchemaName] = SimpleItems("BuiltOutputPath1")
             };
 
-            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
-            var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
-            var dependentTime = DateTime.UtcNow.AddMinutes(-3);
-            var buildTime = DateTime.UtcNow.AddMinutes(-2);
-            var inputTime = DateTime.UtcNow.AddMinutes(-1);
+            var sourceSnapshot1 = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1")
+            };
 
+            var sourceSnapshot2 = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
+            };
+
+            await _buildUpToDateCheck.LoadAsync();
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            var dependentTime = DateTime.UtcNow.AddMinutes(-1);
             var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-
             _fileSystem.AddFile(dependentPath, dependentTime);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input1", inputTime);
-            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuildDefault", buildTime);
-            _buildUpToDateCheck.TestAccess.SetLastCheckedAtUtc(lastCheckTime);
-            _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangeTime);
+            var dependentTimeFiles = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths).Add(dependentPath, dependentTime);
 
-            await SetupAsync(projectSnapshot: projectSnapshot, dependentTimeFiles: new[] { (dependentPath, dependentTime) });
+            // Initial change does NOT set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange(projectSnapshot, sourceSnapshot1, dependentTimeFiles: dependentTimeFiles);
 
-            await AssertUpToDateAsync(
-                $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\BuildDefault' ({buildTime.ToLocalTime()}).",
-                "No build outputs defined in set 'Set1'.");
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            // Broadcasting an update with same Additional Dependent Files does NOT set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange(dependentTimeFiles: dependentTimeFiles);
+
+            Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
+            // Broadcasting removing Additional Dependent Files DOES set LastAdditionalDependentFileTimesChangedAtUtc
+            BroadcastChange(projectSnapshot, sourceSnapshot2);
+
+            Assert.NotEqual(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
+
         }
 
         [Fact]
