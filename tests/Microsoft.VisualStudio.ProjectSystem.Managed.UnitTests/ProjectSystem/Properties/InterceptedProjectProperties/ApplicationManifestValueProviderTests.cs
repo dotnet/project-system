@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create());
             var defaultProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("NoWin32Manifest", noManifestValue);
 
-            var appManifestValue = await provider.OnGetEvaluatedPropertyValueAsync(appManifestPropValue, defaultProperties);
+            var appManifestValue = await provider.OnGetEvaluatedPropertyValueAsync(string.Empty, appManifestPropValue, defaultProperties);
             Assert.Equal(expectedValue, appManifestValue);
         }
 
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                                                                                                 { "NoWin32Manifest", noManifestPropValue }
                                                                                             });
 
-            var appManifestValue = await provider.OnSetPropertyValueAsync(valueToSet, defaultProperties);
+            var appManifestValue = await provider.OnSetPropertyValueAsync(string.Empty, valueToSet, defaultProperties);
             var noManifestValue = await defaultProperties.GetEvaluatedPropertyValueAsync("NoWin32Manifest");
 
             Assert.Equal(expectedAppManifestValue, appManifestValue);

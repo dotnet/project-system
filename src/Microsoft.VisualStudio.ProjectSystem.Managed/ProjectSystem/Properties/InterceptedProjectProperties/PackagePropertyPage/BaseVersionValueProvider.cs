@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return Version.TryParse(versionStr, out Version version) ? version : DefaultVersion;
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             if (!string.IsNullOrEmpty(evaluatedPropertyValue))
             {
@@ -42,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(
+            string propertyName,
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -63,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 }
             }
 
-            return await base.OnSetPropertyValueAsync(unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
+            return await base.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
         }
     }
 }

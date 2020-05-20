@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                   interceptingValueProviders: interceptingProvider == null ?
                     new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                         () => IInterceptingPropertyValueProviderFactory.Create(),
-                        IInterceptingPropertyValueProviderMetadataFactory.Create("")) } :
+                        IInterceptingPropertyValueProviderMetadataFactory.Create("TestPropertyName")) } :
                     new[] { interceptingProvider },
                   project: project,
                   getActiveProjectId: getActiveProjectId ?? (() => workspace.CurrentSolution.ProjectIds.SingleOrDefault()),

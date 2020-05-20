@@ -1,3 +1,4 @@
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyNames.get -> string![]!
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string! projectFilePath) -> T?
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers

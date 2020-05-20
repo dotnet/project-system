@@ -21,25 +21,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 mock.Setup(t => t.OnGetEvaluatedPropertyValueAsync(
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<IProjectProperties>()))
-                     .Returns<string, IProjectProperties>((u, p) => Task.FromResult(onGetEvaluatedPropertyValue(u, p)));
+                     .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetEvaluatedPropertyValue(u, p)));
             }
 
             if (onGetUnevaluatedPropertyValue != null)
             {
                 mock.Setup(t => t.OnGetUnevaluatedPropertyValueAsync(
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<IProjectProperties>()))
-                     .Returns<string, IProjectProperties>((u, p) => Task.FromResult(onGetUnevaluatedPropertyValue(u, p)));
+                     .Returns<string, string, IProjectProperties>((n, u, p) => Task.FromResult(onGetUnevaluatedPropertyValue(u, p)));
             }
 
             if (onSetPropertyValue != null)
             {
                 mock.Setup(t => t.OnSetPropertyValueAsync(
                     It.IsAny<string>(),
+                    It.IsAny<string>(),
                     It.IsAny<IProjectProperties>(),
                     It.IsAny<IReadOnlyDictionary<string, string>>()))
-                     .Returns<string, IProjectProperties, IReadOnlyDictionary<string, string>>((u, p, d) => Task.FromResult(onSetPropertyValue(u, p, d)));
+                     .Returns<string, string, IProjectProperties, IReadOnlyDictionary<string, string>>((n, u, p, d) => Task.FromResult(onSetPropertyValue(u, p, d)));
             }
 
             return mock.Object;

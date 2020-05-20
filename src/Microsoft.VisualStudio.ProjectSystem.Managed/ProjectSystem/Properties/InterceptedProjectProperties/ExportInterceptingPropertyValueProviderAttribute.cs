@@ -12,17 +12,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     internal sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
     {
-        public string PropertyName { get; }
+        public string[] PropertyNames { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/> class.
         /// </summary>
         public ExportInterceptingPropertyValueProviderAttribute(string propertyName, ExportInterceptingPropertyValueProviderFile file)
+            : this(new[] { propertyName }, file)
+        {
+        }
+
+        public ExportInterceptingPropertyValueProviderAttribute(string[] propertyNames, ExportInterceptingPropertyValueProviderFile file)
             : base(GetFile(file), typeof(IInterceptingPropertyValueProvider))
         {
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
-
-            PropertyName = propertyName;
+            PropertyNames = propertyNames;
         }
 
         private static string GetFile(ExportInterceptingPropertyValueProviderFile file)

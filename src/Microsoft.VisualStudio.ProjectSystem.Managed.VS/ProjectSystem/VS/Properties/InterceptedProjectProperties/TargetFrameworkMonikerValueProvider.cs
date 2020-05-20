@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(
+            string propertyName,
             string unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
