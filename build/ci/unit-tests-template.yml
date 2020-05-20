@@ -10,7 +10,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log'
-        ArtifactName: '${{ parameters.configuration }} unit test logs'
+        ArtifactName: '${{ parameters.configuration }} Log folder'
         publishLocation: Container
       continueOnError: true
       condition: failed()
@@ -18,7 +18,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\bin'
-        ArtifactName: '${{ parameters.configuration }} bin folder'
+        ArtifactName: '${{ parameters.configuration }} Bin folder'
         publishLocation: Container
       continueOnError: true
       condition: failed()
@@ -34,7 +34,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\TestResults'
-        ArtifactName: '${{ parameters.configuration }} Test Result Logs'
+        ArtifactName: '${{ parameters.configuration }} TestResults folder'
         publishLocation: Container
       continueOnError: true
       condition: failed()
