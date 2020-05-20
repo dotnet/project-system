@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality =  Composition.ImportCardinality.ExactlyOne)]
-    internal interface IConfiguredProjectRetargetingDataSource : IProjectValueDataSource<IImmutableList<TargetDescriptionBase>>
+    internal interface IConfiguredProjectRetargetingDataSource : IProjectValueDataSource<IImmutableList<ProjectTargetChange>>
     {
     }
 }

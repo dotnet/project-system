@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     {
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectThreadingService _threadingService;
-        private ITaskDelayScheduler? _taskDelayScheduler;
+        private readonly ITaskDelayScheduler _taskDelayScheduler;
         private IVsSolution? _solution;
         private bool _solutionOpened;
 
@@ -67,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             });
         }
 
-        public void ReportProjectNeedsRetargeting(string projectFile, bool needsRetarget)
+        public void ReportProjectNeedsRetargeting(string projectFile, IEnumerable<ProjectTargetChange> changes)
         {
             ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, col =>
             {
@@ -79,17 +80,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 return col;
             });
 
-            if (needsRetarget)
+            _threadingService.ExecuteSynchronously(async () =>
             {
-                _needRetarget = true;
-            }
+                await _threadingService.SwitchToUIThread();
+
+                IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+
+                foreach (ProjectTargetChange change in changes)
+                {
+                    _needRetarget = true;
+
+                    service.RegisterProjectTarget(change.Description);
+                }
+            });
 
             TryTriggerRetarget();
         }
 
         private void TryTriggerRetarget()
         {
-            if (_projectsToWaitFor.Count == 0 && _needRetarget && _solutionOpened && _taskDelayScheduler != null)
+            if (_projectsToWaitFor.Count == 0 && _needRetarget && _solutionOpened)
             {
                 _ = _taskDelayScheduler.ScheduleAsyncTask(AllProjectsDoneLoading, default);
             }
@@ -100,8 +110,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             await _threadingService.SwitchToUIThread();
 
             IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync(cancellationToken);
-
-            cancellationToken.ThrowIfCancellationRequested();
 
             ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)__RETARGET_CHECK_OPTIONS.RCO_FIRST_SOLUTION_LOAD));
         }

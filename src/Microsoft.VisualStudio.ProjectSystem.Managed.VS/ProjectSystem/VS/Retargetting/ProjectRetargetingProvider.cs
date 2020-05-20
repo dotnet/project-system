@@ -36,7 +36,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public Task RetargetAsync(TextWriter outputLogger, RetargetOptions options, IProjectTargetChange projectTargetChange, string backupLocation)
         {
-            throw new System.NotImplementedException();
+            var change = projectTargetChange as ProjectTargetChange;
+            
+            Assumes.NotNull(projectTargetChange);
+
+            return change.RetargetProvider.FixAsync(projectTargetChange);
         }
     }
 }

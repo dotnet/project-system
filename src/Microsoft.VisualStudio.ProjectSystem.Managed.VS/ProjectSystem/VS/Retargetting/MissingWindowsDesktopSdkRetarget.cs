@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -11,13 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     [AppliesTo(ProjectCapability.DotNet)]
     internal class MissingWindowsDesktopSdkRetarget : IProjectRetargetCheckProvider
     {
-        /// <summary>
-        /// Wether the retargeting option should always be available, to provide a nice UI to the user, or only when a desktop target is not present, to fix up problems
-        /// </summary>
-        private const bool AlwaysProvideRetargetingOption = false;
+        private static readonly IEnumerable<string> s_rules = new string[] { ConfigurationGeneral.SchemaName };
 
         private readonly ConfiguredProject _project;
-        private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectAccessor _projectAccessor;
 
         [ImportingConstructor]
@@ -26,93 +25,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                                                   IProjectAccessor projectAccessor)
         {
             _project = project;
-            _retargettingService = retargettingService;
             _projectAccessor = projectAccessor;
         }
 
-        public TargetDescriptionBase? Check(IImmutableDictionary<string, IProjectRuleSnapshot> projectState)
+        public IEnumerable<string> GetProjectEvaluationRuleNames() => s_rules;
+
+        public Task<TargetDescriptionBase?> CheckAsync(IImmutableDictionary<string, IProjectRuleSnapshot> projectState)
         {
             var useWpf = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, "UseWPF", null);
             var useWindowsForms = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, "UseWindowsForms", null);
 
             if (useWpf == null && useWindowsForms == null)
             {
-                return new DesktopPlatformTargetDescription();
+                return Task.FromResult((TargetDescriptionBase?)new DesktopPlatformTargetDescription());
             }
 
-            return null;
+            return Task.FromResult((TargetDescriptionBase?)null);
         }
 
-        //public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
-        //{
-        //    await Initialize();
 
-        //    Assumes.NotNull(_targetDescription);
+        public Task FixAsync(IProjectTargetChange projectTargetChange)
+        {
+            DesktopPlatformTargetDescription? desktopPlatformTarget = projectTargetChange as DesktopPlatformTargetDescription;
 
-        //    if ((options & RetargetCheckOptions.ProjectLoad) == RetargetCheckOptions.ProjectLoad)
-        //    {
-        //        return await _projectAccessor.OpenProjectXmlForReadAsync(_project, root =>
-        //        {
-        //            if (root.Sdk == "Microsoft.NET.Sdk.WindowsDesktop" &&
-        //                (AlwaysProvideRetargetingOption || !root.Properties.Any(p => p.Name == "UseWindowsForms" || p.Name == "UseWPF")))
-        //            {
-        //                return new ProjectTargetChange(_targetDescription.TargetId);
-        //            }
-        //            return null;
-        //        });
-        //    }
-        //    else
-        //    {
-        //        switch (options)
-        //        {
-        //            case RetargetCheckOptions.None:
-        //                break;
-        //            case RetargetCheckOptions.NoPrompt:
-        //                break;
-        //            case RetargetCheckOptions.RequiredOnly:
-        //                break;
-        //            case RetargetCheckOptions.FirstSolutionLoad:
-        //                break;
-        //            case RetargetCheckOptions.ProjectLoad:
-        //                break;
-        //            case RetargetCheckOptions.ProjectRetarget:
-        //                break;
-        //            case RetargetCheckOptions.ProjectReload:
-        //                break;
-        //            case RetargetCheckOptions.SolutionRetarget:
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
+            Assumes.NotNull(desktopPlatformTarget);
 
-        //    return null;
-        //}
+            return _projectAccessor.OpenProjectXmlForWriteAsync(_project.UnconfiguredProject, root =>
+            {
+                Microsoft.Build.Construction.ProjectPropertyElement prop = BuildUtilities.GetOrAddProperty(root, "Use" + desktopPlatformTarget.NewTargetPlatformName);
+                prop.Value = "true";
 
-        //public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
-        //{
-        //    return Task.FromResult((IImmutableList<string>)ImmutableList<string>.Empty.Add(_project.FullPath));
-        //}
+                root.Save();
+            });
+        }
 
-        //public async Task RetargetAsync(TextWriter outputLogger, RetargetOptions options, IProjectTargetChange projectTargetChange, string backupLocation)
-        //{
-        //    if (options == RetargetOptions.Backup)
-        //    {
-        //        outputLogger.WriteLine("Bkacing up to " + backupLocation);
-        //        File.Copy(_project.FullPath, Path.Combine(backupLocation, Path.GetFileName(_project.FullPath)));
-        //    }
 
-        //    IVsTrackProjectRetargeting2 trackProjectRetageting = await _retargettingService.GetValueAsync();
-        //    if (ErrorHandler.Succeeded(trackProjectRetageting.GetProjectTarget(projectTargetChange.NewTargetId, out IVsProjectTargetDescription description)) && description is DesktopPlatformTargetDescription desktopPlatformTarget)
-        //    {
-        //         await _projectAccessor.OpenProjectXmlForWriteAsync(_project, root =>
-        //         {
-        //             Microsoft.Build.Construction.ProjectPropertyElement prop = BuildUtilities.GetOrAddProperty(root, "Use" + desktopPlatformTarget.NewTargetPlatformName);
-        //             prop.Value = "true";
-
-        //             root.Save();
-        //         });
-        //    }
-        //}
     }
 }

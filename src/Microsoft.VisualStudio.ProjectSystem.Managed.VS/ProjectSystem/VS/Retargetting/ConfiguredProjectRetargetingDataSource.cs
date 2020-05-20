@@ -1,8 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Composition;
 
@@ -10,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     [Export(typeof(IConfiguredProjectRetargetingDataSource))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class ConfiguredProjectRetargetingDataSource : ChainedProjectValueDataSourceBase<IImmutableList<TargetDescriptionBase>>, IConfiguredProjectRetargetingDataSource
+    internal class ConfiguredProjectRetargetingDataSource : ChainedProjectValueDataSourceBase<IImmutableList<ProjectTargetChange>>, IConfiguredProjectRetargetingDataSource
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -34,13 +36,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         [ImportMany]
         public OrderPrecedenceImportCollection<IProjectRetargetCheckProvider> ProjectRetargetCheckProviders { get; }
 
-        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<IImmutableList<TargetDescriptionBase>>> targetBlock)
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<IImmutableList<ProjectTargetChange>>> targetBlock)
         {
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.ProjectRuleSource;
 
+            HashSet<string> ruleNames = new HashSet<string>();
+            foreach (IProjectRetargetCheckProvider provider in ProjectRetargetCheckProviders.ExtensionValues())
+            {
+                ruleNames.AddRange(provider.GetProjectEvaluationRuleNames());
+            }
+
             // Transform the changes from evaluation/design-time build -> restore data
-            DisposableValue<ISourceBlock<IProjectVersionedValue<IImmutableList<TargetDescriptionBase>>>> transformBlock = source.SourceBlock.TransformWithNoDelta(CheckForProjectRetarget,
-                                                                                                                                                                  suppressVersionOnlyUpdates: false);    // We need to coordinate these at the unconfigured-level
+            DisposableValue<ISourceBlock<IProjectVersionedValue<IImmutableList<ProjectTargetChange>>>> transformBlock = source.SourceBlock.TransformWithNoDelta(CheckForProjectRetarget,
+                    suppressVersionOnlyUpdates: false,
+                    ruleNames: ruleNames);
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -52,20 +61,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             return transformBlock;
         }
 
-        private IProjectVersionedValue<IImmutableList<TargetDescriptionBase>> CheckForProjectRetarget(IProjectVersionedValue<IProjectSubscriptionUpdate> arg)
+        private async Task<IProjectVersionedValue<IImmutableList<ProjectTargetChange>>> CheckForProjectRetarget(IProjectVersionedValue<IProjectSubscriptionUpdate> arg)
         {
-            ImmutableList<TargetDescriptionBase>.Builder changes = ImmutableList.CreateBuilder<TargetDescriptionBase>();
+            ImmutableList<ProjectTargetChange>.Builder changes = ImmutableList.CreateBuilder<ProjectTargetChange>();
 
             foreach (IProjectRetargetCheckProvider provider in ProjectRetargetCheckProviders.ExtensionValues())
             {
-                TargetDescriptionBase? change = provider.Check(arg.Value.CurrentState);
+                TargetDescriptionBase? change = await provider.CheckAsync(arg.Value.CurrentState);
                 if (change != null)
                 {
-                    changes.Add(change);
+                    changes.Add(new ProjectTargetChange(change, provider));
                 }
             }
 
-            return new ProjectVersionedValue<IImmutableList<TargetDescriptionBase>>(changes.ToImmutable(), arg.DataSourceVersions);
+            return new ProjectVersionedValue<IImmutableList<ProjectTargetChange>>(changes.ToImmutable(), arg.DataSourceVersions);
         }
     }
 }
