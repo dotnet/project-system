@@ -42,7 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec"),
                 model.Flags);
         }
 
@@ -78,7 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec"),
                 model.Flags);
         }
 
@@ -114,7 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:myOriginalItemSpec") -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);
         }
