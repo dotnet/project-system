@@ -15,7 +15,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.VisualBasic,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "vbproj",
-    NewProjectRequireNewFolderVsTemplate = true)]
+    NewProjectRequireNewFolderVsTemplate = true,
+    SupportsCodespaces = true)]
 [assembly: ProvideDiffSupportedContentType(".vbproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".vbproj")] // Use the XML editor
 
@@ -30,7 +31,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.FSharp,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "fsproj",
-    NewProjectRequireNewFolderVsTemplate = true)]
+    NewProjectRequireNewFolderVsTemplate = true,
+    SupportsCodespaces = true)]
 [assembly: ProvideDiffSupportedContentType(".fsproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".fsproj")] // Use the XML editor
 
