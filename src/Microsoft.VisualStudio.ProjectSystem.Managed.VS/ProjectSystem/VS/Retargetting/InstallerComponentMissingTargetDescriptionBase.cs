@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal abstract class InstallerComponentMissingTargetDescriptionBase : TargetDescriptionBase
     {
-        public override object GetProperty(uint prop)
+        public override object? GetProperty(uint prop)
         {
             switch ((__VSPTDPROPID)prop)
             {

@@ -10,13 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         public abstract Guid TargetId { get; }
         public abstract string DisplayName { get; }
         public abstract uint Order { get; }
-        public abstract bool Supported { get; }
+        public virtual bool Supported => true;
 
         public abstract Array GetRetargetParameters();
-        public abstract string GetRetargetParameterDisplayName(string parameter);
+        public virtual string GetRetargetParameterDisplayName(string parameter) => parameter;
         public abstract Array GetPossibleParameterValues(string parameter);
-        public abstract string GetParameterValue(string parameter);
         public abstract void PutParameterValue(string parameter, string pValue);
+        public virtual string GetParameterValue(string parameter) => parameter;
         public abstract string GetValueDisplayName(string parameter, string pValue);
         public abstract void ResetSelectedValues();
 

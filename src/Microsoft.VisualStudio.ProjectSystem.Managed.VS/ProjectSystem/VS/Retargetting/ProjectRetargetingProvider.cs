@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
@@ -24,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
         {
-            var x = await _unconfiguredProjectRetargetingDataSource.SourceBlock.GetLatestVersionAsync(_unconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
+            // TODO: There is an API in CPS that takes an IProjectDataSourceRegistry
+            IProjectVersionedValue<IImmutableList<ProjectTargetChange>> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(_unconfiguredProject.Services.DataSourceRegistry);
 
-            return x.Value.FirstOrDefault();
+            return changes.Value?[0];
         }
 
         public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         {
             var change = projectTargetChange as ProjectTargetChange;
             
-            Assumes.NotNull(projectTargetChange);
+            Assumes.NotNull(change);
 
             return change.RetargetProvider.FixAsync(projectTargetChange);
         }
