@@ -36,8 +36,4 @@
       <Link>ProvideCodeBaseBindingRedirection.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="16.4.11" />
-  </ItemGroup>
 </Project>

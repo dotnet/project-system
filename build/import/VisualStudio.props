@@ -3,11 +3,6 @@
   <Import Project="HostAgnostic.props"/>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp"                                                      Version="4.7.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition"                                    Version="16.4.11" />
-  </ItemGroup>
-
-  <ItemGroup>
     <!-- Framework -->
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -55,6 +50,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
     <PackageReference Include="NuGet.VisualStudio" />
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" />
   </ItemGroup>
 
   <!--

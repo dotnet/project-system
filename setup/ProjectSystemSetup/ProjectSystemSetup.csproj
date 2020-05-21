@@ -15,8 +15,6 @@
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="16.4.11" />
     <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" />
   </ItemGroup>
   <ItemGroup>

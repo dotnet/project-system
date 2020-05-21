@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         protected virtual string GetFailureMessageCannotApply(CodeAnalysis.Rename.Renamer.RenameDocumentActionSet? documentRenameResult)
         {
             return "Cannot apply " +
-                documentRenameResult?.ApplicableActions.First().GetDescription(CultureInfo.CurrentCulture);
+                documentRenameResult?.ApplicableActions.First().GetDescription(CultureInfo.CurrentUICulture);
         }
 
         protected virtual async Task<bool> IsAutomationFunctionAsync()
