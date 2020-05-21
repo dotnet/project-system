@@ -25,10 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         private readonly ITaskDelayScheduler _taskDelayScheduler;
         private IVsSolution? _solution;
         private bool _solutionOpened;
+        private __RETARGET_CHECK_OPTIONS _retargetCheckOption = __RETARGET_CHECK_OPTIONS.RCO_FIRST_SOLUTION_LOAD;
 
         private ImmutableHashSet<IVsProjectTargetDescription> _registeredDescriptions = ImmutableHashSet<IVsProjectTargetDescription>.Empty;
         private ImmutableList<string> _projectsToWaitFor = ImmutableList<string>.Empty;
-        private bool _needRetarget = false;
+        private bool _needsRetarget = false;
         private uint _cookie;
 
         [ImportingConstructor]
@@ -102,12 +103,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
                     foreach (ProjectTargetChange change in changes)
                     {
-                        _needRetarget = true;
-
                         ErrorHandler.ThrowOnFailure(service.RegisterProjectTarget(change.Description));
                         ThreadingTools.ApplyChangeOptimistically(ref _registeredDescriptions, change, (col, c) => col.Add(c.Description));
                     }
                 });
+            }
+
+            if (changes.Any())
+            {
+                _needsRetarget = true;
             }
 
             TryTriggerRetarget();
@@ -115,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         private void TryTriggerRetarget()
         {
-            if (_projectsToWaitFor.Count == 0 && _needRetarget && _solutionOpened)
+            if (_projectsToWaitFor.Count == 0 && _needsRetarget && _solutionOpened)
             {
                 _ = _taskDelayScheduler.ScheduleAsyncTask(AllProjectsDoneLoading, default);
             }
@@ -125,9 +129,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         {
             await _threadingService.SwitchToUIThread();
 
+            _needsRetarget = false;
+
             IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync(cancellationToken);
 
-            ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)__RETARGET_CHECK_OPTIONS.RCO_FIRST_SOLUTION_LOAD));
+            ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)_retargetCheckOption));
+
+            _retargetCheckOption = __RETARGET_CHECK_OPTIONS.RCO_PROJECT_RETARGET;
         }
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)

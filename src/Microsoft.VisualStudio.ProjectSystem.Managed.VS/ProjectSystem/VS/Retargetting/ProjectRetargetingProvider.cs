@@ -23,10 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
         {
-            // TODO: There is an API in CPS that takes an IProjectDataSourceRegistry
-            IProjectVersionedValue<IImmutableList<ProjectTargetChange>> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(_unconfiguredProject.Services.DataSourceRegistry);
+            IProjectVersionedValue<ProjectTargetChange> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(_unconfiguredProject.Services.DataSourceRegistry);
 
-            return changes.Value?[0];
+            return changes.Value;
         }
 
         public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)

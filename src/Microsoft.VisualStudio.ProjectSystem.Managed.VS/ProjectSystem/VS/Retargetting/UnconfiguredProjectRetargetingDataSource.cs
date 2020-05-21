@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     [Export(typeof(IUnconfiguredProjectRetargetingDataSource))]
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal partial class UnconfiguredProjectRetargetingDataSource : ConfiguredToUnconfiguredChainedDataSourceBase<IImmutableList<ProjectTargetChange>, IImmutableList<ProjectTargetChange>>, IUnconfiguredProjectRetargetingDataSource, IProjectDynamicLoadComponent
+    internal partial class UnconfiguredProjectRetargetingDataSource : ConfiguredToUnconfiguredChainedDataSourceBase<IImmutableList<ProjectTargetChange>, ProjectTargetChange>, IUnconfiguredProjectRetargetingDataSource, IProjectDynamicLoadComponent
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectRetargetingManager _projectRetargetingManager;
@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             return configuredProject.Services.ExportProvider.GetExportedValueOrDefault<IConfiguredProjectRetargetingDataSource>();
         }
 
-        protected override IImmutableList<ProjectTargetChange> ConvertInputData(IReadOnlyCollection<IImmutableList<ProjectTargetChange>> inputs)
+        protected override ProjectTargetChange ConvertInputData(IReadOnlyCollection<IImmutableList<ProjectTargetChange>> inputs)
         {
-            // For now, we just remove duplicates so that we have one target change per project
+            // Remove duplicates so that we have one target change per project
             ImmutableList<ProjectTargetChange> changes = ImmutableList<ProjectTargetChange>.Empty
                                                                                    .AddRange(inputs.SelectMany(projects => projects)
                                                                                    .Select(changes => changes)
@@ -61,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
             _projectRetargetingManager.ReportProjectNeedsRetargeting(_project.FullPath, changes);
 
-            return changes;
+            // TODO: Make this smarter, and select the best retarget to offer
+            return changes.FirstOrDefault();
         }
     }
 }
