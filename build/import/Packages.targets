@@ -76,7 +76,6 @@
     <PackageReference Update="Microsoft.VisualStudio.Workspace.VSIntegration"                         Version="16.3.43" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="16.0.28321-alpha" />
-    <PackageReference Include="Microsoft.CSharp"                                                      Version="4.7.0" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="8.0.0-alpha"/>
     <PackageReference Update="VSLangProj"                                                             Version="7.0.3300" />
     <PackageReference Update="VSLangProj2"                                                            Version="7.0.5000" />
@@ -103,6 +102,7 @@
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.7.0-2.20256.8" />
     <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.7.0-2.20256.8" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
+    <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
     <!-- Note: analyzers from github.com/dotnet/roslyn-analyzers are built together and share the same version -->
