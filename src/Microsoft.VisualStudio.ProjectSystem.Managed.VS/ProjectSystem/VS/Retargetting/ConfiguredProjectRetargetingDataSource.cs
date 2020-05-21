@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         {
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.ProjectRuleSource;
 
-            HashSet<string> ruleNames = new HashSet<string>();
+            var ruleNames = new HashSet<string>();
             foreach (IProjectRetargetCheckProvider provider in ProjectRetargetCheckProviders.ExtensionValues())
             {
                 ruleNames.AddRange(provider.GetProjectEvaluationRuleNames());

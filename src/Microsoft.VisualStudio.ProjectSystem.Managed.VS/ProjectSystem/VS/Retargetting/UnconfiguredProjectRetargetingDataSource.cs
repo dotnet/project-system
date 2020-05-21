@@ -18,8 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectRetargetingManager _projectRetargetingManager;
-        private readonly IVsService<IVsTrackProjectRetargeting2> _retargettingService;
-        private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
         internal UnconfiguredProjectRetargetingDataSource(UnconfiguredProject project,
@@ -31,8 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         {
             _project = project;
             _projectRetargetingManager = projectRetargetingManager;
-            _retargettingService = retargettingService;
-            _threadingService = threadingService;
         }
 
 
@@ -58,7 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         protected override IImmutableList<ProjectTargetChange> ConvertInputData(IReadOnlyCollection<IImmutableList<ProjectTargetChange>> inputs)
         {
             // For now, we just remove duplicates so that we have one target change per project
-            var changes = ImmutableList<ProjectTargetChange>.Empty.AddRange(inputs.SelectMany(projects => projects)
+            ImmutableList<ProjectTargetChange> changes = ImmutableList<ProjectTargetChange>.Empty
+                                                                                   .AddRange(inputs.SelectMany(projects => projects)
                                                                                    .Select(changes => changes)
                                                                                    .Distinct(change => change.NewTargetId, EqualityComparer<Guid>.Default));
 

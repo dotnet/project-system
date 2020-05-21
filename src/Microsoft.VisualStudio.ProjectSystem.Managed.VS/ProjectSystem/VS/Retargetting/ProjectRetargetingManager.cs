@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -14,35 +15,32 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
-    [Export(typeof(IPackageService))]
     [Export(typeof(IProjectRetargetingManager))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
-    internal class ProjectRetargetingManager : IProjectRetargetingManager, IVsSolutionEvents, IPackageService, IDisposable
+    internal class ProjectRetargetingManager : IProjectRetargetingManager, IVsSolutionEvents, IDisposable
     {
+        private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
         private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ITaskDelayScheduler _taskDelayScheduler;
         private IVsSolution? _solution;
         private bool _solutionOpened;
 
+        private ImmutableHashSet<IVsProjectTargetDescription> _registeredDescriptions = ImmutableHashSet<IVsProjectTargetDescription>.Empty;
         private ImmutableList<string> _projectsToWaitFor = ImmutableList<string>.Empty;
         private bool _needRetarget = false;
         private uint _cookie;
 
         [ImportingConstructor]
-        public ProjectRetargetingManager(IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
+        public ProjectRetargetingManager(IVsService<SVsSolution, IVsSolution> solutionService,
+                                         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
                                          IProjectThreadingService threadingService)
         {
+            _solutionService = solutionService;
             _retargettingService = retargettingService;
             _threadingService = threadingService;
+
             _taskDelayScheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), threadingService, default);
-        }
-
-        public async Task InitializeAsync(Shell.IAsyncServiceProvider asyncServiceProvider)
-        {
-            _solution = await asyncServiceProvider.GetServiceAsync<IVsSolution, IVsSolution>();
-
-            Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
         }
 
         public void Dispose()
@@ -57,6 +55,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public void ReportProjectMightRetarget(string projectFile)
         {
+            if (_solution == null)
+            {
+                _threadingService.ExecuteSynchronously(async () =>
+                {
+                    await _threadingService.SwitchToUIThread();
+                    if (_solution != null) return;
+
+                    _solution = await _solutionService.GetValueAsync();
+
+                    Verify.HResult(_solution.AdviseSolutionEvents(this, out _cookie));
+                });
+            }
+
             ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, col =>
             {
                 if (!col.Contains(projectFile))
@@ -70,29 +81,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public void ReportProjectNeedsRetargeting(string projectFile, IEnumerable<ProjectTargetChange> changes)
         {
-            ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, col =>
+            ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, projectFile, (col, file) =>
             {
-                if (col.Contains(projectFile))
+                if (col.Contains(file))
                 {
-                    col = col.Remove(projectFile);
+                    col = col.Remove(file);
                 }
 
                 return col;
             });
 
-            _threadingService.ExecuteSynchronously(async () =>
+            // fast path to not switch to the UI thread unnecessarily
+            if (changes.Select(c => c.Description).Except(_registeredDescriptions).Any())
             {
-                await _threadingService.SwitchToUIThread();
-
-                IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
-
-                foreach (ProjectTargetChange change in changes)
+                _threadingService.ExecuteSynchronously(async () =>
                 {
-                    _needRetarget = true;
+                    await _threadingService.SwitchToUIThread();
 
-                    service.RegisterProjectTarget(change.Description);
-                }
-            });
+                    IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+
+                    foreach (ProjectTargetChange change in changes)
+                    {
+                        _needRetarget = true;
+
+                        ErrorHandler.ThrowOnFailure(service.RegisterProjectTarget(change.Description));
+                        ThreadingTools.ApplyChangeOptimistically(ref _registeredDescriptions, change, (col, c) => col.Add(c.Description));
+                    }
+                });
+            }
 
             TryTriggerRetarget();
         }
