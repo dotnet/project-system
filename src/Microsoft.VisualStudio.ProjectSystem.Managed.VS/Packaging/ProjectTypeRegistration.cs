@@ -45,6 +45,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
     Capabilities = ProjectTypeCapabilities.CSharp,
     DisableAsynchronousProjectTreeLoad = true,
     PossibleProjectExtensions = "csproj",
-    NewProjectRequireNewFolderVsTemplate = true)]
+    NewProjectRequireNewFolderVsTemplate = true,
+    SupportsCodespaces = true)]
 [assembly: ProvideDiffSupportedContentType(".csproj", "")]   // Empty string because content type is not important, we just want to tell the diff that the file type is supported
 [assembly: ProvideEditorFactoryMapping("{f6819a78-a205-47b5-be1c-675b3c7f0b8e}", ".csproj")] // Use the XML editor
