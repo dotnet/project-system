@@ -2,7 +2,8 @@
   "tools": {
     "vs": {
       "version": "16.0"
-    }
+    },
+  "xcopy-msbuild": "16.5.0-alpha"
   },
   "msbuild-sdks": {
     "Microsoft.DotNet.Arcade.Sdk": "5.0.0-beta.20261.9"
