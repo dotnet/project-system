@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     [Export(typeof(IProjectRetargetCheckProvider))]
     [AppliesTo(ProjectCapability.DotNet)]
 #endif
-    internal class MissingWindowsDesktopSdkRetarget : IProjectRetargetCheckProvider
+    internal class MissingWindowsDesktopPlatformRetarget : IProjectRetargetCheckProvider
     {
         private static readonly IEnumerable<string> s_rules = new string[] { ConfigurationGeneral.SchemaName };
 
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         private readonly IProjectAccessor _projectAccessor;
 
         [ImportingConstructor]
-        internal MissingWindowsDesktopSdkRetarget(ConfiguredProject project,
+        internal MissingWindowsDesktopPlatformRetarget(ConfiguredProject project,
                                                   IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
                                                   IProjectAccessor projectAccessor)
         {

@@ -12,6 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         public abstract uint Order { get; }
         public virtual bool Supported => true;
 
+        // TODO: Abstract these away to a nicer API?
         public abstract Array GetRetargetParameters();
         public virtual string GetRetargetParameterDisplayName(string parameter) => parameter;
         public abstract Array GetPossibleParameterValues(string parameter);
