@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return (true, compilation.IsCaseSensitive);
         }
 
-        private static CanHandleRename(string oldName, string newName, bool isCaseSensitive)
+        private bool CanHandleRename(string oldName, string newName, bool isCaseSensitive)
             => _roslynServices.IsValidIdentifier(oldName) &&
                _roslynServices.IsValidIdentifier(newName) &&
               (!string.Equals(
