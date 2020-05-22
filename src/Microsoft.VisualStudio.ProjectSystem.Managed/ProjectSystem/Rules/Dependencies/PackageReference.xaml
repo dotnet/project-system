@@ -35,6 +35,15 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  DisplayName="Name">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
                   DisplayName="Suppress warnings" />
