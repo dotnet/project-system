@@ -83,6 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             // Get the list of possible actions to execute
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
+            string newName = Path.GetFileNameWithoutExtension(newFileWithExtension);
             CodeAnalysis.Project? project = GetCurrentProject();
             if (project is null)
             {
@@ -109,7 +110,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Rename the file
             await CPSRenameAsync(context, node, value);
 
-            //Check if there are any symbols that need to be renamed
+            if (HasSpecialCharacter(newName))
+            {
+                return;
+            }
+
+            // Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)
             {
                 return;
@@ -158,6 +164,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         }
 
+        private static bool HasSpecialCharacter(string filenameWithoutExtension)
+        {
+            return filenameWithoutExtension.Any(c => !char.IsLetterOrDigit(c));
+        }
+
         protected virtual async Task<bool> IsAutomationFunctionAsync()
         {
             await _threadingService.SwitchToUIThread();
@@ -168,7 +179,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private CodeAnalysis.Project? GetCurrentProject() =>
             _workspace.CurrentSolution.Projects.FirstOrDefault(proj => StringComparers.Paths.Equals(proj.FilePath, _projectVsServices.Project.FullPath));
-
 
         private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath) =>
             project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
