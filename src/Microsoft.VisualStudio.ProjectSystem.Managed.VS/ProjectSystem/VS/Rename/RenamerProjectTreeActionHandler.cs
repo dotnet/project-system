@@ -90,6 +90,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
+            // see if the current project contains a compilation
+            (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
+            if (!success)
+            {
+                return;
+            }
+
+            if (!CanHandleRename(oldName, newName, isCaseSensitive))
+            {
+                return;
+            }
+
             CodeAnalysis.Document? oldDocument = GetDocument(project, oldFilePath);
             if (oldDocument is null)
             {
@@ -99,18 +111,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
 
             // Check errors before applying changes
+            bool foundErrors = false;
             foreach (var action in documentRenameResult.ApplicableActions)
             {
                 foreach (var e in action.GetErrors())
                 {
-                    return;
+                    foundErrors = true;
                 }
             }
 
             // Rename the file
             await CPSRenameAsync(context, node, value);
 
-            if (HasSpecialCharacter(newName))
+            if (foundErrors)
             {
                 return;
             }
@@ -164,10 +177,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         }
 
-        private static bool HasSpecialCharacter(string filenameWithoutExtension)
+        private static async Task<(bool success, bool isCaseSensitive)> TryDetermineIfCompilationIsCaseSensitiveAsync(CodeAnalysis.Project? project)
         {
-            return filenameWithoutExtension.Any(c => !char.IsLetterOrDigit(c));
+            if (project is null)
+                return (false, false);
+
+            Compilation? compilation = await project.GetCompilationAsync();
+            if (compilation is null)
+            {
+                // this project does not support compilations
+                return (false, false);
+            }
+
+            return (true, compilation.IsCaseSensitive);
         }
+
+        private bool CanHandleRename(string oldName, string newName, bool isCaseSensitive)
+            => _roslynServices.IsValidIdentifier(oldName) &&
+               _roslynServices.IsValidIdentifier(newName) &&
+              (!string.Equals(
+                  oldName,
+                  newName,
+                  isCaseSensitive
+                    ? StringComparisons.LanguageIdentifiers
+                    : StringComparisons.LanguageIdentifiersIgnoreCase));
 
         protected virtual async Task<bool> IsAutomationFunctionAsync()
         {
