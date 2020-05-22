@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ResolvedSdkReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
-        <source>Resolved SDK Reference</source>
-        <target state="translated">已解析的 SDK 參考</target>
+        <source>SDK Reference</source>
+        <target state="needs-review-translation">已解析的 SDK 參考</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">

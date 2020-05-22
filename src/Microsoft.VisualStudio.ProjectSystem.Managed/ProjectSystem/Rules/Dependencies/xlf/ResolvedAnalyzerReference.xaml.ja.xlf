@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ja" original="../ResolvedAnalyzerReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
-        <source>Resolved Analyzer Reference</source>
-        <target state="translated">解決されたアナライザー参照</target>
+        <source>Analyzer Reference</source>
+        <target state="needs-review-translation">解決されたアナライザー参照</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
-        <source>Analyzer Properties</source>
-        <target state="translated">アナライザーのプロパティ</target>
+        <source>Analyzer Reference Properties</source>
+        <target state="needs-review-translation">アナライザーのプロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

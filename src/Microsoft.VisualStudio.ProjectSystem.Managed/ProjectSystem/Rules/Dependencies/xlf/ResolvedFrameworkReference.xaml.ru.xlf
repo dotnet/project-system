@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ru" original="../ResolvedFrameworkReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
-        <source>Framework Properties</source>
-        <target state="translated">Свойства платформы</target>
+        <source>Framework Reference Properties</source>
+        <target state="needs-review-translation">Свойства платформы</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
-        <source>Framework</source>
-        <target state="translated">Платформа</target>
+        <source>Framework Reference</source>
+        <target state="needs-review-translation">Платформа</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

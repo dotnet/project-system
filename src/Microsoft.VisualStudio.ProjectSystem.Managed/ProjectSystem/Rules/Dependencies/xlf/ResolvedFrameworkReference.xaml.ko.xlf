@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ResolvedFrameworkReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
-        <source>Framework Properties</source>
-        <target state="translated">프레임워크 속성</target>
+        <source>Framework Reference Properties</source>
+        <target state="needs-review-translation">프레임워크 속성</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
-        <source>Framework</source>
-        <target state="translated">프레임워크</target>
+        <source>Framework Reference</source>
+        <target state="needs-review-translation">프레임워크</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

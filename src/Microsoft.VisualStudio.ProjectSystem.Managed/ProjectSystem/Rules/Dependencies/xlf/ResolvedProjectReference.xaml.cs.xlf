@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="cs" original="../ResolvedProjectReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
-        <source>Resolved Project Reference</source>
-        <target state="translated">Vyřešené odkazy projektu</target>
+        <source>Project Reference</source>
+        <target state="needs-review-translation">Vyřešené odkazy projektu</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Reference Properties</source>
-        <target state="translated">Vlastnosti odkazu</target>
+        <source>Project Reference Properties</source>
+        <target state="needs-review-translation">Vlastnosti odkazu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="fr" original="../PackageReference.xaml">
     <body>
       <trans-unit id="Rule|PackageReference|DisplayName">
-        <source>Package</source>
-        <target state="translated">Package</target>
+        <source>Package Reference</source>
+        <target state="needs-review-translation">Package</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
-        <source>Package Properties</source>
-        <target state="translated">Propriétés du package</target>
+        <source>Package Reference Properties</source>
+        <target state="needs-review-translation">Propriétés du package</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">

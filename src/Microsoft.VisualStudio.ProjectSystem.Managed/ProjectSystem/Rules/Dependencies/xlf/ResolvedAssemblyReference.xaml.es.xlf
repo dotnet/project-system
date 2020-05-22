@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="es" original="../ResolvedAssemblyReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
-        <source>Resolved Assembly Reference</source>
-        <target state="translated">Referencia de ensamblado resuelta</target>
+        <source>Assembly Reference</source>
+        <target state="needs-review-translation">Referencia de ensamblado resuelta</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
-        <source>Reference Properties</source>
-        <target state="translated">Propiedades de la referencia</target>
+        <source>Assembly Reference Properties</source>
+        <target state="needs-review-translation">Propiedades de la referencia</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

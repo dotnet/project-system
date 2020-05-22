@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../ResolvedProjectReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
-        <source>Resolved Project Reference</source>
-        <target state="translated">解析的项目引用</target>
+        <source>Project Reference</source>
+        <target state="needs-review-translation">解析的项目引用</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
-        <source>Reference Properties</source>
-        <target state="translated">引用属性</target>
+        <source>Project Reference Properties</source>
+        <target state="needs-review-translation">引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

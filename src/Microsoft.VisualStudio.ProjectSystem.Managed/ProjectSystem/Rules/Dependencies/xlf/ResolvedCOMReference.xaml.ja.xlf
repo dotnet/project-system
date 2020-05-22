@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="ja" original="../ResolvedCOMReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedCOMReference|DisplayName">
-        <source>Resolved COM Reference</source>
-        <target state="translated">解決された COM 参照</target>
+        <source>COM Reference</source>
+        <target state="needs-review-translation">解決された COM 参照</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
