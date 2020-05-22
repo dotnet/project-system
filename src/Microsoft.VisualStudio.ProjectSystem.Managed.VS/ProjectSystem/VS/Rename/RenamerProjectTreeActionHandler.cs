@@ -96,13 +96,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
-            bool errorsDetected = !documentRenameResult.ApplicableActions.Select(action => action.GetErrors()).Any();
+
             // Check errors before applying changes
-            if (errorsDetected)
+            foreach (var action in documentRenameResult.ApplicableActions)
             {
-                string failureMessage = GetFailureMessageCannotApply(documentRenameResult);
-                _userNotificationServices.ShowWarning(failureMessage);
-                return;
+                foreach (var e in action.GetErrors())
+                {
+                    return;
+                }
             }
 
             // Rename the file
@@ -110,7 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             //Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)
+            {
                 return;
+            }
 
             // Ask if the user wants to rename the symbol
             bool userWantsToRenameSymbol = await CheckUserConfirmation(oldName);
@@ -153,12 +156,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }, _unconfiguredProject);
 
-        }
-
-        protected virtual string GetFailureMessageCannotApply(CodeAnalysis.Rename.Renamer.RenameDocumentActionSet? documentRenameResult)
-        {
-            return "Cannot apply " +
-                documentRenameResult?.ApplicableActions.First().GetDescription(CultureInfo.CurrentUICulture);
         }
 
         protected virtual async Task<bool> IsAutomationFunctionAsync()
