@@ -127,11 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return null;
             }
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-#pragma warning disable RS1024 // Compare symbols correctly
-            return assemblyAttributes?.FirstOrDefault((data, symbol) => data.AttributeClass.Equals(symbol), attributeTypeSymbol);
-#pragma warning restore RS1024 // Compare symbols correctly
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            return assemblyAttributes?.FirstOrDefault((data, symbol) => SymbolEqualityComparer.Default.Equals(data.AttributeClass, symbol), attributeTypeSymbol);
         }
     }
 }

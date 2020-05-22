@@ -611,9 +611,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return True
                     End If
 
-#Disable Warning RS1024 ' Compare symbols correctly
-                    If typeMember.ContainingAssembly.Equals(compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
-#Enable Warning RS1024 ' Compare symbols correctly
+                    If SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
                         Return True
                     End If
                 End If
