@@ -76,13 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 return await Task.FromResult(false);
             }
-
-            // This is a workaround to skip the method action.Description() from Roslyn.
-            protected override string GetFailureMessageCannotApply(CodeAnalysis.Rename.Renamer.RenameDocumentActionSet? documentRenameResult)
-            {
-                // TODO - Roslyn to fix https://github.com/dotnet/roslyn/issues/44220
-                return "";
-            }
         }
 
         internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, IVsOnlineServices vsOnlineServices, string language)
