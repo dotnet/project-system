@@ -85,6 +85,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             string oldName = Path.GetFileNameWithoutExtension(oldFilePath);
             string newName = Path.GetFileNameWithoutExtension(newFileWithExtension);
             CodeAnalysis.Project? project = GetCurrentProject();
+
+            // Rename the file
+            await CPSRenameAsync(context, node, value);
+
             if (project is null)
             {
                 return;
@@ -111,21 +115,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
 
             // Check errors before applying changes
-            bool foundErrors = false;
             foreach (var action in documentRenameResult.ApplicableActions)
             {
                 foreach (var e in action.GetErrors())
                 {
-                    foundErrors = true;
+                    return;
                 }
-            }
-
-            // Rename the file
-            await CPSRenameAsync(context, node, value);
-
-            if (foundErrors)
-            {
-                return;
             }
 
             // Check if there are any symbols that need to be renamed
@@ -192,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return (true, compilation.IsCaseSensitive);
         }
 
-        private bool CanHandleRename(string oldName, string newName, bool isCaseSensitive)
+        private static CanHandleRename(string oldName, string newName, bool isCaseSensitive)
             => _roslynServices.IsValidIdentifier(oldName) &&
                _roslynServices.IsValidIdentifier(newName) &&
               (!string.Equals(
