@@ -13,13 +13,13 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
-        <source>Package</source>
-        <target state="translated">Пакет</target>
+        <source>Package Reference</source>
+        <target state="needs-review-translation">Пакет</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
-        <source>Package Properties</source>
-        <target state="translated">Свойства пакета</target>
+        <source>Package Reference Properties</source>
+        <target state="needs-review-translation">Свойства пакета</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">

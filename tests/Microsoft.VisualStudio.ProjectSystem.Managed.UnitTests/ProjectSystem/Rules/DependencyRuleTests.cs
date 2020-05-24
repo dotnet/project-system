@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -109,14 +110,52 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
+        [MemberData(nameof(GetDependenciesRules))]
+        public void DependenciesRulesDescriptionHaveCorrectSuffix(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath);
+
+            Assert.EndsWith(" Reference Properties", rule.Attribute("Description")?.Value);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDependenciesRules))]
+        public void DependenciesRulesDisplayNameHaveCorrectSuffix(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath);
+
+            Assert.EndsWith(" Reference", rule.Attribute("DisplayName")?.Value);
+        }
+
+        [Theory]
         [MemberData(nameof(GetUnresolvedDependenciesRules))]
         public void UnresolvedDependenciesRulesMustNotHaveOriginalItemSpec(string ruleName, string fullPath)
         {
             XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
 
-            var property = rule.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""OriginalItemSpec""]", namespaceManager);
+            XElement? property = rule.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""OriginalItemSpec""]", namespaceManager);
 
             Assert.Null(property);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetResolvedAndUnresolvedDependencyRulePairs))]
+        public void ResolvedAndUnresolvedDependencyRulesHaveSameDisplayName(string unresolvedName, string resolvedName, string unresolvedPath, string resolvedPath)
+        {
+            XElement unresolvedRule = LoadXamlRule(unresolvedPath);
+            XElement resolvedRule = LoadXamlRule(resolvedPath);
+
+            Assert.Equal(unresolvedRule.Attribute("DisplayName")?.Value, resolvedRule.Attribute("DisplayName")?.Value);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetResolvedAndUnresolvedDependencyRulePairs))]
+        public void ResolvedAndUnresolvedDependencyRulesHaveSameDescription(string unresolvedName, string resolvedName, string unresolvedPath, string resolvedPath)
+        {
+            XElement unresolvedRule = LoadXamlRule(unresolvedPath);
+            XElement resolvedRule = LoadXamlRule(resolvedPath);
+
+            Assert.Equal(unresolvedRule.Attribute("Description")?.Value, resolvedRule.Attribute("Description")?.Value);
         }
 
         public static IEnumerable<object[]> GetUnresolvedDependenciesRules()
@@ -134,6 +173,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public static IEnumerable<object[]> GetDependenciesRules()
         {
             return Project(GetRules("Dependencies"));
+        }
+
+        public static IEnumerable<object[]> GetResolvedAndUnresolvedDependencyRulePairs()
+        {
+            List<string> rules = GetRules("Dependencies").ToList();
+
+            HashSet<string> unresolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1).ToHashSet(StringComparer.Ordinal);
+            HashSet<string> resolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1).ToHashSet(StringComparer.Ordinal);
+
+            Assert.Equal(resolvedPaths.Count, unresolvedPaths.Count);
+
+            foreach (string unresolvedPath in unresolvedPaths)
+            {
+                string unresolvedName = Path.GetFileNameWithoutExtension(unresolvedPath);
+                string resolvedName = "Resolved" + unresolvedName;
+                string resolvedPath = Path.Combine(Path.GetDirectoryName(unresolvedPath), resolvedName + ".xaml");
+
+                Assert.Contains(resolvedPath, resolvedPaths);
+
+                yield return new object[] { unresolvedName, resolvedName, unresolvedPath, resolvedPath };
+            }
         }
     }
 }

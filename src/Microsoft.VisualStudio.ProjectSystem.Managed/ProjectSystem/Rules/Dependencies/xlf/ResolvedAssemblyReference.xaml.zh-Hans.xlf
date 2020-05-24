@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../ResolvedAssemblyReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
-        <source>Resolved Assembly Reference</source>
-        <target state="translated">解析的程序集引用</target>
+        <source>Assembly Reference</source>
+        <target state="needs-review-translation">解析的程序集引用</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
-        <source>Reference Properties</source>
-        <target state="translated">引用属性</target>
+        <source>Assembly Reference Properties</source>
+        <target state="needs-review-translation">引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

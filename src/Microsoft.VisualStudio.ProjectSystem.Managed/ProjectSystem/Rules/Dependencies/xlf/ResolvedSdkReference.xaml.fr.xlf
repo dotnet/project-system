@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="fr" original="../ResolvedSdkReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
-        <source>Resolved SDK Reference</source>
-        <target state="translated">Référence SDK résolue</target>
+        <source>SDK Reference</source>
+        <target state="needs-review-translation">Référence SDK résolue</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">

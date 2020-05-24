@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ResolvedAnalyzerReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
-        <source>Resolved Analyzer Reference</source>
-        <target state="translated">확인된 분석기 참조</target>
+        <source>Analyzer Reference</source>
+        <target state="needs-review-translation">확인된 분석기 참조</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
-        <source>Analyzer Properties</source>
-        <target state="translated">분석기 속성</target>
+        <source>Analyzer Reference Properties</source>
+        <target state="needs-review-translation">분석기 속성</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

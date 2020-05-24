@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
-        <source>Analyzer Properties</source>
-        <target state="translated">Proprietà dell'analizzatore</target>
+        <source>Analyzer Reference Properties</source>
+        <target state="needs-review-translation">Proprietà dell'analizzatore</target>
         <note />
       </trans-unit>
     </body>

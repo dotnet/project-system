@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ResolvedSdkReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
-        <source>Resolved SDK Reference</source>
-        <target state="translated">확인된 SDK 참조</target>
+        <source>SDK Reference</source>
+        <target state="needs-review-translation">확인된 SDK 참조</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">

@@ -29,24 +29,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             var searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
-            foreach (var fileName in Directory.EnumerateFiles(rulesPath, "*.xaml", searchOption))
+            foreach (var filePath in Directory.EnumerateFiles(rulesPath, "*.xaml", searchOption))
             {
-                XElement rule = LoadXamlRule(fileName);
+                XElement rule = LoadXamlRule(filePath);
 
                 // Ignore XAML documents for non-Rule types (such as ProjectSchemaDefinitions)
                 if (rule.Name.LocalName != "Rule")
                     continue;
 
-                yield return fileName;
+                yield return filePath;
             }
         }
 
-        /// <summary>Projects a XAML file name into the form used by unit tests theories.</summary>
-        protected static IEnumerable<object[]> Project(IEnumerable<string> fileNames)
+        /// <summary>Projects a XAML rule file's path into the form used by unit tests theories.</summary>
+        protected static IEnumerable<object[]> Project(IEnumerable<string> filePaths)
         {
             // we return the rule name separately mainly to get a readable display in Test Explorer so failures can be diagnosed more easily
-            return from fileName in fileNames
-                   select new object[] { Path.GetFileNameWithoutExtension(fileName), fileName };
+            return from filePath in filePaths
+                   select new object[] { Path.GetFileNameWithoutExtension(filePath), filePath };
         }
 
         protected static XElement LoadXamlRule(string filePath)

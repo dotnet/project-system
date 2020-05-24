@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ResolvedAssemblyReference.xaml">
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
-        <source>Resolved Assembly Reference</source>
-        <target state="translated">확인된 어셈블리 참조</target>
+        <source>Assembly Reference</source>
+        <target state="needs-review-translation">확인된 어셈블리 참조</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
-        <source>Reference Properties</source>
-        <target state="translated">참조 속성</target>
+        <source>Assembly Reference Properties</source>
+        <target state="needs-review-translation">참조 속성</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
