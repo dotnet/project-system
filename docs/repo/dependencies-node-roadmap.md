@@ -92,7 +92,7 @@ Items are modelled via `IRelatableItem`. Each kind of item in a project's depend
 
 The easiest way to define an item is to derive from `RelatableItemBase` which in turn derives from `AttachedCollectionItemBase`.
 
-- `RelatableImemBase` makes it easier to implement `IRelatableItem` correctly, implementing much of the required protocol and exposing abstract/virtual members for customising behaviour.
+- `RelatableItemBase` makes it easier to implement `IRelatableItem` correctly, implementing much of the required protocol and exposing abstract/virtual members for customising behaviour.
 
 - `AttachedCollectionItemBase` exposes presentation and interaction members for the item such as its `Text`, icons (`IconMoniker`, `ExpandedIconMoniker`, `OverlayIconMoniker`, `StateIconMoniker`), `FontStyle`, `FontWeight`, `ToolTipText`, browse objects (for Visual Studio's _Properties_ pane) and so forth. Derivations may expose additional patterns such as `IInvocationPattern` for double-click logic, `IContextMenuPattern` for context menus, `IDragDropSourcePattern`/`IDragDropTargetPattern` for drag/drop, and so on.
 
