@@ -21,4 +21,18 @@
                 ReadOnly="True"
                 Visible="False" />
 
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="TargetingPackPath"
+                  DisplayName="Path"
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="TargetingPackVersion"
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="Profile"
+                  DisplayName="Profile"
+                  ReadOnly="True" />
 </Rule>

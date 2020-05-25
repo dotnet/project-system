@@ -27,6 +27,16 @@
         <target state="new">Name</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">버전</target>
@@ -38,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
-        <source>Included assets</source>
-        <target state="translated">포함된 자산</target>
+        <source>Included Assets</source>
+        <target state="needs-review-translation">포함된 자산</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -48,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
-        <source>Excluded assets</source>
-        <target state="translated">제외된 자산</target>
+        <source>Excluded Assets</source>
+        <target state="needs-review-translation">제외된 자산</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -58,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>Private assets</source>
-        <target state="translated">Private 자산</target>
+        <source>Private Assets</source>
+        <target state="needs-review-translation">Private 자산</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -68,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress warnings</source>
-        <target state="translated">경고 표시 안 함</target>
+        <source>Suppress Warnings</source>
+        <target state="needs-review-translation">경고 표시 안 함</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -78,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
-        <source>Generate path property</source>
-        <target state="translated">경로 속성 생성</target>
+        <source>Generate Path Property</source>
+        <target state="needs-review-translation">경로 속성 생성</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">

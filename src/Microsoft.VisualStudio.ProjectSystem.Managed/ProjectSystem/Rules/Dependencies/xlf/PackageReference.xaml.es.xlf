@@ -27,6 +27,16 @@
         <target state="new">Name</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">Versión</target>
@@ -38,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
-        <source>Included assets</source>
-        <target state="translated">Recursos incluidos</target>
+        <source>Included Assets</source>
+        <target state="needs-review-translation">Recursos incluidos</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -48,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
-        <source>Excluded assets</source>
-        <target state="translated">Recursos excluidos</target>
+        <source>Excluded Assets</source>
+        <target state="needs-review-translation">Recursos excluidos</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -58,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>Private assets</source>
-        <target state="translated">Recursos privados</target>
+        <source>Private Assets</source>
+        <target state="needs-review-translation">Recursos privados</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -68,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress warnings</source>
-        <target state="translated">Suprimir las advertencias</target>
+        <source>Suppress Warnings</source>
+        <target state="needs-review-translation">Suprimir las advertencias</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -78,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
-        <source>Generate path property</source>
-        <target state="translated">Generar la propiedad path</target>
+        <source>Generate Path Property</source>
+        <target state="needs-review-translation">Generar la propiedad path</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">

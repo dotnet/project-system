@@ -27,6 +27,16 @@
         <target state="new">Name</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Path|Description">
+        <source>Location of the package being referenced.</source>
+        <target state="new">Location of the package being referenced.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Path|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
         <target state="translated">バージョン</target>
@@ -38,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
-        <source>Included assets</source>
-        <target state="translated">含まれている資産</target>
+        <source>Included Assets</source>
+        <target state="needs-review-translation">含まれている資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -48,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
-        <source>Excluded assets</source>
-        <target state="translated">除外された資産</target>
+        <source>Excluded Assets</source>
+        <target state="needs-review-translation">除外された資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -58,8 +68,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
-        <source>Private assets</source>
-        <target state="translated">プライベート資産</target>
+        <source>Private Assets</source>
+        <target state="needs-review-translation">プライベート資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -68,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress warnings</source>
-        <target state="translated">警告の抑制</target>
+        <source>Suppress Warnings</source>
+        <target state="needs-review-translation">警告の抑制</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -78,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
-        <source>Generate path property</source>
-        <target state="translated">パス プロパティを生成します</target>
+        <source>Generate Path Property</source>
+        <target state="needs-review-translation">パス プロパティを生成します</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">
