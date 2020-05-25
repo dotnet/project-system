@@ -54,9 +54,9 @@
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="15.8.28010" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="1.16.30" />
     <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.29" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="16.6.30008.236" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="16.6.30107.105" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="16.0.28316-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="16.6.30008.236" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="16.6.30107.105" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.9.0"                               Version="9.0.30730" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.10.0"                              Version="10.0.30320" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.11.0"                              Version="11.0.61031" />
