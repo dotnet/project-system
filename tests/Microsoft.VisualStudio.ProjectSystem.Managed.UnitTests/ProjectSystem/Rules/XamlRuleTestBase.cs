@@ -78,5 +78,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 }
             }
         }
+
+        protected static IEnumerable<XElement> GetVisibleProperties(XElement rule)
+        {
+            foreach (var property in GetProperties(rule))
+            {
+                if (!string.Equals(property.Attribute("Visible")?.Value, "False", StringComparison.OrdinalIgnoreCase))
+                {
+                    yield return property;
+                }
+            }
+        }
     }
 }

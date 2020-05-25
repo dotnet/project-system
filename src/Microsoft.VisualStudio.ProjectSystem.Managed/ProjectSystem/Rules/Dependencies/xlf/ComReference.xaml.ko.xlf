@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../COMReference.xaml">
     <body>
+      <trans-unit id="BoolProperty|CopyLocal|Description">
+        <source>Indicates whether the reference will be copied to the output directory.</source>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocal|DisplayName">
+        <source>Copy Local</source>
+        <target state="new">Copy Local</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
+        <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
+        <source>Embed Interop Types</source>
+        <target state="new">Embed Interop Types</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|ComReference|DisplayName">
         <source>COM Reference</source>
         <target state="translated">COM 참조</target>
@@ -12,6 +32,16 @@
         <target state="translated">COM 참조 속성</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|Description">
+        <source>A comma-delimited list of aliases to this reference.</source>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|Aliases|DisplayName">
+        <source>Aliases</source>
+        <target state="new">Aliases</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
         <target state="translated">CLSID</target>
@@ -20,6 +50,16 @@
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
         <target state="translated">COM 서버의 GUID입니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|Description">
+        <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Identity|DisplayName">
+        <source>Identity</source>
+        <target state="new">Identity</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
@@ -40,6 +80,26 @@
       <trans-unit id="IntProperty|VersionMinor|DisplayName">
         <source>Minor Version</source>
         <target state="translated">부 버전</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|Description">
+        <source>Location of the file being referenced.</source>
+        <target state="new">Location of the file being referenced.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResolvedPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>Version of reference.</source>
+        <target state="new">Version of reference.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WrapperTool|DisplayName">

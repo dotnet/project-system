@@ -8,8 +8,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
-        <source>Generate path property</source>
-        <target state="translated">Generuj właściwość ścieżki</target>
+        <source>Generate Path Property</source>
+        <target state="needs-review-translation">Generuj właściwość ścieżki</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>NoWarn</source>
-        <target state="translated">NoWarn</target>
+        <source>Suppress Warnings</source>
+        <target state="needs-review-translation">NoWarn</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -53,8 +53,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
-        <source>IncludeAssets</source>
-        <target state="translated">Uwzględnij zasoby</target>
+        <source>Included Assets</source>
+        <target state="needs-review-translation">Uwzględnij zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
-        <source>ExcludeAssets</source>
-        <target state="translated">Wyklucz zasoby</target>
+        <source>Excluded Assets</source>
+        <target state="needs-review-translation">Wyklucz zasoby</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">

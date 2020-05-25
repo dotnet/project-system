@@ -12,9 +12,54 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
+  <StringListProperty Name="Aliases"
+                      Description="A comma-delimited list of aliases to this reference."
+                      DisplayName="Aliases"
+                      Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+  <BoolProperty Name="CopyLocal"
+                Description="Indicates whether the reference will be copied to the output directory."
+                DisplayName="Copy Local">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  PersistedName="Private"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="EmbedInteropTypes"
+                Description="Indicates whether types defined in this assembly will be embedded into the target assembly."
+                DisplayName="Embed Interop Types">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
   <StringProperty Name="Guid"
                   Description="The GUID of the COM server."
                   DisplayName="CLSID" />
+
+  <StringProperty Name="Identity"
+                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
+                  DisplayName="Identity"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
@@ -39,5 +84,17 @@
 
   <StringProperty Name="WrapperTool"
                   DisplayName="Wrapper Tool" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="ResolvedPath"
+                  DisplayName="Path"
+                  Description="Location of the file being referenced."
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="Version"
+                  DisplayName="Version"
+                  Description="Version of reference."
+                  ReadOnly="True" />
 
 </Rule>

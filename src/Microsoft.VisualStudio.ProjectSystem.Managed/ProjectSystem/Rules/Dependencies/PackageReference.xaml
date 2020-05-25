@@ -21,15 +21,15 @@
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="Excluded assets" />
+                  DisplayName="Excluded Assets" />
 
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
-                DisplayName="Generate path property" />
+                DisplayName="Generate Path Property" />
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="Included assets" />
+                  DisplayName="Included Assets" />
 
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
@@ -46,11 +46,17 @@
 
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
-                  DisplayName="Suppress warnings" />
+                  DisplayName="Suppress Warnings" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="Path"
+                  Description="Location of the package being referenced."
+                  DisplayName="Path"
+                  ReadOnly="True" />
 
   <StringProperty Name="PrivateAssets"
                   Description="Assets that are private in this reference."
-                  DisplayName="Private assets" />
+                  DisplayName="Private Assets" />
 
   <StringProperty Name="Version"
                   Description="Version of dependency."

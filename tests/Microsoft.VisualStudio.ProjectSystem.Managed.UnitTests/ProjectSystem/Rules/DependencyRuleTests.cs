@@ -158,6 +158,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             Assert.Equal(unresolvedRule.Attribute("Description")?.Value, resolvedRule.Attribute("Description")?.Value);
         }
 
+        [Theory]
+        [MemberData(nameof(GetResolvedAndUnresolvedDependencyRulePairs))]
+        public void ResolvedAndUnresolvedDependencyRulesHaveSameVisibleProperties(string unresolvedName, string resolvedName, string unresolvedPath, string resolvedPath)
+        {
+            Dictionary<string, XElement> unresolvedPropertyByName = GetVisibleProperties(LoadXamlRule(unresolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
+            Dictionary<string, XElement> resolvedPropertyByName = GetVisibleProperties(LoadXamlRule(resolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
+
+            var missingInUnresolved = resolvedPropertyByName.Keys.Except(unresolvedPropertyByName.Keys).ToList();
+            var missingInResolved = unresolvedPropertyByName.Keys.Except(resolvedPropertyByName.Keys).ToList();
+
+            Assert.True(missingInUnresolved.Count == 0, "Resolved properties not found in unresolved: " + string.Join(", ", missingInUnresolved));
+            Assert.True(missingInResolved.Count == 0, "Unresolved properties not found in resolved: " + string.Join(", ", missingInResolved));
+            Assert.Equal(unresolvedPropertyByName.Count, resolvedPropertyByName.Count); // should be redundant given the above two checks
+
+            foreach ((string name, XElement resolved) in resolvedPropertyByName)
+            {
+                XElement unresolved = unresolvedPropertyByName[name];
+
+                Assert.Equal(resolved.Attribute("Description")?.Value, unresolved.Attribute("Description")?.Value);
+                Assert.Equal(resolved.Attribute("DisplayName")?.Value, unresolved.Attribute("DisplayName")?.Value);
+                Assert.True(string.Equals(resolved.Attribute("ReadOnly")?.Value, unresolved.Attribute("ReadOnly")?.Value),
+                    $"ReadOnly attribute for property {name} differs between unresolved/resolved rules");
+            }
+        }
+
         public static IEnumerable<object[]> GetUnresolvedDependenciesRules()
         {
             return Project(GetRules("Dependencies")

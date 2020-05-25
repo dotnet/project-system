@@ -28,7 +28,7 @@
 
   <StringProperty Name="ExcludeAssets"
                   Description="Assets to exclude from this reference."
-                  DisplayName="ExcludeAssets">
+                  DisplayName="Excluded Assets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
@@ -39,7 +39,7 @@
 
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
-                DisplayName="Generate path property">
+                DisplayName="Generate Path Property">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
@@ -50,7 +50,7 @@
 
   <StringProperty Name="IncludeAssets"
                   Description="Assets to include from this reference."
-                  DisplayName="IncludeAssets">
+                  DisplayName="Included Assets">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   ItemType="PackageReference"
@@ -69,7 +69,7 @@
 
   <StringProperty Name="NoWarn"
                   Description="Comma-delimited list of warnings that should be suppressed for this package."
-                  DisplayName="NoWarn"
+                  DisplayName="Suppress Warnings"
                   Visible="True">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"

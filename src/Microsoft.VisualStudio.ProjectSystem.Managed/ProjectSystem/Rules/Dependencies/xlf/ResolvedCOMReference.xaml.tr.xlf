@@ -2,6 +2,21 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../ResolvedCOMReference.xaml">
     <body>
+      <trans-unit id="BoolProperty|Isolated|DisplayName">
+        <source>Isolated</source>
+        <target state="new">Isolated</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|VersionMajor|DisplayName">
+        <source>Major Version</source>
+        <target state="new">Major Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IntProperty|VersionMinor|DisplayName">
+        <source>Minor Version</source>
+        <target state="new">Minor Version</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|DisplayName">
         <source>COM Reference</source>
         <target state="needs-review-translation">Çözümlenen COM Başvurusu</target>
@@ -57,6 +72,16 @@
         <target state="translated">Yerel Bütünleştirilmiş Kod</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Guid|Description">
+        <source>The GUID of the COM server.</source>
+        <target state="new">The GUID of the COM server.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Guid|DisplayName">
+        <source>CLSID</source>
+        <target state="new">CLSID</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
         <target state="translated">Kimlik</target>
@@ -65,6 +90,16 @@
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
         <target state="translated">Başvurulan bütünleştirilmiş kodun güvenlik kimliği (bkz. System.Reflection.Assembly.Evidence veya System.Security.Policy.Evidence).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|Description">
+        <source>The LCID of the COM server.</source>
+        <target state="new">The LCID of the COM server.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Lcid|DisplayName">
+        <source>Locale</source>
+        <target state="new">Locale</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
@@ -85,6 +120,11 @@
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
         <target state="translated">Başvurunun sürümü.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WrapperTool|DisplayName">
+        <source>Wrapper Tool</source>
+        <target state="new">Wrapper Tool</target>
         <note />
       </trans-unit>
     </body>

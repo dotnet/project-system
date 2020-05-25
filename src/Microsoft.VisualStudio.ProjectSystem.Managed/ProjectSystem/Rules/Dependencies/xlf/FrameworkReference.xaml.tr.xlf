@@ -12,6 +12,21 @@
         <target state="translated">Framework Başvurusu</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|Profile|DisplayName">
+        <source>Profile</source>
+        <target state="new">Profile</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
+        <source>Version</source>
+        <target state="new">Version</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

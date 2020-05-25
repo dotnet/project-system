@@ -73,7 +73,15 @@
                   Visible="False" />
 
   <StringProperty Name="Guid"
-                  Visible="False" />
+                  Description="The GUID of the COM server."
+                  DisplayName="CLSID">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="HintPath"
                   Visible="false" />
@@ -92,8 +100,29 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <BoolProperty Name="Isolated"
+                DisplayName="Isolated">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
   <BoolProperty Name="IsWinMDFile"
                 Visible="false" />
+
+  <StringProperty Name="Lcid"
+                  Description="The LCID of the COM server."
+                  DisplayName="Locale">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="Name"
                   ReadOnly="True"
@@ -136,10 +165,24 @@
                   ReadOnly="True" />
 
   <IntProperty Name="VersionMajor"
-               Visible="False" />
+               DisplayName="Major Version">
+    <IntProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </IntProperty.DataSource>
+  </IntProperty>
 
   <IntProperty Name="VersionMinor"
-               Visible="False" />
+               DisplayName="Minor Version">
+    <IntProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </IntProperty.DataSource>
+  </IntProperty>
 
   <BoolProperty Name="Visible"
                 ReadOnly="True"
@@ -150,6 +193,13 @@
                 Visible="false" />
 
   <StringProperty Name="WrapperTool"
-                  Visible="False" />
+                  DisplayName="Wrapper Tool">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
 </Rule>
