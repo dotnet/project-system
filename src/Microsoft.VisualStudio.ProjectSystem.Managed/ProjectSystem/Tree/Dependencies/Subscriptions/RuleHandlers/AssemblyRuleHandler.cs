@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AssemblyRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "AssemblyDependency";
+        public const string ProviderTypeString = "Assembly";
 
         private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,
