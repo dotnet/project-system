@@ -88,23 +88,23 @@ The Project System provides a higher-level system for building the transitive de
 
 ### Items
 
-Items are modelled via `IRelatableItem`. Each kind of item in a project's dependency tree has its own item type.
+Items are modelled via [`IRelatableItem`][IRelatableItem]. Each kind of item in a project's dependency tree has its own item type.
 
-The easiest way to define an item is to derive from `RelatableItemBase` which in turn derives from `AttachedCollectionItemBase`.
+The easiest way to define an item is to derive from [`RelatableItemBase`][RelatableItemBase] which in turn derives from [`AttachedCollectionItemBase`][AttachedCollectionItemBase].
 
-- `RelatableItemBase` makes it easier to implement `IRelatableItem` correctly, implementing much of the required protocol and exposing abstract/virtual members for customising behaviour.
+- [`RelatableItemBase`][RelatableItemBase] makes it easier to implement [`IRelatableItem`][IRelatableItem] correctly, implementing much of the required protocol and exposing abstract/virtual members for customising behaviour.
 
-- `AttachedCollectionItemBase` exposes presentation and interaction members for the item such as its `Text`, icons (`IconMoniker`, `ExpandedIconMoniker`, `OverlayIconMoniker`, `StateIconMoniker`), `FontStyle`, `FontWeight`, `ToolTipText`, browse objects (for Visual Studio's _Properties_ pane) and so forth. Derivations may expose additional patterns such as `IInvocationPattern` for double-click logic, `IContextMenuPattern` for context menus, `IDragDropSourcePattern`/`IDragDropTargetPattern` for drag/drop, and so on.
+- [`AttachedCollectionItemBase`][AttachedCollectionItemBase] exposes presentation and interaction members for the item such as its `Text`, icons (`IconMoniker`, `ExpandedIconMoniker`, `OverlayIconMoniker`, `StateIconMoniker`), `FontStyle`, `FontWeight`, `ToolTipText`, browse objects (for Visual Studio's _Properties_ pane) and so forth. Derivations may expose additional patterns such as `IInvocationPattern` for double-click logic, `IContextMenuPattern` for context menus, `IDragDropSourcePattern`/`IDragDropTargetPattern` for drag/drop, and so on.
 
-A typical item implementation will derive from `AttachedCollectionItemBase`, define properties for the item's state, and override presentation members to specify icons, browse objects and so forth.
+A typical item implementation will derive from [`AttachedCollectionItemBase`][AttachedCollectionItemBase], define properties for the item's state, and override presentation members to specify icons, browse objects and so forth.
 
 Item state is important as we will see when we talk about relations.
 
 ### Relations
 
-Relations are modelled via `IRelation` and represent bi-directional linkages between items in the tree.
+Relations are modelled via [`IRelation`][IRelation] and represent bi-directional linkages between items in the tree.
 
-The easiest way to define a relation is to derive from `RelationBase<TParent, TChild>`. This offers an extra level of type safety over `IRelation`.
+The easiest way to define a relation is to derive from [`RelationBase<TParent, TChild>`][RelationBase]. This offers an extra level of type safety over [`IRelation`][IRelation].
 
 A relation may be between two different kinds of item (e.g. a _package_ contains a _compile-time assembly_) or even two items of the same kind (e.g. a _package_ contains a reference to another _package_).
 
@@ -120,9 +120,9 @@ Use of relations to determine an item's parents comes into play when searching, 
 
 When the user performs a search within Solution Explorer, it is unlikly that the entire dependency graph has been materialised. Therefore, in order to search we need an additional mechanism that doesn't rely on materialised items.
 
-Extensions that add transitive dependencies to the tree via the above items/relations should also implement `IDependenciesTreeSearchProvider` to support search in Solution Explorer. The implementation should look at the underlying data source and produce any items that match the user's search.
+Extensions that add transitive dependencies to the tree via the above items/relations should also implement [`IDependenciesTreeSearchProvider`][IDependenciesTreeSearchProvider] to support search in Solution Explorer. The implementation should look at the underlying data source and produce any items that match the user's search.
 
-Each search operation runs with an `IDependenciesTreeProjectSearchContext` which exposes a `CancellationToken`, the `UnconfiguredProject`, and allows creating a per-target `IDependenciesTreeProjectTargetSearchContext` via which results may be submitted.
+Each search operation runs with an [`IDependenciesTreeProjectSearchContext`][IDependenciesTreeProjectSearchContext] which exposes a `CancellationToken`, the `UnconfiguredProject`, and allows creating a per-target [`IDependenciesTreeProjectTargetSearchContext`][IDependenciesTreeProjectTargetSearchContext] via which results may be submitted.
 
 Implementations should check for cancellation periodically, as a modification to the user's search string or reaching the maximum number of results will both result in cancellation.
 
@@ -157,3 +157,12 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [DependenciesSnapshotProvider]:           /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/DependenciesSnapshotProvider.cs "DependenciesSnapshotProvider.cs"
 [IDependencyCrossTargetSubscriber]:       /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/IDependencyCrossTargetSubscriber.cs "IDependencyCrossTargetSubscriber.cs"
 [ProjectRuleHandler]:                     /src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Tree/Dependencies/Subscriptions/ProjectRuleHandler.cs "ProjectRuleHandler.cs"
+
+[IRelation]:                                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelation.cs "IRelation.cs"
+[IRelatableItem]:                              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelatableItem.cs "IRelatableItem.cs"
+[IDependenciesTreeProjectSearchContext]:       /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectSearchContext.cs "IDependenciesTreeProjectSearchContext.cs"
+[IDependenciesTreeProjectTargetSearchContext]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectTargetSearchContext.cs "IDependenciesTreeProjectTargetSearchContext.cs"
+[RelatableItemBase]:                           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelatableItemBase.cs "RelatableItemBase.cs"
+[AttachedCollectionItemBase]:                  /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/AttachedCollectionItemBase.cs "AttachedCollectionItemBase.cs"
+[RelationBase]:                                /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelationBase.cs "RelationBase.cs"
+[IDependenciesTreeSearchProvider]:             /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeSearchProvider.cs "IDependenciesTreeSearchProvider.cs"
