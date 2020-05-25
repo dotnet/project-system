@@ -384,17 +384,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     provider.CalculatePropertyValues(ProjectTreeCustomizablePropertyContext.Instance, values);
                 }
 
-                // Note that all the parameters are specified so we can force this call to an
-                // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
-                // is publicly available we can move this to an overload with default values for
-                // most of the parameters, and we'll only need to pass the interesting ones.
                 return NewTree(
                     caption: values.Caption,
-                    filePath: null,
-                    browseObjectProperties: null,
                     icon: values.Icon,
                     expandedIcon: values.ExpandedIcon,
-                    visible: true,
                     flags: values.Flags);
             }
         }
@@ -436,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             catch (Exception ex)
             {
                 // We do not expect any exception when we call SubmitTreeUpdateAsync, but we don't want to leak an exception here.
-                // Because it will fail the dataflow block and stops updating the project tree silently.
+                // Because it will fault the dataflow block which stops further tree updates.
                 _ = ProjectFaultHandlerService.ReportFaultAsync(ex, UnconfiguredProject);
             }
 
@@ -453,7 +446,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    dependenciesNode = await viewProvider!.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
+                    dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
                     if (_treeTelemetryService.IsActive)
                     {
@@ -487,10 +480,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             bool visible = true,
             ProjectTreeFlags? flags = null)
         {
-            // Note that all the parameters are specified so we can force this call to an
-            // overload of NewTree available prior to 15.5 versions of CPS. Once a 15.5 build
-            // is publicly available we can move this to an overload with default values for
-            // most of the parameters, and we'll only need to pass the interesting ones.
             return NewTree(
                 caption: caption,
                 item: itemContext,
@@ -499,8 +488,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 icon: icon,
                 expandedIcon: expandedIcon,
                 visible: visible,
-                flags: flags,
-                isLinked: false);
+                flags: flags);
         }
 
         public IProjectTree CreateTree(
