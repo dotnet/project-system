@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         [ImportingConstructor]
         public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
-            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var disposables = new DisposableBag();
 
             var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
-                _project.Services,
+                _project,
                 projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
                                     .WhereNotNull() // Filter out those without PackageReference
                                     .Select(DropConfiguredProjectVersions),
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-            return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project.Services, dataSource);
+            return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project, dataSource);
         }
 
         private void ReportUserFault(string message)
