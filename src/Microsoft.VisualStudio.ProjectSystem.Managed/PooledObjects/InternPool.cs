@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 
-namespace Microsoft.VisualStudio.Utilities
+namespace Microsoft.VisualStudio.Buffers.PooledObjects
 {
     /// <summary>
     /// A thread-safe object pool, backed by <see cref="ImmutableHashSet{T}"/> and using interlocked
