@@ -136,7 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
                 if (!containsProhibited)
                 {
-                    // TODO when CPS inserts, use ContainsAny here instead
                     if (item.Flags.Contains(DependencyTreeFlags.DependencyGroup) ||
                         item.Flags.Contains(DependencyTreeFlags.TargetNode) ||
                         item.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
