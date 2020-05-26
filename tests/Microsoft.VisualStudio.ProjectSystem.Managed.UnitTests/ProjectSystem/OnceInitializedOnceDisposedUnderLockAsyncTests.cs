@@ -408,8 +408,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed) 
                 : base(joinableTaskContextNode)
             {
-                if (disposed == null)
-                    disposed = () => Task.CompletedTask;
+                disposed ??= () => Task.CompletedTask;
 
                 _disposed = disposed;
             }

@@ -42,8 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             {
                 if (IsEnabled)
                 {
-                    if (_builder == null)
-                        _builder = new StringBuilder();
+                    _builder ??= new StringBuilder();
 
                     // Need to factor in that when we eventually write to the logger
                     // it's going to append a new line to the string we write, so we 

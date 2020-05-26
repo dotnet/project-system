@@ -142,10 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                         SelectedDebugProfile.CommandName = _selectedLaunchType.CommandName;
                         if (_selectedLaunchType.CommandName == ProfileCommandNames.Executable)
                         {
-                            if (ExecutablePath == null)
-                            {
-                                ExecutablePath = string.Empty;
-                            }
+                            ExecutablePath ??= string.Empty;
                         }
                         else
                         {
