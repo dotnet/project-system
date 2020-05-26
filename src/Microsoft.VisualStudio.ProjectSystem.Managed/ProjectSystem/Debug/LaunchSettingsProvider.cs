@@ -397,10 +397,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 : new LaunchSettingsData();
 
             // Make sure there is at least an empty profile list
-            if (settings.Profiles == null)
-            {
-                settings.Profiles = new List<LaunchProfileData>();
-            }
+            settings.Profiles ??= new List<LaunchProfileData>();
 
             return settings;
         }

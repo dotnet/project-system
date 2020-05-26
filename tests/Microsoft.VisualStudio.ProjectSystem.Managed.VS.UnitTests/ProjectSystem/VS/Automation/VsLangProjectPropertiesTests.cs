@@ -179,10 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             UnconfiguredProject? project = null,
             BuildManager? buildManager = null)
         {
-            if (project == null)
-            {
-                project = UnconfiguredProjectFactory.Create();
-            }
+            project ??= UnconfiguredProjectFactory.Create();
 
             return new VSProject(vsproject, threadingService, projectProperties, project, buildManager!);
         }

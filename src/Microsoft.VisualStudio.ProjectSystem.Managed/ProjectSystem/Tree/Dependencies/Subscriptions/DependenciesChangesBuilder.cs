@@ -15,10 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         public void Added(IDependencyModel model)
         {
-            if (_added == null)
-            {
-                _added = new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
-            }
+            _added ??= new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
 
             _added.Remove(model);
             _added.Add(model);
@@ -26,10 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         public void Removed(string providerType, string dependencyId)
         {
-            if (_removed == null)
-            {
-                _removed = new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
-            }
+            _removed ??= new HashSet<IDependencyModel>(IDependencyModelEqualityComparer.Instance);
 
             var identity = new RemovedDependencyModel(providerType, dependencyId);
             _removed.Remove(identity);
