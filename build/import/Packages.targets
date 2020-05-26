@@ -111,7 +111,7 @@
     <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.6.0-2.20157.5" />
     <PackageReference Update="Microsoft.NetCore.Analyzers"                                            Version="3.0.0" />
     <PackageReference Update="Microsoft.CodeAnalysis.BannedApiAnalyzers"                              Version="3.0.0" />
-    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers"                              Version="3.0.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.PublicApiAnalyzers"                              Version="3.3.0-beta1.final" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.0.0" />
 
     <!-- NuGet -->
