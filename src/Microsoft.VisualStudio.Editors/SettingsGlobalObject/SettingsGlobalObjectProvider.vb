@@ -1891,7 +1891,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                                                             True)
                                 If shouldSaveAppConfig Then
                                     If appConfigItemid = VSITEMID.NIL OrElse appConfigCookie = 0 Then
-                                        ' Let's make sure we have all the nescessary info for this...
+                                        ' Let's make sure we have all the necessary info for this...
                                         Dim appConfigReadLocks As UInteger
                                         Dim appConfigEditLocks As UInteger
                                         GetDocumentInfo(AppConfigFileName, appConfigReadLocks, appConfigEditLocks, appConfigItemid, appConfigCookie)

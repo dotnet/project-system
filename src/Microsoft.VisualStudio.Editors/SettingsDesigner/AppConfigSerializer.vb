@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' 
             Dim ConfigHelperService As New ConfigurationHelperService()
 
-            ' Let us get all settings that we know about, create SettingsPropeties for 'em
+            ' Let us get all settings that we know about, create SettingsProperties for 'em
             ' and add 'em to a SettingsPropertyCollection.
             Dim UserScopedSettingProps As New SettingsPropertyCollection()
             Dim AppScopedSettingProps As New SettingsPropertyCollection()
@@ -80,7 +80,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Next
 
-            ' Deserialize conenction strings
+            ' Deserialize connection strings
             '
             ' First, we ask the config helper to read all the connection strings....
             Dim DeserializedConnectionStrings As ConnectionStringSettingsCollection =
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' If the value in the app.config file differs from the value in the .settings file,
         ''' or the scope has been changed,
-        ''' propmpt the user if they want to update the value in the .settings file
+        ''' prompt the user if they want to update the value in the .settings file
         ''' </summary>
         ''' <param name="DeserializedPropertyValue"></param>
         ''' <param name="Scope">The scope in which the deserialized property value was found</param>

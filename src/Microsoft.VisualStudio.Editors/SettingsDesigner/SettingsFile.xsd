@@ -31,7 +31,7 @@
     </xs:complexType>
     
     <!--
-        The Settings element contains a list of individual settings. Not strictly nescessary,
+        The Settings element contains a list of individual settings. Not strictly necessary,
         but I like to group all settings under one common parent...
     -->
     <xs:complexType name="Settings">
