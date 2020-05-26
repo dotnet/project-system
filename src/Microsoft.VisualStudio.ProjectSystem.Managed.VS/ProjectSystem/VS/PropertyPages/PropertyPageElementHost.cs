@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 //supported commands first before actually firing the command.
                 filterKeys.TranslateAcceleratorEx(new OLE.Interop.MSG[] { oleMSG },
                                                   (uint)(__VSTRANSACCELEXFLAGS.VSTAEXF_NoFireCommand | __VSTRANSACCELEXFLAGS.VSTAEXF_UseGlobalKBScope | __VSTRANSACCELEXFLAGS.VSTAEXF_AllowModalState),
-                                                  0 /*scope count*/,
-                                                  Array.Empty<Guid>() /*scopes*/,
+                                                  cKeyBindingScopes: 0,
+                                                  rgguidKeyBindingScopes: Array.Empty<Guid>(),
                                                   out Guid cmdGuid,
                                                   out _,
                                                   out int fTranslated,

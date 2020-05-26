@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         {
             var provider = CreateInstance();
 
-            var task = new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "" /* Code */, "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
+            var task = new TargetGeneratedError("Test", new BuildErrorEventArgs(null, code: "", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
 
             var result = await provider.AddMessageAsync(task);
 
