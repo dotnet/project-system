@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         {
             // Unlike RelationAttachedCollectionSourceProviderBase, this method will not be
             // called for context menus, as the source item is a IVsHierarchyItem in the tree.
-            if (item is IRelatableItem relatableItem)
+            if (item is IRelatableItem)
             {
                 yield return Relationships.Contains;
             }

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
         public TreeItemOrderPropertyProviderSource(
             UnconfiguredProject project,
             [Import(ExportContractNames.Scopes.UnconfiguredProject)] IOrderedSourceItemsDataSourceService orderedItemSource)
-            : base(project.Services)
+            : base(project)
         {
             _project = project;
             _orderedItemSource = orderedItemSource;

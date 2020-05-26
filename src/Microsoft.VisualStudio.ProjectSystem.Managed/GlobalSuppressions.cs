@@ -2,14 +2,10 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Usage", "VSTHRD004:Await SwitchToMainThreadAsync", Justification = "https://github.com/Microsoft/vs-threading/issues/377", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.ThreadingExtensions.SwitchToUIThread(Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService,System.Threading.CancellationToken)~Microsoft.VisualStudio.Threading.JoinableTaskFactory.MainThreadAwaitable")]
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope = "member", Target = "~M:Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CreateNext(System.Threading.CancellationToken)~System.Threading.CancellationToken")]
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp.FSharpCommandLineParserService.HandleCommandLineNotifications(System.String,Microsoft.VisualStudio.ProjectSystem.LanguageServices.BuildOptions,Microsoft.VisualStudio.ProjectSystem.LanguageServices.BuildOptions)")]
 
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Threading.Tasks.TaskExtensions.TryWaitForCompleteOrTimeout(System.Threading.Tasks.Task,System.Int32)~System.Threading.Tasks.Task{System.Boolean}")]
-[assembly: SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "<Pending>", Scope = "member", Target = "~F:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider._contextUpdateGate")]
-[assembly: SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "<Pending>", Scope = "member", Target = "~F:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider._snapshot")]
-[assembly: SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.UpToDate.BuildUpToDateCheck.CheckInputsAndOutputs(Microsoft.VisualStudio.ProjectSystem.UpToDate.BuildUpToDateCheck.Log,Microsoft.VisualStudio.ProjectSystem.UpToDate.BuildUpToDateCheck.TimestampCache@,Microsoft.VisualStudio.ProjectSystem.UpToDate.BuildUpToDateCheck.State)~System.Boolean")]
 
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AdditionalDesignTimeBuildInput.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AnalyzerReference.InitializeFallbackRule")]
@@ -37,7 +33,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.None.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.NuGetRestore.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.PackageReference.InitializeFallbackRule")]
-[assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.PotentialEditorConfigFiles.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.ProjectDebugger.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.ProjectReference.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.ResolvedAnalyzerReference.InitializeFallbackRule")]

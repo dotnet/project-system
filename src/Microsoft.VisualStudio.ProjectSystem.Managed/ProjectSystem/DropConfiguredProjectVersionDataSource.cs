@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly IProjectValueDataSource<T> _dataSource;
 
-        public DropConfiguredProjectVersionDataSource(IProjectServices commonServices, IProjectValueDataSource<T> dataSource)
-            : base(commonServices, synchronousDisposal: true, registerDataSource: false)
+        public DropConfiguredProjectVersionDataSource(UnconfiguredProject project, IProjectValueDataSource<T> dataSource)
+            : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _dataSource = dataSource;
         }

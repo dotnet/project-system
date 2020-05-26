@@ -150,7 +150,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             {
                 try
                 {
-                    var minimumRequiredDataSourceVersions = ActiveConfiguredProjectProvider.ActiveConfiguredProject.CreateVersionRequirement(allowMissingData: false).ToBuilder();
+                    var minimumRequiredDataSourceVersions = ActiveConfiguredProjectProvider.ActiveConfiguredProject?.CreateVersionRequirement(allowMissingData: false).ToBuilder();
+
+                    Assumes.NotNull(minimumRequiredDataSourceVersions);
 
                     IComparable? latestProjectCollectionVersion = GlobalProjectCollectionWatcher.DataSourceVersion;
                     minimumRequiredDataSourceVersions.Add(

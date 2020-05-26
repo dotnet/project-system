@@ -25,34 +25,40 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                                  IProjectConfigurationsService? projectConfigurationsService = null,
                                                  ConfiguredProject? configuredProject = null, Encoding? projectEncoding = null,
                                                  IProjectAsynchronousTasksService? projectAsynchronousTasksService = null,
-                                                 IProjectCapabilitiesScope? scope = null)
+                                                 IProjectCapabilitiesScope? scope = null,
+                                                 UnconfiguredProjectServices? unconfiguredProjectServices = null)
         {
             var service = IProjectServiceFactory.Create();
 
-            var unconfiguredProjectServices = new Mock<UnconfiguredProjectServices>();
+            if (unconfiguredProjectServices == null)
+            {
+                var unconfiguredProjectServicesMock = new Mock<UnconfiguredProjectServices>();
 
-            unconfiguredProjectServices.SetupGet<object?>(u => u.FaultHandler)
-                                       .Returns(IProjectFaultHandlerServiceFactory.Create());
+                unconfiguredProjectServicesMock.SetupGet<object?>(u => u.FaultHandler)
+                                           .Returns(IProjectFaultHandlerServiceFactory.Create());
 
-            unconfiguredProjectServices.SetupGet<object?>(u => u.HostObject)
-                                       .Returns(hostObject);
+                unconfiguredProjectServicesMock.SetupGet<object?>(u => u.HostObject)
+                                           .Returns(hostObject);
 
-            unconfiguredProjectServices.SetupGet<IProjectConfigurationsService?>(u => u.ProjectConfigurationsService)
-                                       .Returns(projectConfigurationsService);
+                unconfiguredProjectServicesMock.SetupGet<IProjectConfigurationsService?>(u => u.ProjectConfigurationsService)
+                                           .Returns(projectConfigurationsService);
 
-            var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
-            unconfiguredProjectServices.Setup(u => u.ActiveConfiguredProjectProvider)
-                                       .Returns(activeConfiguredProjectProvider);
+                var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
+                unconfiguredProjectServicesMock.Setup(u => u.ActiveConfiguredProjectProvider)
+                                           .Returns(activeConfiguredProjectProvider);
 
-            unconfiguredProjectServices.Setup(u => u.ProjectAsynchronousTasks)
-                                       .Returns(projectAsynchronousTasksService!);
+                unconfiguredProjectServicesMock.Setup(u => u.ProjectAsynchronousTasks)
+                                           .Returns(projectAsynchronousTasksService!);
+
+                unconfiguredProjectServices = unconfiguredProjectServicesMock.Object;
+            }
 
             var project = CreateDefault();
             project.Setup(u => u.ProjectService)
                                .Returns(service);
 
             project.Setup(u => u.Services)
-                               .Returns(unconfiguredProjectServices.Object);
+                               .Returns(unconfiguredProjectServices);
 
             project.SetupGet<string?>(u => u.FullPath)
                                 .Returns(filePath);

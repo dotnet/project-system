@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // via blocking RPC for STA objects when we cast explicitly to the type
                 await joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
-                return (T)iunknown;
+                return (T)iunknown!;
 
             }, joinableTaskContext.Factory);
         }

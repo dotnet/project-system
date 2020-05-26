@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         public DesignTimeInputsDataSource(UnconfiguredProject project,
                                           IUnconfiguredProjectServices unconfiguredProjectServices,
                                           IActiveConfiguredProjectSubscriptionService projectSubscriptionService)
-            : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;

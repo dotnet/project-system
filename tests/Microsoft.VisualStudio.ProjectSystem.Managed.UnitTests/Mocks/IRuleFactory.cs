@@ -17,12 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             string? pageTemplate = null,
             Dictionary<string, object>? metadata = null)
         {
-            var schema = new Rule();
-
-            schema.Name = name;
-            schema.DisplayName = displayName;
-            schema.Metadata = metadata;
-            schema.PageTemplate = pageTemplate;
+            var schema = new Rule
+            {
+                Name = name,
+                DisplayName = displayName,
+                Metadata = metadata,
+                PageTemplate = pageTemplate
+            };
 
             var rule = new Mock<IRule>();
 

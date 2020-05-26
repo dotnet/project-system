@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
             IProjectLogger logger)
-            : base(project.Services, synchronousDisposal : true, registerDataSource : false)
+            : base(project, synchronousDisposal : true, registerDataSource : false)
         {
             _project = project;
             _dataSource = dataSource;

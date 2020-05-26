@@ -2,8 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Telemetry.TelemetryTestContext.Dispose")]
-[assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.Telemetry.TelemetryTestContext")]
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsChangeTrackerTests.Dispose")]
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsChangeTrackerTests")]
 [assembly:SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.TempPE.DesignTimeInputsCompilerTests.Dispose")]
