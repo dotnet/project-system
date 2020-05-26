@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
                 // Save documents before build.
                 var projectVsHierarchy = (IVsHierarchy)Project.Services.HostObject;
-                ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, 0 /*docCookie*/));
+                ErrorHandler.ThrowOnFailure(_buildManager!.SaveDocumentsBeforeBuild(projectVsHierarchy, (uint)VSConstants.VSITEMID.Root, docCookie: 0));
 
                 // We need to make sure dependencies are built so they can go into the package
                 ErrorHandler.ThrowOnFailure(_buildManager.CalculateProjectDependencies());
