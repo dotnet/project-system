@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <param name="persistenceSlot">Unique identifier for a tool window created using IVsUIShell::CreateToolWindow.
         /// The caller of this method can use predefined identifiers that map to tool windows if those tool windows
         /// are known to the caller. </param>
-        /// <returns>A reference to an IVsUIHierarchyWindow interface, or <c>null</c> if the window isn't available, such as command line mode.</returns>
+        /// <returns>A reference to an IVsUIHierarchyWindow interface, or <see langword="null"/> if the window isn't available, such as command line mode.</returns>
         private static IVsUIHierarchyWindow? GetUIHierarchyWindow(IServiceProvider serviceProvider, Guid persistenceSlot)
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));

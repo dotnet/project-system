@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         }
 
         /// <summary>
-        /// Overrides the value of GeneratePackageOnBuild to the value specified, or resets to the project property value if <c>null</c> is passed in.
+        /// Overrides the value of GeneratePackageOnBuild to the value specified, or resets to the project property value if <see langword="null"/> is passed in.
         /// </summary>
         public void OverrideGeneratePackageOnBuild(bool? value)
         {
