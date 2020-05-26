@@ -5,6 +5,10 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Composition" Version="16.4.11" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.csproj" />
   </ItemGroup>

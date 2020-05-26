@@ -38,5 +38,4 @@
       <FileWrites Include="$(IntermediateOutputPath)$(TargetName).latest.pkgdef" Condition="Exists('$(IntermediateOutputPath)$(TargetName).latest.pkgdef')"/>
     </ItemGroup>
   </Target>
-  
 </Project>

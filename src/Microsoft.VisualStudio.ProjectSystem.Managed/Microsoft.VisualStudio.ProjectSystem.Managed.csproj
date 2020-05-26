@@ -479,5 +479,4 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
-
 </Project>

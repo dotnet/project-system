@@ -611,7 +611,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         Return True
                     End If
 
-                    If typeMember.ContainingAssembly.Equals(compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
+                    If SymbolEqualityComparer.Default.Equals(typeMember.ContainingAssembly, compilation.Assembly) OrElse typeMember.ContainingAssembly.GivesAccessTo(compilation.Assembly) Then
                         Return True
                     End If
                 End If

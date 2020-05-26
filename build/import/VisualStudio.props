@@ -49,7 +49,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
-    <PackageReference Include="NuGet.VisualStudio" />
+    <PackageReference Include="NuGet.VisualStudio" />    
   </ItemGroup>
 
   <!--

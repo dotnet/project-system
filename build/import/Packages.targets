@@ -40,7 +40,7 @@
     <!-- VS SDK -->
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.7.2" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="16.0.198-g52de9c2988"/>
-    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.1.8"/>
+    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.4.11"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="9.0.21022" />
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="16.0.28321-alpha"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21022" />
@@ -99,9 +99,10 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.7.232-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.2.0-beta4-19359-03" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.2.0-beta4-19359-03" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.7.0-2.20256.8" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.7.0-2.20256.8" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
+    <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
     <!-- Note: analyzers from github.com/dotnet/roslyn-analyzers are built together and share the same version -->

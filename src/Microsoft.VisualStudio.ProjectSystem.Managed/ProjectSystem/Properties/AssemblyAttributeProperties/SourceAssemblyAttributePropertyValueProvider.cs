@@ -77,6 +77,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return;
             }
 
+            if (attribute.ApplicationSyntaxReference == null)
+            {
+                return;
+            }
             SyntaxNode attributeNode = await attribute.ApplicationSyntaxReference.GetSyntaxAsync();
             var syntaxGenerator = SyntaxGenerator.GetGenerator(project);
             IReadOnlyList<SyntaxNode> arguments = syntaxGenerator.GetAttributeArguments(attributeNode);
@@ -86,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 SyntaxNode argumentNode = arguments[0];
                 SyntaxNode newNode;
-                if (attribute.AttributeConstructor.Parameters.FirstOrDefault()?.Type.SpecialType == SpecialType.System_Boolean)
+                if (attribute.AttributeConstructor?.Parameters.FirstOrDefault()?.Type.SpecialType == SpecialType.System_Boolean)
                 {
                     newNode = syntaxGenerator.AttributeArgument(bool.Parse(value) ? syntaxGenerator.TrueLiteralExpression() : syntaxGenerator.FalseLiteralExpression());
                 }
@@ -110,16 +114,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private static async Task<AttributeData?> GetAttributeAsync(string assemblyAttributeFullName, Project project)
         {
-            Compilation compilation = await project.GetCompilationAsync();
-            ImmutableArray<AttributeData> assemblyAttributes = compilation.Assembly.GetAttributes();
+            if (project == null)
+            {
+                return null;
+            }
+            Compilation? compilation = await project.GetCompilationAsync();
+            ImmutableArray<AttributeData>? assemblyAttributes = compilation?.Assembly.GetAttributes();
 
-            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(assemblyAttributeFullName);
+            INamedTypeSymbol? attributeTypeSymbol = compilation?.GetTypeByMetadataName(assemblyAttributeFullName);
             if (attributeTypeSymbol == null)
             {
                 return null;
             }
 
-            return assemblyAttributes.FirstOrDefault((data, symbol) => data.AttributeClass.Equals(symbol), attributeTypeSymbol);
+            return assemblyAttributes?.FirstOrDefault((data, symbol) => SymbolEqualityComparer.Default.Equals(data.AttributeClass, symbol), attributeTypeSymbol);
         }
     }
 }

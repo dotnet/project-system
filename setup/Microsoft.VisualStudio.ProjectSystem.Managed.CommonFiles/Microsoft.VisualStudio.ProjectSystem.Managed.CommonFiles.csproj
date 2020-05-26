@@ -21,5 +21,4 @@
   <Target Name="Build" DependsOnTargets="ResolveProjectReferences">
     <MakeDir Directories="$(IntermediateOutputPath)" ContinueOnError="True" />
   </Target>
-
 </Project>
