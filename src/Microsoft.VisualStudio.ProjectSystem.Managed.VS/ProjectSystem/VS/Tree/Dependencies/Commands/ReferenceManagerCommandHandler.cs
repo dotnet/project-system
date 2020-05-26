@@ -19,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
     [Order(ProjectSystem.Order.Default)]
     internal sealed class ReferenceManagerCommandHandler : ICommandGroupHandler
     {
-        // WORKAROUND: Until we can consume the new CommandStatus from CPS
-        public const CommandStatus InvisibleOnContextMenu = (CommandStatus)unchecked((int)0x20);
-
         private readonly IReferencesUI _referencesUI;
 
         [ImportingConstructor]
@@ -47,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 if (items.Any(tree => tree.IsFolder))
                 {   // Hide these commands for Folder -> Add
 
-                    progressiveStatus |= InvisibleOnContextMenu;
+                    progressiveStatus |= CommandStatus.InvisibleOnContextMenu;
                 }
 
                 return new CommandStatusResult(handled: true, commandText, progressiveStatus);
