@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
         ///     Attempts to extract the details required by the VS Error List from an MSBuild build event.
         /// </summary>
         /// <param name="eventArgs">The build event.  May be null.</param>
-        /// <param name="result">The extracted details, or <c>null</c> if <paramref name="eventArgs"/> was <c>null</c> or of an unrecognized type.</param>
+        /// <param name="result">The extracted details, or <see langword="null"/> if <paramref name="eventArgs"/> was <see langword="null"/> or of an unrecognized type.</param>
         internal static bool TryExtractErrorListDetails(BuildEventArgs eventArgs, out ErrorListDetails result)
         {
             if (eventArgs is BuildErrorEventArgs errorMessage)

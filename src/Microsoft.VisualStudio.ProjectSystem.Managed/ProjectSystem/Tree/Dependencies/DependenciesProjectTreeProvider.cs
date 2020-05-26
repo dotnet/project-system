@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         /// <param name="root">The root of the tree.</param>
         /// <param name="path">The absolute or project-relative path to the item sought.</param>
-        /// <returns>The item in the tree if found; otherwise <c>null</c>.</returns>
+        /// <returns>The item in the tree if found; otherwise <see langword="null"/>.</returns>
         public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
             // We override this since we need to find children under either:
@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         /// <param name="node">The node whose path is sought.</param>
         /// <returns>
-        /// A non-empty string, or <c>null</c> if searching is not supported.
+        /// A non-empty string, or <see langword="null"/> if searching is not supported.
         /// For nodes that represent files on disk, this is the project-relative path to that file.
         /// The root node of a project is the absolute path to the project file.
         /// </returns>
