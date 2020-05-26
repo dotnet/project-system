@@ -22,12 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         // WORKAROUND: Until we can consume the new CommandStatus from CPS
         public const CommandStatus InvisibleOnContextMenu = (CommandStatus)unchecked((int)0x20);
 
-        public const int CmdidAddAssemblyReference       = 0x200;
-        public const int CmdidAddComReference            = 0x201;
-        public const int CmdidAddProjectReference        = 0x202;
-        public const int CmdidAddSharedProjectReference  = 0x203;
-        public const int CmdidAddSdkReference          = 0x204;
-
         private readonly IReferencesUI _referencesUI;
 
         [ImportingConstructor]
@@ -90,13 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
         private static string? GetReferenceProviderIdentifier(long commandId)
         {
-            return commandId switch
+            return (VSConstants.VSStd16CmdID)commandId switch
             {
-                CmdidAddAssemblyReference => VSConstants.AssemblyReferenceProvider_string,
-                CmdidAddComReference => VSConstants.ComReferenceProvider_string,
-                CmdidAddProjectReference => VSConstants.ProjectReferenceProvider_string,
-                CmdidAddSharedProjectReference => VSConstants.SharedProjectReferenceProvider_string,
-                CmdidAddSdkReference => VSConstants.PlatformReferenceProvider_string,
+                VSConstants.VSStd16CmdID.AddAssemblyReference => VSConstants.AssemblyReferenceProvider_string,
+                VSConstants.VSStd16CmdID.AddComReference => VSConstants.ComReferenceProvider_string,
+                VSConstants.VSStd16CmdID.AddProjectReference => VSConstants.ProjectReferenceProvider_string,
+                VSConstants.VSStd16CmdID.AddSharedProjectReference => VSConstants.SharedProjectReferenceProvider_string,
+                VSConstants.VSStd16CmdID.AddSdkReference => VSConstants.PlatformReferenceProvider_string,
                 _ => null,
             };
 
