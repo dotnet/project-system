@@ -101,24 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         }
 
         /// <summary>
-        /// Gets a value indicating whether a given set of nodes can be copied or moved underneath some given node.
-        /// </summary>
-        /// <param name="nodes">The set of nodes the user wants to copy or move.</param>
-        /// <param name="receiver">
-        /// The target node where <paramref name="nodes"/> should be copied or moved to.
-        /// May be <c>null</c> to determine whether a given set of nodes could allowably be copied anywhere (not 
-        /// necessarily everywhere).
-        /// </param>
-        /// <param name="deleteOriginal"><c>true</c> for a move operation; <c>false</c> for a copy operation.</param>
-        /// <returns><c>true</c> if such a move/copy operation would be allowable; <c>false</c> otherwise.</returns>
-        public override bool CanCopy(IImmutableSet<IProjectTree> nodes,
-                                     IProjectTree? receiver,
-                                     bool deleteOriginal = false)
-        {
-            return false;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether deleting a given set of items from the project, and optionally from disk,
         /// would be allowed. 
         /// Note: CanRemove can be called several times since there two types of remove operations:
