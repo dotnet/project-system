@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class AnalyzerRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "AnalyzerDependency";
+        public const string ProviderTypeString = "Analyzer";
 
         private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed class PackageRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "NuGetDependency";
+        public const string ProviderTypeString = "Package";
 
         private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,

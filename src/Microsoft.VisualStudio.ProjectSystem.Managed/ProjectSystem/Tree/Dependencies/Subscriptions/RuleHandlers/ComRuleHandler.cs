@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class ComRuleHandler : DependenciesRuleHandlerBase
     {
-        public const string ProviderTypeString = "ComDependency";
+        public const string ProviderTypeString = "Com";
 
         private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
             ProviderTypeString,
