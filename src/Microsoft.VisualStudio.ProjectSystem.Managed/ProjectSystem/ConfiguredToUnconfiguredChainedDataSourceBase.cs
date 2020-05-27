@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
 
         protected ConfiguredToUnconfiguredChainedDataSourceBase(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
-            : base(project.Services, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var disposables = new DisposableBag();
 
             var configuredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, TInput>(
-                _project.Services,
+                _project,
                 projects => projects.Select(GetInputDataSource)
                                     .WhereNotNull()
                                     .Select(DropConfiguredProjectVersions),
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             // Wrap it in a data source that will drop project version and identity versions so as they will never agree
             // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-            return new DropConfiguredProjectVersionDataSource<TInput>(_project.Services, dataSource);
+            return new DropConfiguredProjectVersionDataSource<TInput>(_project, dataSource);
         }
 
         protected abstract TOutput ConvertInputData(IReadOnlyCollection<TInput> inputs);
