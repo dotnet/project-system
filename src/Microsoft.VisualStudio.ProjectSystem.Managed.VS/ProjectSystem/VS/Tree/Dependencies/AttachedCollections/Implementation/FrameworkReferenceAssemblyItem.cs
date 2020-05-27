@@ -1,11 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
     internal sealed class FrameworkReferenceAssemblyItem : RelatableItemBase
     {
+        private const int IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE = 0x04B1;
+
+        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_TRANSITIVE_ASSEMBLY_REFERENCE);
+
         public string AssemblyName { get; }
         public string? Path { get; }
         public string? AssemblyVersion { get; }
@@ -26,6 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         public override object Identity => Text;
         public override int Priority => 0;
         public override ImageMoniker IconMoniker => ManagedImageMonikers.ReferencePrivate;
+
+        protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
 
         public override object? GetBrowseObject() => new BrowseObject(this);
 

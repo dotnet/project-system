@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Internal.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -11,6 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </summary>
     public abstract partial class RelatableItemBase : AttachedCollectionItemBase, IRelatableItem
     {
+        private const int IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM = 0x04B0;
+
+        private static readonly IContextMenuController s_defaultMenuController = new MenuController(VsMenus.guidSHLMainMenu, IDM_VS_CTXT_DEPENDENCY_TRANSITIVE_ITEM);
+
         private AggregateContainsRelationCollection? _containsCollection;
 
         protected RelatableItemBase(string name)
@@ -20,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public abstract object Identity { get; }
 
-        protected override IContextMenuController? ContextMenuController => DefaultContextMenuController.Instance;
+        protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
 
         AggregateContainsRelationCollection? IRelatableItem.ContainsCollection => _containsCollection;
 
