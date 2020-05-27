@@ -23,7 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
         {
-            IProjectVersionedValue<ProjectTargetChange> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(_unconfiguredProject.Services.DataSourceRegistry);
+            IProjectDataSourceRegistry? dataSourceRegistry = _unconfiguredProject.Services.DataSourceRegistry;
+            Assumes.NotNull(dataSourceRegistry);
+            IProjectVersionedValue<ProjectTargetChange> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(dataSourceRegistry);
 
             return changes.Value;
         }

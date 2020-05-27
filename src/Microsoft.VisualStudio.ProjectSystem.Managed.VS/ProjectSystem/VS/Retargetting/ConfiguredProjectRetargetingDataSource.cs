@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         [ImportingConstructor]
         internal ConfiguredProjectRetargetingDataSource(ConfiguredProject project,
                                                         IProjectSubscriptionService projectSubscriptionService)
-            : base(project.Services)
+            : base(project)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;

@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
             : base(project, activeConfigurationGroupService)
         {
-            _project = project;
-            _activeConfigurationGroupService = activeConfigurationGroupService;
         }
 
         protected override IProjectValueDataSource<PackageRestoreConfiguredInput>? GetInputDataSource(ConfiguredProject configuredProject)
