@@ -44,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
             return TryGetProjectNode(targetRootNode, item, out projectTree);
         }
 
+        /// <inheritdoc cref="IRelatableItem.TryGetProjectNode" />
         protected virtual bool TryGetProjectNode(IProjectTree targetRootNode, IRelatableItem item, [NotNullWhen(returnValue: true)] out IProjectTree? projectTree)
         {
             projectTree = null;
