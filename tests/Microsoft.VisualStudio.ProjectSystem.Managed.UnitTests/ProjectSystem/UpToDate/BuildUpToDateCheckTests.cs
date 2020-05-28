@@ -1123,7 +1123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.NotEqual(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
         }
 
-        [Fact]
+        [Fact(Skip = "TODO fix #6227")]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceRemoved()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1166,7 +1166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "Outputs");
         }
 
-        [Fact]
+        [Fact(Skip = "TODO fix #6227")]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceAdded()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1199,7 +1199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 "Outputs");
         }
 
-        [Fact]
+        [Fact(Skip = "TODO fix #6227")]
         public async Task IsUpToDateAsync_False_AdditionalDependentFileTimeSourceIsNewerThanOutput()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
