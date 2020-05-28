@@ -38,7 +38,7 @@
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
 
     <!-- VS SDK -->
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.7.2" />
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.7.2041" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="16.0.198-g52de9c2988"/>
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.4.11"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="9.0.21022" />
