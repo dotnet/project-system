@@ -8,34 +8,5 @@
     <None Remove="$(Pkgxunit_runner_visualstudio)\**\xunit.abstractions.dll" />
     <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" />
   </ItemGroup>
-  
-  <!-- WORKAROUND: Upgrading Microsoft.VisualStudio.Threading causes CreatePkgDef fail to run
-       because it is using runtime reflection to load a reference assembly.
-       This is due to a dependency on Bcl.Interfaces package references.  -->
-  <Target Name="GeneratePkgDef"
-          Inputs="$(CreatePkgDefAssemblyToProcess)"
-          Outputs="$(IntermediateOutputPath)$(TargetName).pkgdef"
-          Condition="'$(GeneratePkgDefFile)'=='true'"
-          DependsOnTargets="$(GeneratePkgDefDependsOn)">
 
-    <Message Text="Creating intermediate PkgDef file." />
-
-    <CreatePkgDef AssemblyToProcess="$(CreatePkgDefAssemblyToProcess)"
-                  ProductVersion="$(TargetVSVersion)"
-                  OutputFile="$(IntermediateOutputPath)$(TargetName).latest.pkgdef"
-                  UseCodebase="$(UseCodebase)"
-                  ReferencedAssemblies="@(ReferenceCopyLocalPaths);@(ReferencePath)"  />
-    <CopyIfChanged Condition="Exists('$(IntermediateOutputPath)$(TargetName).latest.pkgdef')"
-                   SourceFile="$(IntermediateOutputPath)$(TargetName).latest.pkgdef"
-                   DestinationFile="$(IntermediateOutputPath)$(TargetName).pkgdef" />
-
-    <!-- If the CTO file was changed, touch the pkgdef file to cause a re-merge -->
-    <Touch Files="$(IntermediateOutputPath)$(TargetName).pkgdef"
-           Condition="'$(CTOFileHasChanged)'=='true' AND Exists('$(IntermediateOutputPath)$(TargetName).pkgdef')" />
-
-    <ItemGroup>
-      <FileWrites Include="$(IntermediateOutputPath)$(TargetName).pkgdef" Condition="Exists('$(IntermediateOutputPath)$(TargetName).pkgdef')"/>
-      <FileWrites Include="$(IntermediateOutputPath)$(TargetName).latest.pkgdef" Condition="Exists('$(IntermediateOutputPath)$(TargetName).latest.pkgdef')"/>
-    </ItemGroup>
-  </Target>
 </Project>
