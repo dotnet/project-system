@@ -48,6 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
+        // Temporarily disable support for Additional Dependent Files
+        // TODO - pending to fix https://github.com/dotnet/project-system/issues/6227
+        private readonly bool _enableAdditionalDependentFile = false;
+
         private readonly object _stateLock = new object();
 
         private State _state = State.Empty;
@@ -236,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
-                if (earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
+                if (_enableAdditionalDependentFile && earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
                 {
                     return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
@@ -348,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.AdditionalDependentFileTimes.Count != 0)
+                if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
                 {
                     log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
                     foreach ((string input, DateTime _) in state.AdditionalDependentFileTimes)
