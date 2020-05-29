@@ -12,9 +12,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 {
     public abstract partial class RelatableItemBase
     {
-        private sealed class DefaultContextMenuController : IContextMenuController
+        internal sealed class MenuController : IContextMenuController
         {
-            public static DefaultContextMenuController Instance { get; } = new DefaultContextMenuController();
+            private readonly Guid _menuGuid;
+            private readonly int _menuId;
+
+            public MenuController(Guid menuGuid, int menuId)
+            {
+                _menuGuid = menuGuid;
+                _menuId = menuId;
+            }
 
             public bool ShowContextMenu(IEnumerable<object> items, Point location)
             {
@@ -24,13 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 {
                     if (Package.GetGlobalService(typeof(SVsUIShell)) is IVsUIShell shell)
                     {
-                        const int MenuId = VsMenus.IDM_VS_CTXT_PROJWIN_FILECONTENTS;
-                        Guid guidContextMenu = VsMenus.guidSHLMainMenu;
+                        Guid guidContextMenu = _menuGuid;
 
                         int result = shell.ShowContextMenu(
                             dwCompRole: 0,
                             rclsidActive: ref guidContextMenu,
-                            nMenuId: MenuId,
+                            nMenuId: _menuId,
                             pos: new[] { new POINTS { x = (short)location.X, y = (short)location.Y } },
                             pCmdTrgtActive: null);
 
