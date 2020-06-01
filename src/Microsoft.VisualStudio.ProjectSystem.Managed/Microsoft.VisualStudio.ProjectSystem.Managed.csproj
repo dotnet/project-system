@@ -250,15 +250,6 @@
 
   <!-- Others -->
   <ItemGroup>
-    <Compile Update="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.cs">
-      <DependentUpon>AdditionalDesignTimeBuildInput.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.xaml">
-      <XlfInput>false</XlfInput>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <SubType>Designer</SubType>
-    </XamlPropertyRule>
-
     <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
       <DependentUpon>AppDesigner.xaml</DependentUpon>
     </Compile>
@@ -472,11 +463,5 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ProjectSystem\Rules\AdditionalDesignTimeBuildInput.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 </Project>

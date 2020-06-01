@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.Threading.Tasks.TaskExtensions.TryWaitForCompleteOrTimeout(System.Threading.Tasks.Task,System.Int32)~System.Threading.Tasks.Task{System.Boolean}")]
 
-[assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AdditionalDesignTimeBuildInput.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AnalyzerReference.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AppDesigner.InitializeFallbackRule")]
 [assembly: SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "Generated Code", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.AssemblyReference.InitializeFallbackRule")]
