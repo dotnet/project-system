@@ -27,6 +27,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 return;
             }
 
+            // F# has its own overrides which we can skip
+            if (ruleName.EndsWith(".FSharp", StringComparison.Ordinal))
+            {
+                return;
+            }
+
             string noneFile = Path.Combine(fullPath, "..", "None.xaml");
 
             XElement none = LoadXamlRule(noneFile);

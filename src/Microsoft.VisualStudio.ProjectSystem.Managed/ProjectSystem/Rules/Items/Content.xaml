@@ -50,17 +50,6 @@
   <BoolProperty Name="DesignTimeSharedInput"
                 Visible="false" />
 
-  <StringProperty Name="FullPath"
-                  ReadOnly="true"
-                  Visible="false">
-    <StringProperty.DataSource>
-      <DataSource ItemType="Content"
-                  PersistedName="FullPath"
-                  Persistence="Intrinsic"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
   <StringProperty Name="Generator" />
 
   <StringProperty Name="LastGenOutput"

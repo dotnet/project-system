@@ -26,6 +26,27 @@
     <ProjectCapability Include="FSharp;Managed"/>
   </ItemGroup>
 
+  <!-- Override rules from Microsoft.Managed.DesignTime.targets to add FullPath for TreeItemOrderPropertyProvider. -->
+  <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.FSharp.xaml;">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Content.FSharp.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)EmbeddedResource.FSharp.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)None.FSharp.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+
+  </ItemGroup>
+
   <!-- Targets -->
 
   <!-- Returns Fsc command-line arguments for the language service -->
