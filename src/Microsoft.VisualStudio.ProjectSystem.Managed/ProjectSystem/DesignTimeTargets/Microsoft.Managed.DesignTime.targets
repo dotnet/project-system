@@ -277,9 +277,6 @@
       <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AdditionalDesignTimeBuildInput.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
