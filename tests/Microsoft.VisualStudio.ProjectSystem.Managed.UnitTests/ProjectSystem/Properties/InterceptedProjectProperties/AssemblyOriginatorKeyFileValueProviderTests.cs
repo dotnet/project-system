@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             Assert.Equal(keyFileFullPath, propertyValue);
 
             // Verify relative path key file value from intercepted key file provider.
-            var project = UnconfiguredProjectFactory.Create(filePath: projectFullPath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectFullPath);
             var delegateProvider = IProjectPropertiesProviderFactory.Create();
             var keyFileProvider = new AssemblyOriginatorKeyFileValueProvider(project);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(AssemblyOriginatorKeyFilePropertyName);

@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var dataSource = mock.Object;
 
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject\MyProject.csproj");
             var unconfiguredProjectServices = IUnconfiguredProjectServicesFactory.Create(
                     projectService: IProjectServiceFactory.Create(
                         services: ProjectServicesFactory.Create(

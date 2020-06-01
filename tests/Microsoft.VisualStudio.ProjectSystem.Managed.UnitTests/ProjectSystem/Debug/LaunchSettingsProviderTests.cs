@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
             var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
-            var project = UnconfiguredProjectFactory.Create(filePath: @"c:\test\Project1\Project1.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());

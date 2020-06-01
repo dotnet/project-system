@@ -626,7 +626,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
 
-            var project = UnconfiguredProjectFactory.Create(filePath: _ProjectFile);
+            var project = UnconfiguredProjectFactory.Create(fullPath: _ProjectFile);
 
             var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
             var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);

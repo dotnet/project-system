@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectFilePath);
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: false);
             return new TestProjectFileOrAssemblyInfoPropertiesProvider(project, workspace: workspace, defaultProperties: defaultProperties, interceptingProvider: interceptingProvider);
         }
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var language = code.Contains("[") ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             workspace = WorkspaceFactory.Create(code, language);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
-            var project = UnconfiguredProjectFactory.Create(filePath: projectFilePath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectFilePath);
             additionalProps ??= new Dictionary<string, string?>();
             additionalProps[propertyName] = propertyValueInProjectFile;
             var defaultProperties = CreateProjectProperties(additionalProps, saveInProjectFile: true);
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public void DefaultProjectPath()
         {
-            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(UnconfiguredProjectFactory.Create(filePath: "D:\\TestFile"));
+            var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider(UnconfiguredProjectFactory.Create(fullPath: "D:\\TestFile"));
             Assert.Equal("D:\\TestFile", provider.DefaultProjectPath);
         }
 

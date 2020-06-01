@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             // Setup the debug profiles
             var mockSourceBlock = new Mock<IReceivableSourceBlock<ILaunchSettings>>();
             var mockProfiles = new Mock<ILaunchSettings>();
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Foo\foo.proj");
 
             data.FirstSnapshotComplete = new TaskCompletionSource<bool>();
             var viewModel = new Mock<DebugPageViewModel>(data.FirstSnapshotComplete, project);
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         [Fact]
         public void DebugPageViewModel_UICommands()
         {
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Foo\foo.proj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Foo\foo.proj");
             var viewModel = new DebugPageViewModel(null, project);
 
             Assert.IsType<DelegateCommand>(viewModel.BrowseDirectoryCommand);
