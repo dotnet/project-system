@@ -17,8 +17,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
 #if DEBUG
-    [Export(typeof(IProjectRetargetCheckProvider))]
-    [AppliesTo(ProjectCapability.DotNet)]
+    //[Export(typeof(IProjectRetargetCheckProvider))]
+    //[AppliesTo(ProjectCapability.DotNet)]
 #endif
     internal class MissingWindowsDesktopPlatformRetarget : IProjectRetargetCheckProvider
     {

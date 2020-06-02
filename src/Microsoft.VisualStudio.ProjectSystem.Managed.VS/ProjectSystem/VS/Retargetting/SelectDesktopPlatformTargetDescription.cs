@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public override Guid TargetId => _targetDescriptionId;
 
-        public override uint Order => 1000;
-
         public override string DisplayName => "Missing Desktop Platform";
 
         public override string RetargetingTitle => "No Desktop Platform Selected";
