@@ -6,14 +6,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal abstract class InstallerComponentMissingTargetDescriptionBase : TargetDescriptionBase
     {
-        public override object? GetProperty(uint prop)
+        private readonly string _component;
+
+        protected InstallerComponentMissingTargetDescriptionBase(string component)
         {
-            switch ((__VSPTDPROPID)prop)
-            {
-                case __VSPTDPROPID.VSPTDPROPID_MissingPrerequisites:
-                    return true;
-            }
-            return base.GetProperty(prop);
+            _component = component;
         }
+
+        public override bool Supported => false;
+
+        public override string CommandTitle => "Install Missing Component(s)...";
+
+        public override object? GetProperty(uint prop) => ((__VSPTDPROPID)prop) switch
+        {
+            __VSPTDPROPID.VSPTDPROPID_MissingPrerequisites => true,
+            __VSPTDPROPID.VSPTDPROPID_AcquisitionComponents => _component,
+            _ => base.GetProperty(prop),
+        };
     }
 }
