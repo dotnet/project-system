@@ -92,8 +92,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 return col;
             });
 
-            // fast path to not switch to the UI thread unnecessarily
-            if (changes.Select(c => c.Description).Except(_registeredDescriptions).Any())
+            // Most of the time all target descriptions will already be registered, so avoid changing to the UI thread if we can
+            if (GetAllTargetDescriptions(changes).Except(_registeredDescriptions).Any())
             {
                 _threadingService.ExecuteSynchronously(async () =>
                 {
@@ -103,8 +103,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
                     foreach (ProjectTargetChange change in changes)
                     {
-                        ErrorHandler.ThrowOnFailure(service.RegisterProjectTarget(change.Description));
-                        ThreadingTools.ApplyChangeOptimistically(ref _registeredDescriptions, change, (col, c) => col.Add(c.Description));
+                        if (change.NewTargetDescription != null)
+                        {
+                            RegisterTarget(service, change.NewTargetDescription);
+                        }
+                        if (change.CurrentTargetDescription != null)
+                        {
+                            RegisterTarget(service, change.CurrentTargetDescription);
+                        }
                     }
                 });
             }
@@ -115,6 +121,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             }
 
             TryTriggerRetarget();
+
+            void RegisterTarget(IVsTrackProjectRetargeting2 service, TargetDescriptionBase description)
+            {
+                if (ThreadingTools.ApplyChangeOptimistically(ref _registeredDescriptions, description, (col, d) => col.Add(d)))
+                {
+                    ErrorHandler.ThrowOnFailure(service.RegisterProjectTarget(description));
+                }
+            }
+
+            static IEnumerable<TargetDescriptionBase> GetAllTargetDescriptions(IEnumerable<ProjectTargetChange> changes)
+            {
+                foreach (ProjectTargetChange change in changes)
+                {
+                    if (change.NewTargetDescription != null)
+                    {
+                        yield return change.NewTargetDescription;
+                    }
+                    if (change.CurrentTargetDescription != null)
+                    {
+                        yield return change.CurrentTargetDescription;
+                    }
+                }
+            }
         }
 
         private void TryTriggerRetarget()
@@ -135,6 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
             ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)_retargetCheckOption));
 
+            // The next time we call the platform to retarget, its just going to be a normal retarget
             _retargetCheckOption = __RETARGET_CHECK_OPTIONS.RCO_PROJECT_RETARGET;
         }
 
@@ -147,6 +177,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public int OnAfterCloseSolution(object pUnkReserved)
         {
+            // Reset as next retarget will be for solution load
+            _retargetCheckOption = __RETARGET_CHECK_OPTIONS.RCO_FIRST_SOLUTION_LOAD;
             _solutionOpened = false;
             return HResult.OK;
         }

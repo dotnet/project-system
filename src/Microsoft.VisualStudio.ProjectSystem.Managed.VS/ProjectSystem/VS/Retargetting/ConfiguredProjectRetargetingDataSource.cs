@@ -26,15 +26,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             _projectSubscriptionService = projectSubscriptionService;
 
             ProjectRetargetCheckProviders = new OrderPrecedenceImportCollection<IProjectRetargetCheckProvider>(projectCapabilityCheckProvider: project);
+            ProjectPrerequisiteCheckProviders = new OrderPrecedenceImportCollection<IProjectPrerequisiteCheckProvider>(projectCapabilityCheckProvider: project);
         }
 
         protected override UnconfiguredProject? ContainingProject => _project.UnconfiguredProject;
 
-        /// <summary>
-        /// Import the LaunchTargetProviders which know how to run profiles
-        /// </summary>
         [ImportMany]
         public OrderPrecedenceImportCollection<IProjectRetargetCheckProvider> ProjectRetargetCheckProviders { get; }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IProjectPrerequisiteCheckProvider> ProjectPrerequisiteCheckProviders { get; }
 
         protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<IImmutableList<ProjectTargetChange>>> targetBlock)
         {
@@ -42,6 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
             var ruleNames = new HashSet<string>();
             foreach (IProjectRetargetCheckProvider provider in ProjectRetargetCheckProviders.ExtensionValues())
+            {
+                ruleNames.AddRange(provider.GetProjectEvaluationRuleNames());
+            }
+            foreach (IProjectPrerequisiteCheckProvider provider in ProjectPrerequisiteCheckProviders.ExtensionValues())
             {
                 ruleNames.AddRange(provider.GetProjectEvaluationRuleNames());
             }
@@ -71,6 +76,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 if (change != null)
                 {
                     changes.Add(new ProjectTargetChange(change, provider));
+                }
+            }
+
+            foreach (IProjectPrerequisiteCheckProvider provider in ProjectPrerequisiteCheckProviders.ExtensionValues())
+            {
+                TargetDescriptionBase? change = await provider.CheckAsync(arg.Value.CurrentState);
+                if (change != null)
+                {
+                    changes.Add(new ProjectTargetChange(change));
                 }
             }
 

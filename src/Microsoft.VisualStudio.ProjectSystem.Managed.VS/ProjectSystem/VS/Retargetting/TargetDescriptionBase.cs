@@ -9,24 +9,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     {
         public abstract Guid TargetId { get; }
         public abstract string DisplayName { get; }
-        public abstract uint Order { get; }
-        public virtual bool Supported => true;
+        public virtual uint Order => 1000;
+        public abstract bool Supported { get; }
 
-        // TODO: Abstract these away to a nicer API?
-        public abstract Array GetRetargetParameters();
+        // Allows for something to provide a setup driver, so implementors of this class don't need to
+        public IVsProjectAcquisitionSetupDriver? ActualSetupDriver { get; set; }
+        public abstract Guid SetupDriver { get; }
+        public abstract string CommandTitle { get; }
+
         public virtual string GetRetargetParameterDisplayName(string parameter) => parameter;
-        public abstract Array GetPossibleParameterValues(string parameter);
-        public abstract void PutParameterValue(string parameter, string pValue);
         public virtual string GetParameterValue(string parameter) => parameter;
-        public abstract string GetValueDisplayName(string parameter, string pValue);
-        public abstract void ResetSelectedValues();
+        public virtual Array GetPossibleParameterValues(string parameter) => Array.Empty<string>();
+        public virtual Array GetRetargetParameters() => Array.Empty<string>();
+        public virtual string GetValueDisplayName(string parameter, string pValue) => "";
+        public virtual void PutParameterValue(string parameter, string pValue)
+        {
+        }
+        public virtual void ResetSelectedValues()
+        {
+        }
 
         public virtual object? GetProperty(uint prop)
         {
             switch ((__VSPTDPROPID)prop)
             {
                 case __VSPTDPROPID.VSPTDPROPID_AcquisitionCommandTitle:
-                    break;
+                case __VSPTDPROPID.VSPTDPROPID_RetargetProjectCommandTitle:
+                case __VSPTDPROPID.VSPTDPROPID_RetargetSolutionCommandTitle:
+                    return CommandTitle;
+
                 case __VSPTDPROPID.VSPTDPROPID_ProjectRetargetingDescription:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_ProjectRetargetingTitle:
@@ -34,10 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 case __VSPTDPROPID.VSPTDPROPID_ProjectUnloadUntilRetargetedDescription:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_ProjectUnloadUntilRetargetedTitle:
-                    break;
-                case __VSPTDPROPID.VSPTDPROPID_RetargetProjectCommandTitle:
-                    break;
-                case __VSPTDPROPID.VSPTDPROPID_RetargetSolutionCommandTitle:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_UnloadInfoLine:
                     break;
@@ -59,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 case __VSPTDPROPID.VSPTDPROPID_AcquisitionComponents:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_AcquisitionSetupDriver:
-                    break;
+                    return ActualSetupDriver;
                 case __VSPTDPROPID.VSPTDPROPID_DoBackup:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_IncludeAllProjectsForProjectRetargeting:
