@@ -6,22 +6,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal class ProjectTargetChange : IProjectTargetChange
     {
-        private readonly TargetDescriptionBase _targetDescription;
-        private readonly IProjectRetargetCheckProvider _provider;
+        private readonly TargetDescriptionBase? _newTargetDescription;
+        private readonly TargetDescriptionBase? _currentTargetDescription;
+        private readonly IProjectRetargetCheckProvider? _provider;
 
-        public ProjectTargetChange(TargetDescriptionBase targetDescription, IProjectRetargetCheckProvider provider)
+        public ProjectTargetChange(TargetDescriptionBase currentTargetDescription)
         {
-            _targetDescription = targetDescription;
+            _currentTargetDescription = currentTargetDescription;
+        }
+
+        public ProjectTargetChange(TargetDescriptionBase newTargetDescription, IProjectRetargetCheckProvider provider)
+        {
+            _newTargetDescription = newTargetDescription;
             _provider = provider;
         }
 
-        public TargetDescriptionBase Description => _targetDescription;
+        public TargetDescriptionBase? NewTargetDescription => _newTargetDescription;
+        public TargetDescriptionBase? CurrentTargetDescription => _currentTargetDescription;
 
-        public IProjectRetargetCheckProvider RetargetProvider => _provider;
+        public IProjectRetargetCheckProvider? RetargetProvider => _provider;
 
-        public Guid NewTargetId => _targetDescription.TargetId;
+        public Guid NewTargetId => _newTargetDescription?.TargetId ?? Guid.Empty;
 
-        public Guid CurrentTargetId => Guid.Empty;
+        public Guid CurrentTargetId => _currentTargetDescription?.TargetId ?? Guid.Empty;
 
         public bool ReloadProjectOnSuccess => true;
 

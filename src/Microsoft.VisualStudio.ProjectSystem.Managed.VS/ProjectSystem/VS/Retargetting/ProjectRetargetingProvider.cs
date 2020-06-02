@@ -1,9 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
@@ -13,12 +15,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
     {
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IUnconfiguredProjectRetargetingDataSource _unconfiguredProjectRetargetingDataSource;
+        private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
 
         [ImportingConstructor]
-        public ProjectRetargetingProvider(UnconfiguredProject unconfiguredProject, IUnconfiguredProjectRetargetingDataSource unconfiguredProjectRetargetingDataSource)
+        public ProjectRetargetingProvider(UnconfiguredProject unconfiguredProject,
+            IUnconfiguredProjectRetargetingDataSource unconfiguredProjectRetargetingDataSource,
+            IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService)
         {
             _unconfiguredProject = unconfiguredProject;
             _unconfiguredProjectRetargetingDataSource = unconfiguredProjectRetargetingDataSource;
+            _retargettingService = retargettingService;
         }
 
         public async Task<IProjectTargetChange?> CheckForRetargetAsync(RetargetCheckOptions options)
@@ -27,19 +33,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             Assumes.NotNull(dataSourceRegistry);
             IProjectVersionedValue<ProjectTargetChange> changes = await _unconfiguredProjectRetargetingDataSource.GetLatestVersionAsync(dataSourceRegistry);
 
+            ProjectTargetChange change = changes.Value;
+
+            if (change.CurrentTargetDescription != null && change.CurrentTargetDescription.SetupDriver != Guid.Empty)
+            {
+                IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+                ErrorHandler.ThrowOnFailure(service.GetSetupDriver(change.CurrentTargetDescription.SetupDriver, out IVsProjectAcquisitionSetupDriver driver));
+
+                change.CurrentTargetDescription.ActualSetupDriver = driver;
+            }
+
             return changes.Value;
         }
 
         public Task<IImmutableList<string>> GetAffectedFilesAsync(IProjectTargetChange projectTargetChange)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult<IImmutableList<string>>(ImmutableList<string>.Empty);
         }
 
         public Task RetargetAsync(TextWriter outputLogger, RetargetOptions options, IProjectTargetChange projectTargetChange, string backupLocation)
         {
             var change = projectTargetChange as ProjectTargetChange;
-            
+
             Assumes.NotNull(change);
+            Assumes.NotNull(change.RetargetProvider);
 
             return change.RetargetProvider.FixAsync(projectTargetChange);
         }
