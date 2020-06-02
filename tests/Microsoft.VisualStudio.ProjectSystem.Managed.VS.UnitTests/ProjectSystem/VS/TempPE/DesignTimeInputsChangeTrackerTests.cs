@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var threadingService = IProjectThreadingServiceFactory.Create();
             var projectSubscriptionService = IActiveConfiguredProjectSubscriptionServiceFactory.Create();
             var unconfiguredProject = UnconfiguredProjectFactory.Create(
-                filePath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
+                fullPath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
                 projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
 
             var unconfiguredProjectServices = IUnconfiguredProjectServicesFactory.Create(

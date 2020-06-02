@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _lastSharedInputs = sharedInputs;
                 });
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject\MyProject.csproj");
 
             _buildManager = new TestBuildManager();
 

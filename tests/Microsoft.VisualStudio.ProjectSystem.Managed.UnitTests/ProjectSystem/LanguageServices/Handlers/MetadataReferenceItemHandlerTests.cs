@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
             void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onReferenceAdded(string s) => referencesPushedToWorkspace.Add(s);
             void onReferenceRemoved(string s) => referencesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
             var logger = Mock.Of<IProjectLogger>();
 

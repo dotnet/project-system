@@ -153,7 +153,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                         services: ProjectServicesFactory.Create(
                             threadingService: IProjectThreadingServiceFactory.Create(),
                             projectLockService: IProjectLockServiceFactory.Create())));
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(unconfiguredProjectServices: unconfiguredProjectServices);
+
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(
+                unconfiguredProjectServices: unconfiguredProjectServices,
+                fullPath: @"C:\Project\Project.csproj");
 
             sourceItemsRuleSource = new ProjectValueDataSource<IProjectSubscriptionUpdate>(unconfiguredProjectServices);
 

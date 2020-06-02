@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 

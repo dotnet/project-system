@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [InlineData(@"C:\projectdir\foo.man", null, null, null, "")]
         public async Task SetApplicationManifest(string appManifestPropValue, string? noManifestPropValue, string? valueToSet, string? expectedAppManifestValue, string expectedNoManifestValue)
         {
-            var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create(filePath: @"C:\projectdir\proj.proj"));
+            var provider = new ApplicationManifestValueProvider(UnconfiguredProjectFactory.Create(fullPath: @"C:\projectdir\proj.proj"));
             var defaultProperties = IProjectPropertiesFactory.CreateWithPropertiesAndValues(new Dictionary<string, string?>
                                                                                             {
                                                                                                 { "ApplicationManifest", appManifestPropValue },

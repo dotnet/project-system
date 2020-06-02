@@ -66,11 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(metadata);
 
-                if (!metadata.TryGetValue(Compile.FullPathProperty, out string fullPath))
-                {
-                    // if there is no full path then we can calculate it
-                    fullPath = _project.MakeRooted(itemName);
-                }
+                string fullPath = _project.MakeRooted(itemName);
 
                 if (designTime)
                 {

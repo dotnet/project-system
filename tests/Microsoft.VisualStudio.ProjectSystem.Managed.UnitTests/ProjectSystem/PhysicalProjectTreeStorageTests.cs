@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateEmptyFileAsync_CreatesFileOnDisk()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Project\Project.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Project\Project.csproj");
             var fileSystem = IFileSystemFactory.ImplementCreate((path) => { result = path; return new MemoryStream(); });
 
             var storage = CreateInstance(fileSystem: fileSystem, project: project);
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_CreatesFolderOnDisk()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Root.csproj");
             var fileSystem = IFileSystemFactory.ImplementCreateDirectory((path) => { result = path; });
 
             var storage = CreateInstance(fileSystem: fileSystem, project: project);
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateEmptyFileAsync_AddsFileToProject()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Project.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Project.csproj");
 
             var sourceItemsProvider = IProjectItemProviderFactory.AddItemAsync(path => { result = path; return null!; });
             var storage = CreateInstance(sourceItemsProvider: sourceItemsProvider, project: project);
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task AddFileAsync_AddsFileToProject()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Project.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Project.csproj");
 
             var sourceItemsProvider = IProjectItemProviderFactory.AddItemAsync(path => { result = path; return null!; });
             var storage = CreateInstance(sourceItemsProvider: sourceItemsProvider, project: project);
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_IncludesFolderInProject()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = path; return Task.CompletedTask; });
 
             var storage = CreateInstance(folderManager: folderManager, project: project);
@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task AddFolderAsync_IncludesFolderInProject()
         {
             string? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = path; return Task.CompletedTask; });
 
             var storage = CreateInstance(folderManager: folderManager, project: project);
@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public async Task CreateFolderAsync_IncludesFolderInProjectNonRecursively()
         {
             bool? result = null;
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Root.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Root.csproj");
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, recursive) => { result = recursive; return Task.CompletedTask; });
 
             var storage = CreateInstance(folderManager: folderManager, project: project);
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder\File.cs", @"D:\Folder With Spaces\Folder\File.cs")]
         public async Task AddFileAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectPath);
             string? result = null;
             var sourceItemsProvider = IProjectItemProviderFactory.AddItemAsync(path => { result = path; return null!; });
             var storage = CreateInstance(sourceItemsProvider: sourceItemsProvider, project: project);
@@ -243,7 +243,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder\File.cs", @"D:\Folder With Spaces\Folder\File.cs")]
         public async Task CreateEmptyFileAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectPath);
             string? result = null;
             var fileSystem = IFileSystemFactory.ImplementCreate(path => { result = path; return new MemoryStream(); });
 
@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder", @"D:\Folder With Spaces\Folder")]
         public async Task CreateFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectPath);
             string? result = null;
             var fileSystem = IFileSystemFactory.ImplementCreateDirectory(path => { result = path; });
 
@@ -301,7 +301,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"C:\Projects\Project.csproj",  @"D:\Folder With Spaces\Folder", @"D:\Folder With Spaces\Folder")]
         public async Task AddFolderAsync_ValueAsPath_IsCalculatedRelativeToProjectDirectory(string projectPath, string input, string expected)
         {
-            var project = UnconfiguredProjectFactory.Create(filePath: projectPath);
+            var project = UnconfiguredProjectFactory.Create(fullPath: projectPath);
             string? result = null;
             var folderManager = IFolderManagerFactory.IncludeFolderInProjectAsync((path, _) => { result = path; });
 

@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var threadingService = IProjectThreadingServiceFactory.Create();
             var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
             var unconfiguredProject = UnconfiguredProjectFactory.Create(
-                filePath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
+                fullPath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
                 projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
 
             var compilerMock = new Mock<ITempPECompiler>();
