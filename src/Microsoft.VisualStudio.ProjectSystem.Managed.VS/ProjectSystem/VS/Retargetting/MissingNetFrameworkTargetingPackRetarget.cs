@@ -23,7 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             string? targetFrameworkVersion = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkVersionProperty, string.Empty);
             string? targetFrameworkProfile = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkProfileProperty, string.Empty);
 
-            if (targetFrameworkVersion.Length > 1)
+            if (StringComparers.PropertyLiteralValues.Equals(targetFrameworkIdentifier, ".NETFramework") &&    // Only .NET Framework has targeting packs
+                targetFrameworkVersion.Length > 1)                                                             // Sanity check so that substring doesn't fail
             {
                 string versionWithoutTheV = targetFrameworkVersion.Substring(1);
 
