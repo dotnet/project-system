@@ -56,13 +56,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             // Remove duplicates so that we have one target change per project
             ImmutableList<ProjectTargetChange> changes = ImmutableList<ProjectTargetChange>.Empty
                                                                                    .AddRange(inputs.SelectMany(projects => projects)
-                                                                                   .Select(changes => changes)
                                                                                    .Distinct(change => change.NewTargetId, EqualityComparer<Guid>.Default));
 
-            _projectRetargetingManager.ReportProjectNeedsRetargeting(_project.FullPath, changes);
+            ProjectTargetChange changeToProcess = ProjectTargetChange.None;
+            if (changes.Count > 0)
+            {
+                // TODO: Make this smarter, and select the best retarget to offer
+                changeToProcess = changes[0];
+            }
 
-            // TODO: Make this smarter, and select the best retarget to offer
-            return changes.FirstOrDefault();
+            _projectRetargetingManager.ReportProjectNeedsRetargeting(_project.FullPath, changeToProcess);
+
+            return changeToProcess;
         }
     }
 }

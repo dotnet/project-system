@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             });
         }
 
-        public void ReportProjectNeedsRetargeting(string projectFile, IEnumerable<ProjectTargetChange> changes)
+        public void ReportProjectNeedsRetargeting(string projectFile, ProjectTargetChange change)
         {
             ThreadingTools.ApplyChangeOptimistically(ref _projectsToWaitFor, projectFile, (col, file) =>
             {
@@ -92,56 +92,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 return col;
             });
 
-            // Most of the time all target descriptions will already be registered, so avoid changing to the UI thread if we can
-            if (GetAllTargetDescriptions(changes).Except(_registeredDescriptions).Any())
+            if (change != ProjectTargetChange.None)
             {
-                _threadingService.ExecuteSynchronously(async () =>
+                // Most of the time all target descriptions will already be registered, so avoid changing to the UI thread if we can
+                if (GetAllTargetDescriptions(change).Except(_registeredDescriptions).Any())
                 {
-                    await _threadingService.SwitchToUIThread();
-
-                    IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
-
-                    foreach (ProjectTargetChange change in changes)
+                    _threadingService.ExecuteSynchronously(async () =>
                     {
+                        await _threadingService.SwitchToUIThread();
+
+                        IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+
                         if (change.NewTargetDescription != null)
                         {
-                            RegisterTarget(service, change.NewTargetDescription);
+                            InitializeTargetDescription(service, change.NewTargetDescription);
                         }
                         if (change.CurrentTargetDescription != null)
                         {
-                            RegisterTarget(service, change.CurrentTargetDescription);
+                            InitializeTargetDescription(service, change.CurrentTargetDescription);
                         }
-                    }
-                });
-            }
+                    });
+                }
 
-            if (changes.Any())
-            {
                 _needsRetarget = true;
             }
 
             TryTriggerRetarget();
 
-            void RegisterTarget(IVsTrackProjectRetargeting2 service, TargetDescriptionBase description)
+            void InitializeTargetDescription(IVsTrackProjectRetargeting2 service, TargetDescriptionBase description)
             {
                 if (ThreadingTools.ApplyChangeOptimistically(ref _registeredDescriptions, description, (col, d) => col.Add(d)))
                 {
                     ErrorHandler.ThrowOnFailure(service.RegisterProjectTarget(description));
                 }
+
+                if (description.SetupDriver != Guid.Empty && description.ActualSetupDriver == null)
+                {
+                    ErrorHandler.ThrowOnFailure(service.GetSetupDriver(description.SetupDriver, out IVsProjectAcquisitionSetupDriver driver));
+
+                    description.ActualSetupDriver = driver;
+                }
             }
 
-            static IEnumerable<TargetDescriptionBase> GetAllTargetDescriptions(IEnumerable<ProjectTargetChange> changes)
+            static IEnumerable<TargetDescriptionBase> GetAllTargetDescriptions(ProjectTargetChange change)
             {
-                foreach (ProjectTargetChange change in changes)
+                if (change.NewTargetDescription != null)
                 {
-                    if (change.NewTargetDescription != null)
-                    {
-                        yield return change.NewTargetDescription;
-                    }
-                    if (change.CurrentTargetDescription != null)
-                    {
-                        yield return change.CurrentTargetDescription;
-                    }
+                    yield return change.NewTargetDescription;
+                }
+                if (change.CurrentTargetDescription != null)
+                {
+                    yield return change.CurrentTargetDescription;
                 }
             }
         }

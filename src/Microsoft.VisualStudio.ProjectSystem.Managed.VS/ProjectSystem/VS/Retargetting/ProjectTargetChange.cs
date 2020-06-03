@@ -6,9 +6,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal class ProjectTargetChange : IProjectTargetChange
     {
+        internal static ProjectTargetChange None = new ProjectTargetChange();
+
         private readonly TargetDescriptionBase? _newTargetDescription;
         private readonly TargetDescriptionBase? _currentTargetDescription;
         private readonly IProjectRetargetCheckProvider? _provider;
+
+        private ProjectTargetChange()
+        {
+        }
 
         public ProjectTargetChange(TargetDescriptionBase currentTargetDescription)
         {
