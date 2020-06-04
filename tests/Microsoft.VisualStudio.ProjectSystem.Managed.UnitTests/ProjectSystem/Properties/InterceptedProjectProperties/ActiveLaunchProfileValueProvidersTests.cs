@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
@@ -252,12 +253,243 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.Equal(expected: @"C:\four\five\six", actual: activeProfileWorkingDirectory);
         }
 
+        [Fact]
+        public async Task AuthenticationMode_OnGetEvaluatedPropertyValueAsync_GetsModeFromActiveProfile()
+        {
+            string activeProfileAuthenticationMode = "Windows";
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileAuthenticationMode }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.AuthenticationModePropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileAuthenticationMode, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task AuthenticationMode_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            string activeProfileAuthenticationMode = "Windows";
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileAuthenticationMode }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileOtherSettings: activeProfileOtherSettings,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileAuthenticationMode = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.AuthenticationModePropertyName, "NotWindows", Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "NotWindows", actual: activeProfileAuthenticationMode);
+        }
+
+        [Fact]
+        public async Task NativeDebugging_OnGetEvaluatedPropertyValueAsync_GetsNativeDebuggingFromActiveProfile()
+        {
+            bool activeProfileNativeDebugging = true;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.NativeDebuggingProperty, activeProfileNativeDebugging }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.NativeDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileNativeDebugging.ToString(), actual: actualValue);
+        }
+
+        [Fact]
+        public async Task NativeDebugging_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            bool activeProfileNativeDebugging = false;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileNativeDebugging }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileOtherSettings: activeProfileOtherSettings,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileNativeDebugging = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.NativeDebuggingPropertyName, "true", Mock.Of<IProjectProperties>());
+
+            Assert.True(activeProfileNativeDebugging);
+        }
+
+        [Fact]
+        public async Task RemoteDebugEnabled_OnGetEvaluatedPropertyValueAsync_GetsNativeDebuggingFromActiveProfile()
+        {
+            bool activeProfileRemoteDebugEnabled = true;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteDebugEnabledProperty, activeProfileRemoteDebugEnabled }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugEnabledPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileRemoteDebugEnabled.ToString(), actual: actualValue);
+        }
+
+        [Fact]
+        public async Task RemoveDebugEnabled_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            bool activeProfileRemoteDebugEnabled = false;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteDebugEnabledProperty, activeProfileRemoteDebugEnabled }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileOtherSettings: activeProfileOtherSettings,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugEnabledPropertyName, "true", Mock.Of<IProjectProperties>());
+
+            Assert.True(activeProfileRemoteDebugEnabled);
+        }
+
+        [Fact]
+        public async Task RemoteMachineName_OnGetEvaluatedPropertyValueAsync_GetsNameFromActiveProfile()
+        {
+            string activeProfileRemoteMachineName = "alphaMachine";
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteDebugMachineProperty, activeProfileRemoteMachineName }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugMachinePropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileRemoteMachineName, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task RemoteMachineName_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            string activeProfileRemoteMachineName = "Tiger";
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.RemoteDebugMachineProperty, activeProfileRemoteMachineName }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileOtherSettings: activeProfileOtherSettings,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileRemoteMachineName = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugMachinePropertyName, "Cheetah", Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "Cheetah", actual: activeProfileRemoteMachineName);
+        }
+
+        [Fact]
+        public async Task SqlDebugEnabled_OnGetEvaluatedPropertyValueAsync_GetsSettingFromActiveProfile()
+        {
+            bool activeProfileSqlDebugEnabled = true;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.SqlDebuggingProperty, activeProfileSqlDebugEnabled }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.SqlDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileSqlDebugEnabled.ToString(), actual: actualValue);
+        }
+
+        [Fact]
+        public async Task SqlDebugEnabled_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
+        {
+            bool activeProfileSqlDebugEnabled = false;
+            var activeProfileOtherSettings = new Dictionary<string, object>
+            {
+                { LaunchProfileExtensions.SqlDebuggingProperty, activeProfileSqlDebugEnabled }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileOtherSettings: activeProfileOtherSettings,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.SqlDebuggingPropertyName, "true", Mock.Of<IProjectProperties>());
+
+            Assert.True(activeProfileSqlDebugEnabled);
+        }
+
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(
             string activeProfileName,
             string? activeProfileLaunchTarget = null,
             string? activeProfileExecutablePath = null,
             string? activeProfileCommandLineArgs = null,
             string? activeProfileWorkingDirectory = null,
+            Dictionary<string, object>? activeProfileOtherSettings = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
         {
@@ -286,6 +518,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (activeProfileWorkingDirectory != null)
             {
                 profile.WorkingDirectory = activeProfileWorkingDirectory;
+            }
+
+            if (activeProfileOtherSettings != null)
+            {
+                foreach (var kvp in activeProfileOtherSettings)
+                {
+                    profile.OtherSettings.Add(kvp.Key, kvp.Value);
+                }
             }
 
             var settingsProvider = ILaunchSettingsProviderFactory.Create(
