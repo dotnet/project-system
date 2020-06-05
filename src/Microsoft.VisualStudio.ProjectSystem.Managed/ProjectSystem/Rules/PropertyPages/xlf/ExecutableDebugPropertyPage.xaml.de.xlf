@@ -22,6 +22,16 @@
         <target state="new">Enable SQL Server debugging</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
+        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
+        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="new">Authentication mode</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
         <target state="new">Properties associated with launching and debugging a specified executable file.</target>
@@ -30,16 +40,6 @@
       <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
         <target state="new">Executable</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AuthenticationMode|Description">
-        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|AuthenticationMode|DisplayName">
-        <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">

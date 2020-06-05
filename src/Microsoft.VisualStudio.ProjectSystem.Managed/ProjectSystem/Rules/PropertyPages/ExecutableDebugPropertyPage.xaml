@@ -39,9 +39,10 @@
                   DisplayName="Remote machine name"
                   Description="The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled."/>
 
-  <StringProperty Name="AuthenticationMode"
-                  DisplayName="Authentication mode"
-                  Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."/>
+  <DynamicEnumProperty Name="AuthenticationMode"
+                       DisplayName="Authentication mode"
+                       Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
+                       EnumProvider="AuthenticationModeEnumProvider" />
 
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging" />
