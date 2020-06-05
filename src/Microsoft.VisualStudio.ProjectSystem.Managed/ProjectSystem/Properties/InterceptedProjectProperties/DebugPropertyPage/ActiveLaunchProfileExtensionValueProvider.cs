@@ -28,6 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string RemoteDebugMachinePropertyName = "RemoteDebugMachine";
         internal const string SqlDebuggingPropertyName = "SqlDebugging";
 
+        // The CPS property system will map "true" and "false" to the localized versions of
+        // "Yes" and "No" for display purposes, but not other casings like "True" and
+        // "False". To ensure consistency we need to map booleans to these constants.
+        private const string True = "true";
+        private const string False = "false";
+
         private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private readonly IProjectThreadingService _projectThreadingService;
@@ -58,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfilePropertyValue = propertyName switch
             {
                 AuthenticationModePropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, string.Empty),
-                NativeDebuggingPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, false).ToString(),
-                RemoteDebugEnabledPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, false).ToString(),
+                NativeDebuggingPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, false) ? True : False,
+                RemoteDebugEnabledPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, false) ? True : False,
                 RemoteDebugMachinePropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, string.Empty),
-                SqlDebuggingPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.SqlDebuggingProperty, false).ToString(),
+                SqlDebuggingPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.SqlDebuggingProperty, false) ? True : False,
 
                 _ => throw new InvalidOperationException($"{nameof(ActiveLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.")
             };
@@ -124,7 +130,8 @@ unconfiguredProject: _project);
 
         private static T GetOtherProperty<T>(ILaunchProfile? launchProfile, string propertyName, T defaultValue)
         {
-            if (launchProfile == null)
+            if (launchProfile == null
+                || launchProfile.OtherSettings == null)
             {
                 return defaultValue;
             }

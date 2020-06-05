@@ -316,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.NativeDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
-            Assert.Equal(expected: activeProfileNativeDebugging.ToString(), actual: actualValue);
+            Assert.Equal(expected: "true", actual: actualValue);
         }
 
         [Fact]
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugEnabledPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
-            Assert.Equal(expected: activeProfileRemoteDebugEnabled.ToString(), actual: actualValue);
+            Assert.Equal(expected: "true", actual: actualValue);
         }
 
         [Fact]
@@ -454,7 +454,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.SqlDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
-            Assert.Equal(expected: activeProfileSqlDebugEnabled.ToString(), actual: actualValue);
+            Assert.Equal(expected: "true", actual: actualValue);
         }
 
         [Fact]
