@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
+        <source>Enable native code debugging</source>
+        <target state="new">Enable native code debugging</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
+        <source>Indicates that the debugger should attach to a process on a remote machine.</source>
+        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
+        <source>Use remote machine</source>
+        <target state="new">Use remote machine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
+        <source>Enable SQL Server debugging</source>
+        <target state="new">Enable SQL Server debugging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
         <target state="new">Properties associated with launching and debugging the project output.</target>
@@ -12,6 +32,16 @@
         <target state="new">Project</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|AuthenticationMode|Description">
+        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
+        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AuthenticationMode|DisplayName">
+        <source>Authentication mode</source>
+        <target state="new">Authentication mode</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
         <target state="new">Command line arguments to pass to the executable.</target>
@@ -20,6 +50,16 @@
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
         <target state="new">Command line arguments</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RemoteDebugMachine|Description">
+        <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
+        <target state="new">The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
+        <source>Remote machine name</source>
+        <target state="new">Remote machine name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
