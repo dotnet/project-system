@@ -62,20 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void HasSameTarget()
-        {
-            var targetFramework1 = new TargetFramework("tfm1");
-            var targetFramework2 = new TargetFramework("tfm2");
-
-            var dependency1 = new TestDependency { TargetFramework = targetFramework1 };
-            var dependency2 = new TestDependency { TargetFramework = targetFramework1 };
-            var dependency3 = new TestDependency { TargetFramework = targetFramework2 };
-
-            Assert.True(dependency1.HasSameTarget(dependency2));
-            Assert.False(dependency1.HasSameTarget(dependency3));
-        }
-
-        [Fact]
         public void GetTopLevelId()
         {
             var dependency1 = new TestDependency
