@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync("ExecutablePath", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileExecutablePath, actual: actualValue);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await launchProfileProvider.OnGetUnevaluatedPropertyValueAsync("ExecutablePath", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await launchProfileProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileExecutablePath, actual: actualValue);
         }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            await launchProfileProvider.OnSetPropertyValueAsync("ExecutablePath", @"C:\user\bin\delta.exe", Mock.Of<IProjectProperties>());
+            await launchProfileProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, @"C:\user\bin\delta.exe", Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: @"C:\user\bin\delta.exe", actual: activeProfileExecutablePath);
         }
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync("LaunchTarget", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileLaunchTarget, actual: actualValue);
         }
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync("LaunchTarget", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileLaunchTarget, actual: actualValue);
         }
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            await launchProfileProvider.OnSetPropertyValueAsync("LaunchTarget", "NewCommand", Mock.Of<IProjectProperties>());
+            await launchProfileProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, "NewCommand", Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "NewCommand", actual: activeProfileLaunchTarget);
         }
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await commandLineArgumentsProvider.OnGetEvaluatedPropertyValueAsync("CommandLineArguments", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await commandLineArgumentsProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileCommandLineArguments, actual: actualValue);
         }
@@ -175,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await commandLineArgumentsProvider.OnGetUnevaluatedPropertyValueAsync("CommandLineArguments", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await commandLineArgumentsProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileCommandLineArguments, actual: actualValue);
         }
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            await commandLineArgumentsProvider.OnSetPropertyValueAsync("CommandLineArguments", "/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
+            await commandLineArgumentsProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, "/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "/seaotters:YES /seals:YES", actual: activeProfileCommandLineArgs);
         }
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync("WorkingDirectory", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileWorkingDirectory, actual: actualValue);
         }
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await workingDirectoryProvider.OnGetUnevaluatedPropertyValueAsync("WorkingDirectory", string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await workingDirectoryProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: activeProfileWorkingDirectory, actual: actualValue);
         }
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var threadingService = IProjectThreadingServiceFactory.Create();
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
 
-            await workingDirectoryProvider.OnSetPropertyValueAsync("WorkingDirectory", @"C:\four\five\six", Mock.Of<IProjectProperties>());
+            await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, @"C:\four\five\six", Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: @"C:\four\five\six", actual: activeProfileWorkingDirectory);
         }

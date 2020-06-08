@@ -29,10 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal class ActiveLaunchProfileCommonValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string CommandLineArgumentsPropertyName = "CommandLineArguments";
-        private const string ExecutablePathPropertyName = "ExecutablePath";
-        private const string LaunchTargetPropertyName = "LaunchTarget";
-        private const string WorkingDirectoryPropertyName = "WorkingDirectory";
+        internal const string CommandLineArgumentsPropertyName = "CommandLineArguments";
+        internal const string ExecutablePathPropertyName = "ExecutablePath";
+        internal const string LaunchTargetPropertyName = "LaunchTarget";
+        internal const string WorkingDirectoryPropertyName = "WorkingDirectory";
 
         private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
