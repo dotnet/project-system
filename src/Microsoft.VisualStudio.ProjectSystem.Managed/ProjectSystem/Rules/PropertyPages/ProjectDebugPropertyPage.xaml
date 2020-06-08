@@ -17,13 +17,30 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
+  <StringProperty Name="CommandLineArguments"
+                  DisplayName="Command line arguments"
+                  Description="Command line arguments to pass to the executable." />
+
   <StringProperty Name="WorkingDirectory"
                   DisplayName="Working directory"
                   Description="Path to the working directory where the process will be started."
                   Subtype="folder" />
 
-  <StringProperty Name="CommandLineArguments"
-                  DisplayName="Command line arguments"
-                  Description="Command line arguments to pass to the executable." />
+  <BoolProperty Name="RemoteDebugEnabled"
+                DisplayName="Use remote machine"
+                Description="Indicates that the debugger should attach to a process on a remote machine."/>
 
+  <StringProperty Name="RemoteDebugMachine"
+                  DisplayName="Remote machine name"
+                  Description="The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled."/>
+
+  <DynamicEnumProperty Name="AuthenticationMode"
+                       DisplayName="Authentication mode"
+                       Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
+                       EnumProvider="AuthenticationModeEnumProvider" />
+  <BoolProperty Name="NativeDebugging"
+                DisplayName="Enable native code debugging" />
+
+  <BoolProperty Name="SqlDebugging"
+                DisplayName="Enable SQL Server debugging" />
 </Rule>
