@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// makes the related <see cref="ILaunchProfile" /> the active one.
     /// </summary>
     /// <remarks>
-    /// Not to be confused with <see cref="ActiveLaunchProfileValueProviderBase"/> which
-    /// reads and writes values within the active launch profile.
+    /// Not to be confused with <see cref="ActiveLaunchProfileCommonValueProvider"/>
+    /// which reads and writes values within the active launch profile.
     /// </remarks>
     [ExportInterceptingPropertyValueProvider(ActiveLaunchProfilePropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal class ActiveLaunchProfileNameValueProvider : InterceptingPropertyValueProviderBase
