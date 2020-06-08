@@ -254,6 +254,77 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
+        public async Task LaunchBrowser_OnGetEvaluatedPropertyValueAsync_GetsValueFromActiveProfile()
+        {
+            bool activeProfileLaunchBrowser = true;
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchBrowser: activeProfileLaunchBrowser);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchBrowserPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "true", actual: actualValue);
+        }
+
+        [Fact]
+        public async Task LaunchBrowser_OnSetPropertyValueAsync_SetsValueInActiveProfile()
+        {
+            bool activeProfileLaunchBrowser = false;
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "Three",
+                activeProfileLaunchBrowser: activeProfileLaunchBrowser,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileLaunchBrowser = s.ActiveProfile!.LaunchBrowser;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchBrowserPropertyName, "true", Mock.Of<IProjectProperties>());
+
+            Assert.True(activeProfileLaunchBrowser);
+        }
+
+        [Fact]
+        public async Task LaunchUrl_OnGetEvaluatedPropertyValueAsync_GetsUrlFromActiveProfile()
+        {
+            string activeProfileLaunchUrl = "https://microsoft.com";
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchUrl: activeProfileLaunchUrl);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchUrlPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: activeProfileLaunchUrl, actual: actualValue);
+        }
+
+        [Fact]
+        public async Task LaunchUrl_OnSetPropertyValueAsync_SetsUrlInActiveProfile()
+        {
+            string activeProfileLaunchUrl = "https://incorrect.com";
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "Three",
+                activeProfileLaunchUrl: activeProfileLaunchUrl,
+                updateLaunchSettingsCallback: s =>
+                {
+                    activeProfileLaunchUrl = s.ActiveProfile!.LaunchUrl;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchUrlPropertyName, "https://microsoft.com", Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "https://microsoft.com", actual: activeProfileLaunchUrl);
+        }
+        [Fact]
         public async Task AuthenticationMode_OnGetEvaluatedPropertyValueAsync_GetsModeFromActiveProfile()
         {
             string activeProfileAuthenticationMode = "Windows";
@@ -489,6 +560,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfileExecutablePath = null,
             string? activeProfileCommandLineArgs = null,
             string? activeProfileWorkingDirectory = null,
+            bool? activeProfileLaunchBrowser = null,
+            string? activeProfileLaunchUrl = null,
             Dictionary<string, object>? activeProfileOtherSettings = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
@@ -518,6 +591,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (activeProfileWorkingDirectory != null)
             {
                 profile.WorkingDirectory = activeProfileWorkingDirectory;
+            }
+
+            if (activeProfileLaunchBrowser != null)
+            {
+                profile.LaunchBrowser = activeProfileLaunchBrowser.Value;
+            }
+
+            if (activeProfileLaunchUrl != null)
+            {
+                profile.LaunchUrl = activeProfileLaunchUrl;
             }
 
             if (activeProfileOtherSettings != null)
