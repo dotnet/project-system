@@ -31,7 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         internal const string CommandLineArgumentsPropertyName = "CommandLineArguments";
         internal const string ExecutablePathPropertyName = "ExecutablePath";
+        internal const string LaunchBrowserPropertyName = "LaunchBrowser";
         internal const string LaunchTargetPropertyName = "LaunchTarget";
+        internal const string LaunchUrlPropertyName = "LaunchUrl";
         internal const string WorkingDirectoryPropertyName = "WorkingDirectory";
 
         private readonly UnconfiguredProject _project;
@@ -64,12 +66,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 CommandLineArgumentsPropertyName => launchSettings.ActiveProfile?.CommandLineArgs,
                 ExecutablePathPropertyName => launchSettings.ActiveProfile?.ExecutablePath,
+                LaunchBrowserPropertyName => ConvertBooleanToString(launchSettings.ActiveProfile?.LaunchBrowser),
                 LaunchTargetPropertyName => launchSettings.ActiveProfile?.CommandName,
+                LaunchUrlPropertyName => launchSettings.ActiveProfile?.LaunchUrl,
                 WorkingDirectoryPropertyName => launchSettings.ActiveProfile?.WorkingDirectory,
                 _ => throw new InvalidOperationException($"{nameof(ActiveLaunchProfileCommonValueProvider)} does not handle property '{propertyName}'.")
             };
 
             return activeProfilePropertyValue ?? string.Empty;
+        }
+
+        private static string? ConvertBooleanToString(bool? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            else if (value.Value)
+            {
+                return "true";
+            }
+            else
+            {
+                return "false";
+            }
         }
 
         public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
@@ -108,8 +128,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     activeProfile.ExecutablePath = newValue;
                     break;
 
+                case LaunchBrowserPropertyName:
+                    activeProfile.LaunchBrowser = bool.Parse(newValue);
+                    break;
+
                 case LaunchTargetPropertyName:
                     activeProfile.CommandName = newValue;
+                    break;
+
+                case LaunchUrlPropertyName:
+                    activeProfile.LaunchUrl = newValue;
                     break;
 
                 case WorkingDirectoryPropertyName:
