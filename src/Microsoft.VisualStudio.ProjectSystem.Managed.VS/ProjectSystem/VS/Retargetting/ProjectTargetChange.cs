@@ -6,6 +6,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal class ProjectTargetChange : IProjectTargetChange
     {
+        /// <summary>
+        /// Creates a project target change for a prerequisite, where the target description is the CurrentTargetDescription
+        /// </summary>
+        public static ProjectTargetChange CreateForPrerequisite(TargetDescriptionBase targetDescription) => new ProjectTargetChange(targetDescription);
+
+        /// <summary>
+        /// Creates a project target change for a prerequisite, where the target description is the NewTargetDescription
+        /// </summary>
+        public static ProjectTargetChange CreateForRetarget(TargetDescriptionBase targetDescription, IProjectRetargetCheckProvider provider) => new ProjectTargetChange(targetDescription, provider);
+
         internal static ProjectTargetChange None = new ProjectTargetChange();
 
         private readonly TargetDescriptionBase? _newTargetDescription;
@@ -16,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         {
         }
 
-        public ProjectTargetChange(TargetDescriptionBase currentTargetDescription)
+        private ProjectTargetChange(TargetDescriptionBase currentTargetDescription)
         {
             _currentTargetDescription = currentTargetDescription;
         }
 
-        public ProjectTargetChange(TargetDescriptionBase newTargetDescription, IProjectRetargetCheckProvider provider)
+        private ProjectTargetChange(TargetDescriptionBase newTargetDescription, IProjectRetargetCheckProvider provider)
         {
             _newTargetDescription = newTargetDescription;
             _provider = provider;
