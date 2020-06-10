@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 TargetDescriptionBase? change = await provider.CheckAsync(arg.Value.CurrentState);
                 if (change != null)
                 {
-                    changes.Add(new ProjectTargetChange(change, provider));
+                    changes.Add(ProjectTargetChange.CreateForRetarget(change, provider));
                 }
             }
 
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 TargetDescriptionBase? change = await provider.CheckAsync(arg.Value.CurrentState);
                 if (change != null)
                 {
-                    changes.Add(new ProjectTargetChange(change));
+                    changes.Add(ProjectTargetChange.CreateForPrerequisite(change));
                 }
             }
 
