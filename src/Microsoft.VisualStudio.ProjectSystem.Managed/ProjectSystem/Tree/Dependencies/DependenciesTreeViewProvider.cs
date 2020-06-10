@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 Assumes.NotNull(parent);
 
-                rootNode = parent!;
+                rootNode = parent;
             }
 
             return currentNodes != null // shouldCleanup
