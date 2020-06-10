@@ -60,16 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
         }
 
-        /// <summary>
-        /// Returns true if given dependencies belong to the same targeted snapshot, i.e. have same target.
-        /// </summary>
-        public static bool HasSameTarget(this IDependency self, IDependency other)
-        {
-            Requires.NotNull(other, nameof(other));
-
-            return self.TargetFramework.Equals(other.TargetFramework);
-        }
-
         public static IDependency ToResolved(
             this IDependency dependency,
             string? schemaName = null)
