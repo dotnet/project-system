@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = CreateFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 projectItemSpecs,

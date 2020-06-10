@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     internal abstract class DependenciesSnapshotFilterBase : IDependenciesSnapshotFilter
     {
         public virtual void BeforeAddOrUpdate(
-            ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
@@ -22,7 +21,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         }
 
         public virtual void BeforeRemove(
-            ITargetFramework targetFramework,
             IDependency dependency,
             RemoveDependencyContext context)
         {

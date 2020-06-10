@@ -30,9 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 _hasUnresolvedDependency = !dependency.Resolved;
             }
 
-            public IDependency? Dependency => _dependency;
             public string Caption => _dependency.Caption;
-            public string? FilePath => _dependency.Id;
             public string? SchemaName => _dependency.SchemaName;
             public string? SchemaItemType => _dependency.SchemaItemType;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedIcon : _dependency.IconSet.Icon;
@@ -47,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             return string.IsNullOrEmpty(self.Path)
                 ? self.Id
-                : Dependency.GetID(self.TargetFramework, self.ProviderType, self.Path);
+                : Dependency.GetID(self.ProviderType, self.Path);
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             return string.IsNullOrEmpty(self.Path)
                 ? string.Equals(self.Id, id, StringComparisons.DependencyTreeIds)
-                : Dependency.IdEquals(id, self.TargetFramework, self.ProviderType, self.Path);
+                : Dependency.IdEquals(id, self.ProviderType, self.Path);
         }
 
         public static IDependency ToResolved(

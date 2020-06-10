@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new TestProjectTree
             {
                 Caption = caption,
-                FilePath = itemContext.File ?? caption,
                 BrowseObjectProperties = browseObjectProperties,
                 Icon = icon,
                 ExpandedIcon = expandedIcon,
@@ -45,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return new TestProjectTree
             {
                 Caption = caption,
-                FilePath = filePath,
                 BrowseObjectProperties = browseObjectProperties,
                 Icon = icon,
                 ExpandedIcon = expandedIcon,
@@ -55,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             };
         }
 
-        public Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
+        public Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             var mockRule = new Mock<IRule>(MockBehavior.Strict);
             mockRule.Setup(x => x.Name).Returns(dependency.SchemaItemType);

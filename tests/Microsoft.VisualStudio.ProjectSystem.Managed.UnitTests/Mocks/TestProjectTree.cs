@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public bool Visible { get; set; }
         public ProjectImageMoniker ExpandedIcon { get; set; }
         public ProjectImageMoniker Icon { get; set; }
-        public string FilePath { get; set; } = "";
+        public string FilePath => null;
         public string Caption { get; set; }
         IReadOnlyList<IProjectTree> IProjectTree.Children => Children.ToList();
         public IProjectTree Root { get; }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectTree Remove(IProjectTree subtree)
         {
-            var nodeToRemove = Children.FirstOrDefault(x => x.FilePath.Equals(subtree.FilePath));
+            var nodeToRemove = Children.FirstOrDefault(ReferenceEquals, subtree);
             if (nodeToRemove != null)
             {
                 Children.Remove(nodeToRemove);

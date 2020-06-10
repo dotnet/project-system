@@ -32,13 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         /// In addition to the above operations, implementations of this method may also modify other
         /// dependencies in the snapshot. All these operations are performed via the <paramref name="context"/>.
         /// </remarks>
-        /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="subTreeProviderByProviderType">All dictionary of subtree providers keyed by <see cref="IProjectDependenciesSubTreeProvider.ProviderType"/>.</param>
         /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment (non-imported items), otherwise, <see langword="null"/> if we do not have any data.</param>
         /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
         void BeforeAddOrUpdate(
-            ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
@@ -47,11 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         /// <summary>
         /// Called before removing a dependency from a snapshot.
         /// </summary>
-        /// <param name="targetFramework">Target framework for which dependency was resolved.</param>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
         /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
         void BeforeRemove(
-            ITargetFramework targetFramework,
             IDependency dependency,
             RemoveDependencyContext context);
     }

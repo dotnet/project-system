@@ -6,16 +6,11 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     /// <summary>
-    /// Represents internal immutable dependency entity that is stored in immutable
-    /// snapshot <see cref="TargetedDependenciesSnapshot"/>.
+    /// Represents internal immutable dependency entity that is stored in an immutable
+    /// <see cref="TargetedDependenciesSnapshot"/>.
     /// </summary>
     internal interface IDependency
     {
-        /// <summary>
-        /// Target framework of the snapshot dependency belongs to
-        /// </summary>
-        ITargetFramework TargetFramework { get; }
-
         /// <summary>
         /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).
         /// </summary>
@@ -35,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         #region Copied from IDependencyModel
 
         /// <summary>
-        /// Gets an composite identifier comprised of <see cref="TargetFramework"/>, <see cref="ProviderType"/>
+        /// Gets an composite identifier comprised of <see cref="ProviderType"/>
         /// and the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
         /// </summary>
         /// <remarks>
-        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
+        /// This string has form <c>"provider-type\model-id"</c>.
         /// See <see cref="Dependency.GetID"/> for details on how this string is constructed.
         /// </remarks>
         string Id { get; }

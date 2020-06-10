@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
@@ -32,12 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         }
 
         public string Caption { get; }
-        public string? FilePath => null;
         public string? SchemaName => null;
         public string? SchemaItemType => null;
         public ImageMoniker Icon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;
         public ProjectTreeFlags Flags { get; }
-        public IDependency? Dependency => null;
     }
 }

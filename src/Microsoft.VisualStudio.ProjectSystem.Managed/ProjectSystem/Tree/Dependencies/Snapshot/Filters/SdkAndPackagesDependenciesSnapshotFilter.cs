@@ -23,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         public const int Order = 110;
 
         public override void BeforeAddOrUpdate(
-            ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find a resolved package dependency with the same name.
 
-                string packageId = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
+                string packageId = Dependency.GetID(PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (context.TryGetDependency(packageId, out IDependency package) && package.Resolved)
                 {
@@ -52,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
+                string sdkId = Dependency.GetID(SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
@@ -71,7 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         }
 
         public override void BeforeRemove(
-            ITargetFramework targetFramework,
             IDependency dependency,
             RemoveDependencyContext context)
         {
@@ -82,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                string sdkId = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
+                string sdkId = Dependency.GetID(SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
 
                 if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {

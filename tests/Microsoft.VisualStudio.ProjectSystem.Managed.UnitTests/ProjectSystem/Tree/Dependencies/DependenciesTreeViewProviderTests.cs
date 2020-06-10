@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await CreateProvider().BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy = "Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
+            var expectedFlatHierarchy = "Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.Icon);
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.ExpandedIcon);
@@ -60,37 +60,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyXxx1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "tfm1\\xxx\\dependency1",
+                Id = "xxx\\dependency1",
                 Name = "dependency1",
                 Path = "dependencyXxxpath",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependencyYyy1 = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependency1",
+                Id = "yyy\\dependency1",
                 Name = "dependency1",
                 Path = "dependencyYyypath",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
+                Id = "yyy\\dependencyExisting",
                 Name = "dependencyExisting",
                 Path = "dependencyExistingPath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependenciesRoot = new TestProjectTree
@@ -105,13 +102,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     new TestProjectTree
                     {
                         Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot",
                         Children =
                         {
                             new TestProjectTree
                             {
-                                Caption = "DependencyExisting",
-                                FilePath = "tfm1\\yyy\\dependencyExisting"
+                                Caption = "DependencyExisting"
                             }
                         }
                     }
@@ -126,13 +121,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-        Caption=Dependency1, FilePath=tfm1\Yyy\dependencyYyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
-    Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=Dependency1, FilePath=tfm1\Xxx\dependencyXxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
+            const string expectedFlatHierarchy =
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
+        Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
+    Caption=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -151,13 +146,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
+                Id = "yyy\\dependencyExisting",
                 Name = "dependencyExisting",
                 Path = "dependencyExistingpath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependenciesRoot = new TestProjectTree
@@ -168,13 +162,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     new TestProjectTree
                     {
                         Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot",
                         Children =
                         {
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                FilePath = "tfm1\\yyy\\dependencyExisting",
                                 CustomTag = "Untouched",
                                 Flags = DependencyTreeFlags.Unresolved
                             }
@@ -192,9 +184,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=Untouched";
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=Untouched";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -213,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
+                Id = "yyy\\dependencyExisting",
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -228,13 +220,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     new TestProjectTree
                     {
                         Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot",
                         Children =
                         {
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                FilePath = "tfm1\\yyy\\dependencyExisting",
                                 CustomTag = "Untouched",
                                 Flags = DependencyTreeFlags.Resolved
                             }
@@ -252,9 +242,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=Untouched";
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=DependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=Untouched";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -273,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyExisting",
+                Id = "yyy\\dependencyExisting",
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -289,13 +279,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     new TestProjectTree
                     {
                         Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot",
                         Children =
                         {
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                FilePath = "tfm1\\yyy\\dependencyExisting",
                                 Flags = DependencyTreeFlags.Resolved
                             }
                         }
@@ -312,9 +300,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=DependencyExisting, FilePath=tfm1\yyy\dependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=Yyy, IsProjectItem=False, CustomTag=";
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=Yyy, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -348,8 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     new TestProjectTree
                     {
-                        Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot"
+                        Caption = "YyyDependencyRoot"
                     }
                 }
             };
@@ -363,8 +350,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=";
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -397,8 +384,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     new TestProjectTree
                     {
-                        Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot"
+                        Caption = "YyyDependencyRoot"
                     }
                 }
             };
@@ -412,7 +398,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
         }
 
@@ -436,8 +422,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 Name = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependencyModelRootYyy = new TestDependencyModel
@@ -456,8 +441,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 Name = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependencyYyyExisting = new TestDependency
@@ -468,8 +452,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
-                Resolved = true,
-                TargetFramework = _tfm1
+                Resolved = true
             };
 
             var dependencyModelRootZzz = new TestDependencyModel
@@ -488,8 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 Id = "ZzzDependencyAny1",
                 Path = "ZzzDependencyAny1path",
                 Name = "ZzzDependencyAny1",
-                Caption = "ZzzDependencyAny1",
-                TargetFramework = TargetFramework.Any
+                Caption = "ZzzDependencyAny1"
             };
 
             var dependenciesRoot = new TestProjectTree
@@ -504,13 +486,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     new TestProjectTree
                     {
                         Caption = "YyyDependencyRoot",
-                        FilePath = "YyyDependencyRoot",
                         Children =
                         {
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                FilePath = "yyy\\dependencyExisting"
                             }
                         }
                     }
@@ -544,232 +524,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
-@"Caption=MyDependencies, FilePath=, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
-    Caption=ZzzDependencyRoot, FilePath=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-        Caption=ZzzDependencyAny1, FilePath=ZzzDependencyAny1, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=
-    Caption=tfm2, FilePath=tfm2, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
-        Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
-    Caption=tfm1, FilePath=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
-        Caption=XxxDependencyRoot, FilePath=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Xxx\dependencyxxxpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
-        Caption=YyyDependencyRoot, FilePath=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
-            Caption=Dependency1, FilePath=tfm1\Yyy\dependencyyyypath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
-            Caption=DependencyExisting, FilePath=tfm1\Yyy\dependencyyyyExistingpath, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
+            const string expectedFlatHierarchy =
+@"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
+    Caption=ZzzDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+        Caption=ZzzDependencyAny1, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=
+    Caption=tfm2, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
+        Caption=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
+        Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
+            Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=
+    Caption=tfm1, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=, BubbleUpFlag=True
+        Caption=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
+        Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
+            Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
+            Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
             Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
-        }
-
-        [Fact]
-        public void WhenFindByPathAndNullNode_ShouldDoNothing()
-        {
-            // Arrange
-            var provider = CreateProvider();
-
-            // Act
-            var resultTree = provider.FindByPath(null, "SomePath");
-
-            // Assert
-            Assert.Null(resultTree);
-        }
-
-        [Fact]
-        public void WhenFindByPathAndNotDependenciesRoot_ShouldDoNothing()
-        {
-            // Arrange
-            var provider = CreateProvider();
-            var dependenciesRoot = new TestProjectTree { Caption = "MyDependencies" };
-
-            // Act
-            var resultTree = provider.FindByPath(dependenciesRoot, "SomePath");
-
-            // Assert
-            Assert.Null(resultTree);
-        }
-
-        [Fact]
-        public void WhenFindByPathAndAbsoluteNodePath_ShouldFind()
-        {
-            // Arrange
-            var provider = CreateProvider();
-
-            var dependenciesRoot = new TestProjectTree
-            {
-                Caption = "MyDependencies",
-                Flags = DependencyTreeFlags.DependenciesRootNode,
-                Children =
-                {
-                    new TestProjectTree
-                    {
-                        Caption = "level1Child1",
-                        FilePath = @"c:\folder\level1Child1"
-                    },
-                    new TestProjectTree
-                    {
-                        Caption = "level1Child2",
-                        FilePath = @"c:\folder\level1Child2",
-                        Children =
-                        {
-                            new TestProjectTree
-                            {
-                                Caption = "level2Child21",
-                                FilePath = @"c:\folder\level2Child21"
-                            },
-                            new TestProjectTree
-                            {
-                                Caption = "level1Child22",
-                                FilePath = @"c:\folder\level2Child22",
-                                Children =
-                                {
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level3Child31",
-                                        FilePath = @"c:\folder\level3Child31"
-                                    },
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level3Child32",
-                                        FilePath = @"c:\folder\level3Child32"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            // Act
-            var resultTree = provider.FindByPath(dependenciesRoot, @"c:\folder\level3Child32");
-
-            // Assert
-            Assert.NotNull(resultTree);
-            Assert.Equal("level3Child32", resultTree!.Caption);
-        }
-
-        [Fact]
-        public void WhenFindByPathAndRelativeNodePath_ShouldNotFind()
-        {
-            // Arrange
-            var provider = CreateProvider();
-
-            var dependenciesRoot = new TestProjectTree
-            {
-                Caption = "MyDependencies",
-                Flags = DependencyTreeFlags.DependenciesRootNode,
-                Children =
-                {
-                    new TestProjectTree
-                    {
-                        Caption = "level1Child1",
-                        FilePath = @"c:\folder\level1Child1"
-                    },
-                    new TestProjectTree
-                    {
-                        Caption = "level1Child2",
-                        FilePath = @"c:\folder\level1Child2",
-                        Children =
-                        {
-                            new TestProjectTree
-                            {
-                                Caption = "level2Child21",
-                                FilePath = @"c:\folder\level2Child21"
-                            },
-                            new TestProjectTree
-                            {
-                                Caption = "level1Child22",
-                                FilePath = @"c:\folder\level2Child22",
-                                Children =
-                                {
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level3Child31",
-                                        FilePath = @"c:\folder\level3Child31"
-                                    },
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level3Child32",
-                                        FilePath = @"level3Child32"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            // Act
-            var resultTree = provider.FindByPath(dependenciesRoot, "SomePath\\level3Child32");
-
-            // Assert
-            Assert.Null(resultTree);
-        }
-
-        [Fact]
-        public void WhenFindByPathAndNeedToFindDependenciesRoot_ShouldNotFind()
-        {
-            // Arrange
-            var provider = CreateProvider();
-
-            var projectRoot = new TestProjectTree
-            {
-                Caption = "myproject",
-                Children =
-                {
-                    new TestProjectTree
-                    {
-                        Caption = "MyDependencies",
-                        Flags = DependencyTreeFlags.DependenciesRootNode,
-                        Children =
-                        {
-                            new TestProjectTree
-                            {
-                                Caption = "level1Child1",
-                                FilePath = @"c:\folder\level1Child1"
-                            },
-                            new TestProjectTree
-                            {
-                                Caption = "level1Child2",
-                                FilePath = @"c:\folder\level1Child2",
-                                Children =
-                                {
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level2Child21",
-                                        FilePath = @"c:\folder\level2Child21"
-                                    },
-                                    new TestProjectTree
-                                    {
-                                        Caption = "level1Child22",
-                                        FilePath = @"c:\folder\level2Child22",
-                                        Children =
-                                        {
-                                            new TestProjectTree
-                                            {
-                                                Caption = "level3Child31",
-                                                FilePath = @"c:\folder\level3Child31"
-                                            },
-                                            new TestProjectTree
-                                            {
-                                                Caption = "level3Child32",
-                                                FilePath = @"level3Child32"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            // Act
-            var result = provider.FindByPath(projectRoot, "SomePath\\level3Child32");
-
-            // Assert
-            Assert.Null(result);
         }
 
         private static DependenciesTreeViewProvider CreateProvider(
@@ -783,7 +554,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 createRootViewModel: rootModels,
                 createTargetViewModel: targetModels);
 
-            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create();
+            var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(
+                project: UnconfiguredProjectFactory.Create());
 
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
@@ -830,7 +602,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     builder.Append(' ', indent * 4);
                     builder.Append("Caption=").Append(tree.Caption).Append(", ");
-                    builder.Append("FilePath=").Append(tree.FilePath).Append(", ");
                     builder.Append("IconHash=").Append(tree.Icon.GetHashCode()).Append(", ");
                     builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon.GetHashCode()).Append(", ");
                     builder.Append("Rule=").Append(tree.BrowseObjectProperties?.Name ?? "").Append(", ");

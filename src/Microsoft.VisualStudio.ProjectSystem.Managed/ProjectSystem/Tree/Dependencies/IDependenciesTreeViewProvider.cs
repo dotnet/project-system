@@ -28,12 +28,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             IProjectTree dependenciesTree,
             DependenciesSnapshot snapshot,
             CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Finds node by path in current dependencies view hierarchy.
-        /// </summary>
-        /// <param name="root">Node where we start searching</param>
-        /// <param name="path">Path to find</param>
-        IProjectTree? FindByPath(IProjectTree? root, string path);
     }
 }

@@ -2,7 +2,6 @@
 
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
@@ -24,9 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 _hasUnresolvedDependency = hasUnresolvedDependency;
             }
 
-            public IDependency? Dependency => null;
             public string Caption => _model.Caption;
-            public string? FilePath => _model.Id;
             public string? SchemaName => _model.SchemaName;
             public string? SchemaItemType => _model.SchemaItemType;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _model.UnresolvedIcon : _model.Icon;
