@@ -58,26 +58,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolved.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
         }
-
-        [Fact]
-        public void GetTopLevelId()
-        {
-            var dependency1 = new TestDependency
-            {
-                Id = "id1",
-                ProviderType = "MyProvider"
-            };
-
-            Assert.Equal("id1", dependency1.GetTopLevelId());
-
-            var dependency2 = new TestDependency
-            {
-                Id = "id1",
-                Path = "xxxxxxx",
-                ProviderType = "MyProvider"
-            };
-
-            Assert.Equal("MyProvider\\xxxxxxx", dependency2.GetTopLevelId());
-        }
     }
 }

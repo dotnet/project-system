@@ -38,19 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             public ProjectTreeFlags Flags => _dependency.Flags;
         }
 
-        /// <summary>
-        /// Returns id having full path instead of OriginalItemSpec
-        /// </summary>
-        public static string GetTopLevelId(this IDependency self)
-        {
-            return string.IsNullOrEmpty(self.Path)
-                ? self.Id
-                : Dependency.GetID(self.ProviderType, self.Path);
-        }
-
-        /// <summary>
-        /// Returns id having full path instead of OriginalItemSpec
-        /// </summary>
         public static bool TopLevelIdEquals(this IDependency self, string id)
         {
             return string.IsNullOrEmpty(self.Path)
