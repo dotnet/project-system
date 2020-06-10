@@ -59,15 +59,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                                                                                    .Distinct(change => change.NewTargetId, EqualityComparer<Guid>.Default));
 
             ProjectTargetChange changeToProcess = ProjectTargetChange.None;
-            if (changes.Count > 0)
+            foreach (ProjectTargetChange change in changes)
             {
-                // TODO: Make this smarter, and select the best retarget to offer
-                changeToProcess = changes[0];
+                changeToProcess = GetMostImportantChange(changeToProcess, change);
             }
 
             _projectRetargetingManager.ReportProjectNeedsRetargeting(_project.FullPath, changeToProcess);
 
             return changeToProcess;
+        }
+
+        internal static ProjectTargetChange GetMostImportantChange(ProjectTargetChange current, ProjectTargetChange candidate)
+        {
+            // Always prefer the non-None option
+            if (candidate == null) return current;
+            if (current == null) return candidate;
+            if (candidate == ProjectTargetChange.None) return current;
+            if (current == ProjectTargetChange.None) return candidate;
+
+            // Pre-requisites (where NewTargetDescription is null) take precedence over retargets (NewTargetDescription is non-null)
+            if (candidate.NewTargetDescription == null && current.NewTargetDescription != null) return candidate;
+
+            // Pre-requisites that use VS setup take precendence over other feeds or URLs
+            if (candidate.CurrentTargetDescription != null && current.CurrentTargetDescription != null &&
+                candidate.CurrentTargetDescription.SetupDriver == VSConstants.SetupDrivers.SetupDriver_VS && current.CurrentTargetDescription.SetupDriver != VSConstants.SetupDrivers.SetupDriver_VS)
+            {
+                return candidate;
+            }
+
+            return current;
         }
     }
 }
