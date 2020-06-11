@@ -555,7 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 createTargetViewModel: targetModels);
 
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(
-                project: UnconfiguredProjectFactory.Create());
+                project: UnconfiguredProjectFactory.Create(fullPath: @"c:\Project\Project.csproj"));
 
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }

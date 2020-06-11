@@ -474,7 +474,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             Rule? schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
 
-            string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
+            string? itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
                 ? dependency.Path
                 : dependency.OriginalItemSpec;
 
@@ -496,7 +496,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     context.ItemName);
             }
 
-            if (dependency.Resolved)
+            if (dependency.Resolved && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec))
             {
                 return GetConfiguredProjectExports().RuleFactory.CreateResolvedReferencePageRule(
                     schema,

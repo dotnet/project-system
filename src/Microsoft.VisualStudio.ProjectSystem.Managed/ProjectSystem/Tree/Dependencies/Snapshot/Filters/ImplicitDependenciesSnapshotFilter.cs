@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             AddDependencyContext context)
         {
             if (projectItemSpecs != null                                              // must have data
+                && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec)
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency

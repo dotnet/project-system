@@ -19,9 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var sdkDependency = new TestDependency
             {
-                Id = "dependency1Id",
+                Id = sdkName,
                 ProviderType = SdkRuleHandler.ProviderTypeString,
-                OriginalItemSpec = sdkName,
                 Resolved = false,
                 Flags = DependencyTreeFlags.SdkDependency
             };
@@ -115,9 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var packageDependency = new TestDependency
             {
-                Id = "packageId",
+                Id = packageName,
                 ProviderType = PackageRuleHandler.ProviderTypeString,
-                OriginalItemSpec = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };
@@ -161,9 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var packageDependency = new TestDependency
             {
-                Id = "packageId",
+                Id = packageName,
                 ProviderType = PackageRuleHandler.ProviderTypeString,
-                OriginalItemSpec = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };

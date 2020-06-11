@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             ProviderType = dependencyModel.ProviderType;
             Caption = dependencyModel.Caption ?? string.Empty;
-            OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
-            Path = dependencyModel.Path ?? string.Empty;
+            OriginalItemSpec = dependencyModel.OriginalItemSpec;
+            Path = dependencyModel.Path;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
             _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
-                     .Add(Folder.FullPathProperty, Path);
+                     .Add(Folder.FullPathProperty, Path ?? string.Empty);
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string Id { get; }
 
         public string ProviderType { get; }
-        public string OriginalItemSpec { get; }
-        public string Path { get; }
+        public string? OriginalItemSpec { get; }
+        public string? Path { get; }
 
         public string SchemaName { get; }
 

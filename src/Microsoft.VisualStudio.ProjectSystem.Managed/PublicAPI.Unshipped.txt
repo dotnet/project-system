@@ -22,8 +22,8 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Icon.
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Id.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Implicit.get -> bool
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Name.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.OriginalItemSpec.get -> string!
-Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Path.get -> string!
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.OriginalItemSpec.get -> string?
+Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Path.get -> string?
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Priority.get -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.Properties.get -> System.Collections.Immutable.IImmutableDictionary<string!, string!>!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel.ProviderType.get -> string!

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         }
 
         protected DependencyModel(
-            string path,
+            string? path,
             string originalItemSpec,
             ProjectTreeFlags flags,
             bool isResolved,
@@ -27,13 +27,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             IImmutableDictionary<string, string>? properties,
             bool isVisible = true)
         {
-            Requires.NotNullOrEmpty(path, nameof(path));
+            // IDependencyModel allows original item spec to be null, but we can satisfy a more strict
+            // requirement on this values for the dependency types produced internally.
+            // External providers may not have useful values for these however.
             Requires.NotNullOrEmpty(originalItemSpec, nameof(originalItemSpec));
 
             Path = path;
             OriginalItemSpec = originalItemSpec;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
-            Caption = path;
+            Caption = originalItemSpec;
             Flags = flags;
 
             if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))
@@ -55,10 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public abstract string ProviderType { get; }
 
+        public string Id => OriginalItemSpec;
+
         string IDependencyModel.Name => throw new NotImplementedException();
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
-        public string Path { get; }
+        public string? Path { get; }
         public virtual string? SchemaName => null;
         public virtual string? SchemaItemType => null;
         string IDependencyModel.Version => throw new NotImplementedException();
@@ -76,8 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public ProjectTreeFlags Flags { get; }
 
         public abstract DependencyIconSet IconSet { get; }
-
-        public string Id => OriginalItemSpec;
 
         public override string ToString() => $"{ProviderType}-{Id}";
     }
