@@ -21,6 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         internal static readonly ProjectTreeFlags GenericDependency = ProjectTreeFlags.Create("GenericDependency");
 
+        /// <summary>
+        /// Added to dependency tree items which can be removed from the project.
+        /// </summary>
+        /// <remarks>
+        /// Non-<see cref="IDependencyModel.Implicit"/> dependencies are considered removable.
+        /// </remarks>
         public static readonly ProjectTreeFlags SupportsRemove = ProjectTreeFlags.Create("SupportsRemove");
 
         /// <summary>
