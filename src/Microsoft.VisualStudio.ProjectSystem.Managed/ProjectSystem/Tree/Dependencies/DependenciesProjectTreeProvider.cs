@@ -100,75 +100,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether deleting a given set of items from the project, and optionally from disk,
-        /// would be allowed. 
-        /// Note: CanRemove can be called several times since there two types of remove operations:
-        ///   - Remove is a command that can remove project tree items from the tree/project but not from disk. 
-        ///     For that command requests deleteOptions has DeleteOptions.None flag.
-        ///   - Delete is a command that can remove project tree items from project and from disk. 
-        ///     For this command requests deleteOptions has DeleteOptions.DeleteFromStorage flag.
-        /// We can potentially support only Remove command here, since we don't remove Dependencies form disk, 
-        /// thus we return false when DeleteOptions.DeleteFromStorage is provided.
-        /// </summary>
-        /// <param name="nodes">The nodes that should be deleted.</param>
-        /// <param name="deleteOptions">
-        /// A value indicating whether the items should be deleted from disk as well as from the project file.
-        /// </param>
-        public override bool CanRemove(IImmutableSet<IProjectTree> nodes,
-                                       DeleteOptions deleteOptions = DeleteOptions.None)
+        public override bool CanRemove(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
         {
             if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
             {
+                // We support "Remove" but not "Delete".
+                // We remove the dependency from the project, not delete it from disk.
                 return false;
             }
 
-            DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (snapshot == null)
-            {
-                return false;
-            }
-
-            foreach (IProjectTree node in nodes)
-            {
-                if (!node.Flags.Contains(DependencyTreeFlags.SupportsRemove))
-                {
-                    return false;
-                }
-
-                string filePath = UnconfiguredProject.MakeRelative(node.FilePath);
-                if (string.IsNullOrEmpty(filePath))
-                {
-                    continue;
-                }
-
-                IDependency? dependency = snapshot.FindDependency(filePath);
-                if (dependency == null || dependency.Implicit)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return nodes.All(node => node.Flags.Contains(DependencyTreeFlags.SupportsRemove));
         }
 
-        /// <summary>
-        /// Deletes items from the project, and optionally from disk.
-        /// Note: Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
+        /// <inheritdoc />
+        /// <remarks>
+        /// Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
         /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
         /// We can remove only nodes that are standard and based on project items, i.e. nodes that 
         /// are created by default IProjectDependenciesSubTreeProvider implementations and have 
         /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain 
         /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
-        /// </summary>
-        /// <param name="nodes">The nodes that should be deleted.</param>
-        /// <param name="deleteOptions">A value indicating whether the items should be deleted from disk as well as 
-        /// from the project file.
-        /// </param>
-        /// <exception cref="InvalidOperationException">Thrown when <see cref="IProjectTreeProvider.CanRemove"/> 
-        /// would return <c>false</c> for this operation.</exception>
-        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes,
-                                               DeleteOptions deleteOptions = DeleteOptions.None)
+        /// </remarks>
+        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
         {
             if (!CanRemove(nodes, deleteOptions))
             {
@@ -191,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     if (node.BrowseObjectProperties?.Context == null)
                     {
-                        // if node does not have an IRule with valid ProjectPropertiesContext we can not 
+                        // If node does not have an IRule with valid ProjectPropertiesContext we can not 
                         // get its itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
                         // since they would not have DependencyNode.GenericDependencyFlags and we would not 
@@ -213,44 +166,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                 }
 
-                DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-                Requires.NotNull(snapshot, nameof(snapshot));
-                if (snapshot == null)
-                {
-                    return;
-                }
-
                 // Handle the removal of shared import nodes.
                 ProjectRootElement projectXml = project.Xml;
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
-                    string sharedFilePath = UnconfiguredProject.MakeRelative(sharedImportNode.FilePath);
-                    if (string.IsNullOrEmpty(sharedFilePath))
+                    string? sharedFilePath = sharedImportNode.FilePath;
+                    if (Strings.IsNullOrEmpty(sharedFilePath))
                     {
                         continue;
                     }
 
-                    IDependency? sharedProjectDependency = snapshot.FindDependency(sharedFilePath);
-                    if (sharedProjectDependency != null)
-                    {
-                        sharedFilePath = sharedProjectDependency.Path;
-                    }
-
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
-                    IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
-                                                                  where import.ImportingElement.ContainingProject == projectXml
-                                                                     && PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
-                                                                  select import;
-                    foreach (ResolvedImport importToRemove in matchingImports)
+                    foreach (ResolvedImport import in project.Imports)
                     {
-                        ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;
-                        Report.IfNot(importingElementToRemove != null,
-                                     "Cannot find shared project reference to remove.");
-                        if (importingElementToRemove != null)
+                        if (import.ImportingElement.ContainingProject != projectXml || !PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath))
                         {
-                            importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
+                            continue;
                         }
+
+                        ProjectImportElement importingElementToRemove = import.ImportingElement;
+                        Report.IfNot(importingElementToRemove != null, "Cannot find shared project reference to remove.");
+                        importingElementToRemove?.Parent.RemoveChild(importingElementToRemove);
                     }
                 }
             });
