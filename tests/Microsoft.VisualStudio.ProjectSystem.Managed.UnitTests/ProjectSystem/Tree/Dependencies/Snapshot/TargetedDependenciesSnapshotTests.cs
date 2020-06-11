@@ -191,6 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Removed(dependency1.ProviderType, dependency1.Id);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter();
+            snapshotFilter.BeforeRemoveReject("Xxx", "dependency1");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
