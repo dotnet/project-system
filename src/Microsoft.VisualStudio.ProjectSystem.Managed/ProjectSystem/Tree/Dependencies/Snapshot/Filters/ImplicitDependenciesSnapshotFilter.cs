@@ -49,7 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 context.Accept(
                     dependency.SetProperties(
                         iconSet: implicitIconSet,
-                        isImplicit: true));
+                        isImplicit: true,
+                        flags: dependency.Flags.Except(DependencyTreeFlags.SupportsRemove)));
                 return;
             }
 

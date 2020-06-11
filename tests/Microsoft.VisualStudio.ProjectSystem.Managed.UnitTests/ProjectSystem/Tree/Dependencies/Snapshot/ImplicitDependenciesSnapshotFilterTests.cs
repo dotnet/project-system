@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = providerType,
                 Implicit = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.GenericDependency,
+                Flags = DependencyTreeFlags.GenericResolvedDependencyFlags,
                 OriginalItemSpec = projectItemSpec,
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
@@ -143,7 +143,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         implicitIcon,
                         implicitIcon,
                         KnownMonikers.Reference,
-                        KnownMonikers.Reference)
+                        KnownMonikers.Reference),
+                    Flags = DependencyTreeFlags.GenericResolvedDependencyFlags.Except(DependencyTreeFlags.SupportsRemove)
                 }, acceptedDependency!);
 
             // No other changes made
