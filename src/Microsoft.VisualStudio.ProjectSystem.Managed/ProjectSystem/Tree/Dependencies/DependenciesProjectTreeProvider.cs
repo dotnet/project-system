@@ -501,7 +501,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return GetConfiguredProjectExports().RuleFactory.CreateResolvedReferencePageRule(
                     schema,
                     context,
-                    dependency.Name,
+                    dependency.OriginalItemSpec,
                     dependency.BrowseObjectProperties);
             }
 
