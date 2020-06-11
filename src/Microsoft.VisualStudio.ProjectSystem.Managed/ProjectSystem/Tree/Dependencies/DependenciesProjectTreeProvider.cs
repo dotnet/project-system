@@ -170,9 +170,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes,
                                                DeleteOptions deleteOptions = DeleteOptions.None)
         {
-            if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
+            if (!CanRemove(nodes, deleteOptions))
             {
-                throw new NotSupportedException();
+                throw new InvalidOperationException();
             }
 
             // Get the list of shared import nodes.
