@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "myVersion",
                 isResolved: true,
@@ -25,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -52,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "myVersion",
                 isResolved: false,
@@ -61,7 +58,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -88,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "",
                 isResolved: true,
@@ -97,7 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec", model.Caption);
