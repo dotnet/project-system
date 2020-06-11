@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     internal interface IDependencyViewModel
     {
         string Caption { get; }
+        string? FilePath { get; }
         string? SchemaName { get; }
         string? SchemaItemType { get; }
         ImageMoniker Icon { get; }

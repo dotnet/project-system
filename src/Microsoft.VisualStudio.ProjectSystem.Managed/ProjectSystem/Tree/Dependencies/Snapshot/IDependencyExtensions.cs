@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             }
 
             public string Caption => _dependency.Caption;
+            public string? FilePath => _dependency.Path;
             public string? SchemaName => _dependency.SchemaName;
             public string? SchemaItemType => _dependency.SchemaItemType;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedIcon : _dependency.IconSet.Icon;

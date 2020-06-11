@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
-                    filePath: null,
+                    filePath: viewModel.FilePath,
                     browseObjectProperties: browseObjectProperties,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
@@ -363,9 +363,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,
-                    file: null,
+                    file: viewModel.FilePath,
                     itemType: viewModel.SchemaItemType,
-                    itemName: null);
+                    itemName: viewModel.FilePath);
 
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,

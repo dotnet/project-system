@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             }
 
             public string Caption => _model.Caption;
+            public string? FilePath => _model.Path;
             public string? SchemaName => _model.SchemaName;
             public string? SchemaItemType => _model.SchemaItemType;
             public ImageMoniker Icon => _hasUnresolvedDependency ? _model.UnresolvedIcon : _model.Icon;
