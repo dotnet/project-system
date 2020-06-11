@@ -32,8 +32,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             DependencyIconSet? iconSet = null,
             bool? isImplicit = null);
 
-        #region Copied from IDependencyModel
-
         /// <summary>
         /// Gets an composite identifier comprised of <see cref="TargetFramework"/>, <see cref="ProviderType"/>
         /// and the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
@@ -111,7 +109,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         bool Visible { get; }
 
         ProjectTreeFlags Flags { get; }
-
-        #endregion
     }
 }
