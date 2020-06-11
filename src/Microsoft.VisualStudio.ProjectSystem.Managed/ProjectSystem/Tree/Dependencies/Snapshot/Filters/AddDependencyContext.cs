@@ -12,14 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     /// </summary>
     internal sealed class AddDependencyContext
     {
-        private readonly Dictionary<string, IDependency> _dependencyById;
+        private readonly Dictionary<(string ProviderType, string DependencyId), IDependency> _dependencyById;
 
         private bool _acceptedOrRejected;
         private IDependency? _acceptedDependency;
 
         public bool Changed { get; private set; }
 
-        public AddDependencyContext(Dictionary<string, IDependency> dependencyById)
+        public AddDependencyContext(Dictionary<(string ProviderType, string DependencyId), IDependency> dependencyById)
         {
             _dependencyById = dependencyById;
         }
@@ -44,15 +44,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         }
 
         /// <summary>
-        /// Attempts to find the dependency in the project's tree with specified <paramref name="dependencyId"/>.
+        /// Attempts to find the dependency in the project's tree with specified <paramref name="providerType"/> and <paramref name="dependencyId"/>.
         /// </summary>
-        public bool TryGetDependency(string dependencyId, out IDependency dependency)
+        public bool TryGetDependency(string providerType, string dependencyId, out IDependency dependency)
         {
-            return _dependencyById.TryGetValue(dependencyId, out dependency);
+            return _dependencyById.TryGetValue((providerType, dependencyId), out dependency);
         }
 
         /// <summary>
-        /// Adds a new, or replaces an existing dependency (keyed on <see cref="IDependency.Id"/>).
+        /// Adds a new, or replaces an existing dependency (keyed on <see cref="IDependency.ProviderType"/> and <see cref="IDependency.Id"/>).
         /// </summary>
         /// <remarks>
         /// In the course of filtering one dependency, the filter may wish to modify or add other
@@ -60,23 +60,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         /// </remarks>
         public void AddOrUpdate(IDependency dependency)
         {
-            _dependencyById.Remove(dependency.Id);
-            _dependencyById.Add(dependency.Id, dependency);
+            (string ProviderType, string ModelId) key = (dependency.ProviderType, dependency.Id);
+            _dependencyById.Remove(key);
+            _dependencyById.Add(key, dependency);
             Changed = true;
         }
 
         /// <summary>
         /// Returns <see langword="true"/> if the project tree contains a dependency with specified <paramref name="dependencyId"/>.
         /// </summary>
-        public bool Contains(string dependencyId)
+        public bool Contains(string providerType, string dependencyId)
         {
-            return _dependencyById.ContainsKey(dependencyId);
+            return _dependencyById.ContainsKey((providerType, dependencyId));
         }
 
         /// <summary>
         /// Returns an enumerator over all dependencies in the project tree.
         /// </summary>
-        public Dictionary<string, IDependency>.Enumerator GetEnumerator()
+        public Dictionary<(string ProviderType, string DependencyId), IDependency>.Enumerator GetEnumerator()
         {
             return _dependencyById.GetEnumerator();
         }

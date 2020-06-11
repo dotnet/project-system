@@ -13,9 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         private protected void VerifyUnchangedOnAdd(IDependency dependency, IImmutableSet<string>? projectItemSpecs = null)
         {
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>
             {
-                { dependency.Id, dependency }
+                { (dependency.ProviderType, dependency.Id), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);

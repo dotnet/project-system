@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Matches(IDependency dependency)
         {
-            return Dependency.GetID(ProviderType, Id) == dependency.Id
+            return Id == dependency.Id
                    && ProviderType == dependency.ProviderType
                    && Flags == dependency.Flags
                    && (Name == null || Name == dependency.Name)

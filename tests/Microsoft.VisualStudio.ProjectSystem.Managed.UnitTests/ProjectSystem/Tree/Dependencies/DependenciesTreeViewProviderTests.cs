@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyXxx1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
+                Id = "dependency1",
                 Name = "dependency1",
                 Path = "dependencyXxxpath",
                 Caption = "Dependency1",
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyy1 = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependency1",
+                Id = "dependency1",
                 Name = "dependency1",
                 Path = "dependencyYyypath",
                 Caption = "Dependency1",
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependencyExisting",
+                Id = "dependencyExisting",
                 Name = "dependencyExisting",
                 Path = "dependencyExistingPath",
                 Caption = "DependencyExisting",
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependencyExisting",
+                Id = "dependencyExisting",
                 Name = "dependencyExisting",
                 Path = "dependencyExistingpath",
                 Caption = "DependencyExisting",
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependencyExisting",
+                Id = "dependencyExisting",
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependencyExisting",
+                Id = "dependencyExisting",
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -417,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyXxx1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
+                Id = "dependency1",
                 Path = "dependencyxxxpath",
                 Name = "dependency1",
                 Caption = "Dependency1",
@@ -436,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyy1 = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependency1",
+                Id = "dependency1",
                 Path = "dependencyyyypath",
                 Name = "dependency1",
                 Caption = "Dependency1",
@@ -447,7 +447,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var dependencyYyyExisting = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "yyy\\dependencyExisting",
+                Id = "dependencyExisting",
                 Path = "dependencyyyyExistingpath",
                 Name = "dependencyExisting",
                 Caption = "DependencyExisting",

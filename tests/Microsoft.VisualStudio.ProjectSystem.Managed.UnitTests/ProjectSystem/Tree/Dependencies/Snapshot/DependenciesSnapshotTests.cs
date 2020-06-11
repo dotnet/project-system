@@ -66,7 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(dependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
-            Assert.Null(snapshot.FindDependency("foo"));
         }
 
         [Fact]
@@ -77,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
             Assert.False(snapshot.HasVisibleUnresolvedDependency);
-            Assert.Null(snapshot.FindDependency("foo"));
         }
 
         [Fact]
@@ -174,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var (actualTfm, targetedSnapshot) = Assert.Single(snapshot.DependenciesByTargetFramework);
             Assert.Same(targetFramework, actualTfm);
             var dependency = Assert.Single(targetedSnapshot.Dependencies);
-            Assert.Equal(@"Xxx\dependency1", dependency.Id);
+            Assert.Equal("dependency1", dependency.Id);
             Assert.Equal("Xxx", dependency.ProviderType);
         }
 

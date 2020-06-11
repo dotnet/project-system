@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             ITargetFramework targetFramework = previousSnapshot.TargetFramework;
 
-            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => d.Id, StringComparers.DependencyTreeIds);
+            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => (d.ProviderType, ModelId: d.Id)/*, StringComparers.DependencyTreeIds*/);
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
@@ -88,9 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
             {
-                string dependencyId = Dependency.GetID(dependencyModel.ProviderType, dependencyModel.Id);
-
-                if (!context.TryGetDependency(dependencyId, out IDependency dependency))
+                if (!context.TryGetDependency(dependencyModel.ProviderType, dependencyModel.Id, out IDependency dependency))
                 {
                     return;
                 }
@@ -112,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     }
                 }
 
-                dependencyById.Remove(dependencyId);
+                dependencyById.Remove((dependencyModel.ProviderType, dependencyModel.Id));
                 anyChanges = true;
             }
 
@@ -142,8 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 if (dependency != null)
                 {
                     // A dependency was accepted
-                    dependencyById.Remove(dependency.Id);
-                    dependencyById.Add(dependency.Id, dependency);
+                    (string ProviderType, string Id) key = (dependencyModel.ProviderType, dependencyModel.Id);
+                    dependencyById.Remove(key);
+                    dependencyById.Add(key, dependency);
                     anyChanges = true;
                 }
                 else

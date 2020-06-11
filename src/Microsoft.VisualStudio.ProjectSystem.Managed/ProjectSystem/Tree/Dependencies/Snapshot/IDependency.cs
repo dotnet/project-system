@@ -28,12 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             bool? isImplicit = null);
 
         /// <summary>
-        /// Gets an composite identifier comprised of <see cref="ProviderType"/>
-        /// and the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
+        /// Gets the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
         /// </summary>
         /// <remarks>
-        /// This string has form <c>"provider-type\model-id"</c>.
-        /// See <see cref="Dependency.GetID"/> for details on how this string is constructed.
+        /// When combined with <see cref="ProviderType"/> a unique key is obtained for the dependency
+        /// within a given target.
         /// </remarks>
         string Id { get; }
 
@@ -41,6 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// Dependency type, a formal name of the provider type that knows how to create a node
         /// for given dependency.
         /// </summary>
+        /// <remarks>
+        /// When combined with <see cref="Id"/> a unique key is obtained for the dependency
+        /// within a given target.
+        /// </remarks>
         string ProviderType { get; }
 
         /// <summary>

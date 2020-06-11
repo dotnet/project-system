@@ -195,31 +195,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </summary>
         public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
 
-        /// <summary>
-        /// Finds dependency for given id across all target frameworks.
-        /// </summary>
-        /// <param name="dependencyId">Unique id for dependency to be found.</param>
-        /// <returns>The <see cref="IDependency"/> if found, otherwise <see langword="null"/>.</returns>
-        public IDependency? FindDependency(string? dependencyId)
-        {
-            if (Strings.IsNullOrEmpty(dependencyId))
-            {
-                return null;
-            }
-
-            foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedDependencies) in DependenciesByTargetFramework)
-            {
-                IDependency? dependency = targetedDependencies.Dependencies.FirstOrDefault((dep, id) => dep.TopLevelIdEquals(id), dependencyId);
-
-                if (dependency != null)
-                {
-                    return dependency;
-                }
-            }
-
-            return null;
-        }
-
         public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")}";
     }
 }

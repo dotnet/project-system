@@ -110,9 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>
             {
-                { dependency.Id, dependency }
+                { (dependency.ProviderType, dependency.Id), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);

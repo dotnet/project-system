@@ -38,13 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             public ProjectTreeFlags Flags => _dependency.Flags;
         }
 
-        public static bool TopLevelIdEquals(this IDependency self, string id)
-        {
-            return string.IsNullOrEmpty(self.Path)
-                ? string.Equals(self.Id, id, StringComparisons.DependencyTreeIds)
-                : Dependency.IdEquals(id, self.ProviderType, self.Path);
-        }
-
         public static IDependency ToResolved(
             this IDependency dependency,
             string? schemaName = null)

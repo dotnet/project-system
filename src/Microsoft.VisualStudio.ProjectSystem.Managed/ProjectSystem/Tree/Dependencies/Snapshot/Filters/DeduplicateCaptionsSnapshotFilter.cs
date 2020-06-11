@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
-            foreach ((string _, IDependency other) in context)
+            foreach (((string _, string _), IDependency other) in context)
             {
                 if (StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
                     !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyResolved = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyResolved",
+                Id = "dependencyResolved",
                 Name = "dependencyResolved",
                 Caption = "DependencyResolved",
                 SchemaName = "MySchema",
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyUnresolved = new TestDependency
             {
                 ProviderType = "Yyy",
-                Id = "tfm1\\yyy\\dependencyUnresolved",
+                Id = "dependencyUnresolved",
                 Name = "dependencyUnresolved",
                 Caption = "DependencyUnresolved",
                 SchemaName = "MySchema",
