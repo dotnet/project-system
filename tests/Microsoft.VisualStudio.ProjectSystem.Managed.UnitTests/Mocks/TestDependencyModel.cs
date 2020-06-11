@@ -13,24 +13,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
 #pragma warning disable CS8618 // Non-nullable property is uninitialized
         public string ProviderType { get; set; }
-        public string Name { get; set; }
+        string IDependencyModel.Name => throw new NotImplementedException();
         public string Caption { get; set; }
         public string OriginalItemSpec { get; set; }
         public string Path { get; set; }
         public string SchemaName { get; set; }
         public string? SchemaItemType { get; set; }
-        public string Version => throw new NotImplementedException();
+        string IDependencyModel.Version => throw new NotImplementedException();
         public bool Resolved { get; set; } = false;
         public bool TopLevel => true;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
-        public int Priority => throw new NotImplementedException();
+        int IDependencyModel.Priority => throw new NotImplementedException();
         public ImageMoniker Icon { get; set; }
         public ImageMoniker ExpandedIcon { get; set; }
         public ImageMoniker UnresolvedIcon { get; set; }
         public ImageMoniker UnresolvedExpandedIcon { get; set; }
         public IImmutableDictionary<string, string> Properties { get; set; }
-        public IImmutableList<string> DependencyIDs => throw new NotImplementedException();
+        IImmutableList<string> IDependencyModel.DependencyIDs => throw new NotImplementedException();
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
@@ -40,7 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Id == dependency.Id
                    && ProviderType == dependency.ProviderType
                    && Flags == dependency.Flags
-                   && (Name == null || Name == dependency.Name)
                    && (Caption == null || Caption == dependency.Caption)
                    && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
                    && (Path == null || Path == dependency.Path)

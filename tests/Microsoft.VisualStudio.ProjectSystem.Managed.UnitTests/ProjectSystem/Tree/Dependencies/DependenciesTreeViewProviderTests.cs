@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Xxx",
                 Id = "XxxDependencyRoot",
-                Name = "XxxDependencyRoot",
+                OriginalItemSpec = "XxxDependencyRoot",
                 Caption = "XxxDependencyRoot",
                 Resolved = true
             };
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot"
             };
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Xxx",
                 Id = "dependency1",
-                Name = "dependency1",
+                OriginalItemSpec = "dependency1",
                 Path = "dependencyXxxpath",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependency1",
-                Name = "dependency1",
+                OriginalItemSpec = "dependency1",
                 Path = "dependencyYyypath",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
-                Name = "dependencyExisting",
+                OriginalItemSpec = "dependencyExisting",
                 Path = "dependencyExistingPath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot",
                 Resolved = true
             };
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
-                Name = "dependencyExisting",
+                OriginalItemSpec = "dependencyExisting",
                 Path = "dependencyExistingpath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -197,7 +197,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot",
                 Resolved = true
             };
@@ -206,7 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
-                Name = "dependencyExisting",
+                OriginalItemSpec = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = false
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot",
                 Resolved = true
             };
@@ -264,7 +264,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
-                Name = "dependencyExisting",
+                OriginalItemSpec = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = true,
@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot",
                 Resolved = true
             };
@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "someid",
-                Name = "someid",
+                OriginalItemSpec = "someid",
                 Caption = "someid",
                 Resolved = false,
                 Visible = false,
@@ -362,7 +362,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot",
                 Resolved = true
             };
@@ -371,7 +371,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "someid",
-                Name = "someid",
+                OriginalItemSpec = "someid",
                 Caption = "someid",
                 Resolved = false,
                 Visible = false
@@ -409,7 +409,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Xxx",
                 Id = "XxxDependencyRoot",
-                Name = "XxxDependencyRoot",
+                OriginalItemSpec = "XxxDependencyRoot",
                 Caption = "XxxDependencyRoot",
                 Resolved = true
             };
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Xxx",
                 Id = "dependency1",
                 Path = "dependencyxxxpath",
-                Name = "dependency1",
+                OriginalItemSpec = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -429,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "YyyDependencyRoot",
-                Name = "YyyDependencyRoot",
+                OriginalItemSpec = "YyyDependencyRoot",
                 Caption = "YyyDependencyRoot"
             };
 
@@ -438,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Yyy",
                 Id = "dependency1",
                 Path = "dependencyyyypath",
-                Name = "dependency1",
+                OriginalItemSpec = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
                 Resolved = true
@@ -449,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
                 Path = "dependencyyyyExistingpath",
-                Name = "dependencyExisting",
+                OriginalItemSpec = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = true
@@ -459,7 +459,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Zzz",
                 Id = "ZzzDependencyRoot",
-                Name = "ZzzDependencyRoot",
+                OriginalItemSpec = "ZzzDependencyRoot",
                 Caption = "ZzzDependencyRoot",
                 Resolved = true,
                 Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
@@ -470,7 +470,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Zzz",
                 Id = "ZzzDependencyAny1",
                 Path = "ZzzDependencyAny1path",
-                Name = "ZzzDependencyAny1",
+                OriginalItemSpec = "ZzzDependencyAny1",
                 Caption = "ZzzDependencyAny1"
             };
 
@@ -500,14 +500,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var targetModel1 = new TestDependencyModel
             {
                 Id = "tfm1",
-                Name = "tfm1",
+                OriginalItemSpec = "tfm1",
                 Caption = "tfm1"
             };
 
             var targetModel2 = new TestDependencyModel
             {
                 Id = "tfm2",
-                Name = "tfm2",
+                OriginalItemSpec = "tfm2",
                 Caption = "tfm2"
             };
 

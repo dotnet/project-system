@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public abstract string ProviderType { get; }
 
-        public virtual string Name => Path;
+        string IDependencyModel.Name => throw new NotImplementedException();
         public string Caption { get; protected set; }
         public string OriginalItemSpec { get; }
         public string Path { get; }

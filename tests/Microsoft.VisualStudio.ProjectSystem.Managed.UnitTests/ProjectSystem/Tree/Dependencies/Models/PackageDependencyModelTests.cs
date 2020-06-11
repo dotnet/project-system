@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -63,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -100,7 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
             Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec", model.Caption);

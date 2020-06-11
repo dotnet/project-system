@@ -2,6 +2,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -19,7 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var sdkDependency = new TestDependency
             {
                 Id = "dependency1Id",
-                Name = sdkName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
+                OriginalItemSpec = sdkName,
                 Resolved = false,
                 Flags = DependencyTreeFlags.SdkDependency
             };
@@ -27,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var packageDependency = new TestDependency
             {
                 Id = sdkName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency
             };
@@ -49,8 +52,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName), acceptedDependency!);
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                acceptedDependency!);
 
             // No changes other than the filtered dependency
             Assert.False(context.Changed);
@@ -64,7 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var sdkDependency = new TestDependency
             {
                 Id = "dependency1",
-                Name = sdkName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
+                OriginalItemSpec = sdkName,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency
             };
@@ -72,6 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var packageDependency = new TestDependency
             {
                 Id = sdkName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Resolved = false,
                 Flags = DependencyTreeFlags.PackageDependency
             };
@@ -98,13 +103,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var targetFramework = new TargetFramework("tfm");
-
             const string packageName = "packageName";
 
             var sdkDependency = new TestDependency
             {
                 Id = packageName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
@@ -112,7 +116,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var packageDependency = new TestDependency
             {
                 Id = "packageId",
-                Name = packageName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
+                OriginalItemSpec = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };
@@ -137,8 +142,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.True(context.TryGetDependency(sdkDependency.ProviderType, sdkDependency.Id, out IDependency sdkDependencyAfter));
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName), sdkDependencyAfter);
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependencyAfter);
         }
 
         [Fact]
@@ -149,6 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var sdkDependency = new TestDependency
             {
                 Id = packageName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
             };
@@ -156,7 +162,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var packageDependency = new TestDependency
             {
                 Id = "packageId",
-                Name = packageName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
+                OriginalItemSpec = packageName,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };
@@ -182,8 +189,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.True(builder.TryGetValue((sdkDependency.ProviderType, sdkDependency.Id), out var afterSdkDependency));
             DependencyAssert.Equal(
-                afterSdkDependency.ToUnresolved(
-                    SdkReference.SchemaName), afterSdkDependency);
+                afterSdkDependency.ToUnresolved(SdkReference.SchemaName),
+                afterSdkDependency);
         }
     }
 }

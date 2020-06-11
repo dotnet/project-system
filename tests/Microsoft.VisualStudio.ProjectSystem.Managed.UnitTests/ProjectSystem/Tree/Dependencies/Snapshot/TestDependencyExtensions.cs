@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Xunit.Assert.NotNull(expected);
 
             Xunit.Assert.Equal(expected.ProviderType, actual.ProviderType);
-            Xunit.Assert.Equal(expected.Name, actual.Name);
             Xunit.Assert.Equal(expected.Caption, actual.Caption);
             Xunit.Assert.Equal(expected.OriginalItemSpec, actual.OriginalItemSpec);
             Xunit.Assert.Equal(expected.Path, actual.Path);

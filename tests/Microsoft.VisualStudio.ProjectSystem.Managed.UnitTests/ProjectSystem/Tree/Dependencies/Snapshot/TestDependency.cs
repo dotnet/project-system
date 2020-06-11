@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             set
             {
                 ProviderType = value.ProviderType;
-                Name = value.Name;
                 Caption = value.Caption;
                 OriginalItemSpec = value.OriginalItemSpec;
                 Path = value.Path;
@@ -38,7 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
 #pragma warning disable CS8618 // Non-nullable property is uninitialized
         public string ProviderType { get; set; }
-        public string Name { get; set; }
         public string Caption { get; set; }
         public string OriginalItemSpec { get; set; }
         public string Path { get; set; }

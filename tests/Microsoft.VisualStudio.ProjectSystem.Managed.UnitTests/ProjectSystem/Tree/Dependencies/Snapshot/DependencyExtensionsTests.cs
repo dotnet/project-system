@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Yyy",
                 Id = "dependencyResolved",
-                Name = "dependencyResolved",
+                OriginalItemSpec = "dependencyResolved",
                 Caption = "DependencyResolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Yyy",
                 Id = "dependencyUnresolved",
-                Name = "dependencyUnresolved",
+                OriginalItemSpec = "dependencyUnresolved",
                 Caption = "DependencyUnresolved",
                 SchemaName = "MySchema",
                 SchemaItemType = "MySchemaItemType",

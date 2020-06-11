@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             {
                 ProviderType = "MyProvider1",
                 Id = "ZzzDependencyRoot",
-                Name = "ZzzDependencyRoot",
+                OriginalItemSpec = "ZzzDependencyRoot",
                 Caption = "ZzzDependencyRoot",
                 Icon = KnownMonikers.AboutBox
             };

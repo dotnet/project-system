@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Name of the dependency
         /// </summary>
+        [Obsolete("Property is unused")]
         string Name { get; }
 
         /// <summary>

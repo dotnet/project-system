@@ -47,11 +47,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         string ProviderType { get; }
 
         /// <summary>
-        /// Name of the dependency
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
         /// ItemSpec by which dependency could be found in msbuild Project.
         ///     - If dependency is "Resolved" then resolved path will be in Path property,
         ///       and unresolved in OriginalItemSpec.

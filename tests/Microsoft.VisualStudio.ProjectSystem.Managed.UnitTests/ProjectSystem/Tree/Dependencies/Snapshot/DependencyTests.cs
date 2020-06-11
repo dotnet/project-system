@@ -45,7 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency = new Dependency(mockModel);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(string.Empty, dependency.Name);
             Assert.Equal(string.Empty, dependency.Caption);
             Assert.Equal(string.Empty, dependency.OriginalItemSpec);
             Assert.Equal(string.Empty, dependency.Path);
@@ -63,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "xxx",
                 Id = "mymodelid",
-                Name = "mymodelname",
                 Caption = "mymodel",
                 OriginalItemSpec = "mymodeloriginal",
                 Path = "mymodelpath",
@@ -83,7 +81,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency = new Dependency(mockModel);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(mockModel.Name, dependency.Name);
             Assert.Equal(mockModel.Caption, dependency.Caption);
             Assert.Equal(mockModel.OriginalItemSpec, dependency.OriginalItemSpec);
             Assert.Equal(mockModel.Path, dependency.Path);

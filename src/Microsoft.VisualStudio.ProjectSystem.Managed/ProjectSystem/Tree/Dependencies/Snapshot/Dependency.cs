@@ -18,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Id = dependencyModel.Id;
 
             ProviderType = dependencyModel.ProviderType;
-            Name = dependencyModel.Name ?? string.Empty;
             Caption = dependencyModel.Caption ?? string.Empty;
             OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
             Path = dependencyModel.Path ?? string.Empty;
@@ -81,7 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Id = dependency.Id;
             ProviderType = dependency.ProviderType;
-            Name = dependency.Name;
             OriginalItemSpec = dependency.OriginalItemSpec;
             Path = dependency.Path;
             _schemaItemType = dependency.SchemaItemType;
@@ -100,7 +98,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string Id { get; }
 
         public string ProviderType { get; }
-        public string Name { get; }
         public string OriginalItemSpec { get; }
         public string Path { get; }
 
