@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
 
                 if (context.TryGetDependency(packageId, out IDependency package) && package.Resolved)
                 {
-                    // Set to resolved, and copy dependencies.
+                    // Set to resolved.
 
                     context.Accept(dependency.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName));
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                     // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
                     // corresponding package.
                     //
-                    // Set to resolved, and copy dependencies.
+                    // Set to resolved.
 
                     context.AddOrUpdate(sdk.ToResolved(
                         schemaName: ResolvedSdkReference.SchemaName));
@@ -87,9 +87,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 if (context.TryGetDependency(sdkId, out IDependency sdk))
                 {
                     // We are removing the package dependency related to this SDK dependency
-                    // and must undo the changes made above in BeforeAdd.
+                    // and must undo the changes made above in BeforeAddOrUpdate.
                     //
-                    // Set to unresolved, and clear dependencies.
+                    // Set to unresolved.
 
                     context.AddOrUpdate(sdk.ToUnresolved(
                         schemaName: SdkReference.SchemaName));
