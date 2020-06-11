@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             var mockRule = new Mock<IRule>(MockBehavior.Strict);
-            mockRule.Setup(x => x.Name).Returns(dependency.SchemaItemType);
+            mockRule.Setup<string?>(x => x.Name).Returns(dependency.SchemaItemType);
             return Task.FromResult<IRule?>(mockRule.Object);
         }
     }

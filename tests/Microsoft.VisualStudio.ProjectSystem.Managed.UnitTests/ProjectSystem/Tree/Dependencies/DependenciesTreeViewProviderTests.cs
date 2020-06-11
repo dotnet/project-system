@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
@@ -16,8 +17,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     {
         private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
         private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
+        
+        private readonly ITestOutputHelper _output;
 
         private static readonly ImageMoniker s_rootImage = KnownMonikers.AboutBox;
+
+        public DependenciesTreeViewProviderTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
 
         [Fact]
         public async Task BuildTreeAsync_EmptySnapshot_CreatesRootNode()
@@ -32,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             // Assert
             var expectedFlatHierarchy = "Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.Icon);
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.ExpandedIcon);
         }
@@ -62,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Xxx",
                 Id = "dependency1",
                 OriginalItemSpec = "dependency1",
-                Path = "dependencyXxxpath",
+                FilePath = "dependencyXxxpath",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -73,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Yyy",
                 Id = "dependency1",
                 OriginalItemSpec = "dependency1",
-                Path = "dependencyYyypath",
+                FilePath = "dependencyYyypath",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
                 Resolved = true
@@ -84,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
                 OriginalItemSpec = "dependencyExisting",
-                Path = "dependencyExistingPath",
+                FilePath = "dependencyExistingPath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = true
@@ -128,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
     Caption=XxxDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -148,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
                 OriginalItemSpec = "dependencyExisting",
-                Path = "dependencyExistingpath",
+                FilePath = "dependencyExistingpath",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
                 Resolved = true
@@ -187,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=Untouched";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -245,7 +253,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=Untouched";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -303,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=Yyy, IsProjectItem=False, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -352,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -399,7 +407,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             // Assert
             var expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         [Fact]
@@ -418,7 +426,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Xxx",
                 Id = "dependency1",
-                Path = "dependencyxxxpath",
+                FilePath = "dependencyxxxpath",
                 OriginalItemSpec = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
@@ -437,7 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependency1",
-                Path = "dependencyyyypath",
+                FilePath = "dependencyyyypath",
                 OriginalItemSpec = "dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Yyy",
@@ -448,7 +456,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Yyy",
                 Id = "dependencyExisting",
-                Path = "dependencyyyyExistingpath",
+                FilePath = "dependencyyyyExistingpath",
                 OriginalItemSpec = "dependencyExisting",
                 Caption = "DependencyExisting",
                 SchemaItemType = "Yyy",
@@ -469,7 +477,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 ProviderType = "Zzz",
                 Id = "ZzzDependencyAny1",
-                Path = "ZzzDependencyAny1path",
+                FilePath = "ZzzDependencyAny1path",
                 OriginalItemSpec = "ZzzDependencyAny1",
                 Caption = "ZzzDependencyAny1"
             };
@@ -540,7 +548,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
             Caption=Dependency1, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=
             Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=True, CustomTag=";
-            Assert.Equal(expectedFlatHierarchy, ToTestDataString((TestProjectTree)resultTree));
+            AssertTestData(expectedFlatHierarchy, resultTree);
         }
 
         private static DependenciesTreeViewProvider CreateProvider(
@@ -580,37 +588,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 dependenciesByTarget.ToImmutableDictionary());
         }
 
-        private static string ToTestDataString(TestProjectTree root)
+        private void AssertTestData(string expected, IProjectTree? resultTree)
         {
-            var builder = new StringBuilder();
+            Assert.NotNull(resultTree);
 
-            GetChildrenTestStats(root, indent: 0);
+            string actual = ToTestDataString((TestProjectTree)resultTree!);
 
-            return builder.ToString();
-
-            void GetChildrenTestStats(TestProjectTree tree, int indent)
+            if (expected != actual)
             {
-                WriteLine();
+                _output.WriteLine("EXPECTED");
+                _output.WriteLine(expected);
+                _output.WriteLine("ACTUAL");
+                _output.WriteLine(actual);
+            }
 
-                foreach (var child in tree.Children)
+            Assert.Equal(expected, actual);
+
+            return;
+
+            static string ToTestDataString(TestProjectTree root)
+            {
+                var builder = new StringBuilder();
+
+                GetChildrenTestStats(root, indent: 0);
+
+                return builder.ToString();
+
+                void GetChildrenTestStats(TestProjectTree tree, int indent)
                 {
-                    builder.AppendLine();
-                    GetChildrenTestStats(child, indent + 1);
-                }
+                    WriteLine();
 
-                void WriteLine()
-                {
-                    builder.Append(' ', indent * 4);
-                    builder.Append("Caption=").Append(tree.Caption).Append(", ");
-                    builder.Append("IconHash=").Append(tree.Icon.GetHashCode()).Append(", ");
-                    builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon.GetHashCode()).Append(", ");
-                    builder.Append("Rule=").Append(tree.BrowseObjectProperties?.Name ?? "").Append(", ");
-                    builder.Append("IsProjectItem=").Append(tree.IsProjectItem).Append(", ");
-                    builder.Append("CustomTag=").Append(tree.CustomTag);
-
-                    if (tree.Flags.Contains(ProjectTreeFlags.Common.BubbleUp))
+                    foreach (var child in tree.Children)
                     {
-                        builder.Append(", BubbleUpFlag=True");
+                        builder.AppendLine();
+                        GetChildrenTestStats(child, indent + 1);
+                    }
+
+                    void WriteLine()
+                    {
+                        builder.Append(' ', indent * 4);
+                        builder.Append("Caption=").Append(tree.Caption).Append(", ");
+                        builder.Append("IconHash=").Append(tree.Icon.GetHashCode()).Append(", ");
+                        builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon.GetHashCode()).Append(", ");
+                        builder.Append("Rule=").Append(tree.BrowseObjectProperties?.Name ?? "").Append(", ");
+                        builder.Append("IsProjectItem=").Append(tree.IsProjectItem).Append(", ");
+                        builder.Append("CustomTag=").Append(tree.CustomTag);
+
+                        if (tree.Flags.Contains(ProjectTreeFlags.Common.BubbleUp))
+                        {
+                            builder.Append(", BubbleUpFlag=True");
+                        }
                     }
                 }
             }

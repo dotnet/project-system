@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
 
             return;
 
-            static string? GetSuffix(IDependency dependency) => dependency.OriginalItemSpec ?? dependency.Path;
+            static string? GetSuffix(IDependency dependency) => dependency.OriginalItemSpec ?? dependency.FilePath;
 
             static string GetAlias(IDependency dependency)
             {

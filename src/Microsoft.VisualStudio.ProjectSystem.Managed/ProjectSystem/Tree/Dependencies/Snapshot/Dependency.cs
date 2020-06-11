@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -20,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProviderType = dependencyModel.ProviderType;
             Caption = dependencyModel.Caption ?? string.Empty;
             OriginalItemSpec = dependencyModel.OriginalItemSpec;
-            Path = dependencyModel.Path;
+            FilePath = dependencyModel.Path;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
             _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
@@ -61,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
-                     .Add(Folder.FullPathProperty, Path ?? string.Empty);
+                     .Add(Folder.FullPathProperty, FilePath ?? string.Empty);
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Id = dependency.Id;
             ProviderType = dependency.ProviderType;
             OriginalItemSpec = dependency.OriginalItemSpec;
-            Path = dependency.Path;
+            FilePath = dependency.FilePath;
             _schemaItemType = dependency.SchemaItemType;
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
@@ -99,7 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public string ProviderType { get; }
         public string? OriginalItemSpec { get; }
-        public string? Path { get; }
 
         public string SchemaName { get; }
 
@@ -129,6 +129,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public ProjectTreeFlags Flags { get; }
 
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; }
+
+        #endregion
+
+        #region IDependencyViewModel
+
+        public string? FilePath { get; }
+
+        public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 
         #endregion
 

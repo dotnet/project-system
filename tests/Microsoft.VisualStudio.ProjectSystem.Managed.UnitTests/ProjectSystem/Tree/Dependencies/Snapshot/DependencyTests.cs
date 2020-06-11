@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(string.Empty, dependency.Caption);
             Assert.Null(dependency.OriginalItemSpec);
-            Assert.Null(dependency.Path);
+            Assert.Null(dependency.FilePath);
             Assert.Equal("Folder", dependency.SchemaName);
             Assert.Equal("Folder", dependency.SchemaItemType);
             AssertEx.CollectionLength(dependency.BrowseObjectProperties, 2);
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
             Assert.Equal(mockModel.Caption, dependency.Caption);
             Assert.Equal(mockModel.OriginalItemSpec, dependency.OriginalItemSpec);
-            Assert.Equal(mockModel.Path, dependency.Path);
+            Assert.Equal(mockModel.Path, dependency.FilePath);
             Assert.Equal(mockModel.SchemaName, dependency.SchemaName);
             Assert.Equal(mockModel.SchemaItemType, dependency.SchemaItemType);
             Assert.Equal(mockModel.Resolved, dependency.Resolved);

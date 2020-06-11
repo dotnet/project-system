@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                    && Flags == dependency.Flags
                    && (Caption == null || Caption == dependency.Caption)
                    && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
-                   && (Path == null || Path == dependency.Path)
+                   && (Path == null || Path == dependency.FilePath)
                    && (SchemaName == null || SchemaName == dependency.SchemaName)
                    && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependency) || SchemaItemType == dependency.SchemaItemType)
                    && Resolved == dependency.Resolved

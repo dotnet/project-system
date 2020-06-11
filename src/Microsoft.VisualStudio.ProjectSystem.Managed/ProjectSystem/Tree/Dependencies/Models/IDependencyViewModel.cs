@@ -19,12 +19,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     /// </remarks>
     internal interface IDependencyViewModel
     {
+        /// <summary>
+        /// Friendly name of the dependency, should be used for UI (captions etc)
+        /// </summary>
         string Caption { get; }
+
+        /// <summary>
+        /// Where appropriate, contains the resolved path of the dependency, otherwise <see langword="null"/>.
+        /// </summary>
         string? FilePath { get; }
+
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string? SchemaName { get; }
+
+        /// <summary>
+        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
+        /// object rule for this dependency.
+        /// </summary>
         string? SchemaItemType { get; }
+
         ImageMoniker Icon { get; }
+
         ImageMoniker ExpandedIcon { get; }
+
         ProjectTreeFlags Flags { get; }
     }
 }

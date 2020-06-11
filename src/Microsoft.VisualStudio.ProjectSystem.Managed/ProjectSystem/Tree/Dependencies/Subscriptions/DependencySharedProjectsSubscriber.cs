@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IEnumerable<string> sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
             var currentSharedImportNodePaths = targetedSnapshot.Dependencies
                 .Where(pair => pair.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
-                .Select(pair => pair.Path!)
+                .Select(pair => pair.FilePath!)
                 .ToList();
 
             var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);

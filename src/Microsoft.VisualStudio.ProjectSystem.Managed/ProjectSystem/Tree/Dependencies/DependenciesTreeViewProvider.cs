@@ -321,7 +321,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             return CreateOrUpdateNode(
                 node,
-                dependency.ToViewModel(),
+                dependency,
                 browseObjectProperties,
                 isProjectItem,
                 additionalFlags,

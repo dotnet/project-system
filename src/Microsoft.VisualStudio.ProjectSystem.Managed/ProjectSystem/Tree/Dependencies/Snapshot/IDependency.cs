@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
@@ -9,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     /// Represents internal immutable dependency entity that is stored in an immutable
     /// <see cref="TargetedDependenciesSnapshot"/>.
     /// </summary>
-    internal interface IDependency
+    internal interface IDependency : IDependencyViewModel
     {
         /// <summary>
         /// Gets the set of icons to use for this dependency based on its state (e.g. resolved, expanded).
@@ -56,28 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         string? OriginalItemSpec { get; }
 
         /// <summary>
-        /// Where appropriate, contains the resolved path of the dependency, otherwise <see langword="null"/>.
-        /// </summary>
-        string? Path { get; }
-
-        /// <summary>
-        /// Friendly name of the dependency, should be used for UI (captions etc)
-        /// </summary>
-        string Caption { get; }
-
-        /// <summary>
-        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
-        /// object rule for this dependency.
-        /// </summary>
-        string SchemaName { get; }
-
-        /// <summary>
-        /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to determine the browse
-        /// object rule for this dependency.
-        /// </summary>
-        string SchemaItemType { get; }
-
-        /// <summary>
         /// Used in <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync"/> to populate the browse
         /// object for resolved dependencies, to be displayed in property pages (in BrowsableObject context).
         /// </summary>
@@ -97,7 +76,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// In some cases dependency should be present in snapshot, but not displayed in the Tree.
         /// </summary>
         bool Visible { get; }
-
-        ProjectTreeFlags Flags { get; }
     }
 }

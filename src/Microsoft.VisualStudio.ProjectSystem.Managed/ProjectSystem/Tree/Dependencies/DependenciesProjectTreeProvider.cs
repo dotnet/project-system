@@ -409,16 +409,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return null;
             }
 
-            Rule? schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
-
             string? itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
-                ? dependency.Path
+                ? dependency.FilePath
                 : dependency.OriginalItemSpec;
 
             var context = ProjectPropertiesContext.GetContext(
                 UnconfiguredProject,
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
+
+            Rule? schema = dependency.SchemaName != null ? browseObjectsCatalog.GetSchema(dependency.SchemaName) : null;
 
             if (schema == null)
             {
