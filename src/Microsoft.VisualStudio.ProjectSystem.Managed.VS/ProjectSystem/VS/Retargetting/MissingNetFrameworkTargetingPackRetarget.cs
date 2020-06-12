@@ -23,18 +23,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
             string? targetFrameworkVersion = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkVersionProperty, string.Empty);
             string? targetFrameworkProfile = projectState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.TargetFrameworkProfileProperty, string.Empty);
 
-            if (StringComparers.PropertyLiteralValues.Equals(targetFrameworkIdentifier, ".NETFramework") &&    // Only .NET Framework has targeting packs
-                targetFrameworkVersion.Length > 1)                                                             // Sanity check so that substring doesn't fail
+            if (StringComparers.PropertyLiteralValues.Equals(targetFrameworkIdentifier, ".NETFramework"))   // Only .NET Framework has targeting packs
             {
-                string versionWithoutTheV = targetFrameworkVersion.Substring(1);
+                string? component = GetInstallerComponent(targetFrameworkVersion);
 
-                if (!Microsoft.Build.Utilities.ToolLocationHelper.GetPathToReferenceAssemblies(targetFrameworkIdentifier, targetFrameworkVersion, targetFrameworkProfile).Any())
+                if (component != null && !Microsoft.Build.Utilities.ToolLocationHelper.GetPathToReferenceAssemblies(targetFrameworkIdentifier, targetFrameworkVersion, targetFrameworkProfile).Any())
                 {
-                    return Task.FromResult((TargetDescriptionBase?)new InstallTargetingPackTargetDescription($"Microsoft.Net.Component.{versionWithoutTheV}.TargetingPack"));
+                    return Task.FromResult((TargetDescriptionBase?)new InstallTargetingPackTargetDescription(component));
                 }
             }
 
             return Task.FromResult((TargetDescriptionBase?)null);
         }
+
+        private static string? GetInstallerComponent(string version) => version switch
+        {
+            "v3.5" => "Microsoft.Net.Component.3.5.DeveloperTools",
+            "v4.0" => "Microsoft.Net.Component.4.TargetingPack",
+            "v4.5" => "Microsoft.Net.Component.4.5.TargetingPack",
+            "v4.5.1" => "Microsoft.Net.Component.4.5.1.TargetingPack",
+            "v4.5.2" => "Microsoft.Net.Component.4.5.2.TargetingPack",
+            "v4.6" => "Microsoft.Net.Component.4.6.TargetingPack",
+            "v4.6.1" => "Microsoft.Net.Component.4.6.1.TargetingPack",
+            "v4.6.2" => "Microsoft.Net.Component.4.6.2.TargetingPack",
+            "v4.7" => "Microsoft.Net.Component.4.7.TargetingPack",
+            "v4.7.1" => "Microsoft.Net.Component.4.7.1.TargetingPack",
+            "v4.7.2" => "Microsoft.Net.Component.4.7.2.TargetingPack",
+            "v4.8" => "Microsoft.Net.Component.4.8.TargetingPack",
+            _ => null
+        };
     }
 }
