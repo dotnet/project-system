@@ -5,18 +5,18 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using EventData = System.Tuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
     Microsoft.VisualStudio.ProjectSystem.IProjectCapabilitiesSnapshot>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]

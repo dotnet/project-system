@@ -104,9 +104,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// Gets a value indicating whether deleting a given set of items from the project, and optionally from disk,
         /// would be allowed. 
         /// Note: CanRemove can be called several times since there two types of remove operations:
-        ///   - Remove is a command that can remove project tree items form the tree/project but not from disk. 
+        ///   - Remove is a command that can remove project tree items from the tree/project but not from disk. 
         ///     For that command requests deleteOptions has DeleteOptions.None flag.
-        ///   - Delete is a command that can remove project tree items and form project and from disk. 
+        ///   - Delete is a command that can remove project tree items from project and from disk. 
         ///     For this command requests deleteOptions has DeleteOptions.DeleteFromStorage flag.
         /// We can potentially support only Remove command here, since we don't remove Dependencies form disk, 
         /// thus we return false when DeleteOptions.DeleteFromStorage is provided.
@@ -170,9 +170,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes,
                                                DeleteOptions deleteOptions = DeleteOptions.None)
         {
-            if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
+            if (!CanRemove(nodes, deleteOptions))
             {
-                throw new NotSupportedException();
+                throw new InvalidOperationException();
             }
 
             // Get the list of shared import nodes.

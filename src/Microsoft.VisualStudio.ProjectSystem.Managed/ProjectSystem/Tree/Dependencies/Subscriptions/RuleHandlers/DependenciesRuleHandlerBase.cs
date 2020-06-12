@@ -171,6 +171,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 ? properties.GetStringProperty(ProjectItemMetadata.OriginalItemSpec) ?? itemSpec
                 : itemSpec;
 
+            // NOTE the SDK only sets this for a default set of implicit dependencies. At this point, this data
+            // does not reflect implicit dependencies brought in by imported project files. That behaviour is
+            // added by ImplicitDependenciesSnapshotFilter.
             bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
 
             return CreateDependencyModel(

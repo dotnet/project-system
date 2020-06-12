@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Path = dependency.Path;
             _schemaItemType = dependency.SchemaItemType;
             Visible = dependency.Visible;
-            BrowseObjectProperties = dependency.BrowseObjectProperties;
+            BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
