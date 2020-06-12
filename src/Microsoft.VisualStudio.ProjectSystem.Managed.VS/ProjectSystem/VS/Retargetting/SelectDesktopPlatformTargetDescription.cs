@@ -25,6 +25,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public override Array GetRetargetParameters() => new[] { "Platform" };
 
+        public override string CommandTitle => "Retarget project";
+
         public override Array GetPossibleParameterValues(string parameter)
         {
             return new string[] { "WindowsForms", "WPF" };
