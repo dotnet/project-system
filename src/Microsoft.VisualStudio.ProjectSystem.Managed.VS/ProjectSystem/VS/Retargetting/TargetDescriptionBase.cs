@@ -7,14 +7,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 {
     internal abstract class TargetDescriptionBase : IVsProjectTargetDescription2
     {
+        public IVsProjectAcquisitionSetupDriver? ActualSetupDriver { get; set; }
         public abstract Guid TargetId { get; }
         public abstract string DisplayName { get; }
         public virtual uint Order => 1000;
         public abstract bool Supported { get; }
-
-        // Allows for something to provide a setup driver, so implementors of this class don't need to
-        public IVsProjectAcquisitionSetupDriver? ActualSetupDriver { get; set; }
         public abstract Guid SetupDriver { get; }
+
+        /// <summary>
+        /// Text for the menu item that fixes the problem with the project
+        /// </summary>
         public abstract string CommandTitle { get; }
 
         public virtual string GetRetargetParameterDisplayName(string parameter) => parameter;
@@ -37,6 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                 case __VSPTDPROPID.VSPTDPROPID_RetargetProjectCommandTitle:
                 case __VSPTDPROPID.VSPTDPROPID_RetargetSolutionCommandTitle:
                     return CommandTitle;
+
+                case __VSPTDPROPID.VSPTDPROPID_AcquisitionSetupDriver:
+                    return ActualSetupDriver;
 
                 case __VSPTDPROPID.VSPTDPROPID_ProjectRetargetingDescription:
                     break;
@@ -65,8 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
                 case __VSPTDPROPID.VSPTDPROPID_AcquisitionComponents:
                     break;
-                case __VSPTDPROPID.VSPTDPROPID_AcquisitionSetupDriver:
-                    return ActualSetupDriver;
                 case __VSPTDPROPID.VSPTDPROPID_DoBackup:
                     break;
                 case __VSPTDPROPID.VSPTDPROPID_IncludeAllProjectsForProjectRetargeting:

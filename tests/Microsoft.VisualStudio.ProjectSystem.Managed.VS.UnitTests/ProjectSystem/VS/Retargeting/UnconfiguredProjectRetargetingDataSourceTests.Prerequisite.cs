@@ -22,6 +22,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
             public override string DisplayName => throw new NotImplementedException();
 
             public override Guid SetupDriver => _setupDriver;
+
+            public override string UnloadReason => throw new NotImplementedException();
+
+            public override string UnloadDescription => throw new NotImplementedException();
         }
     }
 }

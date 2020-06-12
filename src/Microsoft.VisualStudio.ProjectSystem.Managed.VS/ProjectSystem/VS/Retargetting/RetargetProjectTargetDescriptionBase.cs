@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         public override bool Supported => true;
 
-        public override string CommandTitle => "Retarget Project";
-
         public override object? GetProperty(uint prop) => ((__VSPTDPROPID)prop) switch
         {
             __VSPTDPROPID.VSPTDPROPID_ProjectRetargetingTitle => RetargetingTitle,

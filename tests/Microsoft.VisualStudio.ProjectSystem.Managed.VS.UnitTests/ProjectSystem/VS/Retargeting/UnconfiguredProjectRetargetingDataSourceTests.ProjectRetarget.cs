@@ -16,6 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
             public override string RetargetingDescription => throw new NotImplementedException();
 
             public override string DisplayName => throw new NotImplementedException();
+
+            public override string CommandTitle => throw new NotImplementedException();
         }
     }
 }
