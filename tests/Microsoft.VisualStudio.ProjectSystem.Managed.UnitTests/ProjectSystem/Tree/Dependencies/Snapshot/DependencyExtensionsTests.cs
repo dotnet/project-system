@@ -44,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Equal(dependencyResolved.Caption,               viewModelResolved.Caption);
             Assert.Equal(dependencyResolved.Flags,                 viewModelResolved.Flags);
-            Assert.Equal(dependencyResolved.Id,                    viewModelResolved.FilePath);
             Assert.Equal(dependencyResolved.SchemaName,            viewModelResolved.SchemaName);
             Assert.Equal(dependencyResolved.SchemaItemType,        viewModelResolved.SchemaItemType);
             Assert.Equal(iconSet.Icon,                             viewModelResolved.Icon);
@@ -54,33 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Equal(dependencyUnresolved.Caption,             viewModelUnresolved.Caption);
             Assert.Equal(dependencyUnresolved.Flags,               viewModelUnresolved.Flags);
-            Assert.Equal(dependencyUnresolved.Id,                  viewModelUnresolved.FilePath);
             Assert.Equal(dependencyUnresolved.SchemaName,          viewModelUnresolved.SchemaName);
             Assert.Equal(dependencyUnresolved.SchemaItemType,      viewModelUnresolved.SchemaItemType);
             Assert.Equal(iconSet.UnresolvedIcon,                   viewModelUnresolved.Icon);
             Assert.Equal(iconSet.UnresolvedExpandedIcon,           viewModelUnresolved.ExpandedIcon);
-        }
-
-        [Fact]
-        public void GetTopLevelId()
-        {
-            var dependency1 = new TestDependency
-            {
-                Id = "id1",
-                ProviderType = "MyProvider"
-            };
-
-            Assert.Equal("id1", dependency1.GetTopLevelId());
-
-            var dependency2 = new TestDependency
-            {
-                Id = "id1",
-                Path = "xxxxxxx",
-                ProviderType = "MyProvider",
-                TargetFramework = new TargetFramework("tfm1")
-            };
-
-            Assert.Equal("tfm1\\MyProvider\\xxxxxxx", dependency2.GetTopLevelId());
         }
     }
 }

@@ -174,7 +174,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var (actualTfm, targetedSnapshot) = Assert.Single(snapshot.DependenciesByTargetFramework);
             Assert.Same(targetFramework, actualTfm);
             var dependency = Assert.Single(targetedSnapshot.Dependencies);
-            Assert.Equal(@"tfm1\Xxx\dependency1", dependency.Id);
+            Assert.Equal(@"Xxx\dependency1", dependency.Id);
             Assert.Equal("Xxx", dependency.ProviderType);
         }
 

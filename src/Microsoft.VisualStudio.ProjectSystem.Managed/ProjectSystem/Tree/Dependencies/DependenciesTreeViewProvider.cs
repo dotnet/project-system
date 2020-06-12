@@ -155,21 +155,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public IProjectTree? FindByPath(IProjectTree? root, string path)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNode)
-                ? root
-                : root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
-
-            return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
-                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
-        }
-
         /// <summary>
         /// Builds all available sub trees under root: target framework or Dependencies node
         /// when there is only one target.
@@ -298,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 Assumes.NotNull(parent);
 
-                rootNode = parent!;
+                rootNode = parent;
             }
 
             return currentNodes != null // shouldCleanup
@@ -331,7 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectTreeFlags? excludedFlags = null)
         {
             IRule? browseObjectProperties = dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties)
-                ? await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.Catalogs)
+                ? await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.TargetFramework, targetedSnapshot.Catalogs)
                 : null;
 
             return CreateOrUpdateNode(
@@ -356,11 +341,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            string? filePath = viewModel.Dependency != null &&
-                               viewModel.Dependency.Resolved
-                ? viewModel.Dependency.GetTopLevelId()
-                : viewModel.FilePath;
-
             ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);
 
             return isProjectItem
@@ -371,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
-                    filePath,
+                    filePath: null,
                     browseObjectProperties: browseObjectProperties,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
@@ -381,13 +361,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             IProjectTree CreateProjectItemTreeNode()
             {
-                Assumes.NotNull(filePath);
-
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,
-                    file: filePath,
+                    file: null,
                     itemType: viewModel.SchemaItemType,
-                    itemName: filePath);
+                    itemName: null);
 
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,

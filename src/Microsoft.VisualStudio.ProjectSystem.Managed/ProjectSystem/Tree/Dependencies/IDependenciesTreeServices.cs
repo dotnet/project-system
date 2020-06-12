@@ -58,7 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// display browse object properties page.
         /// </summary>
         /// <param name="dependency"></param>
+        /// <param name="targetFramework"></param>
         /// <param name="catalogs"></param>
-        Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs);
+        Task<IRule?> GetBrowseObjectRuleAsync(
+            IDependency dependency,
+            ITargetFramework targetFramework,
+            IProjectCatalogSnapshot? catalogs);
     }
 }

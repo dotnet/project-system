@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var packageDependency = new TestDependency
             {
-                Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
+                Id = Dependency.GetID(PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency
             };
@@ -41,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                targetFramework,
                 sdkDependency,
                 null!,
                 null,
@@ -77,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var packageDependency = new TestDependency
             {
-                Id = Dependency.GetID(targetFramework, PackageRuleHandler.ProviderTypeString, sdkName),
+                Id = Dependency.GetID(PackageRuleHandler.ProviderTypeString, sdkName),
                 Resolved = false,
                 Flags = DependencyTreeFlags.PackageDependency
             };
@@ -89,7 +88,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                targetFramework,
                 sdkDependency,
                 null!,
                 null,
@@ -111,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var sdkDependency = new TestDependency
             {
-                Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
+                Id = Dependency.GetID(SdkRuleHandler.ProviderTypeString, packageName),
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
@@ -131,7 +129,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                targetFramework,
                 packageDependency,
                 null!,
                 null,
@@ -158,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var sdkDependency = new TestDependency
             {
-                Id = Dependency.GetID(targetFramework, SdkRuleHandler.ProviderTypeString, packageName),
+                Id = Dependency.GetID(SdkRuleHandler.ProviderTypeString, packageName),
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
             };
@@ -178,7 +175,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new SdkAndPackagesDependenciesSnapshotFilter();
 
             filter.BeforeRemove(
-                targetFramework: targetFramework,
                 dependency: packageDependency,
                 context);
 

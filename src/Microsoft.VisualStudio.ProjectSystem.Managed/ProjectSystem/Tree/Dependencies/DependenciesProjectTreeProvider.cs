@@ -257,42 +257,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         }
 
         /// <summary>
-        /// Efficiently finds a descendent with the given path in the given tree.
-        /// </summary>
-        /// <param name="root">The root of the tree.</param>
-        /// <param name="path">The absolute or project-relative path to the item sought.</param>
-        /// <returns>The item in the tree if found; otherwise <see langword="null"/>.</returns>
-        public override IProjectTree? FindByPath(IProjectTree root, string path)
-        {
-            // We override this since we need to find children under either:
-            //
-            // - our dependencies root node
-            // - dependency sub tree nodes
-            // - dependency sub tree top level nodes
-            //
-            // Deeper levels will be attached items with additional info, not direct dependencies
-            // specified in the project file.
-
-            IProjectTree? projectTree = _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
-            return projectTree;
-        }
-
-        /// <summary>
-        /// Gets the path to a given node that can later be provided to <see cref="IProjectTreeProvider.FindByPath" /> to locate the node again.
-        /// </summary>
-        /// <param name="node">The node whose path is sought.</param>
-        /// <returns>
-        /// A non-empty string, or <see langword="null"/> if searching is not supported.
-        /// For nodes that represent files on disk, this is the project-relative path to that file.
-        /// The root node of a project is the absolute path to the project file.
-        /// </returns>
-        public override string? GetPath(IProjectTree node)
-        {
-            // TODO this is apparently for graph nodes search -- do we still need it?
-            return node.FilePath;
-        }
-
-        /// <summary>
         /// Generates the original references directory tree.
         /// </summary>
         protected override void Initialize()
@@ -492,7 +456,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
+        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
@@ -569,9 +533,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 Assumes.NotNull(ActiveConfiguredProject);
 
-                ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
+                ConfiguredProject project = targetFramework.Equals(TargetFramework.Any)
                     ? ActiveConfiguredProject
-                    : _dependenciesSnapshotProvider.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+                    : _dependenciesSnapshotProvider.GetConfiguredProject(targetFramework) ?? ActiveConfiguredProject;
 
                 return GetActiveConfiguredProjectExports(project);
             }

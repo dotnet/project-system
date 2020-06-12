@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
 {
     /// <summary>
     /// Context used by <see cref="IDependenciesSnapshotFilter"/> implementations when filtering
-    /// a dependency that is being removed from a <see cref="DependenciesSnapshot"/> by
-    /// <see cref="DependenciesSnapshot.FromChanges"/>.
+    /// a dependency that is being removed from a <see cref="TargetedDependenciesSnapshot"/> by
+    /// <see cref="TargetedDependenciesSnapshot.FromChanges"/>.
     /// </summary>
     internal sealed class RemoveDependencyContext
     {

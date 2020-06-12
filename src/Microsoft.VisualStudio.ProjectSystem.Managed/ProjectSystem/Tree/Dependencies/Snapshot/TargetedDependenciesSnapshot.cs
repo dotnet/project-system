@@ -88,8 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
             {
-                string dependencyId = Dependency.GetID(
-                    targetFramework, dependencyModel.ProviderType, dependencyModel.Id);
+                string dependencyId = Dependency.GetID(dependencyModel.ProviderType, dependencyModel.Id);
 
                 if (!context.TryGetDependency(dependencyId, out IDependency dependency))
                 {
@@ -101,7 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeRemove(
-                        targetFramework,
                         dependency,
                         context);
 
@@ -121,14 +119,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             void Add(AddDependencyContext context, IDependencyModel dependencyModel)
             {
                 // Create the unfiltered dependency
-                IDependency? dependency = new Dependency(dependencyModel, targetFramework);
+                IDependency? dependency = new Dependency(dependencyModel);
 
                 context.Reset();
 
                 foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
                 {
                     filter.BeforeAddOrUpdate(
-                        targetFramework,
                         dependency,
                         subTreeProviderByProviderType,
                         projectItemSpecs,

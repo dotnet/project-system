@@ -124,7 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 implicitIcon: implicitIcon);
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,

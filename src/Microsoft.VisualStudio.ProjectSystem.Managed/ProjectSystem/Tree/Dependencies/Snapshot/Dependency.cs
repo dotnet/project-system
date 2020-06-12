@@ -10,14 +10,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework)
+        public Dependency(IDependencyModel dependencyModel)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-
-            TargetFramework = targetFramework;
 
             _modelId = dependencyModel.Id;
 
@@ -85,7 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             _id = dependency._id;
             _modelId = dependency._modelId;
-            TargetFramework = dependency.TargetFramework;
             ProviderType = dependency.ProviderType;
             Name = dependency.Name;
             OriginalItemSpec = dependency.OriginalItemSpec;
@@ -110,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         private readonly string _modelId;
         private string? _id;
 
-        public string Id => _id ??= GetID(TargetFramework, ProviderType, _modelId);
+        public string Id => _id ??= GetID(ProviderType, _modelId);
 
         public string ProviderType { get; }
         public string Name { get; }
@@ -148,8 +144,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         #endregion
 
-        public ITargetFramework TargetFramework { get; }
-
         public IDependency SetProperties(
             string? caption = null,
             bool? resolved = null,
@@ -178,14 +172,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         /// <summary>
         /// Determines whether <paramref name="id"/> is equal to the result of <see cref="GetID"/> when passed
-        /// <paramref name="targetFramework"/>, <paramref name="providerType"/> and <paramref name="modelId"/>.
+        /// <paramref name="providerType"/> and <paramref name="modelId"/>.
         /// </summary>
         /// <remarks>
         /// This method performs no heap allocations unless <paramref name="modelId"/> must be escaped.
         /// </remarks>
-        public static bool IdEquals(string id, ITargetFramework targetFramework, string providerType, string modelId)
+        public static bool IdEquals(string id, string providerType, string modelId)
         {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
@@ -195,18 +188,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             int modelSlashCount = 0;
             for (int i = modelId.Length - 1; i >= 0 && (modelId[i] == '\\' || modelId[i] == '/'); i--)
                 modelSlashCount++;
-            int length = targetFramework.ShortName.Length + providerType.Length + modelId.Length - modelSlashCount + 2;
+            int length = providerType.Length + modelId.Length - modelSlashCount + 1;
 
             if (id.Length != length)
                 return false;
-            if (!id.StartsWith(targetFramework.ShortName, StringComparisons.DependencyTreeIds))
+            if (string.Compare(id, 0, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
                 return false;
-            int index = targetFramework.ShortName.Length;
-            if (id[index++] != '\\')
-                return false;
-            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
-                return false;
-            index += providerType.Length;
+            int index = providerType.Length;
             if (id[index++] != '\\')
                 return false;
 
@@ -222,10 +210,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         /// <summary>
-        /// Constructs the string identifier for a dependency from its target framework, provider type and dependency model ID.
+        /// Constructs the string identifier for a dependency from its provider type and dependency model ID.
         /// </summary>
         /// <remarks>
-        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
+        /// This string has form <c>"provider-type\model-id"</c>.
         /// <list type="bullet">
         ///   <item>All characters are lower-case.</item>
         ///   <item><c>".."</c> is replaced with <c>"__"</c>.</item>
@@ -233,18 +221,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         ///   <item>Any trailing <c>"\"</c> characters are trimmed.</item>
         /// </list>
         /// </remarks>
-        /// <param name="targetFramework"></param>
         /// <param name="providerType"></param>
         /// <param name="modelId"></param>
-        public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
+        public static string GetID(string providerType, string modelId)
         {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
             Requires.NotNullOrEmpty(providerType, nameof(providerType));
             Requires.NotNullOrEmpty(modelId, nameof(modelId));
 
             var sb = PooledStringBuilder.GetInstance();
-            sb.Append(targetFramework.ShortName);
-            sb.Append('\\');
             sb.Append(providerType);
             sb.Append('\\');
             int offset = sb.Length;

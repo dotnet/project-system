@@ -35,9 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public string Id { get; set; }
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
 
-        public bool Matches(IDependency dependency, ITargetFramework tfm)
+        public bool Matches(IDependency dependency)
         {
-            return Dependency.GetID(tfm, ProviderType, Id) == dependency.Id
+            return Dependency.GetID(ProviderType, Id) == dependency.Id
                    && ProviderType == dependency.ProviderType
                    && Flags == dependency.Flags
                    && (Name == null || Name == dependency.Name)

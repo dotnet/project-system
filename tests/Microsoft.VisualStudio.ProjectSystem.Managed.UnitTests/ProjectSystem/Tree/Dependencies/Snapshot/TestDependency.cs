@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 BrowseObjectProperties = value.BrowseObjectProperties;
                 Flags = value.Flags;
                 Id = value.Id;
-                TargetFramework = value.TargetFramework;
             }
         }
 
@@ -51,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
-        public ITargetFramework TargetFramework { get; set; }
         public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
 

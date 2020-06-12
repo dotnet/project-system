@@ -38,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -84,7 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -136,7 +134,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -189,7 +186,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
