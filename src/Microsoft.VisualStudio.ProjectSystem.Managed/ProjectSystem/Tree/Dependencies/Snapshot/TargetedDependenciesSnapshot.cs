@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             ITargetFramework targetFramework = previousSnapshot.TargetFramework;
 
-            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => (d.ProviderType, ModelId: d.Id)/*, StringComparers.DependencyTreeIds*/);
+            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
