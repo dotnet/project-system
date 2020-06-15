@@ -1,50 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     internal static class IDependencyExtensions
     {
-        /// <summary>
-        /// Returns a IDependencyViewModel for given dependency.
-        /// </summary>
-        public static IDependencyViewModel ToViewModel(this IDependency dependency)
-        {
-            return new DependencyViewModel(dependency);
-        }
-
-        private sealed class DependencyViewModel : IDependencyViewModel
-        {
-            private readonly IDependency _dependency;
-            private readonly bool _hasUnresolvedDependency;
-
-            public DependencyViewModel(IDependency dependency)
-            {
-                Requires.NotNull(dependency, nameof(dependency));
-                Requires.Argument(dependency.Visible, nameof(dependency), "Must be visible");
-
-                _dependency = dependency;
-                _hasUnresolvedDependency = !dependency.Resolved;
-            }
-
-            public string Caption => _dependency.Caption;
-            public string? SchemaName => _dependency.SchemaName;
-            public string? SchemaItemType => _dependency.SchemaItemType;
-            public ImageMoniker Icon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedIcon : _dependency.IconSet.Icon;
-            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _dependency.IconSet.UnresolvedExpandedIcon : _dependency.IconSet.ExpandedIcon;
-            public ProjectTreeFlags Flags => _dependency.Flags;
-        }
-
-        public static bool TopLevelIdEquals(this IDependency self, string id)
-        {
-            return string.IsNullOrEmpty(self.Path)
-                ? string.Equals(self.Id, id, StringComparisons.DependencyTreeIds)
-                : Dependency.IdEquals(id, self.ProviderType, self.Path);
-        }
-
         public static IDependency ToResolved(
             this IDependency dependency,
             string? schemaName = null)

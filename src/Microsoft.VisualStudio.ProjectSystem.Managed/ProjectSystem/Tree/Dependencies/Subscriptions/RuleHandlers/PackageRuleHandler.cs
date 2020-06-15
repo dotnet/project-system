@@ -193,7 +193,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 }
 
                 dependencyModel = new PackageDependencyModel(
-                    itemSpec,
                     originalItemSpec: name,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: true,
@@ -208,7 +207,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 System.Diagnostics.Debug.Assert(itemSpec.IndexOf('/') == -1);
 
                 dependencyModel = new PackageDependencyModel(
-                    itemSpec,
                     originalItemSpec: itemSpec,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: false,

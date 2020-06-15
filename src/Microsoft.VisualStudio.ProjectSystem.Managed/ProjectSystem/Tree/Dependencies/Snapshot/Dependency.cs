@@ -2,9 +2,9 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
@@ -16,13 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
 
-            _modelId = dependencyModel.Id;
+            Id = dependencyModel.Id;
 
             ProviderType = dependencyModel.ProviderType;
-            Name = dependencyModel.Name ?? string.Empty;
             Caption = dependencyModel.Caption ?? string.Empty;
-            OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
-            Path = dependencyModel.Path ?? string.Empty;
+            OriginalItemSpec = dependencyModel.OriginalItemSpec;
+            FilePath = dependencyModel.Path;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
             _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
@@ -63,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
-                     .Add(Folder.FullPathProperty, Path);
+                     .Add(Folder.FullPathProperty, FilePath ?? string.Empty);
         }
 
         /// <summary>
@@ -80,12 +79,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             // Copy values as necessary to create a clone with any properties overridden
 
-            _id = dependency._id;
-            _modelId = dependency._modelId;
+            Id = dependency.Id;
             ProviderType = dependency.ProviderType;
-            Name = dependency.Name;
             OriginalItemSpec = dependency.OriginalItemSpec;
-            Path = dependency.Path;
+            FilePath = dependency.FilePath;
             _schemaItemType = dependency.SchemaItemType;
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
@@ -99,19 +96,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         #region IDependency
 
-        /// <summary>
-        /// Id unique for a particular provider. We append target framework and provider type to it,
-        /// to get a unique id for the whole snapshot.
-        /// </summary>
-        private readonly string _modelId;
-        private string? _id;
-
-        public string Id => _id ??= GetID(ProviderType, _modelId);
+        public string Id { get; }
 
         public string ProviderType { get; }
-        public string Name { get; }
-        public string OriginalItemSpec { get; }
-        public string Path { get; }
+        public string? OriginalItemSpec { get; }
 
         public string SchemaName { get; }
 
@@ -144,6 +132,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         #endregion
 
+        #region IDependencyViewModel
+
+        public string? FilePath { get; }
+
+        public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
+
+        #endregion
+
         public IDependency SetProperties(
             string? caption = null,
             bool? resolved = null,
@@ -159,7 +156,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             // Used for debugging only
             var sb = PooledStringBuilder.GetInstance();
-            sb.Append("Id=\"");
+            sb.Append("Provider=\"");
+            sb.Append(ProviderType);
+            sb.Append("\" ModelId=\"");
             sb.Append(Id);
             sb.Append('"');
 
@@ -167,76 +166,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             if (Implicit) sb.Append(" Implicit");
             if (Visible) sb.Append(" Visible");
 
-            return sb.ToStringAndFree();
-        }
-
-        /// <summary>
-        /// Determines whether <paramref name="id"/> is equal to the result of <see cref="GetID"/> when passed
-        /// <paramref name="providerType"/> and <paramref name="modelId"/>.
-        /// </summary>
-        /// <remarks>
-        /// This method performs no heap allocations unless <paramref name="modelId"/> must be escaped.
-        /// </remarks>
-        public static bool IdEquals(string id, string providerType, string modelId)
-        {
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
-            Requires.NotNullOrEmpty(modelId, nameof(modelId));
-
-            if (id == null)
-                return false;
-
-            int modelSlashCount = 0;
-            for (int i = modelId.Length - 1; i >= 0 && (modelId[i] == '\\' || modelId[i] == '/'); i--)
-                modelSlashCount++;
-            int length = providerType.Length + modelId.Length - modelSlashCount + 1;
-
-            if (id.Length != length)
-                return false;
-            if (string.Compare(id, 0, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
-                return false;
-            int index = providerType.Length;
-            if (id[index++] != '\\')
-                return false;
-
-            // Escape model ID
-            // NOTE It doesn't seem possible to avoid the potential string allocation here without
-            // reimplementing OrdinalIgnoreCase comparison.
-            modelId = modelId.Replace('/', '\\').Replace("..", "__");
-
-            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparisons.DependencyTreeIds) != 0)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Constructs the string identifier for a dependency from its provider type and dependency model ID.
-        /// </summary>
-        /// <remarks>
-        /// This string has form <c>"provider-type\model-id"</c>.
-        /// <list type="bullet">
-        ///   <item>All characters are lower-case.</item>
-        ///   <item><c>".."</c> is replaced with <c>"__"</c>.</item>
-        ///   <item><c>"/"</c> is replaced with <c>"\"</c>.</item>
-        ///   <item>Any trailing <c>"\"</c> characters are trimmed.</item>
-        /// </list>
-        /// </remarks>
-        /// <param name="providerType"></param>
-        /// <param name="modelId"></param>
-        public static string GetID(string providerType, string modelId)
-        {
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
-            Requires.NotNullOrEmpty(modelId, nameof(modelId));
-
-            var sb = PooledStringBuilder.GetInstance();
-            sb.Append(providerType);
-            sb.Append('\\');
-            int offset = sb.Length;
-            sb.Append(modelId);
-            // normalize modelId (without allocating)
-            sb.Replace('/', '\\', offset, modelId.Length);
-            sb.Replace("..", "__", offset, modelId.Length);
-            sb.TrimEnd(Delimiter.BackSlash);
             return sb.ToStringAndFree();
         }
     }

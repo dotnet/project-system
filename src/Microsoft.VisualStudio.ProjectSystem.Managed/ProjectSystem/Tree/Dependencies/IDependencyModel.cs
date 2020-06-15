@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Name of the dependency
         /// </summary>
+        [Obsolete("Property is unused")]
         string Name { get; }
 
         /// <summary>
@@ -40,13 +41,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         ///       item is not represented by xaml rule, then OriginalItemSpec will be ignored
         ///       and should be empty.
         /// </summary>
-        string OriginalItemSpec { get; }
+        string? OriginalItemSpec { get; }
 
         /// <summary>
         /// When <see cref="Resolved"/> is <see langword="true"/>, this contains the resolved path
         /// of the dependency, otherwise it is equal to <see cref="OriginalItemSpec"/>.
         /// </summary>
-        string Path { get; }
+        string? Path { get; }
 
         /// <summary>
         /// Friendly name of the dependency, should be used for UI (captions etc)

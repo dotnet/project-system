@@ -34,9 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find a resolved package dependency with the same name.
 
-                string packageId = Dependency.GetID(PackageRuleHandler.ProviderTypeString, modelId: dependency.Name);
-
-                if (context.TryGetDependency(packageId, out IDependency package) && package.Resolved)
+                if (context.TryGetDependency(PackageRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency package) && package.Resolved)
                 {
                     // Set to resolved.
 
@@ -51,9 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                string sdkId = Dependency.GetID(SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
-
-                if (context.TryGetDependency(sdkId, out IDependency sdk))
+                if (context.TryGetDependency(SdkRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency sdk))
                 {
                     // We have an SDK dependency for this package. Such dependencies, when implicit, are created
                     // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
@@ -80,9 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                string sdkId = Dependency.GetID(SdkRuleHandler.ProviderTypeString, modelId: dependency.Name);
-
-                if (context.TryGetDependency(sdkId, out IDependency sdk))
+                if (context.TryGetDependency(SdkRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency sdk))
                 {
                     // We are removing the package dependency related to this SDK dependency
                     // and must undo the changes made above in BeforeAddOrUpdate.

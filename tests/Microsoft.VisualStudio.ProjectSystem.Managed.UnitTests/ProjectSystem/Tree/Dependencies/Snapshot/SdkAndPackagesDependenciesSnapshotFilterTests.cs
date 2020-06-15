@@ -2,8 +2,8 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
@@ -15,26 +15,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
-            var targetFramework = new TargetFramework("tfm");
-
             const string sdkName = "sdkName";
 
             var sdkDependency = new TestDependency
             {
-                Id = "dependency1Id",
-                Name = sdkName,
+                Id = sdkName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = false,
                 Flags = DependencyTreeFlags.SdkDependency
             };
 
             var packageDependency = new TestDependency
             {
-                Id = Dependency.GetID(PackageRuleHandler.ProviderTypeString, sdkName),
+                Id = sdkName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => d.Id);
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
 
             var context = new AddDependencyContext(builder);
 
@@ -52,8 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName), acceptedDependency!);
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                acceptedDependency!);
 
             // No changes other than the filtered dependency
             Assert.False(context.Changed);
@@ -62,26 +61,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenSdkAndPackageUnresolved_ShouldDoNothing()
         {
-            var targetFramework = new TargetFramework("tfm");
-
             const string sdkName = "sdkName";
 
             var sdkDependency = new TestDependency
             {
                 Id = "dependency1",
-                Name = sdkName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
+                OriginalItemSpec = sdkName,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency
             };
 
             var packageDependency = new TestDependency
             {
-                Id = Dependency.GetID(PackageRuleHandler.ProviderTypeString, sdkName),
+                Id = sdkName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Resolved = false,
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => d.Id);
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
 
             var context = new AddDependencyContext(builder);
 
@@ -103,26 +102,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void BeforeAddOrUpdate_WhenPackage_ShouldFindMatchingSdkAndSetProperties()
         {
-            var targetFramework = new TargetFramework("tfm");
-
             const string packageName = "packageName";
 
             var sdkDependency = new TestDependency
             {
-                Id = Dependency.GetID(SdkRuleHandler.ProviderTypeString, packageName),
+                Id = packageName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
             };
 
             var packageDependency = new TestDependency
             {
-                Id = "packageId",
-                Name = packageName,
+                Id = packageName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => d.Id);
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
 
             var context = new AddDependencyContext(builder);
 
@@ -140,10 +138,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // Other changes made
             Assert.True(context.Changed);
 
-            Assert.True(context.TryGetDependency(sdkDependency.Id, out IDependency sdkDependencyAfter));
+            Assert.True(context.TryGetDependency(sdkDependency.ProviderType, sdkDependency.Id, out IDependency sdkDependencyAfter));
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(
-                    schemaName: ResolvedSdkReference.SchemaName), sdkDependencyAfter);
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependencyAfter);
         }
 
         [Fact]
@@ -151,24 +149,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             const string packageName = "packageName";
 
-            var targetFramework = new TargetFramework("tfm");
-
             var sdkDependency = new TestDependency
             {
-                Id = Dependency.GetID(SdkRuleHandler.ProviderTypeString, packageName),
+                Id = packageName,
+                ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
                 Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
             };
 
             var packageDependency = new TestDependency
             {
-                Id = "packageId",
-                Name = packageName,
+                Id = packageName,
+                ProviderType = PackageRuleHandler.ProviderTypeString,
                 Flags = DependencyTreeFlags.PackageDependency,
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => d.Id);
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
 
             var context = new RemoveDependencyContext(builder);
 
@@ -184,13 +181,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // Makes other changes too
             Assert.True(context.Changed);
 
-            Assert.True(builder.TryGetValue(packageDependency.Id, out var afterPackageDependency));
+            Assert.True(builder.TryGetValue((packageDependency.ProviderType, packageDependency.Id), out var afterPackageDependency));
             Assert.Same(packageDependency, afterPackageDependency);
 
-            Assert.True(builder.TryGetValue(sdkDependency.Id, out var afterSdkDependency));
+            Assert.True(builder.TryGetValue((sdkDependency.ProviderType, sdkDependency.Id), out var afterSdkDependency));
             DependencyAssert.Equal(
-                afterSdkDependency.ToUnresolved(
-                    SdkReference.SchemaName), afterSdkDependency);
+                afterSdkDependency.ToUnresolved(SdkReference.SchemaName),
+                afterSdkDependency);
         }
     }
 }

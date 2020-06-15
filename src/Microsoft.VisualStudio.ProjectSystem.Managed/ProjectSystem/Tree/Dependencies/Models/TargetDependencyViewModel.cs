@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         }
 
         public string Caption { get; }
+        public string? FilePath => null;
         public string? SchemaName => null;
         public string? SchemaItemType => null;
         public ImageMoniker Icon => _hasUnresolvedDependency ? ManagedImageMonikers.LibraryWarning : KnownMonikers.Library;

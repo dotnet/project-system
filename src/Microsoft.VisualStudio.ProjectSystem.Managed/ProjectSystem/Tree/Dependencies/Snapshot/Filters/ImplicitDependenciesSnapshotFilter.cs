@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             AddDependencyContext context)
         {
             if (projectItemSpecs != null                                              // must have data
+                && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec)
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
                 && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
@@ -49,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 context.Accept(
                     dependency.SetProperties(
                         iconSet: implicitIconSet,
-                        isImplicit: true));
+                        isImplicit: true,
+                        flags: dependency.Flags.Except(DependencyTreeFlags.SupportsRemove)));
                 return;
             }
 

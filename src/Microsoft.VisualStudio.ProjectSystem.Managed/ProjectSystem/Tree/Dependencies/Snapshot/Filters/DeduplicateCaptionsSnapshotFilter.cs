@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -28,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
-            foreach ((string _, IDependency other) in context)
+            foreach (((string _, string _), IDependency other) in context)
             {
                 if (StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
                     !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))
@@ -47,16 +46,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                     }
 
                     // Prefix matches.
-                    // Check whether we have a match of form "Caption (ItemSpec)".
+                    // Check whether we have a match of form "Caption (Suffix)".
+                    string? suffix = GetSuffix(other);
 
-                    string itemSpec = other.OriginalItemSpec;
-                    int expectedItemSpecIndex = dependency.Caption.Length + 2;        // " (".Length
-                    int expectedLength = expectedItemSpecIndex + itemSpec.Length + 1; // ")".Length
-
-                    if (other.Caption.Length == expectedLength &&
-                        string.Compare(other.Caption, expectedItemSpecIndex, itemSpec, 0, itemSpec.Length, StringComparisons.ProjectTreeCaptionIgnoreCase) == 0)
+                    if (suffix != null)
                     {
-                        shouldApplyAlias = true;
+                        int expectedItemSpecIndex = dependency.Caption.Length + 2; // " (".Length
+                        int expectedLength = expectedItemSpecIndex + suffix.Length + 1; // ")".Length
+
+                        if (other.Caption.Length == expectedLength &&
+                            string.Compare(other.Caption, expectedItemSpecIndex, suffix, 0, suffix.Length, StringComparisons.ProjectTreeCaptionIgnoreCase) == 0)
+                        {
+                            shouldApplyAlias = true;
+                        }
                     }
                 }
             }
@@ -80,13 +82,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
 
             return;
 
+            static string? GetSuffix(IDependency dependency) => dependency.OriginalItemSpec ?? dependency.FilePath;
+
             static string GetAlias(IDependency dependency)
             {
-                string path = dependency.OriginalItemSpec ?? dependency.Path;
+                string? suffix = GetSuffix(dependency);
 
-                return string.IsNullOrEmpty(path) || path.Equals(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase)
+                return Strings.IsNullOrEmpty(suffix) || suffix.Equals(dependency.Caption, StringComparisons.ProjectTreeCaptionIgnoreCase)
                     ? dependency.Caption
-                    : string.Concat(dependency.Caption, " (", path, ")");
+                    : string.Concat(dependency.Caption, " (", suffix, ")");
             }
         }
     }

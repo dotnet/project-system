@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "dependency1",
-                Name = "Dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 Resolved = true,
                 Flags = DependencyTreeFlags.Resolved,
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "dependency2",
-                Name = "Dependency2",
+                OriginalItemSpec = "Dependency2",
                 Caption = "Dependency2",
                 Resolved = false,
                 Flags = DependencyTreeFlags.Unresolved,
@@ -164,8 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID("Xxx", "dependency1"),
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -174,9 +174,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID("Xxx", "dependency2"),
-                Name = "Dependency1",
-                Caption = "Dependency1",
+                Id = "dependency2",
+                OriginalItemSpec = "Dependency2",
+                Caption = "Dependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true
             };
@@ -191,6 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Removed(dependency1.ProviderType, dependency1.Id);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter();
+            snapshotFilter.BeforeRemoveReject("Xxx", "dependency1");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -212,8 +213,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -222,8 +223,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency2 = new TestDependency
             {
                 ProviderType =  "Xxx",
-                Id = "xxx\\dependency2",
-                Name = "Dependency2",
+                Id = "dependency2",
+                OriginalItemSpec = "Dependency2",
                 Caption = "Dependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -241,7 +242,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var addedOnRemove = new TestDependency { Id = "SomethingElse" };
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeRemoveReject(@"xxx\dependency1", addOrUpdate: addedOnRemove);
+                .BeforeRemoveReject("Xxx", "dependency1", addOrUpdate: addedOnRemove);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -269,8 +270,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = Dependency.GetID("Xxx", "dependency1"),
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -280,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType =  "Xxx",
                 Id =  "newdependency1",
-                Name = "NewDependency1",
+                OriginalItemSpec = "NewDependency1",
                 Caption = "NewDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -298,7 +299,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Added(dependencyModelNew1);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeAddReject(@"xxx\newdependency1");
+                .BeforeAddReject("Xxx", "newdependency1");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -321,8 +322,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -331,8 +332,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency2",
-                Name = "Dependency2",
+                Id = "dependency2",
+                OriginalItemSpec = "Dependency2",
                 Caption = "Dependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -342,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "newdependency1",
-                Name = "NewDependency1",
+                OriginalItemSpec = "NewDependency1",
                 Caption = "NewDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -362,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filterAddedDependency = new TestDependency { Id = "unexpected" };
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeAddReject(@"xxx\newdependency1", addOrUpdate: filterAddedDependency);
+                .BeforeAddReject("Xxx", "newdependency1", addOrUpdate: filterAddedDependency);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -393,8 +394,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -403,8 +404,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency2 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency2",
-                Name = "Dependency2",
+                Id = "dependency2",
+                OriginalItemSpec = "Dependency2",
                 Caption = "Dependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -414,7 +415,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "addeddependency1",
-                Name = "AddedDependency1",
+                OriginalItemSpec = "AddedDependency1",
                 Caption = "AddedDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -426,7 +427,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "addeddependency2",
-                Name = "AddedDependency2",
+                OriginalItemSpec = "AddedDependency2",
                 Caption = "AddedDependency2",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -438,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "addeddependency3",
-                Name = "AddedDependency3",
+                OriginalItemSpec = "AddedDependency3",
                 Caption = "AddedDependency3",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -449,8 +450,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyAdded2Changed = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\addeddependency2",
-                Name = "AddedDependency2Changed",
+                Id = "addeddependency2",
+                OriginalItemSpec = "AddedDependency2Changed",
                 Caption = "AddedDependency2Changed",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -459,8 +460,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyRemoved1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\Removeddependency1",
-                Name = "RemovedDependency1",
+                Id = "Removeddependency1",
+                OriginalItemSpec = "RemovedDependency1",
                 Caption = "RemovedDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -469,8 +470,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyInsteadRemoved1 = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\InsteadRemoveddependency1",
-                Name = "InsteadRemovedDependency1",
+                Id = "InsteadRemoveddependency1",
+                OriginalItemSpec = "InsteadRemovedDependency1",
                 Caption = "InsteadRemovedDependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -489,10 +490,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Removed("Xxx", "Removeddependency1");
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeAddReject(@"xxx\addeddependency1")
-                .BeforeAddAccept(@"xxx\addeddependency2", dependencyAdded2Changed)
-                .BeforeAddAccept(@"xxx\addeddependency3")
-                .BeforeRemoveAccept(@"xxx\Removeddependency1", dependencyInsteadRemoved1);
+                .BeforeAddReject("Xxx", "addeddependency1")
+                .BeforeAddAccept("Xxx", "addeddependency2", dependencyAdded2Changed)
+                .BeforeAddAccept("Xxx", "addeddependency3")
+                .BeforeRemoveAccept("Xxx", "Removeddependency1", dependencyInsteadRemoved1);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -509,11 +510,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
             AssertEx.CollectionLength(snapshot.Dependencies, 5);
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"xxx\dependency1");
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"xxx\dependency2");
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"xxx\addeddependency2");
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"xxx\InsteadRemoveddependency1");
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == @"Xxx\addeddependency3");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "dependency1");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "dependency2");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "addeddependency2");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "InsteadRemoveddependency1");
+            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "addeddependency3");
         }
 
         [Fact]
@@ -524,8 +525,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyPrevious = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -535,7 +536,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "Xxx",
                 Id = "dependency1",
-                Name = "Dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true,
@@ -546,8 +547,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependencyUpdated = new TestDependency
             {
                 ProviderType = "Xxx",
-                Id = "xxx\\dependency1",
-                Name = "Dependency1",
+                Id = "dependency1",
+                OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 SchemaItemType = "Xxx",
                 Resolved = true
@@ -563,7 +564,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             changes.Added(dependencyModelAdded);
 
             var snapshotFilter = new TestDependenciesSnapshotFilter()
-                    .BeforeAddAccept(@"xxx\dependency1", dependencyUpdated);
+                    .BeforeAddAccept("Xxx", "dependency1", dependencyUpdated);
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -583,30 +584,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             private enum FilterAction { Reject, Accept }
 
-            private readonly Dictionary<string, (FilterAction, IDependency?)> _beforeAdd    = new Dictionary<string, (FilterAction, IDependency?)>(StringComparer.OrdinalIgnoreCase);
-            private readonly Dictionary<string, (FilterAction, IDependency?)> _beforeRemove = new Dictionary<string, (FilterAction, IDependency?)>(StringComparer.OrdinalIgnoreCase);
+            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeAdd    = new Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)>();
+            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeRemove = new Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)>();
 
-            public TestDependenciesSnapshotFilter BeforeAddAccept(string id, IDependency? dependency = null)
+            public TestDependenciesSnapshotFilter BeforeAddAccept(string providerType, string id, IDependency? dependency = null)
             {
-                _beforeAdd.Add(id, (FilterAction.Accept, dependency));
+                _beforeAdd.Add((providerType, id), (FilterAction.Accept, dependency));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeAddReject(string id, IDependency? addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeAddReject(string providerType, string id, IDependency? addOrUpdate = null)
             {
-                _beforeAdd.Add(id, (FilterAction.Reject, addOrUpdate));
+                _beforeAdd.Add((providerType, id), (FilterAction.Reject, addOrUpdate));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string id, IDependency? addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string providerType, string id, IDependency? addOrUpdate = null)
             {
-                _beforeRemove.Add(id, (FilterAction.Accept, addOrUpdate));
+                _beforeRemove.Add((providerType, id), (FilterAction.Accept, addOrUpdate));
                 return this;
             }
 
-            public TestDependenciesSnapshotFilter BeforeRemoveReject(string id, IDependency? addOrUpdate = null)
+            public TestDependenciesSnapshotFilter BeforeRemoveReject(string providerType, string id, IDependency? addOrUpdate = null)
             {
-                _beforeRemove.Add(id, (FilterAction.Reject, addOrUpdate));
+                _beforeRemove.Add((providerType, id), (FilterAction.Reject, addOrUpdate));
                 return this;
             }
 
@@ -616,7 +617,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 IImmutableSet<string>? projectItemSpecs,
                 AddDependencyContext context)
             {
-                if (_beforeAdd.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
+                (string ProviderType, string Id) key = (dependency.ProviderType, dependency.Id);
+
+                if (_beforeAdd.TryGetValue(key, out (FilterAction Action, IDependency? Dependency) info))
                 {
                     if (info.Action == FilterAction.Reject)
                     {
@@ -636,11 +639,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         throw new NotSupportedException();
                     }
 
-                    _beforeAdd.Remove(dependency.Id);
+                    _beforeAdd.Remove(key);
                 }
                 else
                 {
-                    throw new ArgumentException("Unexpected dependency ID: " + dependency.Id);
+                    throw new ArgumentException("Unexpected dependency: " + key);
                 }
             }
 
@@ -648,7 +651,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 IDependency dependency,
                 RemoveDependencyContext context)
             {
-                if (_beforeRemove.TryGetValue(dependency.Id, out (FilterAction Action, IDependency? Dependency) info))
+                (string ProviderType, string Id) key = (dependency.ProviderType, dependency.Id);
+
+                if (_beforeRemove.TryGetValue(key, out (FilterAction Action, IDependency? Dependency) info))
                 {
                     if (info.Action == FilterAction.Reject)
                     {
@@ -673,11 +678,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         throw new NotSupportedException();
                     }
 
-                    _beforeRemove.Remove(dependency.Id);
+                    _beforeRemove.Remove(key);
                 }
                 else
                 {
-                    throw new ArgumentException("Unexpected dependency ID: " + dependency.Id);
+                    throw new ArgumentException("Unexpected dependency: " + key);
                 }
             }
 

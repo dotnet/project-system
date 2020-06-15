@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
             var resolvedDependency   = new TestDependency { Id = "dependency", Resolved = true  };
 
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>
             {
-                { resolvedDependency.Id, resolvedDependency }
+                { (resolvedDependency.ProviderType, resolvedDependency.Id), resolvedDependency }
             };
 
             var context = new AddDependencyContext(dependencyById);
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var unresolvedDependency = new TestDependency { Id = "dependency", Resolved = false };
 
-            var dependencyById = new Dictionary<string, IDependency>();
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>();
 
             var context = new AddDependencyContext(dependencyById);
 
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var resolvedDependency = new TestDependency { Id = "dependency", Resolved = true };
 
-            var dependencyById = new Dictionary<string, IDependency>();
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>();
 
             var context = new AddDependencyContext(dependencyById);
 

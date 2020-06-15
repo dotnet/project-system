@@ -105,14 +105,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = providerType,
                 Implicit = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.GenericDependency,
+                Flags = DependencyTreeFlags.GenericResolvedDependencyFlags,
                 OriginalItemSpec = projectItemSpec,
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>
             {
-                { dependency.Id, dependency }
+                { (dependency.ProviderType, dependency.Id), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);
@@ -143,7 +143,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         implicitIcon,
                         implicitIcon,
                         KnownMonikers.Reference,
-                        KnownMonikers.Reference)
+                        KnownMonikers.Reference),
+                    Flags = DependencyTreeFlags.GenericResolvedDependencyFlags.Except(DependencyTreeFlags.SupportsRemove)
                 }, acceptedDependency!);
 
             // No other changes made

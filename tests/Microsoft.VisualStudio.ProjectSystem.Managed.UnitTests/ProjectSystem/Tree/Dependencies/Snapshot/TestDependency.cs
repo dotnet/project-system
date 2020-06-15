@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
@@ -20,10 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             set
             {
                 ProviderType = value.ProviderType;
-                Name = value.Name;
                 Caption = value.Caption;
                 OriginalItemSpec = value.OriginalItemSpec;
-                Path = value.Path;
+                FilePath = value.FilePath;
                 SchemaName = value.SchemaName;
                 SchemaItemType = value.SchemaItemType;
                 Resolved = value.Resolved;
@@ -38,12 +38,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
 #pragma warning disable CS8618 // Non-nullable property is uninitialized
         public string ProviderType { get; set; }
-        public string Name { get; set; }
         public string Caption { get; set; }
-        public string OriginalItemSpec { get; set; }
-        public string Path { get; set; }
-        public string SchemaName { get; set; }
-        public string SchemaItemType { get; set; }
+        public string? OriginalItemSpec { get; set; }
+        public string? SchemaName { get; set; }
+        public string? SchemaItemType { get; set; }
         public bool Resolved { get; set; } = false;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
@@ -51,6 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
         public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
+        public string? FilePath { get; set; }
+        public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
 
         public IDependency SetProperties(

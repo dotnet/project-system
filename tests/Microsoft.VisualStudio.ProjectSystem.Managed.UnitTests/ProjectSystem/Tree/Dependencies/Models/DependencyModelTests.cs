@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             public override DependencyIconSet IconSet => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
 
             public TestableDependencyModel(
-                string path,
+                string? path,
                 string originalItemSpec,
                 ProjectTreeFlags flags,
                 bool resolved,
@@ -29,9 +29,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
-            Assert.Throws<ArgumentNullException>("path", () =>
+            Assert.Throws<ArgumentNullException>("originalItemSpec", () =>
             {
-                new TestableDependencyModel(null!, "", ProjectTreeFlags.Empty, false, false, null);
+                new TestableDependencyModel(null!, null!, ProjectTreeFlags.Empty, false, false, null);
             });
         }
 

@@ -45,10 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency = new Dependency(mockModel);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(string.Empty, dependency.Name);
             Assert.Equal(string.Empty, dependency.Caption);
-            Assert.Equal(string.Empty, dependency.OriginalItemSpec);
-            Assert.Equal(string.Empty, dependency.Path);
+            Assert.Null(dependency.OriginalItemSpec);
+            Assert.Null(dependency.FilePath);
             Assert.Equal("Folder", dependency.SchemaName);
             Assert.Equal("Folder", dependency.SchemaItemType);
             AssertEx.CollectionLength(dependency.BrowseObjectProperties, 2);
@@ -63,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 ProviderType = "xxx",
                 Id = "mymodelid",
-                Name = "mymodelname",
                 Caption = "mymodel",
                 OriginalItemSpec = "mymodeloriginal",
                 Path = "mymodelpath",
@@ -83,10 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency = new Dependency(mockModel);
 
             Assert.Equal(mockModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(mockModel.Name, dependency.Name);
             Assert.Equal(mockModel.Caption, dependency.Caption);
             Assert.Equal(mockModel.OriginalItemSpec, dependency.OriginalItemSpec);
-            Assert.Equal(mockModel.Path, dependency.Path);
+            Assert.Equal(mockModel.Path, dependency.FilePath);
             Assert.Equal(mockModel.SchemaName, dependency.SchemaName);
             Assert.Equal(mockModel.SchemaItemType, dependency.SchemaItemType);
             Assert.Equal(mockModel.Resolved, dependency.Resolved);
@@ -95,34 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Single(dependency.BrowseObjectProperties);
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
             Assert.Equal(DependencyTreeFlags.Resolved + DependencyTreeFlags.GenericDependency, dependency.Flags);
-        }
-
-        [Theory]
-        [InlineData(@"../../somepath", @"xxx\__\__\somepath")]
-        [InlineData(@"__\somepath..\", @"xxx\__\somepath__")]
-        [InlineData(@"somepath", @"xxx\somepath")]
-        public void Dependency_Id_NoSnapshotTargetFramework(string modelId, string expectedId)
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "xxx", Id = modelId };
-
-            var dependency = new Dependency(dependencyModel);
-
-            Assert.Equal(dependencyModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(expectedId, dependency.Id);
-        }
-
-        [Theory]
-        [InlineData(@"../../somepath", @"providerType\__\__\somepath")]
-        [InlineData(@"__\somepath..\", @"providerType\__\somepath__")]
-        [InlineData(@"somepath", @"providerType\somepath")]
-        public void Dependency_Id(string modelId, string expectedId)
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = modelId };
-
-            var dependency = new Dependency(dependencyModel);
-
-            Assert.Equal(dependencyModel.ProviderType, dependency.ProviderType);
-            Assert.Equal(expectedId, dependency.Id);
         }
 
         [Fact]
@@ -209,43 +178,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var dependency2 = new Dependency(model2);
 
             Assert.Same(dependency1.IconSet, dependency2.IconSet);
-        }
-
-        [Fact]
-        public void GetID_ThrowsForInvalidArguments()
-        {
-            var type = "providerType";
-            var modelId = "modelId";
-
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(null!, modelId));
-            Assert.Throws<ArgumentNullException>(() => Dependency.GetID(type, null!));
-
-            Assert.Throws<ArgumentException>(() => Dependency.GetID("", modelId));
-            Assert.Throws<ArgumentException>(() => Dependency.GetID(type, ""));
-        }
-
-        [Theory]
-        [InlineData(@"../../somepath", @"providerType\__\__\somepath")]
-        [InlineData(@"__\somepath..\", @"providerType\__\somepath__")]
-        [InlineData(@"somepath", @"providerType\somepath")]
-        public void GetID_CreatesCorrectString(string modelId, string expected)
-        {
-            Assert.Equal(expected, Dependency.GetID("providerType", modelId));
-        }
-
-        [Fact]
-        public void IdEquals()
-        {
-            Assert.True(Dependency.IdEquals(@"providerType\modelId", "providerType", "modelId"));
-            Assert.True(Dependency.IdEquals(@"providerType\modelId", "providerType", "modelId/"));
-            Assert.True(Dependency.IdEquals(@"providerType\__\__\modelId", "providerType", "../../modelId"));
-            Assert.True(Dependency.IdEquals(@"providerType\__\__\modelId", "providerType", "..\\..\\modelId"));
-            Assert.True(Dependency.IdEquals(@"providerType\__\__\modelId", "providerType", "../../modelId/"));
-            Assert.True(Dependency.IdEquals(@"PROVIDERTYPE\MODELID", "providerType", "modelId"));
-            Assert.False(Dependency.IdEquals(@"providerType/modelId", "providerType", "modelId"));
-            Assert.False(Dependency.IdEquals(@"providerType/modelId/", "providerType", "modelId"));
-            Assert.False(Dependency.IdEquals(@"XXX\providerType\modelId", "providerType", "modelId"));
-            Assert.False(Dependency.IdEquals(@"XXX\modelId", "providerType", "modelId"));
         }
     }
 }
