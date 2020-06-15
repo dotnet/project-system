@@ -37,6 +37,10 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="DiagnosticLevel"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <BoolProperty Name="GeneratePathProperty"
                 Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'."
                 DisplayName="Generate Path Property">
