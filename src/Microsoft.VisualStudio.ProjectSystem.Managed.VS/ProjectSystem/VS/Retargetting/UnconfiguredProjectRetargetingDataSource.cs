@@ -7,9 +7,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [Export(typeof(IUnconfiguredProjectRetargetingDataSource))]
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
@@ -22,9 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
         [ImportingConstructor]
         internal UnconfiguredProjectRetargetingDataSource(UnconfiguredProject project,
                                                           IProjectRetargetingManager projectRetargetingManager,
-                                                          IActiveConfigurationGroupService activeConfigurationGroupService,
-                                                          IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
-                                                          IProjectThreadingService threadingService)
+                                                          IActiveConfigurationGroupService activeConfigurationGroupService)
              : base(project, activeConfigurationGroupService)
         {
             _project = project;

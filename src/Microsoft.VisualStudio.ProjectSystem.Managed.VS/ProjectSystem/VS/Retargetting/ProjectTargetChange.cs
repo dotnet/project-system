@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     internal class ProjectTargetChange : IProjectTargetChange
     {

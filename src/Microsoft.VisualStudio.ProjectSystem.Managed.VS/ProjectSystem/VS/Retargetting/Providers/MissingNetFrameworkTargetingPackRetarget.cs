@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [Export(typeof(IProjectPrerequisiteCheckProvider))]
     [AppliesTo(ProjectCapability.DotNet)]

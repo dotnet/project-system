@@ -2,7 +2,7 @@
 
 using Moq;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     internal static class IProjectRetargetCheckProviderFactory
     {

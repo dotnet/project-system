@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.System, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
     internal interface IProjectRetargetCheckProvider : IProjectPrerequisiteCheckProvider

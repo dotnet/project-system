@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [Export(typeof(IProjectRetargetHandler))]
     [AppliesTo(ProjectCapability.DotNet)]

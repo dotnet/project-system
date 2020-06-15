@@ -13,14 +13,14 @@ using Microsoft.VisualStudio.Threading.Tasks;
 
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [Export(typeof(IProjectRetargetingManager))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]
     internal class ProjectRetargetingManager : IProjectRetargetingManager, IVsSolutionEvents, IDisposable
     {
         private readonly IVsService<SVsSolution, IVsSolution> _solutionService;
-        private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargettingService;
+        private readonly IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> _retargetingService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ITaskDelayScheduler _taskDelayScheduler;
         private IVsSolution? _solution;
@@ -34,11 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
         [ImportingConstructor]
         public ProjectRetargetingManager(IVsService<SVsSolution, IVsSolution> solutionService,
-                                         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargettingService,
+                                         IVsService<SVsTrackProjectRetargeting, IVsTrackProjectRetargeting2> retargetingService,
                                          IProjectThreadingService threadingService)
         {
             _solutionService = solutionService;
-            _retargettingService = retargettingService;
+            _retargetingService = retargetingService;
             _threadingService = threadingService;
 
             _taskDelayScheduler = new TaskDelayScheduler(TimeSpan.FromMilliseconds(250), threadingService, default);
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
                     {
                         await _threadingService.SwitchToUIThread();
 
-                        IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync();
+                        IVsTrackProjectRetargeting2 service = await _retargetingService.GetValueAsync();
 
                         if (change.NewTargetDescription != null)
                         {
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
 
             _needsRetarget = false;
 
-            IVsTrackProjectRetargeting2 service = await _retargettingService.GetValueAsync(cancellationToken);
+            IVsTrackProjectRetargeting2 service = await _retargetingService.GetValueAsync(cancellationToken);
 
             ErrorHandler.ThrowOnFailure(service.CheckSolutionForRetarget((uint)_retargetCheckOption));
 

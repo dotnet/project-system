@@ -3,7 +3,7 @@
 using System;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     internal abstract class TargetDescriptionBase : IVsProjectTargetDescription2
     {

@@ -2,7 +2,7 @@
 
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargetting
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 {
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality =  Composition.ImportCardinality.ExactlyOne)]
     internal interface IConfiguredProjectRetargetingDataSource : IProjectValueDataSource<IImmutableList<ProjectTargetChange>>
