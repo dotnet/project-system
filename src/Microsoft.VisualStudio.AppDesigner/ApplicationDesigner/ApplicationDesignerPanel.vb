@@ -2,7 +2,7 @@
 
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
-
+Imports Microsoft.Internal.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -420,14 +420,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocView, DocViewObject))
 
-                            'Get the DocView for those we can
-                            Dim DesignerWindowPane As Shell.Design.DesignerWindowPane
-                            DesignerWindowPane = TryCast(DocViewObject, Shell.Design.DesignerWindowPane)
-                            If DesignerWindowPane IsNot Nothing Then
-                                Dim WindowPaneControl As Control = TryCast(DesignerWindowPane.Window, Control)
-                                If WindowPaneControl IsNot Nothing Then
-                                    _docView = DirectCast(WindowPaneControl, Control).Controls(0)
-                                End If
+                            ' If the DocView is a replacable pane then its the Partial Load Mode "wait for intellisense" pane, so we hook up to when that is ready
+                            Dim replacablePane As IReplaceablePane = TryCast(DocViewObject, IReplaceablePane)
+                            If replacablePane IsNot Nothing Then
+                                AddHandler replacablePane.ReplacementAvailable, AddressOf PaneReplaced
+                            Else
+                                InitializePane(DocViewObject)
                             End If
 
                             'Get the editor caption to use as the tab text
@@ -437,31 +435,22 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 EditorCaption = captionObject
                             End If
 
-                            If _propertyPageInfo IsNot Nothing AndAlso _propertyPageInfo.Site IsNot Nothing Then
-                                'Set up the service provider for the property page site.
-                                'The service provider that we want comes from the PropPageDesignerView
-                                '  (the DocView), so that property pages querying services receive
-                                '  the inner window frame, etc., rather than getting services from
-                                '  the outer window frame (the application designer).
-                                Debug.Assert(_propertyPageInfo.Site.BackingServiceProvider Is Nothing, "Service provider in property page site set twice")
-                                Debug.Assert(_docView IsNot Nothing AndAlso TypeOf _docView Is PropPageDesigner.PropPageDesignerView _
-                                    AndAlso TypeOf _docView Is IServiceProvider)
-                                _propertyPageInfo.Site.BackingServiceProvider = TryCast(_docView, IServiceProvider)
 
 #If DEBUG Then
-                                'Verify that property pages can get to native services such as IVsWindowFrame
-                                '  (needed to hook up help) through the service provider in the property page
-                                '  site.
+                            'Verify that property pages can get to native services such as IVsWindowFrame
+                            '  (needed to hook up help) through the service provider in the property page
+                            '  site.
+                            If _propertyPageInfo IsNot Nothing Then
                                 Dim spOLE As OLE.Interop.IServiceProvider = TryCast(_propertyPageInfo.Site, OLE.Interop.IServiceProvider)
                                 If spOLE IsNot Nothing Then
                                     Dim sp As New Shell.ServiceProvider(spOLE)
                                     Dim iwf As IVsWindowFrame = TryCast(sp.GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
                                     Debug.Assert(iwf IsNot Nothing AndAlso iwf Is WindowFrame,
-                                        "Unable to access the correct IVsWindowFrame for a property page through its property page site via " _
-                                            & "native IServiceProvider")
+                            "Unable to access the correct IVsWindowFrame for a property page through its property page site via " _
+                                & "native IServiceProvider")
                                 End If
-#End If
                             End If
+#End If
 
                             'Make the window frame visible
                             VsWindowFrame = WindowFrame
@@ -483,6 +472,39 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _creatingDesigner = False
                 End Try
             End Using
+        End Sub
+
+        Private Sub InitializePane(docViewObject As Object)
+
+            'Get the DocView for those we can
+            Dim DesignerWindowPane As Shell.Design.DesignerWindowPane
+            DesignerWindowPane = TryCast(docViewObject, Shell.Design.DesignerWindowPane)
+            If DesignerWindowPane IsNot Nothing Then
+                Dim WindowPaneControl As Control = TryCast(DesignerWindowPane.Window, Control)
+                If WindowPaneControl IsNot Nothing Then
+                    _docView = DirectCast(WindowPaneControl, Control).Controls(0)
+                End If
+            End If
+
+            If _propertyPageInfo IsNot Nothing AndAlso _propertyPageInfo.Site IsNot Nothing Then
+                'Set up the service provider for the property page site.
+                'The service provider that we want comes from the PropPageDesignerView
+                '  (the DocView), so that property pages querying services receive
+                '  the inner window frame, etc., rather than getting services from
+                '  the outer window frame (the application designer).
+                Debug.Assert(_propertyPageInfo.Site.BackingServiceProvider Is Nothing, "Service provider in property page site set twice")
+                Debug.Assert(_docView IsNot Nothing AndAlso TypeOf _docView Is PropPageDesigner.PropPageDesignerView _
+                    AndAlso TypeOf _docView Is IServiceProvider)
+                _propertyPageInfo.Site.BackingServiceProvider = TryCast(_docView, IServiceProvider)
+            End If
+        End Sub
+
+        Private Sub PaneReplaced(sender As Object, e As ReplacementEventArgs)
+
+            RemoveHandler e.OriginalPane.ReplacementAvailable, AddressOf PaneReplaced
+
+            InitializePane(e.ReplacementPane)
+
         End Sub
 
         Protected Overridable Sub ShowWindowFrame()
