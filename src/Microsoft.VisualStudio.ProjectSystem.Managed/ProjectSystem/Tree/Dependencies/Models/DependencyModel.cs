@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Caption = originalItemSpec;
             Flags = flags;
 
-            if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))
+            if (Properties.TryGetBoolProperty(ProjectItemMetadata.Visible, out bool visibleProperty))
             {
                 isVisible = visibleProperty;
             }

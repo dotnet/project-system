@@ -10,5 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         public const string Version = "Version";
         public const string IsImplicitlyDefined = "IsImplicitlyDefined";
         public const string OriginalItemSpec = "OriginalItemSpec";
+        public const string Visible = "Visible";
     }
 }
