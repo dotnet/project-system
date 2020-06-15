@@ -34,7 +34,7 @@ Namespace Microsoft.VisualStudio.Editors
                      1600,                  ' keywordListResourceId
                      IsServerAware:=True),  ' Configured to work in cloud environment scenarios
     ProvideMenuResource("Menus.ctmenu", 30),
-    ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
+    ProvideEditorFactory(GetType(ApplicationDesigner.ApplicationDesignerEditorFactory), 1300, False, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(SettingsDesigner.SettingsDesignerEditorFactory), 1200, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
     ProvideEditorFactory(GetType(PropPageDesigner.PropPageDesignerEditorFactory), 1400, False, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted),
     ProvideEditorFactory(GetType(ResourceEditor.ResourceEditorFactory), 1100, True, TrustLevel:=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted, CommonPhysicalViewAttributes:=3),
