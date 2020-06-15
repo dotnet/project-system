@@ -240,7 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
-                if (_enableAdditionalDependentFile && earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
+                if (earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
                 {
                     return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
