@@ -53,6 +53,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             if (dependencyModel is DependencyModel model)
             {
                 IconSet = model.IconSet;
+
+                // For now we consider any non-empty DiagnosticLevel string as a warning. In future we
+                // may differentiate visually on the node between different grades of diagnostic,
+                // such as warnings and errors.
+                _hasDiagnostic = model.DiagnosticLevel != DiagnosticLevel.None;
             }
             else
             {
@@ -83,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProviderType = dependency.ProviderType;
             OriginalItemSpec = dependency.OriginalItemSpec;
             FilePath = dependency.FilePath;
-            _schemaItemType = dependency.SchemaItemType;
+            _schemaItemType = dependency._schemaItemType;
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
@@ -92,7 +97,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             SchemaName = schemaName ?? dependency.SchemaName;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
+            _hasDiagnostic = dependency._hasDiagnostic;
         }
+
+        private readonly bool _hasDiagnostic;
 
         #region IDependency
 
@@ -136,8 +144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public string? FilePath { get; }
 
-        public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
-        public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
+        public ImageMoniker Icon => Resolved && !_hasDiagnostic ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => Resolved && !_hasDiagnostic ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 
         #endregion
 

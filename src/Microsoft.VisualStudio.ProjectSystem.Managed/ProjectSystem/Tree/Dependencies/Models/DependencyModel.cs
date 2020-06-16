@@ -4,10 +4,20 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
+    internal enum DiagnosticLevel
+    {
+        // These states are in precedence order, where later states override earlier ones.
+
+        None = 0,
+        Warning = 1,
+        Error = 2,
+    }
+
     internal abstract partial class DependencyModel : IDependencyModel
     {
         [Flags]
@@ -41,9 +51,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Caption = caption;
             Flags = flags;
 
-            if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))
+            if (Properties.TryGetBoolProperty(ProjectItemMetadata.Visible, out bool visibleProperty))
             {
                 isVisible = visibleProperty;
+            }
+
+            DiagnosticLevel diagnosticLevel = DiagnosticLevel.None;
+
+            if (Properties.TryGetStringProperty(ProjectItemMetadata.DiagnosticLevel, out string? levelString))
+            {
+                diagnosticLevel = levelString switch
+                {
+                    "Warning" => DiagnosticLevel.Warning,
+                    "Error" => DiagnosticLevel.Error,
+                    _ => DiagnosticLevel.None
+                };
             }
 
             DependencyFlags depFlags = 0;
@@ -54,6 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             if (isImplicit)
                 depFlags |= DependencyFlags.Implicit;
             _flags = depFlags;
+
+            DiagnosticLevel = diagnosticLevel;
         }
 
         private readonly DependencyFlags _flags;
@@ -81,6 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public IImmutableDictionary<string, string> Properties { get; }
         IImmutableList<string> IDependencyModel.DependencyIDs => throw new NotImplementedException();
         public ProjectTreeFlags Flags { get; }
+
+        public DiagnosticLevel DiagnosticLevel { get; }
 
         public abstract DependencyIconSet IconSet { get; }
 

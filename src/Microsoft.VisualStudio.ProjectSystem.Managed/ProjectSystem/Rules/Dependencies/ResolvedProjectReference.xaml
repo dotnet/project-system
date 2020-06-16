@@ -59,6 +59,10 @@
                   DisplayName="Description"
                   ReadOnly="True" />
 
+  <StringProperty Name="DiagnosticLevel"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <BoolProperty Name="EmbedInteropTypes"
                 Description="Indicates whether types defined in this assembly will be embedded into the target assembly."
                 DisplayName="Embed Interop Types">
