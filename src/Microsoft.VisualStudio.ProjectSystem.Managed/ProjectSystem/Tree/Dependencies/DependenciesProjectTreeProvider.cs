@@ -114,9 +114,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
-            Assumes.True(root.Flags.Contains(ProjectTreeFlags.ProjectRoot), "Expected search to operate from project root");
-
-            // Limit our search to the "Dependencies" subtree
+            // We are _usually_ passed the project root here, and we know that our tree items are limited to the
+            // "Dependencies" subtree, so scope the search to that node.
+            //
+            // If we are passed a root which is not the project node, we will not find any search results.
+            // This does not appear to be an issue, but may one day be required.
             IProjectTree? dependenciesRootNode = root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
             return dependenciesRootNode?.GetSelfAndDescendentsDepthFirst().FirstOrDefault((node, p) => StringComparers.Paths.Equals(node.FilePath, p), path);
