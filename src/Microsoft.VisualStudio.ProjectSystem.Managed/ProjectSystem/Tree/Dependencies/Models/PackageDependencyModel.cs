@@ -40,7 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isVisible,
             IImmutableDictionary<string, string> properties)
             : base(
-                null,
+                caption: string.IsNullOrEmpty(version) ? originalItemSpec : $"{originalItemSpec} ({version})",
+                path: null,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{originalItemSpec}"),
                 isResolved,
@@ -48,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 properties,
                 isVisible)
         {
-            Caption = string.IsNullOrEmpty(version) ? originalItemSpec : $"{originalItemSpec} ({version})";
         }
     }
 }

@@ -15,13 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             public override DependencyIconSet IconSet => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
 
             public TestableDependencyModel(
+                string caption,
                 string? path,
                 string originalItemSpec,
                 ProjectTreeFlags flags,
                 bool resolved,
                 bool isImplicit,
                 IImmutableDictionary<string, string>? properties)
-                : base(path, originalItemSpec, flags, resolved, isImplicit, properties)
+                : base(caption, path, originalItemSpec, flags, resolved, isImplicit, properties)
             {
             }
         }
@@ -29,9 +30,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [Fact]
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
+            Assert.Throws<ArgumentNullException>("caption", () =>
+            {
+                new TestableDependencyModel(null!, null, "itemSpec", ProjectTreeFlags.Empty, false, false, null);
+            });
             Assert.Throws<ArgumentNullException>("originalItemSpec", () =>
             {
-                new TestableDependencyModel(null!, null!, ProjectTreeFlags.Empty, false, false, null);
+                new TestableDependencyModel("Caption", null, null!, ProjectTreeFlags.Empty, false, false, null);
+            });
+
+            // Empty caption is also disallowed
+            Assert.Throws<ArgumentException>("caption", () =>
+            {
+                new TestableDependencyModel("", null, "itemSpec", ProjectTreeFlags.Empty, false, false, null);
             });
         }
 
@@ -39,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Constructor_NullProperties_SetsEmptyCollection()
         {
             var model = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "originalItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -53,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Constructor_WhenValidParametersProvided_UnresolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -60,6 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit: false,
                 properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
+            Assert.Equal("Caption", model.Caption);
             Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
@@ -74,6 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Constructor_WhenValidParametersProvided_ResolvedAndNotImplicit()
         {
             var model = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -81,6 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit: false,
                 properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
+            Assert.Equal("Caption", model.Caption);
             Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
@@ -95,6 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Constructor_WhenValidParametersProvided_ResolvedAndImplicit()
         {
             var model = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "SomeItemSpec",
                 flags: ProjectTreeFlags.HiddenProjectItem,
@@ -102,6 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit: true,
                 properties: ImmutableStringDictionary<string>.EmptyOrdinal.Add("someProp1", "someVal1"));
 
+            Assert.Equal("Caption", model.Caption);
             Assert.Equal("SomeItemSpec", model.Id);
             Assert.Equal("someProvider", model.ProviderType);
             Assert.Equal("somePath", model.Path);
@@ -116,6 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Visible_True()
         {
             var dependencyModel = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -130,6 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Visible_False()
         {
             var dependencyModel = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,
@@ -144,6 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public void Visible_TrueWhenNotSpecified()
         {
             var dependencyModel = new TestableDependencyModel(
+                caption: "Caption",
                 path: "somePath",
                 originalItemSpec: "someItemSpec",
                 flags: ProjectTreeFlags.Empty,

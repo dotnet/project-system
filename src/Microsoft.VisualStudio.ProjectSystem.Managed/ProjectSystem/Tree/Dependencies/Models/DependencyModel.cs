@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         }
 
         protected DependencyModel(
+            string caption,
             string? path,
             string originalItemSpec,
             ProjectTreeFlags flags,
@@ -27,6 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             IImmutableDictionary<string, string>? properties,
             bool isVisible = true)
         {
+            Requires.NotNullOrEmpty(caption, nameof(caption));
+
             // IDependencyModel allows original item spec to be null, but we can satisfy a
             // more strict requirement for the dependency types produced internally.
             // External providers may not have a meaningful value, but do not use this type.
@@ -35,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Path = path;
             OriginalItemSpec = originalItemSpec;
             Properties = properties ?? ImmutableStringDictionary<string>.EmptyOrdinal;
-            Caption = originalItemSpec;
+            Caption = caption;
             Flags = flags;
 
             if (Properties.TryGetBoolProperty("Visible", out bool visibleProperty))
@@ -60,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public string Id => OriginalItemSpec;
 
         string IDependencyModel.Name => throw new NotImplementedException();
-        public string Caption { get; protected set; }
+        public string Caption { get; }
         public string OriginalItemSpec { get; }
         public string? Path { get; }
         public virtual string? SchemaName => null;

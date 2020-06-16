@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: GetCaption(path, isResolved, properties),
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit),
@@ -48,16 +49,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
+        }
+
+        private static string GetCaption(string path, bool isResolved, IImmutableDictionary<string, string> properties)
+        {
             if (isResolved)
             {
-                string? fusionName = Properties.GetStringProperty(ResolvedAssemblyReference.FusionNameProperty);
+                string? fusionName = properties.GetStringProperty(ResolvedAssemblyReference.FusionNameProperty);
 
-                Caption = fusionName == null ? path : new AssemblyName(fusionName).Name;
+                return fusionName == null ? path : new AssemblyName(fusionName).Name;
             }
-            else
-            {
-                Caption = path;
-            }
+
+            return path;
         }
     }
 }
