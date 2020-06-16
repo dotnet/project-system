@@ -102,12 +102,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public override string? GetPath(IProjectTree node)
         {
+            // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
+            // while other dependency types (e.g. analyzers) do.
+            //
             // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
             // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
             // and allows fast lookup. So in general we want to return null here unless there is a compelling
             // requirement to use the path.
-            //
-            // Analyzer diagnostics (and possibly other consumers) require a file path on items.
 
             return node.FilePath;
         }
