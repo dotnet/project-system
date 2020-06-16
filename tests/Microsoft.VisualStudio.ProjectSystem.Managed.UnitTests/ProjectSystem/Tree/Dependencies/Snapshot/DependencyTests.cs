@@ -129,6 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public void WhenCreatingADependencyFromAnotherDependency_ExistingIconSetInstanceIsReused()
         {
             var dependencyModel = new TestableDependencyModel(
+                    "Caption",
                     "Path",
                     "ItemSpec",
                     iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
@@ -144,8 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             public override DependencyIconSet IconSet { get; }
 
-            public TestableDependencyModel(string path, string originalItemSpec, DependencyIconSet iconSet)
-                : base(path, originalItemSpec, ProjectTreeFlags.Empty, isResolved: false, isImplicit: false, properties: null)
+            public TestableDependencyModel(string caption, string path, string originalItemSpec, DependencyIconSet iconSet)
+                : base(caption, path, originalItemSpec, ProjectTreeFlags.Empty, isResolved: false, isImplicit: false, properties: null)
             {
                 IconSet = iconSet;
             }

@@ -102,21 +102,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public override string? GetPath(IProjectTree node)
         {
+            // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
+            // while other dependency types (e.g. analyzers) do.
+            //
             // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
             // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
             // and allows fast lookup. So in general we want to return null here unless there is a compelling
             // requirement to use the path.
-            //
-            // Analyzer diagnostics (and possibly other consumers) require a file path on items.
 
             return node.FilePath;
         }
 
         public override IProjectTree? FindByPath(IProjectTree root, string path)
         {
-            Assumes.True(root.Flags.Contains(ProjectTreeFlags.ProjectRoot), "Expected search to operate from project root");
-
-            // Limit our search to the "Dependencies" subtree
+            // We are _usually_ passed the project root here, and we know that our tree items are limited to the
+            // "Dependencies" subtree, so scope the search to that node.
+            //
+            // If we are passed a root which is not the project node, we will not find any search results.
+            // This does not appear to be an issue, but may one day be required.
             IProjectTree? dependenciesRootNode = root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
 
             return dependenciesRootNode?.GetSelfAndDescendentsDepthFirst().FirstOrDefault((node, p) => StringComparers.Paths.Equals(node.FilePath, p), path);

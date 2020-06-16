@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             DependencyIconSet iconSet,
             ProjectTreeFlags flags)
             : base(
+                caption: name,
                 name,
                 originalItemSpec: name,
                 flags: flags + ProjectTreeFlags.VirtualFolder + DependencyTreeFlags.DependencyGroup,

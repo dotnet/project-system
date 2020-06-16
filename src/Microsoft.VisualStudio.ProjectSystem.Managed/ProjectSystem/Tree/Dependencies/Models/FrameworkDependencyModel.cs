@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isResolved,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: originalItemSpec,
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit: false),

@@ -39,6 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: resolved
+                    ? System.IO.Path.GetFileNameWithoutExtension(path)
+                    : path,
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(resolved, isImplicit),
@@ -46,9 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
-            Caption = resolved
-                ? System.IO.Path.GetFileNameWithoutExtension(path)
-                : path;
         }
     }
 }

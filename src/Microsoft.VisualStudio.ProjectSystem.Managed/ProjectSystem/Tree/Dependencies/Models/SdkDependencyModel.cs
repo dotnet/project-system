@@ -42,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: GetCaption(path, originalItemSpec, properties),
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit),
@@ -49,9 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
+        }
+
+        private static string GetCaption(string path, string originalItemSpec, IImmutableDictionary<string, string> properties)
+        {
             string version = properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty;
             string? baseCaption = new LazyStringSplit(path, ',').FirstOrDefault();
-            Caption = (string.IsNullOrEmpty(version) ? baseCaption : $"{baseCaption} ({version})") ?? originalItemSpec;
+            return (string.IsNullOrEmpty(version) ? baseCaption : $"{baseCaption} ({version})") ?? originalItemSpec;
         }
     }
 }
