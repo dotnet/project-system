@@ -7,8 +7,15 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
+    /// <para>
     /// Reads and writes the common properties of the active <see cref="ILaunchProfile"/>
     /// via the <see cref="ILaunchSettingsProvider"/>.
+    /// </para>
+    /// <para>
+    /// "Common" here means properties that are stored in the named properties of <see cref="ILaunchProfile"/>,
+    /// rather than the <see cref="ILaunchProfile.OtherSettings"/> dictionary. Those are
+    /// handled by the <see cref="ActiveLaunchProfileExtensionValueProvider"/>.
+    /// </para>
     /// </summary>
     /// <remarks>
     /// Not to be confused with <see cref="ActiveLaunchProfileNameValueProvider" />,

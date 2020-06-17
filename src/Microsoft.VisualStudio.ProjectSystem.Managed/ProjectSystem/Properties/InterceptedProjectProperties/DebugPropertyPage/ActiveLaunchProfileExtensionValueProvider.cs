@@ -7,6 +7,21 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// <para>
+    /// Reads and writes "extension" properties of the active <see cref="ILaunchProfile"/>
+    /// via the <see cref="ILaunchSettingsProvider"/>.
+    /// </para>
+    /// <para>"Extension" means properties that are stored in the <see cref="ILaunchProfile.OtherSettings"/>
+    /// dictionary, rather than in named properties of <see cref="ILaunchProfile"/>
+    /// itself. Those are handled by <see cref="ActiveLaunchProfileCommonValueProvider"/>.
+    /// </para>
+    /// </summary>
+    /// <remarks>
+    /// Not to be confused with <see cref="ActiveLaunchProfileNameValueProvider" />,
+    /// which reads and writes the _name_ of the active launch profile but does not
+    /// access its members.
+    /// </remarks>
     [ExportInterceptingPropertyValueProvider(
         new[]
         {
