@@ -10,18 +10,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-    internal sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
+    public sealed class ExportInterceptingPropertyValueProviderAttribute : ExportAttribute
     {
         public string[] PropertyNames { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/>
+        /// class for a single intercepted property.
         /// </summary>
         public ExportInterceptingPropertyValueProviderAttribute(string propertyName, ExportInterceptingPropertyValueProviderFile file)
             : this(new[] { propertyName }, file)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportInterceptingPropertyValueProviderAttribute"/>
+        /// class for multiple intercepted properties.
+        /// </summary>
         public ExportInterceptingPropertyValueProviderAttribute(string[] propertyNames, ExportInterceptingPropertyValueProviderFile file)
             : base(GetFile(file), typeof(IInterceptingPropertyValueProvider))
         {
@@ -41,10 +46,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
     }
 
-    internal enum ExportInterceptingPropertyValueProviderFile
+    /// <summary>
+    /// Specifies the "backing store" for an <see cref="IInterceptingPropertyValueProvider"/>.
+    /// This determines where the original (non-intercepted) value is retrieved from/stored to.
+    /// </summary>
+    public enum ExportInterceptingPropertyValueProviderFile
     {
+        /// <summary>
+        /// Intercepted properties are backed by the property provider that reads/writes
+        /// from the project file.
+        /// </summary>
         ProjectFile,
+        /// <summary>
+        /// Intercepted properties are backed by the property provider that reads/writes
+        /// from the user file.
+        /// </summary>
         UserFile,
+        /// <summary>
+        /// Intercepted properties are backed by the property provider that reads/writes
+        /// from the user file, except that default values come from the underlying XAML
+        /// file instead of elsewhere in the project (e.g., an imported .props file).
+        /// </summary>
         UserFileWithXamlDefaults
     }
 }
