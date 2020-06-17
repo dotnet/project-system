@@ -1,1 +1,3 @@
+Microsoft.VisualStudio.Editors.PropPageDesigner.DeferredPropPageDesignerEditorFactory
+Microsoft.VisualStudio.Editors.PropPageDesigner.DeferredPropPageDesignerEditorFactory.New() -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.HiddenIfMissingPropertyControlData.New(id As Integer, name As String, formControl As System.Windows.Forms.Control, setter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate, getter As Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.GetDelegate, flags As Microsoft.VisualStudio.Editors.PropertyPages.ControlDataFlags, assocControls As System.Windows.Forms.Control()) -> Void

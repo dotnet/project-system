@@ -11,6 +11,13 @@ Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
+    <CLSCompliant(False),
+    Guid("79d33e5a-ad5c-43ea-9b62-426b05459b2a")>
+    Public NotInheritable Class DeferredPropPageDesignerEditorFactory
+        Inherits PropPageDesignerEditorFactory
+
+    End Class
+
     '**************************************************************************
     ';PropPageDesignerEditorFactory
     '
@@ -21,7 +28,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     '**************************************************************************
     <CLSCompliant(False),
     Guid("b270807c-d8c6-49eb-8ebe-8e8d566637a1")>
-    Public NotInheritable Class PropPageDesignerEditorFactory
+    Public Class PropPageDesignerEditorFactory
         Implements IVsEditorFactory
 
         'The all important GUIDs 

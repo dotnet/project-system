@@ -94,7 +94,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Debug.Assert(View IsNot Nothing)
             _view = View
 
-            _editorGuid = GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID
+            If PropertyPageInfo.DeferUntilIntellisenseIsReady Then
+                _editorGuid = GetType(PropPageDesigner.DeferredPropPageDesignerEditorFactory).GUID
+            Else
+                _editorGuid = GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID
+            End If
+
         End Sub
 
 
@@ -137,7 +142,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public ReadOnly Property IsPropertyPage As Boolean
             Get
                 Dim ReturnValue As Boolean = _propertyPageInfo IsNot Nothing
-                Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID),
+                Debug.Assert(Not ReturnValue OrElse EditorGuid.Equals(GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID) _
+                                             OrElse EditorGuid.Equals(GetType(PropPageDesigner.DeferredPropPageDesignerEditorFactory).GUID),
                     "If it's a property page, the EditorGuid should be the PropPageDesigner's guid")
                 Return _propertyPageInfo IsNot Nothing
             End Get
