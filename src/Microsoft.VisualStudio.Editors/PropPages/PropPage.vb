@@ -264,6 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     <Guid("4E43F4AB-9F03-4129-95BF-B8FF870AF6AB"), ComVisible(True), CLSCompliant(False)>
     <ProvideObject(GetType(ReferencePropPageComClass))>
+    <ProvidePropertyPage(DeferUntilIntellisenseIsReady:=True)>
     Public NotInheritable Class ReferencePropPageComClass
         Inherits VBPropPageBase
 
