@@ -415,15 +415,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 Marshal.Release(ExistingDocDataPtr)
                             End If
 
-                            'Add the Document Cookie to our list
-                            Dim CookieObj As Object = Nothing
-                            Dim EditorCaptionObject As Object = Nothing
                             Dim DocViewObject As Object = Nothing
-
-                            VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocData, _docData))
-                            VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocCookie, CookieObj))
-                            _docCookie = Common.NoOverflowCUInt(CookieObj)
-
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocView, DocViewObject))
 
                             ' If the DocView is a replacable pane then its the Partial Load Mode "wait for intellisense" pane, so we hook up to when that is ready
@@ -431,32 +423,16 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             If replacablePane IsNot Nothing Then
                                 AddHandler replacablePane.ReplacementAvailable, AddressOf PaneReplaced
                             Else
-                                InitializePane(DocViewObject)
+                                InitializePane(DocViewObject, WindowFrame)
                             End If
 
                             'Get the editor caption to use as the tab text
+                            Dim EditorCaptionObject As Object = Nothing
                             VSErrorHandler.ThrowOnFailure(WindowFrame.GetProperty(__VSFPROPID.VSFPROPID_EditorCaption, EditorCaptionObject))
                             Dim captionObject = TryCast(EditorCaptionObject, String)
                             If captionObject IsNot Nothing Then
                                 EditorCaption = captionObject
                             End If
-
-
-#If DEBUG Then
-                            'Verify that property pages can get to native services such as IVsWindowFrame
-                            '  (needed to hook up help) through the service provider in the property page
-                            '  site.
-                            If _propertyPageInfo IsNot Nothing Then
-                                Dim spOLE As OLE.Interop.IServiceProvider = TryCast(_propertyPageInfo.Site, OLE.Interop.IServiceProvider)
-                                If spOLE IsNot Nothing Then
-                                    Dim sp As New Shell.ServiceProvider(spOLE)
-                                    Dim iwf As IVsWindowFrame = TryCast(sp.GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
-                                    Debug.Assert(iwf IsNot Nothing AndAlso iwf Is WindowFrame,
-                            "Unable to access the correct IVsWindowFrame for a property page through its property page site via " _
-                                & "native IServiceProvider")
-                                End If
-                            End If
-#End If
 
                             'Make the window frame visible
                             VsWindowFrame = WindowFrame
@@ -480,7 +456,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Using
         End Sub
 
-        Private Sub InitializePane(docViewObject As Object)
+        Private Sub InitializePane(docViewObject As Object, windowFrame As IVsWindowFrame)
+
+            'Add the Document Cookie to our list
+            Dim CookieObj As Object = Nothing
+
+            VSErrorHandler.ThrowOnFailure(windowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocData, _docData))
+            VSErrorHandler.ThrowOnFailure(windowFrame.GetProperty(__VSFPROPID.VSFPROPID_DocCookie, CookieObj))
+            _docCookie = Common.NoOverflowCUInt(CookieObj)
 
             'Get the DocView for those we can
             Dim DesignerWindowPane As Shell.Design.DesignerWindowPane
@@ -502,6 +485,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Debug.Assert(_docView IsNot Nothing AndAlso TypeOf _docView Is PropPageDesigner.PropPageDesignerView _
                     AndAlso TypeOf _docView Is IServiceProvider)
                 _propertyPageInfo.Site.BackingServiceProvider = TryCast(_docView, IServiceProvider)
+
+#If DEBUG Then
+                'Verify that property pages can get to native services such as IVsWindowFrame
+                '  (needed to hook up help) through the service provider in the property page
+                '  site.
+                Dim spOLE As OLE.Interop.IServiceProvider = TryCast(_propertyPageInfo.Site, OLE.Interop.IServiceProvider)
+                If spOLE IsNot Nothing Then
+                    Dim sp As New Shell.ServiceProvider(spOLE)
+                    Dim iwf As IVsWindowFrame = TryCast(sp.GetService(GetType(IVsWindowFrame)), IVsWindowFrame)
+                    Debug.Assert(iwf IsNot Nothing AndAlso iwf Is windowFrame,
+                        "Unable to access the correct IVsWindowFrame for a property page through its property page site via " _
+                            & "native IServiceProvider")
+                End If
+#End If
             End If
         End Sub
 
@@ -509,7 +506,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             RemoveHandler e.OriginalPane.ReplacementAvailable, AddressOf PaneReplaced
 
-            InitializePane(e.ReplacementPane)
+            InitializePane(e.ReplacementPane, VsWindowFrame)
 
         End Sub
 
