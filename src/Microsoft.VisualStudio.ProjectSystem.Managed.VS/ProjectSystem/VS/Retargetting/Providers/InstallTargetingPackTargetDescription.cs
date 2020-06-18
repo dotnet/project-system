@@ -15,13 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Retargeting
 
         public override Guid TargetId => _targetDescriptionId;
 
-        public override string DisplayName => "Install Targeting Pack";
+        public override string DisplayName => VSResources.InstallTargetingPackDisplayName;
 
-        public override string CommandTitle => "Install Targeting Pack...";
+        public override string CommandTitle => VSResources.InstallTargetingPackCommandTitle;
 
-        public override string UnloadReason => "Targeting pack missing";
+        public override string UnloadReason => VSResources.InstallTargetingPackUnloadReason;
 
-        public override string UnloadDescription => "This project targets a version of .NET Framework for which there is no targeting pack installed.";
+        public override string UnloadDescription => VSResources.InstallTargetingPackUnloadDescription;
 
         public override Guid SetupDriver => VSConstants.SetupDrivers.SetupDriver_VS;
     }
