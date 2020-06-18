@@ -1,4 +1,20 @@
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.ExportInterceptingPropertyValueProviderAttribute(string![]! propertyNames, Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile file) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderAttribute.PropertyNames.get -> string![]!
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.ProjectFile = 0 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFile = 1 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile.UserFileWithXamlDefaults = 2 -> Microsoft.VisualStudio.ProjectSystem.Properties.ExportInterceptingPropertyValueProviderFile
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvider.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!
 Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProviderMetadata.PropertyNames.get -> string![]!
+Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase
+Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.InterceptingPropertyValueProviderBase() -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject! project, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider! launchSettingsProvider, Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService! projectThreadingService) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string! projectFilePath) -> T?
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers
@@ -39,9 +55,14 @@ Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSu
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.CreateRootDependencyNode() -> Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IDependencyModel!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.DependenciesChanged -> System.EventHandler<Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependenciesChangedEventArgs!>!
 Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.IProjectDependenciesSubTreeProvider.ProviderType.get -> string!
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.GetPropertyValue(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings! launchSettings) -> string?
+abstract Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.SetPropertyValue(string! propertyName, string! value, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings! launchSettings) -> bool
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.NativeDebugging = "NativeDebugging" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.RemoteDebug = "RemoteDebug" -> string!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.SqlDebugging = "SQLDebugging" -> string!
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+override Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.Application.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationPrivate.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
 static Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ApplicationWarning.get -> Microsoft.VisualStudio.Imaging.Interop.ImageMoniker
@@ -82,3 +103,6 @@ static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Depend
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.ShowEmptyProviderRootNode -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.SupportsRemove -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
 static readonly Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.DependencyTreeFlags.UnresolvedDependencyFlags -> Microsoft.VisualStudio.ProjectSystem.ProjectTreeFlags
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnGetEvaluatedPropertyValueAsync(string! propertyName, string! evaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnGetUnevaluatedPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties) -> System.Threading.Tasks.Task<string!>!
+virtual Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.OnSetPropertyValueAsync(string! propertyName, string! unevaluatedPropertyValue, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectProperties! defaultProperties, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? dimensionalConditions = null) -> System.Threading.Tasks.Task<string?>!

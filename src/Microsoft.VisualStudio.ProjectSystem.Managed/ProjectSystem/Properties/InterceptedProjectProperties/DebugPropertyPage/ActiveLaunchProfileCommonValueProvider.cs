@@ -1,17 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
+    /// <para>
     /// Reads and writes the common properties of the active <see cref="ILaunchProfile"/>
     /// via the <see cref="ILaunchSettingsProvider"/>.
+    /// </para>
+    /// <para>
+    /// "Common" here means properties that are stored in the named properties of <see cref="ILaunchProfile"/>,
+    /// rather than the <see cref="ILaunchProfile.OtherSettings"/> dictionary. Those are
+    /// handled by the <see cref="ActiveLaunchProfileExtensionValueProvider"/>.
+    /// </para>
     /// </summary>
     /// <remarks>
     /// Not to be confused with <see cref="ActiveLaunchProfileNameValueProvider" />,
@@ -27,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             WorkingDirectoryPropertyName,
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal class ActiveLaunchProfileCommonValueProvider : InterceptingPropertyValueProviderBase
+    internal class ActiveLaunchProfileCommonValueProvider : LaunchSettingsValueProviderBase
     {
         internal const string CommandLineArgumentsPropertyName = "CommandLineArguments";
         internal const string ExecutablePathPropertyName = "ExecutablePath";
@@ -36,32 +40,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string LaunchUrlPropertyName = "LaunchUrl";
         internal const string WorkingDirectoryPropertyName = "WorkingDirectory";
 
-        private readonly UnconfiguredProject _project;
-        private readonly ILaunchSettingsProvider _launchSettingsProvider;
-        private readonly IProjectThreadingService _projectThreadingService;
-
         [ImportingConstructor]
         public ActiveLaunchProfileCommonValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
+            : base(project, launchSettingsProvider, projectThreadingService)
         {
-            _project = project;
-            _launchSettingsProvider = launchSettingsProvider;
-            _projectThreadingService = projectThreadingService;
         }
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override string? GetPropertyValue(string propertyName, ILaunchSettings launchSettings)
         {
-            return GetPropertyValueAsync(propertyName);
-        }
-
-        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
-        {
-            return GetPropertyValueAsync(propertyName);
-        }
-
-        private async Task<string> GetPropertyValueAsync(string propertyName)
-        {
-            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-
             string? activeProfilePropertyValue = propertyName switch
             {
                 CommandLineArgumentsPropertyName => launchSettings.ActiveProfile?.CommandLineArgs,
@@ -73,7 +59,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 _ => throw new InvalidOperationException($"{nameof(ActiveLaunchProfileCommonValueProvider)} does not handle property '{propertyName}'.")
             };
 
-            return activeProfilePropertyValue ?? string.Empty;
+            return activeProfilePropertyValue;
+        }
+
+        public override bool SetPropertyValue(string propertyName, string value, IWritableLaunchSettings launchSettings)
+        {
+            var activeProfile = launchSettings.ActiveProfile;
+            if (activeProfile == null)
+            {
+                return false;
+            }
+
+            UpdateActiveLaunchProfile(activeProfile, propertyName, value);
+
+            return true;
         }
 
         private static string? ConvertBooleanToString(bool? value)
@@ -90,30 +89,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 return "false";
             }
-        }
-
-        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
-        {
-            _projectThreadingService.RunAndForget(async () =>
-            {
-                ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-
-                var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
-                var activeProfile = writableLaunchSettings.ActiveProfile;
-                if (activeProfile != null)
-                {
-                    UpdateActiveLaunchProfile(activeProfile, propertyName, unevaluatedPropertyValue);
-
-                    await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
-                }
-            },
-            options: ForkOptions.HideLocks,
-            unconfiguredProject: _project);
-
-            // We've intercepted the "set" operation and redirected it to the launch settings.
-            // Return "null" to indicate that the value should _not_ be set in the project file
-            // as well.
-            return Task.FromResult<string?>(null);
         }
 
         private static void UpdateActiveLaunchProfile(IWritableLaunchProfile activeProfile, string propertyName, string newValue)
