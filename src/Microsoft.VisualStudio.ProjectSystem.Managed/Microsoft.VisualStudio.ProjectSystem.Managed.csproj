@@ -146,14 +146,6 @@
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\PropertyPages\DebugPropertyPage.xaml.cs">
-      <DependentUpon>DebugPropertyPage.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\DebugPropertyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-    </XamlPropertyRule>
-
     <Compile Update="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml.cs">
       <DependentUpon>ExecutableDebugPropertyPage.xaml</DependentUpon>
     </Compile>
