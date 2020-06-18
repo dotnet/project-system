@@ -90,7 +90,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     If ExistingDocData Is Nothing Then
                         DocData = New PropPageDesignerDocData(_siteProvider)
                     ElseIf TypeOf ExistingDocData Is PropPageDesignerDocData Then
-                        DocData = ExistingDocData
+                        Dim PropPageDocData = DirectCast(ExistingDocData, PropPageDesignerDocData)
+                        If PropPageDocData.BaseProvider Is Nothing Then
+                            PropPageDocData.BaseProvider = _siteProvider
+                        End If
+
+                        DocData = PropPageDocData
                     Else
                         Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If

@@ -289,6 +289,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                 ExistingDocDataPtr = Marshal.GetIUnknownForObject(rdtInfo.DocData)
                             End If
                         End If
+
+                        ' For partial load mode we need to specify a docdata, other the partial view will create a text buffer which we can't work with
+                        ' so instead we create a doc data, and the editor factory will fill in the base provider later
+                        If IsPropertyPage() AndAlso PropertyPageInfo.DeferUntilIntellisenseIsReady AndAlso ExistingDocDataPtr.Equals(IntPtr.Zero) Then
+                            Dim tempDocData = New PropPageDesigner.PropPageDesignerDocData(Nothing)
+                            ExistingDocDataPtr = Marshal.GetIUnknownForObject(tempDocData)
+                        End If
+
                         OleServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                         Debug.Assert(OleServiceProvider IsNot Nothing, "Unable to get OleServiceProvider")
 
