@@ -57,15 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _baseProvider = BaseProvider
         End Sub
 
-        Public Property BaseProvider As IServiceProvider
-            Get
-                Return _baseProvider
-            End Get
-            Set(value As IServiceProvider)
-                _baseProvider = value
-            End Set
-        End Property
-
         ''' <summary>
         ''' Creates VsTextBuffer if necessary and returns the instance of VsTextBuffer
         ''' </summary>

@@ -73,6 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         'True while in the process of creating the designer
         Private _creatingDesigner As Boolean
+        Private _designerCreated As Boolean
 
         'The owning project designer
         Private ReadOnly _view As ApplicationDesignerView
@@ -167,6 +168,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
+        Friend ReadOnly Property DesignerCreated As Boolean
+            Get
+                Return _designerCreated
+            End Get
+        End Property
+
         ''' <summary>
         ''' Provides a custom view control that can be displayed instead of hosting a designer.  We can display either
         '''   a custom view provider or a hosted designer, but not both at once.
@@ -252,6 +259,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Exit Sub
             End If
 
+            _designerCreated = True
+
             Using New Common.WaitCursor()
                 Common.Switches.TracePDPerfBegin("CreateDesigner")
                 Common.Switches.TracePDFocus(TraceLevel.Warning, "CreateDesigner() on panel """ & TabAutomationName & "/" & TabTitle & """")
@@ -288,13 +297,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                             If rdtInfo.DocData IsNot Nothing Then
                                 ExistingDocDataPtr = Marshal.GetIUnknownForObject(rdtInfo.DocData)
                             End If
-                        End If
-
-                        ' For partial load mode we need to specify a docdata, other the partial view will create a text buffer which we can't work with
-                        ' so instead we create a doc data, and the editor factory will fill in the base provider later
-                        If IsPropertyPage() AndAlso PropertyPageInfo.DeferUntilIntellisenseIsReady AndAlso ExistingDocDataPtr.Equals(IntPtr.Zero) Then
-                            Dim tempDocData = New PropPageDesigner.PropPageDesignerDocData(Nothing)
-                            ExistingDocDataPtr = Marshal.GetIUnknownForObject(tempDocData)
                         End If
 
                         OleServiceProvider = CType(_serviceProvider.GetService(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
@@ -515,6 +517,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             RemoveHandler e.OriginalPane.ReplacementAvailable, AddressOf PaneReplaced
 
             InitializePane(e.ReplacementPane, VsWindowFrame)
+
+            _view.ReactivateCurrentTab()
 
         End Sub
 
