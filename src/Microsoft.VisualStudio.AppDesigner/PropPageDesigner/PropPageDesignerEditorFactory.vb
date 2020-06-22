@@ -11,13 +11,6 @@ Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
-    <CLSCompliant(False),
-    Guid("79d33e5a-ad5c-43ea-9b62-426b05459b2a")>
-    Public NotInheritable Class DeferredPropPageDesignerEditorFactory
-        Inherits PropPageDesignerEditorFactory
-
-    End Class
-
     '**************************************************************************
     ';PropPageDesignerEditorFactory
     '
@@ -82,28 +75,17 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     DocData = Nothing
                     Caption = Nothing
 
-                    Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
-                    If DesignerService Is Nothing Then
-                        Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, FileName))
-                    End If
 
                     If ExistingDocData Is Nothing Then
-                        DocData = New PropPageDesignerDocData(_siteProvider)
+                        DocData = GetDocData()
                     ElseIf TypeOf ExistingDocData Is PropPageDesignerDocData Then
-                        Dim PropPageDocData = DirectCast(ExistingDocData, PropPageDesignerDocData)
-                        If PropPageDocData.BaseProvider Is Nothing Then
-                            PropPageDocData.BaseProvider = _siteProvider
-                        End If
-
-                        DocData = PropPageDocData
+                        DocData = ExistingDocData
                     Else
                         Throw New COMException(My.Resources.Designer.DFX_IncompatibleBuffer, AppDesInterop.NativeMethods.VS_E_INCOMPATIBLEDOCDATA)
                     End If
 
-                    DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
-
-                    Dim OleProvider As IServiceProvider = CType(_siteProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
-                    Dim Designer As IVSMDDesigner = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
+                    'Gets the object that can support IVsWindowPane
+                    DocView = GetDocView(FileName)
 
                     'Site the TextStream
                     If TypeOf DocData Is IObjectWithSite Then
@@ -111,11 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Else
                         Debug.Fail("DocData does not implement IObjectWithSite")
                     End If
-
-                    Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
-
-                    'Set the out params
-                    DocView = Designer.View 'Gets the object that can support IVsWindowPane
 
                     Caption = "" ' Leave empty - The property page Title will appear as the caption 'Application|References|Debug etc.'
 
@@ -139,6 +116,24 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Try
         End Sub
 
+        Protected Function GetDocView(fileName As String) As Object
+            Dim DesignerService As IVSMDDesignerService = CType(_siteProvider.GetService(GetType(IVSMDDesignerService)), IVSMDDesignerService)
+            If DesignerService Is Nothing Then
+                Throw New Exception(My.Resources.Designer.GetString(My.Resources.Designer.DFX_EditorNoDesignerService, fileName))
+            End If
+            Dim DesignerLoader = CType(DesignerService.CreateDesignerLoader(GetType(PropPageDesignerLoader).AssemblyQualifiedName), PropPageDesignerLoader)
+
+            Dim OleProvider As IServiceProvider = CType(_siteProvider.GetService(GetType(IServiceProvider)), IServiceProvider)
+            Dim Designer = DesignerService.CreateDesigner(OleProvider, DesignerLoader)
+
+            Debug.Assert(Designer IsNot Nothing, "Designer service should have thrown if it had a problem.")
+
+            Return Designer.View
+        End Function
+
+        Protected Function GetDocData() As Object
+            Return New PropPageDesignerDocData(_siteProvider)
+        End Function
 
         ''' <summary>
         ''' Disconnect from the owning site
@@ -222,7 +217,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
             End If
         End Function
-
     End Class
 
 End Namespace
