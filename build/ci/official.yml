@@ -17,6 +17,7 @@ variables:
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
   DropRoot: \\cpvsbuild\drops\Roslyn
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
