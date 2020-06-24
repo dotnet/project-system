@@ -100,7 +100,8 @@ namespace Microsoft.VisualStudio.SolutionExplorer
                 {
                     Assumes.NotNull(openDocumentService);
 
-                    await openDocumentService.OpenDocumentAsync(node.NodeMoniker, cancellationToken: default);
+                    if (openDocumentService != null)
+                        await openDocumentService.OpenDocumentAsync(node.NodeMoniker, cancellationToken: default);
                 }
                 finally
                 {
