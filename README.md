@@ -14,21 +14,21 @@ Click the first toolbar icon to start recording both regular and design-time bui
 
 Once a build is recorded, it will appear as shown. Right-clicking the build item produces a context menu:
 
-<img src="img/build-logging-context-menu.png" width="664">
+<img src="img/build-logging-context-menu.png" width="470">
 
 From here you may:
 
 - _Save Logs_ which prompts for a folder to save the `.binlog` file into
-- _Open Logs_ which opens the log in [MSBuild Structured Log Viewer](http://msbuildlog.com/)
-- _Explore logs_ which opens the `Build Log Explorer` pane in Visual Studio
+- _Open Logs_ which opens the log file inside Visual Studio
+- _Open Logs External_ which opens the `.binlog` file outside of Visual Studio
 
-The `Build Log Explorer` pane displays build results in a tree view:
+The `Open Logs` option displays build results in a tree view:
 
-<img src="img/build-log-explorer.png" width="664">
+<img src="img/open-log-view.png" width="470">
 
 By opening the `Build Message List` pane (via the `View > Other Windows` menu, as above) you can see data about the selected tree node.
 
-<img src="img/build-message-list.png" width="664">
+<img src="img/build-message-list.png" width="470">
 
 ## Contributing
 We welcome contributions and suggestions!
