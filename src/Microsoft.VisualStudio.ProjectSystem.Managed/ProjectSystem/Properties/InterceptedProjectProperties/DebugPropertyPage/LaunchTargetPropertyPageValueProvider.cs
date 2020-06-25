@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 var rule = catalog.GetSchema(schemaName);
                 if (rule != null
-                    && string.Equals(rule.PageTemplate, "Debugger", StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                     && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj)
                     && pageCommandNameObj is string pageCommandName
                     && pageCommandName.Equals(commandName))
