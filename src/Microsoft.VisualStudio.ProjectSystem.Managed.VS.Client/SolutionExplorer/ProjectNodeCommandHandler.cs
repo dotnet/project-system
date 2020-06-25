@@ -98,10 +98,10 @@ namespace Microsoft.VisualStudio.SolutionExplorer
 
                 try
                 {
-                    Assumes.NotNull(openDocumentService);
-
                     if (openDocumentService != null)
                         await openDocumentService.OpenDocumentAsync(node.NodeMoniker, cancellationToken: default);
+                    //else
+                        // TODO: figure out what to tell the user if we can't get the service
                 }
                 finally
                 {
