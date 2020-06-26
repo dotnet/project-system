@@ -102,6 +102,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
                         await openDocumentService.OpenDocumentAsync(node.NodeMoniker, cancellationToken: default);
                     //else
                         // TODO: figure out what to tell the user if we can't get the service
+                        // https://github.com/dotnet/project-system/issues/6306
                 }
                 finally
                 {
