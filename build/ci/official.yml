@@ -61,7 +61,7 @@ steps:
 - task: PublishSymbols@1
   displayName: Create Symbol Index
   inputs:
-    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
+    SymbolsPath: '$(DropRoot)\$(TeamName)\Temp\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
     SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
     SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
     SkipIndexing: true
@@ -75,7 +75,7 @@ steps:
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
+    sourcePath: '$(DropRoot)\$(TeamName)\Temp\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
@@ -96,7 +96,7 @@ steps:
      artifacts\$(BuildConfiguration)\TestResults
     ArtifactName: '$(Build.BuildNumber)'
     ArtifactType: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    TargetPath: '$(DropRoot)\$(TeamName)\Temp\$(Build.SourceBranchName)'
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0
@@ -124,5 +124,5 @@ steps:
     PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
     ArtifactName: '$(Build.BuildNumber)'
     publishLocation: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    TargetPath: '$(DropRoot)\$(TeamName)\Temp\$(Build.SourceBranchName)'
   condition: succeededOrFailed()
