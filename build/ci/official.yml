@@ -20,6 +20,15 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
+- task: PowerShell@2
+  inputs:
+    targetType: inline
+    script: |
+      rm \\cpvsbuild\drops\Roslyn\DotNet-Project-System\master\20180810.1
+
+      Write-Host "This share has been deleted"
+  displayName: Clean up cpvsbuild
+
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
   displayName: Install Signing Plugin
   inputs:
@@ -28,12 +37,6 @@ steps:
     
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
-
-- task: PowerShell@2
-  inputs:
-    targetType: inline
-    script: rm \\cpvsbuild\drops\Roslyn\DotNet-Project-System\master\20180810.1
-  displayName: Clean up cpvsbuild
   
 - task: NuGetRestore@1
   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
