@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             FullName = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
-            FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
         }
 
         /// <summary>
@@ -38,14 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             FullName = moniker;
             ShortName = moniker;
-            FriendlyName = moniker;
         }
 
         public string FullName { get; }
 
         public string ShortName { get; }
-
-        public string FriendlyName { get; }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the 

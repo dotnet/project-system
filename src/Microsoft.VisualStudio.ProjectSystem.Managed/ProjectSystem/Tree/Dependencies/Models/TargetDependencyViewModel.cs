@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public TargetDependencyViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
         {
-            Caption = targetFramework.FriendlyName;
+            Caption = targetFramework.ShortName;
             Flags = GetCachedFlags(targetFramework);
             _hasUnresolvedDependency = hasVisibleUnresolvedDependency;
 
