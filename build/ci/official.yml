@@ -57,6 +57,12 @@ steps:
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
 
+- task: PowerShell@2
+  inputs:
+    filePath: build\variables\_vsts.ps1
+    failOnStderr: true
+  displayName: Set VSTS variables based on source
+
 # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
 # needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
 # Artifact -> publish to symweb
@@ -66,13 +72,13 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
     Contents: '**'
-    TargetFolder: '$(Build.SourcesDirectory)\artifacts\s'
+    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols'
   displayName: Copy symbols
 
 - task: PublishSymbols@2
   displayName: Archive symbols to VSTS
   inputs:
-    SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols'
     SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
     SymbolServerType: TeamServices
     SkipIndexing: true
@@ -83,7 +89,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    PathtoPublish: $(Build.ArtifactStagingDirectory)/symbols'
     ArtifactName: symbols
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
@@ -93,7 +99,7 @@ steps:
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(Build.SourcesDirectory)\artifacts\s'
+    sourcePath: $(Build.ArtifactStagingDirectory)/symbols'
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
