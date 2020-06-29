@@ -16,19 +16,10 @@ variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
-  DropRoot: \\cpvsbuild\drops\Roslyn
+  DropRoot: \\cpvsbuild\drops\Roslyn\project-system-tools
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
-- task: PowerShell@2
-  inputs:
-    targetType: inline
-    script: |
-      rm \\cpvsbuild\drops\Roslyn\DotNet-Project-System\master\20180810.1
-
-      Write-Host "This share has been deleted"
-  displayName: Clean up cpvsbuild
-
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
   displayName: Install Signing Plugin
   inputs:
