@@ -70,7 +70,7 @@ steps:
 #TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
 - task: CopyFiles@2
   inputs:
-    SourceFolder: 'artifacts\$(BuildConfiguration)\bin\obj'
+    SourceFolder: 'artifacts\$(BuildConfiguration)\obj'
     Contents: |
       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
