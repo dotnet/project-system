@@ -16,7 +16,6 @@ variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
-  DropRoot: \\cpvsbuild\drops\Roslyn\project-system-tools
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
@@ -57,32 +56,51 @@ steps:
     testResultsFiles: 'artifacts/$(BuildConfiguration)/TestResults/*.xml'
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
-    
-- task: PublishSymbols@1
-  displayName: Create Symbol Index
+
+#Might need to do a CopyFiles@2 before this publish symbols
+- task: PublishSymbols@2
+  displayName: Archive symbols to VSTS
   inputs:
-    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
-    SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
     SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
+    SymbolServerType: TeamServices
     SkipIndexing: true
     SymbolsProduct: 'Roslyn Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
   continueOnError: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    ArtifactName: symbols
+    publishLocation: Container
+  displayName: 'Publish Artifact: symbols'
   
 - task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
   displayName: Publish Symbols to Artifact Services
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
+    sourcePath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
-    
+
+#Is this how we publish to symweb??
+#TODO change vsMajorVersion to a variable so we don't have to change this every new release
+- task: ms-vseng.MicroBuildTasks.0e9d0d4d-71ec-4e4e-ae40-db9896f1ae74.MicroBuildBuildVSBootstrapper@2
+  inputs:
+    vsMajorVersion: 16
+    channelName: $(TestBootstrapperChannel)
+    manifests: $(SetupManifests)
+    outputFolder: $(Build.Repository.LocalPath)\bin\$(BuildConfiguration)\packages\vsix
+  displayName: Build VS bootstrapper
+
+#TODO deprecate this with PublishBuildArtifacts@1
 - task: CopyPublishBuildArtifacts@1
   displayName: Publish Drop
   inputs:
@@ -95,8 +113,7 @@ steps:
      artifacts\$(BuildConfiguration)\VSSetup
      artifacts\$(BuildConfiguration)\TestResults
     ArtifactName: '$(Build.BuildNumber)'
-    ArtifactType: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    ArtifactType: Container
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0
@@ -123,6 +140,5 @@ steps:
   inputs:
     PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
     ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    publishLocation: Container
   condition: succeededOrFailed()
