@@ -70,8 +70,11 @@ steps:
 #TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
-    Contents: '**'
+    SourceFolder: 'artifacts\$(BuildConfiguration)\bin\obj'
+    Contents: |
+      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
     TargetFolder: $(Build.ArtifactStagingDirectory)/symbols'
   displayName: Copy symbols
 
