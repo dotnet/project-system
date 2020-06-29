@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var betaPage = IRuleFactory.Create(
                 name: "BetaCommandPageId",
                 displayName: "Beta",
-                pageTemplate: "Debugger",
+                pageTemplate: "CommandNameBasedDebugger",
                 metadata: new Dictionary<string, object>
                 {
                     { "CommandName", "BetaCommand" }
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var gammaPage = IRuleFactory.Create(
                 name: "GammaCommandPageId",
                 displayName: "Gamma",
-                pageTemplate: "Debugger",
+                pageTemplate: "CommandNameBasedDebugger",
                 metadata: new Dictionary<string, object>
                 {
                     { "CommandName", "GammaCommand" }
