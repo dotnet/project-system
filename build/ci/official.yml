@@ -61,7 +61,7 @@ steps:
   inputs:
     filePath: build\variables\_vsts.ps1
     failOnStderr: true
-  displayName: Set VSTS variables based on source
+  displayName: Set VSTS variables based on source 
 
 # Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
 # needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
