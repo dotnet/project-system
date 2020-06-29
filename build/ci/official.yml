@@ -57,7 +57,18 @@ steps:
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
 
-#Might need to do a CopyFiles@2 before this publish symbols
+# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
+# needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
+# Artifact -> publish to symweb
+
+#TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    Contents: **
+    TargetFolder: '$(Build.SourcesDirectory)\artifacts\s'
+  displayName: Copy symbols
+
 - task: PublishSymbols@2
   displayName: Archive symbols to VSTS
   inputs:
@@ -82,7 +93,7 @@ steps:
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    sourcePath: '$(Build.SourcesDirectory)\artifacts\s'
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
