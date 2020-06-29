@@ -78,7 +78,7 @@ steps:
   displayName: 'Publish Artifact: symbols'
   
 - task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
-  displayName: Publish Symbols to Artifact Services
+  displayName: Publish Symbols to Artifact Services (symweb)
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
