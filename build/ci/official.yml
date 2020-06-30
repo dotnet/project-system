@@ -75,14 +75,17 @@ steps:
       **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
       **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
       **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
-    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols'
+    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
   displayName: Copy symbols
 
 - task: PublishSymbols@2
   displayName: Archive symbols to VSTS
   inputs:
-    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols'
-    SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
+    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
+    SearchPattern: 
+      '**/*.pdb
+      **/*.dll
+      **/*.exe'
     SymbolServerType: TeamServices
     SkipIndexing: true
     SymbolsProduct: 'Roslyn Project System'
@@ -92,7 +95,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: $(Build.ArtifactStagingDirectory)/symbols'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/symbols'
     ArtifactName: symbols
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
