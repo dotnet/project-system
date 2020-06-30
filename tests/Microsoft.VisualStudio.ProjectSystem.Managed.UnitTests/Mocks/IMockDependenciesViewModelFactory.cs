@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 foreach (var d in createTargetViewModel)
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
-                            It.Is<ITargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
                             false))
                         .Returns(d.ToViewModel(false));
                 }

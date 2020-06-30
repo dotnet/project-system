@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                             return null;
                         }
 
-                        ITargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
+                        TargetFramework? newTargetFramework = _targetFrameworkProvider.GetTargetFramework(newTargetFrameworkName);
                         if (previousContext.ActiveTargetFramework.Equals(newTargetFramework))
                         {
                             // No change
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     Assumes.NotNull(previousContext);
                     Assumes.True(activeProjectConfiguration.IsCrossTargeting());
 
-                    ITargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
+                    TargetFramework? activeTargetFramework = _targetFrameworkProvider.GetTargetFramework(activeProjectConfiguration.Dimensions[ConfigurationGeneral.TargetFrameworkProperty]);
 
                     if (!previousContext.ActiveTargetFramework.Equals(activeTargetFramework))
                     {
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
                     foreach (string targetFrameworkMoniker in targetFrameworkMonikers)
                     {
-                        ITargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
+                        TargetFramework? targetFramework = _targetFrameworkProvider.GetTargetFramework(targetFrameworkMoniker);
 
                         if (targetFramework == null || !previousContext.TargetFrameworks.Contains(targetFramework))
                         {

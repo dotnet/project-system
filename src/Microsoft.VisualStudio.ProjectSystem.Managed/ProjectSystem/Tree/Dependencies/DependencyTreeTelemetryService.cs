@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// Holds data used for telemetry. If telemetry is disabled, or if required
         /// information has been gathered, this field will be null.
         /// </summary>
-        private Dictionary<ITargetFramework, TelemetryState>? _stateByFramework;
+        private Dictionary<TargetFramework, TelemetryState>? _stateByFramework;
 
         private string? _projectId;
         private int _eventCount = 0;
@@ -52,13 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             if (telemetryService != null)
             {
                 _telemetryService = telemetryService;
-                _stateByFramework = new Dictionary<ITargetFramework, TelemetryState>();
+                _stateByFramework = new Dictionary<TargetFramework, TelemetryState>();
             }
         }
 
         public bool IsActive => _stateByFramework != null;
 
-        public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
+        public void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stateByFramework == null)
                 return;
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 if (_stateByFramework == null)
                     return;
 
-                foreach (ITargetFramework targetFramework in targetFrameworks)
+                foreach (TargetFramework targetFramework in targetFrameworks)
                 {
                     if (!_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
                     {
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
+        public void ObserveTargetFrameworkRules(TargetFramework targetFramework, IEnumerable<string> rules)
         {
             if (_stateByFramework == null)
                 return;

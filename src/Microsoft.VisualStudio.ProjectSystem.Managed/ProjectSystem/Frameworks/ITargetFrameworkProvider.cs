@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface ITargetFrameworkProvider
     {
         /// <summary>
-        /// Parses full tfm or short framework name and returns a corresponding <see cref="ITargetFramework"/>
+        /// Parses full tfm or short framework name and returns a corresponding <see cref="TargetFramework"/>
         /// instance, or <see langword="null" /> if the framework name has an invalid format.
         /// </summary>
-        ITargetFramework? GetTargetFramework(string? shortOrFullName);
+        TargetFramework? GetTargetFramework(string? shortOrFullName);
     }
 }

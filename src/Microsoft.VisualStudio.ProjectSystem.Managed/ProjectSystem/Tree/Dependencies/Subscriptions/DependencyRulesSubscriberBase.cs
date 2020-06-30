@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                         }
 
                         // Get the target framework to update for this change.
-                        ITargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(GetProjectConfiguration(e));
+                        TargetFramework? targetFrameworkToUpdate = currentAggregateContext.GetProjectFramework(GetProjectConfiguration(e));
 
                         if (targetFrameworkToUpdate == null)
                         {
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             });
         }
 
-        protected abstract void Handle(AggregateCrossTargetProjectContext currentAggregateContext, ITargetFramework targetFrameworkToUpdate, T e);
+        protected abstract void Handle(AggregateCrossTargetProjectContext currentAggregateContext, TargetFramework targetFrameworkToUpdate, T e);
 
         protected abstract IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(T e);
         protected abstract ProjectConfiguration GetProjectConfiguration(T e);
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             return Task.CompletedTask;
         }
 
-        protected void RaiseDependenciesChanged(ITargetFramework targetFramework, IDependenciesChanges? changes, AggregateCrossTargetProjectContext currentAggregateContext, IProjectCatalogSnapshot catalogSnapshot)
+        protected void RaiseDependenciesChanged(TargetFramework targetFramework, IDependenciesChanges? changes, AggregateCrossTargetProjectContext currentAggregateContext, IProjectCatalogSnapshot catalogSnapshot)
         {
             DependenciesChanged?.Invoke(
                 this,
