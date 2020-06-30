@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class TargetFramework : IEquatable<TargetFramework?>
+    internal sealed class TargetFramework : IEquatable<TargetFramework?>
     {
         public static readonly TargetFramework Empty = new TargetFramework(string.Empty);
 
