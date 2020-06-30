@@ -49,40 +49,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj switch
-            {
-                ITargetFramework targetFramework => Equals(targetFramework),
-                string s => Equals(s),
-                _ => false
-            };
+            return obj is ITargetFramework targetFramework && Equals(targetFramework);
         }
 
         public bool Equals(ITargetFramework? obj)
         {
-            if (obj != null)
-            {
-                return FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
-            }
-
-            return false;
+            return obj != null && FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
         }
 
-        public bool Equals(string? obj)
+        public static bool operator ==(TargetFramework? left, TargetFramework? right)
         {
-            if (obj != null)
-            {
-                return string.Equals(FullName, obj, StringComparisons.FrameworkIdentifiers)
-                    || string.Equals(ShortName, obj, StringComparisons.FrameworkIdentifiers);
-            }
-
-            return false;
+            return left is null ? right is null : left.Equals(right);
         }
 
-        public static bool operator ==(TargetFramework left, TargetFramework right)
-            => left is null ? right is null : left.Equals(right);
-
-        public static bool operator !=(TargetFramework left, TargetFramework right)
-            => !(left == right);
+        public static bool operator !=(TargetFramework? left, TargetFramework? right)
+        {
+            return !(left == right);
+        }
 
         public override int GetHashCode()
         {

@@ -4,8 +4,7 @@ using System;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal interface ITargetFramework : IEquatable<ITargetFramework?>,
-                                          IEquatable<string?>
+    internal interface ITargetFramework : IEquatable<ITargetFramework?>
     {
         /// <summary>
         /// Gets the full moniker (TFM).
