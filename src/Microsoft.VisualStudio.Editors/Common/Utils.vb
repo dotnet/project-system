@@ -1371,67 +1371,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
 
-#Region "SQM data point helpers"
-        Friend Class SQMData
-
-            Private Sub New()
-                ' Non-creatable class
-            End Sub
-
-            'A list of known editor guids
-            ' Each property page will be reported back to SQM with the 1-based index in which it is present 
-            ' in this list. All unknown entries will be reported as &hFF
-            '
-            ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared ReadOnly s_sqmOrder() As Guid = {
-                KnownPropertyPageGuids.GuidApplicationPage_VB,
-                KnownPropertyPageGuids.GuidApplicationPage_CS,
-                KnownPropertyPageGuids.GuidApplicationPage_JS,
-                KnownPropertyPageGuids.GuidCompilePage_VB,
-                KnownPropertyPageGuids.GuidBuildPage_CS,
-                KnownPropertyPageGuids.GuidBuildPage_JS,
-                KnownPropertyPageGuids.GuidBuildEventsPage,
-                KnownPropertyPageGuids.GuidDebugPage,
-                KnownPropertyPageGuids.GuidReferencesPage_VB,
-                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID,
-                GetType(ResourceEditor.ResourceEditorFactory).GUID,
-                KnownPropertyPageGuids.GuidReferencePathsPage,
-                KnownPropertyPageGuids.GuidSigningPage,
-                KnownPropertyPageGuids.GuidSecurityPage,
-                KnownPropertyPageGuids.GuidPublishPage,
-                KnownPropertyPageGuids.GuidDatabasePage_SQL,
-                KnownPropertyPageGuids.GuidFxCopPage,
-                KnownPropertyPageGuids.GuidDeployPage,
-                KnownPropertyPageGuids.GuidDevicesPage_VSD,
-                KnownPropertyPageGuids.GuidDebugPage_VSD,
-                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF,
-                KnownPropertyPageGuids.GuidSecurityPage_WPF,
-                KnownPropertyPageGuids.GuidMyExtensionsPage,
-                KnownPropertyPageGuids.GuidOfficePublishPage,
-                KnownPropertyPageGuids.GuidServicesPage,
-                KnownPropertyPageGuids.GuidWAPWebPage
-            }
-
-            Public Const UNKNOWN_PAGE As Byte = &HFF
-            Public Const DEFAULT_PAGE As Byte = 0
-
-            ''' <summary>
-            ''' Map a known property page or designer id to a unique unsigned char in order
-            ''' to report back to SQM what the values are...
-            ''' </summary>
-            ''' <param name="guid"></param>
-            Friend Shared Function PageGuidToId(guid As Guid) As Byte
-                For i As Integer = 0 To s_sqmOrder.Length - 1
-                    If s_sqmOrder(i).Equals(guid) Then
-                        Return CByte(i + 1)
-                    End If
-                Next
-                Return UNKNOWN_PAGE
-            End Function
-
-        End Class
-#End Region
-
 #Region "Wrapper that allows indirect calls into the static helpers in order to help unit test our code"
 
         Private s_instance As New Helper

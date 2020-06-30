@@ -388,12 +388,6 @@
     <Compile Update="DesignerFramework\ErrorControl.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="DesignerFramework\ThemedBorderUserControl.Designer.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\ThemedBorderUserControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Update="DesignerFramework\WrapCheckBox.vb">
       <SubType>Component</SubType>
     </Compile>

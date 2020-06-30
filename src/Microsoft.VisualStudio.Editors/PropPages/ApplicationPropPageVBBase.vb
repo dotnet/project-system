@@ -430,7 +430,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             ''' flag to only allow apptypes supported by Express SKUs
             ''' </summary>
             Private Class SemicolonSeparatedNamesPredicate
-                Public Delegate Function CompareFun(SemicolonSeparatedNames As String, Item As ApplicationTypeInfo) As Boolean
 
                 ' Non-localized name to match
                 Private ReadOnly _names As New Dictionary(Of String, Boolean)
