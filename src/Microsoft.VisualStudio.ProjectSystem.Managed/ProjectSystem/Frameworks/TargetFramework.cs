@@ -58,10 +58,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         public static bool operator ==(TargetFramework left, TargetFramework right)
-            => left is null ? right is null : left.Equals(right);
+        {
+            return left is null ? right is null : left.Equals(right);
+        }
 
         public static bool operator !=(TargetFramework left, TargetFramework right)
-            => !(left == right);
+        {
+            return !(left == right);
+        }
 
         public override int GetHashCode()
         {
