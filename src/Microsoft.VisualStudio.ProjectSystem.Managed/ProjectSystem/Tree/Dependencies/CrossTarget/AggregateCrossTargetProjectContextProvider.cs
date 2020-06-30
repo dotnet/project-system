@@ -52,14 +52,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             }
 
             ProjectConfiguration activeProjectConfiguration = _commonServices.ActiveConfiguredProject.ProjectConfiguration;
-            ImmutableArray<ITargetFramework>.Builder targetFrameworks = ImmutableArray.CreateBuilder<ITargetFramework>(initialCapacity: configuredProjectsMap.Count);
-            ITargetFramework activeTargetFramework = TargetFramework.Empty;
+            ImmutableArray<TargetFramework>.Builder targetFrameworks = ImmutableArray.CreateBuilder<TargetFramework>(initialCapacity: configuredProjectsMap.Count);
+            TargetFramework activeTargetFramework = TargetFramework.Empty;
 
             foreach ((string tfm, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                ITargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
+                TargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
 
                 targetFrameworks.Add(targetFramework);
 
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
                 _targetFrameworkProvider);
         }
 
-        private async Task<ITargetFramework> GetTargetFrameworkAsync(
+        private async Task<TargetFramework> GetTargetFrameworkAsync(
             string shortOrFullName,
             ConfigurationGeneral configurationGeneralProperties)
         {

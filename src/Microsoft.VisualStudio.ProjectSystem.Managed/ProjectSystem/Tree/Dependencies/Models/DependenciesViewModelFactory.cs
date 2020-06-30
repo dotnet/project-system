@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
+        public IDependencyViewModel CreateTargetViewModel(TargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
         {
             return new TargetDependencyViewModel(targetFramework, hasVisibleUnresolvedDependency);
         }

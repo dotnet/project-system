@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         /// <summary>
         /// Returns a view model for a node that represents a target framework.
         /// </summary>
-        IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency);
+        IDependencyViewModel CreateTargetViewModel(TargetFramework targetFramework, bool hasVisibleUnresolvedDependency);
 
         /// <summary>
         /// Returns a view model for a node that groups dependencies from a given provider.

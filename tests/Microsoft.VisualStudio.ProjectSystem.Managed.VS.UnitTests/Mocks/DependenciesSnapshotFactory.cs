@@ -10,9 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal static class DependenciesSnapshotFactory
     {
         public static DependenciesSnapshot Implement(
-            Dictionary<ITargetFramework, TargetedDependenciesSnapshot>? dependenciesByTarget = null,
+            Dictionary<TargetFramework, TargetedDependenciesSnapshot>? dependenciesByTarget = null,
             bool? hasUnresolvedDependency = null,
-            ITargetFramework? activeTarget = null,
+            TargetFramework? activeTarget = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
             var mock = new Mock<DependenciesSnapshot>(mockBehavior);
