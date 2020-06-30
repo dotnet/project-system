@@ -57,12 +57,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return obj != null && FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
         }
 
-        public static bool operator ==(TargetFramework left, TargetFramework right)
+        public static bool operator ==(TargetFramework? left, TargetFramework? right)
         {
             return left is null ? right is null : left.Equals(right);
         }
 
-        public static bool operator !=(TargetFramework left, TargetFramework right)
+        public static bool operator !=(TargetFramework? left, TargetFramework? right)
         {
             return !(left == right);
         }
