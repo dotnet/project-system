@@ -217,6 +217,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return false;
         }
 
-        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies";
+        public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";
     }
 }

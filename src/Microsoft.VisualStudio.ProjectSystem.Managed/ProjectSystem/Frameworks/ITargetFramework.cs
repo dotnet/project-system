@@ -16,10 +16,5 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Gets the short name.
         /// </summary>
         string ShortName { get; }
-
-        /// <summary>
-        /// Gets the display name. Can be an empty string.
-        /// </summary>
-        string FriendlyName { get; }
     }
 }
