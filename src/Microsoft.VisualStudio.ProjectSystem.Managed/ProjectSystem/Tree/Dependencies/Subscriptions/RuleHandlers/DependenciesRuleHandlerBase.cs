@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public void Handle(
             IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
             // We receive evaluated and resolved project data separately, each as its own rule.
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             bool resolved,
             IProjectChangeDescription projectChange,
             DependenciesChangesBuilder changesBuilder,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             bool resolved,
             IProjectChangeDescription projectChange,
             DependenciesChangesBuilder changesBuilder,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             string dependencyId = resolved
@@ -149,7 +149,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             bool resolved,
             IProjectChangeDescription projectChange,
             DependenciesChangesBuilder changesBuilder,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);

@@ -418,7 +418,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 

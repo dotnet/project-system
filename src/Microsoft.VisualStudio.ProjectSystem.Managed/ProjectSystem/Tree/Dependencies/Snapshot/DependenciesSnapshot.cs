@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public static DependenciesSnapshot Empty { get; } = new DependenciesSnapshot(
             activeTargetFramework: TargetFramework.Empty,
-            dependenciesByTargetFramework: ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
+            dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
 
         /// <summary>
         /// Updates the <see cref="TargetedDependenciesSnapshot"/> corresponding to <paramref name="changedTargetFramework"/>,
@@ -35,11 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
         public static DependenciesSnapshot FromChanges(
             DependenciesSnapshot previousSnapshot,
-            ITargetFramework changedTargetFramework,
+            TargetFramework changedTargetFramework,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<ITargetFramework> targetFrameworks,
-            ITargetFramework? activeTargetFramework,
+            ImmutableArray<TargetFramework> targetFrameworks,
+            TargetFramework? activeTargetFramework,
             ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs)
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 // This is a long-winded way of doing this that minimises allocations
 
                 // Ensure all required target frameworks are present
-                foreach (ITargetFramework targetFramework in targetFrameworks)
+                foreach (TargetFramework targetFramework in targetFrameworks)
                 {
                     if (!builder.ContainsKey(targetFramework))
                     {
@@ -120,9 +120,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 {
                     // NOTE We need "ToList" here as "Except" is lazy, and attempts to remove from the builder
                     // while iterating will throw "Collection was modified"
-                    IEnumerable<ITargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks).ToList();
+                    IEnumerable<TargetFramework> targetFrameworksToRemove = builder.Keys.Except(targetFrameworks).ToList();
 
-                    foreach (ITargetFramework targetFramework in targetFrameworksToRemove)
+                    foreach (TargetFramework targetFramework in targetFrameworksToRemove)
                     {
                         builder.Remove(targetFramework);
                     }
@@ -133,19 +133,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         public DependenciesSnapshot SetTargets(
-            ImmutableArray<ITargetFramework> targetFrameworks,
-            ITargetFramework activeTargetFramework)
+            ImmutableArray<TargetFramework> targetFrameworks,
+            TargetFramework activeTargetFramework)
         {
             bool activeChanged = !activeTargetFramework.Equals(ActiveTargetFramework);
 
-            ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
+            ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> map = DependenciesByTargetFramework;
 
-            var diff = new SetDiff<ITargetFramework>(map.Keys, targetFrameworks);
+            var diff = new SetDiff<TargetFramework>(map.Keys, targetFrameworks);
 
             map = map.RemoveRange(diff.Removed);
             map = map.AddRange(
                 diff.Added.Select(
-                    added => new KeyValuePair<ITargetFramework, TargetedDependenciesSnapshot>(
+                    added => new KeyValuePair<TargetFramework, TargetedDependenciesSnapshot>(
                         added,
                         TargetedDependenciesSnapshot.CreateEmpty(added, null))));
 
@@ -159,8 +159,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         // Internal, for test use -- normal code should use the factory methods
         internal DependenciesSnapshot(
-            ITargetFramework activeTargetFramework,
-            ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
+            TargetFramework activeTargetFramework,
+            ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> dependenciesByTargetFramework)
         {
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
@@ -183,12 +183,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// <summary>
         /// Gets the active target framework for project.
         /// </summary>
-        public ITargetFramework ActiveTargetFramework { get; }
+        public TargetFramework ActiveTargetFramework { get; }
 
         /// <summary>
         /// Gets a dictionary of dependencies by target framework.
         /// </summary>
-        public ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
+        public ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
         /// Gets whether this snapshot contains at least one visible unresolved dependency, for any target framework.

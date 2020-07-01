@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
-            ITargetFramework targetFrameworkToUpdate,
+            TargetFramework targetFrameworkToUpdate,
             EventData e)
         {
             IProjectSubscriptionUpdate projectUpdate = e.Item1;
