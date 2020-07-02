@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
@@ -27,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             IDependency? matchingDependency = null;
             bool shouldApplyAlias = false;
 
-            foreach (((string _, string _), IDependency other) in context)
+            foreach ((DependencyId _, IDependency other) in context)
             {
                 if (StringComparers.DependencyTreeIds.Equals(other.Id, dependency.Id) ||
                     !StringComparers.DependencyProviderTypes.Equals(other.ProviderType, dependency.ProviderType))

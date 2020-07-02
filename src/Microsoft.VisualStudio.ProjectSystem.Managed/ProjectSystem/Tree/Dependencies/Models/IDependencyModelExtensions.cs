@@ -7,6 +7,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal static class IDependencyModelExtensions
     {
+        public static DependencyId GetDependencyId(this IDependencyModel self)
+        {
+            return new DependencyId(self.ProviderType, self.Id);
+        }
+
         public static IDependencyViewModel ToViewModel(this IDependencyModel self, bool hasUnresolvedDependency)
         {
             return new DependencyModelViewModel(self, hasUnresolvedDependency);

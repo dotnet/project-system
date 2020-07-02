@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -42,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             TargetFramework targetFramework = previousSnapshot.TargetFramework;
 
-            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var dependencyById = previousSnapshot.Dependencies.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
@@ -88,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
             {
-                if (!context.TryGetDependency(dependencyModel.ProviderType, dependencyModel.Id, out IDependency dependency))
+                if (!context.TryGetDependency(dependencyModel.GetDependencyId(), out IDependency dependency))
                 {
                     return;
                 }
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     }
                 }
 
-                dependencyById.Remove((dependencyModel.ProviderType, dependencyModel.Id));
+                dependencyById.Remove(dependencyModel.GetDependencyId());
                 anyChanges = true;
             }
 
@@ -140,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 if (dependency != null)
                 {
                     // A dependency was accepted
-                    (string ProviderType, string Id) key = (dependencyModel.ProviderType, dependencyModel.Id);
-                    dependencyById.Remove(key);
-                    dependencyById.Add(key, dependency);
+                    var id = dependencyModel.GetDependencyId();
+                    dependencyById.Remove(id);
+                    dependencyById.Add(id, dependency);
                     anyChanges = true;
                 }
                 else
