@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
 #pragma warning disable CS8618 // Non-nullable property is uninitialized
-        public string ProviderType { get; set; }
+        public string ProviderType { get; set; } = "provider";
         public string Caption { get; set; }
         public string? OriginalItemSpec { get; set; }
         public string? SchemaName { get; set; }
