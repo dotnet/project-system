@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
@@ -110,9 +111,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var dependencyById = new Dictionary<(string ProviderType, string ModelId), IDependency>
+            var dependencyById = new Dictionary<DependencyId, IDependency>
             {
-                { (dependency.ProviderType, dependency.Id), dependency }
+                { dependency.GetDependencyId(), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);
