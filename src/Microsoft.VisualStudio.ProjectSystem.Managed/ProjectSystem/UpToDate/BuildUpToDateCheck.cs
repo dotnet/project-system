@@ -19,9 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
+    internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider
     {
         private const string Link = "Link";
         private const string DefaultSetName = "";
@@ -54,12 +53,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private readonly object _stateLock = new object();
 
+        /// <summary>Allows waiting for initialization to complete. For unit tests only.</summary>
+        private readonly TaskCompletionSource<byte> _initializedTask = new TaskCompletionSource<byte>();
+
+        private readonly CancellationTokenSource _disposeCancellationTokenSource = new CancellationTokenSource();
+
         private State _state = State.Empty;
 
         private IDisposable? _link;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
+            IConfiguredProjectActivationTracking configuredProjectActivationTracking,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
@@ -75,27 +80,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _projectItemSchemaService = projectItemSchemaService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
-        }
 
-        public Task LoadAsync()
-        {
-            return InitializeAsync();
-        }
-
-        public Task UnloadAsync()
-        {
-            return ExecuteUnderLockAsync(_ =>
-            {
-                lock (_stateLock)
+            threadingService.RunAndForget(
+                async () =>
                 {
-                    _link?.Dispose();
-                    _link = null;
-
-                    _state = State.Empty;
-                }
-
-                return Task.CompletedTask;
-            });
+                    await configuredProjectActivationTracking.ActivationTask.WithCancellation(_disposeCancellationTokenSource.Token);
+                    await InitializeAsync(_disposeCancellationTokenSource.Token);
+                },
+                configuredProject);
         }
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -111,12 +103,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
                 linkOptions: DataflowOption.PropagateCompletion);
 
+            _initializedTask.TrySetResult(0);
+
             return Task.CompletedTask;
         }
 
         protected override Task DisposeCoreUnderLockAsync(bool initialized)
         {
-            _link?.Dispose();
+            _disposeCancellationTokenSource.Cancel();
+            _disposeCancellationTokenSource.Dispose();
+
+            lock (_stateLock)
+            {
+                _link?.Dispose();
+                _link = null;
+
+                _state = State.Empty;
+            }
+
+            _initializedTask.TrySetCanceled();
 
             return Task.CompletedTask;
         }
@@ -651,6 +656,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             public State State => _check._state;
+
+            public Task InitializedTask => _check._initializedTask.Task;
 
             public void SetLastCheckedAtUtc(DateTime lastCheckedAtUtc)
             {

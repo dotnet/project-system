@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IConfiguredProjectActivationTracking"/> that is based on the results of <see cref="IActiveConfigurationGroupService"/>.
+    ///     Provides an implementation of <see cref="IConfiguredProjectImplicitActivationTracking"/> that is based on the results of <see cref="IActiveConfigurationGroupService"/>.
     /// </summary>
     [Export(typeof(IConfiguredProjectImplicitActivationTracking))]
     [AppliesTo(ProjectCapability.DotNet)]
