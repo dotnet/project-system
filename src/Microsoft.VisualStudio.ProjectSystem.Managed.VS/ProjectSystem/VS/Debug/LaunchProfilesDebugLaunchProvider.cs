@@ -25,14 +25,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IVsService<IVsDebugger4> _vsDebuggerService;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
+        private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
         public LaunchProfilesDebugLaunchProvider(
+            IProjectThreadingService threadingService,
             ConfiguredProject configuredProject, 
             ILaunchSettingsProvider launchSettingsProvider, 
             IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
             : base(configuredProject)
         {
+            _threadingService = threadingService;
             _launchSettingsProvider = launchSettingsProvider;
             _vsDebuggerService = vsDebuggerService;
 
@@ -48,9 +51,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called by CPS to determine whether we can launch
         /// </summary>
-        public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
+        public override async Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
         {
-            return TplExtensions.TrueTask;
+            try
+            {
+                // Launch providers to enforce requirements for debuggable projects
+                await QueryDebugTargetsInternalAsync(launchOptions, true);
+            }
+            catch(Exception e)
+            {
+                if (string.Compare(e.Message, VSResources.ProjectNotRunnableDirectly, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    return await TplExtensions.FalseTask;
+                }
+            }
+
+            return await TplExtensions.TrueTask;
         }
 
         /// <summary>
@@ -79,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Now find the DebugTargets provider for this profile
-            IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
+            IDebugProfileLaunchTargetsProvider launchProvider = await GetLaunchTargetsProviderAsync(activeProfile) ??
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
 
             IReadOnlyList<IDebugLaunchSettings> launchSettings;
@@ -99,8 +115,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Returns the provider which knows how to launch the profile type.
         /// </summary>
-        public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
+        public async Task<IDebugProfileLaunchTargetsProvider?> GetLaunchTargetsProviderAsync(ILaunchProfile profile)
         {
+            // WORKAROUND: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1152611
+            await _threadingService.SwitchToUIThread();
+
             // We search through the imports in order to find the one which supports the profile
             foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
             {
@@ -124,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.NotNull(activeProfile);
 
-            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
+            IDebugProfileLaunchTargetsProvider? targetProfile = await GetLaunchTargetsProviderAsync(activeProfile);
             if (targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
