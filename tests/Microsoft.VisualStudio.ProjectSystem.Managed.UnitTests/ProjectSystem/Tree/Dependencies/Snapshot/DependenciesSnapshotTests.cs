@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
@@ -65,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
             Assert.Same(dependenciesByTargetFramework, snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.None, snapshot.MaximumVisibleDiagnosticLevel);
         }
 
         [Fact]
@@ -75,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Same(TargetFramework.Empty, snapshot.ActiveTargetFramework);
             Assert.Empty(snapshot.DependenciesByTargetFramework);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.None, snapshot.MaximumVisibleDiagnosticLevel);
         }
 
         [Fact]

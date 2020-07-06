@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Moq;
 
@@ -11,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         public static DependenciesSnapshot Implement(
             Dictionary<ITargetFramework, TargetedDependenciesSnapshot>? dependenciesByTarget = null,
-            bool? hasUnresolvedDependency = null,
+            DiagnosticLevel? maximumVisibleDiagnosticLevel = null,
             ITargetFramework? activeTarget = null,
             MockBehavior mockBehavior = MockBehavior.Default)
         {
@@ -22,9 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 mock.Setup(x => x.DependenciesByTargetFramework).Returns(dependenciesByTarget.ToImmutableDictionary());
             }
 
-            if (hasUnresolvedDependency.HasValue)
+            if (maximumVisibleDiagnosticLevel.HasValue)
             {
-                mock.Setup(x => x.HasVisibleUnresolvedDependency).Returns(hasUnresolvedDependency.Value);
+                mock.Setup(x => x.MaximumVisibleDiagnosticLevel).Returns(maximumVisibleDiagnosticLevel.Value);
             }
 
             if (activeTarget != null)
