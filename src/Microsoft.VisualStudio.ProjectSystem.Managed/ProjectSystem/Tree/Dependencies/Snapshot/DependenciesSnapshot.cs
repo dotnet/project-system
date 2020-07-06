@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -191,9 +192,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> DependenciesByTargetFramework { get; }
 
         /// <summary>
-        /// Gets whether this snapshot contains at least one visible unresolved dependency, for any target framework.
+        /// Gets the maximum diagnostic level across all dependencies and targets within the snapshot.
         /// </summary>
-        public bool HasVisibleUnresolvedDependency => DependenciesByTargetFramework.Any(x => x.Value.HasVisibleUnresolvedDependency);
+        public DiagnosticLevel MaximumVisibleDiagnosticLevel
+        {
+            get
+            {
+                DiagnosticLevel max = DiagnosticLevel.None;
+                
+                foreach ((_, TargetedDependenciesSnapshot snapshot) in DependenciesByTargetFramework)
+                {
+                    if (snapshot.MaximumVisibleDiagnosticLevel > max)
+                    {
+                        max = snapshot.MaximumVisibleDiagnosticLevel;
+                    }
+                }
+
+                return max;
+            }
+        }
 
         public override string ToString() => $"{DependenciesByTargetFramework.Count} target framework{(DependenciesByTargetFramework.Count == 1 ? "" : "s")}";
     }
