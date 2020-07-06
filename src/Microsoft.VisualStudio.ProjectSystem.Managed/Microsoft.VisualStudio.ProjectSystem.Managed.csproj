@@ -337,6 +337,7 @@
       <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
@@ -392,11 +393,12 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SourceControl.xaml" />
-    <Compile Update="ProjectSystem\Rules\SpecialFolder.cs">
-      <DependentUpon>SpecialFolder.xaml</DependentUpon>
-    </Compile>
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SpecialFolder.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SourceControl.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SpecialFolder.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
 
     <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
       <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
@@ -435,6 +437,7 @@
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
       <DataAccess>None</DataAccess>
