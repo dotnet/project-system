@@ -500,7 +500,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
-                    LastItemsChangedAtUtc, lastCheckedAtUtc);
+                    LastItemsChangedAtUtc,
+                    lastCheckedAtUtc);
             }
 
             /// <summary>
@@ -527,7 +528,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
-                    lastItemsChangedAtUtc, LastCheckedAtUtc);
+                    lastItemsChangedAtUtc,
+                    LastCheckedAtUtc);
             }
 
             /// <summary>
