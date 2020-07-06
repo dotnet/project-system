@@ -166,29 +166,10 @@
     </XamlPropertyRule>
     
     <!-- Property Pages -->
-    <Compile Update="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml.cs">
-      <DependentUpon>ApplicationPropertyPage.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
-    
-    <Compile Update="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml.cs">
-      <DependentUpon>ExecutableDebugPropertyPage.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml" />
-    
-    <Compile Update="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml.cs">
-      <DependentUpon>BuildPropertyPage.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml.cs">
-      <DependentUpon>ParentDebugPropertyPage.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml" />
-
-    <Compile Update="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml.cs">
-      <DependentUpon>ProjectDebugPropertyPage.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml" />
   </ItemGroup>
 
@@ -224,9 +205,6 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.BrowseObject.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\EditorConfigFiles.cs">
-      <DependentUpon>EditorConfigFiles.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRuleNoCodeBehind>
@@ -235,9 +213,6 @@
     </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.BrowseObject.xaml" />
 
-    <Compile Update="ProjectSystem\Rules\Items\EmbeddedResource.cs">
-      <DependentUpon>EmbeddedResource.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.xaml">
       <XlfInput>false</XlfInput>
     </XamlPropertyRuleNoCodeBehind>
@@ -356,9 +331,6 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\DebuggerGeneral.cs">
-      <DependentUpon>DebuggerGeneral.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\DebuggerGeneral.xaml" />
 
     <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
@@ -420,9 +392,6 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\SourceControl.cs">
-      <DependentUpon>SourceControl.xaml</DependentUpon>
-    </Compile>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SourceControl.xaml" />
     <Compile Update="ProjectSystem\Rules\SpecialFolder.cs">
       <DependentUpon>SpecialFolder.xaml</DependentUpon>
