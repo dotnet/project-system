@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (getDependenciesRootIcon.HasValue)
             {
-                mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<bool>())).Returns(getDependenciesRootIcon.Value);
+                mock.Setup(x => x.GetDependenciesRootIcon(It.IsAny<DiagnosticLevel>())).Returns(getDependenciesRootIcon.Value);
             }
 
             if (createRootViewModel != null)
@@ -30,12 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     mock.Setup(x => x.CreateGroupNodeViewModel(
                             It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
-                            false))
-                        .Returns(d.ToViewModel(false));
+                            DiagnosticLevel.None))
+                        .Returns(d.ToViewModel(DiagnosticLevel.None));
                     mock.Setup(x => x.CreateGroupNodeViewModel(
                             It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
-                            true))
-                        .Returns(d.ToViewModel(true));
+                            DiagnosticLevel.Warning))
+                        .Returns(d.ToViewModel(DiagnosticLevel.Warning));
+                    mock.Setup(x => x.CreateGroupNodeViewModel(
+                            It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
+                            DiagnosticLevel.Error))
+                        .Returns(d.ToViewModel(DiagnosticLevel.Error));
                 }
             }
 
@@ -45,8 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
                             It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
-                            false))
-                        .Returns(d.ToViewModel(false));
+                            DiagnosticLevel.None))
+                        .Returns(d.ToViewModel(DiagnosticLevel.None));
+                    mock.Setup(x => x.CreateTargetViewModel(
+                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            DiagnosticLevel.Warning))
+                        .Returns(d.ToViewModel(DiagnosticLevel.Warning));
+                    mock.Setup(x => x.CreateTargetViewModel(
+                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            DiagnosticLevel.Error))
+                        .Returns(d.ToViewModel(DiagnosticLevel.Error));
                 }
             }
 

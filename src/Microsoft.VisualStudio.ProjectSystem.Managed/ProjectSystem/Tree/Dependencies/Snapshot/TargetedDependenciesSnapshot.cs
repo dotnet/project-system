@@ -168,7 +168,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Catalogs = catalogs;
             Dependencies = dependencies;
 
-            HasVisibleUnresolvedDependency = dependencies.Any(pair => pair.Visible && !pair.Resolved);
+            MaximumVisibleDiagnosticLevel = GetMaximumVisibleDiagnosticLevel();
+
+            DiagnosticLevel GetMaximumVisibleDiagnosticLevel()
+            {
+                DiagnosticLevel max = DiagnosticLevel.None;
+
+                foreach (IDependency dependency in Dependencies)
+                {
+                    if (dependency.Visible && dependency.DiagnosticLevel > max)
+                    {
+                        max = dependency.DiagnosticLevel;
+                    }
+                }
+
+                return max;
+            }
         }
 
         #endregion
@@ -189,33 +204,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public ImmutableArray<IDependency> Dependencies { get; }
 
         /// <summary>
-        /// Gets whether this snapshot contains at least one visible unresolved dependency.
+        /// Gets the most severe diagnostic level among the dependencies in this snapshot.
         /// </summary>
-        public bool HasVisibleUnresolvedDependency { get; }
+        public DiagnosticLevel MaximumVisibleDiagnosticLevel { get; }
 
         /// <summary>
-        /// Efficient API for checking if a there is at least one unresolved dependency with given provider type.
+        /// Returns the most severe <see cref="DiagnosticLevel"/> for the dependencies in this snapshot belonging to
+        /// the specified <paramref name="providerType"/>.
         /// </summary>
-        /// <param name="providerType">Provider type to check</param>
-        /// <returns>Returns true if there is at least one unresolved dependency with given providerType.</returns>
-        public bool CheckForUnresolvedDependencies(string providerType)
+        public DiagnosticLevel GetMaximumVisibleDiagnosticLevelForProvider(string providerType)
         {
-            if (HasVisibleUnresolvedDependency == false)
+            if (MaximumVisibleDiagnosticLevel == DiagnosticLevel.None)
             {
-                return false;
+                // No item in the snapshot has a diagnostic, so the result must be 'None'
+                return DiagnosticLevel.None;
             }
+
+            DiagnosticLevel max = DiagnosticLevel.None;
 
             foreach (IDependency dependency in Dependencies)
             {
-                if (!dependency.Resolved &&
-                    dependency.Visible &&
-                    StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType))
+                if (dependency.Visible && StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType))
                 {
-                    return true;
+                    if (dependency.DiagnosticLevel > max)
+                    {
+                        max = dependency.DiagnosticLevel;
+                    }
                 }
             }
 
-            return false;
+            return max;
         }
 
         public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";

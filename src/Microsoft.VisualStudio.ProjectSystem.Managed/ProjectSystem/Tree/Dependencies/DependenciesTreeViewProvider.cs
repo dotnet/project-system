@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     {
                         IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.ShortName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasVisibleUnresolvedDependency);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.MaximumVisibleDiagnosticLevel);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
-                    targetedSnapshot.CheckForUnresolvedDependencies(providerType));
+                    targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
                 if (subTreeViewModel == null)
                 {

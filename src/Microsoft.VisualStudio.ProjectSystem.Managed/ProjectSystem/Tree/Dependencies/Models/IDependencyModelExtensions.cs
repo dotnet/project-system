@@ -12,28 +12,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             return new DependencyId(self.ProviderType, self.Id);
         }
 
-        public static IDependencyViewModel ToViewModel(this IDependencyModel self, bool hasUnresolvedDependency)
+        public static IDependencyViewModel ToViewModel(this IDependencyModel self, DiagnosticLevel diagnosticLevel)
         {
-            return new DependencyModelViewModel(self, hasUnresolvedDependency);
+            return new DependencyModelViewModel(self, diagnosticLevel);
         }
 
         private sealed class DependencyModelViewModel : IDependencyViewModel
         {
             private readonly IDependencyModel _model;
-            private readonly bool _hasUnresolvedDependency;
+            private readonly DiagnosticLevel _diagnosticLevel;
 
-            public DependencyModelViewModel(IDependencyModel model, bool hasUnresolvedDependency)
+            public DependencyModelViewModel(IDependencyModel model, DiagnosticLevel diagnosticLevel)
             {
                 _model = model;
-                _hasUnresolvedDependency = hasUnresolvedDependency;
+                _diagnosticLevel = diagnosticLevel;
             }
 
             public string Caption => _model.Caption;
             public string? FilePath => _model.Path;
             public string? SchemaName => _model.SchemaName;
             public string? SchemaItemType => _model.SchemaItemType;
-            public ImageMoniker Icon => _hasUnresolvedDependency ? _model.UnresolvedIcon : _model.Icon;
-            public ImageMoniker ExpandedIcon => _hasUnresolvedDependency ? _model.UnresolvedExpandedIcon : _model.ExpandedIcon;
+            public ImageMoniker Icon => _diagnosticLevel == DiagnosticLevel.None ? _model.Icon : _model.UnresolvedIcon;
+            public ImageMoniker ExpandedIcon => _diagnosticLevel == DiagnosticLevel.None ? _model.ExpandedIcon : _model.UnresolvedExpandedIcon;
             public ProjectTreeFlags Flags => _model.Flags;
         }
     }

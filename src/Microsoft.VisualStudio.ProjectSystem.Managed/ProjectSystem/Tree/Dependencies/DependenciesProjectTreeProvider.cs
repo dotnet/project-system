@@ -14,6 +14,7 @@ using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -358,7 +359,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                     if (_treeTelemetryService.IsActive)
                     {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
+                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
                     }
                 }
 

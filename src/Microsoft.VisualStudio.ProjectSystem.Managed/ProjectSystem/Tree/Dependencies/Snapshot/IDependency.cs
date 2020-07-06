@@ -63,6 +63,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         IImmutableDictionary<string, string> BrowseObjectProperties { get; }
 
         /// <summary>
+        /// Gets the level of any diagnostic associated with this dependency (e.g. <see cref="DiagnosticLevel.Error"/>,
+        /// <see cref="DiagnosticLevel.Warning"/> and <see cref="DiagnosticLevel.None"/>).
+        /// </summary>
+        DiagnosticLevel DiagnosticLevel { get; }
+
+        /// <summary>
         /// Specifies if dependency is resolved or not
         /// </summary>
         bool Resolved { get; }

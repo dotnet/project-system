@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
@@ -42,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string? OriginalItemSpec { get; set; }
         public string? SchemaName { get; set; }
         public string? SchemaItemType { get; set; }
+        public DiagnosticLevel DiagnosticLevel { get; set; } = DiagnosticLevel.None;
         public bool Resolved { get; set; } = false;
         public bool Implicit { get; set; } = false;
         public bool Visible { get; set; } = true;
