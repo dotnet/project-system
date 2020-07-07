@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Linq;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -51,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName, diagnosticLevel: DiagnosticLevel.None),
                 acceptedDependency!);
 
             // No changes other than the filtered dependency
@@ -140,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.True(context.TryGetDependency(sdkDependency.GetDependencyId(), out IDependency sdkDependencyAfter));
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName, diagnosticLevel: DiagnosticLevel.None),
                 sdkDependencyAfter);
         }
 

@@ -26,7 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null);
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null);
 
         /// <summary>
         /// Gets the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.

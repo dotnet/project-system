@@ -79,7 +79,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags,
             string? schemaName,
             DependencyIconSet? iconSet,
-            bool? isImplicit)
+            bool? isImplicit,
+            DiagnosticLevel? diagnosticLevel)
         {
             // Copy values as necessary to create a clone with any properties overridden
 
@@ -96,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             SchemaName = schemaName ?? dependency.SchemaName;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
-            DiagnosticLevel = dependency.DiagnosticLevel;
+            DiagnosticLevel = diagnosticLevel ?? dependency.DiagnosticLevel;
         }
 
         public DiagnosticLevel DiagnosticLevel { get; }
@@ -154,9 +155,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null)
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
-            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit);
+            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit, diagnosticLevel);
         }
 
         public override string ToString()
