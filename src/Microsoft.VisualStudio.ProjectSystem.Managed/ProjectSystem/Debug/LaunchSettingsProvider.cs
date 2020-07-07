@@ -155,8 +155,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// The DebugProfileProvider sinks 2 sets of information
-        /// 1, Changes to the launchsettings.json file on disk
+        /// The LaunchSettingsProvider sinks 2 sets of information:
+        /// 1. Changes to the launchsettings.json file on disk
         /// 2. Changes to the ActiveDebugProfile property in the .user file
         /// </summary>
         protected override void Initialize()
@@ -215,36 +215,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Called when the active profile has changed. If there is a current snapshot it just updates that. Otherwise, it creates
         /// a new snapshot
         /// </summary>
-        protected async Task UpdateActiveProfileInSnapshotAsync(string activeProfile)
+        protected async Task UpdateActiveProfileInSnapshotAsync(string updatedActiveProfileName)
         {
             ILaunchSettings snapshot = CurrentSnapshot;
             if (snapshot == null || await SettingsFileHasChangedAsync())
             {
-                await UpdateProfilesAsync(activeProfile);
+                await UpdateProfilesAsync(updatedActiveProfileName);
                 return;
             }
 
-            var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, activeProfile);
-            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: false);
+            var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, updatedActiveProfileName);
+            FinishUpdateAsync(newSnapshot);
         }
 
         /// <summary>
-        /// Does the processing to update the profiles when changes have been made to either the file or the active profile.
+        /// Does the processing to update the profiles when changes have been made to either the file or the active profile name.
         /// When merging with the disk, it needs to honor in-memory only profiles that may have been programmatically added. If
         /// a profile on disk has the same name as an in-memory profile, the one on disk wins. It tries to add the in-memory profiles
         /// in the same order they appeared prior to the disk change.
         /// </summary>
-        protected async Task UpdateProfilesAsync(string activeProfile)
+        protected async Task UpdateProfilesAsync(string updatedActiveProfileName)
         {
             try
             {
-                // If no active profile specified, try to get one
-                if (activeProfile == null)
+                // If the name of the new active profile wasn't provided we'll continue to use the
+                // current one.
+                if (updatedActiveProfileName == null)
                 {
                     ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
                     if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
                     {
-                        activeProfile = activeProfileVal.Name;
+                        updatedActiveProfileName = activeProfileVal.Name;
                     }
                 }
 
@@ -265,9 +266,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     MergeExistingInMemoryGlobalSettings(launchSettingData, prevSnapshot);
                 }
 
-                var newSnapshot = new LaunchSettings(launchSettingData, activeProfile);
+                var newSnapshot = new LaunchSettings(launchSettingData, updatedActiveProfileName);
 
-                await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true);
+                FinishUpdateAsync(newSnapshot);
             }
             catch (Exception ex)
             {
@@ -285,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message)
                     };
                     var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name);
-                    await FinishUpdateAsync(snapshot, ensureProfileProperty: false);
+                    FinishUpdateAsync(snapshot);
                 }
             }
         }
@@ -363,24 +364,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Helper function to set the new snapshot, update the active profile property to match what is in the snapshot,  and post
-        /// the changes to consumers.
+        /// Helper function to set the new snapshot and post the changes to consumers.
         /// </summary>
-        protected async Task FinishUpdateAsync(ILaunchSettings newSnapshot, bool ensureProfileProperty)
+        protected void FinishUpdateAsync(ILaunchSettings newSnapshot)
         {
             CurrentSnapshot = newSnapshot;
-
-            if (ensureProfileProperty)
-            {
-                ProjectDebugger props = await _commonProjectServices.ActiveConfiguredProjectProperties.GetProjectDebuggerPropertiesAsync();
-                if (await props.ActiveDebugProfile.GetValueAsync() is IEnumValue activeProfileVal)
-                {
-                    if (newSnapshot.ActiveProfile?.Name != null && !string.Equals(newSnapshot.ActiveProfile?.Name, activeProfileVal.Name))
-                    {
-                        await props.ActiveDebugProfile.SetValueAsync(newSnapshot.ActiveProfile.Name);
-                    }
-                }
-            }
 
             _broadcastBlock?.Post(newSnapshot);
         }
@@ -723,7 +711,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 await SaveSettingsToDiskAsync(newSettings);
             }
 
-            await FinishUpdateAsync(newSnapshot, ensureProfileProperty: true);
+            FinishUpdateAsync(newSnapshot);
         }
 
         /// <summary>
