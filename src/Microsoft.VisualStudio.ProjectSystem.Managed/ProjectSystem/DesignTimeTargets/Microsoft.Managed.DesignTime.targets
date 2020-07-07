@@ -228,7 +228,7 @@
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -256,7 +256,7 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
       <Context>ConfiguredBrowseObject</Context>
     </PropertyPageSchema>
 

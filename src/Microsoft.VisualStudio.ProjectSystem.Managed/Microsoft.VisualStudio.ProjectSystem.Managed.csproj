@@ -316,6 +316,7 @@
       <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
+      <XlfInput>false</XlfInput>
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
     </XamlPropertyRule>
@@ -378,6 +379,7 @@
       <DependentUpon>ProjectDebugger.xaml</DependentUpon>
     </Compile>
     <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
+      <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
       <SubType>Designer</SubType>
     </XamlPropertyRule>

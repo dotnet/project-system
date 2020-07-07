@@ -1,17 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Copyright, Microsoft Corporation, All rights reserved.-->
 <Rule Name="ConfiguredBrowseObject"
-      Description="General"
-      DisplayName="General"
       OverrideMode="Replace"
       PageTemplate="generic"
       PropertyPagesHidden="true"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
-  <Rule.Categories>
-    <Category Name="General"
-              Description="General"
-              DisplayName="General" />
-  </Rule.Categories>
 
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="True"
@@ -76,8 +69,8 @@
                 Visible="False" />
 
   <StringProperty Name="FullPath"
-                  DisplayName="Project Folder"
-                  ReadOnly="True">
+                  ReadOnly="True"
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource PersistedName="ProjectDir"
                   Persistence="ProjectFile"
@@ -146,11 +139,10 @@
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
+    
     <EnumValue Name="Binary"
-               DisplayName="Binary"
-               IsDefault="True" />
-    <EnumValue Name="Text"
-               DisplayName="Text" />
+               IsDefault="True" />    
+    <EnumValue Name="Text" />
   </EnumProperty>
 
   <EnumProperty Name="OptionExplicit"
@@ -161,10 +153,8 @@
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off"
-               DisplayName="Off" />
+    <EnumValue Name="Off" />
     <EnumValue Name="On"
-               DisplayName="On"
                IsDefault="True" />
   </EnumProperty>
 
@@ -176,10 +166,8 @@
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Off"
-               DisplayName="Off" />
+    <EnumValue Name="Off" />
     <EnumValue Name="On"
-               DisplayName="On"
                IsDefault="True" />
   </EnumProperty>
 
