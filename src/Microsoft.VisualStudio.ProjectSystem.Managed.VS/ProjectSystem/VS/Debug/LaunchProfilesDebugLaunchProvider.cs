@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -56,17 +55,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             try
             {
                 // Launch providers to enforce requirements for debuggable projects
-                await QueryDebugTargetsInternalAsync(launchOptions, true);
+                await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
             }
-            catch(Exception e)
+            catch (ProjectNotRunnableDirectlyException)
             {
-                if (string.Compare(e.Message, VSResources.ProjectNotRunnableDirectly, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    return await TplExtensions.FalseTask;
-                }
+                return false;
+            }
+            catch (Exception)
+            {
             }
 
-            return await TplExtensions.TrueTask;
+            return true;
         }
 
         /// <summary>
