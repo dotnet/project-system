@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.-->
 <Rule Name="SourceControl"
-      Description="General"
-      DisplayName="Source control"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
@@ -12,16 +10,16 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
-  <StringProperty Name="SccAuxPath"
-                  DisplayName="SccAuxPath" />
+  <StringProperty Name="SccAuxPath" 
+                  Visible="False" />
 
-  <StringProperty Name="SccLocalPath"
-                  DisplayName="SccLocalPath" />
+  <StringProperty Name="SccLocalPath" 
+                  Visible="False" />
 
-  <StringProperty Name="SccProjectName"
-                  DisplayName="SccProjectName" />
+  <StringProperty Name="SccProjectName" 
+                  Visible="False" />
 
   <StringProperty Name="SccProvider"
-                  DisplayName="SccProvider" />
+                  Visible="False" />
 
 </Rule>
