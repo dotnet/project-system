@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     public sealed class DependenciesTreeViewProviderTests
     {
-        private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
-        private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
+        private readonly TargetFramework _tfm1 = new TargetFramework("tfm1");
+        private readonly TargetFramework _tfm2 = new TargetFramework("tfm2");
         
         private readonly ITestOutputHelper _output;
 
@@ -568,12 +568,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
 
-        private static DependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
+        private static DependenciesSnapshot GetSnapshot(params (TargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var dependenciesByTarget = new Dictionary<ITargetFramework, TargetedDependenciesSnapshot>();
+            var dependenciesByTarget = new Dictionary<TargetFramework, TargetedDependenciesSnapshot>();
 
-            foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
+            foreach ((TargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
                 var targetedSnapshot = new TargetedDependenciesSnapshot(
                     tfm,

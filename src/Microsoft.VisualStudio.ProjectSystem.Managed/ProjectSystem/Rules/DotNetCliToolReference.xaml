@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="DotNetCliToolReference"
-      Description="Package"
-      DisplayName="Package"
       PageTemplate="generic"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
@@ -13,13 +11,11 @@
   </Rule.DataSource>
 
   <StringProperty Name="Description"
-                  Description="Dependency description."
-                  DisplayName="Description"
+                  Visible="False"
                   ReadOnly="True" />
 
   <StringProperty Name="ExcludeAssets"
-                  Description="Assets to exclude from this reference."
-                  DisplayName="ExcludeAssets" />
+                  Visible="False" />
 
   <StringProperty Name="FrameworkName"
                   ReadOnly="True"
@@ -29,13 +25,12 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="IncludeAssets"
-                  Description="Assets to include from this reference."
-                  DisplayName="IncludeAssets" />
+  <StringProperty Name="IncludeAssets" 
+                  Visible="False" />
 
   <StringProperty Name="Name"
                   ReadOnly="True"
-                  DisplayName="Name" />
+                  Visible="False" />
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"
@@ -45,9 +40,8 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="PrivateAssets"
-                  Description="Assets that are private in this reference."
-                  DisplayName="PrivateAssets" />
+  <StringProperty Name="PrivateAssets" 
+                  Visible="False" />
 
   <StringProperty Name="RuntimeIdentifier"
                   ReadOnly="True"
@@ -61,8 +55,7 @@
                   ReadOnly="True"
                   Visible="False" />
 
-  <StringProperty Name="Version"
-                  Description="Version of dependency."
-                  DisplayName="Version" />
+  <StringProperty Name="Version" 
+                  Visible="False" />
 
 </Rule>

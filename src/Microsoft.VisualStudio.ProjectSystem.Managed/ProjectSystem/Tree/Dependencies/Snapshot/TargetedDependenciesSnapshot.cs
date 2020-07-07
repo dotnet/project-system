@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         #region Factories and internal constructor
 
-        public static TargetedDependenciesSnapshot CreateEmpty(ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public static TargetedDependenciesSnapshot CreateEmpty(TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             return new TargetedDependenciesSnapshot(
                 targetFramework,
@@ -40,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             bool anyChanges = false;
 
-            ITargetFramework targetFramework = previousSnapshot.TargetFramework;
+            TargetFramework targetFramework = previousSnapshot.TargetFramework;
 
-            var dependencyById = previousSnapshot.Dependencies.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var dependencyById = previousSnapshot.Dependencies.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
@@ -88,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
             {
-                if (!context.TryGetDependency(dependencyModel.ProviderType, dependencyModel.Id, out IDependency dependency))
+                if (!context.TryGetDependency(dependencyModel.GetDependencyId(), out IDependency dependency))
                 {
                     return;
                 }
@@ -110,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     }
                 }
 
-                dependencyById.Remove((dependencyModel.ProviderType, dependencyModel.Id));
+                dependencyById.Remove(dependencyModel.GetDependencyId());
                 anyChanges = true;
             }
 
@@ -140,9 +141,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 if (dependency != null)
                 {
                     // A dependency was accepted
-                    (string ProviderType, string Id) key = (dependencyModel.ProviderType, dependencyModel.Id);
-                    dependencyById.Remove(key);
-                    dependencyById.Add(key, dependency);
+                    var id = dependencyModel.GetDependencyId();
+                    dependencyById.Remove(id);
+                    dependencyById.Add(id, dependency);
                     anyChanges = true;
                 }
                 else
@@ -156,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         // Internal, for test use -- normal code should use the factory methods
         internal TargetedDependenciesSnapshot(
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependency> dependencies)
         {
@@ -167,15 +168,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Catalogs = catalogs;
             Dependencies = dependencies;
 
-            HasVisibleUnresolvedDependency = dependencies.Any(pair => pair.Visible && !pair.Resolved);
+            MaximumVisibleDiagnosticLevel = GetMaximumVisibleDiagnosticLevel();
+
+            DiagnosticLevel GetMaximumVisibleDiagnosticLevel()
+            {
+                DiagnosticLevel max = DiagnosticLevel.None;
+
+                foreach (IDependency dependency in Dependencies)
+                {
+                    if (dependency.Visible && dependency.DiagnosticLevel > max)
+                    {
+                        max = dependency.DiagnosticLevel;
+                    }
+                }
+
+                return max;
+            }
         }
 
         #endregion
 
         /// <summary>
-        /// <see cref="ITargetFramework" /> for which project has dependencies contained in this snapshot.
+        /// <see cref="TargetFramework" /> for which project has dependencies contained in this snapshot.
         /// </summary>
-        public ITargetFramework TargetFramework { get; }
+        public TargetFramework TargetFramework { get; }
 
         /// <summary>
         /// Catalogs of rules for project items (optional, custom dependency providers might not provide it).
@@ -188,35 +204,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public ImmutableArray<IDependency> Dependencies { get; }
 
         /// <summary>
-        /// Gets whether this snapshot contains at least one visible unresolved dependency.
+        /// Gets the most severe diagnostic level among the dependencies in this snapshot.
         /// </summary>
-        public bool HasVisibleUnresolvedDependency { get; }
+        public DiagnosticLevel MaximumVisibleDiagnosticLevel { get; }
 
         /// <summary>
-        /// Efficient API for checking if a there is at least one unresolved dependency with given provider type.
+        /// Returns the most severe <see cref="DiagnosticLevel"/> for the dependencies in this snapshot belonging to
+        /// the specified <paramref name="providerType"/>.
         /// </summary>
-        /// <param name="providerType">Provider type to check</param>
-        /// <returns>Returns true if there is at least one unresolved dependency with given providerType.</returns>
-        public bool CheckForUnresolvedDependencies(string providerType)
+        public DiagnosticLevel GetMaximumVisibleDiagnosticLevelForProvider(string providerType)
         {
-            if (HasVisibleUnresolvedDependency == false)
+            if (MaximumVisibleDiagnosticLevel == DiagnosticLevel.None)
             {
-                return false;
+                // No item in the snapshot has a diagnostic, so the result must be 'None'
+                return DiagnosticLevel.None;
             }
+
+            DiagnosticLevel max = DiagnosticLevel.None;
 
             foreach (IDependency dependency in Dependencies)
             {
-                if (!dependency.Resolved &&
-                    dependency.Visible &&
-                    StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType))
+                if (dependency.Visible && StringComparers.DependencyProviderTypes.Equals(dependency.ProviderType, providerType))
                 {
-                    return true;
+                    if (dependency.DiagnosticLevel > max)
+                    {
+                        max = dependency.DiagnosticLevel;
+                    }
                 }
             }
 
-            return false;
+            return max;
         }
 
-        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies";
+        public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";
     }
 }

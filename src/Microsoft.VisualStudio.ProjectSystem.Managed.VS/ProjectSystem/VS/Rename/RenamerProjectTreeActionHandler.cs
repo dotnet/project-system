@@ -6,12 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
+using EnvDTE;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.LanguageServices;
+using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.OperationProgress;
-using EnvDTE;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -95,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return;
             }
 
-            (bool result, var documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
+            (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
             if (result == false || documentRenameResult == null)
             {
                 return;
@@ -111,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 // TODO - implement PublishAsync() to sync with LanguageService
                 // https://github.com/dotnet/project-system/issues/3425)
                 // await _languageService.PublishAsync(treeVersion);
-                var stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+                IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
                 await stageStatus.WaitForCompletionAsync();
 
                 // Apply actions and notify other VS features
@@ -143,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }, _unconfiguredProject);
         }
 
-        private static async Task<(bool, CodeAnalysis.Rename.Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
+        private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
         {
             CodeAnalysis.Document? oldDocument = GetDocument(project, oldFilePath);
             if (oldDocument is null)
@@ -152,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Get the list of possible actions to execute
-            var documentRenameResult = await CodeAnalysis.Rename.Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
+            Renamer.RenameDocumentActionSet documentRenameResult = await Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
 
             // Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)
@@ -161,13 +162,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Check errors before applying changes
-            foreach (var action in documentRenameResult.ApplicableActions)
-            {
-                foreach (var e in action.GetErrors())
-                {
-                    return (false, documentRenameResult);
-                }
-            }
+            if (documentRenameResult.ApplicableActions.Any(a => a.GetErrors().Length > 0))
+                return (false, documentRenameResult);
 
             return (true, documentRenameResult);
         }

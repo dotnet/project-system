@@ -190,13 +190,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private static IPropertyPagesCatalogProvider GetCatalogProviderAndData()
         {
             var betaPage = ProjectSystem.IRuleFactory.Create(
-                pageTemplate: "Debugger",
+                pageTemplate: "CommandNameBasedDebugger",
                 metadata: new Dictionary<string, object>
                 {
                     { "CommandName", "BetaCommand" }
                 });
             var gammaPage = ProjectSystem.IRuleFactory.Create(
-                pageTemplate: "Debugger",
+                pageTemplate: "CommandNamedBasedDebugger",
                 metadata: new Dictionary<string, object>
                 {
                     { "CommandName", "GammaCommand" }

@@ -22,6 +22,7 @@ pr:
 variables:
   # Opt out of running Codesign Validation (https://aka.ms/gdn-injection)
   runCodesignValidationInjection: false
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
 - template: unit-tests-template.yml

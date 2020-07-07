@@ -76,13 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
             async Task BuildSingleTargetTreeAsync()
             {
-                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((TargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             async Task BuildMultiTargetTreeAsync()
             {
-                foreach ((ITargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((TargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -116,9 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                     else
                     {
-                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
+                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.ShortName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasVisibleUnresolvedDependency);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.MaximumVisibleDiagnosticLevel);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         private async Task<IProjectTree> BuildSubTreesAsync(
             IProjectTree rootNode,
-            ITargetFramework activeTarget,
+            TargetFramework activeTarget,
             TargetedDependenciesSnapshot targetedSnapshot,
             Func<IProjectTree, HashSet<IProjectTree>, IProjectTree> syncFunc)
         {
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
-                    targetedSnapshot.CheckForUnresolvedDependencies(providerType));
+                    targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
                 if (subTreeViewModel == null)
                 {

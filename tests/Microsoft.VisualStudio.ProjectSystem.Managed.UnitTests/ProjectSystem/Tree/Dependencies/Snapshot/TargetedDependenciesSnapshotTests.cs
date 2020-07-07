@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
@@ -37,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.None, snapshot.MaximumVisibleDiagnosticLevel);
             Assert.Empty(snapshot.Dependencies);
-            Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
+            Assert.Equal(DiagnosticLevel.None, snapshot.GetMaximumVisibleDiagnosticLevelForProvider("foo"));
         }
 
         [Fact]
@@ -52,9 +53,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Same(targetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.None, snapshot.MaximumVisibleDiagnosticLevel);
             Assert.Empty(snapshot.Dependencies);
-            Assert.False(snapshot.CheckForUnresolvedDependencies("foo"));
+            Assert.Equal(DiagnosticLevel.None, snapshot.GetMaximumVisibleDiagnosticLevelForProvider("foo"));
         }
 
         [Fact]
@@ -99,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 Assert.Same(previousSnapshot.Dependencies[i], snapshot.Dependencies[i]);
             }
-            Assert.False(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.None, snapshot.MaximumVisibleDiagnosticLevel);
             Assert.Empty(snapshot.Dependencies);
         }
 
@@ -150,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(catalogs, snapshot.Catalogs);
-            Assert.True(snapshot.HasVisibleUnresolvedDependency);
+            Assert.Equal(DiagnosticLevel.Warning, snapshot.MaximumVisibleDiagnosticLevel);
             AssertEx.CollectionLength(snapshot.Dependencies, 2);
             Assert.Contains(snapshot.Dependencies, resolved.Matches);
             Assert.Contains(snapshot.Dependencies, unresolved.Matches);
@@ -578,6 +579,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(dependencyUpdated, snapshot.Dependencies.Single());
+        }
+
+        [Fact]
+        public void FromChanges_DifferentModelIdCapitalisation()
+        {
+            var targetFramework = new TargetFramework("tfm1");
+
+            var dependencyPrevious = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "dependency1",
+                Resolved = false
+            };
+
+            var dependencyModelUpdated = new TestDependencyModel
+            {
+                ProviderType = "XXX", // changed case
+                Id = "DEPENDENCY1",   // changed case
+                Resolved = true
+            };
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                targetFramework,
+                catalogs,
+                ImmutableArray.Create<IDependency>(dependencyPrevious));
+
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelUpdated);
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                previousSnapshot,
+                changes.TryBuildChanges()!,
+                catalogs,
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            var dependency = Assert.Single(snapshot.Dependencies);
+            Assert.Equal("DEPENDENCY1", dependency.Id);
+            Assert.Equal("XXX", dependency.ProviderType);
+            Assert.True(dependency.Resolved);
         }
 
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter

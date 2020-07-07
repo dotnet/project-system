@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
 
         /// <summary>
         /// Dependencies having this flag support displaying a browse object, where the corresponding <see cref="IRule" />
-        /// is obtained by <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync(IDependency, ITargetFramework, IProjectCatalogSnapshot)" />.
+        /// is obtained by <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync(IDependency, TargetFramework, IProjectCatalogSnapshot)" />.
         /// </summary>
         internal static readonly ProjectTreeFlags SupportsRuleProperties = ProjectTreeFlags.Create("SupportsRuleProperties");
 

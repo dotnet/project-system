@@ -26,7 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null);
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null);
 
         /// <summary>
         /// Gets the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
@@ -61,6 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// object for resolved dependencies, to be displayed in property pages (in BrowsableObject context).
         /// </summary>
         IImmutableDictionary<string, string> BrowseObjectProperties { get; }
+
+        /// <summary>
+        /// Gets the level of any diagnostic associated with this dependency (e.g. <see cref="DiagnosticLevel.Error"/>,
+        /// <see cref="DiagnosticLevel.Warning"/> and <see cref="DiagnosticLevel.None"/>).
+        /// </summary>
+        DiagnosticLevel DiagnosticLevel { get; }
 
         /// <summary>
         /// Specifies if dependency is resolved or not

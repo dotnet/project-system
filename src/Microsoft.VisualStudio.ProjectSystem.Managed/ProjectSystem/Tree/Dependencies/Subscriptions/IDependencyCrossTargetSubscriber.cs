@@ -64,9 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     internal sealed class DependencySubscriptionChangedEventArgs
     {
         public DependencySubscriptionChangedEventArgs(
-            ImmutableArray<ITargetFramework> targetFrameworks,
-            ITargetFramework activeTarget,
-            ITargetFramework changedTargetFramework,
+            ImmutableArray<TargetFramework> targetFrameworks,
+            TargetFramework activeTarget,
+            TargetFramework changedTargetFramework,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot catalogs)
         {
@@ -79,14 +79,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             ChangedTargetFramework = changedTargetFramework;
         }
 
-        public ImmutableArray<ITargetFramework> TargetFrameworks { get; }
+        public ImmutableArray<TargetFramework> TargetFrameworks { get; }
 
-        public ITargetFramework ActiveTarget { get; }
+        public TargetFramework ActiveTarget { get; }
 
         public IProjectCatalogSnapshot Catalogs { get; }
 
         public IDependenciesChanges? Changes { get; }
 
-        public ITargetFramework ChangedTargetFramework { get; }
+        public TargetFramework ChangedTargetFramework { get; }
     }
 }

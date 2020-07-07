@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Linq;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(builder);
 
@@ -51,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.NotNull(acceptedDependency);
             Assert.NotSame(sdkDependency, acceptedDependency);
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName, diagnosticLevel: DiagnosticLevel.None),
                 acceptedDependency!);
 
             // No changes other than the filtered dependency
@@ -80,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Flags = DependencyTreeFlags.PackageDependency
             };
 
-            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var builder = new IDependency[] { sdkDependency, packageDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(builder);
 
@@ -120,7 +121,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(builder);
 
@@ -138,9 +139,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // Other changes made
             Assert.True(context.Changed);
 
-            Assert.True(context.TryGetDependency(sdkDependency.ProviderType, sdkDependency.Id, out IDependency sdkDependencyAfter));
+            Assert.True(context.TryGetDependency(sdkDependency.GetDependencyId(), out IDependency sdkDependencyAfter));
             DependencyAssert.Equal(
-                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName),
+                sdkDependency.ToResolved(schemaName: ResolvedSdkReference.SchemaName, diagnosticLevel: DiagnosticLevel.None),
                 sdkDependencyAfter);
         }
 
@@ -165,7 +166,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(d => (d.ProviderType, ModelId: d.Id));
+            var builder = new IDependency[] { packageDependency, sdkDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new RemoveDependencyContext(builder);
 
@@ -181,10 +182,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // Makes other changes too
             Assert.True(context.Changed);
 
-            Assert.True(builder.TryGetValue((packageDependency.ProviderType, packageDependency.Id), out var afterPackageDependency));
+            Assert.True(builder.TryGetValue(packageDependency.GetDependencyId(), out var afterPackageDependency));
             Assert.Same(packageDependency, afterPackageDependency);
 
-            Assert.True(builder.TryGetValue((sdkDependency.ProviderType, sdkDependency.Id), out var afterSdkDependency));
+            Assert.True(builder.TryGetValue(sdkDependency.GetDependencyId(), out var afterSdkDependency));
             DependencyAssert.Equal(
                 afterSdkDependency.ToUnresolved(SdkReference.SchemaName),
                 afterSdkDependency);

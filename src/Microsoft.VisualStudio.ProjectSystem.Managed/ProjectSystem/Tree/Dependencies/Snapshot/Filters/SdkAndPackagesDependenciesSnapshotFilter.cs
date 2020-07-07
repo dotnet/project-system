@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -34,12 +35,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find a resolved package dependency with the same name.
 
-                if (context.TryGetDependency(PackageRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency package) && package.Resolved)
+                if (context.TryGetDependency(new DependencyId(PackageRuleHandler.ProviderTypeString, dependency.Id), out IDependency package) && package.Resolved)
                 {
-                    // Set to resolved.
+                    // Set to resolved and clear any diagnostic.
 
                     context.Accept(dependency.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName));
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.None));
                     return;
                 }
             }
@@ -49,16 +51,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                if (context.TryGetDependency(SdkRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency sdk))
+                if (context.TryGetDependency(new DependencyId(SdkRuleHandler.ProviderTypeString, dependency.Id), out IDependency sdk))
                 {
                     // We have an SDK dependency for this package. Such dependencies, when implicit, are created
                     // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
                     // corresponding package.
                     //
-                    // Set to resolved.
+                    // Set to resolved and clear any diagnostic.
 
                     context.AddOrUpdate(sdk.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName));
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.None));
                 }
             }
 
@@ -76,15 +79,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 //
                 // Try to find an SDK dependency with the same name.
 
-                if (context.TryGetDependency(SdkRuleHandler.ProviderTypeString, dependencyId: dependency.Id, out IDependency sdk))
+                if (context.TryGetDependency(new DependencyId(SdkRuleHandler.ProviderTypeString, dependency.Id), out IDependency sdk))
                 {
                     // We are removing the package dependency related to this SDK dependency
                     // and must undo the changes made above in BeforeAddOrUpdate.
                     //
-                    // Set to unresolved.
+                    // Set to unresolved and reinstate warning diagnostic.
 
                     context.AddOrUpdate(sdk.ToUnresolved(
-                        schemaName: SdkReference.SchemaName));
+                        schemaName: SdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.Warning));
                 }
             }
 

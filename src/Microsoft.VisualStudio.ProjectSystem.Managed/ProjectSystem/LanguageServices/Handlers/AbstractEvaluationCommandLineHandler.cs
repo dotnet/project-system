@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void EnqueueProjectEvaluation(IComparable version, IProjectChangeDiff evaluationDifference)
         {
-            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThanOrEqualTo(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
+            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThan(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
 
             _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
         }

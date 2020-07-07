@@ -3,7 +3,7 @@
 <Rule Name="ExecutableDebugPropertyPage"
       Description="Properties associated with launching and debugging a specified executable file."
       DisplayName="Executable"
-      PageTemplate="debugger"
+      PageTemplate="commandNameBasedDebugger"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
