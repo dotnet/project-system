@@ -657,7 +657,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public State State => _check._state;
 
-            public Task InitializedTask => _check._initializedTask.Task;
+            public Task EnsureInitialized() => _check._initializedTask.Task;
 
             public void SetLastCheckedAtUtc(DateTime lastCheckedAtUtc)
             {
