@@ -27,7 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             CommandLineArgumentsPropertyName,
             ExecutablePathPropertyName,
+            LaunchBrowserPropertyName,
             LaunchTargetPropertyName,
+            LaunchUrlPropertyName,
             WorkingDirectoryPropertyName,
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
