@@ -22,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Xunit.Assert.Equal(expected.BrowseObjectProperties, actual.BrowseObjectProperties);
             Xunit.Assert.Equal(expected.Flags, actual.Flags);
             Xunit.Assert.Equal(expected.Id, actual.Id);
+            Xunit.Assert.Equal(expected.DiagnosticLevel, actual.DiagnosticLevel);
         }
     }
 }
