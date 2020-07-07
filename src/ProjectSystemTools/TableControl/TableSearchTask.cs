@@ -18,7 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         protected override void OnStartSearch()
         {
-            _control.SetFilter(TableToolWindow.SearchFilterKey, new TableSearchFilter(SearchQuery, _control));
+            ThreadHelper.Generic.BeginInvoke(delegate(){
+                _control.SetFilter(TableToolWindow.SearchFilterKey, new TableSearchFilter(SearchQuery, _control));
+                }
+            );
             SearchCallback.ReportComplete(this, dwResultsFound: 0);
         }
 
