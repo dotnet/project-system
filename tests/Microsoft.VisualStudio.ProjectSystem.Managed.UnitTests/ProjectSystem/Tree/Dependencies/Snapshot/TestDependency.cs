@@ -62,7 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null)
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
             return new TestDependency
             {
@@ -75,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Flags = flags ?? Flags,
                 SchemaName = schemaName ?? SchemaName,
                 IconSet = iconSet ?? IconSet,
-                Implicit = isImplicit ?? Implicit
+                Implicit = isImplicit ?? Implicit,
+                DiagnosticLevel = diagnosticLevel ?? DiagnosticLevel
             };
         }
     }
