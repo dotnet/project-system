@@ -67,11 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 JoinableTaskFactory.Run(asyncAction);
             }
-
-            public Task SwitchToUIThread()
-            {
-                return Task.CompletedTask;
-            }
         }
     }
 }

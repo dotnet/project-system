@@ -648,6 +648,4 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
         }
     }
-
-
 }
