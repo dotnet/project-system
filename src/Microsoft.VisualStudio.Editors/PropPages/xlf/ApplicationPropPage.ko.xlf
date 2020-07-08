@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="Win32ResourceFile.AccessibleName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">리소스 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">

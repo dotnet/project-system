@@ -2005,7 +2005,7 @@ app.config 파일의 새 값은 '{1}'입니다.
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="translated">코드 분석</target>
+        <target state="translated">Code Analysis</target>
         <note />
       </trans-unit>
     </body>

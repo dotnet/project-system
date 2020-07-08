@@ -76,9 +76,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">Impossible d'ouvrir le fichier projet '{0}'. 
+        <target state="translated">Impossible d'ouvrir le fichier projet '{0}'. 
 
-Ce projet a été chargé à l'aide d'un type de projet incorrect, probablement à la suite du renommage de l'extension de projet en dehors de Visual Studio. Supprimez et lisez le projet pour que la solution prenne le bon type de projet.</target>
+Ce projet a été chargé à l'aide d'un type de projet incorrect, probablement à la suite du renommage de l'extension de projet en dehors de Visual Studio. Supprimez et rajoutez le projet pour que la solution prenne le bon type de projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

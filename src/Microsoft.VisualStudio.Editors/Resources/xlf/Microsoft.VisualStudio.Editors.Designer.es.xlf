@@ -1976,7 +1976,7 @@ El nuevo valor del archivo app.config es '{1}'
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
         <source>Portable</source>
-        <target state="translated">Portátil</target>
+        <target state="translated">Portable</target>
         <note />
       </trans-unit>
       <trans-unit id="BlockedResx">

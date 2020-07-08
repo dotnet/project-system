@@ -14,17 +14,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|Profile|DisplayName">
         <source>Profile</source>
-        <target state="new">Profile</target>
+        <target state="translated">配置文件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">路径</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">版本</target>
         <note />
       </trans-unit>
     </body>

@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="needs-review-translation">Aufgelöster Assemblyverweis</target>
+        <target state="translated">Assemblyverweis</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">Verweiseigenschaften</target>
+        <target state="translated">Assemblyverweiseigenschaften</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

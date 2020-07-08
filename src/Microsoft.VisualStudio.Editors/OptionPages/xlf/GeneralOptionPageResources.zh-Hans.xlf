@@ -39,12 +39,12 @@
       </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
-        <target state="new">Ignore solution and project settings</target>
+        <target state="translated">忽略解决方案和项目设置</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
-        <target state="new">File Nesting Settings</target>
+        <target state="translated">文件嵌套设置</target>
         <note />
       </trans-unit>
     </body>

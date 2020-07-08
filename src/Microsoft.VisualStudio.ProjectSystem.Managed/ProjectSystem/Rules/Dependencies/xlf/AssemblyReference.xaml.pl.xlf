@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">Właściwości odwołania</target>
+        <target state="translated">Właściwości odwołania do zestawu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

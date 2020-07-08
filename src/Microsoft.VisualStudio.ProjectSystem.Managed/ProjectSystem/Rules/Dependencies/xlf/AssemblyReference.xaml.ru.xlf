@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">Свойства ссылки</target>
+        <target state="translated">Свойства ссылок на сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="needs-review-translation">偵測到 PackageIconUrl，但已淘汰。請改用 PackageIcon。</target>
+        <target state="translated">偵測到 PackageIconUrl，但即將淘汰。請改用 PackageIcon。</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="needs-review-translation">偵測到 PackageLicenseURL 屬性，但該屬性已淘汰。請變更為運算式或檔案。</target>
+        <target state="translated">偵測到 PackageLicenseURL，但即將淘汰。請改用運算式或檔案。</target>
         <note />
       </trans-unit>
     </body>

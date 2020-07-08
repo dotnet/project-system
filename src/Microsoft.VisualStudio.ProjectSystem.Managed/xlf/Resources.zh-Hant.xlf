@@ -76,9 +76,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">無法開啟專案檔 '{0}'。
+        <target state="translated">無法開啟專案檔 '{0}'。
 
-用來載入此專案的專案類型不正確，可能是在 Visual Studio 外部將專案延伸模組重新命名所致。請移除並重新新增專案，讓解決方案挑選正確的專案類型。</target>
+此專案使用了錯誤的專案類型載入。這可能是在 Visual Studio 外部重新命名了專案延伸模組所致。請移除再重新新增該專案，以便於解決方案能夠挑選正確的專案類型。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

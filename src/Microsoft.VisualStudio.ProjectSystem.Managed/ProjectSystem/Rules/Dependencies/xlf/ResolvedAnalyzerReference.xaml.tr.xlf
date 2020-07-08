@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <target state="needs-review-translation">Çözümlenen Çözümleyici Başvurusu</target>
+        <target state="translated">Çözümleyici Başvurusu</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Reference Properties</source>
-        <target state="needs-review-translation">Çözümleyici Özellikleri</target>
+        <target state="translated">Çözümleyici Başvurusu Özellikleri</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

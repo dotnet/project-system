@@ -2005,7 +2005,7 @@ app.config 文件中的新值为“{1}”
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="translated">代码分析</target>
+        <target state="translated">Code Analysis</target>
         <note />
       </trans-unit>
     </body>

@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
         <source>Framework Reference Properties</source>
-        <target state="needs-review-translation">Vlastnosti rozhraní</target>
+        <target state="translated">Vlastnosti odkazu na rozhraní</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
         <source>Framework Reference</source>
-        <target state="needs-review-translation">Architektura</target>
+        <target state="translated">Odkaz na rozhraní</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

@@ -9,17 +9,17 @@
       </trans-unit>
       <trans-unit id="Rule|AnalyzerReference|Description">
         <source>Analyzer Reference Properties</source>
-        <target state="needs-review-translation">Proprietà dell'analizzatore</target>
+        <target state="translated">Proprietà riferimento ad analizzatore</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the analyzer assembly.</source>
-        <target state="new">Location of the analyzer assembly.</target>
+        <target state="translated">Percorso dell'assembly dell'analizzatore.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Percorso</target>
         <note />
       </trans-unit>
     </body>

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
         <source>SDK Reference</source>
-        <target state="needs-review-translation">解決された SDK 参照</target>
+        <target state="translated">SDK 参照</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">

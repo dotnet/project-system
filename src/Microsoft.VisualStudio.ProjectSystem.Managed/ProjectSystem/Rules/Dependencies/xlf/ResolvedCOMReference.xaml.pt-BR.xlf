@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="BoolProperty|Isolated|DisplayName">
         <source>Isolated</source>
-        <target state="new">Isolated</target>
+        <target state="translated">Isolada</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMajor|DisplayName">
         <source>Major Version</source>
-        <target state="new">Major Version</target>
+        <target state="translated">Versão Principal</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMinor|DisplayName">
         <source>Minor Version</source>
-        <target state="new">Minor Version</target>
+        <target state="translated">Versão Secundária</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|DisplayName">
         <source>COM Reference</source>
-        <target state="needs-review-translation">Referência COM resolvida</target>
+        <target state="translated">Referência COM</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <target state="new">The GUID of the COM server.</target>
+        <target state="translated">O GUID do servidor COM.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <target state="new">CLSID</target>
+        <target state="translated">CLSID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|Description">
         <source>The LCID of the COM server.</source>
-        <target state="new">The LCID of the COM server.</target>
+        <target state="translated">O LCID do servidor COM.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
         <source>Locale</source>
-        <target state="new">Locale</target>
+        <target state="translated">Localidade</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WrapperTool|DisplayName">
         <source>Wrapper Tool</source>
-        <target state="new">Wrapper Tool</target>
+        <target state="translated">Ferramenta do Wrapper</target>
         <note />
       </trans-unit>
     </body>
