@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     [ExportDebugger(ProjectDebugger.SchemaName)]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
+    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider
     {
         private readonly IVsService<IVsDebugger4> _vsDebuggerService;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
@@ -50,7 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called by CPS to determine whether we can launch
         /// </summary>
-        public override async Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
+        public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
+        {
+            return TplExtensions.TrueTask;
+        }
+
+        /// <summary>
+        /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.
+        /// </summary>
+        public async Task<bool> IsProjectDebuggableAsync(DebugLaunchOptions launchOptions)
         {
             try
             {
@@ -63,6 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
             catch (Exception)
             {
+                // If other exception, just return true.
             }
 
             return true;
