@@ -428,7 +428,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
                 if (validateSettings && await IsClassLibraryAsync())
                 {
-                    throw new ProjectNotRunnableDirectlyException(VSResources.ProjectNotRunnableDirectly);
+                    throw new ProjectNotRunnableDirectlyException();
                 }
 
                 // Otherwise, fall back to "TargetPath"
@@ -631,10 +631,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
     }
 
-    [Serializable]
     internal class ProjectNotRunnableDirectlyException : Exception
     {
         public ProjectNotRunnableDirectlyException()
+            :this(VSResources.ProjectNotRunnableDirectly)
         {
         }
 
