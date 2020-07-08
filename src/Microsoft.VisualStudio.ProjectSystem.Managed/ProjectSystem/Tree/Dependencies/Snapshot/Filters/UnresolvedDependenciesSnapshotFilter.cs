@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             AddDependencyContext context)
         {
             // TODO should this verify that the existing one is actually resolved?
-            if (!dependency.Resolved && context.Contains(dependency.ProviderType, dependency.Id))
+            if (!dependency.Resolved && context.Contains(dependency.GetDependencyId()))
             {
                 context.Reject();
                 return;
