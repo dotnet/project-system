@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, updatedActiveProfileName);
-            FinishUpdateAsync(newSnapshot);
+            FinishUpdate(newSnapshot);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 var newSnapshot = new LaunchSettings(launchSettingData, updatedActiveProfileName);
 
-                FinishUpdateAsync(newSnapshot);
+                FinishUpdate(newSnapshot);
             }
             catch (Exception ex)
             {
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message)
                     };
                     var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name);
-                    FinishUpdateAsync(snapshot);
+                    FinishUpdate(snapshot);
                 }
             }
         }
@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// Helper function to set the new snapshot and post the changes to consumers.
         /// </summary>
-        protected void FinishUpdateAsync(ILaunchSettings newSnapshot)
+        protected void FinishUpdate(ILaunchSettings newSnapshot)
         {
             CurrentSnapshot = newSnapshot;
 
@@ -711,7 +711,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 await SaveSettingsToDiskAsync(newSettings);
             }
 
-            FinishUpdateAsync(newSnapshot);
+            FinishUpdate(newSnapshot);
         }
 
         /// <summary>
