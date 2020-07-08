@@ -68,6 +68,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 };
             }
 
+            if (diagnosticLevel == DiagnosticLevel.None && !isResolved)
+            {
+                // Treat unresolved state as a warning diagnostic
+                diagnosticLevel = DiagnosticLevel.Warning;
+            }
+
             DependencyFlags depFlags = 0;
             if (isResolved)
                 depFlags |= DependencyFlags.Resolved;

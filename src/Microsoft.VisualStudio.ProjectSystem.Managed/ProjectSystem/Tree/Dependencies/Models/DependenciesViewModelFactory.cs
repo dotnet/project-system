@@ -22,18 +22,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
+        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, DiagnosticLevel maximumDiagnosticLevel)
         {
-            return new TargetDependencyViewModel(targetFramework, hasVisibleUnresolvedDependency);
+            return new TargetDependencyViewModel(targetFramework, maximumDiagnosticLevel);
         }
 
-        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasVisibleUnresolvedDependency)
+        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel)
         {
             IProjectDependenciesSubTreeProvider? provider = GetProvider();
 
             IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
-            return dependencyModel?.ToViewModel(hasVisibleUnresolvedDependency);
+            return dependencyModel?.ToViewModel(maximumDiagnosticLevel);
 
             IProjectDependenciesSubTreeProvider? GetProvider()
             {
@@ -43,11 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             }
         }
 
-        public ImageMoniker GetDependenciesRootIcon(bool hasVisibleUnresolvedDependency)
+        public ImageMoniker GetDependenciesRootIcon(DiagnosticLevel maximumDiagnosticLevel)
         {
-            return hasVisibleUnresolvedDependency
-                ? ManagedImageMonikers.ReferenceGroupWarning
-                : ManagedImageMonikers.ReferenceGroup;
+            return maximumDiagnosticLevel switch
+            {
+                DiagnosticLevel.None => ManagedImageMonikers.ReferenceGroup,
+                _ => ManagedImageMonikers.ReferenceGroupWarning
+            };
         }
     }
 }

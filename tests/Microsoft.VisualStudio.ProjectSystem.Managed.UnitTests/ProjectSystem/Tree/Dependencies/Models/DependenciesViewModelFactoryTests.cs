@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetFramework, hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetFramework, hasVisibleUnresolvedDependency: true);
+            var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.Warning);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1, subTreeProvider2 });
 
-            var result = factory.CreateGroupNodeViewModel("MyProvider1", hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("MyProvider1", maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result!.Caption);
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1 });
 
-            var result = factory.CreateGroupNodeViewModel("UnknownProviderType", hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("UnknownProviderType", maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.Null(result);
         }
@@ -96,8 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);
 
-            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(hasVisibleUnresolvedDependency: false));
-            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(hasVisibleUnresolvedDependency: true));
+            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.None));
+            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.Warning));
         }
 
         private class TestableDependenciesViewModelFactory : DependenciesViewModelFactory

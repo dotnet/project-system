@@ -14,22 +14,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public static IDependency ToResolved(
             this IDependency dependency,
-            string? schemaName = null)
+            string? schemaName = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
             return dependency.SetProperties(
                 resolved: true,
                 flags: dependency.GetResolvedFlags(),
-                schemaName: schemaName);
+                schemaName: schemaName,
+                diagnosticLevel: diagnosticLevel);
         }
 
         public static IDependency ToUnresolved(
             this IDependency dependency,
-            string? schemaName = null)
+            string? schemaName = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
             return dependency.SetProperties(
                 resolved: false,
                 flags: dependency.GetUnresolvedFlags(),
-                schemaName: schemaName);
+                schemaName: schemaName,
+                diagnosticLevel: diagnosticLevel);
         }
 
         private static ProjectTreeFlags GetResolvedFlags(this IDependency dependency)

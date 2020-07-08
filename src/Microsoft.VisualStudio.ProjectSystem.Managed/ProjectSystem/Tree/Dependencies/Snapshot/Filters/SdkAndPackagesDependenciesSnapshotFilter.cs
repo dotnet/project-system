@@ -37,10 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
 
                 if (context.TryGetDependency(new DependencyId(PackageRuleHandler.ProviderTypeString, dependency.Id), out IDependency package) && package.Resolved)
                 {
-                    // Set to resolved.
+                    // Set to resolved and clear any diagnostic.
 
                     context.Accept(dependency.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName));
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.None));
                     return;
                 }
             }
@@ -56,10 +57,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                     // as unresolved by SdkRuleHandler, and are only marked resolved here once we have resolved the
                     // corresponding package.
                     //
-                    // Set to resolved.
+                    // Set to resolved and clear any diagnostic.
 
                     context.AddOrUpdate(sdk.ToResolved(
-                        schemaName: ResolvedSdkReference.SchemaName));
+                        schemaName: ResolvedSdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.None));
                 }
             }
 
@@ -82,10 +84,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                     // We are removing the package dependency related to this SDK dependency
                     // and must undo the changes made above in BeforeAddOrUpdate.
                     //
-                    // Set to unresolved.
+                    // Set to unresolved and reinstate warning diagnostic.
 
                     context.AddOrUpdate(sdk.ToUnresolved(
-                        schemaName: SdkReference.SchemaName));
+                        schemaName: SdkReference.SchemaName,
+                        diagnosticLevel: DiagnosticLevel.Warning));
                 }
             }
 
