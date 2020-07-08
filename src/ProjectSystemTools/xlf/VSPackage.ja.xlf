@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../VSPackage.resx">
+    <body>
+      <trans-unit id="110">
+        <source>Project System Tools</source>
+        <target state="new">Project System Tools</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="112">
+        <source>Tools for working with C#, VisualBasic, and F# projects.</source>
+        <target state="new">Tools for working with C#, VisualBasic, and F# projects.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="113">
+        <source>MSBuild Binary Log Viewer</source>
+        <target state="new">MSBuild Binary Log Viewer</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

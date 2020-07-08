@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../TableControlResources.resx">
+    <body>
+      <trans-unit id="DimensionsHeaderLabel">
+        <source>Dimensions</source>
+        <target state="new">Dimensions</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ElapsedHeaderLabel">
+        <source>Elapsed</source>
+        <target state="new">Elapsed</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartTimeHeaderLabel">
+        <source>Start</source>
+        <target state="new">Start</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StatusHeaderLabel">
+        <source>Status</source>
+        <target state="new">Status</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetsHeaderLabel">
+        <source>Targets</source>
+        <target state="new">Targets</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeHeaderLabel">
+        <source>Time</source>
+        <target state="new">Time</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildTypeHeaderLabel">
+        <source>Type</source>
+        <target state="new">Type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectTypeHeaderLabel">
+        <source>Project</source>
+        <target state="new">Project</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
