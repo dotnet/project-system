@@ -23,14 +23,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// <summary>
         /// Initialize telemetry state with the set of target frameworks and rules we expect to observe.
         /// </summary>
-        void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);
+        void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);
 
         /// <summary>
         /// Indicate that a set of rules has been observed in either an Evaluation or Design Time pass.
         /// This information is used when firing tree update telemetry events to indicate whether all rules
         /// have been observed.
         /// </summary>
-        void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules);
+        void ObserveTargetFrameworkRules(TargetFramework targetFramework, IEnumerable<string> rules);
 
         /// <summary>
         /// Fire telemetry when dependency tree completes an update

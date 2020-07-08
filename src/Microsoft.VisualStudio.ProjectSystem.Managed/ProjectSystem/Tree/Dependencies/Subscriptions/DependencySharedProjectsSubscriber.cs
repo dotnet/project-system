@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
-            ITargetFramework targetFrameworkToUpdate,
+            TargetFramework targetFrameworkToUpdate,
             EventData e)
         {
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));

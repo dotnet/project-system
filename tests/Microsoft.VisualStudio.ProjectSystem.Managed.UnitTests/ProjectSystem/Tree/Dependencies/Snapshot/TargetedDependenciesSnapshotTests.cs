@@ -581,6 +581,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Same(dependencyUpdated, snapshot.Dependencies.Single());
         }
 
+        [Fact]
+        public void FromChanges_DifferentModelIdCapitalisation()
+        {
+            var targetFramework = new TargetFramework("tfm1");
+
+            var dependencyPrevious = new TestDependency
+            {
+                ProviderType = "Xxx",
+                Id = "dependency1",
+                Resolved = false
+            };
+
+            var dependencyModelUpdated = new TestDependencyModel
+            {
+                ProviderType = "XXX", // changed case
+                Id = "DEPENDENCY1",   // changed case
+                Resolved = true
+            };
+
+            var catalogs = IProjectCatalogSnapshotFactory.Create();
+            var previousSnapshot = new TargetedDependenciesSnapshot(
+                targetFramework,
+                catalogs,
+                ImmutableArray.Create<IDependency>(dependencyPrevious));
+
+            var changes = new DependenciesChangesBuilder();
+            changes.Added(dependencyModelUpdated);
+
+            var snapshot = TargetedDependenciesSnapshot.FromChanges(
+                previousSnapshot,
+                changes.TryBuildChanges()!,
+                catalogs,
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
+                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
+                null);
+
+            Assert.NotSame(previousSnapshot, snapshot);
+            var dependency = Assert.Single(snapshot.Dependencies);
+            Assert.Equal("DEPENDENCY1", dependency.Id);
+            Assert.Equal("XXX", dependency.ProviderType);
+            Assert.True(dependency.Resolved);
+        }
+
         internal sealed class TestDependenciesSnapshotFilter : IDependenciesSnapshotFilter
         {
             private enum FilterAction { Reject, Accept }

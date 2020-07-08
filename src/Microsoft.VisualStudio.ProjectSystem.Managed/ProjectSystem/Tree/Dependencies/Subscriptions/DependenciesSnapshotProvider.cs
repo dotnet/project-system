@@ -238,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     return;
                 }
 
-                ITargetFramework targetFramework =
+                TargetFramework targetFramework =
                     Strings.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                         ? TargetFramework.Any
                         : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
@@ -265,11 +265,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         }
 
         private void UpdateDependenciesSnapshot(
-            ITargetFramework changedTargetFramework,
+            TargetFramework changedTargetFramework,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<ITargetFramework> targetFrameworks,
-            ITargetFramework? activeTargetFramework,
+            ImmutableArray<TargetFramework> targetFrameworks,
+            TargetFramework? activeTargetFramework,
             CancellationToken token)
         {
             Assumes.NotNull(_commonServices.Project.FullPath);
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             return _context.Current;
         }
 
-        public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
+        public ConfiguredProject? GetConfiguredProject(TargetFramework target)
         {
             return _context.Current!.GetInnerConfiguredProject(target);
         }

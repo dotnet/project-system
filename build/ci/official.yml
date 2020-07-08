@@ -16,7 +16,6 @@ variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
-  DropRoot: \\cpvsbuild\drops\Roslyn
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
@@ -50,39 +49,71 @@ steps:
   condition: succeeded()
   continueOnError: true
 
-- task: PublishTestResults@1
+- task: PublishTestResults@2
   displayName: Publish Test Results
   inputs:
     testRunner: XUnit
     testResultsFiles: 'artifacts/$(BuildConfiguration)/TestResults/*.xml'
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
-    
-- task: PublishSymbols@1
-  displayName: Create Symbol Index
+
+- task: PowerShell@2
   inputs:
-    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
-    SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
-    SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
+    filePath: build\variables\_vsts.ps1
+    failOnStderr: true
+  displayName: Set VSTS variables based on source 
+
+# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
+# needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
+# Artifact -> publish to symweb
+
+#TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    Contents: |
+      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
+    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
+  displayName: Copy symbols
+
+- task: PublishSymbols@2
+  displayName: Archive symbols to VSTS
+  inputs:
+    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
+    SearchPattern: 
+      '**/*.pdb
+      **/*.dll
+      **/*.exe'
+    SymbolServerType: TeamServices
     SkipIndexing: true
     SymbolsProduct: 'Roslyn Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
   continueOnError: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/symbols'
+    ArtifactName: symbols
+    publishLocation: Container
+  displayName: 'Publish Artifact: symbols'
   
 - task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
-  displayName: Publish Symbols to Artifact Services
+  displayName: Publish Symbols to Artifact Services (symweb)
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
+    sourcePath: $(Build.ArtifactStagingDirectory)/symbols
     usePat: false
     
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
-    
+
+#TODO deprecate this with PublishBuildArtifacts@1
 - task: CopyPublishBuildArtifacts@1
   displayName: Publish Drop
   inputs:
@@ -95,8 +126,7 @@ steps:
      artifacts\$(BuildConfiguration)\VSSetup
      artifacts\$(BuildConfiguration)\TestResults
     ArtifactName: '$(Build.BuildNumber)'
-    ArtifactType: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    ArtifactType: Container
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0
@@ -123,6 +153,5 @@ steps:
   inputs:
     PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
     ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    publishLocation: Container
   condition: succeededOrFailed()

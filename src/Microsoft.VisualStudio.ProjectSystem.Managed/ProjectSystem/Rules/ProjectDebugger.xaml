@@ -23,9 +23,8 @@
   </Rule.Metadata>
 
   <DynamicEnumProperty Name="ActiveDebugProfile"
-                       DisplayName="Debug Target"
                        EnumProvider="DebugProfileProvider"
-                       Description="Specifies the profile to use for debugging.">
+                       Visible="False">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="UserFile"
                   HasConfigurationCondition="False"

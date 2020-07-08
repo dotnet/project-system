@@ -1,15 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
     ///     Responsible for reporting package restore progress to operation progress.
     /// </summary>
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(typeof(IImplicitlyActiveService))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreProgressTracker : AbstractMultiLifetimeComponent<PackageRestoreProgressTracker.PackageRestoreProgressTrackerInstance>, IProjectDynamicLoadComponent
+    internal partial class PackageRestoreProgressTracker : AbstractMultiLifetimeComponent<PackageRestoreProgressTracker.PackageRestoreProgressTrackerInstance>, IImplicitlyActiveService
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
@@ -34,6 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _dataProgressTrackerService = dataProgressTrackerService;
             _dataSource = dataSource;
             _projectSubscriptionService = projectSubscriptionService;
+        }
+
+        public Task ActivateAsync()
+        {
+            return LoadAsync();
+        }
+
+        public Task DeactivateAsync()
+        {
+            return UnloadAsync();
         }
 
         protected override PackageRestoreProgressTrackerInstance CreateInstance()

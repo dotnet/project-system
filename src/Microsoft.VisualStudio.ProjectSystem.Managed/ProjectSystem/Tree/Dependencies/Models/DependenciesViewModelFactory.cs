@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, DiagnosticLevel maximumDiagnosticLevel)
+        public IDependencyViewModel CreateTargetViewModel(TargetFramework targetFramework, DiagnosticLevel maximumDiagnosticLevel)
         {
             return new TargetDependencyViewModel(targetFramework, maximumDiagnosticLevel);
         }
