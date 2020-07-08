@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             var vsimports = CreateInstance(
                                 Mock.Of<VSLangProj.VSProject>(),
                                 Mock.Of<IProjectThreadingService>(),
-                                Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
+                                Mock.Of<IActiveConfiguredValue<ConfiguredProject>>(),
                                 Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
                                 VisualBasicNamespaceImportsListFactory.CreateInstance());
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             var vsimports = CreateInstance(
                                 vsProjectMock.Object,
                                 Mock.Of<IProjectThreadingService>(),
-                                Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
+                                Mock.Of<IActiveConfiguredValue<ConfiguredProject>>(),
                                 Mock.Of<IProjectAccessor>(),
                                 Mock.Of<IUnconfiguredProjectVsServices>(),
                                 VisualBasicNamespaceImportsListFactory.CreateInstance());
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             var vsimports = CreateInstance(
                     Mock.Of<VSLangProj.VSProject>(),
                     Mock.Of<IProjectThreadingService>(),
-                    Mock.Of<ActiveConfiguredProject<ConfiguredProject>>(),
+                    Mock.Of<IActiveConfiguredValue<ConfiguredProject>>(),
                     Mock.Of<IProjectAccessor>(),
                     Mock.Of<IUnconfiguredProjectVsServices>(),
                     VisualBasicNamespaceImportsListFactory.CreateInstance("A", "B"));
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         private static VisualBasicVSImports CreateInstance(
             VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
+            IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
             IProjectAccessor projectAccessor,
             IUnconfiguredProjectVsServices vsServices,
             VisualBasicNamespaceImportsList importList)

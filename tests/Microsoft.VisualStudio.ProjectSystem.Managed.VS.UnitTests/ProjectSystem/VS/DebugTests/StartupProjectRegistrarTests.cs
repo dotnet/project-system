@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Shell.Interop;
 using Xunit;
-using static Microsoft.VisualStudio.ProjectSystem.VS.Debug.StartupProjectRegistrar;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
@@ -148,17 +147,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private static Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(Guid projectGuid, IVsStartupProjectsListService vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
         {
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(projectGuid);
-            var debuggerLaunchProviders = new DebuggerLaunchProviders(ConfiguredProjectFactory.Create());
+            var debuggerLaunchProviders = new OrderPrecedenceImportCollection<IDebugLaunchProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
 
             int orderPrecedence = 0;
             foreach (IDebugLaunchProvider launchProvider in launchProviders)
             {
-                debuggerLaunchProviders.Debuggers.Add(launchProvider, orderPrecedence: orderPrecedence++);
+                debuggerLaunchProviders.Add(launchProvider, orderPrecedence: orderPrecedence++);
             }
 
             return CreateInitializedInstanceAsync(vsStartupProjectsListService: vsStartupProjectsListService,
                                                   projectGuidService: projectGuidService,
-                                                  launchProviders: ActiveConfiguredProjectFactory.ImplementValue(() => debuggerLaunchProviders));
+                                                  launchProviders: IActiveConfiguredValuesFactory.ImplementValues(() => debuggerLaunchProviders));
         }
 
         private static async Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(
@@ -166,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
            IProjectThreadingService? threadingService = null,
            ISafeProjectGuidService? projectGuidService = null,
            IActiveConfiguredProjectSubscriptionService? projectSubscriptionService = null,
-           ActiveConfiguredProject<DebuggerLaunchProviders>? launchProviders = null)
+           IActiveConfiguredValues<IDebugLaunchProvider>? launchProviders = null)
         {
             var instance = CreateInstance(vsStartupProjectsListService, threadingService, projectGuidService, projectSubscriptionService, launchProviders);
             await instance.InitializeAsync();
@@ -179,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectThreadingService? threadingService = null,
             ISafeProjectGuidService? projectGuidService = null,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService = null,
-            ActiveConfiguredProject<DebuggerLaunchProviders>? launchProviders = null)
+            IActiveConfiguredValues<IDebugLaunchProvider>? launchProviders = null)
         {
 
             var project = UnconfiguredProjectFactory.Create();

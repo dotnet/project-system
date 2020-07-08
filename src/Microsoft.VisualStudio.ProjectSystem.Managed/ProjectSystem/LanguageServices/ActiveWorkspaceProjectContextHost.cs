@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class ActiveWorkspaceProjectContextHost : IActiveWorkspaceProjectContextHost
     {
-        private readonly ActiveConfiguredProject<IWorkspaceProjectContextHost> _activeHost;
+        private readonly IActiveConfiguredValue<IWorkspaceProjectContextHost?> _activeHost;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
 
         [ImportingConstructor]
         public ActiveWorkspaceProjectContextHost(
-            ActiveConfiguredProject<IWorkspaceProjectContextHost> activeHost,
+            IActiveConfiguredValue<IWorkspaceProjectContextHost?> activeHost,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
             IUnconfiguredProjectTasksService tasksService)
         {
@@ -46,7 +46,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    await _activeHost.Value.PublishAsync(tokenSource.Token);
+                    IWorkspaceProjectContextHost? host = _activeHost.Value;
+                    if (host != null)
+                    {
+                        await host.PublishAsync(tokenSource.Token);
+                    }
+
                     return;
                 }
                 catch (OperationCanceledException) when (activeConfigChangedToken.IsCancellationRequested)
@@ -61,7 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 try
                 {
-                    await _activeHost.Value.OpenContextForWriteAsync(action);
+                    IWorkspaceProjectContextHost? host = _activeHost.Value;
+                    if (host != null)
+                    {
+                        await host.OpenContextForWriteAsync(action);
+                    }
+
                     return;
                 }
                 catch (ActiveProjectConfigurationChangedException)
@@ -76,7 +86,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 try
                 {
-                    return await _activeHost.Value.OpenContextForWriteAsync(action);
+                    IWorkspaceProjectContextHost? host = _activeHost.Value;
+                    if (host != null)
+                    {
+                        return await host.OpenContextForWriteAsync(action);
+                    }
+
+                    return default!;
                 }
                 catch (ActiveProjectConfigurationChangedException)
                 {   // Host was unloaded because configuration changed, retry on new config

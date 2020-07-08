@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string ErrorProfileCommandName = "ErrorProfile";
 
         private readonly UnconfiguredProject _project;
-        private readonly ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
         private readonly IUnconfiguredProjectServices _projectServices;
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
             IProjectFaultHandlerService projectFaultHandler)
         {
             _project = project;
@@ -897,7 +897,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
             // see: https://github.com/dotnet/project-system/issues/2316.
 
-            string folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
+            string folder = await _appDesignerSpecialFileProvider.Value?.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
 
             if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
                 folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
