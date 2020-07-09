@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     {
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
-        private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
+        private readonly IActiveConfiguredValue<ProjectProperties> _projectProperties;
         private readonly BuildManager _buildManager;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ProjectProperties> projectProperties,
+            IActiveConfiguredValue<ProjectProperties> projectProperties,
             UnconfiguredProject project,
             BuildManager buildManager)
         {

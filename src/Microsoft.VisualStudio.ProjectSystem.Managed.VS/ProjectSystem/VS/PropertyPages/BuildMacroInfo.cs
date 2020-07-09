@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     internal class BuildMacroInfo : IVsBuildMacroInfo, IDisposable
     {
         private IProjectThreadingService? _threadingService;
-        private ActiveConfiguredProject<ConfiguredProject>? _configuredProject;
+        private IActiveConfiguredValue<ConfiguredProject>? _configuredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildMacroInfo"/> class.
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <param name="threadingService">Project threading service.</param>
         [ImportingConstructor]
         public BuildMacroInfo(
-            ActiveConfiguredProject<ConfiguredProject> configuredProject,
+            IActiveConfiguredValue<ConfiguredProject> configuredProject,
             IProjectThreadingService threadingService)
         {
             _threadingService = threadingService;

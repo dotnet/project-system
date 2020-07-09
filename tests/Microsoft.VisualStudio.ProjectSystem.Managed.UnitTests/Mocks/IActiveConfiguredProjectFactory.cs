@@ -5,11 +5,12 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal static class ActiveConfiguredProjectFactory
+    internal static class IActiveConfiguredValueFactory
     {
-        public static ActiveConfiguredProject<T> ImplementValue<T>(Func<T> action)
+        public static IActiveConfiguredValue<T> ImplementValue<T>(Func<T> action)
+            where T : class?
         {
-            var mock = new Mock<ActiveConfiguredProject<T>>();
+            var mock = new Mock<IActiveConfiguredValue<T>>();
 
             mock.SetupGet(p => p.Value)
                 .Returns(action);

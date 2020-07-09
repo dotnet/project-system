@@ -324,7 +324,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 project,
                 projectTreeService,
                 new Lazy<IFileSystem>(() => fileSystem),
-                ActiveConfiguredProjectFactory.ImplementValue(() => new PhysicalProjectTreeStorage.ConfiguredImports(folderManager, sourceItemsProvider)));
+                IActiveConfiguredValueFactory.ImplementValue(() => new PhysicalProjectTreeStorage.ConfiguredImports(folderManager, sourceItemsProvider)));
         }
     }
 }
