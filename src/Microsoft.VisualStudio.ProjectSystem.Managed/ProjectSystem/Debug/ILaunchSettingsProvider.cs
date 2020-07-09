@@ -23,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ILaunchProfile? ActiveProfile { get; }
 
         /// <summary>
-        /// Replaces the current set of profiles with the contents of profiles. If changes were
-        /// made, the file will be checked out and updated. If the active profile is different, the
-        /// active profile property is updated.
+        /// Replaces the current set of profiles with the contents of <paramref name="profiles"/>.
+        /// If changes were made, the file will be checked out and updated. Note that the
+        /// active profile in <paramref name="profiles"/> is ignored; to change the active
+        /// profile use <see cref="SetActiveProfileAsync(string)"/> instead.
         /// </summary>
         Task UpdateAndSaveSettingsAsync(ILaunchSettings profiles);
 
