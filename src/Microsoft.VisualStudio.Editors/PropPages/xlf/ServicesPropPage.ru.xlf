@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../ServicesPropPage.resx">
+    <body>
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="translated">Службы клиентских приложений позволяют использовать в Windows приложениях службы ASP.NET входа (аутентификации), ролей и профиля (настроек).  Дополнительные сведения о службах клиентских приложений...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="translated">Использовать &amp;проверку подлинности Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="translated">Проверка подлиннос&amp;ти на основе форм</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="translated">Дополнительно: П&amp;оставщик учетных данных
+(например, MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">&amp;Расположение службы проверки подлинности:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="translated">Проверка подлинности</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="translated">Расположение &amp;службы роли:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="translated">Расположение службы &amp;веб-параметров:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">Д&amp;ополнительно...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="translated">Включить службы приложений &amp;клиента</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

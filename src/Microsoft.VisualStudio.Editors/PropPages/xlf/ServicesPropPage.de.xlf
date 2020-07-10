@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../ServicesPropPage.resx">
+    <body>
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="translated">Dank Clientanwendungsdiensten können Ihre Windows-basierten Anwendungen die ASP.NET-Dienste für Anmeldung (Authentifizierung), Rollen und Profile (Einstellungen) nutzen.  Erfahren Sie mehr über Clientanwendungsdienste</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="translated">Window&amp;s-Authentifizierung verwenden</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="translated">&amp;Formularauthentifizierung verwenden</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="translated">Optional: Anmeldeinfor&amp;mationsanbieter
+(Beispiel: EigenerNamespace.EigeneAnmeldeklasse, EigeneAssembly):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">Speicherort des &amp;Authentifizierungsdiensts:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="translated">Authentifizierung</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="translated">Speicherort des &amp;Rollendiensts:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="translated">Speicherort des We&amp;beinstellungsdiensts:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">Er&amp;weitert...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="translated">Clientanwendungsdienste aktivi&amp;eren</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

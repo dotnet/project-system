@@ -1,0 +1,32 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project DefaultTargets="CodeCov">
+
+  <Import Project="..\import\Versions.props" />
+  <Import Project="..\import\NuGet.props" />
+  <Import Project="..\import\RepoLayout.props" />
+
+  <Target Name="Codecov">
+    <PropertyGroup>
+      <_CodecovPath>$(NuGetPackageRoot)codecov\$(CodecovVersion)\tools\Codecov.exe</_CodecovPath>
+
+      <_BranchName Condition="'$(_BranchName)' == ''">$(ghprbTargetBranch)</_BranchName>
+      <_BranchName Condition="'$(_BranchName)' == ''">$(BranchName)</_BranchName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_CoverageReports Include="$(ArtifactsTestResultsDir)*.coverage" />
+
+      <_CodecovArgs Include="-f;@(_CoverageReports)" />
+      <_CodecovArgs Include="-r;$(QualifiedRepoName)" Condition="'$(QualifiedRepoName)' != ''" />
+      <_CodecovArgs Include="--pr;$(ghprbPullId)" Condition="'$(ghprbPullId)' != ''" />
+      <_CodecovArgs Include="-b;$(BUILD_NUMBER)" Condition="'$(BUILD_NUMBER)' != ''" />
+      <_CodecovArgs Include="--branch;$(_BranchName)" Condition="'$(_BranchName)' != ''" />
+      <_CodecovArgs Include="-c;$(ghprbActualCommit)" Condition="'$(ghprbActualCommit)' != ''" />
+      <_CodecovArgs Include="-n;$(JOB_NAME)" Condition="'$(JOB_NAME)' != ''" />
+      <_CodecovArgs Include="--flag;$(Configuration)" Condition="'$(Configuration)' != ''" />
+    </ItemGroup>
+
+    <Exec Command="&quot;$(_CodecovPath)&quot; @(_CodecovArgs, ' ')" />
+  </Target>
+
+</Project>

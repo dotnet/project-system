@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../ServicesAuthenticationForm.resx">
+    <body>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">Ubicación del servicio de &amp;autenticación:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserNameLabel.Text">
+        <source>&amp;Username:</source>
+        <target state="translated">Nombre de &amp;usuario:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PasswordLabel.Text">
+        <source>&amp;Password:</source>
+        <target state="translated">&amp;Contraseña:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>&amp;Log In</source>
+        <target state="translated">I&amp;niciar sesión</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Cancel.Text">
+        <source>&amp;Skip Login</source>
+        <target state="translated">&amp;Omitir inicio de sesión</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InfoLabel.Text">
+        <source>To retrieve Web settings for a particular user, specify the user credentials and click Log In. To skip authentication and retrieve Web settings for anonymous users, click Skip Login. 
+ 
+You can modify the location of the authentication and Web settings services on the Services page of the Project Designer. 
+</source>
+        <target state="translated">Para recuperar la configuración web de un usuario, especifique las credenciales del mismo y haga clic en Iniciar sesión. Para omitir la autenticación y recuperar la configuración web de los usuarios anónimos, haga clic en Omitir inicio de sesión. 
+ 
+Puede modificar la ubicación de los servicios de autenticación y configuración web en la página Servicios del Diseñador de proyectos. 
+</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Login</source>
+        <target state="translated">Inicio de sesión</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

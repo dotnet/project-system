@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../CodeAnalysisPropPage.resx">
+    <body>
+      <trans-unit id="InstallCustomVersionButton.Text">
+        <source>&amp;...</source>
+        <target state="new">&amp;...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstallLatestVersionButton.Text">
+        <source>&amp;Install</source>
+        <target state="translated">I&amp;nstalar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstalledVersionLabel.Text">
+        <source>Installed Version:</source>
+        <target state="translated">Versión instalada:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UninstallAnalyzersButton.Text">
+        <source>&amp;Uninstall</source>
+        <target state="translated">&amp;Desinstalar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameLabel.Text">
+        <source>Recommended analyzer package:</source>
+        <target state="translated">Paquete de analizadores recomendado:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameTextBox.Text">
+        <source>Microsoft.CodeAnalysis.FxCopAnalyzers</source>
+        <target state="translated">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersLabel.Text">
+        <source>Analyzers</source>
+        <target state="translated">Analizadores</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
+        <source>What are the benefits of source code analyzers?</source>
+        <target state="translated">¿Cuáles son las ventajas de los analizadores de código fuente?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
+        <source>Run on &amp;live analysis</source>
+        <target state="translated">Ejecutar durante el análisis en &amp;directo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringBuild.Text">
+        <source>Run on &amp;build</source>
+        <target state="translated">Ejecutar durante la &amp;compilación</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

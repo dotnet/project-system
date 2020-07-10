@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.-->
+<Rule Name="EmbeddedResource"
+      Description="File Properties"
+      DisplayName="Embedded Resource"
+      PageTemplate="generic"
+      PropertyPagesHidden="true"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.Categories>
+    <Category Name="Advanced"
+              DisplayName="Advanced" />
+    <Category Name="Misc"
+              DisplayName="Misc" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="EmbeddedResource"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       Category="Advanced"
+                       Description="How the file relates to the build and deployment processes."
+                       DisplayName="Build Action"
+                       EnumProvider="ItemTypes" />
+
+  <BoolProperty Name="AutoGen"
+                Visible="false" />
+
+  <EnumProperty Name="CopyToOutputDirectory"
+                Category="Advanced"
+                Description="Specifies the source file will be copied to the output directory."
+                DisplayName="Copy to Output Directory">
+    <EnumValue Name="Never"
+               DisplayName="Do not copy" />
+    <EnumValue Name="Always"
+               DisplayName="Copy always" />
+    <EnumValue Name="PreserveNewest"
+               DisplayName="Copy if newer" />
+  </EnumProperty>
+
+  <StringProperty Name="CustomTool"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="EmbeddedResource"
+                  PersistedName="Generator"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="CustomToolNamespace"
+                  Category="Advanced"
+                  Description="The namespace into which the output of the custom tool is placed."
+                  DisplayName="Custom Tool Namespace" />
+
+  <StringProperty Name="DependentUpon"
+                  Visible="false" />
+
+  <BoolProperty Name="DesignTime"
+                Visible="false" />
+
+  <BoolProperty Name="DesignTimeSharedInput"
+                Visible="false" />
+
+  <StringProperty Name="Extension"
+                  ReadOnly="true"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="EmbeddedResource"
+                  PersistedName="Extension"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="FileNameAndExtension"
+                  Category="Misc"
+                  Description="Name of the file or folder."
+                  DisplayName="File Name"
+                  ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource ItemType="EmbeddedResource"
+                  PersistedName="FileNameAndExtension"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="FullPath"
+                  Category="Misc"
+                  Description="Location of the file."
+                  DisplayName="Full Path"
+                  ReadOnly="true">
+    <StringProperty.DataSource>
+      <DataSource ItemType="EmbeddedResource"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="Generator"
+                  Category="Advanced"
+                  Description="Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool."
+                  DisplayName="Custom Tool" />
+
+  <StringProperty Name="Identity"
+                  ReadOnly="true"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource ItemType="EmbeddedResource"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="LastGenOutput"
+                  Visible="false" />
+
+  <StringProperty Name="Link"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <EnumProperty Name="SubType"
+                Visible="false">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="DesignTimeItemPropertiesStorage"
+                  ItemType="EmbeddedResource"
+                  PersistedName="SubType"
+                  HasConfigurationCondition="false"/>
+    </EnumProperty.DataSource>
+    <EnumValue Name="Designer" />
+    <EnumValue Name="Component" />
+    <EnumValue Name="UserControl" />
+    <EnumValue Name="Form" />
+    <EnumValue Name="Code" />
+  </EnumProperty>
+
+  <StringProperty Name="URL"
+                  ReadOnly="true"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource ItemType="EmbeddedResource"
+                  PersistedName="FullPath"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="Visible"
+                Visible="false" />
+
+</Rule>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../DebugPropPage.resx">
+    <body>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Authentication &amp;mode:</source>
+        <target state="translated">Режим &amp;проверки подлинности:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartActionLabel.Text">
+        <source>Start action</source>
+        <target state="translated">Действие при запуске</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProject.Text">
+        <source>&amp;Start project</source>
+        <target state="translated">&amp;Запуск проекта</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProgram.Text">
+        <source>Start e&amp;xternal program:</source>
+        <target state="translated">Запуск &amp;внешней программы:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartURL.Text">
+        <source>Start browser with U&amp;RL:</source>
+        <target state="translated">Запускать &amp;браузер, используя URL-адрес:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgram.AccessibleName">
+        <source>Program to start</source>
+        <target state="translated">Программа для запуска</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartURL.AccessibleName">
+        <source>URL to start browser with</source>
+        <target state="translated">URL-адрес для начала работы браузера</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.AccessibleName">
+        <source>Browse for external program</source>
+        <target state="translated">Выбор внешней программы</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.Text">
+        <source>&amp;Browse...</source>
+        <target state="translated">&amp;Обзор...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartOptionsLabel.Text">
+        <source>Start options</source>
+        <target state="translated">Параметры запуска</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CommandLineArgsLabel.Text">
+        <source>Comma&amp;nd line arguments:</source>
+        <target state="translated">&amp;Аргументы командной строки:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirLabel.Text">
+        <source>Wor&amp;king directory:</source>
+        <target state="translated">Ра&amp;бочий каталог:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugEnabled.Text">
+        <source>Use remote m&amp;achine</source>
+        <target state="translated">Использовать удаленный &amp;компьютер</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachine.AccessibleName">
+        <source>Remote Machine Name:</source>
+        <target state="translated">Имя удаленного компьютера:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
+        <source>Browse for working directory</source>
+        <target state="translated">Выбор рабочего каталога</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.Text">
+        <source>Bro&amp;wse...</source>
+        <target state="translated">&amp;Обзор...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableDebuggerLabel.Text">
+        <source>Debugger engines</source>
+        <target state="translated">Модули отладчика</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableSQLServerDebugging.Text">
+        <source>Enable SQ&amp;L Server debugging</source>
+        <target state="translated">&amp;Включить отладку SQL Server</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableUnmanagedDebugging.Text">
+        <source>Enable na&amp;tive code debugging</source>
+        <target state="translated">Включить отладку в &amp;машинном коде</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Аргументы командной строки</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

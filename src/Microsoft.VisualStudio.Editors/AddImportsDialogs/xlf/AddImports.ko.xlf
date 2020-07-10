@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../AddImports.resx">
+    <body>
+      <trans-unit id="AddImportsMainTextFormatString">
+        <source>Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</source>
+        <target state="translated">'{0}'을(를) 가져오면 이 파일에 있는 다른 식별자의 의미가 달라질 수 있습니다. '{1}'을(를) 수정하고 다른 식별자의 의미를 유지하려면 다음 옵션 중 하나를 선택하세요.</target>
+        <note>
+      Defines the replacement string for use in the main label of the Add Imports collision dialog.
+    </note>
+      </trans-unit>
+      <trans-unit id="ImportsAnywaysFormatString">
+        <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
+        <target state="translated">'{0}'을(를) 가져오고 영향을 받는 식별자를 한정합니다(&amp;I).</target>
+        <note>
+      Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
+      This text will be formated as richtext.
+      
+      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
+      contained in this resource.
+
+      Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
+      with the label this text will be inserted into.
+    </note>
+      </trans-unit>
+      <trans-unit id="QualifyCurrentLineFormatString">
+        <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
+        <target state="translated">'{0}'을(를) 가져오지 않고 '{1}'을(를) '{2}'(으)로 변경합니다(&amp;D).</target>
+        <note>
+      Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
+      This text will be formated as richtext. 
+      
+      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
+      contained in this resource.
+
+
+      Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
+      with the label this text will be inserted into.
+    </note>
+      </trans-unit>
+      <trans-unit id="AddImportsExtensionMethodsMainFormatString">
+        <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
+        <target state="translated">'{0}'을(를) 가져오면 확장 메서드에 대한 호출을 포함하여 파일에 있는 다른 코드의 의미가 변경됩니다. '{1}'을(를) '{2}'(으)로 수정하려면 [확인]을 클릭하세요. </target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

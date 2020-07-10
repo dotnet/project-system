@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml" />
+      <trans-unit id="ContentType|Text|DisplayName">
+        <source>Text file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XML|DisplayName">
+        <source>Xml file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|HTML|DisplayName">
+        <source>Html file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|CSS|DisplayName">
+        <source>Cascading style sheet</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Json|DisplayName">
+        <source>Json file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Font|DisplayName">
+        <source>Font file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Media|DisplayName">
+        <source>Media file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Image|DisplayName">
+        <source>Image file</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|None|DisplayName">
+        <source>None</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Content|DisplayName">
+        <source>Content</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

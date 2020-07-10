@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../VSPackage.resx">
+    <body>
+      <trans-unit id="3">
+        <source>Console App (.NET Core)</source>
+        <target state="translated">Aplicación de consola (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="4">
+        <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Proyecto para crear una aplicación de línea de comandos que se puede ejecutar en .NET Core en Windows, Linux y MacOS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Class Library (.NET Standard)</source>
+        <target state="translated">Biblioteca de clases (.NET Standard)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="6">
+        <source>A project for creating a class library that targets .NET Standard.</source>
+        <target state="translated">Proyecto para crear una biblioteca de clases para .NET Standard.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Class Library (.NET Core)</source>
+        <target state="translated">Biblioteca de clases (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="10">
+        <source>A project for creating a class library that targets .NET Core.</source>
+        <target state="translated">Proyecto para crear una biblioteca de clases para .NET Core.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="11">
+        <source>xUnit Test Project (.NET Core)</source>
+        <target state="translated">Proyecto de pruebas xUnit (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="12">
+        <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Proyecto que contiene pruebas xUnit que se pueden ejecutar en .NET Core en Windows, Linux y MacOS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="13">
+        <source>NUnit Test Project (.NET Core)</source>
+        <target state="translated">Proyecto de prueba NUnit (.NET Core)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="14">
+        <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
+        <target state="translated">Un proyecto que contiene tests de NUnit que pueden ejecutarse en .NET Core en Windows, Linux y MacOS.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="21">
+        <source>Visual Basic</source>
+        <target state="translated">Visual Basic</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="22">
+        <source>Visual Basic Project Files (*.vbproj);*.vbproj</source>
+        <target state="translated">Archivos de proyecto de Visual Basic (*.vbproj);*.vbproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="23">
+        <source>F#</source>
+        <target state="translated">F#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="24">
+        <source>F# Project Files (*.fsproj);*.fsproj</source>
+        <target state="translated">Archivos de proyecto de F# (*.fsproj);*.fsproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="25">
+        <source>C#</source>
+        <target state="translated">C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="26">
+        <source>C# Project Files (*.csproj);*.csproj</source>
+        <target state="translated">Archivos de proyecto de C# (*.csproj);*.csproj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="27">
+        <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
+        <target state="translated">Archivos de proyecto de .NET Core 2015 (*.xproj);*.xproj</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

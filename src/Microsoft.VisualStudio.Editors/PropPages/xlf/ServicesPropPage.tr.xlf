@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../ServicesPropPage.resx">
+    <body>
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="translated">İstemci uygulama hizmetleri Windows tabanlı uygulamalarınızın ASP.NET oturum açma (kimlik doğrulaması), rol ve profil (ayarlar) hizmetlerini kullanmasını sağlar.  İstemci uygulama hizmetleri hakkında daha fazla bilgi edinin...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="translated">&amp;Windows kimlik doğrulaması kullan</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="translated">&amp;Forms kimlik doğrulaması kullan</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="translated">İsteğe bağlı: Kimlik bilgileri &amp;sağlayıcısı
+(örneğin: MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">&amp;Kimlik doğrulama hizmeti konumu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="translated">Kimlik doğrulama</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="translated">&amp;Rol hizmeti konumu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="translated">We&amp;b ayarları hizmet konumu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">G&amp;elişmiş...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="translated">&amp;İstemci uygulama hizmetlerini etkinleştir</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

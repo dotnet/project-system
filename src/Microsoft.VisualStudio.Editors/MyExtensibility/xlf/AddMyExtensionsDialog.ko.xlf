@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../AddMyExtensionsDialog.resx">
+    <body>
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="translated">확인</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="translated">취소</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.Text">
+        <source>Name</source>
+        <target state="translated">이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.Text">
+        <source>Version</source>
+        <target state="translated">버전</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="listViewExtensions.AccessibleName">
+        <source>Available My Namespace Extensions</source>
+        <target state="translated">사용 가능한 My 네임스페이스 확장</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add Visual Basic My Namespace Extension</source>
+        <target state="translated">Visual Basic My 네임스페이스 확장 추가</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.Text">
+        <source>Description</source>
+        <target state="translated">설명</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

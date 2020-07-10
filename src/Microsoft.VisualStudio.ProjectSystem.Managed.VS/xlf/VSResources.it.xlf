@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../VSResources.resx">
+    <body>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
+        <source>The name of the framework assembly.</source>
+        <target state="new">The name of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
+        <source>Assembly Name</source>
+        <target state="new">Assembly Name</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
+        <source>The assembly version of the framework assembly.</source>
+        <target state="new">The assembly version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
+        <source>Assembly Version</source>
+        <target state="new">Assembly Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
+        <source>Framework Assembly</source>
+        <target state="new">Framework Assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDescription">
+        <source>The file version of the framework assembly.</source>
+        <target state="new">The file version of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
+        <source>File Version</source>
+        <target state="new">File Version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDescription">
+        <source>Path of the framework assembly.</source>
+        <target state="new">Path of the framework assembly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FrameworkAssemblyPathDisplayName">
+        <source>Path</source>
+        <target state="new">Path</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportsFromTargetCannotBeDeleted">
+        <source>{0} - Import comes fom target file. This import cannot be removed.</source>
+        <target state="translated">{0} - L'importazione proviene dal file di destinazione e non può essere rimossa.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RenameSymbolFailed">
+        <source>Renaming the code element '{0}' failed.</source>
+        <target state="translated">La ridenominazione dell'elemento di codice '{0}' non è riuscita.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RenameSymbolPrompt">
+        <source>You are renaming a file. Would you also like to perform a rename in this project of all references to the code element '{0}'?</source>
+        <target state="translated">Si sta rinominando un file. Rinominare anche tutti i riferimenti all'elemento di codice '{0}' di questo progetto?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ActiveLaunchProfileNotFound">
+        <source>There aren't any active launch profiles configured for this project.</source>
+        <target state="translated">Non ci sono profili di avvio attivi configurati per questo progetto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DontKnowHowToRunProfile">
+        <source>The project doesn't know how to run the profile {0}.</source>
+        <target state="translated">Il progetto non dispone di informazioni sufficienti per eseguire il profilo {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorInProfilesFile">
+        <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project . Please see the error list for details.</source>
+        <target state="translated">Per eseguire il progetto '{0}', è prima necessario correggere un errore nel file delle impostazioni di avvio. Per informazioni dettagliate, vedere l'elenco errori.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorInProfilesFile2">
+        <source>An error in the launch settings file needs to be corrected before you can run the '{0}' project. {1}. Please see the error list for details.</source>
+        <target state="translated">Per eseguire il progetto '{0}', è prima necessario correggere un errore nel file delle impostazioni di avvio. {1}. Per informazioni dettagliate, vedere l'elenco errori.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProjectNotRunnableDirectly">
+        <source>A project with an Output Type of Class Library cannot be started directly.
+
+In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project.</source>
+        <target state="translated">Non è possibile avviare direttamente un progetto con tipo di output della libreria di classi.
+
+Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto eseguibile che fa riferimento al progetto di libreria. Impostare il progetto eseguibile come progetto di avvio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoDebugExecutableSpecified">
+        <source>The debug profile '{0}' is missing the path to the executable to debug.</source>
+        <target state="translated">Nel profilo di debug '{0}' manca il percorso dell'eseguibile per il debug.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugExecutableNotFound">
+        <source>The debug executable '{0}' specified in the '{1}' debug profile does not exist.</source>
+        <target state="translated">L'eseguibile di debug '{0}' specificato nel profilo di debug '{1}' non esiste.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirecotryInvalid">
+        <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
+        <target state="translated">La directory di lavoro '{0}' specificata nel profilo di debug '{1}' non esiste.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoMigratedCSProjFound">
+        <source>Expected to find migrated cpsroj in {0}, but did not find any.</source>
+        <target state="translated">In {0} era previsto il file cpsroj di cui è stata eseguita la migrazione, ma non ne è stato trovato nessuno.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EditProjectFileCommand">
+        <source>Edit {0}</source>
+        <target state="translated">Modifica {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoRunCommandSpecifiedInProject">
+        <source>Unable to run your project. The "RunCommand" property is not defined.</source>
+        <target state="translated">Non è possibile eseguire il progetto. La proprietà "RunCommand" non è definita.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MultiTFEditNotSupported">
+        <source>Editing of multiple target framework is not supported.</source>
+        <target state="translated">La modifica di più framework di destinazione non è supportata.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackCommand">
+        <source>&amp;Pack</source>
+        <target state="translated">Crea &amp;pacchetto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PackSelectedProjectCommand">
+        <source>&amp;Pack {0}</source>
+        <target state="translated">Crea &amp;pacchetto di {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugFrameworkMenuText">
+        <source>Framework ({0})</source>
+        <target state="translated">Framework ({0})</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutputWindowPaneTitle">
+        <source>Project</source>
+        <target state="translated">Progetto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialSupportedDotNetCoreProject">
+        <source>A newer version of Visual Studio is recommended for projects targeting .NET Core {0}.{1}.</source>
+        <target state="translated">Per i progetti destinati a .NET Core {0}.{1} è consigliata una versione più recente di Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotSupportedDotNetCoreProject">
+        <source>Projects targeting .NET Core {0}.{1} or newer are not supported by this version of Visual Studio.</source>
+        <target state="translated">I progetti destinati a .NET Core {0}.{1} o versione successiva non sono supportate in questa versione di Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DontShowAgain">
+        <source>Don't show again</source>
+        <target state="translated">Non visualizzare più questo messaggio</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LearnMore">
+        <source>Learn more</source>
+        <target state="translated">Altre informazioni</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButtonText">
+        <source>OK</source>
+        <target state="translated">OK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_PropertyWithInconsistentValues">
+        <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
+        <target state="translated">Il valore della proprietà '{0}' non è coerente tra i framework di destinazione. Questa proprietà deve essere identica affinché il ripristino NuGet funzioni correttamente. Verrà usato il valore '{1}' della configurazione '{2}'. Altri framework di destinazione potrebbero non riuscire a selezionare gli asset NuGet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_DuplicateToolReferenceItems">
+        <source>The metadata on 'DotNetCliToolReference' item '{0}' is inconsistent between target frameworks. Only the first one will be restored.</source>
+        <target state="translated">I metadati dell'elemento '{0}' di 'DotNetCliToolReference' non sono coerenti tra i framework di destinazione. Verrà ripristinato solo il primo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Restore_EmptyTargetFrameworkMoniker">
+        <source>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</source>
+        <target state="translated">I valori delle proprietà 'TargetFrameworkMoniker' e 'NuGetTargetMoniker' nella configurazione '{0}' sono vuoti. Questa configurazione non contribuisce al ripristino di NuGet e questo può comportare errori di ripristino e di compilazione.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XprojNotSupported">
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <target state="translated">I file di progetto xproj non sono più supportati. Per informazioni dettagliate sulla migrazione a csproj, vedere https://docs.microsoft.com/it-it/dotnet/core/migration/.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsFormEditor_DisplayName">
+        <source>Form (Windows Forms) Designer</source>
+        <target state="translated">Progettazione moduli (Windows Form)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComponentEditor_DisplayName">
+        <source>Component (Windows Forms) Designer</source>
+        <target state="translated">Progettazione componenti (Windows Form)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserControlEditor_DisplayName">
+        <source>User Control (Windows Forms) Designer</source>
+        <target state="translated">Progettazione controlli utente (Windows Form)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Renaming_Type">
+        <source>Renaming Type</source>
+        <target state="translated">Ridenominazione del tipo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Renaming_Type_from_0_to_1">
+        <source>Renaming Type from '{0}' to '{1}'</source>
+        <target state="translated">Ridenominazione del tipo da '{0}' a '{1}'</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

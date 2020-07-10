@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="FrameworkReference"
+      Description="Framework Reference Properties"
+      DisplayName="Framework Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="FrameworkReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="TargetingPackPath"
+                  DisplayName="Path"
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="TargetingPackVersion"
+                  DisplayName="Version"
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="Profile"
+                  DisplayName="Profile"
+                  ReadOnly="True" />
+</Rule>

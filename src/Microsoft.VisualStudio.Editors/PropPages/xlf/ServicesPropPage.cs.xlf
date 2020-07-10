@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../ServicesPropPage.resx">
+    <body>
+      <trans-unit id="HelpLabel.Text">
+        <source>Client application services enable your Windows-based applications to use the ASP.NET login (authentication), roles, and profile (settings) services.  Learn more about client application services...</source>
+        <target state="translated">Klientské aplikační služby umožňují vašim aplikacím pro Windows použít služby technologie ASP.NET pro přihlášení (ověřování), role a nastavení profilu.  Další informace o klientských aplikačních službách...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsBasedAuth.Text">
+        <source>Use &amp;Windows authentication</source>
+        <target state="translated">Použít ověřování systému &amp;Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormBasedAuth.Text">
+        <source>Use &amp;Forms authentication</source>
+        <target state="translated">Použít ověřování pomocí &amp;formulářů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomCredentialProviderTypeLabel.Text">
+        <source>Optional: Credentials &amp;provider
+(for example: MyNamespace.MyLoginClass, MyAssembly):</source>
+        <target state="translated">Volitelné: &amp;Poskytovatel pověření
+(např.: MyNamespace.MyLoginClass, MyAssembly):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationServiceUrlLabel.Text">
+        <source>&amp;Authentication service location:</source>
+        <target state="translated">Umístění ověřov&amp;ací služby:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationProviderGroupBox.Text">
+        <source>Authentication</source>
+        <target state="translated">Ověření</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RolesServiceUrlLabel.Text">
+        <source>&amp;Roles service location:</source>
+        <target state="translated">Umístění služby &amp;rolí:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WebSettingsUrlLabel.Text">
+        <source>We&amp;b settings service location:</source>
+        <target state="translated">Umístění služ&amp;by nastavení webu:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedSettings.Text">
+        <source>A&amp;dvanced...</source>
+        <target state="translated">&amp;Upřesnit...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableApplicationServices.Text">
+        <source>&amp;Enable client application services</source>
+        <target state="translated">Povolit kli&amp;entské aplikační služby</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

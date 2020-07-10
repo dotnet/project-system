@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../ConfigurationGeneral.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneral|DisplayName">
+        <source>General</source>
+        <target state="translated">Generale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneral|Description">
+        <source>General</source>
+        <target state="translated">Generale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Generale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Generale</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Application Icon</source>
+        <target state="translated">Icona dell'applicazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkIdentifier|DisplayName">
+        <source>Target Framework Identifier</source>
+        <target state="translated">Identificatore framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target Frameworks</source>
+        <target state="translated">Framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFramework|DisplayName">
+        <source>Target Framework</source>
+        <target state="translated">Framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkProfile|DisplayName">
+        <source>Target Framework Profile</source>
+        <target state="translated">Profilo framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkVersion|DisplayName">
+        <source>Target Framework Version</source>
+        <target state="translated">Versione framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target Framework Moniker</source>
+        <target state="translated">Moniker framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|DisplayName">
+        <source>XML doc comments file</source>
+        <target state="translated">File dei commenti in formato documentazione XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Root namespace</source>
+        <target state="translated">Spazio dei nomi radice</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Library|DisplayName">
+        <source>Class Library</source>
+        <target state="translated">Libreria di classi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.AppContainerExe|DisplayName">
+        <source>Windows Store app</source>
+        <target state="translated">App di Windows Store</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinMDObj|DisplayName">
+        <source>WinMD</source>
+        <target state="translated">WinMD</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Whether the compiler should optimize output.</source>
+        <target state="translated">Indica se il compilatore deve ottimizzare l'output.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|TargetRuntime.AppHost|DisplayName">
+        <source>Windows app</source>
+        <target state="translated">App di Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="translated">Applicazione console</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="translated">Applicazione Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworkMonikers|DisplayName">
+        <source>Target Framework Monikers</source>
+        <target state="translated">Moniker framework di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DisableFastUpToDateCheck|DisplayName">
+        <source>Disable Fast Up To Date Check</source>
+        <target state="translated">Disabilita controllo aggiornamenti rapido</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringListProperty|AvailablePlatforms|DisplayName">
+        <source>Available Platforms</source>
+        <target state="translated">Piattaforme disponibili</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base Intermediate Output Path</source>
+        <target state="translated">Percorso di output intermedio di base</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="translated">Nome</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Optimize</source>
+        <target state="translated">Ottimizza</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputName|DisplayName">
+        <source>Output Name</source>
+        <target state="translated">Nome output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|DisplayName">
+        <source>Output Path</source>
+        <target state="translated">Percorso di output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|DisplayName">
+        <source>Output Type</source>
+        <target state="translated">Tipo di output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetPath|DisplayName">
+        <source>Target Path</source>
+        <target state="translated">Percorso di destinazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly Name</source>
+        <target state="translated">Nome dell'assembly</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

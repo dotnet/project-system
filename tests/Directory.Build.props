@@ -1,0 +1,24 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  <PropertyGroup>
+    <IsUnitTestProject Condition="$(MSBuildProjectName.EndsWith('.UnitTests')) or $(MSBuildProjectName.EndsWith('.Tests'))">true</IsUnitTestProject>    
+    <IsIntegrationTestProject Condition="$(MSBuildProjectName.EndsWith('.IntegrationTests'))">true</IsIntegrationTestProject>
+    <IsTestProject Condition="'$(IsUnitTestProject)' == 'true' or '$(IsIntegrationTestProject)' == 'true'">true</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutDirName Condition="'$(IsUnitTestProject)' == 'true'">UnitTests</OutDirName>
+    <OutDirName Condition="'$(IsIntegrationTestProject)' == 'true'">IntegrationTests</OutDirName>
+  </PropertyGroup>
+
+  <Import Project="..\Directory.Build.props"/>
+
+  <PropertyGroup>
+    <TestArchitectures>x86</TestArchitectures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Common\Test\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsUnitTestProject)' == 'true'" />
+    <None Include="$(MSBuildThisFileDirectory)Common\Integration\App.config" CopyToOutputDirectory="PreserveNewest" Condition="'$(IsIntegrationTestProject)' == 'true'" />
+  </ItemGroup>
+</Project>

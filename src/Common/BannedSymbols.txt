@@ -1,0 +1,93 @@
+# Banned APIs across the project.
+
+# Syntax:
+#
+#       E:Event
+#       M:Method
+#       F:Field
+#       P:Property
+#       T:Type
+
+T:Microsoft.VisualStudio.ProjectSystem.IProjectLockService; Using IProjectAccessor enables checkout from source control on write, and allows async release
+
+T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
+T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService2; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
+
+P:Microsoft.VisualStudio.ProjectSystem.VS.IProjectAsyncLoadDashboard.ProjectLoadedInHost; Using IUnconfiguredProjectTasksService.ProjectLoadedInHost prevents waiting indefinitely when the project is closed before it has finished loading
+
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProjectAsync`1(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable
+
+M:System.Threading.Tasks.Task.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.Task`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.ValueTask.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+M:System.Threading.Tasks.ValueTask`1.ConfigureAwait(System.Boolean); "ConfigureAwait(true)" should be removed, and "ConfigureAwait(false)" should be replaced with "await TaskScheduler.Default"
+
+M:System.Threading.Tasks.Task.Run(System.Action); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run`1(System.Func{``0}); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run`1(System.Func{System.Threading.Tasks.Task{``0}}); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run(System.Func{System.Threading.Tasks.Task}); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run(System.Action,System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run`1(System.Func`1{``0},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run(System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+M:System.Threading.Tasks.Task.Run`1(System.Func{System.Threading.Tasks.Task{``0}},System.Threading.CancellationToken); Task.Run should be replaced with IProjectThreadingService.RunAndForget, which prevents the project being unloaded while the Task is running and ensures that failed tasks are reported as non-fatal watsons
+
+T:System.IServiceProvider; Import and use IVsUIService<T> and IVsUIService<TService, TInterface> which enforce usage on the UI thread and prevent blocking RPC calls from background threads
+T:Microsoft.VisualStudio.Shell.SVsServiceProvider; Import and use IVsUIService<T> and IVsUIService<TService, TInterface> which enforce usage on the UI thread and prevent blocking RPC calls from background threads
+
+T:Microsoft.VisualStudio.Shell.IAsyncServiceProvider; Import and use IVsService<T> and IVsService<TService, TInterface> which prevent blocking RPC calls from background threads
+T:Microsoft.VisualStudio.Shell.Interop.SAsyncServiceProvider; Import and use IVsService<T> and IVsService<TService, TInterface> which prevent blocking RPC calls from background threads
+
+T:Microsoft.VisualStudio.ProjectSystem.VS.IServiceProviderExtensions; Import and use IVsUIService<T> and IVsUIService<TService, TInterface> which enforce usage on the UI thread and prevent blocking RPC calls from background threads
+
+M:Microsoft.VisualStudio.Threading.TplExtensions.Forget(System.Threading.Tasks.Task); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Shell.VsTaskLibraryHelper.FileAndForget(System.Threading.Tasks.Task,System.String,System.String,System.Func{System.Exception,System.Boolean}); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Shell.VsTaskLibraryHelper.FileAndForget(Microsoft.VisualStudio.Threading.JoinableTask,System.String,System.String,System.Func{System.Exception,System.Boolean}); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+
+M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.HandleFaultAsync(System.Exception,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject); Use IProjectFaultHandlerService.ReportFaultAsync to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.RegisterFaultHandler(System.Threading.Tasks.Task,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.IProjectFaultHandlerService.RegisterFaultHandler`1(System.Threading.Tasks.Task{``0},Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject); Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception,System.Func{Microsoft.VisualStudio.Telemetry.IFaultUtility,System.Int32});Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.Telemetry.PostFault(Microsoft.VisualStudio.Telemetry.TelemetrySession,System.String,System.String,System.Exception,System.Func{Microsoft.VisualStudio.Telemetry.IFaultUtility,System.Int32},Microsoft.VisualStudio.Telemetry.TelemetryEventCorrelation[]);Use IProjectFaultHandlerService.Forget to ensure that failed tasks are reported as non-fatal watsons and assigned to the correct component
+
+M:Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService.Fork(System.Func{System.Threading.Tasks.Task},Microsoft.VisualStudio.Threading.JoinableTaskFactory,Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject,Microsoft.VisualStudio.ProjectSystem.ConfiguredProject,Microsoft.VisualStudio.ProjectSystem.ErrorReportSettings,Microsoft.VisualStudio.ProjectSystem.ProjectFaultSeverity,Microsoft.VisualStudio.ProjectSystem.ForkOptions); Use IProjectThreadingService.RunAndForget to ensure non-fatal watsons are assigned to the correct component
+
+T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToAction/LinkToAsyncAction or DataflowBlockFactory.CreateActionBlock to reduce memory and avoid the overhead of the built-in blocks
+T:System.Threading.Tasks.Dataflow.BroadcastBlock`1;Use DataflowBlockSlim.CreateBroadcastBlock to reduce memory and avoid the overhead of the built-in blocks
+T:System.Threading.Tasks.Dataflow.TransformManyBlock`2;Use DataflowBlockSlim.CreateTransformManyBlock to reduce memory and avoid the overhead of the built-in blocks
+
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Action{``0},System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Func{``0,System.Threading.Tasks.Task},System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Action{``0},System.String,System.Threading.CancellationToken,System.Boolean);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Func{``0,System.Threading.Tasks.Task},System.String,System.Threading.CancellationToken,System.Boolean);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
+
+F:Microsoft.VisualStudio.VSConstants.S_OK;Use HResult.OK or HResult.IsOK
+F:Microsoft.VisualStudio.VSConstants.E_FAIL;Use HResult.Fail or HResult.Failed
+F:Microsoft.VisualStudio.VSConstants.S_FALSE;Use HResult.False or HResult.IsFalse
+F:Microsoft.VisualStudio.VSConstants.E_NOTIMPL;Use HResult.NotImplemented or HResult.IsNotImplemented
+F:Microsoft.VisualStudio.VSConstants.E_INVALIDARG;Use HResult.InvalidArg
+F:Microsoft.VisualStudio.VSConstants.RPC_E_WRONG_THREAD;Use HResult.WrongThread
+F:Microsoft.VisualStudio.VSConstants.E_ABORT;Use HResult.Abort
+F:Microsoft.VisualStudio.VSConstants.E_PENDING;Use HResult.Pending
+F:Microsoft.VisualStudio.VSConstants.DISP_E_MEMBERNOTFOUND;Use HResult.MemberNotFound
+F:Microsoft.VisualStudio.VSConstants.E_NOINTERFACE;Use HResult.NoInterface
+F:Microsoft.VisualStudio.VSConstants.E_UNEXPECTED;Use HResult.Unexpected
+F:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_NOTSUPPORTED;Use HResult.Ole.Cmd.NotSupported
+F:Microsoft.VisualStudio.OLE.Interop.Constants.OLECMDERR_E_UNKNOWNGROUP;Use HResult.Ole.Cmd.UnknownGroup
+
+T:Microsoft.VisualStudio.Shell.ThreadHelper;Import JoinableTaskContext if inside a MEF component for unit testing purposes
+
+T:Microsoft.VisualStudio.ProjectSystem.Properties.StandardRuleDataflowLinkOptions;Use DataflowOption.WithRuleNames to avoid boilerplate initialization
+T:System.Threading.Tasks.Dataflow.DataflowLinkOptions;Use DataflowOption.PropagateCompletion to avoid boilerplate initialization
+
+M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposed.Initialize();Did you mean EnsureInitialized?
+M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposedAsync.InitializeCoreAsync(System.Threading.CancellationToken);Did you mean InitializeAsync(CancellationToken)?
+
+M:System.Diagnostics.Debugger.Break(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
+M:System.Diagnostics.Debugger.Launch(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
+
+T:Microsoft.VisualStudio.ProjectSystem.ActiveConfiguredProject`1; Use IActiveConfiguredValue<T>, and handle when Value returns null.

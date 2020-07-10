@@ -1,0 +1,51 @@
+# Template used by unit-tests.yml
+jobs:
+- job: ${{ parameters.name }}
+  pool: ${{ parameters.pool }}
+  timeoutInMinutes: 20
+  steps:
+    - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /clearnugetcache /no-deploy /no-integration /no-ibc /configuration ${{ parameters.configuration }}
+      displayName: Build ProjectSystem.sln
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\log'
+        ArtifactName: '${{ parameters.configuration }} Log folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\bin'
+        ArtifactName: '${{ parameters.configuration }} Bin folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\VSSetup'
+        ArtifactName: '${{ parameters.configuration }} VSSetup folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\TestResults'
+        ArtifactName: '${{ parameters.configuration }} TestResults folder'
+        publishLocation: Container
+      continueOnError: true
+      condition: failed()
+
+    - task: PublishTestResults@2
+      inputs:
+        testRunner: 'xUnit'	
+        testResultsFiles: '**/*.xml' 	
+        searchFolder: '$(Build.SourcesDirectory)\artifacts\${{ parameters.configuration }}\TestResults'	
+        configuration: '${{ parameters.configuration }}'	
+        publishRunAttachments: true	
+        failTaskOnFailedTests: true
+      continueOnError: true
+      condition: always()  

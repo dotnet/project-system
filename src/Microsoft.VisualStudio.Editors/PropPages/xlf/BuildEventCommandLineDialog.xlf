@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventCommandLineDialog.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/BuildEventCommandLineDialog.resx" />
+      <trans-unit id="InsertButton.Text">
+        <source>I&amp;nsert</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="OKButton.Text">
+        <source>OK</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Cancel_Button.Text">
+        <source>Cancel</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="CommandLine.AccessibleName">
+        <source>Build Command Line</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ShowMacrosButton.Text">
+        <source>&amp;Macros &gt;&gt;</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="HideMacrosButton.Text">
+        <source>&lt;&lt; &amp;Macros</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="TokenList.AccessibleName">
+        <source>Macro List</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Macro.Text">
+        <source>Macro</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Value.Text">
+        <source>Value</source>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../UnusedReferencePropPage.resx">
+    <body>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="translated">類型</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="translated">路徑</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferenceList.AccessibleName">
+        <source>Unused references</source>
+        <target state="translated">未使用的參考</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="translated">參考名稱</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="translated">版本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="translated">複製到本機</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferencesListLabel.Text">
+        <source>Clicking "Remove" will remove all checked references.</source>
+        <target state="translated">按一下 [移除] 將會移除所有核取的參考。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

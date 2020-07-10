@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../Folder.xaml">
+    <body>
+      <trans-unit id="Rule|Folder|DisplayName">
+        <source>General</source>
+        <target state="translated">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Folder|Description">
+        <source>Folder Properties</source>
+        <target state="translated">Propiedades de la carpeta</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">Ruta de acceso completa</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the folder.</source>
+        <target state="translated">Ubicación de la carpeta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FolderName|DisplayName">
+        <source>Folder Name</source>
+        <target state="translated">Nombre de carpeta</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FolderName|Description">
+        <source>Name of this folder.</source>
+        <target state="translated">Nombre de esta carpeta.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

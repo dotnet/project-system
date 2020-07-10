@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../CodeAnalysisPropPage.resx">
+    <body>
+      <trans-unit id="InstallCustomVersionButton.Text">
+        <source>&amp;...</source>
+        <target state="new">&amp;...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstallLatestVersionButton.Text">
+        <source>&amp;Install</source>
+        <target state="translated">安裝(&amp;I)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstalledVersionLabel.Text">
+        <source>Installed Version:</source>
+        <target state="translated">已安裝的版本:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UninstallAnalyzersButton.Text">
+        <source>&amp;Uninstall</source>
+        <target state="translated">解除安裝(&amp;U)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameLabel.Text">
+        <source>Recommended analyzer package:</source>
+        <target state="translated">建議的分析器套件:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameTextBox.Text">
+        <source>Microsoft.CodeAnalysis.FxCopAnalyzers</source>
+        <target state="translated">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersLabel.Text">
+        <source>Analyzers</source>
+        <target state="translated">分析器</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
+        <source>What are the benefits of source code analyzers?</source>
+        <target state="translated">原始程式碼分析器有哪些優點?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
+        <source>Run on &amp;live analysis</source>
+        <target state="translated">在即時分析時執行(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringBuild.Text">
+        <source>Run on &amp;build</source>
+        <target state="translated">建置時執行(&amp;B)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

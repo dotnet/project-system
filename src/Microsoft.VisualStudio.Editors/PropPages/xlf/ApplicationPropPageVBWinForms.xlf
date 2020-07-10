@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPageVBWinForms.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.Editors/PropPages/ApplicationPropPageVBWinForms.resx" />
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>&amp;Root namespace:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>&amp;Target framework:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationTypeLabel.Text">
+        <source>&amp;Application type:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconLabel.Text">
+        <source>&amp;Icon:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseApplicationFrameworkCheckBox.Text">
+        <source>Enable application framewor&amp;k</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembl&amp;y Information...</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewUACSettingsButton.Text">
+        <source>View Windows Settin&amp;gs</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableXPThemesCheckBox.Text">
+        <source>Enable &amp;XP visual styles</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="SingleInstanceCheckBox.Text">
+        <source>Make &amp;single instance application</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="SaveMySettingsCheckbox.Text">
+        <source>Save My.Settin&amp;gs on Shutdown</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Aut&amp;hentication mode:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ShutdownModeLabel.Text">
+        <source>Sh&amp;utdown mode:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="SplashScreenLabel.Text">
+        <source>Sp&amp;lash screen:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewCodeButton.Text">
+        <source>&amp;View Application Events</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAppGroupBox.Text">
+        <source>Windows application framework properties</source>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

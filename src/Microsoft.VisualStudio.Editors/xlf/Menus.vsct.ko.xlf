@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../Menus.vsct">
+    <body>
+      <trans-unit id="IDM_VS_MENU_Resources|ButtonText">
+        <source>&amp;Resources</source>
+        <target state="translated">리소스(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MENU_Resources|CommandName">
+        <source>&amp;Resources</source>
+        <target state="translated">리소스(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_RESX_ContextMenu|ButtonText">
+        <source>Managed Resources Editor Context Menu</source>
+        <target state="translated">관리되는 리소스 편집기 상황에 맞는 메뉴</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU|ButtonText">
+        <source>New &amp;Image</source>
+        <target state="translated">새 이미지(&amp;I)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU|CommandName">
+        <source>New &amp;Image</source>
+        <target state="translated">새 이미지(&amp;I)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_SETTINGSDESIGNER_ContextMenu|ButtonText">
+        <source>Settings Designer</source>
+        <target state="translated">설정 디자이너</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources|ButtonText">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources|CommandName">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources_ResW|ButtonText">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources_ResW|CommandName">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_NAVIGATE|ButtonText">
+        <source>&amp;Category</source>
+        <target state="translated">범주(&amp;C)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_ADD|ButtonText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">리소스 추가(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_VIEWS|ButtonText">
+        <source>Views</source>
+        <target state="translated">보기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Settings|ButtonText">
+        <source>Settings</source>
+        <target state="translated">설정</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Settings|CommandName">
+        <source>Settings</source>
+        <target state="translated">설정</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_MYEXTENSION_ContextMenu|ButtonText">
+        <source>My Extensibility</source>
+        <target state="translated">My 확장성</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONEditCell|ButtonText">
+        <source>&amp;Edit Cell</source>
+        <target state="translated">셀 편집(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONAddRow|ButtonText">
+        <source>Add R&amp;ow</source>
+        <target state="translated">행 추가(&amp;O)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONRemoveRow|ButtonText">
+        <source>R&amp;emove Row</source>
+        <target state="translated">행 제거(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONRemoveRow|MenuText">
+        <source>R&amp;emove Row</source>
+        <target state="translated">행 제거(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXPlay|ButtonText">
+        <source>P&amp;lay</source>
+        <target state="translated">재생(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXImport|ButtonText">
+        <source>&amp;Import From File...</source>
+        <target state="translated">파일에서 가져오기(&amp;I)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXExport|ButtonText">
+        <source>E&amp;xport To File...</source>
+        <target state="translated">파일로 내보내기(&amp;X)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddExistingFile|ButtonText">
+        <source>Add &amp;Existing File...</source>
+        <target state="translated">기존 파일 추가(&amp;E)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddExistingFile|MenuText">
+        <source>&amp;Existing File...</source>
+        <target state="translated">기존 파일(&amp;E)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewString|ButtonText">
+        <source>Add New &amp;String</source>
+        <target state="translated">새 문자열 추가(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewString|MenuText">
+        <source>New &amp;String</source>
+        <target state="translated">새 문자열(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewIcon|ButtonText">
+        <source>Add New I&amp;con</source>
+        <target state="translated">새 아이콘 추가(&amp;C)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewIcon|MenuText">
+        <source>New I&amp;con...</source>
+        <target state="translated">새 아이콘(&amp;C)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewTextFile|ButtonText">
+        <source>Add New &amp;Text File</source>
+        <target state="translated">새 텍스트 파일 추가(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewTextFile|MenuText">
+        <source>New &amp;Text File...</source>
+        <target state="translated">새 텍스트 파일(&amp;T)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImagePNG|ButtonText">
+        <source>Add &amp;PNG Image</source>
+        <target state="translated">PNG 이미지 추가(&amp;P)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImagePNG|MenuText">
+        <source>&amp;PNG Image...</source>
+        <target state="translated">PNG 이미지(&amp;P)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageBMP|ButtonText">
+        <source>Add &amp;BMP Image</source>
+        <target state="translated">BMP 이미지 추가(&amp;B)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageBMP|MenuText">
+        <source>&amp;BMP Image...</source>
+        <target state="translated">BMP 이미지(&amp;B)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageGIF|ButtonText">
+        <source>Add &amp;GIF Image</source>
+        <target state="translated">GIF 이미지 추가(&amp;G)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageGIF|MenuText">
+        <source>&amp;GIF Image...</source>
+        <target state="translated">GIF 이미지(&amp;G)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageJPEG|ButtonText">
+        <source>Add &amp;JPEG Image</source>
+        <target state="translated">JPEG 이미지 추가(&amp;J)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageJPEG|MenuText">
+        <source>&amp;JPEG Image...</source>
+        <target state="translated">JPEG 이미지(&amp;J)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageTIFF|ButtonText">
+        <source>Add &amp;TIFF Image</source>
+        <target state="translated">TIFF 이미지 추가(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageTIFF|MenuText">
+        <source>&amp;TIFF Image...</source>
+        <target state="translated">TIFF 이미지(&amp;T)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeStrings|ButtonText">
+        <source>Strings</source>
+        <target state="translated">문자열</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeStrings|MenuText">
+        <source>Strings</source>
+        <target state="translated">문자열</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeImages|ButtonText">
+        <source>Images</source>
+        <target state="translated">이미지</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeImages|MenuText">
+        <source>Images</source>
+        <target state="translated">이미지</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeIcons|ButtonText">
+        <source>Icons</source>
+        <target state="translated">아이콘</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeIcons|MenuText">
+        <source>Icons</source>
+        <target state="translated">아이콘</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeAudio|ButtonText">
+        <source>Audio</source>
+        <target state="translated">오디오</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeAudio|MenuText">
+        <source>Audio</source>
+        <target state="translated">오디오</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeFiles|ButtonText">
+        <source>Files</source>
+        <target state="translated">파일</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeFiles|MenuText">
+        <source>Files</source>
+        <target state="translated">파일</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeOther|ButtonText">
+        <source>Other</source>
+        <target state="translated">기타</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeOther|MenuText">
+        <source>Other</source>
+        <target state="translated">기타</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsList|ButtonText">
+        <source>View In &amp;List</source>
+        <target state="translated">목록으로 보기(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsList|MenuText">
+        <source>&amp;List</source>
+        <target state="translated">목록(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsDetails|ButtonText">
+        <source>View &amp;Details</source>
+        <target state="translated">자세히 보기(&amp;D)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsDetails|MenuText">
+        <source>&amp;Details</source>
+        <target state="translated">세부 정보(&amp;D)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsThumbnails|ButtonText">
+        <source>View As &amp;Thumbnails</source>
+        <target state="translated">축소판 그림으로 보기(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsThumbnails|MenuText">
+        <source>&amp;Thumbnails</source>
+        <target state="translated">축소판 그림(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERSynchronize|ButtonText">
+        <source>&amp;Synchronize</source>
+        <target state="translated">동기화(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERSynchronize|ToolTipText">
+        <source>Removes the user configuration file where the application saves changes to user settings</source>
+        <target state="translated">애플리케이션이 사용자 설정에 대한 변경 내용을 저장하는 사용자 구성 파일을 제거합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERLoadWebSettings|ButtonText">
+        <source>&amp;Load Web Settings</source>
+        <target state="translated">웹 설정 로드(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERLoadWebSettings|ToolTipText">
+        <source>Loads Web settings from the Web settings host specified on the Services property page.</source>
+        <target state="translated">서비스 속성 페이지에 지정된 웹 설정 호스트에서 웹 설정을 로드합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERViewCode|ButtonText">
+        <source>V&amp;iew Code</source>
+        <target state="translated">코드 보기(&amp;I)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXGenericRemove|ButtonText">
+        <source>Re&amp;move Resource</source>
+        <target state="translated">리소스 제거(&amp;M)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXGenericRemove|MenuText">
+        <source>Re&amp;move Resource</source>
+        <target state="translated">리소스 제거(&amp;M)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAdd|ButtonText">
+        <source>&amp;Add</source>
+        <target state="translated">추가(&amp;A)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAdd|MenuText">
+        <source>Add</source>
+        <target state="translated">추가</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidIDRESXViewsFixedMenuCommand|ButtonText">
+        <source>&amp;View</source>
+        <target state="translated">보기(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidIDRESXViewsFixedMenuCommand|MenuText">
+        <source>View</source>
+        <target state="translated">보기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddDefaultResource|ButtonText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">리소스 추가(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddDefaultResource|MenuText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">리소스 추가(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMYEXTENSIONAddExtension|ButtonText">
+        <source>&amp;Add Extension...</source>
+        <target state="translated">확장 추가(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMYEXTENSIONRemoveExtension|ButtonText">
+        <source>Remo&amp;ve Extension</source>
+        <target state="translated">확장 제거(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERAccessModifierCombobox|ButtonText">
+        <source>Access &amp;Modifier:</source>
+        <target state="translated">액세스 한정자(&amp;M):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAccessModifierCombobox|ButtonText">
+        <source>Access Mod&amp;ifier:</source>
+        <target state="translated">액세스 한정자(&amp;I):</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

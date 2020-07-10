@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../AddMyExtensionsDialog.resx">
+    <body>
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="translated">確定</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="translated">取消</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.Text">
+        <source>Name</source>
+        <target state="translated">名稱</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.Text">
+        <source>Version</source>
+        <target state="translated">版本</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="listViewExtensions.AccessibleName">
+        <source>Available My Namespace Extensions</source>
+        <target state="translated">可用的 My 命名空間延伸模組</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add Visual Basic My Namespace Extension</source>
+        <target state="translated">加入 Visual Basic My 命名空間擴充功能</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.Text">
+        <source>Description</source>
+        <target state="translated">說明</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

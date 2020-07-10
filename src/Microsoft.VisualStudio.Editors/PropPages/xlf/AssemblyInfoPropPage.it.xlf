@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../AssemblyInfoPropPage.resx">
+    <body>
+      <trans-unit id="TitleLabel.Text">
+        <source>&amp;Title:</source>
+        <target state="translated">&amp;Titolo:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TrademarkLabel.Text">
+        <source>T&amp;rademark:</source>
+        <target state="translated">Ma&amp;rchio:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightLabel.Text">
+        <source>C&amp;opyright:</source>
+        <target state="translated">C&amp;opyright:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProductLabel.Text">
+        <source>&amp;Product:</source>
+        <target state="translated">&amp;Prodotto:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompanyLabel.Text">
+        <source>&amp;Company:</source>
+        <target state="translated">&amp;Società:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DescriptionLabel.Text">
+        <source>&amp;Description:</source>
+        <target state="translated">&amp;Descrizione:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComVisibleCheckBox.Text">
+        <source>&amp;Make assembly COM-Visible</source>
+        <target state="translated">&amp;Rendi assembly visibile a COM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageLabel.Text">
+        <source>&amp;Neutral language:</source>
+        <target state="translated">Lingua di &amp;sistema:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionLabel.Text">
+        <source>&amp;Assembly version:</source>
+        <target state="translated">Versione &amp;assembly:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionLabel.Text">
+        <source>&amp;File version:</source>
+        <target state="translated">Versione &amp;file:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMajorTextBox.AccessibleName">
+        <source>File Version major</source>
+        <target state="translated">Versione principale versione del file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMinorTextBox.AccessibleName">
+        <source>File Version minor</source>
+        <target state="translated">Versione secondaria versione del file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionBuildTextBox.AccessibleName">
+        <source>File Version build</source>
+        <target state="translated">Build versione del file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
+        <source>File Version revision</source>
+        <target state="translated">Revisione versione del file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GuidLabel.Text">
+        <source>&amp;GUID:</source>
+        <target state="translated">&amp;GUID:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
+        <source>Assembly Version major</source>
+        <target state="translated">Versione principale versione dell'assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
+        <source>Assembly Version minor</source>
+        <target state="translated">Versione secondaria versione dell'assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
+        <source>Assembly Version build</source>
+        <target state="translated">Build versione dell'assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
+        <source>Assembly Version revision</source>
+        <target state="translated">Revisione versione dell'assembly</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

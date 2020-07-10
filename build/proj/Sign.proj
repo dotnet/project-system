@@ -1,0 +1,37 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project DefaultTargets="Sign">
+  <!--
+    Required parameters:
+      ConfigFile                    SignToolData.json path.
+      RealSign                      "true" to send binaries to the signing service, "false" to only validate signing configuration.
+    Optional parameters:
+      OutputConfigFile              If specified, output a manifest similar to SignToolData.json but with checksums of all relevant files included 
+                                    for reassembly later when only zip archives are available.  If this file is later used as the '-config' file, 
+                                    SignTool will attempt to unpack all zips provided and match on checksums for any missing files.
+  -->
+
+  <Import Project="..\import\Versions.props" />
+  <Import Project="..\import\NuGet.props" />
+  <Import Project="..\import\RepoLayout.props" />
+
+  <Target Name="Sign">
+
+    <PropertyGroup>
+      <_MSBuildExePath>$(VSINSTALLDIR)\MSBuild\$(MSBuildToolsVersion)\Bin\msbuild.exe</_MSBuildExePath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <SignToolArgs Include='-outputconfig "$(OutputConfigFile)"' Condition="'$(OutputConfigFile)' != ''" />      
+      <SignToolArgs Include='-nugetPackagesPath "$(NuGetPackageRoot)\"' />
+      <SignToolArgs Include='-intermediateOutputPath "$(ArtifactsObjDir)\"' />
+      <SignToolArgs Include='-config "$(ConfigFile)"' />
+      <SignToolArgs Include='-test' Condition="'$(RealSign)' != 'true'" />
+      <SignToolArgs Include='-msbuildpath "$(_MSBuildExePath)"' Condition="'$(RealSign)' == 'true'"/>
+      <SignToolArgs Include='"$(ArtifactsConfigurationDir)\"' />
+    </ItemGroup>
+    
+    <Exec Command="$(NuGetPackageRoot)roslyntools.signtool\$(RoslynToolsSignToolVersion)\tools\SignTool.exe @(SignToolArgs, ' ')"
+          LogStandardErrorAsError="true" />
+  </Target>
+
+</Project>

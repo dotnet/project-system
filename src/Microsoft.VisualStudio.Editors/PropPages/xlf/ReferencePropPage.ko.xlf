@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ReferencePropPage.resx">
+    <body>
+      <trans-unit id="ReferenceListLabel.Text">
+        <source>&amp;References:</source>
+        <target state="translated">참조(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="translated">참조 이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="translated">형식</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="translated">버전</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="translated">로컬 복사</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="translated">경로</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferences.Text">
+        <source>U&amp;nused References...</source>
+        <target state="translated">사용하지 않는 참조(&amp;N)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencePathsButton.Text">
+        <source>Reference &amp;Paths...</source>
+        <target state="translated">참조 경로(&amp;P)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveReference.Text">
+        <source>Remo&amp;ve</source>
+        <target state="translated">제거(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="referenceToolStripMenuItem.Text">
+        <source>Reference...</source>
+        <target state="translated">참조...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="webReferenceToolStripMenuItem.Text">
+        <source>Web Reference...</source>
+        <target state="translated">웹 참조...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="serviceReferenceToolStripMenuItem.Text">
+        <source>Service Reference...</source>
+        <target state="translated">서비스 참조...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="addSplitButton.Text">
+        <source>&amp;Add...</source>
+        <target state="translated">추가(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UpdateReferences.Text">
+        <source>&amp;Update</source>
+        <target state="translated">업데이트(&amp;U)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddUserImportButton.Text">
+        <source>Add User Imp&amp;ort</source>
+        <target state="translated">사용자 가져오기 추가(&amp;O)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UpdateUserImportButton.Text">
+        <source>Up&amp;date User Import</source>
+        <target state="translated">사용자 가져오기 업데이트(&amp;D)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleDescription">
+        <source>List of imported namespaces.</source>
+        <target state="translated">가져온 네임스페이스 목록.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleName">
+        <source>Imported Namespaces:</source>
+        <target state="translated">가져온 네임스페이스:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserImportTextBox.AccessibleName">
+        <source>Imported Namespace:</source>
+        <target state="translated">가져온 네임스페이스:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportsListLabel.Text">
+        <source>&amp;Imported namespaces:</source>
+        <target state="translated">가져온 네임스페이스(&amp;I):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencePageSplitContainer.Text">
+        <source>ReferencePageSplitContainer</source>
+        <target state="translated">ReferencePageSplitContainer</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

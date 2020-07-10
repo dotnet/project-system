@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright, Microsoft Corporation, All rights reserved.-->
+<ProjectSchemaDefinitions
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <ContentType
+      Name="FSharpFile"
+      DisplayName="F# file"
+      ItemType="Compile">
+  </ContentType>
+
+  <ItemType Name="Compile" DisplayName="F# compiler"/>
+
+  <FileExtension Name=".fs" ContentType="FSharpFile"/>
+  <FileExtension Name=".fsi" ContentType="FSharpFile"/>
+  <FileExtension Name=".ml" ContentType="FSharpFile"/>
+  <FileExtension Name=".mli" ContentType="FSharpFile"/>
+</ProjectSchemaDefinitions>
+

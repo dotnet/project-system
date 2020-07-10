@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary
+        format that VisualStudio will consume) has the ability to run a preprocessor
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
+        it is possible to define includes and macros with the same syntax used
+        in C++ files. Using this ability of the compiler here, we include some files
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h" />
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h" />
+
+  <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
+  <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
+
+  <!-- This command is associated with the DebugTargetHandlerPackage as we want this package to handle our commands placed on the
+       debug (play button) menu controller. It will redirect through code to our implementation of IVsProjectCfgDebugTargetSelection
+  -->
+  <Commands package="guidDebugTargetHandlerPackage">
+    <Buttons>
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidProjectDebugger" priority="0x1000" type="Button">
+        <Parent guid="guidDebugTargetHandlerPackage" id="DebugTargetMenuControllerGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>DynamicItemStart</CommandFlag>
+        <CommandFlag>TogglePatternAvailable</CommandFlag>
+        <Strings>
+          <ButtonText>Web Debugger</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Commands package="PackageGuidString">
+    <Menus>
+      <!-- Debugging Framework menu added to debug controller -->
+      <Menu guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu" priority="0x00F1" type="Menu">
+        <Parent guid="guidDebugTargetHandlerPackage" id="DebugTargetMenuControllerFooterGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+            <ButtonText>Framework</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveMenu" priority="0x300" type="Menu">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add Above</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowMenu" priority="0x305" type="Menu">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add Below</ButtonText>
+        </Strings>
+      </Menu>  
+    </Menus>
+
+    <Groups>
+      <!-- Group added to the Debugging Framework Type menu on the debug controller -->
+      <Group guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup" priority="0x0100">
+        <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkMenu"/>
+      </Group>
+     <!-- This is the ordering group. Handles ordering files. -->
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+      </Group>
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="OrderingGroup" priority="0x100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+      </Group>
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveGroup" priority="0x101">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveMenu" />
+      </Group>
+      <Group guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowGroup" priority="0x102">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowMenu" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidAddNewItemAbove" priority="0x102">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveGroup"/>
+        <Icon guid="guidSHLMainMenu" id="1"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add New Item...</ButtonText>
+          <CommandName>AddNewItemAbove</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidAddExistingItemAbove" priority="0x103">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddAboveGroup"/>
+        <Icon guid="guidSHLMainMenu" id="16"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add Existing Item...</ButtonText>
+          <CommandName>AddExistingItemAbove</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidAddNewItemBelow" priority="0x104">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowGroup"/>
+        <Icon guid="guidSHLMainMenu" id="1"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add New Item...</ButtonText>
+          <CommandName>AddNewItemBelow</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemOrderCommandSet" id="cmdidAddExistingItemBelow" priority="0x105">
+        <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowGroup"/>
+        <Icon guid="guidSHLMainMenu" id="16"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add Existing Item...</ButtonText>
+          <CommandName>AddExistingItemBelow</CommandName>
+        </Strings>
+      </Button>
+      
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageProjectContextMenu" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Pack</ButtonText>
+          <ToolTipText>Generate NuGet Package</ToolTipText>
+          <CommandName>GenerateNuGetPackageProjectContextMenu</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidGenerateNuGetPackageTopLevelBuild" priority="0x450">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_BUILD_SELECTION" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Pack selection</ButtonText>
+          <ToolTipText>Generate NuGet Package for selected project</ToolTipText>
+          <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
+        </Strings>
+      </Button>
+
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidDebugFrameworks" priority="0x0100" type="Button">
+        <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup"/>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>DynamicItemStart</CommandFlag>
+        <CommandFlag>TogglePatternAvailable</CommandFlag>
+        <Strings>
+          <ButtonText>Framework</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <!-- This is out managed package guid. -->
+    <GuidSymbol name="PackageGuidString" value="{860A27C0-B665-47F3-BC12-637E16A1050A}" />
+
+    <GuidSymbol name="guidDebugTargetHandlerPackage" value="{6e87cfad-6c05-4adf-9cd7-3b7943875b7c}">
+      <IDSymbol name="DebugTargetMenuControllerGroup" value="0x1000" />
+      <IDSymbol name="DebugTargetMenuControllerFooterGroup" value="0x2000" />
+
+    </GuidSymbol>
+
+    <GuidSymbol name="guidManagedProjectSystemCommandSet" value="{568ABDF7-D522-474D-9EED-34B5E5095BA5}">
+      <!-- Note that these need room to grow hence they need to be spaced out-->
+      <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
+      <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
+      <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
+      <IDSymbol name="DebugTargetMenuDebugFrameworkMenu" value="0x3000" />
+      <IDSymbol name="DebugTargetMenuDebugFrameworkGroup" value="0x3001" />
+      <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />        <!--needs space to grow-->
+    </GuidSymbol>
+
+    <GuidSymbol name="guidManagedProjectSystemOrderCommandSet" value="{6C4806E9-034E-4B64-99DE-29A6F837B993}">
+      <IDSymbol name="OrderingGroup" value="0x0100" />
+      <IDSymbol name="AddAboveGroup" value="0x0101" />
+      <IDSymbol name="AddBelowGroup" value="0x0102" />
+      <IDSymbol name="AddAboveMenu" value="0x0103" />
+      <IDSymbol name="AddBelowMenu" value="0x0104" />
+      <IDSymbol name="cmdidMoveUp" value="0x2000" />
+      <IDSymbol name="cmdidMoveDown" value="0x2001" />
+      <IDSymbol name="cmdidAddNewItemAbove" value="0x2002" />
+      <IDSymbol name="cmdidAddExistingItemAbove" value="0x2003" />
+      <IDSymbol name="cmdidAddNewItemBelow" value="0x2004" />
+      <IDSymbol name="cmdidAddExistingItemBelow" value="0x2005" />
+    </GuidSymbol>
+  
+    <GuidSymbol name="SlnExplorerGuid" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
+  </Symbols>
+
+</CommandTable>

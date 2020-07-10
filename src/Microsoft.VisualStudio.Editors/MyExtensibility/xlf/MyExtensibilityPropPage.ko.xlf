@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../MyExtensibilityPropPage.resx">
+    <body>
+      <trans-unit id="labelDescription.Text">
+        <source>My Namespace extensions: </source>
+        <target state="translated">My 네임스페이스 확장: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="linkLabelHelp.Text">
+        <source>Learn more about customizing My Namespace.</source>
+        <target state="translated">My 네임스페이스 사용자 지정에 대한 자세한 정보</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonRemove.Text">
+        <source>Remo&amp;ve extension</source>
+        <target state="translated">확장 제거(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonAdd.Text">
+        <source>&amp;Add extension...</source>
+        <target state="translated">확장 추가(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.HeaderText">
+        <source>Name</source>
+        <target state="translated">이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.HeaderText">
+        <source>Version</source>
+        <target state="translated">버전</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.HeaderText">
+        <source>Description</source>
+        <target state="translated">설명</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

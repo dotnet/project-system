@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../WebUrlDialog.resx">
+    <body>
+      <trans-unit id="okButton.Text">
+        <source>OK</source>
+        <target state="translated">確定</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cancelButton.Text">
+        <source>Cancel</source>
+        <target state="translated">取消</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Label2.Text">
+        <source>&amp;Provide the HTTP address of an XML document:</source>
+        <target state="translated">提供 XML 文件的 HTTP 位址(&amp;P):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add an XML document from the Web</source>
+        <target state="translated">從 Web 加入 XML 文件</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

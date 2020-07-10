@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../compileproppage2.resx">
+    <body>
+      <trans-unit id="BuildOutputPathButton.AccessibleName">
+        <source>Browse...</source>
+        <target state="translated">Обзор...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildOutputPathButton.Text">
+        <source>B&amp;rowse...</source>
+        <target state="translated">&amp;Обзор...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionExplicitLabel.Text">
+        <source>Option e&amp;xplicit:</source>
+        <target state="translated">&amp;Параметр Explicit:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DisableAllWarningsCheckBox.Text">
+        <source>D&amp;isable all warnings</source>
+        <target state="translated">Отключить &amp;все предупреждения</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsAsErrorCheckBox.Text">
+        <source>Treat a&amp;ll warnings as errors</source>
+        <target state="translated">Обрабатывать все предупре&amp;ждения как ошибки</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildEventsButton.Text">
+        <source>Build Eve&amp;nts...</source>
+        <target state="translated">Собы&amp;тия сборки...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RegisterForComInteropCheckBox.Text">
+        <source>R&amp;egister for COM interop</source>
+        <target state="translated">&amp;Регистрация для COM-взаимодействия</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateXMLCheckBox.Text">
+        <source>&amp;Generate XML documentation file</source>
+        <target state="translated">Создать файл XML-доку&amp;ментации</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionStrictLabel.Text">
+        <source>Option &amp;strict:</source>
+        <target state="translated">П&amp;араметр Strict:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionCompareLabel.Text">
+        <source>Option c&amp;ompare:</source>
+        <target state="translated">Пара&amp;метр Compare:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionInferLabel.Text">
+        <source>Option in&amp;fer:</source>
+        <target state="translated">Параме&amp;тр Infer:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
+        <source>Warning configurations:</source>
+        <target state="translated">Настройки предупреждений:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ConditionColumn.HeaderText">
+        <source>Condition</source>
+        <target state="translated">Условие</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotificationColumn.HeaderText">
+        <source>Notification</source>
+        <target state="translated">Уведомление</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedOptionsButton.Text">
+        <source>&amp;Advanced Compile Options...</source>
+        <target state="translated">Дополнительные параметры &amp;компиляции...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompileOptionsGroupBox.Text">
+        <source>Compile Options:</source>
+        <target state="translated">Параметры компиляции:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildOutputPathLabel.Text">
+        <source>B&amp;uild output path:</source>
+        <target state="translated">&amp;Выходной путь сборки:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetCPULabel.Text">
+        <source>&amp;Target CPU:</source>
+        <target state="translated">Це&amp;левой ЦП:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Prefer32BitCheckBox.Text">
+        <source>&amp;Prefer 32-bit</source>
+        <target state="translated">&amp;Предпочитать 32-разрядн.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

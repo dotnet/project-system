@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../AdvancedServicesDialog.resx">
+    <body>
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="translated">角色服務快取逾時(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="translated">在本機儲存密碼雜湊以啟用離線登入(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="translated">要求使用者在伺服器 Cookie 過期時必須再次登入(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="translated">使用自訂連接字串(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeUnitComboBox.AccessibleName">
+        <source>Role service cache timeout units</source>
+        <target state="translated">角色服務快取逾時單位</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConnectionString.AccessibleName">
+        <source>Custom connection string</source>
+        <target state="translated">自訂連接字串</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

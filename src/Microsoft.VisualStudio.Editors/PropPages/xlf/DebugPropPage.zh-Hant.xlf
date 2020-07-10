@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../DebugPropPage.resx">
+    <body>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Authentication &amp;mode:</source>
+        <target state="translated">驗證模式(&amp;M):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartActionLabel.Text">
+        <source>Start action</source>
+        <target state="translated">起始動作</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProject.Text">
+        <source>&amp;Start project</source>
+        <target state="translated">起始專案(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProgram.Text">
+        <source>Start e&amp;xternal program:</source>
+        <target state="translated">啟動外部程式(&amp;X):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartURL.Text">
+        <source>Start browser with U&amp;RL:</source>
+        <target state="translated">瀏覽器起始 URL(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgram.AccessibleName">
+        <source>Program to start</source>
+        <target state="translated">要啟動的程式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartURL.AccessibleName">
+        <source>URL to start browser with</source>
+        <target state="translated">用來起始瀏覽器的 URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.AccessibleName">
+        <source>Browse for external program</source>
+        <target state="translated">瀏覽外部程式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.Text">
+        <source>&amp;Browse...</source>
+        <target state="translated">瀏覽(&amp;B)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartOptionsLabel.Text">
+        <source>Start options</source>
+        <target state="translated">起始選項</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CommandLineArgsLabel.Text">
+        <source>Comma&amp;nd line arguments:</source>
+        <target state="translated">命令列引數(&amp;N):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirLabel.Text">
+        <source>Wor&amp;king directory:</source>
+        <target state="translated">工作目錄(&amp;K):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugEnabled.Text">
+        <source>Use remote m&amp;achine</source>
+        <target state="translated">使用遠端電腦(&amp;A)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachine.AccessibleName">
+        <source>Remote Machine Name:</source>
+        <target state="translated">遠端電腦名稱:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
+        <source>Browse for working directory</source>
+        <target state="translated">瀏覽工作目錄</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.Text">
+        <source>Bro&amp;wse...</source>
+        <target state="translated">瀏覽(&amp;W)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableDebuggerLabel.Text">
+        <source>Debugger engines</source>
+        <target state="translated">偵錯工具引擎</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableSQLServerDebugging.Text">
+        <source>Enable SQ&amp;L Server debugging</source>
+        <target state="translated">啟用 SQL Server 偵錯(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableUnmanagedDebugging.Text">
+        <source>Enable na&amp;tive code debugging</source>
+        <target state="translated">啟用機器碼偵錯(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">命令列引數</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

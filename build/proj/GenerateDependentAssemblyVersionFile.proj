@@ -1,0 +1,46 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project DefaultTargets="GenerateDependentAssemblyVersionsFile">
+  <!-- 
+   
+   Generates DependentAssemblyVersions.csv that enables the Roslyn insertion tool to update various 
+   assembly versions in the VS repository under src\ProductData.
+   See: https://github.com/dotnet/roslyn-tools/tree/master/src/RoslynInsertionTool).
+   
+    $(ProjectSystemVersion):        The version number of both Microsoft.VisualStudio.Editors/Microsoft.VisualStudio.AppDesigner and Microsoft.VisualStudio.ProjectSystem.Managed/Microsoft.VisualStudio.ProjectSystem.Managed.VS
+    $(ArtifactsConfigurationDir):   The configured-based build output location.
+    
+  -->
+  
+  <Import Project="..\import\Versions.props"/>
+  <Import Project="..\import\RepoLayout.props" />
+
+  <Target Name="GenerateDependentAssemblyVersionsFile">
+
+    <PropertyGroup>
+      <DependentAssemblyVersionsOutputDirectory>$(ArtifactsConfigurationDir)DevDivInsertionFiles\</DependentAssemblyVersionsOutputDirectory>
+      <DependentAssemblyVersionsFilePath>$(DependentAssemblyVersionsOutputDirectory)DependentAssemblyVersions.csv</DependentAssemblyVersionsFilePath>
+      
+    <!-- 
+     We use individual version for AppDesigner/Editors, however Managed and Managed.VS share
+     the same variable in VS repository under src\ProductData\AssemblyVersions.tt 
+     -->
+      <DependentAssemblyVersionsContents>
+ <![CDATA[
+Microsoft.VisualStudio.AppDesigner,$(ProjectSystemVersion).0
+Microsoft.VisualStudio.Editors,$(ProjectSystemVersion).0
+Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0
+ ]]>
+      </DependentAssemblyVersionsContents>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(DependentAssemblyVersionsOutputDirectory)" />
+    
+    <WriteLinesToFile
+      File="$(DependentAssemblyVersionsFilePath)"
+      Lines="$(DependentAssemblyVersionsContents)"
+      Overwrite="true"
+      />
+    
+  </Target>
+  
+</Project>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../ReferencePropPage.resx">
+    <body>
+      <trans-unit id="ReferenceListLabel.Text">
+        <source>&amp;References:</source>
+        <target state="translated">&amp;Odwołania:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_RefName.Text">
+        <source>Reference Name</source>
+        <target state="translated">Nazwa odwołania</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Type.Text">
+        <source>Type</source>
+        <target state="translated">Typ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Version.Text">
+        <source>Version</source>
+        <target state="translated">Wersja</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_CopyLocal.Text">
+        <source>Copy Local</source>
+        <target state="translated">Kopia lokalna</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ColHdr_Path.Text">
+        <source>Path</source>
+        <target state="translated">Ścieżka</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnusedReferences.Text">
+        <source>U&amp;nused References...</source>
+        <target state="translated">N&amp;ieużywane odwołania...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencePathsButton.Text">
+        <source>Reference &amp;Paths...</source>
+        <target state="translated">Ś&amp;cieżki odwołania...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveReference.Text">
+        <source>Remo&amp;ve</source>
+        <target state="translated">U&amp;suń</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="referenceToolStripMenuItem.Text">
+        <source>Reference...</source>
+        <target state="translated">Odwołanie...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="webReferenceToolStripMenuItem.Text">
+        <source>Web Reference...</source>
+        <target state="translated">Odwołanie sieci Web...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="serviceReferenceToolStripMenuItem.Text">
+        <source>Service Reference...</source>
+        <target state="translated">Odwołanie do usługi...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="addSplitButton.Text">
+        <source>&amp;Add...</source>
+        <target state="translated">&amp;Dodaj...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UpdateReferences.Text">
+        <source>&amp;Update</source>
+        <target state="translated">&amp;Aktualizuj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddUserImportButton.Text">
+        <source>Add User Imp&amp;ort</source>
+        <target state="translated">Dodaj imp&amp;ortowanie użytkownika</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UpdateUserImportButton.Text">
+        <source>Up&amp;date User Import</source>
+        <target state="translated">Ak&amp;tualizuj importowanie użytkownika</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleDescription">
+        <source>List of imported namespaces.</source>
+        <target state="translated">Lista zaimportowanych przestrzeni nazw.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportList.AccessibleName">
+        <source>Imported Namespaces:</source>
+        <target state="translated">Zaimportowane przestrzenie nazw:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UserImportTextBox.AccessibleName">
+        <source>Imported Namespace:</source>
+        <target state="translated">Zaimportowana przestrzeń nazw:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ImportsListLabel.Text">
+        <source>&amp;Imported namespaces:</source>
+        <target state="translated">&amp;Zaimportowane przestrzenie nazw:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencePageSplitContainer.Text">
+        <source>ReferencePageSplitContainer</source>
+        <target state="translated">ReferencePageSplitContainer</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

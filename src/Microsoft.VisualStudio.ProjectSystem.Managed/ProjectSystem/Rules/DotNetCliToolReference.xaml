@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="DotNetCliToolReference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="DotNetCliToolReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <StringProperty Name="Description"
+                  Visible="False"
+                  ReadOnly="True" />
+
+  <StringProperty Name="ExcludeAssets"
+                  Visible="False" />
+
+  <StringProperty Name="FrameworkName"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="FrameworkVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="IncludeAssets" 
+                  Visible="False" />
+
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="OriginalItemSpec"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Path"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="PrivateAssets" 
+                  Visible="False" />
+
+  <StringProperty Name="RuntimeIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetFramework"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Type"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="Version" 
+                  Visible="False" />
+
+</Rule>

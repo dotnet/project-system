@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../Menus.vsct">
+    <body>
+      <trans-unit id="cmdidProjectDebugger|ButtonText">
+        <source>Web Debugger</source>
+        <target state="translated">Web 调试器</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
+        <source>&amp;Pack</source>
+        <target state="translated">打包(&amp;P)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
+        <source>Generate NuGet Package</source>
+        <target state="translated">生成 NuGet 包</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|CommandName">
+        <source>GenerateNuGetPackageProjectContextMenu</source>
+        <target state="translated">GenerateNuGetPackageProjectContextMenu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
+        <source>&amp;Pack selection</source>
+        <target state="translated">打包选项(&amp;P)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
+        <source>Generate NuGet Package for selected project</source>
+        <target state="translated">为所选项目生成 NuGet 包</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|CommandName">
+        <source>GenerateNuGetPackageTopLevelBuild</source>
+        <target state="translated">GenerateNuGetPackageTopLevelBuild</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
+        <source>Framework</source>
+        <target state="translated">框架</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidDebugFrameworks|ButtonText">
+        <source>Framework</source>
+        <target state="translated">框架</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddAboveMenu|ButtonText">
+        <source>&amp;Add Above</source>
+        <target state="translated">在上方添加(&amp;A)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="translated">添加新项(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|CommandName">
+        <source>AddNewItemAbove</source>
+        <target state="translated">AddNewItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddBelowMenu|ButtonText">
+        <source>&amp;Add Below</source>
+        <target state="translated">在下方添加(&amp;A)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="translated">添加现有项(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|CommandName">
+        <source>AddExistingItemAbove</source>
+        <target state="translated">AddExistingItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="translated">添加新项(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|CommandName">
+        <source>AddNewItemBelow</source>
+        <target state="translated">AddNewItemBelow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="translated">添加现有项(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|CommandName">
+        <source>AddExistingItemBelow</source>
+        <target state="translated">AddExistingItemBelow</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

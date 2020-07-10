@@ -1,0 +1,15 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  <Import Project="..\Directory.Build.props"/>
+
+  <PropertyGroup>
+    <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <SuppressFromVsix Include="Microsoft.VSDesigner.dll"/>
+    <SuppressFromVsix Include="Microsoft.VisualStudio.DataTools.Interop.dll"/>
+    <SuppressFromVsix Include="Microsoft.VisualStudio.XmlEditor.dll"/>
+  </ItemGroup>
+</Project>

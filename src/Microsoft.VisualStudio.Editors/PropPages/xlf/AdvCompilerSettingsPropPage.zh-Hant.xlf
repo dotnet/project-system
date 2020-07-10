@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../AdvCompilerSettingsPropPage.resx">
+    <body>
+      <trans-unit id="OptimizationsLabel.Text">
+        <source>Optimizations</source>
+        <target state="translated">最佳化</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveIntegerChecks.Text">
+        <source>&amp;Remove integer overflow checks</source>
+        <target state="translated">移除整數溢位檢查(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Optimize.Text">
+        <source>&amp;Enable optimizations</source>
+        <target state="translated">啟用最佳化(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DllBaseLabel.Text">
+        <source>DLL &amp;base address:</source>
+        <target state="translated">DLL 基底位址(&amp;B):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineDebug.Text">
+        <source>Define &amp;DEBUG constant</source>
+        <target state="translated">定義 DEBUG 常數(&amp;D)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefineTrace.Text">
+        <source>Define &amp;TRACE constant</source>
+        <target state="translated">定義 TRACE 常數(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateSerializationAssembliesLabel.Text">
+        <source>Generate &amp;serialization assemblies:</source>
+        <target state="translated">產生序列化組件(&amp;S):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsLabel.Text">
+        <source>&amp;Custom constants:</source>
+        <target state="translated">自訂常數(&amp;C):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateDebugInfoLabel.Text">
+        <source>&amp;Generate debug info:</source>
+        <target state="translated">產生偵錯資訊(&amp;G):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConstantsExampleLabel.Text">
+        <source>Example: Name1="Value1",Name2="Value2",Name3="Value3"</source>
+        <target state="translated">範例:Name1="Value1",Name2="Value2",Name3="Value3"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompilationConstantsLabel.Text">
+        <source>Compilation Constants</source>
+        <target state="translated">編譯常數</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompileWithDotNetNative.Text">
+        <source>Compile with .NET Native toolchain</source>
+        <target state="translated">利用 .NET Native 工具鏈進行編譯</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableGatekeeperAudit.Text">
+        <source>Enable static analysis for .NET Native</source>
+        <target state="translated">啟用 .NET 原生的靜態分析</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

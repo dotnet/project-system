@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../ApplicationPropPageVBWPF.resx">
+    <body>
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="translated">&amp;Nombre del ensamblado:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>&amp;Root namespace:</source>
+        <target state="translated">&amp;Espacio de nombres raíz:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>&amp;Target framework:</source>
+        <target state="translated">Platafor&amp;ma de destino:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartupObjectOrUriLabel.Text">
+        <source>#</source>
+        <target state="translated">#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationTypeLabel.Text">
+        <source>&amp;Application type:</source>
+        <target state="translated">Tip&amp;o de aplicación:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseApplicationFrameworkCheckBox.Text">
+        <source>Enable application framewor&amp;k</source>
+        <target state="translated">&amp;Habilitar marco de trabajo de la aplicación</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconLabel.Text">
+        <source>&amp;Icon:</source>
+        <target state="translated">I&amp;cono:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembl&amp;y Information...</source>
+        <target state="translated">Infor&amp;mación de ensamblado...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewUACSettingsButton.Text">
+        <source>View Windows Settin&amp;gs</source>
+        <target state="translated">Ver configuración de &amp;Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAppGroupBox.Text">
+        <source>Windows application framework properties</source>
+        <target state="translated">Propiedades del marco de trabajo de la aplicación de Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EditXamlButton.Text">
+        <source>Edit &amp;XAML</source>
+        <target state="translated">Editar &amp;XAML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewCodeButton.Text">
+        <source>&amp;View Application Events</source>
+        <target state="translated">&amp;Ver eventos de aplicación</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ShutdownModeLabel.Text">
+        <source>Shutdown m&amp;ode:</source>
+        <target state="translated">&amp;Modo de apagado:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
+        <source>Auto-generate &amp;binding redirects</source>
+        <target state="translated">&amp;Generar redirecciones de enlace automáticamente</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

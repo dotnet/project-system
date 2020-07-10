@@ -1,0 +1,34 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  <!--
+     Properties describing the layout of the repo.
+  -->
+  <PropertyGroup>
+    <_RepoRoot>$(MSBuildThisFileDirectory)..\..\</_RepoRoot>
+    <RepoRoot>$([System.IO.Path]::GetFullPath('$(_RepoRoot)'))</RepoRoot>
+    <!-- Respect environment variable for the .NET install directory if set; otherwise, use the current default location -->
+    <DotNetRoot Condition="'$(DotNetRoot)' == ''">$(DOTNET_INSTALL_DIR)</DotNetRoot>
+    <DotNetRoot Condition="'$(DotNetRoot)' == ''">$(RepoRoot).dotnet\</DotNetRoot>
+    <DotNetRoot Condition="!HasTrailingSlash('$(DotNetRoot)')">$(DotNetRoot)\</DotNetRoot>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DotNetTool>$(DotNetRoot)dotnet</DotNetTool>
+    <DotNetTool Condition="'$(OS)' == 'Windows_NT'">$(DotNetTool).exe</DotNetTool>
+    <ArtifactsDir>$(RepoRoot)artifacts\</ArtifactsDir>
+    <ArtifactsToolsetDir>$(ArtifactsDir)toolset\</ArtifactsToolsetDir>
+    <ArtifactsConfigurationDir>$(ArtifactsDir)$(Configuration)\</ArtifactsConfigurationDir>
+    <ArtifactsBinDir>$(ArtifactsConfigurationDir)bin\</ArtifactsBinDir>
+    <ArtifactsObjDir>$(ArtifactsConfigurationDir)obj\</ArtifactsObjDir>
+    <ArtifactsLogDir>$(ArtifactsConfigurationDir)log\</ArtifactsLogDir>
+    <ArtifactsTmpDir>$(ArtifactsConfigurationDir)tmp\</ArtifactsTmpDir>
+    <ArtifactsTestResultsDir>$(ArtifactsConfigurationDir)TestResults\</ArtifactsTestResultsDir>
+    <ArtifactsSymStoreDirectory>$(ArtifactsConfigurationDir)SymStore\</ArtifactsSymStoreDirectory>
+    <PackageOutputPath>$(ArtifactsConfigurationDir)packages\</PackageOutputPath>
+    <VisualStudioSetupOutputPath>$(ArtifactsConfigurationDir)VSSetup\</VisualStudioSetupOutputPath>
+    <VisualStudioSetupInsertionPath>$(VisualStudioSetupOutputPath)Insertion\</VisualStudioSetupInsertionPath>
+    <VisualStudioSetupIntermediateOutputPath>$(ArtifactsConfigurationDir)VSSetup.obj\</VisualStudioSetupIntermediateOutputPath>
+    <VisualStudioXamlRulesDir>$(VisualStudioSetupOutputPath)Rules\</VisualStudioXamlRulesDir>
+  </PropertyGroup>
+
+</Project>

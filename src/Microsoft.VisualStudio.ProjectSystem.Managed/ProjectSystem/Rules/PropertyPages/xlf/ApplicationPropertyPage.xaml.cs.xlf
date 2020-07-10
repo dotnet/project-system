@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../ApplicationPropertyPage.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resources</source>
+        <target state="translated">Prostředky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Resources</source>
+        <target state="translated">Prostředky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="translated">Spouštěcí objekt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target framework</source>
+        <target state="translated">Cílová architektura</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
+        <source>Manifest</source>
+        <target state="translated">Manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|DisplayName">
+        <source>Output type</source>
+        <target state="translated">Typ výstupu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="translated">Vložit manifest s výchozím nastavením</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
+        <source>Create application without a manifest</source>
+        <target state="translated">Vytvořit aplikaci bez manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="translated">Konzolová aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Library|DisplayName">
+        <source>Class Library</source>
+        <target state="translated">Knihovna tříd</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="translated">Aplikace systému Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Application|Description">
+        <source>General</source>
+        <target state="translated">Obecné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Application|DisplayName">
+        <source>Application</source>
+        <target state="translated">Aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Icon</source>
+        <target state="translated">Ikona</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly name</source>
+        <target state="translated">Název sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Default namespace</source>
+        <target state="translated">Výchozí obor názvů</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Soubor prostředků</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

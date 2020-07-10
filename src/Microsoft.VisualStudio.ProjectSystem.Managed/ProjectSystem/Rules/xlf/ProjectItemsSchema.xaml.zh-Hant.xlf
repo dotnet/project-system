@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ProjectItemsSchema.xaml">
+    <body>
+      <trans-unit id="ContentType|AppInstaller|DisplayName">
+        <source>App Installer file</source>
+        <target state="translated">應用程式安裝程式檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Config|DisplayName">
+        <source>Config file</source>
+        <target state="translated">組態檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Manifest|DisplayName">
+        <source>Manifest file</source>
+        <target state="translated">資訊清單檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|PackageLayout|DisplayName">
+        <source>Package Layout file</source>
+        <target state="translated">套件配置檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Text|DisplayName">
+        <source>Text file</source>
+        <target state="translated">文字檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|WindowsResource|DisplayName">
+        <source>Windows Resourcs file</source>
+        <target state="translated">Windows Resourcs 檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XML|DisplayName">
+        <source>Xml file</source>
+        <target state="translated">XML 檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|HTML|DisplayName">
+        <source>Html file</source>
+        <target state="translated">HTML 檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|CSS|DisplayName">
+        <source>Cascading style sheet</source>
+        <target state="translated">階層式樣式表</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Json|DisplayName">
+        <source>Json file</source>
+        <target state="translated">Json 檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Font|DisplayName">
+        <source>Font file</source>
+        <target state="translated">字型檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Media|DisplayName">
+        <source>Media file</source>
+        <target state="translated">媒體檔案</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Image|DisplayName">
+        <source>Image file</source>
+        <target state="translated">影像檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <target state="translated">內嵌資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|None|DisplayName">
+        <source>None</source>
+        <target state="translated">無</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Content|DisplayName">
+        <source>Content</source>
+        <target state="translated">內容</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <target state="translated">內嵌資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Page|DisplayName">
+        <source>Page file</source>
+        <target state="translated">分頁檔</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Page|DisplayName">
+        <source>Page</source>
+        <target state="translated">頁面</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
+        <source>Application definition</source>
+        <target state="translated">應用程式定義</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="translated">工作流程定義</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="translated">工作流程定義</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="translated">資源</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="translated">資源</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

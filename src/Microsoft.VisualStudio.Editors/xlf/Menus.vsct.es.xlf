@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../Menus.vsct">
+    <body>
+      <trans-unit id="IDM_VS_MENU_Resources|ButtonText">
+        <source>&amp;Resources</source>
+        <target state="translated">&amp;Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MENU_Resources|CommandName">
+        <source>&amp;Resources</source>
+        <target state="translated">&amp;Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_RESX_ContextMenu|ButtonText">
+        <source>Managed Resources Editor Context Menu</source>
+        <target state="translated">Menú contextual del Editor de recursos administrados</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU|ButtonText">
+        <source>New &amp;Image</source>
+        <target state="translated">Nueva ima&amp;gen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU|CommandName">
+        <source>New &amp;Image</source>
+        <target state="translated">Nueva ima&amp;gen</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_SETTINGSDESIGNER_ContextMenu|ButtonText">
+        <source>Settings Designer</source>
+        <target state="translated">Diseñador de configuración</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources|ButtonText">
+        <source>Resources</source>
+        <target state="translated">Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources|CommandName">
+        <source>Resources</source>
+        <target state="translated">Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources_ResW|ButtonText">
+        <source>Resources</source>
+        <target state="translated">Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Resources_ResW|CommandName">
+        <source>Resources</source>
+        <target state="translated">Recursos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_NAVIGATE|ButtonText">
+        <source>&amp;Category</source>
+        <target state="translated">&amp;Categoría</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_ADD|ButtonText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">Agregar &amp;recurso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_MNUCTRL_VIEWS|ButtonText">
+        <source>Views</source>
+        <target state="translated">Vistas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Settings|ButtonText">
+        <source>Settings</source>
+        <target state="translated">Configuración</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_VS_TOOLBAR_Settings|CommandName">
+        <source>Settings</source>
+        <target state="translated">Configuración</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IDM_CTX_MYEXTENSION_ContextMenu|ButtonText">
+        <source>My Extensibility</source>
+        <target state="translated">Extensibilidad My</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONEditCell|ButtonText">
+        <source>&amp;Edit Cell</source>
+        <target state="translated">&amp;Editar celda</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONAddRow|ButtonText">
+        <source>Add R&amp;ow</source>
+        <target state="translated">Agregar f&amp;ila</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONRemoveRow|ButtonText">
+        <source>R&amp;emove Row</source>
+        <target state="translated">&amp;Quitar fila</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidCOMMONRemoveRow|MenuText">
+        <source>R&amp;emove Row</source>
+        <target state="translated">&amp;Quitar fila</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXPlay|ButtonText">
+        <source>P&amp;lay</source>
+        <target state="translated">Reprod&amp;ucir</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXImport|ButtonText">
+        <source>&amp;Import From File...</source>
+        <target state="translated">&amp;Importar desde archivo...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXExport|ButtonText">
+        <source>E&amp;xport To File...</source>
+        <target state="translated">E&amp;xportar a archivo...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddExistingFile|ButtonText">
+        <source>Add &amp;Existing File...</source>
+        <target state="translated">Agr&amp;egar archivo existente...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddExistingFile|MenuText">
+        <source>&amp;Existing File...</source>
+        <target state="translated">&amp;Archivo existente</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewString|ButtonText">
+        <source>Add New &amp;String</source>
+        <target state="translated">Agregar n&amp;ueva cadena</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewString|MenuText">
+        <source>New &amp;String</source>
+        <target state="translated">Nueva &amp;cadena</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewIcon|ButtonText">
+        <source>Add New I&amp;con</source>
+        <target state="translated">Agregar nuevo &amp;icono</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewIcon|MenuText">
+        <source>New I&amp;con...</source>
+        <target state="translated">Nuevo ic&amp;ono...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewTextFile|ButtonText">
+        <source>Add New &amp;Text File</source>
+        <target state="translated">Agregar nuevo archivo de te&amp;xto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewTextFile|MenuText">
+        <source>New &amp;Text File...</source>
+        <target state="translated">Nuevo &amp;archivo de texto...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImagePNG|ButtonText">
+        <source>Add &amp;PNG Image</source>
+        <target state="translated">Agregar imagen &amp;PNG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImagePNG|MenuText">
+        <source>&amp;PNG Image...</source>
+        <target state="translated">&amp;Imagen PNG...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageBMP|ButtonText">
+        <source>Add &amp;BMP Image</source>
+        <target state="translated">Agregar imagen &amp;BMP</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageBMP|MenuText">
+        <source>&amp;BMP Image...</source>
+        <target state="translated">&amp;Imagen BMP...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageGIF|ButtonText">
+        <source>Add &amp;GIF Image</source>
+        <target state="translated">Agregar imagen &amp;GIF</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageGIF|MenuText">
+        <source>&amp;GIF Image...</source>
+        <target state="translated">Imagen &amp;GIF...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageJPEG|ButtonText">
+        <source>Add &amp;JPEG Image</source>
+        <target state="translated">Agregar imagen &amp;JPEG</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageJPEG|MenuText">
+        <source>&amp;JPEG Image...</source>
+        <target state="translated">Imagen &amp;JPEG...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageTIFF|ButtonText">
+        <source>Add &amp;TIFF Image</source>
+        <target state="translated">Agregar imagen &amp;TIFF</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddNewImageTIFF|MenuText">
+        <source>&amp;TIFF Image...</source>
+        <target state="translated">&amp;Imagen TIFF...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeStrings|ButtonText">
+        <source>Strings</source>
+        <target state="translated">Cadenas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeStrings|MenuText">
+        <source>Strings</source>
+        <target state="translated">Cadenas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeImages|ButtonText">
+        <source>Images</source>
+        <target state="translated">Imágenes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeImages|MenuText">
+        <source>Images</source>
+        <target state="translated">Imágenes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeIcons|ButtonText">
+        <source>Icons</source>
+        <target state="translated">Iconos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeIcons|MenuText">
+        <source>Icons</source>
+        <target state="translated">Iconos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeAudio|ButtonText">
+        <source>Audio</source>
+        <target state="translated">Audio</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeAudio|MenuText">
+        <source>Audio</source>
+        <target state="translated">Audio</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeFiles|ButtonText">
+        <source>Files</source>
+        <target state="translated">Archivos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeFiles|MenuText">
+        <source>Files</source>
+        <target state="translated">Archivos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeOther|ButtonText">
+        <source>Other</source>
+        <target state="translated">Otro</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXResTypeOther|MenuText">
+        <source>Other</source>
+        <target state="translated">Otro</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsList|ButtonText">
+        <source>View In &amp;List</source>
+        <target state="translated">Ver en &amp;lista</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsList|MenuText">
+        <source>&amp;List</source>
+        <target state="translated">&amp;Lista</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsDetails|ButtonText">
+        <source>View &amp;Details</source>
+        <target state="translated">Ver &amp;detalles</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsDetails|MenuText">
+        <source>&amp;Details</source>
+        <target state="translated">&amp;Detalles</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsThumbnails|ButtonText">
+        <source>View As &amp;Thumbnails</source>
+        <target state="translated">Ver como &amp;miniaturas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXViewsThumbnails|MenuText">
+        <source>&amp;Thumbnails</source>
+        <target state="translated">&amp;Vistas en miniatura</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERSynchronize|ButtonText">
+        <source>&amp;Synchronize</source>
+        <target state="translated">&amp;Sincronizar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERSynchronize|ToolTipText">
+        <source>Removes the user configuration file where the application saves changes to user settings</source>
+        <target state="translated">Quita el archivo de configuración del usuario en el que la aplicación guarda los cambios de configuración del usuario</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERLoadWebSettings|ButtonText">
+        <source>&amp;Load Web Settings</source>
+        <target state="translated">&amp;Cargar configuración web</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERLoadWebSettings|ToolTipText">
+        <source>Loads Web settings from the Web settings host specified on the Services property page.</source>
+        <target state="translated">Carga la configuración web del host de configuración web especificado en la página de propiedades de los servicios.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERViewCode|ButtonText">
+        <source>V&amp;iew Code</source>
+        <target state="translated">Ver cód&amp;igo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXGenericRemove|ButtonText">
+        <source>Re&amp;move Resource</source>
+        <target state="translated">&amp;Quitar recurso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXGenericRemove|MenuText">
+        <source>Re&amp;move Resource</source>
+        <target state="translated">&amp;Quitar recurso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAdd|ButtonText">
+        <source>&amp;Add</source>
+        <target state="translated">&amp;Agregar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAdd|MenuText">
+        <source>Add</source>
+        <target state="translated">Agregar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidIDRESXViewsFixedMenuCommand|ButtonText">
+        <source>&amp;View</source>
+        <target state="translated">&amp;Ver</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidIDRESXViewsFixedMenuCommand|MenuText">
+        <source>View</source>
+        <target state="translated">Vista</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddDefaultResource|ButtonText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">Agregar &amp;recurso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAddDefaultResource|MenuText">
+        <source>Add &amp;Resource</source>
+        <target state="translated">Agregar &amp;recurso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMYEXTENSIONAddExtension|ButtonText">
+        <source>&amp;Add Extension...</source>
+        <target state="translated">&amp;Agregar extensión...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidMYEXTENSIONRemoveExtension|ButtonText">
+        <source>Remo&amp;ve Extension</source>
+        <target state="translated">&amp;Quitar extensión</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidSETTINGSDESIGNERAccessModifierCombobox|ButtonText">
+        <source>Access &amp;Modifier:</source>
+        <target state="translated">&amp;Modificador de acceso:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidRESXAccessModifierCombobox|ButtonText">
+        <source>Access Mod&amp;ifier:</source>
+        <target state="translated">Mod&amp;ificador de acceso:</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

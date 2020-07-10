@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../SdkReference.xaml">
+    <body>
+      <trans-unit id="Rule|SdkReference|DisplayName">
+        <source>SDK Reference</source>
+        <target state="translated">Referência do SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SdkReference|Description">
+        <source>SDK Reference Properties</source>
+        <target state="translated">Propriedades da Referência do SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
+        <source>SDK Root</source>
+        <target state="translated">Raiz do SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AppXLocation|DisplayName">
+        <source>App Package Location</source>
+        <target state="translated">Local do Pacote do Aplicativo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
+        <source>FrameworkIdentity</source>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyPayload|DisplayName">
+        <source>Copy Payload</source>
+        <target state="translated">Copiar Conteúdo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
+        <source>Copy Payload to Subdirectory</source>
+        <target state="translated">Copiar Conteúdo para o Subdiretório</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandContent|DisplayName">
+        <source>Expand Content</source>
+        <target state="translated">Expandir Conteúdo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
+        <source>Expand Reference Assemblies</source>
+        <target state="translated">Expandir Assemblies de Referência</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
+        <source>Copy Local Expanded Reference Assemblies</source>
+        <target state="translated">Assemblies de Referência Expandidos do Local da Cópia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="translated">Nome</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="translated">Versão</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

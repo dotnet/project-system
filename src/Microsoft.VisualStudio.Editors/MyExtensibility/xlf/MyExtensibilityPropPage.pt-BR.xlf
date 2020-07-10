@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../MyExtensibilityPropPage.resx">
+    <body>
+      <trans-unit id="labelDescription.Text">
+        <source>My Namespace extensions: </source>
+        <target state="translated">Extensões do Meu Namespace: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="linkLabelHelp.Text">
+        <source>Learn more about customizing My Namespace.</source>
+        <target state="translated">Aprenda mais sobre a personalização do My Namespace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonRemove.Text">
+        <source>Remo&amp;ve extension</source>
+        <target state="translated">Remo&amp;ver extensão</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonAdd.Text">
+        <source>&amp;Add extension...</source>
+        <target state="translated">&amp;Adicionar extensão...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionName.HeaderText">
+        <source>Name</source>
+        <target state="translated">Nome</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionVersion.HeaderText">
+        <source>Version</source>
+        <target state="translated">Versão</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="colHeaderExtensionDescription.HeaderText">
+        <source>Description</source>
+        <target state="translated">Descrição</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+
+<Rule Name="ProjectDebugger"
+      DisplayName="Start"
+      PageTemplate="Debugger"
+      Description="Web debugging options"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                HasConfigurationCondition="False"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <!-- the command which appears in the debugger dropdown -->
+  <Rule.Metadata>
+    <sys:Guid x:Key="DebugTargetTypeCommandGuid">568ABDF7-D522-474D-9EED-34B5E5095BA5</sys:Guid>
+    <sys:UInt32 x:Key="DebugTargetTypeCommandId">0x100</sys:UInt32>
+    <sys:String x:Key="DebugTargetDropdownEnum">ActiveDebugProfile</sys:String>
+  </Rule.Metadata>
+
+  <DynamicEnumProperty Name="ActiveDebugProfile"
+                       EnumProvider="DebugProfileProvider"
+                       Visible="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="UserFile"
+                  HasConfigurationCondition="False"
+                  SourceOfDefaultValue="AfterContext" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
+
+  <StringProperty Name="ActiveDebugFramework" ReadOnly="False" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile"
+                  HasConfigurationCondition="false"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="ActiveDebugRuntime" ReadOnly="False" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="UserFile"
+                  HasConfigurationCondition="false"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+</Rule>

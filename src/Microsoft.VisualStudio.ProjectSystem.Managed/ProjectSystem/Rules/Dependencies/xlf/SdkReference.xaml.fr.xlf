@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../SdkReference.xaml">
+    <body>
+      <trans-unit id="Rule|SdkReference|DisplayName">
+        <source>SDK Reference</source>
+        <target state="translated">Référence SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SdkReference|Description">
+        <source>SDK Reference Properties</source>
+        <target state="translated">Propriétés de la référence SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
+        <source>SDK Root</source>
+        <target state="translated">Racine du SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AppXLocation|DisplayName">
+        <source>App Package Location</source>
+        <target state="translated">Emplacement du package d'application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
+        <source>FrameworkIdentity</source>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyPayload|DisplayName">
+        <source>Copy Payload</source>
+        <target state="translated">Copier la charge</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
+        <source>Copy Payload to Subdirectory</source>
+        <target state="translated">Copier la charge dans le sous-répertoire</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandContent|DisplayName">
+        <source>Expand Content</source>
+        <target state="translated">Développer le contenu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
+        <source>Expand Reference Assemblies</source>
+        <target state="translated">Développer les assemblys de référence</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
+        <source>Copy Local Expanded Reference Assemblies</source>
+        <target state="translated">Copier les assemblys de référence développés locaux</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="translated">Nom</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="translated">Version</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

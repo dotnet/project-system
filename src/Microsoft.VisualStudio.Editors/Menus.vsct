@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  Useful references:
+  
+    http://msdn2.microsoft.com/en-us/library/bb165339(VS.80).aspx - Best Practices for Implementing Menu and Toolbar Commands
+    http://msdn2.microsoft.com/en-us/library/bb166229(VS.80).aspx - How VSPackages Add User Interface Elements
+
+  Documentation for this file format can be found 
+  at http://vscore/sdk/Documents/Specifications/8.0/VSCTDocumentation.doc
+-->
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="virtkeys.h"/>
+  <Extern href="vsshlids.h"/>
+  <Extern href="SharedIds.h"/>
+
+  <Commands package="CLSID_VBPackage">
+    <Menus>
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources" priority="0x0200" type="Menu">
+        <Annotation>
+          <Documentation>
+            Top level menu for resources
+          </Documentation>
+        </Annotation>
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS"/>
+        <Strings>
+          <ButtonText>&amp;Resources</ButtonText>
+          <CommandName>&amp;Resources</CommandName>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_CTX_RESX_ContextMenu" priority="0x0000" type="Context">
+        <Annotation>
+          <Documentation>
+            Context menu for the resource editor
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="0"/>
+        <Strings>
+          <ButtonText>Managed Resources Editor Context Menu</ButtonText>
+        </Strings>
+      </Menu>
+      <!--  -->
+      <!--  -->
+      <!--     //  -->
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU" priority="0x0200" type="Menu">
+        <Annotation>
+          <Documentation>
+            This is the "Add.New Image" menu item that shows up directly on the "Add" menu (and cascades into PNG Image, BMP Image, etc.)
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew"/>
+        <Strings>
+          <ButtonText>New &amp;Image</ButtonText>
+          <CommandName>New &amp;Image</CommandName>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_CTX_SETTINGSDESIGNER_ContextMenu" priority="0x0000" type="Context">
+        <Annotation>
+          <Documentation>
+            Settings designers's context menu.
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="0"/>
+        <Strings>
+          <ButtonText>Settings Designer</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources" priority="0x0200" type="ToolWindowToolbar">
+        <Annotation>
+          <Documentation>
+            The toolbar for the resource editor
+          </Documentation>
+        </Annotation>
+        <Strings>
+          <ButtonText>Resources</ButtonText>
+          <CommandName>Resources</CommandName>
+        </Strings>
+      </Menu>
+      
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources_ResW" priority="0x0200" type="ToolWindowToolbar">
+        <Annotation>
+          <Documentation>
+            The toolbar for the resource editor
+          </Documentation>
+        </Annotation>
+        <Strings>
+          <ButtonText>Resources</ButtonText>
+          <CommandName>Resources</CommandName>
+        </Strings>
+      </Menu>
+      
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_NAVIGATE" priority="0x0100" type="MenuControllerLatched">
+        <Annotation>
+          <Documentation>
+            Drop down menu for categories tab on the resource designers toolbar
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR"/>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <CommandFlag>TextIsAnchorCommand</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Category</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_ADD" priority="0x0110" type="MenuController">
+        <Annotation>
+          <Documentation>
+            Drop down menu for add tab on the resource editor toolbar
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR"/>
+        <CommandFlag>IconAndText</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;Resource</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_VIEWS" priority="0x0100" type="MenuController">
+        <Annotation>
+          <Documentation>
+            Drop down menu for view tab on the resource editor toolbar
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR_VIEWS"/>
+        <Strings>
+          <ButtonText>Views</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_VS_TOOLBAR_Settings" priority="0x0200" type="ToolWindowToolbar">
+        <Annotation>
+          <Documentation>
+            Toolbar for the settings designer
+          </Documentation>
+        </Annotation>
+        <Strings>
+          <ButtonText>Settings</ButtonText>
+          <CommandName>Settings</CommandName>
+        </Strings>
+      </Menu>
+
+      <!--Define the context menu for My Extension Property Page-->
+      <Menu guid="GUID_MYEXTENSION_Menu" id="IDM_CTX_MYEXTENSION_ContextMenu" priority="0x0000" type="Context">
+        <Annotation>
+          <Documentation>
+            My Extensions Property Page's context menu.
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_MYEXTENSION_Menu" id="0"/>
+        <Strings>
+          <ButtonText>My Extensibility</ButtonText>
+        </Strings>
+      </Menu>
+
+      <!--  -->
+      <!--  -->
+    </Menus>
+
+    <Groups>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_Audio" priority="0x0000">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_CTX_RESX_ContextMenu"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_Open" priority="0x0100">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_CTX_RESX_ContextMenu"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste" priority="0x0200">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_CTX_RESX_ContextMenu"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_ImportExport" priority="0x0300">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_CTX_RESX_ContextMenu"/>
+      </Group>
+
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage" priority="0x0100">
+        <Annotation>
+          <Documentation>
+            This group is in the cascading menu off of "Add.New Image" and contains the actual new image menu items
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_RESX_CSCD_ADDNEWIMAGE_MENU"/>
+      </Group>
+
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate" priority="0x0100">
+        <Annotation>
+          <Documentation>
+            This group is in the cascading menu off of the "Resource Type" menu item and contains the actual resource type menu items
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_NAVIGATE"/>
+      </Group>
+
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views" priority="0x0100">
+        <Annotation>
+          <Documentation>
+            This group is in the cascading menu off of the "Views" menu item and contains the actual views menu items (icon, details, thumbnails)
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_VIEWS"/>
+      </Group>
+
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddExisting" priority="0x0100">
+        <Annotation>
+          <Documentation>
+            Let's also put these items on the main resource menu so that they get a nice canonical name
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew" priority="0x0200">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views" priority="0x0300">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources"/>
+      </Group>
+
+      <Group guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGSDESIGNER_CTX" priority="0x0001">
+        <Annotation>
+          <Documentation>
+            Settings designer context menu
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_CTX_SETTINGSDESIGNER_ContextMenu"/>
+      </Group>
+
+      <Group guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR" priority="0x0001">
+        <Annotation>
+          <Documentation>
+            Settings designer toolbar commands
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_VS_TOOLBAR_Settings"/>
+      </Group>
+      <Group guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_LOADWEBSETTINGS" priority="0x0002">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_VS_TOOLBAR_Settings"/>
+      </Group>
+      <Group guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_ACCESSMODIFIER" priority="0x0F00">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_VS_TOOLBAR_Settings"/>
+      </Group>
+      <Group guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_VIEW" priority="0x0003">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDM_VS_TOOLBAR_Settings"/>
+      </Group>
+
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR" priority="0x0110">
+        <Annotation>
+          <Documentation>
+            Main group containing all menus/commands on the resource editor toolbar
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR_VIEWS" priority="0x0120">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR_ACCESSMODIFIER" priority="0x0F00">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources"/>
+      </Group>
+      <Group guid="GUID_RESX_MenuGroup" id="IDG_VS_RESW_TOOLBAR" priority="0x0F00">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_TOOLBAR_Resources_ResW"/>
+      </Group>
+
+      <!--Define the first menu group in My Extension Property Page's context menu-->
+      <Group guid="GUID_MYEXTENSION_Menu" id="IDG_MYEXTENSION_CTX_AddRemove" priority="0x0001">
+        <Annotation>
+          <Documentation>
+            My Extension Property Page's context menu first group
+          </Documentation>
+        </Annotation>
+        <Parent guid="GUID_MYEXTENSION_Menu" id="IDM_CTX_MYEXTENSION_ContextMenu"/>
+      </Group>
+
+    </Groups>
+    <!--   NEWGROUPS_END -->
+    <!--  -->
+    <!--   ///////////////////////////////////////////////////////////////////////////// -->
+    <!--   // BUTTONS (COMMANDS) -->
+    <!--   //  This section contains an entry for each command. A command can be a toolbar button, menu item, -->
+    <!--   //    drop down list box item. -->
+    <!--   //  Fields are: -->
+    <!--   //  - GUID:CmdID: The unique identifier of the command. -->
+    <!--   //  - GUID:GroupID: The primary group to which command belongs (command can belong to different groups). -->
+    <!--   //  - Priority: Same as above. -->
+    <!--   //  - GUID:IconID: If use GuidOfficeIcon, environment searches in Mso97rt.dll. NOICON for no icon. -->
+    <!--   //  - ButtonType: Button (tool bars, menus, context menus), MenuButton (those that produce another menu), -->
+    <!--   //        SplitDropDown (Undo / Redo). -->
+    <!--   //  - Flags: See documentation. -->
+    <!--   //  - Button Text: the text that is display e.g "&Open". -->
+    <!--   //  - Menu Text: displayed if in a toolbar, context menu or cascade menu. Default to Button Text. -->
+    <!--   //  - ToolTipText: Text in tool tip. Default to ButtonText. -->
+    <!--   //  - CommandWell: Text in commands pane and keyboard window of menu customization. Default to ButtonText. -->
+    <!--   //  - English Canonical: Text that can be entered in command window to execute. -->
+    <!--   //  - Localized canonical: Same as above. -->
+    <!--   ///////////////////////////////////////////////////////////////////////////// -->
+    <Buttons>
+      <!--   BUTTONS_BEGIN -->
+      <!-- 	//Usage:   -->
+      <!-- 	//============================================================================================================================================================================================================================================================================================ -->
+      <!-- 	// GUID:CMID                                PRIMARY GROUP                                       PRIORITY    GUID:ICONID                     BUTTON TYPE     FLAGS							BUTTON TEXT						MENU TEXT                   TOOLTIP TEXT                   COMMAND NAME -->
+      <!-- 	//============================================================================================================================================================================================================================================================================================ -->
+      <!--      -->
+      <!--      -->
+      <!--     // Resource editor's context menu. -->
+      <!--  -->
+      <!--  -->
+
+      <!--     // We don't actually want "Edit Cell" to show up in the menus, we just want to handle F2 within the grid. -->
+      <Button guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONEditCell" priority="0x0500" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_EDIT_COMMANDWELL"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Edit Cell</ButtonText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <!--     // There doesn't seem to be any good shared commands for editing in a grid. We could have used cmdidDelete or cmdidRemove  -->
+      <!--     // instead of the new RemoveRow command, but the problem is that those are often bound to the Del key, which is not quite -->
+      <!--     // what we want. We also want to differentiate between delete:ing the contents of the currently selected cell from deleting -->
+      <!--     // the current row(s) -->
+      <!--     //  -->
+      <!--     // The commands are created with the TEXTCHANGES flag set to allow individual designers to change the text (i.e. Remove Setting or Remove Resource) -->
+      <Button guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONAddRow" priority="0x0501" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_EDIT_CUTCOPY"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Add R&amp;ow</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONRemoveRow" priority="0x0502" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_EDIT_CUTCOPY"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>R&amp;emove Row</ButtonText>
+          <MenuText>R&amp;emove Row</MenuText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXPlay" priority="0x0200" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Audio"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>P&amp;lay</ButtonText>
+        </Strings>
+      </Button>
+      <!--      -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXImport" priority="0x0200" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_ImportExport"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Import From File...</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXExport" priority="0x0250" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_ImportExport"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>E&amp;xport To File...</ButtonText>
+        </Strings>
+      </Button>
+      <!--      -->
+      <!--     // We stick the TEXTMENUUSEBUTTON flag on here to allow for different name on sub menus and top level menus... -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddExistingFile" priority="0x0100" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddExisting"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;Existing File...</ButtonText>
+          <MenuText>&amp;Existing File...</MenuText>
+        </Strings>
+      </Button>
+      <!--      -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewString" priority="0x0100" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add New &amp;String</ButtonText>
+          <MenuText>New &amp;String</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewIcon" priority="0x0800" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add New I&amp;con</ButtonText>
+          <MenuText>New I&amp;con...</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewTextFile" priority="0x0900" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add New &amp;Text File</ButtonText>
+          <MenuText>New &amp;Text File...</MenuText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewImagePNG" priority="0x0100" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;PNG Image</ButtonText>
+          <MenuText>&amp;PNG Image...</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewImageBMP" priority="0x0200" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;BMP Image</ButtonText>
+          <MenuText>&amp;BMP Image...</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewImageGIF" priority="0x0300" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;GIF Image</ButtonText>
+          <MenuText>&amp;GIF Image...</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewImageJPEG" priority="0x0400" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;JPEG Image</ButtonText>
+          <MenuText>&amp;JPEG Image...</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddNewImageTIFF" priority="0x0500" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNewImage"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;TIFF Image</ButtonText>
+          <MenuText>&amp;TIFF Image...</MenuText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeStrings" priority="0x0100" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_STRINGS"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Strings</ButtonText>
+          <MenuText>Strings</MenuText>
+          <CanonicalName>Strings</CanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeImages" priority="0x0200" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_IMAGES"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Images</ButtonText>
+          <MenuText>Images</MenuText>
+          <CanonicalName>Images</CanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeIcons" priority="0x0300" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_ICONS"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Icons</ButtonText>
+          <MenuText>Icons</MenuText>
+          <CanonicalName>Icons</CanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeAudio" priority="0x0400" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_AUDIO"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Audio</ButtonText>
+          <MenuText>Audio</MenuText>
+          <CanonicalName>Audio</CanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeFiles" priority="0x0500" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_FILES"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Files</ButtonText>
+          <MenuText>Files</MenuText>
+          <CanonicalName>Files</CanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXResTypeOther" priority="0x0600" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate"/>
+        <Icon guid="guidEditorsIcons" id="IDBIVIEW_OTHER"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>Other</ButtonText>
+          <MenuText>Other</MenuText>
+          <CanonicalName>Other</CanonicalName>
+        </Strings>
+      </Button>
+      <!--    -->
+      <!--  -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXViewsList" priority="0x0100" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>View In &amp;List</ButtonText>
+          <MenuText>&amp;List</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXViewsDetails" priority="0x0200" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>View &amp;Details</ButtonText>
+          <MenuText>&amp;Details</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXViewsThumbnails" priority="0x0300" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <ButtonText>View As &amp;Thumbnails</ButtonText>
+          <MenuText>&amp;Thumbnails</MenuText>
+        </Strings>
+      </Button>
+      <!--      -->
+      <!--     // Settings designer toolbar commands -->
+      <!--  -->
+      <!--     // The Big Red Button to clear user settings files... -->
+      <Button guid="GUID_SETTINGSDESIGNER_CommandID" id="cmdidSETTINGSDESIGNERSynchronize" priority="0x0203" type="Button">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>TextOnly</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Synchronize</ButtonText>
+          <ToolTipText>Removes the user configuration file where the application saves changes to user settings</ToolTipText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <!--     // The button to reload web settings -->
+      <Button guid="GUID_SETTINGSDESIGNER_CommandID" id="cmdidSETTINGSDESIGNERLoadWebSettings" priority="0x0200" type="Button">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_LOADWEBSETTINGS"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Icon guid="guidEditorsIcons" id="IDBI_LOADSETTINGS"/>
+        <Strings>
+          <ButtonText>&amp;Load Web Settings</ButtonText>
+          <ToolTipText>Loads Web settings from the Web settings host specified on the Services property page.</ToolTipText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <!--     // We don't reuse the normal cmdidViewCode since that only shows an icon, and not any text, and is invisible by default... -->
+      <Button guid="GUID_SETTINGSDESIGNER_CommandID" id="cmdidSETTINGSDESIGNERViewCode" priority="0x0201" type="Button">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_VIEW"/>
+        <Icon guid="guidEditorsIcons" id="IDBI_VIEWCODE"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>V&amp;iew Code</ButtonText>
+        </Strings>
+      </Button>
+      <!--  -->
+      <!--     // -->
+      <!--     // Resource editor toolbar commands    -->
+      <!--     // -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXGenericRemove" priority="0x0120" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR"/>
+        <Icon guid="guidEditorsIcons" id="IDBI_REMOVE"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <Strings>
+          <ButtonText>Re&amp;move Resource</ButtonText>
+          <MenuText>Re&amp;move Resource</MenuText>
+        </Strings>
+      </Button>
+      <!--     // We want the add menu controller to always show the same commandtext and icon, so we create a new command with the FixMenuController flag set just for this purpose -->
+      <!--     // We also don't want these commands to show up on the menus themselves, so we also add the NoShowOnMenuController -->
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAdd" priority="0x0000" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddExisting"/>
+        <Icon guid="guidEditorsIcons" id="IDBI_ADD"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>FixMenuController</CommandFlag>
+        <CommandFlag>NoShowOnMenuController</CommandFlag>
+        <CommandFlag>NoKeyCustomize</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add</ButtonText>
+          <MenuText>Add</MenuText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_RESX_CommandID" id="cmdidIDRESXViewsFixedMenuCommand" priority="0x0000" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Views"/>
+        <Icon guid="guidEditorsIcons" id="IDBI_VIEWS"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>FixMenuController</CommandFlag>
+        <CommandFlag>NoShowOnMenuController</CommandFlag>
+        <CommandFlag>NoKeyCustomize</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;View</ButtonText>
+          <MenuText>View</MenuText>
+        </Strings>
+      </Button>
+
+      <Button guid="GUID_RESX_CommandID" id="cmdidRESXAddDefaultResource" priority="0x0115" type="Button">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESW_TOOLBAR"/>
+        <Icon guid="guidEditorsIcons" id="IDBI_ADD"/>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <CommandFlag>IconAndText</CommandFlag>
+        <Strings>
+          <ButtonText>Add &amp;Resource</ButtonText>
+          <MenuText>Add &amp;Resource</MenuText>
+        </Strings>
+      </Button>
+
+      <!--Define command button for My Extension Property Page context menu-->
+      <Button guid="GUID_MYEXTENSION_Menu" id="cmdidMYEXTENSIONAddExtension" priority="0x0500" type="Button">
+        <Parent guid="GUID_MYEXTENSION_Menu" id="IDG_MYEXTENSION_CTX_AddRemove"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>&amp;Add Extension...</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="GUID_MYEXTENSION_Menu" id="cmdidMYEXTENSIONRemoveExtension" priority="0x0520" type="Button">
+        <Parent guid="GUID_MYEXTENSION_Menu" id="IDG_MYEXTENSION_CTX_AddRemove"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>Remo&amp;ve Extension</ButtonText>
+        </Strings>
+      </Button>
+
+    </Buttons>
+    <Bitmaps>
+      <!--<Bitmap guid="guidEditorsIcons" href="EditorsToolbarButtons.bmp" usedList="IDBI_REMOVE, IDBI_ADD, IDBI_ERROR, IDBIVIEW_STRINGS, IDBIVIEW_OTHER, IDBIVIEW_IMAGES, IDBIVIEW_ICONS, IDBIVIEW_AUDIO, IDBI_VIEWS, IDBIVIEW_FILES, IDBI_VIEWCODE, IDBI_LOADSETTINGS"/>-->
+      <!--<Bitmap guid="guidEditorsIcons" resID="IDB_BITMAPS" usedList="IDBI_REMOVE, IDBI_ADD, IDBI_ERROR, IDBIVIEW_STRINGS, IDBIVIEW_OTHER, IDBIVIEW_IMAGES, IDBIVIEW_ICONS, IDBIVIEW_AUDIO, IDBI_VIEWS, IDBIVIEW_FILES, IDBI_VIEWCODE, IDBI_LOADSETTINGS"/>-->
+      <Bitmap guid="guidEditorsIcons" resID="IDBI_ADD" usedList="IDBI_REMOVE, IDBI_ADD, IDBI_ERROR, IDBIVIEW_STRINGS, IDBIVIEW_OTHER, IDBIVIEW_IMAGES, IDBIVIEW_ICONS, IDBIVIEW_AUDIO, IDBI_VIEWS, IDBIVIEW_FILES, IDBI_VIEWCODE, IDBI_LOADSETTINGS"/>
+    </Bitmaps>
+
+    <Combos>
+      <!-- see http://msdn2.microsoft.com/en-us/library/bb166788(VS.80).aspx -->
+      <Combo guid="GUID_SETTINGSDESIGNER_CommandID" id="cmdidSETTINGSDESIGNERAccessModifierCombobox" priority="0x0200" defaultWidth="0" idCommandList="cmdidSETTINGSDESIGNERGetAccessModifierOptions" type="DropDownCombo">
+        <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGS_TOOLBAR_ACCESSMODIFIER"/>
+        <Annotation>
+          <Documentation>
+          </Documentation>
+        </Annotation>
+        <Strings>
+          <ButtonText>Access &amp;Modifier:</ButtonText>
+        </Strings>
+        <CommandFlag>TextOnly</CommandFlag>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+      </Combo>
+
+      <Combo guid="GUID_RESX_CommandID" id="cmdidRESXAccessModifierCombobox" priority="0x0200" defaultWidth="0" idCommandList="cmdidRESXGetAccessModifierOptions" type="DropDownCombo">
+        <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESX_TOOLBAR_ACCESSMODIFIER"/>
+        <Annotation>
+          <Documentation>
+          </Documentation>
+        </Annotation>
+        <Strings>
+          <ButtonText>Access Mod&amp;ifier:</ButtonText>
+        </Strings>
+        <CommandFlag>TextOnly</CommandFlag>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+      </Combo>
+    </Combos>
+
+  </Commands>
+  <!-- CMDS_END -->
+  <!--  -->
+  <!--  -->
+
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!-- // CMDPLACEMENT_SECTION -->
+  <!-- //  -->
+  <!-- // This sections defines where the commands will be placed if not just in  -->
+  <!-- // their primary groups. -->
+  <!-- // -->
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!--  -->
+  <CommandPlacements>
+    <!-- CMDPLACEMENT_SECTION -->
+    <!-- 	//Usage: -->
+    <!-- 	// GUID:GROUPID                                     PARENT MENU                                             PRIORITY  -->
+    <!-- 	// -->
+    <!-- 	 -->
+    <!--  -->
+    <!-- 	// Resource Editor -->
+    <!--  -->
+    <CommandPlacement guid="guidVSStd97" id="cmdidOpen" priority="0x0200">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Open"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidOpenWith" priority="0x0210">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_Open"/>
+    </CommandPlacement>
+    <!-- 	 -->
+    <CommandPlacement guid="guidVSStd97" id="cmdidCut" priority="0x0400">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidCopy" priority="0x0410">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidPaste" priority="0x0420">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidDelete" priority="0x0430">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidRename" priority="0x0500">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidVSStd97" id="cmdidRemove" priority="0x0520">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONRemoveRow" priority="0x0530">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_RESX_CutCopyPaste"/>
+    </CommandPlacement>
+    <CommandPlacement guid="GUID_RESX_CommandID" id="cmdidRESXGenericRemove" priority="0x0120">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDG_VS_RESW_TOOLBAR"/>
+    </CommandPlacement>
+
+    <!--      -->
+    <!--  -->
+    <!--     // Resource editor toolbar -->
+    <!--     // GUID_RESX_MenuGroup:IDG_RESX_Navigate,              GUID_RESX_MenuGroup:IDM_VS_MNUCTRL_NAVIGATE,         0x0100; -->
+    <!--      -->
+    <!--     // Make sure the resource editor navigate commands get canonical names... -->
+    <CommandPlacement guid="GUID_RESX_MenuGroup" id="IDG_RESX_Navigate" priority="0x0100">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MENU_Resources"/>
+    </CommandPlacement>
+    <!--      -->
+    <CommandPlacement guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddExisting" priority="0x0100">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_ADD"/>
+    </CommandPlacement>
+    <CommandPlacement guid="GUID_RESX_MenuGroup" id="IDG_RESX_AddNew" priority="0x0200">
+      <Parent guid="GUID_RESX_MenuGroup" id="IDM_VS_MNUCTRL_ADD"/>
+    </CommandPlacement>
+    <!--  -->
+    <!--     /// Settings designer toolbar -->
+    <!--  -->
+    <!--     // Settings designer menu items -->
+    <CommandPlacement guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONAddRow" priority="0x0500">
+      <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGSDESIGNER_CTX"/>
+    </CommandPlacement>
+    <CommandPlacement guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONRemoveRow" priority="0x0510">
+      <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGSDESIGNER_CTX"/>
+    </CommandPlacement>
+    <CommandPlacement guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONEditCell" priority="0x0520">
+      <Parent guid="GUID_SETTINGSDESIGNER_MenuGroup" id="IDG_SETTINGSDESIGNER_CTX"/>
+    </CommandPlacement>
+    <!--  -->
+  </CommandPlacements>
+  <!-- CMDPLACEMENT_END -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!-- // CMDUSED_SECTION -->
+  <!-- //  -->
+  <!-- // This sections defines which shared command items we will use -->
+  <!-- // -->
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!--  -->
+  <!--  -->
+  <UsedCommands>
+    <!-- CMDUSED_SECTION -->
+    <!--     // Command ID for VSDB used in Server Explorer. -->
+    <!--  -->
+    <!--     // Standard commands used here. -->
+    <UsedCommand guid="guidVSStd97" id="cmdidOpen"/>
+    <UsedCommand guid="guidVSStd97" id="cmdidOpenWith"/>
+    <!--  -->
+    <UsedCommand guid="guidVSStd97" id="cmdidCut"/>
+    <UsedCommand guid="guidVSStd97" id="cmdidCopy"/>
+    <UsedCommand guid="guidVSStd97" id="cmdidPaste"/>
+    <UsedCommand guid="guidVSStd97" id="cmdidRemove"/>
+    <UsedCommand guid="guidVSStd97" id="cmdidRename"/>
+    <!--      -->
+  </UsedCommands>
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!-- // KEYBINDINGS_SECTION -->
+  <!-- //  -->
+  <!-- // This sections defines the keystroke mappings for the commands. -->
+  <!-- // -->
+  <!-- // The Keystate field is done using the following: -->
+  <!-- //    A = Alt, S = Shift, C = Control, W = Windows Key -->
+  <!-- // -->
+  <!-- // Example of the Keystate assignment, if you want a two key combination -->
+  <!-- // of Ctrl-X, Ctrl-Shift-C then the syntax would be : -->
+  <!-- // -->
+  <!-- //  'x':C:'c':CS -->
+  <!-- // -->
+  <!-- ////////////////////////////////////////////////////////////////////////////// -->
+  <!--  -->
+  <!-- // NOTES: -->
+  <!-- // - If we want to consume a key already registered by the shell, we have to use the same command GUID as the shell.  -->
+  <!-- //   Otherwise the shell consumes the key itself. -->
+  <!--  -->
+  <KeyBindings>
+    <KeyBinding guid="guidVSStd2K" id="ECMD_CANCEL" editor="GUID_RESXEditorCommandUI" key1="VK_ESCAPE"/>
+    <KeyBinding guid="guidVSStd97" id="cmdidRemove" editor="GUID_RESXEditorCommandUI" key1="VK_DELETE"/>
+    <KeyBinding guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONRemoveRow" editor="GUID_RESXEditorCommandUI" key1="VK_DELETE" mod1="Control"/>
+    <KeyBinding guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONEditCell" editor="GUID_RESXEditorCommandUI" key1="VK_F2"/>
+
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeStrings" editor="GUID_RESXEditorCommandUI" key1="1" mod1="Control"/>
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeImages" editor="GUID_RESXEditorCommandUI" key1="2" mod1="Control"/>
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeIcons" editor="GUID_RESXEditorCommandUI" key1="3" mod1="Control"/>
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeAudio" editor="GUID_RESXEditorCommandUI" key1="4" mod1="Control"/>
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeFiles" editor="GUID_RESXEditorCommandUI" key1="5" mod1="Control"/>
+    <KeyBinding guid="GUID_RESX_CommandID" id="cmdidRESXResTypeOther" editor="GUID_RESXEditorCommandUI" key1="6" mod1="Control"/>
+
+    <KeyBinding guid="guidVSStd2K" id="ECMD_CANCEL" editor="GUID_SETTINGSDESIGNER_CommandUI" key1="VK_ESCAPE"/>
+    <KeyBinding guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONEditCell" editor="GUID_SETTINGSDESIGNER_CommandUI" key1="VK_F2"/>
+    <KeyBinding guid="GUID_MS_VS_Editors_CommandId" id="cmdidCOMMONRemoveRow" editor="GUID_SETTINGSDESIGNER_CommandUI" key1="VK_DELETE" mod1="Control"/>
+    <KeyBinding guid="guidVSStd97" id="cmdidViewCode" editor="GUID_SETTINGSDESIGNER_CommandUI" key1="VK_F7"/>
+  </KeyBindings>
+  <Symbols>
+    <GuidSymbol name="guidEditorsIcons" value="{78083eb7-849c-4b7b-b29b-3f793842cbbc}">
+      <IDSymbol name="IDB_BITMAPS" value="0x0000" />
+      <IDSymbol name="IDBI_ADD" value="0x0002" />
+      <IDSymbol name="IDBI_ERROR" value="0x0003" />
+      <IDSymbol name="IDBI_LOADSETTINGS" value="0x000C" />
+      <IDSymbol name="IDBI_REMOVE" value="0x0001" />
+      <IDSymbol name="IDBI_VIEWCODE" value="0x000B" />
+      <IDSymbol name="IDBI_VIEWS" value="0x0009" />
+      <IDSymbol name="IDBIVIEW_AUDIO" value="0x0008" />
+      <IDSymbol name="IDBIVIEW_FILES" value="0x000A" />
+      <IDSymbol name="IDBIVIEW_ICONS" value="0x0007" />
+      <IDSymbol name="IDBIVIEW_IMAGES" value="0x0006" />
+      <IDSymbol name="IDBIVIEW_OTHER" value="0x0005" />
+      <IDSymbol name="IDBIVIEW_STRINGS" value="0x0004" />
+    </GuidSymbol>
+    <GuidSymbol name="GUID_RESX_CommandID" value="{66BD4C1D-3401-4bcc-A942-E4990827E6F7}">
+      <IDSymbol name="cmdidRESXImport" value="0x2003"/>
+      <IDSymbol name="cmdidRESXExport" value="0x2004"/>
+      <IDSymbol name="cmdidRESXPlay" value="0x2005"/>
+      <IDSymbol name="cmdidRESXAddExistingFile" value="0x2020"/>
+      <IDSymbol name="cmdidRESXAddNewString" value="0x2021"/>
+      <IDSymbol name="cmdidRESXAddNewIcon" value="0x2027"/>
+      <IDSymbol name="cmdidRESXAddNewTextFile" value="0x2028"/>
+      <IDSymbol name="cmdidRESXAddNewImagePNG" value="0x2022"/>
+      <IDSymbol name="cmdidRESXAddNewImageBMP" value="0x2023"/>
+      <IDSymbol name="cmdidRESXAddNewImageGIF" value="0x2024"/>
+      <IDSymbol name="cmdidRESXAddNewImageJPEG" value="0x2025"/>
+      <IDSymbol name="cmdidRESXAddNewImageTIFF" value="0x2026"/>
+      <IDSymbol name="cmdidRESXAddNewSoundFile" value="0x2029"/>
+      <IDSymbol name="cmdidRESXResTypeStrings" value="0x2040"/>
+      <IDSymbol name="cmdidRESXResTypeImages" value="0x2041"/>
+      <IDSymbol name="cmdidRESXResTypeIcons" value="0x2042"/>
+      <IDSymbol name="cmdidRESXResTypeAudio" value="0x2043"/>
+      <IDSymbol name="cmdidRESXResTypeFiles" value="0x2044"/>
+      <IDSymbol name="cmdidRESXResTypeOther" value="0x2045"/>
+      <IDSymbol name="cmdidRESXViewsList" value="0x2050"/>
+      <IDSymbol name="cmdidRESXViewsDetails" value="0x2051"/>
+      <IDSymbol name="cmdidRESXViewsThumbnails" value="0x2052"/>
+      <IDSymbol name="cmdidRESXGenericRemove" value="0x2060"/>
+      <IDSymbol name="cmdidIDRESXViewsFixedMenuCommand" value="0x2018"/>
+      <IDSymbol name="cmdidRESXAdd" value="0x2019"/>
+      <IDSymbol name="cmdidRESXAccessModifierCombobox" value="0x2061"/>
+      <IDSymbol name="cmdidRESXGetAccessModifierOptions" value="0x2062"/>
+      <IDSymbol name="cmdidRESXAddDefaultResource" value="0x2030"/>
+    </GuidSymbol>
+    <GuidSymbol name="GUID_MS_VS_Editors_CommandId" value="{E4B9BB05-1963-4774-8CFC-518359E3FCE3}">
+      <IDSymbol name="cmdidCOMMONEditCell" value="0x2F00"/>
+      <IDSymbol name="cmdidCOMMONAddRow" value="0x2F01"/>
+      <IDSymbol name="cmdidCOMMONRemoveRow" value="0x2F02"/>
+
+    </GuidSymbol>
+    <GuidSymbols name="GUID_SETTINGSDESIGNER_CommandID" value="{c2013470-51ac-4278-9ac5-389c72a1f926}">
+      <IDSymbol name="cmdidSETTINGSDESIGNERViewCode" value="0x2104"/>
+      <IDSymbol name="cmdidSETTINGSDESIGNERSynchronize" value="0x2105"/>
+      <IDSymbol name="cmdidSETTINGSDESIGNERAccessModifierCombobox" value="0x2106"/>
+      <IDSymbol name="cmdidSETTINGSDESIGNERGetAccessModifierOptions" value="0x2107"/>
+      <IDSymbol name="cmdidSETTINGSDESIGNERLoadWebSettings" value="0x2108"/>
+    </GuidSymbols>
+    <GuidSymbols name="CLSID_VBPackage" value="{67909B06-91E9-4F3E-AB50-495046BE9A9A}"/>
+    <GuidSymbols name="GUID_RESXEditorCommandUI" value="{fea4dcc9-3645-44cd-92e7-84b55a16465c}"/>
+    <GuidSymbols name="GUID_RESX_MenuGroup" value="{54869924-25F5-4878-A9C9-1C7198D99A8A}">
+      <IDSymbol name="IDG_RESX_Open" value="0x1000"/>
+      <IDSymbol name="IDG_RESX_CutCopyPaste" value="0x1001"/>
+      <IDSymbol name="IDG_RESX_ImportExport" value="0x1002"/>
+      <IDSymbol name="IDG_RESX_Audio" value="0x1003"/>
+      <IDSymbol name="IDG_RESX_AddNewImage" value="0x1004"/>
+      <IDSymbol name="IDG_RESX_AddExisting" value="0x1021"/>
+      <IDSymbol name="IDG_RESX_AddNew" value="0x1022"/>
+      <IDSymbol name="IDG_RESX_Navigate" value="0x1023"/>
+      <IDSymbol name="IDG_RESX_Views" value="0x1024"/>
+      <IDSymbol name="IDG_VS_RESX_TOOLBAR" value="0x1031"/>
+      <IDSymbol name="IDG_VS_RESX_TOOLBAR_VIEWS" value="0x1032"/>
+      <IDSymbol name="IDG_VS_RESX_TOOLBAR_ACCESSMODIFIER" value="0x1033"/>
+      <IDSymbol name="IDG_VS_RESW_TOOLBAR" value="0x1034"/>
+      <IDSymbol name="IDM_CTX_RESX_ContextMenu" value="0x0100"/>
+      <IDSymbol name="IDM_RESX_CSCD_ADDNEWIMAGE_MENU" value="0x0102"/>
+      <IDSymbol name="IDM_VS_TOOLBAR_Resources" value="0x0211"/>
+      <IDSymbol name="IDM_VS_TOOLBAR_Resources_ResW" value="0x0212"/>
+      <IDSymbol name="IDM_VS_MNUCTRL_NAVIGATE" value="0x0106"/>
+      <IDSymbol name="IDM_VS_MNUCTRL_VIEWS" value="0x0107"/>
+      <IDSymbol name="IDM_VS_MNUCTRL_ADD" value="0x0108"/>
+      <IDSymbol name="IDM_VS_MENU_Resources" value="0x0105"/>
+    </GuidSymbols>
+    <GuidSymbols name="GUID_SETTINGSDESIGNER_MenuGroup" value="{42b7a61f-81fd-4283-9678-6c448a827e56}">
+      <IDSymbol name="IDG_SETTINGSDESIGNER_CTX" value="0x1103"/>
+      <IDSymbol name="IDG_SETTINGS_TOOLBAR" value="0x1104"/>
+      <IDSymbol name="IDG_SETTINGS_TOOLBAR_VIEW" value="0x1105"/>
+      <IDSymbol name="IDG_SETTINGS_TOOLBAR_ACCESSMODIFIER" value="0x1106"/>
+      <IDSymbol name="IDG_SETTINGS_TOOLBAR_LOADWEBSETTINGS" value="0x1107"/>
+      <IDSymbol name="IDM_CTX_SETTINGSDESIGNER_ContextMenu" value="0x0110"/>
+      <IDSymbol name="IDM_VS_TOOLBAR_Settings" value="0x0210"/>
+    </GuidSymbols>
+    <GuidSymbols name="GUID_SETTINGSDESIGNER_CommandUI" value="{515231ad-c9dc-4aa3-808f-e1b65e72081c}"/>
+
+    <!--GUID for My Extension feature menu.-->
+    <GuidSymbols name="GUID_MYEXTENSION_Menu" value="{6C37AED7-D987-4fdf-ADF5-B71EB3F7236C}">
+      <!--ID for My Extension feature menus-->
+      <IDSymbol name="IDM_CTX_MYEXTENSION_ContextMenu" value="0x0110"/>
+      <!--ID for My Extension feature menu groups, contained in menus-->
+      <IDSymbol name="IDG_MYEXTENSION_CTX_AddRemove" value="0x1101"/>
+      <IDSymbol name="cmdidMYEXTENSIONAddExtension" value="0x2001"/>
+      <IDSymbol name="cmdidMYEXTENSIONRemoveExtension" value="0x2002"/>
+    </GuidSymbols>
+
+  </Symbols>
+</CommandTable>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../AdvancedServicesDialog.resx">
+    <body>
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="translated">역할 서비스 캐시 제한 시간(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="translated">오프라인으로 로그인할 수 있도록 로컬에 암호 해시 저장(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="translated">서버 쿠키가 만료될 때마다 다시 사용자 로그온(&amp;R)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="translated">사용자 지정 연결 문자열 사용(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeUnitComboBox.AccessibleName">
+        <source>Role service cache timeout units</source>
+        <target state="translated">역할 서비스 캐시 제한 시간 단위</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConnectionString.AccessibleName">
+        <source>Custom connection string</source>
+        <target state="translated">사용자 지정 연결 문자열</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

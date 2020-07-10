@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../DebuggerGeneral.xaml">
+    <body>
+      <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
+        <source>Debugger General Properties</source>
+        <target state="translated">デバッガーの全般プロパティ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|DebuggerGeneralProperties|Description">
+        <source>General Debugger options</source>
+        <target state="translated">デバッガーの全般オプション</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SymbolsPath|DisplayName">
+        <source>Symbol Search Path</source>
+        <target state="translated">シンボルの検索パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SymbolsPath|Description">
+        <source>The search path used by the debugger to locate symbols.</source>
+        <target state="translated">シンボルを見つけるためにデバッガーが使用する検索パスです。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

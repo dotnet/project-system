@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../DebugPropPage.resx">
+    <body>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Authentication &amp;mode:</source>
+        <target state="translated">&amp;Mode d'authentification :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartActionLabel.Text">
+        <source>Start action</source>
+        <target state="translated">Action de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProject.Text">
+        <source>&amp;Start project</source>
+        <target state="translated">Démarrer le proje&amp;t</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartProgram.Text">
+        <source>Start e&amp;xternal program:</source>
+        <target state="translated">Démarrer le programme e&amp;xterne :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="rbStartURL.Text">
+        <source>Start browser with U&amp;RL:</source>
+        <target state="translated">Démarrer le navigateur avec l'U&amp;RL :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgram.AccessibleName">
+        <source>Program to start</source>
+        <target state="translated">Programme à démarrer</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartURL.AccessibleName">
+        <source>URL to start browser with</source>
+        <target state="translated">URL de démarrage de l'explorateur</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.AccessibleName">
+        <source>Browse for external program</source>
+        <target state="translated">Rechercher le programme externe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartProgramBrowse.Text">
+        <source>&amp;Browse...</source>
+        <target state="translated">&amp;Parcourir...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartOptionsLabel.Text">
+        <source>Start options</source>
+        <target state="translated">Options de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CommandLineArgsLabel.Text">
+        <source>Comma&amp;nd line arguments:</source>
+        <target state="translated">&amp;Arguments de la ligne de commande :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirLabel.Text">
+        <source>Wor&amp;king directory:</source>
+        <target state="translated">Répertoire de tra&amp;vail :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugEnabled.Text">
+        <source>Use remote m&amp;achine</source>
+        <target state="translated">Utiliser l'ordin&amp;ateur distant</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoteDebugMachine.AccessibleName">
+        <source>Remote Machine Name:</source>
+        <target state="translated">Nom de l'ordinateur distant :</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.AccessibleName">
+        <source>Browse for working directory</source>
+        <target state="translated">Rechercher le répertoire de travail</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartWorkingDirectoryBrowse.Text">
+        <source>Bro&amp;wse...</source>
+        <target state="translated">Par&amp;courir...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableDebuggerLabel.Text">
+        <source>Debugger engines</source>
+        <target state="translated">Moteurs de débogueur</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableSQLServerDebugging.Text">
+        <source>Enable SQ&amp;L Server debugging</source>
+        <target state="translated">Activer le dé&amp;bogage SQL Server</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableUnmanagedDebugging.Text">
+        <source>Enable na&amp;tive code debugging</source>
+        <target state="translated">Activer le débogage du code na&amp;tif</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartArguments.AccessibleName">
+        <source>Command line arguments</source>
+        <target state="translated">Arguments de ligne de commande</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

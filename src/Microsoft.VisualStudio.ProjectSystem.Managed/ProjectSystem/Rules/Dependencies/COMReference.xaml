@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="ComReference"
+      Description="COM Reference Properties"
+      DisplayName="COM Reference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="COMReference"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <StringListProperty Name="Aliases"
+                      Description="A comma-delimited list of aliases to this reference."
+                      DisplayName="Aliases"
+                      Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+  <BoolProperty Name="CopyLocal"
+                Description="Indicates whether the reference will be copied to the output directory."
+                DisplayName="Copy Local">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  PersistedName="Private"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="EmbedInteropTypes"
+                Description="Indicates whether types defined in this assembly will be embedded into the target assembly."
+                DisplayName="Embed Interop Types">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  ItemType="COMReference"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="Guid"
+                  Description="The GUID of the COM server."
+                  DisplayName="CLSID" />
+
+  <StringProperty Name="Identity"
+                  Description="Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence)."
+                  DisplayName="Identity"
+                  ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <BoolProperty Name="Isolated"
+                DisplayName="Isolated" />
+
+  <StringProperty Name="Lcid"
+                  Description="The LCID of the COM server."
+                  DisplayName="Locale" />
+
+  <IntProperty Name="VersionMajor"
+               DisplayName="Major Version" />
+
+  <IntProperty Name="VersionMinor"
+               DisplayName="Minor Version" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+  <StringProperty Name="WrapperTool"
+                  DisplayName="Wrapper Tool" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="ResolvedPath"
+                  DisplayName="Path"
+                  Description="Location of the file being referenced."
+                  ReadOnly="True" />
+
+  <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
+  <StringProperty Name="Version"
+                  DisplayName="Version"
+                  Description="Version of reference."
+                  ReadOnly="True" />
+
+</Rule>

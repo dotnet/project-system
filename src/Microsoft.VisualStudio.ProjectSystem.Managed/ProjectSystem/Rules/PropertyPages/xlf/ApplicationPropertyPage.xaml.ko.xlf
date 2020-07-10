@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ApplicationPropertyPage.xaml">
+    <body>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|Description">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Resources|DisplayName">
+        <source>Resources</source>
+        <target state="translated">리소스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
+        <source>Startup object</source>
+        <target state="translated">시작 개체</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+        <source>Target framework</source>
+        <target state="translated">대상 프레임워크</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
+        <source>Manifest</source>
+        <target state="translated">매니페스트</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|DisplayName">
+        <source>Output type</source>
+        <target state="translated">출력 유형</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="translated">기본 설정으로 구성된 매니페스트 포함</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
+        <source>Create application without a manifest</source>
+        <target state="translated">매니페스트 없이 애플리케이션 만들기</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
+        <source>Console Application</source>
+        <target state="translated">콘솔 애플리케이션</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.Library|DisplayName">
+        <source>Class Library</source>
+        <target state="translated">클래스 라이브러리</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
+        <source>Windows Application</source>
+        <target state="translated">Windows 애플리케이션</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Application|Description">
+        <source>General</source>
+        <target state="translated">일반</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Application|DisplayName">
+        <source>Application</source>
+        <target state="translated">애플리케이션</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
+        <source>Icon</source>
+        <target state="translated">아이콘</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|DisplayName">
+        <source>Assembly name</source>
+        <target state="translated">어셈블리 이름</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|DisplayName">
+        <source>Default namespace</source>
+        <target state="translated">기본 네임스페이스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">리소스 파일</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

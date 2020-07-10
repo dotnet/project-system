@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../ApplicationPropPageVBWinForms.resx">
+    <body>
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="translated">アセンブリ名(&amp;N):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>&amp;Root namespace:</source>
+        <target state="translated">ルート名前空間(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>&amp;Target framework:</source>
+        <target state="translated">ターゲット フレームワーク(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartupObjectLabel.Text">
+        <source>Startup &amp;object:</source>
+        <target state="translated">スタートアップ オブジェクト(&amp;O):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationTypeLabel.Text">
+        <source>&amp;Application type:</source>
+        <target state="translated">アプリケーションの種類(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconLabel.Text">
+        <source>&amp;Icon:</source>
+        <target state="translated">アイコン(&amp;I):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseApplicationFrameworkCheckBox.Text">
+        <source>Enable application framewor&amp;k</source>
+        <target state="translated">アプリケーション フレームワークを有効にする(&amp;K)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembl&amp;y Information...</source>
+        <target state="translated">アセンブリ情報(&amp;Y)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewUACSettingsButton.Text">
+        <source>View Windows Settin&amp;gs</source>
+        <target state="translated">Windows 設定の表示(&amp;G)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableXPThemesCheckBox.Text">
+        <source>Enable &amp;XP visual styles</source>
+        <target state="translated">XP Visual スタイルを有効にする(&amp;X)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SingleInstanceCheckBox.Text">
+        <source>Make &amp;single instance application</source>
+        <target state="translated">単一インスタンスのアプリケーションを作成する(&amp;S)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SaveMySettingsCheckbox.Text">
+        <source>Save My.Settin&amp;gs on Shutdown</source>
+        <target state="translated">シャットダウン時に My.Settings を保存する(&amp;G)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AuthenticationModeLabel.Text">
+        <source>Aut&amp;hentication mode:</source>
+        <target state="translated">認証モード(&amp;H):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ShutdownModeLabel.Text">
+        <source>Sh&amp;utdown mode:</source>
+        <target state="translated">シャットダウン モード(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SplashScreenLabel.Text">
+        <source>Sp&amp;lash screen:</source>
+        <target state="translated">スプラッシュ スクリーン(&amp;L):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewCodeButton.Text">
+        <source>&amp;View Application Events</source>
+        <target state="translated">アプリケーション イベントの表示(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAppGroupBox.Text">
+        <source>Windows application framework properties</source>
+        <target state="translated">Windows アプリケーション フレームワーク プロパティ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
+        <source>Auto-generate &amp;binding redirects</source>
+        <target state="translated">バインド リダイレクトの自動生成(&amp;B)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

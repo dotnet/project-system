@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../Compile.BrowseObject.xaml">
+    <body>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">詳細</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">その他</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">ビルド アクション</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">ビルドおよび配置のプロセスにファイルがどのように関連しているかを示します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">出力ディレクトリにコピー</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">ソース ファイルを出力ディレクトリにコピーするよう指定します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">コピーしない</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">常にコピーする</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">新しい場合はコピーする</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">完全パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">ファイルの場所。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">ファイル名</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">ファイルまたはフォルダーの名前です。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|DisplayName">
+        <source>Custom Tool</source>
+        <target state="translated">カスタム ツール</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|Description">
+        <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
+        <target state="translated">設計時にファイルを変換し、その変換結果を別のファイルに出力するツールを指定します。たとえば、データセット (.xsd) ファイルには既定のカスタム ツールが用意されています。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
+        <source>Custom Tool Namespace</source>
+        <target state="translated">カスタム ツールの名前空間</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|Description">
+        <source>The namespace into which the output of the custom tool is placed.</source>
+        <target state="translated">カスタム ツールの出力を配置する名前空間です。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Compile|DisplayName">
+        <source>File Properties</source>
+        <target state="translated">ファイルのプロパティ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Compile|Description">
+        <source>File Properties</source>
+        <target state="translated">ファイルのプロパティ</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

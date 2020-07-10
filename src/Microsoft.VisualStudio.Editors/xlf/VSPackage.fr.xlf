@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../VSPackage.resx">
+    <body>
+      <trans-unit id="1100">
+        <source>Managed Resources Editor</source>
+        <target state="translated">Éditeur de ressources managées</target>
+        <note>Used for the resource editor in the shell's "Open With..." dialog plus the editor name for the key-binding it the Tools | Options | Environment | Keyboard | Use new shourtcut.</note>
+      </trans-unit>
+      <trans-unit id="1200">
+        <source>Settings Designer</source>
+        <target state="translated">Concepteur de paramètres</target>
+        <note>Used for the settings designer in the shell's "Open With..." dialog.</note>
+      </trans-unit>
+      <trans-unit id="1300">
+        <source>Project Designer</source>
+        <target state="translated">Concepteur de projets</target>
+        <note>Used for the application page designer in the shell UI.</note>
+      </trans-unit>
+      <trans-unit id="1400">
+        <source>Property Page Host</source>
+        <target state="translated">Hôte de la page de propriétés</target>
+        <note>Used for the property page designer in the shell UI.</note>
+      </trans-unit>
+      <trans-unit id="1500">
+        <source>SDK-Style Projects</source>
+        <target state="translated">Projets de type SDK</target>
+        <note>Used for the Tools|Options|Projects and Solutions page.</note>
+      </trans-unit>
+      <trans-unit id="1600">
+        <source>up to date checks; 
+Don't call MSBuild if a project appears to be up to date; 
+logging level; 
+futd; 
+incremental; 
+up-to-date; 
+build;</source>
+        <target state="translated">contrôles de mise à jour ; 
+Ne pas appeler MSBuild si un projet semble être à jour ; 
+niveau de journalisation ; 
+futd ; 
+incrémentiel ; 
+à jour ; 
+build ;</target>
+        <note>.NET Core SDK-Style Projects option page keywords</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

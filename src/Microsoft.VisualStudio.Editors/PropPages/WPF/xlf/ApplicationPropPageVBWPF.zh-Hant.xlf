@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ApplicationPropPageVBWPF.resx">
+    <body>
+      <trans-unit id="AssemblyNameLabel.Text">
+        <source>Assembly &amp;name:</source>
+        <target state="translated">組件名稱(&amp;N):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootNamespaceLabel.Text">
+        <source>&amp;Root namespace:</source>
+        <target state="translated">根命名空間(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetFrameworkLabel.Text">
+        <source>&amp;Target framework:</source>
+        <target state="translated">目標 Framework(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StartupObjectOrUriLabel.Text">
+        <source>#</source>
+        <target state="translated">#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationTypeLabel.Text">
+        <source>&amp;Application type:</source>
+        <target state="translated">應用程式類型(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseApplicationFrameworkCheckBox.Text">
+        <source>Enable application framewor&amp;k</source>
+        <target state="translated">啟用應用程式架構(&amp;K)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IconLabel.Text">
+        <source>&amp;Icon:</source>
+        <target state="translated">圖示(&amp;I):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyInfoButton.Text">
+        <source>Assembl&amp;y Information...</source>
+        <target state="translated">組件資訊(&amp;Y)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewUACSettingsButton.Text">
+        <source>View Windows Settin&amp;gs</source>
+        <target state="translated">檢視 Windows 設定(&amp;G)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAppGroupBox.Text">
+        <source>Windows application framework properties</source>
+        <target state="translated">Windows 應用程式架構屬性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EditXamlButton.Text">
+        <source>Edit &amp;XAML</source>
+        <target state="translated">編輯 XAML(&amp;X)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ViewCodeButton.Text">
+        <source>&amp;View Application Events</source>
+        <target state="translated">檢視應用程式事件(&amp;V)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ShutdownModeLabel.Text">
+        <source>Shutdown m&amp;ode:</source>
+        <target state="translated">程式關閉模式(&amp;O):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AutoGenerateBindingRedirectsCheckBox.Text">
+        <source>Auto-generate &amp;binding redirects</source>
+        <target state="translated">自動產生繫結重新導向(&amp;B)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

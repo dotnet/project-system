@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../AdvBuildSettingsPropPage.resx">
+    <body>
+      <trans-unit id="lblLanguageVersion.Text">
+        <source>&amp;Language version:</source>
+        <target state="translated">语言版本(&amp;L):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblReportCompilerErrors.Text">
+        <source>&amp;Internal compiler error reporting:</source>
+        <target state="translated">内部编译器错误报告(&amp;I):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblDebugInfo.Text">
+        <source>D&amp;ebugging information:</source>
+        <target state="translated">调试信息(&amp;E):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblFileAlignment.Text">
+        <source>&amp;File alignment:</source>
+        <target state="translated">文件对齐(&amp;F):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items">
+        <source>512</source>
+        <target state="translated">512</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items1">
+        <source>1024</source>
+        <target state="translated">1024</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items2">
+        <source>2048</source>
+        <target state="translated">2048</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items3">
+        <source>4096</source>
+        <target state="translated">4096</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cboFileAlignment.Items4">
+        <source>8192</source>
+        <target state="translated">8192</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lblDLLBase.Text">
+        <source>Library &amp;base address:</source>
+        <target state="translated">库基址(&amp;B):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="outputLabel.Text">
+        <source>Output</source>
+        <target state="translated">输出</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="generalLabel.Text">
+        <source>General</source>
+        <target state="translated">常规</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkOverflow.Text">
+        <source>Chec&amp;k for arithmetic overflow</source>
+        <target state="translated">检查算术溢出(&amp;K)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="lnkLabel.Text">
+        <source>Why can't I select a different C# version?</source>
+        <target state="translated">为何无法选择其他 C# 版本?</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

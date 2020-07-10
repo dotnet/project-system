@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../OpenFileWarningDialog.resx">
+    <body>
+      <trans-unit id="alwaysCheckCheckBox.Text">
+        <source>&amp;Always ask before opening this file type.</source>
+        <target state="translated">이 파일 형식을 열기 전에 항상 확인(&amp;A)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="messageLabel.Text">
+        <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
+        <target state="translated">관리되는 리소스 편집기는 요청된 파일 형식을 지원하지 않습니다. "{0}"을(를) 기본 편집기에서 여시겠습니까?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="translated">확인</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="translated">취소</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="messageLabel2.Text">
+        <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
+        <target state="translated">일부 파일에 악의적인 내용이 들어 있을 수 있습니다.  이 파일의 소스를 신뢰할 수 있는 경우에만 [예]를 선택하세요.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Open File</source>
+        <target state="translated">파일 열기</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx">
+    <body>
+      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/PropertyPages/PropertyPageResources.resx" />
+      <trans-unit id="AllFiles">
+        <source>All files</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationArgumentsWatermark">
+        <source>Arguments to be passed to the application</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugPropertyPageTitle">
+        <source>Debug</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateKey">
+        <source>Duplicate Key</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnvVariableNameWatermark">
+        <source>Key</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnvVariableValueWatermark">
+        <source>Value</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExecutableFiles">
+        <source>Executable files</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExecutablePathWatermark">
+        <source>Path to the executable to run</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="LaunchUrlWatermark">
+        <source>Absolute or relative URL</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="NameCannotBeEmpty">
+        <source>Name cannot be empty.</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewProfileCaption">
+        <source>New profile</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewProfileSeedName">
+        <source>newProfile</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileKindExecutableName">
+        <source>Executable</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileKindIISExpressName">
+        <source>IIS Express</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileKindNoActionName">
+        <source>Start</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileKindProjectName">
+        <source>Project</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileNameInvalid">
+        <source>That profile name is invalid or there is an existing profile with the same name.</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProfileNameRequired">
+        <source>You must specify a profile name.</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueCannotBeEmpty">
+        <source>Value cannot be empty.</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirectoryWatermark">
+        <source>Absolute path to working directory</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
+        <source>The errors on the page must be corrected prior to saving your changes.</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddBtn">
+        <source>Add</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ApplicationArguments">
+        <source>Application arguments:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="BrowseBtn">
+        <source>Browse...</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="DeleteBtn">
+        <source>Delete</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnvironmentVariables">
+        <source>Environment variables:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Executable">
+        <source>Executable</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Launch">
+        <source>Launch:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="LaunchURL">
+        <source>Launch browser:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="NameHeader">
+        <source>Name</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="NewBtn">
+        <source>New...</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="Profile">
+        <source>Profile:</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="RemoveBtn">
+        <source>Remove</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueHeader">
+        <source>Value</source>
+        <note />
+      </trans-unit>
+      <trans-unit id="WorkingDirectory">
+        <source>Working directory:</source>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../compileproppage2.resx">
+    <body>
+      <trans-unit id="BuildOutputPathButton.AccessibleName">
+        <source>Browse...</source>
+        <target state="translated">찾아보기...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildOutputPathButton.Text">
+        <source>B&amp;rowse...</source>
+        <target state="translated">찾아보기(&amp;R)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionExplicitLabel.Text">
+        <source>Option e&amp;xplicit:</source>
+        <target state="translated">명시적 옵션(&amp;X):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DisableAllWarningsCheckBox.Text">
+        <source>D&amp;isable all warnings</source>
+        <target state="translated">모든 경고 사용 안 함(&amp;I)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsAsErrorCheckBox.Text">
+        <source>Treat a&amp;ll warnings as errors</source>
+        <target state="translated">모든 경고를 오류로 처리(&amp;L)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildEventsButton.Text">
+        <source>Build Eve&amp;nts...</source>
+        <target state="translated">빌드 이벤트(&amp;N)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RegisterForComInteropCheckBox.Text">
+        <source>R&amp;egister for COM interop</source>
+        <target state="translated">COM interop 등록(&amp;E)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenerateXMLCheckBox.Text">
+        <source>&amp;Generate XML documentation file</source>
+        <target state="translated">XML 문서 파일 생성(&amp;G)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionStrictLabel.Text">
+        <source>Option &amp;strict:</source>
+        <target state="translated">제한 옵션(&amp;S):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionCompareLabel.Text">
+        <source>Option c&amp;ompare:</source>
+        <target state="translated">비교 옵션(&amp;O):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OptionInferLabel.Text">
+        <source>Option in&amp;fer:</source>
+        <target state="translated">유추 옵션(&amp;F):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
+        <source>Warning configurations:</source>
+        <target state="translated">경고 구성:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ConditionColumn.HeaderText">
+        <source>Condition</source>
+        <target state="translated">조건</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotificationColumn.HeaderText">
+        <source>Notification</source>
+        <target state="translated">알림</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AdvancedOptionsButton.Text">
+        <source>&amp;Advanced Compile Options...</source>
+        <target state="translated">고급 컴파일 옵션(&amp;A)...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompileOptionsGroupBox.Text">
+        <source>Compile Options:</source>
+        <target state="translated">컴파일 옵션:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BuildOutputPathLabel.Text">
+        <source>B&amp;uild output path:</source>
+        <target state="translated">빌드 출력 경로(&amp;U):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TargetCPULabel.Text">
+        <source>&amp;Target CPU:</source>
+        <target state="translated">대상 CPU(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Prefer32BitCheckBox.Text">
+        <source>&amp;Prefer 32-bit</source>
+        <target state="translated">32비트 기본 사용(&amp;P)</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

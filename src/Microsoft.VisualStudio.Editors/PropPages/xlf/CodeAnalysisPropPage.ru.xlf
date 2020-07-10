@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../CodeAnalysisPropPage.resx">
+    <body>
+      <trans-unit id="InstallCustomVersionButton.Text">
+        <source>&amp;...</source>
+        <target state="new">&amp;...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstallLatestVersionButton.Text">
+        <source>&amp;Install</source>
+        <target state="translated">&amp;Установить</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstalledVersionLabel.Text">
+        <source>Installed Version:</source>
+        <target state="translated">Установленная версия:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UninstallAnalyzersButton.Text">
+        <source>&amp;Uninstall</source>
+        <target state="translated">&amp;Удалить</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameLabel.Text">
+        <source>Recommended analyzer package:</source>
+        <target state="translated">Рекомендуемый пакет анализаторов:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersPackageNameTextBox.Text">
+        <source>Microsoft.CodeAnalysis.FxCopAnalyzers</source>
+        <target state="translated">Microsoft.CodeAnalysis.FxCopAnalyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersLabel.Text">
+        <source>Analyzers</source>
+        <target state="translated">Анализаторы</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
+        <source>What are the benefits of source code analyzers?</source>
+        <target state="translated">Каковы преимущества анализаторов исходного кода?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
+        <source>Run on &amp;live analysis</source>
+        <target state="translated">Запустить &amp;при динамическом анализе</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RunAnalyzersDuringBuild.Text">
+        <source>Run on &amp;build</source>
+        <target state="translated">Выполни&amp;ть при сборке</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

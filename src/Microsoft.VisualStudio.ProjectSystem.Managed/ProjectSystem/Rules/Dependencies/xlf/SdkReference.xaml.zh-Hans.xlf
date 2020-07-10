@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../SdkReference.xaml">
+    <body>
+      <trans-unit id="Rule|SdkReference|DisplayName">
+        <source>SDK Reference</source>
+        <target state="translated">SDK 引用</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SdkReference|Description">
+        <source>SDK Reference Properties</source>
+        <target state="translated">SDK 引用属性</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
+        <source>SDK Root</source>
+        <target state="translated">SDK 根</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AppXLocation|DisplayName">
+        <source>App Package Location</source>
+        <target state="translated">应用包位置</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
+        <source>FrameworkIdentity</source>
+        <target state="translated">FrameworkIdentity</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyPayload|DisplayName">
+        <source>Copy Payload</source>
+        <target state="translated">复制负载</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
+        <source>Copy Payload to Subdirectory</source>
+        <target state="translated">将负载复制到子目录</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandContent|DisplayName">
+        <source>Expand Content</source>
+        <target state="translated">扩展内容</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
+        <source>Expand Reference Assemblies</source>
+        <target state="translated">扩展引用程序集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
+        <source>Copy Local Expanded Reference Assemblies</source>
+        <target state="translated">复制本地扩展的引用程序集</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Name|DisplayName">
+        <source>Name</source>
+        <target state="translated">名称</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Version</source>
+        <target state="translated">版本</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

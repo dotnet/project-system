@@ -1,0 +1,611 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+  <PropertyGroup>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFramework>net472</TargetFramework>
+    <IsVsixProject>true</IsVsixProject>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
+    <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
+
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Implementation of some designers and project property page editors in VisualStudio.</Description>
+    <Summary>Editors implementation for Project Properties</Summary>
+    <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="AddImportsDialogs\AddImports.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AddImportsDialogs\AutoAddImportsCollisionDialog.resx">
+      <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.resx">
+      <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DesignerFramework\ErrorControl.resx">
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MyExtensibility\AddMyExtensionsDialog.resx">
+      <DependentUpon>AddMyExtensionsDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MyExtensibility\AssemblyOptionDialog.resx">
+      <DependentUpon>AssemblyOptionDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MyExtensibility\MyExtensibilityPropPage.resx">
+      <DependentUpon>MyExtensibilityPropPage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="OptionPages\GeneralOptionPageResources.resx">
+      <!-- We refer to some of these resources in WPF bindings, and that seems to require
+           that they be public. So here we need to use PublicResXFileCodeGenerator instead 
+           of just ResXFileCodeGenerator. -->
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <LastGenOutput>GeneralOptionPageResources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\AdvancedServicesDialog.resx">
+      <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvancedServicesDialog.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\AdvBuildSettingsPropPage.resx">
+      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvBuildSettingsPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\AdvCompilerSettingsPropPage.resx">
+      <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AdvCompilerSettingsPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ApplicationPropPage.resx">
+      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ApplicationPropPageBase.resx">
+      <DependentUpon>ApplicationPropPageBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ApplicationPropPageVBBase.resx">
+      <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ApplicationPropPageVBWinForms.resx">
+      <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\PackagePropPage.resx">
+      <DependentUpon>PackagePropPage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\AssemblyInfoPropPage.resx">
+      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.AssemblyInfoPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\BuildEventCommandLineDialog.resx">
+      <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventCommandLineDialog.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\BuildEventsPropPage.resx">
+      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildEventsPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\BuildPropPage.resx">
+      <DependentUpon>BuildPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.BuildPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\CodeAnalysisPropPage.resx">
+      <DependentUpon>CodeAnalysisPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\CompilePropPage2.resx">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CompilePropPage2.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\CSharpApplicationPropPage.resx">
+      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.CSharpApplicationPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\DebugPropPage.resx">
+      <DependentUpon>DebugPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.DebugPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ReferencePathsPropPage.resx">
+      <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePathsPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ReferencePropPage.resx">
+      <DependentUpon>ReferencePropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ReferencePropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ServicesAuthenticationForm.resx">
+      <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesAuthenticationForm.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\ServicesPropPage.resx">
+      <DependentUpon>ServicesPropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.ServicesPropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\Strings.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\UnusedReferencePropPage.resx">
+      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.PropertyPages.UnusedReferencePropPage.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\WPF\AppDotXamlErrorControl.resx">
+      <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PropPages\WPF\ApplicationPropPageVBWPF.resx">
+      <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceEditor\DialogQueryName.resx">
+      <DependentUpon>DialogQueryName.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.DialogQueryName.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceEditor\OpenFileWarningDialog.resx">
+      <DependentUpon>OpenFileWarningDialog.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.OpenFileWarningDialog.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Microsoft.VisualStudio.Editors.Designer.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Microsoft.VisualStudio.Editors.Designer.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\MyExtensibilityRes.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyExtensibilityRes.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankBmp.bmp">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankBmp</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankGif.gif">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankGif</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankIcon.ico">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankIcon</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankJpeg.jpg">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankJpeg</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankPng.png">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankPng</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankTiff.tif">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankTiff</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ResourceEditor\BlankWav.wav">
+      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankWav</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SettingsDesigner\SettingsDesignerView.resx">
+      <DependentUpon>SettingsDesignerView.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerView.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SettingsDesigner\TypeEditorHostControl.resx">
+      <DependentUpon>TypeEditorHostControl.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypeEditorHostControl.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SettingsDesigner\TypePickerDialog.resx">
+      <DependentUpon>TypePickerDialog.vb</DependentUpon>
+      <LogicalName>Microsoft.VisualStudio.Editors.SettingsDesigner.TypePickerDialog.resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="VSPackage.resx">
+      <SubType>Designer</SubType>
+      <MergeWithCTO>true</MergeWithCTO>
+    </EmbeddedResource>
+    <EmbeddedResource Update="XmlToSchema\InputXmlForm.resx">
+      <DependentUpon>InputXmlForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="XmlToSchema\PasteXmlDialog.resx">
+      <DependentUpon>PasteXmlDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="XmlToSchema\WebUrlDialog.resx">
+      <DependentUpon>WebUrlDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="OptionPages\GeneralOptionPageControl.xaml.vb">
+      <DependentUpon>GeneralOptionPageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="OptionPages\GeneralOptionPageResources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GeneralOptionPageResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="PropPages\AdvancedServicesDialog.Designer.vb">
+      <DependentUpon>AdvancedServicesDialog.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AdvBuildSettingsPropPage.Designer.vb">
+      <DependentUpon>AdvBuildSettingsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AdvCompilerSettingsPropPage.Designer.vb">
+      <DependentUpon>AdvCompilerSettingsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageVBBase.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBBase.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageVBWinForms.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBWinForms.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\PackagePropPage.Designer.vb">
+      <DependentUpon>PackagePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\PackagePropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AssemblyInfoPropPage.Designer.vb">
+      <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildEventCommandLineDialog.Designer.vb">
+      <DependentUpon>BuildEventCommandLineDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildEventsPropPage.Designer.vb">
+      <DependentUpon>BuildEventsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildPropPage.Designer.vb">
+      <DependentUpon>BuildPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\CodeAnalysisPropPage.Designer.vb">
+      <DependentUpon>CodeAnalysisPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\CompilePropPage2.Designer.vb">
+      <DependentUpon>CompilePropPage2.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\CSharpApplicationPropPage.Designer.vb">
+      <DependentUpon>CSharpApplicationPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\DebugPropPage.Designer.vb">
+      <DependentUpon>DebugPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ReferencePathsPropPage.Designer.vb">
+      <DependentUpon>ReferencePathsPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ReferencePropPage.Designer.vb">
+      <DependentUpon>ReferencePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ServicesAuthenticationForm.Designer.vb">
+      <DependentUpon>ServicesAuthenticationForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PropPages\ServicesPropPage.Designer.vb">
+      <DependentUpon>ServicesPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\UnusedReferencePropPage.Designer.vb">
+      <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\WPF\ApplicationPropPageVBWPF.Designer.vb">
+      <DependentUpon>ApplicationPropPageVBWPF.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\Common\ManagedCodeMarkers.vb">
+      <Link>ManagedCodeMarkers.vb</Link>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AddImportDialogBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AddImports.Designer.vb">
+      <DependentUpon>AddImports.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsCollisionDialog.Designer.vb">
+      <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsCollisionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.Designer.vb">
+      <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\BaseDesignerView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\BaseDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerDataGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerToolbarPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.Designer.vb">
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\WrapCheckBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="MyExtensibility\AddMyExtensionsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MyExtensibility\AssemblyOptionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="MyExtensibility\MyExtensibilityPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="MyExtensibility\MyExtensionDataGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\AdvancedServicesDialog.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AdvBuildSettingsPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AdvCompilerSettingsPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPage.Designer.vb">
+      <DependentUpon>ApplicationPropPage.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageInternalBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageVBBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageVBWinForms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\AssemblyInfoPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildEventCommandLineDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildEventsPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\BuildPropPageBase.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\CodeAnalysisPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\CompilePropPage2.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ComponentWrapper.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\CSharpApplicationPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\DebugPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ReferenceComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\ReferencePathsPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ReferencePropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\ServiceReferenceComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\ServicesAuthenticationForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="PropPages\ServicesPropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\Strings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="PropPages\UnusedReferencePropPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\WebReferenceComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="PropPages\WPF\AppDotXamlErrorControl.Designer.vb">
+      <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\WPF\AppDotXamlErrorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="PropPages\WPF\ApplicationPropPageVBWPF.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\DialogQueryName.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\OpenFileWarningDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceEditorRootComponent.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceEditorView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceEditorView_EditorState.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="ResourceEditor\ResourceStringTable.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Resources\Microsoft.VisualStudio.Editors.Designer.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Microsoft.VisualStudio.Editors.Designer.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\MyExtensibilityRes.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyExtensibilityRes.resx</DependentUpon>
+    </Compile>
+    <Compile Update="SettingsDesigner\DataGridViewUITypeEditorEditingControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="SettingsDesigner\DesignTimeSettingInstance.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="SettingsDesigner\DesignTimeSettings.vb">
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Update="SettingsDesigner\SettingsDesignerView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="SettingsDesigner\TypeEditorHostControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="SettingsDesigner\TypePickerDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\InputXmlForm.Designer.vb">
+      <DependentUpon>InputXmlForm.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\InputXmlForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\PasteXmlDialog.Designer.vb">
+      <DependentUpon>PasteXmlDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\PasteXmlDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\Utilities.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\WebUrlDialog.Designer.vb">
+      <DependentUpon>WebUrlDialog.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\WebUrlDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XmlToSchema\Wizard.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Docs\app-designer-visual-spec-1.png" />
+    <None Include="Docs\app-designer-visual-spec-1-detail1.png" />
+    <None Include="Docs\app-designer-visual-spec-1-detail2.png" />
+    <None Include="Docs\custom_vs_system3.png" />
+    <None Include="Docs\CustomColorRenames.txt" />
+    <None Include="Docs\CustomColors.txt" />
+    <None Include="Docs\Project Designer Architecture Visual.png" />
+    <None Include="Docs\Project Designer Architecture.png" />
+    <None Include="Docs\Project Designer Architecture.vsd" />
+    <None Include="Docs\ProjectDesigner Control Flow.doc" />
+    <None Include="MyExtensibility\MyExtensibilityClassDiagram.cd" />
+    <None Include="PropPages\AdvBuildSettingsPropPage.ComboItem.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="OptionPages\GeneralOptionPageControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="**\*.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="Menus.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+</Project>

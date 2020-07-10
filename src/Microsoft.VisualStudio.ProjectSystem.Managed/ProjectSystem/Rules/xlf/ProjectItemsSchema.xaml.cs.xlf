@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../ProjectItemsSchema.xaml">
+    <body>
+      <trans-unit id="ContentType|AppInstaller|DisplayName">
+        <source>App Installer file</source>
+        <target state="translated">Soubor instalačního programu aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Config|DisplayName">
+        <source>Config file</source>
+        <target state="translated">Konfigurační soubor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Manifest|DisplayName">
+        <source>Manifest file</source>
+        <target state="translated">Soubor manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|PackageLayout|DisplayName">
+        <source>Package Layout file</source>
+        <target state="translated">Soubor rozložení balíčku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Text|DisplayName">
+        <source>Text file</source>
+        <target state="translated">Textový soubor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|WindowsResource|DisplayName">
+        <source>Windows Resourcs file</source>
+        <target state="translated">Soubor prostředků pro Windows</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XML|DisplayName">
+        <source>Xml file</source>
+        <target state="translated">Soubor XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|HTML|DisplayName">
+        <source>Html file</source>
+        <target state="translated">Soubor HTML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|CSS|DisplayName">
+        <source>Cascading style sheet</source>
+        <target state="translated">Šablona CSS</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Json|DisplayName">
+        <source>Json file</source>
+        <target state="translated">Soubor JSON</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Font|DisplayName">
+        <source>Font file</source>
+        <target state="translated">Soubor písma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Media|DisplayName">
+        <source>Media file</source>
+        <target state="translated">Mediální soubor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Image|DisplayName">
+        <source>Image file</source>
+        <target state="translated">Soubor obrázku</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <target state="translated">Vložený prostředek</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|None|DisplayName">
+        <source>None</source>
+        <target state="translated">Žádné</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Content|DisplayName">
+        <source>Content</source>
+        <target state="translated">Obsah</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|EmbeddedResource|DisplayName">
+        <source>Embedded resource</source>
+        <target state="translated">Vložený prostředek</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Page|DisplayName">
+        <source>Page file</source>
+        <target state="translated">Stránkovací soubor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Page|DisplayName">
+        <source>Page</source>
+        <target state="translated">Stránka</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
+        <source>Application definition</source>
+        <target state="translated">Definice aplikace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="translated">Definice pracovního postupu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="translated">Definice pracovního postupu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="translated">Zdroj</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="translated">Zdroj</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../Content.BrowseObject.xaml">
+    <body>
+      <trans-unit id="Rule|Content|DisplayName">
+        <source>File Properties</source>
+        <target state="translated">Propriedades do Arquivo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Content|Description">
+        <source>File Properties</source>
+        <target state="translated">Propriedades do Arquivo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">Avançado</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">Diversos</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">Ação de compilação</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">Como o arquivo está relacionado aos processos de compilação e implantação.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">Copiar para Diretório de Saída</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">Especifica se o arquivo fonte deve ser copiado no diretório de saída.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">Não copiar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">Copiar sempre</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">Copiar se for mais novo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">Caminho Completo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">Localização do arquivo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">Nome do Arquivo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">Nome do arquivo ou da pasta.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|Description">
+        <source>The namespace into which the output of the custom tool is placed.</source>
+        <target state="translated">O namespace em que o resultado da ferramenta personalizada é colocado.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
+        <source>Custom Tool Namespace</source>
+        <target state="translated">Namespace da Ferramenta Personalizada</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|Description">
+        <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
+        <target state="translated">Especifica a ferramenta que transforma um arquivo em tempo de design e coloca o resultado dessa transformação em outro arquivo. Por exemplo, um arquivo de conjunto de dados (.xsd) vem com uma ferramenta personalizada padrão.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|DisplayName">
+        <source>Custom Tool</source>
+        <target state="translated">Ferramenta Personalizada</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

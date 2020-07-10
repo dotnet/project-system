@@ -1,0 +1,32 @@
+﻿<UserControl x:ClassModifier="Friend" 
+             x:Class="Microsoft.VisualStudio.Editors.OptionPages.GeneralOptionPageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:r="clr-namespace:My.Resources"
+             xmlns:local="clr-namespace:Microsoft.VisualStudio.Editors.OptionPages"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="false">
+        <StackPanel Orientation="Vertical">
+            <GroupBox x:Uid="FastUpToDateGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_Title}" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="FastUpToDateCheck" x:Uid="General_FastUpToDateCheck" Content="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck}" Margin="0"
+                          IsChecked="{Binding Mode=TwoWay, Path=FastUpToDateCheckEnabled}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{x:Static r:GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel}" Margin="0" VerticalAlignment="Center" MinWidth="128" />
+                        <ComboBox x:Name="FastUpToDateLogLevel" ItemsSource="{x:Static local:GeneralOptionPageControl.FastUpToDateLogLevelItemSource}" x:Uid="General_LogLevel" VerticalContentAlignment="Center" Margin="0"
+                              SelectedIndex="{Binding Mode=TwoWay, Path=FastUpToDateCheckLogLevel, Converter={x:Static local:LoggingLevelToInt32Converter.Instance}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox x:Uid="NestingSettingsGroupBox" Header="{x:Static r:GeneralOptionPageResources.General_NestingSettings_Title}" VerticalAlignment="Top" Margin="0,8,0,0">
+                <StackPanel Orientation="Vertical">
+                    <CheckBox x:Name="NestingIgnoreSolutionAndProjectProfiles" x:Uid="General_NestingIgnoreSolutionAndProjectProfiles" Content="{x:Static r:GeneralOptionPageResources.General_NestingIgnoreSolutionAndProjectProfiles}" Margin="0"
+                          IsChecked="{Binding Mode=TwoWay, Path=NestingIgnoreSolutionAndProjectProfiles}"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

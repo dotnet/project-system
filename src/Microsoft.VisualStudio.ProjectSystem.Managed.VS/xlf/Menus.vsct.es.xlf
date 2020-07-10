@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../Menus.vsct">
+    <body>
+      <trans-unit id="cmdidProjectDebugger|ButtonText">
+        <source>Web Debugger</source>
+        <target state="translated">Depurador web</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
+        <source>&amp;Pack</source>
+        <target state="translated">&amp;Paquete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
+        <source>Generate NuGet Package</source>
+        <target state="translated">Generar paquete NuGet</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|CommandName">
+        <source>GenerateNuGetPackageProjectContextMenu</source>
+        <target state="translated">GenerateNuGetPackageProjectContextMenu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
+        <source>&amp;Pack selection</source>
+        <target state="translated">Selección de &amp;paquete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
+        <source>Generate NuGet Package for selected project</source>
+        <target state="translated">Generar paquete NuGet para el proyecto seleccionado</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|CommandName">
+        <source>GenerateNuGetPackageTopLevelBuild</source>
+        <target state="translated">GenerateNuGetPackageTopLevelBuild</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
+        <source>Framework</source>
+        <target state="translated">Plataforma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidDebugFrameworks|ButtonText">
+        <source>Framework</source>
+        <target state="translated">Plataforma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddAboveMenu|ButtonText">
+        <source>&amp;Add Above</source>
+        <target state="translated">Agregar &amp;encima</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="translated">Agregar &amp;nuevo elemento</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemAbove|CommandName">
+        <source>AddNewItemAbove</source>
+        <target state="translated">AddNewItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AddBelowMenu|ButtonText">
+        <source>&amp;Add Below</source>
+        <target state="translated">Agregar de&amp;bajo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="translated">Agregar elemento existe&amp;nte</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemAbove|CommandName">
+        <source>AddExistingItemAbove</source>
+        <target state="translated">AddExistingItemAbove</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|ButtonText">
+        <source>&amp;Add New Item...</source>
+        <target state="translated">Agregar &amp;nuevo elemento</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddNewItemBelow|CommandName">
+        <source>AddNewItemBelow</source>
+        <target state="translated">AddNewItemBelow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
+        <source>&amp;Add Existing Item...</source>
+        <target state="translated">Agregar elemento existe&amp;nte</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cmdidAddExistingItemBelow|CommandName">
+        <source>AddExistingItemBelow</source>
+        <target state="translated">AddExistingItemBelow</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

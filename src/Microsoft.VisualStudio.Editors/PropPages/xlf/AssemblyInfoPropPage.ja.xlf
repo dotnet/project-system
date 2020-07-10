@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../AssemblyInfoPropPage.resx">
+    <body>
+      <trans-unit id="TitleLabel.Text">
+        <source>&amp;Title:</source>
+        <target state="translated">タイトル(&amp;T):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TrademarkLabel.Text">
+        <source>T&amp;rademark:</source>
+        <target state="translated">商標(&amp;R):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CopyrightLabel.Text">
+        <source>C&amp;opyright:</source>
+        <target state="translated">著作権(&amp;O):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProductLabel.Text">
+        <source>&amp;Product:</source>
+        <target state="translated">製品(&amp;P):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CompanyLabel.Text">
+        <source>&amp;Company:</source>
+        <target state="translated">会社(&amp;C):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DescriptionLabel.Text">
+        <source>&amp;Description:</source>
+        <target state="translated">説明(&amp;D):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComVisibleCheckBox.Text">
+        <source>&amp;Make assembly COM-Visible</source>
+        <target state="translated">アセンブリを COM 参照可能にする(&amp;M)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NeutralLanguageLabel.Text">
+        <source>&amp;Neutral language:</source>
+        <target state="translated">ニュートラル言語(&amp;N):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionLabel.Text">
+        <source>&amp;Assembly version:</source>
+        <target state="translated">アセンブリ バージョン(&amp;A):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionLabel.Text">
+        <source>&amp;File version:</source>
+        <target state="translated">ファイル バージョン(&amp;F):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMajorTextBox.AccessibleName">
+        <source>File Version major</source>
+        <target state="translated">ファイルのメジャー バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionMinorTextBox.AccessibleName">
+        <source>File Version minor</source>
+        <target state="translated">ファイルのマイナー バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionBuildTextBox.AccessibleName">
+        <source>File Version build</source>
+        <target state="translated">ファイル バージョン ビルド</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
+        <source>File Version revision</source>
+        <target state="translated">ファイル バージョン リビジョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GuidLabel.Text">
+        <source>&amp;GUID:</source>
+        <target state="translated">GUID(&amp;G):</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
+        <source>Assembly Version major</source>
+        <target state="translated">アセンブリのメジャー バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
+        <source>Assembly Version minor</source>
+        <target state="translated">アセンブリのマイナー バージョン</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
+        <source>Assembly Version build</source>
+        <target state="translated">アセンブリ バージョンのビルド</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
+        <source>Assembly Version revision</source>
+        <target state="translated">アセンブリ バージョンのリビジョン</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

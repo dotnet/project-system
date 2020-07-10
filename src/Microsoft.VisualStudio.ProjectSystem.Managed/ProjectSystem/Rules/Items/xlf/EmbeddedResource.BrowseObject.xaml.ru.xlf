@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../EmbeddedResource.BrowseObject.xaml">
+    <body>
+      <trans-unit id="Rule|EmbeddedResource|DisplayName">
+        <source>Embedded Resource</source>
+        <target state="translated">Внедренный ресурс</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|EmbeddedResource|Description">
+        <source>File Properties</source>
+        <target state="translated">Свойства файла</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">Дополнительный</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Misc|DisplayName">
+        <source>Misc</source>
+        <target state="translated">Прочее</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|DisplayName">
+        <source>Build Action</source>
+        <target state="translated">Действие при сборке</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|{}{ItemType}|Description">
+        <source>How the file relates to the build and deployment processes.</source>
+        <target state="translated">Как файл связан с процессами сборки и развертывания.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|DisplayName">
+        <source>Copy to Output Directory</source>
+        <target state="translated">Копировать в выходной каталог</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|CopyToOutputDirectory|Description">
+        <source>Specifies the source file will be copied to the output directory.</source>
+        <target state="translated">Указывает, что файл исходного кода будет скопирован в выходной каталог.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Never|DisplayName">
+        <source>Do not copy</source>
+        <target state="translated">Не копировать</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.Always|DisplayName">
+        <source>Copy always</source>
+        <target state="translated">Всегда копировать</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|CopyToOutputDirectory.PreserveNewest|DisplayName">
+        <source>Copy if newer</source>
+        <target state="translated">Копировать более позднюю версию</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|DisplayName">
+        <source>Custom Tool</source>
+        <target state="translated">Пользовательский инструмент</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Generator|Description">
+        <source>Specifies the tool that transforms a file at design time and places the output of that transformation into another file. For example, a dataset (.xsd) file comes with a default custom tool.</source>
+        <target state="translated">Указывает инструмент, который преобразует файл во время разработки и помещает выходные данные этого преобразования в другой файл. Например, файл набора данных (XSD) поставляется с пользовательским инструментом по умолчанию.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|DisplayName">
+        <source>Custom Tool Namespace</source>
+        <target state="translated">Пространство имен пользовательского инструмента</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CustomToolNamespace|Description">
+        <source>The namespace into which the output of the custom tool is placed.</source>
+        <target state="translated">Пространство имен, в которое помещаются выходные данные пользовательского инструмента.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">Полный путь</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the file.</source>
+        <target state="translated">Расположение файла.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|DisplayName">
+        <source>File Name</source>
+        <target state="translated">Имя файла</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileNameAndExtension|Description">
+        <source>Name of the file or folder.</source>
+        <target state="translated">Имя файла или папки.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../GeneralBrowseObject.xaml">
+    <body>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
+        <source>Project Properties</source>
+        <target state="translated">プロジェクトのプロパティ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="translated">常時</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>On successful build</source>
+        <target state="translated">ビルドが成功したとき</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the build updates the project output</source>
+        <target state="translated">ビルドがプロジェクト出力を更新したとき</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|DisplayName">
+        <source>File Name</source>
+        <target state="translated">ファイル名</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|DisplayName">
+        <source>Project Folder</source>
+        <target state="translated">プロジェクト フォルダー</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileName|Description">
+        <source>Name of the project file.</source>
+        <target state="translated">プロジェクト ファイルの名前。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullPath|Description">
+        <source>Location of the project file.</source>
+        <target state="translated">プロジェクト ファイルの場所。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
+        <source>Full Path</source>
+        <target state="translated">完全パス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FullProjectFileName|Description">
+        <source>Full name of the project file.</source>
+        <target state="translated">プロジェクト ファイルの完全名。</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

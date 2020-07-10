@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="tr" original="../AdvancedServicesDialog.resx">
+    <body>
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="translated">Rol hizmeti önbellek &amp;zaman aşımı:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="translated">Çe&amp;vrimdışı oturum açmayı etkinleştirmek için şifreyi yerel olarak karmaya kaydedin</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="translated">Sunucu tanımlama bilgisi sona e&amp;rdiğinde kullanıcıların yeniden oturum açması gerekir</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="translated">Özel bağlantı dizesi &amp;kullan:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeUnitComboBox.AccessibleName">
+        <source>Role service cache timeout units</source>
+        <target state="translated">Rol hizmeti önbellek zaman aşımı birimleri</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConnectionString.AccessibleName">
+        <source>Custom connection string</source>
+        <target state="translated">Özel bağlantı dizesi</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

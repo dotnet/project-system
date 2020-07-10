@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="cs" original="../AdvancedServicesDialog.resx">
+    <body>
+      <trans-unit id="RoleServiceCacheTimeoutLabel.Text">
+        <source>Role service cache &amp;timeout:</source>
+        <target state="translated">Časový limi&amp;t mezipaměti služby rolí:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SavePasswordHashLocallyCheckbox.Text">
+        <source>&amp;Save password hash locally to enable offline login</source>
+        <target state="translated">Pro umožnění přihlášení offline &amp;uložit hodnotu hash klíče lokálně</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HonorServerCookieExpirationCheckbox.Text">
+        <source>&amp;Require users to log on again whenever the server cookie expires</source>
+        <target state="translated">&amp;Vyžadovat znovu přihlášení uživatele vždy, když vyprší platnost souboru cookie serveru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseCustomConnectionStringCheckBox.Text">
+        <source>&amp;Use custom connection string:</source>
+        <target state="translated">Po&amp;užít vlastní připojovací řetězec:</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TimeUnitComboBox.AccessibleName">
+        <source>Role service cache timeout units</source>
+        <target state="translated">Jednotky časového limitu mezipaměti služby rolí</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CustomConnectionString.AccessibleName">
+        <source>Custom connection string</source>
+        <target state="translated">Vlastní připojovací řetězec</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

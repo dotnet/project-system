@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>3EE19E10-61D8-4E5D-BE32-AEC1EB0AA274</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>build</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="**/*.*" />
+    <None Remove="docs.shproj" />
+    <None Remove="docs.shproj.user" />
+    <None Remove="docs.projitems" />
+  </ItemGroup>
+</Project>

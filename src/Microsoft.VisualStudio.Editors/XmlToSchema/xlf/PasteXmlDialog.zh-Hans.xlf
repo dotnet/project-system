@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../PasteXmlDialog.resx">
+    <body>
+      <trans-unit id="okButton.Text">
+        <source>&amp;OK</source>
+        <target state="translated">确定(&amp;O)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="cancelButton.Text">
+        <source>Cancel</source>
+        <target state="translated">取消</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>&amp;Type or paste an XML document</source>
+        <target state="translated">键入或粘贴 XML 文档(&amp;T)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Add XML</source>
+        <target state="translated">添加 XML</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

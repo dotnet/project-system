@@ -1,0 +1,482 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\import\HostAgnostic.props" />
+
+  <PropertyGroup>
+    <RootNamespace>Microsoft.VisualStudio</RootNamespace>
+    <!-- The value of RuleInjectionClassName of XamlPropertyRule items defined by this project -->
+    <XamlPropertyRuleInjectionClassName>ProjectProperties</XamlPropertyRuleInjectionClassName>
+    
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Microsoft VisualStudio ProjectSystem for Managed languages Projects</Description>
+    <Summary>Microsoft VisualStudio Managed Project System</Summary>
+    <PackageTags>Roslyn Managed Project System VisualStudio</PackageTags>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
+  </ItemGroup>
+
+  <!-- Dependencies -->
+  <ItemGroup>
+    <!-- Analyzer Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml.cs">
+      <DependentUpon>AnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml.cs">
+      <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- Assembly Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\AssemblyReference.cs">
+      <DependentUpon>AssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\AssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.cs">
+      <DependentUpon>ResolvedAssemblyReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedAssemblyReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- COM Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\COMReference.cs">
+      <DependentUpon>COMReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\COMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.cs">
+      <DependentUpon>ResolvedCOMReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedCOMReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- Framework Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\FrameworkReference.cs">
+      <DependentUpon>FrameworkReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\FrameworkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.cs">
+      <DependentUpon>ResolvedFrameworkReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedFrameworkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- Package Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\PackageReference.cs">
+      <DependentUpon>PackageReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\PackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.cs">
+      <DependentUpon>ResolvedPackageReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedPackageReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- Project Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\ProjectReference.cs">
+      <DependentUpon>ProjectReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ProjectReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.cs">
+      <DependentUpon>ResolvedProjectReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedProjectReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <!-- SDK Reference -->
+    <Compile Update="ProjectSystem\Rules\Dependencies\SdkReference.xaml.cs">
+      <DependentUpon>SdkReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\SdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.cs">
+      <DependentUpon>ResolvedSdkReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Dependencies\ResolvedSdkReference.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    
+    <!-- Property Pages -->
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml" />
+  </ItemGroup>
+
+  <!-- Items -->
+  <ItemGroup>
+    <Compile Update="ProjectSystem\Rules\Items\Compile.cs">
+      <DependentUpon>Compile.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Compile.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Compile.BrowseObject.xaml" />
+
+    <Compile Update="ProjectSystem\Rules\Items\Content.cs">
+      <DependentUpon>Content.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Content.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\Content.BrowseObject.xaml" />
+
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EditorConfigFiles.BrowseObject.xaml" />
+
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\EmbeddedResource.BrowseObject.xaml" />
+
+    <Compile Update="ProjectSystem\Rules\Items\Folder.cs">
+      <DependentUpon>Folder.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\Folder.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\Items\None.cs">
+      <DependentUpon>None.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\Items\None.xaml">
+      <XlfInput>false</XlfInput>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.FSharp.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\Items\None.BrowseObject.xaml" />
+  </ItemGroup>
+
+  <!-- Others -->
+  <ItemGroup>
+    <Compile Update="ProjectSystem\Rules\AppDesigner.xaml.cs">
+      <DependentUpon>AppDesigner.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\AppDesigner.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\CollectedFrameworkReference.cs">
+      <DependentUpon>CollectedFrameworkReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedFrameworkReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+
+    <Compile Update="ProjectSystem\Rules\CollectedPackageDownload.cs">
+      <DependentUpon>CollectedPackageDownload.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageDownload.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\CollectedPackageVersion.cs">
+      <DependentUpon>CollectedPackageVersion.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CollectedPackageVersion.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\CompilerCommandLineArgs.cs">
+      <DependentUpon>CompilerCommandLineArgs.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CompilerCommandLineArgs.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\ConfigurationGeneral.xaml.cs">
+      <DependentUpon>ConfigurationGeneral.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ConfigurationGeneral.xaml">
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
+    <!-- TODO reconcile mismatched file names -->
+    <Compile Update="ProjectSystem\Rules\ConfiguredBrowseObject.cs">
+      <DependentUpon>GeneralConfiguredBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralConfiguredBrowseObject.xaml">
+      <XlfInput>false</XlfInput>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\CopyUpToDateMarker.cs">
+      <DependentUpon>CopyUpToDateMarker.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyUpToDateMarker.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\DebuggerGeneral.xaml" />
+
+    <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
+      <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DotNetCliToolReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\GeneralBrowseObject.cs">
+      <DependentUpon>GeneralBrowseObject.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\GeneralBrowseObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\LanguageService.cs">
+      <DependentUpon>LanguageService.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\LanguageService.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\NuGetRestore.cs">
+      <DependentUpon>NuGetRestore.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\NuGetRestore.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\ProjectDebugger.xaml.cs">
+      <DependentUpon>ProjectDebugger.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ProjectDebugger.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\ResolvedCompilationReference.cs">
+      <DependentUpon>ResolvedCompilationReference.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\ResolvedCompilationReference.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SourceControl.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\SpecialFolder.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
+
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
+      <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckBuilt.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckInput.cs">
+      <DependentUpon>UpToDateCheckInput.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckInput.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\UpToDateCheckOutput.cs">
+      <DependentUpon>UpToDateCheckOutput.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\UpToDateCheckOutput.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
+      <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\VisualBasic.NamespaceImport.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+  </ItemGroup>
+
+  <ItemGroup>
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Update="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="xlf\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+</Project>

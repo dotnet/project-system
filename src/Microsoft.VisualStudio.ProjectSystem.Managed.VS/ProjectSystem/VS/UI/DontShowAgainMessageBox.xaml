@@ -1,0 +1,75 @@
+﻿<ui:DialogWindow
+        x:Class="Microsoft.VisualStudio.ProjectSystem.VS.UI.DontShowAgainMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+        x:ClassModifier="internal" 
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"                    
+        Title="{Binding Path=DialogCaption, Mode=OneWay}"
+        Width="500" SizeToContent="Height"
+        UseLayoutRounding="true"
+        TextOptions.TextFormattingMode="Display"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <Style x:Key="BlueHyperlinkStyle" TargetType="{x:Type Hyperlink}">
+                        <Setter Property="Foreground" Value="{DynamicResource VsBrush.ControlLinkText}" />
+                        <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource VsBrush.ControlLinkTextHover}" />
+                                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource VsBrush.CommandBarTextInactive}" />
+                                <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Viewbox VerticalAlignment="Top" Width="32" Height="32" Margin="10,10,10,0">
+            <Rectangle Width="16" Height="16">
+                <Rectangle.Fill>
+                    <DrawingBrush>
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.0002,-0.000199999999999534L0.000200000000000422,13.9998 2.0002,15.9998 14.0002,15.9998 16.0002,13.9998 9.0002,-0.000199999999999534z" />
+                                <GeometryDrawing Brush="#FFFFCC00" Geometry="F1M9,10L7,10 7,5 9,5z M9,13L7,13 7,11 9,11z M8.382,1L7.618,1 1.217,13.803 2.5,15 13.5,15 14.783,13.803z" />
+                                <GeometryDrawing Brush="#FF000000" Geometry="F1M9,11L7,11 7,13 9,13z M9,10L7,10 7,5 9,5z" />
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Viewbox>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="6,10,6,0" Grid.Row="0" TextWrapping="WrapWithOverflow" Text="{Binding Path=MessageText, Mode=OneWay}"/>
+            <TextBlock Margin="6,10,6,0" x:Name="LearnMore" Grid.Row="1" Grid.Column="0" Visibility="Collapsed">
+                <Hyperlink Style="{StaticResource BlueHyperlinkStyle}" Command="{Binding LearnMoreCommand}">
+                    <Run Text="{Binding Path=LearnMoreText, Mode=OneWay}" />
+                </Hyperlink>
+            </TextBlock>
+            <CheckBox Margin="6,20,0,0" x:Name="DontShowAgainCheckBox" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" IsChecked="{Binding Path=CheckboxState}" Content="{Binding Path=CheckboxText, Mode=OneWay}" />
+            <Button Grid.Row="3" x:Uid="okButton" Margin="6,10,6,6" Padding="4,4,4,4" MinHeight="23" MinWidth="105" HorizontalAlignment="Right" IsDefault="True" Click="OK_Click" Content="{Binding Path=OkButtonText, Mode=OneWay}"/>
+        </Grid>
+    </Grid>
+</ui:DialogWindow>

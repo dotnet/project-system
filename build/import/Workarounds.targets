@@ -1,0 +1,12 @@
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project>
+  
+  <!-- WORKAROUND: Both xunit.runner.console and xunit.runner.visualstudio carry the same file and try to 
+       deploy it as CopyToOutputDirectory item. Remove them both, xunit.extensibility.core carries the 
+       version we will use.  -->
+  <ItemGroup>
+    <None Remove="$(Pkgxunit_runner_visualstudio)\**\xunit.abstractions.dll" />
+    <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" />
+  </ItemGroup>
+
+</Project>

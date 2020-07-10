@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pl" original="../AddImports.resx">
+    <body>
+      <trans-unit id="AddImportsMainTextFormatString">
+        <source>Importing '{0}' would change the meaning of other identifiers in this file. To correct '{1}' and preserve the meaning of other identifiers, choose one of the following options:</source>
+        <target state="translated">Importowanie „{0}” mogło zmienić znaczenie innych identyfikatorów w tym pliku. Aby poprawić „{1}” i zachować znaczenie innych identyfikatorów, wybierz jedną z poniższych opcji:</target>
+        <note>
+      Defines the replacement string for use in the main label of the Add Imports collision dialog.
+    </note>
+      </trans-unit>
+      <trans-unit id="ImportsAnywaysFormatString">
+        <source>&amp;Import '{0}' and qualify the affected identifiers.</source>
+        <target state="translated">&amp;Importuj '{0}' i kwalifikuj zmienione identyfikatory.</target>
+        <note>
+      Defines the replacement string for use in "Imports Anyways" option of the add imports collision dialog.
+      This text will be formated as richtext.
+      
+      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
+      contained in this resource.
+
+      Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
+      with the label this text will be inserted into.
+    </note>
+      </trans-unit>
+      <trans-unit id="QualifyCurrentLineFormatString">
+        <source>&amp;Do not import '{0}', but change '{1}' to '{2}'.</source>
+        <target state="translated">&amp;Nie importuj '{0}', ale zmień '{1}' na '{2}'.</target>
+        <note>
+      Defines the replacement string for use in the "Qualify Current Line" option of the Add Imports collision dialog. 
+      This text will be formated as richtext. 
+      
+      See the comments for AddImportsMainTextFormatString for more details about the richt text formating codes
+      contained in this resource.
+
+
+      Also, the "&amp;" is used to define the mnemonic  character for the radio button associated
+      with the label this text will be inserted into.
+    </note>
+      </trans-unit>
+      <trans-unit id="AddImportsExtensionMethodsMainFormatString">
+        <source>Importing '{0}' would change the meaning of other code in your file, including calls to extension methods. Click OK to correct '{1}' by changing it to '{2}' </source>
+        <target state="translated">Importowanie „{0}” może zmienić znaczenie innego kodu w pliku, w tym wywołania metod rozszerzenia. Kliknij pozycję OK, aby poprawić element „{1}”, zmieniając go na „{2}” </target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
