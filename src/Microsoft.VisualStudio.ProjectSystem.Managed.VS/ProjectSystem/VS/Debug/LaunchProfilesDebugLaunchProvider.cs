@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
-        private readonly IVsService<IVsDebugger4> _vsDebuggerService;
+        private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
 
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public LaunchProfilesDebugLaunchProvider(
             ConfiguredProject configuredProject, 
             ILaunchSettingsProvider launchSettingsProvider, 
-            IVsService<SVsShellDebugger, IVsDebugger4> vsDebuggerService)
+            IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
             : base(configuredProject)
         {
             _launchSettingsProvider = launchSettingsProvider;
@@ -113,6 +114,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return null;
         }
 
+        private class LaunchCompleteCallback : IVsDebuggerLaunchCompletionCallback
+        {
+            private readonly DebugLaunchOptions _launchOptions;
+            private readonly IDebugProfileLaunchTargetsProvider? _targetProfile;
+            private readonly ILaunchProfile? _activeProfile;
+
+            public LaunchCompleteCallback(DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetProfile, ILaunchProfile? activeProfile)
+            {
+                _launchOptions = launchOptions;
+                _targetProfile = targetProfile;
+                _activeProfile = activeProfile;
+            }
+
+            public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
+            {
+                if (_targetProfile != null)
+                {
+                    Assumes.NotNull(_activeProfile);
+#pragma warning disable RS0030 // Do not used banned APIs
+                    ThreadHelper.JoinableTaskFactory.Run(async delegate
+                    {
+                        await _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile);
+                    });
+#pragma warning restore RS0030 // Do not used banned APIs
+                }
+            }
+        };
+
         /// <summary>
         /// Overridden to direct the launch to the current active provider as determined by the active launch profile
         /// </summary>
@@ -130,23 +159,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
-            await DoLaunchAsync(targets.ToArray());
-
-            if (targetProfile != null)
-            {
-                await targetProfile.OnAfterLaunchAsync(launchOptions, activeProfile);
-            }
+            await DoLaunchAsync(new LaunchCompleteCallback(launchOptions, targetProfile, activeProfile), targets.ToArray());
         }
 
         /// <summary>
         /// Launches the Visual Studio debugger.
         /// </summary>
-        protected async Task<IReadOnlyList<VsDebugTargetProcessInfo>> DoLaunchAsync(params IDebugLaunchSettings[] launchSettings)
+        protected async Task DoLaunchAsync(IVsDebuggerLaunchCompletionCallback cb, params IDebugLaunchSettings[] launchSettings)
         {
             VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
             if (launchSettingsNative.Length == 0)
             {
-                return Array.Empty<VsDebugTargetProcessInfo>();
+                return;
             }
 
             try
@@ -154,10 +178,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // The debugger needs to be called on the UI thread
                 await ThreadingService.SwitchToUIThread();
 
-                IVsDebugger4 shellDebugger = await _vsDebuggerService.GetValueAsync();
-                var launchResults = new VsDebugTargetProcessInfo[launchSettingsNative.Length];
-                shellDebugger.LaunchDebugTargets4((uint)launchSettingsNative.Length, launchSettingsNative, launchResults);
-                return launchResults;
+                IVsDebuggerLaunchAsync shellDebugger = await _vsDebuggerService.GetValueAsync();
+                shellDebugger.LaunchDebugTargetsAsync((uint)launchSettingsNative.Length, launchSettingsNative, cb);
             }
             finally
             {
