@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="needs-review-translation">PackageIconUrl が検出されましたが、非推奨です。代わりに PackageIcon をご使用ください。</target>
+        <target state="translated">PackageIconUrl が検出されましたが、非推奨です。代わりに PackageIcon をご使用ください。</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="needs-review-translation">PackageLicenseURL プロパティが検出されましたが、このプロパティは非推奨です。式またはファイルに変更してください。</target>
+        <target state="translated">PackageLicenseURL が検出されましたが、非推奨です。代わりに、Expression または File を使用してください。</target>
         <note />
       </trans-unit>
     </body>

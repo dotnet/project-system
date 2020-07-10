@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
         <source>SDK Reference</source>
-        <target state="needs-review-translation">Aufgelöster SDK-Verweis</target>
+        <target state="translated">SDK-Verweis</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">

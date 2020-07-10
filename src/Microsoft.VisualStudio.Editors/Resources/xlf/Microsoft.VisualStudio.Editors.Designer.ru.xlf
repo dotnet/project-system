@@ -1976,7 +1976,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_AdvancedBuildSettings_DebugInfo_Portable">
         <source>Portable</source>
-        <target state="translated">Портативный</target>
+        <target state="translated">Переносимый</target>
         <note />
       </trans-unit>
       <trans-unit id="BlockedResx">
@@ -2005,7 +2005,7 @@ Do you want to update the value in the .settings file?</source>
       </trans-unit>
       <trans-unit id="PPG_CodeAnalysisTitle">
         <source>Code Analysis</source>
-        <target state="translated">Анализ кода</target>
+        <target state="translated">Code Analysis</target>
         <note />
       </trans-unit>
     </body>

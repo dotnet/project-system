@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">引用属性</target>
+        <target state="translated">程序集引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

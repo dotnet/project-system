@@ -9,27 +9,27 @@
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate Path Property</source>
-        <target state="needs-review-translation">パス プロパティを生成します</target>
+        <target state="translated">パス プロパティを生成する</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|DisplayName">
         <source>Package Reference</source>
-        <target state="needs-review-translation">パッケージ</target>
+        <target state="translated">パッケージ参照</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedPackageReference|Description">
         <source>Package Reference Properties</source>
-        <target state="needs-review-translation">パッケージのプロパティ</target>
+        <target state="translated">パッケージ参照プロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to assembly references contained in this package.</source>
-        <target state="new">A comma-delimited list of aliases to assembly references contained in this package.</target>
+        <target state="translated">このパッケージに含まれているアセンブリ参照へのエイリアスのコンマ区切りリスト。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
+        <target state="translated">エイリアス</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress Warnings</source>
-        <target state="needs-review-translation">NoWarn</target>
+        <target state="translated">警告を抑制する</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Included Assets</source>
-        <target state="needs-review-translation">IncludeAssets</target>
+        <target state="translated">含まれている資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Excluded Assets</source>
-        <target state="needs-review-translation">ExcludeAssets</target>
+        <target state="translated">除外された資産</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">

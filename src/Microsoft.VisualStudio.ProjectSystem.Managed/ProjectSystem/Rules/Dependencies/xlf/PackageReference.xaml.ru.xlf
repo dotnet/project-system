@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="Rule|PackageReference|DisplayName">
         <source>Package Reference</source>
-        <target state="needs-review-translation">Пакет</target>
+        <target state="translated">Ссылка на пакет</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
         <source>Package Reference Properties</source>
-        <target state="needs-review-translation">Свойства пакета</target>
+        <target state="translated">Свойства ссылок на пакеты</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to assembly references contained in this package.</source>
-        <target state="new">A comma-delimited list of aliases to assembly references contained in this package.</target>
+        <target state="translated">Разделенный запятыми список псевдонимов ссылок на сборки, содержащиеся в этом пакете.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
+        <target state="translated">Псевдонимы</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">Имя</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
-        <target state="new">Location of the package being referenced.</target>
+        <target state="translated">Расположение пакета, на который указывает ссылка.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Путь</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Included Assets</source>
-        <target state="needs-review-translation">Включенные ресурсы</target>
+        <target state="translated">Включенные ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Excluded Assets</source>
-        <target state="needs-review-translation">Исключенные ресурсы</target>
+        <target state="translated">Исключенные ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="needs-review-translation">Закрытые ресурсы</target>
+        <target state="translated">Частные ресурсы</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress Warnings</source>
-        <target state="needs-review-translation">Отключить предупреждения</target>
+        <target state="translated">Отключить предупреждения</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate Path Property</source>
-        <target state="needs-review-translation">Создать свойство пути</target>
+        <target state="translated">Создать свойство пути</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">

@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
-        <target state="new">The name of the framework assembly.</target>
+        <target state="translated">Nom de l'assembly de framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">Nom d'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
         <source>The assembly version of the framework assembly.</source>
-        <target state="new">The assembly version of the framework assembly.</target>
+        <target state="translated">Version d'assembly de l'assembly de framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
         <source>Assembly Version</source>
-        <target state="new">Assembly Version</target>
+        <target state="translated">Version d'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
         <source>Framework Assembly</source>
-        <target state="new">Framework Assembly</target>
+        <target state="translated">Assembly de framework</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDescription">
         <source>The file version of the framework assembly.</source>
-        <target state="new">The file version of the framework assembly.</target>
+        <target state="translated">Version de fichier de l'assembly de framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
         <source>File Version</source>
-        <target state="new">File Version</target>
+        <target state="translated">Version de fichier</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDescription">
         <source>Path of the framework assembly.</source>
-        <target state="new">Path of the framework assembly.</target>
+        <target state="translated">Chemin de l'assembly de framework.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Chemin</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">

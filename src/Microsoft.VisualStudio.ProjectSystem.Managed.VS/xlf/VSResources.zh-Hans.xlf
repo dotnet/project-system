@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
-        <target state="new">The name of the framework assembly.</target>
+        <target state="translated">框架程序集的名称。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">程序集名称</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
         <source>The assembly version of the framework assembly.</source>
-        <target state="new">The assembly version of the framework assembly.</target>
+        <target state="translated">框架程序集的程序集版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
         <source>Assembly Version</source>
-        <target state="new">Assembly Version</target>
+        <target state="translated">程序集版本</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
         <source>Framework Assembly</source>
-        <target state="new">Framework Assembly</target>
+        <target state="translated">框架程序集</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDescription">
         <source>The file version of the framework assembly.</source>
-        <target state="new">The file version of the framework assembly.</target>
+        <target state="translated">框架程序集的文件版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
         <source>File Version</source>
-        <target state="new">File Version</target>
+        <target state="translated">文件版本</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDescription">
         <source>Path of the framework assembly.</source>
-        <target state="new">Path of the framework assembly.</target>
+        <target state="translated">框架程序集的路径。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">路径</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">

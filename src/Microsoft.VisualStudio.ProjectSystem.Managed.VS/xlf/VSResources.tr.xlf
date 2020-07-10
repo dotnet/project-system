@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
-        <target state="new">The name of the framework assembly.</target>
+        <target state="translated">Çerçeve bütünleştirilmiş kodunun adı.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">Bütünleştirilmiş Kod Adı</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
         <source>The assembly version of the framework assembly.</source>
-        <target state="new">The assembly version of the framework assembly.</target>
+        <target state="translated">Çerçeve bütünleştirilmiş kodunun bütünleştirilmiş kod sürümü.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
         <source>Assembly Version</source>
-        <target state="new">Assembly Version</target>
+        <target state="translated">Bütünleştirilmiş Kod Sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
         <source>Framework Assembly</source>
-        <target state="new">Framework Assembly</target>
+        <target state="translated">Çerçeve Bütünleştirilmiş Kodu</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDescription">
         <source>The file version of the framework assembly.</source>
-        <target state="new">The file version of the framework assembly.</target>
+        <target state="translated">Çerçeve bütünleştirilmiş kodunun dosya sürümü.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
         <source>File Version</source>
-        <target state="new">File Version</target>
+        <target state="translated">Dosya Sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDescription">
         <source>Path of the framework assembly.</source>
-        <target state="new">Path of the framework assembly.</target>
+        <target state="translated">Çerçeve bütünleştirilmiş kodunun yolu.</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Yol</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">

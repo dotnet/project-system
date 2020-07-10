@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="needs-review-translation">已解析的專案參考</target>
+        <target state="translated">專案參考</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
         <source>Project Reference Properties</source>
-        <target state="needs-review-translation">參考屬性</target>
+        <target state="translated">專案參考屬性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
