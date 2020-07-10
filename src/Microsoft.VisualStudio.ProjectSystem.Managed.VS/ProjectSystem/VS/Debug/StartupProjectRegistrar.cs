@@ -97,7 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             foreach (Lazy<IDebugLaunchProvider> provider in _launchProviders.Values)
             {
-                if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
+                if (provider.Value is IStartupProjectProvider startupProjectProvider &&
+                    await startupProjectProvider.IsProjectDebuggableAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
                 {
                     return true;
                 }
