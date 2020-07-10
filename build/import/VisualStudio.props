@@ -44,6 +44,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime"/>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime"/>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"/>
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.16.6.DesignTime"/>
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
