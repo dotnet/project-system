@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -118,10 +117,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             private readonly DebugLaunchOptions _launchOptions;
             private readonly IDebugProfileLaunchTargetsProvider? _targetProfile;
-            private readonly ILaunchProfile? _activeProfile;
+            private readonly ILaunchProfile _activeProfile;
+            private readonly IProjectThreadingService _threadingService;
 
-            public LaunchCompleteCallback(DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetProfile, ILaunchProfile? activeProfile)
+            public LaunchCompleteCallback(IProjectThreadingService threadingService, DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetProfile, ILaunchProfile activeProfile)
             {
+                _threadingService = threadingService;
                 _launchOptions = launchOptions;
                 _targetProfile = targetProfile;
                 _activeProfile = activeProfile;
@@ -131,13 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 if (_targetProfile != null)
                 {
-                    Assumes.NotNull(_activeProfile);
-#pragma warning disable RS0030 // Do not used banned APIs
-                    ThreadHelper.JoinableTaskFactory.Run(async delegate
-                    {
-                        await _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile);
-                    });
-#pragma warning restore RS0030 // Do not used banned APIs
+                    _threadingService.ExecuteSynchronously(() => _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile));
                 }
             }
         };
@@ -159,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
-            await DoLaunchAsync(new LaunchCompleteCallback(launchOptions, targetProfile, activeProfile), targets.ToArray());
+            await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProfile, activeProfile), targets.ToArray());
         }
 
         /// <summary>
