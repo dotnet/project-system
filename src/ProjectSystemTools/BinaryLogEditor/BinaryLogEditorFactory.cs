@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
 using System.Runtime.InteropServices;
@@ -11,9 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
     [Guid(ProjectSystemToolsPackage.BinaryLogEditorFactoryGuidString)]
     public sealed class BinaryLogEditorFactory : IVsEditorFactory
     {
-        private static readonly Guid LogicalViewIdAnyGuid = new Guid(LogicalViewID.Any);
-        private static readonly Guid LogicalViewIdPrimaryGuid = new Guid(LogicalViewID.Primary);
-        private static readonly Guid LogicalViewIdDesignerGuid = new Guid(LogicalViewID.Designer);
+        private static readonly Guid s_logicalViewIdAnyGuid = new Guid(LogicalViewID.Any);
+        private static readonly Guid s_logicalViewIdPrimaryGuid = new Guid(LogicalViewID.Primary);
+        private static readonly Guid s_logicalViewIdDesignerGuid = new Guid(LogicalViewID.Designer);
 
         private OLE.Interop.IServiceProvider _site;
         private ServiceProvider _serviceProvider;
@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
         {
             physicalView = null;
 
-            return logicalView.Equals(LogicalViewIdAnyGuid) ||
-                   logicalView.Equals(LogicalViewIdPrimaryGuid) ||
-                   logicalView.Equals(LogicalViewIdDesignerGuid)
+            return logicalView.Equals(s_logicalViewIdAnyGuid) ||
+                   logicalView.Equals(s_logicalViewIdPrimaryGuid) ||
+                   logicalView.Equals(s_logicalViewIdDesignerGuid)
                 ? VSConstants.S_OK
                 : VSConstants.E_NOTIMPL;
         }

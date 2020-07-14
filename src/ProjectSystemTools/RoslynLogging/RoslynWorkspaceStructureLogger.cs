@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -18,8 +20,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 {
     internal static class RoslynWorkspaceStructureLogger
     {
-        private static int s_NextCompilationId;
-        private static readonly ConditionalWeakTable<Compilation, StrongBox<int>> s_CompilationIds = new ConditionalWeakTable<Compilation, StrongBox<int>>();
+        private static int s_nextCompilationId;
+        private static readonly ConditionalWeakTable<Compilation, StrongBox<int>> s_compilationIds = new ConditionalWeakTable<Compilation, StrongBox<int>>();
 
         public static void ShowSaveDialogAndLog(IServiceProvider serviceProvider)
         {
@@ -187,8 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
                     projectsProcessed++;
 
-                    bool cancelled;
-                    threadedWaitDialog.UpdateProgress(null, null, null, projectsProcessed, solution.ProjectIds.Count, false, out cancelled);
+                    threadedWaitDialog.UpdateProgress(null, null, null, projectsProcessed, solution.ProjectIds.Count, false, out bool cancelled);
                 }
 
                 File.Delete(path);
@@ -208,8 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
             }
             finally
             {
-                int cancelled;
-                threadedWaitDialog.EndWaitDialog(out cancelled);
+                threadedWaitDialog.EndWaitDialog(out int cancelled);
             }
         }
 
@@ -304,11 +304,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
         private static XElement CreateElementForCompilation(Compilation compilation)
         {
-            StrongBox<int> compilationId;
-            if (!s_CompilationIds.TryGetValue(compilation, out compilationId))
+            if (!s_compilationIds.TryGetValue(compilation, out StrongBox<int> compilationId))
             {
-                compilationId = new StrongBox<int>(s_NextCompilationId++);
-                s_CompilationIds.Add(compilation, compilationId);
+                compilationId = new StrongBox<int>(s_nextCompilationId++);
+                s_compilationIds.Add(compilation, compilationId);
             }
 
             var namespaces = new Queue<INamespaceSymbol>();
