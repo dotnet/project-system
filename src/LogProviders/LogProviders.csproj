@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\build\import\HostAgnostic.props" />
+  <Import Project="..\..\build\import\VisualStudio.props" />
   
   <PropertyGroup>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</AssemblyName>

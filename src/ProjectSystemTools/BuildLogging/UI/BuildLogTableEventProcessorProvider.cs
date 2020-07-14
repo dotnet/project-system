@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.UI
 {
     [Export(typeof(ITableControlEventProcessorProvider))]
     [Name(BuildLog)]
-    [Utilities.Order(After = Priority.Default, Before = StandardTableControlEventProcessors.Default)]
+    [VisualStudio.Utilities.Order(After = Priority.Default, Before = StandardTableControlEventProcessors.Default)]
     [ManagerType(BuildLoggingToolWindow.BuildLogging)]
     [DataSourceType(StandardTableDataSources.AnyDataSource)]
     [DataSource(StandardTableDataSources.AnyDataSource)]
