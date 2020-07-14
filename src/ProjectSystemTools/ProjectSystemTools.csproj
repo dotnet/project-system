@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\import\HostAgnostic.props" />
+  
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools</AssemblyName>
@@ -20,6 +23,7 @@
     <!-- Work around dotnet/wpf#1718 for the time being -->
     <EmbedUntrackedSources>false</EmbedUntrackedSources>
   </PropertyGroup>
+  <!--
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildVersion)" />
     <PackageReference Include="Microsoft.Build.Engine" Version="$(MicrosoftBuildVersion)" />
@@ -41,6 +45,7 @@
     <PackageReference Include="System.Composition" Version="$(SystemCompositionVersion)" />
     <PackageReference Include="VSLangProj" Version="7.0.3301" />
   </ItemGroup>
+  -->
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
