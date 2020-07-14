@@ -13,15 +13,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     internal sealed class DependenciesTreeSearchContext : IDisposable
     {
         private readonly string _searchString;
-        private readonly int _maximumResults;
+        private readonly uint _maximumResults;
         private readonly Action<ISearchResult> _resultAccumulator;
         private readonly CancellationTokenSource _cts;
-        private int _submittedResultCount;
+        private long _submittedResultCount; // long as there's no interlocked increment for uint32
 
         public DependenciesTreeSearchContext(IRelationshipSearchParameters parameters, Action<ISearchResult> resultAccumulator)
         {
             _searchString = parameters.SearchQuery.SearchString;
-            _maximumResults = checked((int)parameters.MaximumResults);
+            _maximumResults = parameters.MaximumResults;
             _resultAccumulator = resultAccumulator;
             _cts = CancellationTokenSource.CreateLinkedTokenSource(parameters.CancellationToken);
         }
