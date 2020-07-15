@@ -257,7 +257,7 @@
       <Context>ConfiguredBrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
