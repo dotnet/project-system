@@ -22,8 +22,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
         Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
         Private ReadOnly _packageIconUrlPropName As String = "PackageIconUrl"
-        Private _licenseUrlDetected As Boolean = False
-        Private _newLicensePropertyDetectedAtInit As Boolean = False
+        Private _licenseUrlDetected As Boolean
+        Private _newLicensePropertyDetectedAtInit As Boolean
         Private _unconfiguredProject As UnconfiguredProject
         Private _configuredProject As ConfiguredProject
         Private _projectSourceItemProvider As IProjectSourceItemProvider

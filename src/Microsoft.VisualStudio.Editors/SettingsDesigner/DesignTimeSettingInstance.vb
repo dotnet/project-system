@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is this setting a roaming setting?
         ''' </summary>
-        Private _roaming As Boolean = False
+        Private _roaming As Boolean
 
         ''' <summary>
         ''' The serialized representation of this setting

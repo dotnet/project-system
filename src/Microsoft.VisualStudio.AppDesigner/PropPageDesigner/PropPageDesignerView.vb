@@ -207,10 +207,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _loadedPageSite As PropertyPageSite
 
         'True once we have been initialized completely.
-        Private _fInitialized As Boolean = False
+        Private _fInitialized As Boolean
 
         'If true, we ignore the selected index changed event
-        Private _ignoreSelectedIndexChanged As Boolean = False
+        Private _ignoreSelectedIndexChanged As Boolean
 
         Private _errorControl As Control 'Displayed error control, if any
 
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Private _needToCheckForModeChanges As Boolean
 
         'The number of undo units that were available when the page was in a clean state.
-        Private _undoUnitsOnStackAtCleanState As Integer = 0
+        Private _undoUnitsOnStackAtCleanState As Integer
 
         ' The UndoEngine for this designer
         Private WithEvents _undoEngine As UndoEngine

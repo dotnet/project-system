@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '  is passed to GetManifestBitmap
         Public ReadOnly StandardTransparentColor As Color = Color.Lime
 
-        Public VBPackageInstance As IVBPackage = Nothing
+        Public VBPackageInstance As IVBPackage
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
         Private Const VSDPLMAXFILES As Integer = 200

@@ -54,7 +54,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' 
         ''' Since all the file generation should happen on the main thread, it is OK to have this member shared...
         ''' </remarks>
-        Friend Shared AllowSymbolRename As Boolean = False
+        Friend Shared AllowSymbolRename As Boolean
 
         ''' <summary>
         ''' Returns the default visibility of this properties

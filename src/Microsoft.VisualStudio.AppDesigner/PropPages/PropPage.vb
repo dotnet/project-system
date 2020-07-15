@@ -101,7 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private _objects As Object()
         Private _prevParent As IntPtr
         Private _dispidFocus As Integer
-        Private _hostedInNative As Boolean = False
+        Private _hostedInNative As Boolean
         Private _wasSetParentCalled As Boolean
 
         Protected Sub New()

@@ -32,13 +32,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Const CATEGORY_RESOURCE As String = "Resource"
 
         ' The type of the property
-        Private ReadOnly _propertyType As Type = Nothing
+        Private ReadOnly _propertyType As Type
 
         ' Indicates whether this property is read-only or not
-        Private ReadOnly _isReadOnly As Boolean = False
+        Private ReadOnly _isReadOnly As Boolean
 
         ' Indicates whether the property can be reset or not
-        Private ReadOnly _canReset As Boolean = False
+        Private ReadOnly _canReset As Boolean
 
         '======================================================================
         '= Constructors =                                                     =

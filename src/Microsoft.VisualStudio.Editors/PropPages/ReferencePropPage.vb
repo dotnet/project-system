@@ -57,7 +57,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents ReferencePageSplitContainer As SplitContainer
         Friend WithEvents addUserImportTableLayoutPanel As TableLayoutPanel
         Private _needRefreshImportList As Boolean
-        Private _importListSelectedItem As String = Nothing
+        Private _importListSelectedItem As String
         Private _hidingImportListSelectedItem As Boolean
 
         ' helper object to sort the reference list

@@ -216,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _cachedImageProperties As ImagePropertiesCache
 
         'ISite reference (needed for IComponent implementation, see Site property)
-        Private _site As ISite = Nothing
+        Private _site As ISite
 
         'This is either an ITypeResolutionService instance (if the .resx file was opened inside the context
         '  of a project), or an array of AssemblyName's (if the .resx file was opened outside of 

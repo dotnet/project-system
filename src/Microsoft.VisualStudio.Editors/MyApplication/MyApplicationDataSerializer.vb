@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Write2_MyApplicationData("MyApplicationData", "", CType(o, MyApplicationData), True, False)
         End Sub 'Write3_MyApplicationData 
 
-        Private _publicMethods As Hashtable = Nothing
+        Private _publicMethods As Hashtable
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
@@ -225,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             _id12_SaveMySettingsOnExit = Reader.NameTable.Add("SaveMySettingsOnExit")
         End Sub 'InitIDs 
 
-        Private _publicMethods As Hashtable = Nothing
+        Private _publicMethods As Hashtable
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then

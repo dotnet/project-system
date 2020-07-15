@@ -15,7 +15,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Partial Friend Class AdvBuildSettingsPropPage
         Inherits PropPageUserControlBase
 
-        Protected DebugSymbols As Boolean = False
+        Protected DebugSymbols As Boolean
 
         Public Sub New()
             MyBase.New()

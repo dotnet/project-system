@@ -36,7 +36,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private WithEvents _componentChangeService As IComponentChangeService
 
         'Our set of resources
-        Private ReadOnly _resources As Dictionary(Of String, Resource) = Nothing
+        Private ReadOnly _resources As Dictionary(Of String, Resource)
 
         'Metadata from the resource file so we can write them back out when saving the file.
         Private ReadOnly _resourceFileMetadata As List(Of DictionaryEntry)
@@ -93,7 +93,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         Private ReadOnly _multiTargetService As MultiTargetService
 
-        Private ReadOnly _allowMOTW As Boolean = False
+        Private ReadOnly _allowMOTW As Boolean
 #End Region
 
 #Region "Constructors/Destructors"

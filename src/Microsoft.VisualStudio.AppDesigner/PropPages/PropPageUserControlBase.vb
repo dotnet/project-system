@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ' When true, the dialog is not scaled automatically
         ' Currently only used by the Publish page because it isn't a normal page
-        Private _manualPageScaling As Boolean = False
+        Private _manualPageScaling As Boolean
 
         'Backcolor for all property pages
         <Obsolete("Colors should be retrieved directly from the theming service")>

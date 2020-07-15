@@ -492,17 +492,17 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
     <StructLayout(LayoutKind.Sequential)>
     Friend Class HDITEM2
-        Public mask As Integer = 0
-        Public cxy As Integer = 0
+        Public mask As Integer
+        Public cxy As Integer
         Public pszTextPtr As IntPtr
-        Public hbm As IntPtr = IntPtr.Zero
-        Public cchTextMax As Integer = 0
-        Public fmt As Integer = 0
-        Public lParam As IntPtr = IntPtr.Zero
-        Public iImage As Integer = 0
-        Public iOrder As Integer = 0
-        Public type As Integer = 0
-        Public pvFilter As IntPtr = IntPtr.Zero
+        Public hbm As IntPtr
+        Public cchTextMax As Integer
+        Public fmt As Integer
+        Public lParam As IntPtr
+        Public iImage As Integer
+        Public iOrder As Integer
+        Public type As Integer
+        Public pvFilter As IntPtr
     End Class
 
 End Namespace

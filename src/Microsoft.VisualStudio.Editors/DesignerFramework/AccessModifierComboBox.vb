@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend MustInherit Class AccessModifierCombobox
         Implements IDisposable
 
-        Private _isDisposed As Boolean = False
+        Private _isDisposed As Boolean
         Private ReadOnly _rootDesigner As BaseRootDesigner
         Private ReadOnly _projectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider

@@ -166,7 +166,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             HandleFlush(SerializationManager)
         End Sub
 
-        Private _loadDeferred As Boolean = False
+        Private _loadDeferred As Boolean
         Private _deferredLoaderService As IDesignerLoaderService
         Private _deferredLoadManager As IDesignerSerializationManager
         Protected NotOverridable Overrides Sub PerformLoad(SerializationManager As IDesignerSerializationManager)
@@ -260,10 +260,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected WithEvents m_DocData As DocData
 
         'The "base" editor caption.  See SetBaseEditorCaption for more details.
-        Private _baseEditorCaption As String = Nothing
+        Private _baseEditorCaption As String
 
         'The moniker of file that's loaded in the designer
-        Private _moniker As String = Nothing
+        Private _moniker As String
 
         Private _rdt As IVsRunningDocumentTable
         Private _rdtEventsCookie As UInteger

@@ -37,7 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private ReadOnly _categoryDisplay As Display
         Private ReadOnly _localizedName As String
         Private ReadOnly _programmaticName As String
-        Private _resourceCount As Integer = 0
+        Private _resourceCount As Integer
         Private _resourceView As ResourceListView.ResourceView = ResourceListView.ResourceView.Thumbnail
         Private _allowNewEntriesInStringTable As Boolean 'applies only to Display.StringTable
         Private _showTypeColumnInStringTable As Boolean 'applies only to Display.StringTable

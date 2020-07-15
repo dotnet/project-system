@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 #Region "Standard dispose pattern - the only thing we need to do is to unadvise events..."
 
-            Private _disposed As Boolean = False
+            Private _disposed As Boolean
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)

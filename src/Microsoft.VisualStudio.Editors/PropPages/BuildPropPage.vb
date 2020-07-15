@@ -21,7 +21,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Protected DocumentationFile() As String
         'True when we're changing control values ourselves
-        Protected InsideInternalUpdate As Boolean = False
+        Protected InsideInternalUpdate As Boolean
 
         ' Stored conditional compilation symbols. We need these to calculate the new strings
         '   to return for the conditional compilation constants when the user changes any

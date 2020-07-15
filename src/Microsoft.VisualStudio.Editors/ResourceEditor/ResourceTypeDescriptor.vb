@@ -19,7 +19,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Inherits CustomTypeDescriptor
 
         ' The instance of the Resource that we're providing type description information for.
-        Private ReadOnly _instance As Resource = Nothing
+        Private ReadOnly _instance As Resource
 
         '======================================================================
         '= Constructors =                                                     =

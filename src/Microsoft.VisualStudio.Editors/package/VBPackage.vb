@@ -503,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 #End Region
 
-            Private _disposed As Boolean = False
+            Private _disposed As Boolean
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)

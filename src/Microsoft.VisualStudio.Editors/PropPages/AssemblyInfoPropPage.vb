@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Common.SetComboBoxDropdownWidth(NeutralLanguageComboBox)
         End Sub
 
-        Private _neutralLanguageWasDroppedDown As Boolean = False
+        Private _neutralLanguageWasDroppedDown As Boolean
 
         ''' <summary>
         ''' For checking if the NeutralLanguageComboBox was DroppedDown when the escape key was pressed.

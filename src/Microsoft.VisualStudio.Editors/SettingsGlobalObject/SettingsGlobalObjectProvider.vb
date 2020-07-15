@@ -1131,7 +1131,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' (the XML serializer may use the DynamicTypeService to resolve the type to
         ''' deserialize, which means that we may be called again - See VsWhidbey 444946)
         ''' </summary>
-        Private _loadingSettings As Boolean = False
+        Private _loadingSettings As Boolean
 
         ''' <summary>
         ''' Create a new settings global object.  We defer building the type until later.

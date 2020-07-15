@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
         Private Declare Auto Function GetDC Lib "user32" (hWnd As IntPtr) As IntPtr
         Private Declare Auto Function ReleaseDC Lib "user32" (hWnd As IntPtr, hDC As IntPtr) As Integer
-        Private _designerChangeCount As Integer = 0
+        Private _designerChangeCount As Integer
         Private Sub OnActiveDesignerChanged(sender As Object, e As ActiveDesignerEventArgs)
             _designerChangeCount += 1
             If Common.Switches.PDDesignerActivations.TraceWarning Then

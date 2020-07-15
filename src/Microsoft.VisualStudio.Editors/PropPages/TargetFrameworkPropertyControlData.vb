@@ -109,7 +109,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <summary>
         ''' Holds the site provided the parent page when the parent page is able to obtain it
         ''' </summary>
-        Public Property Site As IServiceProvider = Nothing
+        Public Property Site As IServiceProvider
 
         ''' <summary>
         ''' Holds the last committed property value.  This can change with user interaction in the combo box
