@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         // Temporarily disable support for Additional Dependent Files
         // TODO - pending to fix https://github.com/dotnet/project-system/issues/6227
-        private readonly bool _enableAdditionalDependentFile = false;
+        private readonly bool _enableAdditionalDependentFile;
 
         private readonly object _stateLock = new object();
 
