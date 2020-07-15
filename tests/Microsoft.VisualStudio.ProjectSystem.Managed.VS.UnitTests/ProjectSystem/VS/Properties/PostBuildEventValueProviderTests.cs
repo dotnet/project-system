@@ -643,7 +643,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Equal(expected, actual);
         }
 
-
         [Fact]
         public static void EscapeValue_Write_CheckEscaped()
         {

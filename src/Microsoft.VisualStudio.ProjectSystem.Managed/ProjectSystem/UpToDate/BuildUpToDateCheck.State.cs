@@ -405,7 +405,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
 
-
                 DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
                 {
                     var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)

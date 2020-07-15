@@ -49,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.True(setValueInvoked);
         }
 
-
         [Fact]
         public async Task VerifyInterceptedViaSnapshotCommonPropertiesProviderAsync()
         {

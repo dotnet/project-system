@@ -267,7 +267,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }
-
                     },
                     registerFaultHandler: true);
             }
