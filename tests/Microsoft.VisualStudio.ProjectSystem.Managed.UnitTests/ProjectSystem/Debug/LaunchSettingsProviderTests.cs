@@ -270,7 +270,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
 
-
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
         {
@@ -944,7 +943,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [JsonProperty(PropertyName = "iis")]
         public ServerBindingData? IISBindingData { get; set; }
-
 
         [JsonProperty(PropertyName = "iisExpress")]
         public ServerBindingData? IISExpressBindingData { get; set; }

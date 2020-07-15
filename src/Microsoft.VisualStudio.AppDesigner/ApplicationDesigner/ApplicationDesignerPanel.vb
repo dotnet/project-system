@@ -33,8 +33,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private _windowFrameLastSize As Drawing.Size
         Private _windowFrameShown As Boolean 'True iff ShowWindowFrame() has been called
 #Disable Warning IDE1006 ' Naming Styles (Compat)
-        Public m_Debug_cWindowFrameShow As Integer = 0 '# of times the window frame has been shown
-        Public m_Debug_cWindowFrameBoundsUpdated As Integer = 0 '# of times the window frame bounds have been changed
+        Public m_Debug_cWindowFrameShow As Integer '# of times the window frame has been shown
+        Public m_Debug_cWindowFrameBoundsUpdated As Integer '# of times the window frame bounds have been changed
 #Enable Warning IDE1006 ' Naming Styles
         Private _windowFrameNotifyCookie As UInteger
 
@@ -77,7 +77,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The owning project designer
         Private ReadOnly _view As ApplicationDesignerView
 
-
         ''' <summary>
         ''' Constructor for a designer panel to hold a property page
         ''' </summary>
@@ -96,7 +95,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             _editorGuid = GetType(PropPageDesigner.PropPageDesignerEditorFactory).GUID
         End Sub
-
 
         ''' <summary>
         ''' Constructor for non-property pages.
@@ -829,7 +827,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
-
         ''' <summary>
         ''' We need to keep the native window (created by devenv) that hosts our property page the
         '''   same size as the hosting panel (as if it were dock filled).  This sets the native
@@ -965,7 +962,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns true if this page should show the '*' dirty indicator in its tab
         ''' </summary>
@@ -994,7 +990,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return False
         End Function
 
-
 #If DEBUG Then
         ''' <summary>
         ''' We want to get notified if the HWND is re-created, because that's a bad thing...
@@ -1008,7 +1003,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 #End If
-
 
 #Region "Dispose/IDisposable"
         ''' <summary>

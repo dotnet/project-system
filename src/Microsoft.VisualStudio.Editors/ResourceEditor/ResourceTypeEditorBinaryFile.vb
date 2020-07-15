@@ -41,7 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Gets the type name of the main resource type that this resource type editor handles
         ''' </summary>
@@ -55,8 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             Return BinaryFileValueType.AssemblyQualifiedName
         End Function
-
-
 
         ''' <summary>
         ''' Returns an image for displaying to the user for this resource.
@@ -76,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return s_thumbnailForBinaryFile
         End Function
 
-
         ''' <summary>
         ''' Returns whether a given file extension can be handled by this resource type editor, and at what
         '''   priority.
@@ -91,7 +87,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return ExtensionPriorities.Lowest
         End Function
 
-
         ''' <summary>
         ''' Gets a friendly description to display to the user that indicates the type of a
         '''   particular resource.  E.g., "BMP Image".
@@ -103,7 +98,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Resource.IsLink)
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_BinaryFile
         End Function
-
 
         ''' <summary>
         ''' Gets a friendly size to display to the user for this particular resource.  E.g., "240 x 160".
@@ -129,8 +123,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetSafeFileExtensionList() As String()
             Return _safeExtensions
         End Function
-
-
 
     End Class
 End Namespace

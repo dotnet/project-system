@@ -43,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 => await Task.FromException(new OperationCanceledException()));
         }
 
-
         [Fact]
         public static void Wait_DoNotReturnTask_Test()
         {

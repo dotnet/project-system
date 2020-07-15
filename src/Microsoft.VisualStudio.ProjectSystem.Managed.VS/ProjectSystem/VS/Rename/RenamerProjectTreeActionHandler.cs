@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Check errors before applying changes
-            if (documentRenameResult.ApplicableActions.Any(a => a.GetErrors().Length > 0))
+            if (documentRenameResult.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
                 return (false, documentRenameResult);
 
             return (true, documentRenameResult);

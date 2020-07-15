@@ -8,14 +8,12 @@ Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.Common
 
     ''' <summary>
     ''' Utilities relating to the Visual Studio shell, services, etc.
     ''' </summary>
     Friend NotInheritable Class ShellUtil
-
 
         ''' <summary>
         ''' Gets a color from the shell's color service.  If for some reason this fails, returns the supplied
@@ -27,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Function GetColor(VsUIShell As IVsUIShell, VsSysColorIndex As __VSSYSCOLOREX, DefaultColor As Color) As Color
             Return GetColor(TryCast(VsUIShell, IVsUIShell2), VsSysColorIndex, DefaultColor)
         End Function
-
 
         ''' <summary>
         ''' Gets a color from the shell's color service.  If for some reason this fails, returns the supplied
@@ -49,7 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return DefaultColor
         End Function
 
-
         ''' <summary>
         ''' Converts a COLORREF value (as UInteger) to System.Drawing.Color
         ''' </summary>
@@ -58,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Private Shared Function COLORREFToColor(abgrValue As UInteger) As Color
             Return Color.FromArgb(CInt(abgrValue And &HFFUI), CInt((abgrValue And &HFF00UI) >> 8), CInt((abgrValue And &HFF0000UI) >> 16))
         End Function
-
 
         ''' <summary>
         ''' Retrieves the window that should be used as the owner of all dialogs and messageboxes.
@@ -73,7 +68,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(dialogOwner IsNot Nothing, "Couldn't get DialogOwnerWindow")
             Return dialogOwner
         End Function
-
 
         ''' <summary>
         ''' Given an IVsCfg, get its configuration and platform names.
@@ -105,7 +99,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Debug.Assert(ConfigName <> "" AndAlso PlatformName <> "")
         End Sub
 
-
         ''' <summary>
         ''' Returns whether or not we're in simplified config mode for this project, which means that
         '''   we hide the configuration/platform comboboxes.
@@ -124,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return False 'Default to advanced configs
         End Function
-
 
         ''' <summary>
         ''' Returns whether it's permissible to hide configurations for this project.  This should normally
@@ -185,7 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ShowValue
         End Function
 
-
         ''' <summary>
         ''' Given an IVsHierarchy, fetch the DTE Project for it, if it exists.  For project types that 
         '''   don't support this, returns Nothing (e.g. C++).
@@ -205,7 +196,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' Given a DTE Project, get the hierarchy corresponding to it.
@@ -479,7 +469,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 ConnectBroadcastEvents()
             End Sub
 
-
 #Region "Helper methods to advise/unadvise broadcast messages from the IVsShell service"
 
             Friend Sub ConnectBroadcastEvents()
@@ -529,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
 #Region "Standard dispose pattern - the only thing we need to do is to unadvise events..."
 
-            Private _disposed As Boolean = False
+            Private _disposed As Boolean
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)
@@ -540,8 +529,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
                 _disposed = True
             End Sub
-
-
 
 #Region " IDisposable Support "
             ' This code added by Visual Basic to correctly implement the disposable pattern.
@@ -630,7 +617,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End Get
             End Property
         End Class
-
 
         ''' <summary>
         ''' Determine if the specified custom tool is registered for the current project system

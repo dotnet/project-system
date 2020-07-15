@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         private Dictionary<TargetFramework, TelemetryState>? _stateByFramework;
 
         private string? _projectId;
-        private int _eventCount = 0;
+        private int _eventCount;
 
         [ImportingConstructor]
         public DependencyTreeTelemetryService(

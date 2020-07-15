@@ -4,7 +4,6 @@ Imports System.Runtime.InteropServices
 
 Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
-
     <ComImport, Guid("20bd130e-bcd6-4977-a7da-121555dca33b"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     CLSCompliant(False), ComVisible(False)>

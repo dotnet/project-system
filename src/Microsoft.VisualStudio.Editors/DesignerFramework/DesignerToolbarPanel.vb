@@ -130,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-
         ''' <summary>
         ''' WndProc for the DesignerToolbarPanel
         ''' </summary>
@@ -158,7 +157,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
             MyBase.WndProc(m)
         End Sub
-
 
 #Region "IVsToolWindowToolbar implementation"
 

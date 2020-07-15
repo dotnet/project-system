@@ -41,7 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
-
         [Fact]
         public void UnregisterContext_EmptyAsContextId_ThrowsArgument()
         {

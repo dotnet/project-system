@@ -43,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 
         Public Shared ReadOnly IID_IMetaDataImport As Guid = New Guid("7DAC8207-D3AE-4c75-9B67-92801A497D44")
 
-
         Public Shared Function Succeeded(hr As Integer) As Boolean
             Return hr >= 0
         End Function 'Succeeded
@@ -92,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Private ReadOnly _eventInterface As Type
 #End If
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
             ' <devdoc>
             ' Creates a connection point to of the given interface type.
@@ -101,7 +99,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
-
 
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
             ' <devdoc>
@@ -158,7 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
                     ex = New InvalidCastException("The source object does not expose IConnectionPointContainer.")
                 End If
 
-
                 If throwException AndAlso ((_connectionPoint Is Nothing AndAlso _connectionPoint2 Is Nothing) OrElse _cookie = 0) Then
                     If ex Is Nothing Then
                         Throw New ArgumentException(String.Format("Could not create connection point for event interface '{0}'", eventInterface.Name))
@@ -173,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
 #End If
             End Sub 'New
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
             ' <devdoc>
             ' Disconnect the current connection point.  If the object is not connected,
@@ -182,7 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
             Public Overloads Sub Disconnect()
                 Disconnect(False)
             End Sub 'Disconnect
-
 
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
             ' <devdoc>
@@ -214,7 +208,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
                 End If
             End Sub 'Disconnect
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
             ' <internalonly/>
             Protected Overrides Sub Finalize()
@@ -238,7 +231,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         <PreserveSig> Public Declare Function _
             SetParent _
                 Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
-
 
         <PreserveSig> Public Declare Function _
             GetParent _
@@ -290,7 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesInterop
         <PreserveSig> Public Declare Auto Function _
             GetNextDlgTabItem _
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
-
 
         <PreserveSig>
         Public Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr

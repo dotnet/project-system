@@ -40,11 +40,13 @@
     
     <!-- Analyzers-->
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
 
     <!-- MSBuild -->

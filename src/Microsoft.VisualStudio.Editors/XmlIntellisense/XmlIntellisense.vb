@@ -1168,7 +1168,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlIntellisense
             Return New XmlIntellisenseMemberEnumerator(GetEnumerator())
         End Function
 
-
         '--------------------------------------------------------------------------
         ' MatchesType:
         '   Returns True if the specified member's axis matches this list's axis.

@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string? SchemaName { get; set; }
         public string? SchemaItemType { get; set; }
         public DiagnosticLevel DiagnosticLevel { get; set; } = DiagnosticLevel.None;
-        public bool Resolved { get; set; } = false;
-        public bool Implicit { get; set; } = false;
+        public bool Resolved { get; set; }
+        public bool Implicit { get; set; }
         public bool Visible { get; set; } = true;
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;

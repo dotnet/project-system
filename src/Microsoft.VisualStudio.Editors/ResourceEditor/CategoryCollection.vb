@@ -32,7 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Searches for a category by its programmatic name.
         ''' </summary>
@@ -47,15 +46,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
-
         '======================================================================
         '= Methods =                                                          =
         '======================================================================
-
-
-
 
         ''' <summary>
         ''' Adds a category to the collection.
@@ -69,8 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _innerHashByName(Category.ProgrammaticName) = Category
         End Sub
 
-
     End Class
-
 
 End Namespace

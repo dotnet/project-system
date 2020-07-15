@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel
 
-
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     ''' <summary>

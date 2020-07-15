@@ -32,7 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return AddFileToProjectHelper(EditorName, Project, ResXProjectItem, MessageBoxOwner, SourceFilePath, CopyFileIfExists)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the destination path where imported files (e.g. .bmp files) will normally be placed 
         '''   when calling AddFileToProject, for the specified project
@@ -60,7 +59,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return DestinationPath
         End Function
 
-
         ''' <summary>
         ''' Returns True iff the given file is within the directories of the given project on disk.
         ''' </summary>
@@ -73,7 +71,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return IsSubdirectoryOf(Path.GetDirectoryName(FilePath), GetProjectDirectory(Project))
         End Function
-
 
     End Class
 

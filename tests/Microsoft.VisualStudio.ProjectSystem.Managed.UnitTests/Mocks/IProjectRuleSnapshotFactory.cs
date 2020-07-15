@@ -18,7 +18,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             mock.SetupGet(r => r.Properties)
                 .Returns(dictionary);
 
-
             return mock.Object;
         }
 

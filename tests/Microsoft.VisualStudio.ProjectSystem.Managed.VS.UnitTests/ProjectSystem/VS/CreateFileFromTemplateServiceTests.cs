@@ -61,7 +61,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return templateFilePath;
             });
 
-
             var vsProject = (IVsProject4)IVsHierarchyFactory.Create();
             vsProject.ImplementAddItemWithSpecific((itemId, itemOperation, itemName, cOpen, files, result) =>
             {

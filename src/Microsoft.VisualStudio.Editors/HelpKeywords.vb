@@ -4,12 +4,9 @@
 '   so that it is easier for UE to find them.
 '
 
-
 Option Explicit On
 Option Strict On
 Option Compare Binary
-
-
 
 '****************************************************
 '*****  Property Page Help IDs
@@ -46,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Const VBProjPropBuildEvents As String = "vb.ProjectPropertiesBuildEvents"
         Friend Const VBProjPropBuildEventsBuilder As String = "vb.ProjectPropertiesBuildEventsBuilder"
 
-
         Friend Const CSProjPropApplication As String = "cs.ProjectPropertiesApplication"
         Friend Const CSProjPropBuild As String = "cs.ProjectPropertiesBuild"
         Friend Const CSProjPropBuildEvents As String = "cs.ProjectPropertiesBuildEvents"
@@ -60,15 +56,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend Const JSProjPropAdvancedCompile As String = "js.AdvancedBuildSettings"
         Friend Const JSProjPropReferencePaths As String = "js.ProjectPropertiesReferencePaths"
 
-
         Friend Const VBProjPropWPFApp_CantOpenOrCreateAppXaml As String = "vb.ProjProp.WPFApp.CantOpenOrCreateAppXaml"
         Friend Const VBProjPropWPFApp_AppXamlOpenInUnsupportedEditor As String = "vb.ProjProp.WPFApp.AppXamlOpenInUnsupportedEditor"
         Friend Const VBProjPropWPFApp_CouldntCreateApplicationEventsFile As String = "vb.ProjProp.WPFApp.CouldntCreateApplicationEventsFile"
     End Class
 
 End Namespace
-
-
 
 '****************************************************
 '*****  Resource Editor Help IDs
@@ -100,7 +93,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Const Task_NonrecommendedName As String = "msvse_resedit.tasklist.NonrecommendedName"
         Public Const Task_CantChangeCustomToolOrNamespace As String = "msvse_resedit.tasklist.CantChangeCustomToolOrNamespace"
 
-
         'Dialogs
         Public Const Dlg_OpenEmbedded As String = "msvse_resedit.dlg.OpenEmbedded"
         Public Const Dlg_QueryName As String = "msvse_resedit.dlg.QueryName"
@@ -108,8 +100,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     End Class
 
 End Namespace
-
-
 
 '****************************************************
 '*****  Settings Designer Help IDs
@@ -138,10 +128,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ' Help keyword for description link in settings designer
         Public Const SettingsDesignerDescription As String = "ApplicationSettingsOverview"
 
-
         'My.Settings help keyword (generated into the .settings.designer.vb file in VB)
         Public Const MySettingsHelpKeyword As String = "My.Settings"
-
 
         ' Can't create this!
         Private Sub New()
@@ -149,8 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
     End Class
 
 End Namespace
-
-
 
 '****************************************************
 '*****  My Extensibility Design-Time Tools HelpIDs

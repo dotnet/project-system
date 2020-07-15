@@ -242,7 +242,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 AllowSourceBlockCompletion = true
             };
 
-
             // Create a block to receive the output
             var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(OutputProduced);
             _changeTracker.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);

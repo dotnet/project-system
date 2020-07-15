@@ -20,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Shared ReadOnly s_indeterminateValue As Object = New Object
         Private Shared ReadOnly s_missingValue As Object = New Object
 
-
 #If DEBUG Then
         Private _isInitialized As Boolean
 #End If
@@ -116,7 +115,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Delegate Function MultiValueGetDelegate(control As Control, prop As PropertyDescriptor, ByRef Values() As Object) As Boolean
 
 #End Region
-
 
         ''' <summary>
         ''' Constructor.
@@ -284,7 +282,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Retrieves the object to be used for querying for common property values.  The object
         '''   used may vary, depending on the project type and what it supports.
@@ -295,7 +292,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return m_PropPage.CommonPropertiesObject
             End Get
         End Property
-
 
         ''' <summary>
         ''' Returns the raw set of objects in use by this property page.  This will generally be the set of objects
@@ -314,7 +310,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return m_PropPage.m_Objects
             End Get
         End Property
-
 
         ''' <summary>
         ''' Returns the extended objects created from the raw set of objects in use by this property page.  This will generally be 
@@ -337,7 +332,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return m_FormControl
             End Get
         End Property
-
 
         ''' <summary>
         ''' True iff this property is user-persisted (i.e., rather than getting/setting it directly through the project
@@ -395,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-
         ''' <summary>
         ''' Returns true iff this property is configuration-specific.  This is not the opposite of
         '''   a "common" property (but all common properties are non-configuration-specific).
@@ -415,7 +408,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End Get
         End Property
-
 
         ''' <summary>
         ''' True iff this property instance is currently dirty
@@ -559,7 +551,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Set
         End Property
 
-
         ''' <summary>
         ''' The single value which represents the currently-persisted value.  If there are multiple configurations, this
         '''   will have the value IndeterminateValue (and m_AllInitialValues will contain the array of differing values).
@@ -570,7 +561,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _initialValue
             End Get
         End Property
-
 
         ''' <summary>
         ''' All initial values for all objects (usually configurations) passed in to SetObjects, if multiple values are supported
@@ -584,7 +574,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _allInitialValues
             End Get
         End Property
-
 
         ''' <summary>
         ''' Same as AllInitialValues, except that if AllInitialValues is Nothing (indicating that
@@ -613,7 +602,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Sets the current persisted ("initial") value.  Also sets AllInitialValues to Nothing, indicating
         '''   that the same value is being persisted for all objects (configurations).
@@ -623,7 +611,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _initialValue = InitialValue
             _allInitialValues = Nothing
         End Sub
-
 
         ''' <summary>
         ''' Sets the single initial value as well as all initial values, when multi-value undo/redo is supported.
@@ -644,7 +631,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _allInitialValues = AllInitialValues
         End Sub
 
-
         ''' <summary>
         ''' Sets all the initial values, when multi-value undo/redo is supported.  InitialValue will be automatically
         '''   set as well.
@@ -660,7 +646,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _initialValue = GetValueOrIndeterminateFromArray(AllInitialValues)
             _allInitialValues = AllInitialValues
         End Sub
-
 
         ''' <summary>
         ''' Sets up the property descriptor by searching for the property in the objects passed to us.
@@ -811,7 +796,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     '  doesn't check for MissingProperty.
                 End If
 
-
                 If IsReadOnly Then
                     'The property is read only.  We want to disable the control, but we do want to still set its
                     '  current value, so we let the other If cases go through after this.
@@ -822,7 +806,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     End If
                     SetControlsReadOnly(AssociatedControls)
                 End If
-
 
                 If IsHidden OrElse (value Is MissingProperty) Then
                     _controlsCanBeEnabled = False
@@ -860,7 +843,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Enables or disables the given control associated with this property (but never
         '''   enables a control when it has been disabled by a project flavor).
@@ -868,7 +850,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub EnableAssociatedControl(control As Control, Enabled As Boolean)
             EnableAssociatedControls(New Control() {control}, Enabled)
         End Sub
-
 
         ''' <summary>
         ''' Enables or disables all the controls associated with this property (but never
@@ -887,7 +868,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
         End Sub
 
-
         ''' <summary>
         ''' Enables or disables all the controls associated with this property (but never
         '''   enables a control when it has been disabled by a project flavor).
@@ -903,7 +883,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableAssociatedControls(AssociatedControls, Enabled)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Sets the given controls to a read-only state, if supported by the control, otherwise
@@ -922,7 +901,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' Hides or disables the given set of controls
         ''' </summary>
@@ -939,7 +917,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called to get a property descriptor for user-defined properties.
@@ -959,7 +936,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(Prop IsNot Nothing, "Must implement GetUserDefinedPropertyDescriptor in derived class for UserDefined properties")
             Return Prop
         End Function
-
 
         ''' <summary>
         ''' Reads a property from a user-defined storage location (instead of automatically from the project properties).
@@ -1118,7 +1094,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-
         ''' <summary>
         ''' Retrieves all current values of a property, for controls which support multiple-value get.
         ''' </summary>
@@ -1143,7 +1118,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return values
         End Function
-
 
         ''' <summary>
         ''' Retrieves the current value of the property's from its UI control (i.e., the value that 
@@ -1264,7 +1238,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
-
         ''' <summary>
         ''' Given a list of extenders, returns a single value for the current value of the property.  If all of the
         '''   extenders return the same value, the return value of the function is that single value.  If any of the values
@@ -1283,7 +1256,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return TryGetNonCommonPropertyValueNative(PropDesc, Extenders)
             End If
         End Function
-
 
         ''' <summary>
         ''' Given a list of extenders, returns a single value for the current value of the property.  If all of the
@@ -1316,7 +1288,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Value
         End Function
 
-
         ''' <summary>
         ''' Given a list of extenders, returns the property values for this property against each of the
         '''   extenders.  Also returns a single value (the equivalent of a call to TryGetPropertyValueNative(), but
@@ -1331,7 +1302,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Overridable Sub GetAllPropertyValuesNative(Extenders As Object(), ByRef Values As Object(), ByRef ValueOrIndeterminate As Object)
             GetAllPropertyValuesNative(PropDesc, Extenders, Values, ValueOrIndeterminate)
         End Sub
-
 
         ''' <summary>
         ''' Given a list of extenders, returns the property values for this property against each of the
@@ -1372,7 +1342,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Values = ReturnValues
         End Sub
 
-
         ''' <summary>
         ''' Given an array of property values, return the single value which is shared by them all (if they're all the same),
         '''   or else return Indeterminate
@@ -1406,7 +1375,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Property getter/setter helpers"
 
-
         ''' <summary>
         ''' Retrieves the current value of this property (from the project system, not the current value
         '''   visible in the property page's control, which the user may have edited).
@@ -1422,7 +1390,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return GetNonCommonPropertyValueNative(PropDesc, Extender)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current value of a property (from the project system, not the current value
         '''   visible in the property page's control, which the user may have edited).
@@ -1437,7 +1404,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Note: For property get we must pass in the extended object as the component.
             Return Descriptor.GetValue(Extender)
         End Function
-
 
         ''' <summary>
         ''' Sets the current value of this property (into the project system, not into the 
@@ -1483,7 +1449,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Sets the current value of this property (into the project system, not into the 
@@ -1576,7 +1541,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next
         End Sub
 
-
         ''' <summary>
         ''' The PropertyDescriptor implementations ignore checkout cancellation exceptions
         '''   (i.e., when the user has explicitly cancelled a checkout) and simply do
@@ -1592,7 +1556,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim Helper As New PropertyDescriptorSetValueHelper
             Helper.SetValue(Descriptor, Component, Value)
         End Sub
-
 
         ''' <summary>
         ''' Helper class for PropertyDescriptorSetValue - detects if a PropertyDescriptor.SetValue
@@ -1649,7 +1612,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Sub
 
         End Class
-
 
         ''' <summary>
         ''' Returns true if the given property supports returning and setting multiple values at the same time in order to support
@@ -1710,7 +1672,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Descriptor.GetValue(ProjectCommonPropertiesObject)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current value of this property in the project (not the current value in the 
         '''   control on the property page as it has been edited by the user).
@@ -1725,7 +1686,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(IsCommonProperty)
             Return GetCommonPropertyValueNative(PropDesc, CommonPropertiesObject)
         End Function
-
 
         ''' <summary>
         ''' Retrieves the current value of this property in the project (not the current value 
@@ -1755,7 +1715,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return value
         End Function
 
-
         ''' <summary>
         ''' Sets the current value of this property (into the project system, not into the 
         '''   control on the property page).
@@ -1778,7 +1737,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 m_PropPage.ResumePropertyChangeListening(DispId)
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Sets the current value of a common property (into the project system, not into the 
@@ -1804,10 +1762,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PropertyDescriptorSetValue(Descriptor, ProjectCommonPropertiesObject, Value)
         End Sub
 
-
-
 #End Region
-
 
         ''' <summary>
         ''' Restore the initial value of a property into the property's control (or user-persisted store).
@@ -1823,7 +1778,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             IsDirty = False
         End Sub
 
-
         ''' <summary>
         ''' Called to re-retrieve a property's current value and updated its UI with that new value when it has been 
         '''   changed by code other than direct manipulation by the user via the property page.
@@ -1838,7 +1792,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             InitPropertyUI()
             IsDirty = False
         End Sub
-
 
         ''' <summary>
         ''' Marks the property as dirty, so that it will get updated the next time the property 
@@ -1905,12 +1858,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
+#Disable Warning CA2109 ' Review visible event handlers
         ''' <summary>
         ''' Updates the dirty state when user changes selection in a listbox or combobox
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Protected Overridable Sub ComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs)
+#Enable Warning CA2109
             SetDirty(True)
         End Sub
 
@@ -1953,7 +1908,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
         End Sub
-
 
 #End Region
 
@@ -2047,7 +2001,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-
         ''' <summary>
         ''' Calls OnPropertyChanging on the PropPageUserControlBase for this property.  This is required for Undo/Redo
         '''   support.
@@ -2055,7 +2008,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable Sub OnPropertyChanging()
             m_PropPage.OnPropertyChanging(PropertyName, PropDesc)
         End Sub
-
 
         ''' <summary>
         ''' Calls OnPropertyChanged on the PropPageUserControlBase for this property.  This is required for Undo/Redo
@@ -2066,7 +2018,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overridable Sub OnPropertyChanged(OldValue As Object, NewValue As Object)
             m_PropPage.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
         End Sub
-
 
         ''' <summary>
         ''' Returns a list of files which should be checked out before trying to change this property's
@@ -2110,7 +2061,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Array.Empty(Of String)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the name of the given special file, and creates it if requested
         ''' </summary>
@@ -2144,7 +2094,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return fileName
         End Function
-
 
         ''' <summary>
         ''' Given two object pointers, returns true if the two objects are identical either by reference or value.

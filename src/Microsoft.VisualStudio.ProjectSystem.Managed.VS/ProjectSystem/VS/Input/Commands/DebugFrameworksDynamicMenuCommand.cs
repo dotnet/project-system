@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         {
             bool handled = false;
             ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = _startupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Length > 0)
+            if (!activeDebugFrameworks.IsEmpty)
             {
                 ExecuteSynchronously(async () =>
                 {
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public override bool QueryStatusCommand(int cmdIndex, EventArgs e)
         {
             ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = _startupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Length > 0)
+            if (!activeDebugFrameworks.IsEmpty)
             {
                 // See if the projects support at least two runtimes
                 List<string>? frameworks = null;

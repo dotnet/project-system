@@ -25,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private _previousCursor As Cursor
 
-
         '**************************************************************************
         ';New
         '
@@ -38,7 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             _previousCursor = Cursor.Current
             Cursor.Current = Cursors.WaitCursor
         End Sub 'Ne
-
 
         '**************************************************************************
         ';Dispose

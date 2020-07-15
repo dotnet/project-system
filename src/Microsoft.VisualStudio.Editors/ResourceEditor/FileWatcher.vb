@@ -13,7 +13,6 @@ Imports Microsoft.VisualStudio.Editors.Common
 'CONSIDER: of whether the user is showing that category or not.
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
-
     ''' <summary>
     ''' Watches for changes on files, and notifies any listeners when those
     '''   changes happen.
@@ -21,14 +20,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class FileWatcher
         Implements IDisposable
 
-
-
         'An interface for anyone interested in listening to file watcher notifications.
         Public Interface IFileWatcherListener
             Sub OnFileChanged(FileNameAndPath As String)
         End Interface
-
-
 
         ''' <summary>
         ''' A list of DirectoryWatchers for each directory of interest.  We have exactly
@@ -42,10 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  the system filewatch events (called on a secondary thread) back to the main thread.
         Private ReadOnly _controlForSynchronizingThreads As Control
 
-
-
-
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -54,7 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(ControlForSynchronizingThreads IsNot Nothing)
             _controlForSynchronizingThreads = ControlForSynchronizingThreads
         End Sub
-
 
         ''' <summary>
         ''' Dispose
@@ -67,10 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _directoryWatchers.Clear()
         End Sub
 
-
-
-
-
         ''' <summary>
         ''' Returns the number of directories being watched.
         ''' </summary>
@@ -79,10 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _directoryWatchers.Count
             End Get
         End Property
-
-
-
-
 
         ''' <summary>
         ''' Start watching a file.  The listener will get notified when it changes.
@@ -110,7 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Add the listener.
             DirectoryWatcher.AddFileListener(FileName, Listener)
         End Sub
-
 
         ''' <summary>
         ''' Stops watching a particular file.
@@ -145,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Gets a DirectoryWatcher for this path.  If one doesn't already exist, a new one
         '''   will be created.
@@ -168,7 +148,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Watcher
         End Function
 
-
         ''' <summary>
         ''' Normalizes a directory path so we can use it as a key.
         ''' </summary>
@@ -181,7 +160,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return DirectoryPath
         End Function
 
-
         ''' <summary>
         ''' Given a FileWatcherEntry, invoke its OnFileChanged event in such a way that the
         '''   call is marshalled to the thread on which m_ControlForSynchronizingThreads exists.
@@ -191,10 +169,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _controlForSynchronizingThreads.BeginInvoke(New MethodInvoker(AddressOf Entry.OnFileChanged))
         End Sub
 
-
-
 #Region "Private class - DirectoryWatcher"
-
 
         ''' <summary>
         ''' A private class that watches a single directory and manages a list of single
@@ -217,7 +192,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             'The parent FileWatcher class
             Private ReadOnly _parentFileWatcher As FileWatcher
-
 
             Public Sub New(DirectoryPath As String, ParentFileWatcher As FileWatcher)
                 Debug.Assert(ParentFileWatcher IsNot Nothing)
@@ -250,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _fileSystemWatcher.NotifyFilter = NotifyFilters.FileName Or NotifyFilters.LastWrite
             End Sub
 
-
             ''' <summary>
             ''' Dispose
             ''' </summary>
@@ -262,7 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _fileWatcherEntries = Nothing
             End Sub
 
-
             ''' <summary>
             ''' The directory path being watched.
             ''' </summary>
@@ -272,7 +244,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Get
             End Property
 
-
             ''' <summary>
             ''' Returns the number of files being watched in this directory
             ''' </summary>
@@ -281,7 +252,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return _fileWatcherEntries.Count
                 End Get
             End Property
-
 
             ''' <summary>
             ''' Adds an entry to watch a single file within this directory.
@@ -305,7 +275,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _fileSystemWatcher.EnableRaisingEvents = True
                 End If
             End Sub
-
 
             ''' <summary>
             ''' Removes a listener for a particular file in this directory.
@@ -339,7 +308,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End Sub
 
-
             ''' <summary>
             ''' Normalizes a filename so we can make comparisons between files
             ''' </summary>
@@ -350,7 +318,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.Assert(Path.GetFileName(FileNameOnly) = FileNameOnly)
                 Return FileNameOnly
             End Function
-
 
             ''' <summary>
             ''' This is called when a file in this directory has changed in any way that
@@ -381,7 +348,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End Sub
 
-
             ''' <summary>
             ''' Called by the FileSystemWatcher for this directory when a file has been changed.
             ''' </summary>
@@ -391,7 +357,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Debug.WriteLineIf(Switches.RSEFileWatcher.TraceVerbose, "DirectoryWatcher: Raw changed event: " & e.ChangeType & ", " & e.FullPath & ": " & e.Name & ", Thread = " & Hex(System.Threading.Thread.CurrentThread.GetHashCode))
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
-
 
             ''' <summary>
             ''' Called by the FileSystemWatcher for this directory when a file has been renamed.
@@ -416,7 +381,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             End Sub
 
-
             ''' <summary>
             ''' Called by the FileSystemWatcher for this directory when a file in it has been created.
             ''' </summary>
@@ -425,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Private Sub FileSystemWatcher_Created(sender As Object, e As FileSystemEventArgs) Handles _fileSystemWatcher.Created
                 OnFileChanged(e.FullPath, e.Name)
             End Sub
-
 
             ''' <summary>
             ''' Called by the FileSystemWatcher for this directory when a file has been deleted.
@@ -438,8 +401,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Class
 
 #End Region
-
-
 
 #Region "Private class - FileWatcherEntry"
 
@@ -487,7 +448,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _directoryWatcher = Directory
             End Sub
 
-
             ''' <summary>
             ''' Dispose.
             ''' </summary>
@@ -499,7 +459,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _listeners.Clear()
             End Sub
 
-
             ''' <summary>
             ''' Gets the path and filename of the file.
             ''' </summary>
@@ -509,7 +468,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Get
             End Property
 
-
             ''' <summary>
             ''' Retrieves the current number of listeners.
             ''' </summary>
@@ -518,7 +476,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return _listeners.Count
                 End Get
             End Property
-
 
             ''' <summary>
             ''' Adds a new listener for this file.
@@ -532,7 +489,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 _listeners.Add(Listener)
             End Sub
-
 
             ''' <summary>
             ''' Removes a listener.
@@ -549,14 +505,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End Sub
 
-
             ''' <summary>
             ''' ToString() override for debugging purposes.
             ''' </summary>
             Public Overrides Function ToString() As String
                 Return "FileWatcherEntry: PathAndFileName = """ & PathAndFileName & """, " & ListenerCount & " listeners"
             End Function
-
 
             ''' <summary>
             ''' Called when the file referred to by this entry is changed.  This
@@ -587,7 +541,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 _timer.Enabled = True
             End Sub
-
 
             ''' <summary>
             ''' Called by our timer when the delay time is over.  This means that we received

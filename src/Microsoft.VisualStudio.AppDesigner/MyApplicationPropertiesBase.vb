@@ -11,7 +11,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return Array.Empty(Of String)
         End Function
 
-
     End Class ' Class MyApplicationPropertiesBase
 
 End Namespace

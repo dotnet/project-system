@@ -36,7 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ';Methods
         '==========
 
-
         Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 RemoveMenuCommands()
@@ -186,9 +185,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' All the menu commands this designer exposes. Use MenuCommands to access this.
         Private ReadOnly _menuCommands As New ArrayList
         ' Pointer to the IMenuCommandService.
-        Private _menuCommandService As IMenuCommandService = Nothing
+        Private _menuCommandService As IMenuCommandService
         ' Pointer to ISelectionService
-        Private _selectionService As ISelectionService = Nothing
+        Private _selectionService As ISelectionService
         ' SyncLock object used to lazy initialized private fields.
         Private ReadOnly _syncLockObject As New Object
 

@@ -62,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             Assert.Null(result);
         }
 
-
         [Fact]
         public async Task GetSpecificEditorAsync_WhenNoDefaultProjectSpecificEditorProviders_ReturnsNull()
         {

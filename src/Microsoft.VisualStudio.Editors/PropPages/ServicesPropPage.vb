@@ -8,7 +8,6 @@ Imports System.Xml
 
 Imports Microsoft.VisualStudio.Editors.Common
 
-
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
     Friend Class ServicesPropPage
         Inherits PropPageUserControlBase
@@ -289,7 +288,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
         End Sub
-
 
         Private Sub WindowsBasedAuth_CheckedChanged(sender As Object, e As EventArgs) Handles WindowsBasedAuth.CheckedChanged
             'DevDiv Bugs 100690, disable Authentication service location and credential type

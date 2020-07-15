@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// value.  To guard against this, IgnoreEvents returns true if the count is > 0 and there is no setter. 
         /// PushIgnoreEvents\PopIgnoreEvents  are used instead to control the count.
         /// </summary>
-        private int _ignoreEventsNestingCount = 0;
+        private int _ignoreEventsNestingCount;
 
         public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
 
