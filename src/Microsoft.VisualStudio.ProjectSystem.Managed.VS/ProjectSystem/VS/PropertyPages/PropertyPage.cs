@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     {
         private IPropertyPageSite? _site;
         private bool _isDirty;
-        private readonly bool _ignoreEvents;
         private IVsDebugger? _debugger;
         private uint _debuggerCookie;
         private bool _isActivated;
@@ -43,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             set
             {
                 // Only process real changes
-                if (value != _isDirty && !_ignoreEvents)
+                if (value != _isDirty)
                 {
                     _isDirty = value;
 
