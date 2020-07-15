@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedAnalyzerReferencePaths.Count != 0)
+                if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedCompilationReferencePaths.Count != 0)
+                if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedCompilationReferencePaths)
