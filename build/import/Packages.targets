@@ -4,7 +4,6 @@
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
-      D:\microsoft\cps\bin\Debug\packages\nuget;
       https://dotnet.myget.org/F/msbuild/api/v3/index.json;
       https://dotnet.myget.org/F/nuget-build/api/v3/index.json;
       https://dotnet.myget.org/F/roslyn/api/v3/index.json;

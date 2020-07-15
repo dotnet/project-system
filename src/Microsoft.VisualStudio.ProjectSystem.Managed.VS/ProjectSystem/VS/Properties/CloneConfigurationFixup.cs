@@ -66,10 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         /// <returns>Default propertyName value</returns>
         private async Task<string> GetDefaultPropertyValueAsync(string propertyName)
         {
-            string propertyValue = "COFFEEEE"; 
-
-            // How to get the property value from the configured project ?
-            //_sourceConfiguredProject.GetPropertyValue(propertyName);
+            // TODO - How to get the property value from the configured project ?
+            IProjectProperties? commonProperties = _sourceConfiguredProject?.Services?.ProjectPropertiesProvider?.GetCommonProperties();
+            string? propertyValue = await commonProperties?.GetUnevaluatedPropertyValueAsync(propertyName);
 
             return propertyValue;
         }
