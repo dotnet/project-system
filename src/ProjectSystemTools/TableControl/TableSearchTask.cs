@@ -18,16 +18,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         protected override void OnStartSearch()
         {
-            ThreadHelper.Generic.BeginInvoke(delegate(){
+            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 _control.SetFilter(TableToolWindow.SearchFilterKey, new TableSearchFilter(SearchQuery, _control));
-                }
-            );
-            SearchCallback.ReportComplete(this, dwResultsFound: 0);
+
+                SearchCallback.ReportComplete(this, dwResultsFound: 0);
+            });
         }
 
         protected override void OnStopSearch()
         {
-            _control.SetFilter(TableToolWindow.SearchFilterKey, null);
+            ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                
+                _control.SetFilter(TableToolWindow.SearchFilterKey, null);
+            });
         }
     }
 }
