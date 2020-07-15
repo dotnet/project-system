@@ -16,16 +16,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         private IEnumerable<string> _propertyNames = null;
         private List<string> _configurationProperties;
         private readonly IUnconfiguredProjectServices _unconfiguredProjectServices;
+        private readonly IProjectThreadingService _projectThreadingService;
         private readonly ConfiguredProject? _sourceConfiguredProject;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CloneConfigurationFixup"/> class.
         /// </summary>
         public CloneConfigurationFixup(IUnconfiguredProjectServices unconfiguredProjectServices,
+            IProjectThreadingService projectThreadingService,
             ConfiguredProject? sourceConfiguredProject,
             string newConfigurationName)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
+            _projectThreadingService = projectThreadingService;
             _sourceConfiguredProject = sourceConfiguredProject;
         }
 
@@ -76,26 +79,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
         public bool ShouldElementBeCloned(ProjectPropertyElement propertyElement, ref string? alternativeValue)
         {
+            string possibleAlternativeValue = "";
             bool shouldClone = false;
-            if (isInConfigurationDefaultsAsync(propertyElement.Name).GetAwaiter().GetResult())
-            {
-                alternativeValue = GetDefaultPropertyValueAsync(propertyElement.Name).GetAwaiter().GetResult();
-                shouldClone = true;
-            }
 
+            _projectThreadingService.ExecuteSynchronously(async () =>
+            {
+                if (await isInConfigurationDefaultsAsync(propertyElement.Name))
+                {
+                    possibleAlternativeValue = await GetDefaultPropertyValueAsync(propertyElement.Name);
+                    shouldClone = true;
+                }
+            });
+
+            alternativeValue = possibleAlternativeValue;
             return shouldClone;
         }
 
 
         public bool ShouldElementBeCloned(ProjectMetadataElement metadataElement, ref string? alternativeValue)
         {
+            string possibleAlternativeValue = "";
             bool shouldClone = false;
-            if (isInConfigurationDefaultsAsync(metadataElement.Name).GetAwaiter().GetResult())
-            {
-                alternativeValue = GetDefaultPropertyValueAsync(metadataElement.Name).GetAwaiter().GetResult();
-                shouldClone = true;
-            }
 
+            _projectThreadingService.ExecuteSynchronously(async () =>
+            {
+                if (await isInConfigurationDefaultsAsync(metadataElement.Name))
+                {
+                    possibleAlternativeValue = GetDefaultPropertyValueAsync(metadataElement.Name).GetAwaiter().GetResult();
+                    shouldClone = true;
+                }
+            });
+
+            alternativeValue = possibleAlternativeValue;
             return shouldClone;
         }
     }

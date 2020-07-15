@@ -13,14 +13,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class CloneConfigurationFixupFactory : ICloneConfigurationFixupFactory
     {
         private readonly IUnconfiguredProjectServices _unconfiguredProjectServices;
+        private readonly IProjectThreadingService _projectThreadingService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CloneConfigurationFixup"/> class.
         /// </summary>>
         [ImportingConstructor]
-        public CloneConfigurationFixupFactory(IUnconfiguredProjectServices unconfiguredProjectServices)
+        public CloneConfigurationFixupFactory(IUnconfiguredProjectServices unconfiguredProjectServices, 
+            IProjectThreadingService projectThreadingService)
         {
             _unconfiguredProjectServices = unconfiguredProjectServices;
+            _projectThreadingService = projectThreadingService;
         }
 
         /// <summary>
@@ -36,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public IClonePlatformFixup CreateCloneFixup(ConfiguredProject? sourceConfiguredProject, string newConfigurationName)
         {
             return new CloneConfigurationFixup(_unconfiguredProjectServices,
+                                                _projectThreadingService,
                                                 sourceConfiguredProject,
                                                 newConfigurationName);
         }
