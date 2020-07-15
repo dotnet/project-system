@@ -730,7 +730,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Update the hosted property page size
         ''' </summary>
-        Protected Sub UpdatePageSize()
+        Private Sub UpdatePageSize()
             If _loadedPage IsNot Nothing Then
                 Dim RectArray As OleInterop.RECT() = New OleInterop.RECT() {GetPageRect()}
                 Switches.TracePDPerfBegin("PropPageDesignerView.UpdatePageSize (" _
@@ -823,7 +823,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' <summary>
         ''' Set font for controls on the Configuration panel
         ''' </summary>
-        Protected Sub SetDialogFont()
+        Private Sub SetDialogFont()
             Font = GetDialogFont()
         End Sub
 

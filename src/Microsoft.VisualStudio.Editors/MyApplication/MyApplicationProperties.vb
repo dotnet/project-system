@@ -335,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-        Protected Overloads Function AddFileToProject(ProjectItems As ProjectItems, FileName As String, CopyFile As Boolean) As ProjectItem
+        Private Overloads Function AddFileToProject(ProjectItems As ProjectItems, FileName As String, CopyFile As Boolean) As ProjectItem
             Dim ProjectItem As ProjectItem = MyAppProjectItem
 
             'First see if it is already in the project
@@ -1030,7 +1030,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Sub Dispose(disposing As Boolean)
+        Private Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 Close()
             End If

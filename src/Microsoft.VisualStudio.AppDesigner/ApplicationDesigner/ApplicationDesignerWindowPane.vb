@@ -530,7 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Unhook events and prepare for takeoff
         ''' </summary>
         ''' <param name="disposing"></param>
-        Protected Overloads Sub Dispose(disposing As Boolean)
+        Private Overloads Sub Dispose(disposing As Boolean)
             Dim disposedView As Control = _view
 
             Try

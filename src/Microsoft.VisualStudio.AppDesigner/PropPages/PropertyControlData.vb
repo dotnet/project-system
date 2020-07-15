@@ -1858,12 +1858,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
+#Disable Warning CA2109 ' Review visible event handlers
         ''' <summary>
         ''' Updates the dirty state when user changes selection in a listbox or combobox
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Protected Overridable Sub ComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs)
+#Enable Warning CA2109
             SetDirty(True)
         End Sub
 

@@ -331,7 +331,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Disposes of contained objects
         ''' </summary>
         ''' <param name="disposing"></param>
-        Protected Overloads Sub Dispose(disposing As Boolean)
+        Private Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 ' Dispose managed resources.
                 _baseProvider = Nothing
