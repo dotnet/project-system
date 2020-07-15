@@ -1,6 +1,8 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 ' Public API and cannot be changed
+Imports System.Diagnostics.CodeAnalysis
+
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification:="Public API and cannot be changed.", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.ApplicationPropPageVBBase.ApplicationIconSet(System.Windows.Forms.Control,System.ComponentModel.PropertyDescriptor,System.Object)~System.Boolean")>
 <Assembly: CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification:="Public API and cannot be changed.", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.DesignerFramework.SourceCodeControlManager.#ctor(System.IServiceProvider,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)")>
 
@@ -1326,3 +1328,6 @@
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ResourceEditor.ResourceSerializationService.ResourceSerializationStore.SerializedResourceOrProperty.IsEntireResourceObject")>
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsDesignerLoader.FilesToCheckOut")>
 <Assembly: CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.SettingsGlobalObjects.SettingsFileGlobalObject.SettingsFileCodeDomSerializer.Serialize(System.ComponentModel.Design.Serialization.IDesignerSerializationManager,System.Object)~System.Object")>
+
+' Bugs
+<Assembly: SuppressMessage("Style", "IDE0070:Use 'System.HashCode'", Justification:="https://github.com/dotnet/roslyn/issues/45995", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.WPF.ApplicationPropPageVBWPF.StartupObject.GetHashCode~System.Int32")>
