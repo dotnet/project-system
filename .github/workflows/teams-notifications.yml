@@ -14,4 +14,4 @@ jobs:
       - name: Notify
         uses: davidwengier/PostAdaptiveCard@v1.0.0
         with:
-          webhook-uri: ${{ secrets.TeamsWebhook }}
+          webhook_uri: ${{ secrets.TeamsWebhook }}
