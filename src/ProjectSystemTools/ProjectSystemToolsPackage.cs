@@ -21,7 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [Guid(PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 2)]
+#pragma warning disable VSSDK003 // Support async tool windows - Issue #6373 https://github.com/dotnet/project-system/issues/6373
     [ProvideToolWindow(typeof(BuildLoggingToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
+#pragma warning restore VSSDK003
     [ProvideToolWindow(typeof(MessageListToolWindow), Style = VsDockStyle.Tabbed, Window = ToolWindowGuids.Outputwindow)]
     [ProvideEditorExtension(typeof(BinaryLogEditorFactory), ".binlog", 0x50, NameResourceID = 113)]
     [ProvideEditorLogicalView(typeof(BinaryLogEditorFactory), LogicalViewID.Designer)]

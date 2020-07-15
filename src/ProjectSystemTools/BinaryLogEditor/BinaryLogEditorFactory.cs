@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 {
     [Guid(ProjectSystemToolsPackage.BinaryLogEditorFactoryGuidString)]
-    public sealed class BinaryLogEditorFactory : IVsEditorFactory
+    internal sealed class BinaryLogEditorFactory : IVsEditorFactory
     {
         private static readonly Guid s_logicalViewIdAnyGuid = new Guid(LogicalViewID.Any);
         private static readonly Guid s_logicalViewIdPrimaryGuid = new Guid(LogicalViewID.Primary);

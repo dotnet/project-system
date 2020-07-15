@@ -29,36 +29,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
             using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: false))
             {
-                using (var columnsSubKey = rootKey.OpenSubKey(CreateColumnsKey(window), writable: false))
+                using var columnsSubKey = rootKey.OpenSubKey(CreateColumnsKey(window), writable: false);
+                if (columnsSubKey == null)
                 {
-                    if (columnsSubKey == null)
+                    return defaultColumns;
+                }
+
+                foreach (var columnName in columnsSubKey.GetSubKeyNames())
+                {
+                    using var columnSubKey = columnsSubKey.OpenSubKey(columnName, writable: false);
+                    if (columnSubKey == null)
                     {
-                        return defaultColumns;
+                        continue;
                     }
 
-                    foreach (var columnName in columnsSubKey.GetSubKeyNames())
-                    {
-                        using (var columnSubKey = columnsSubKey.OpenSubKey(columnName, writable: false))
-                        {
-                            if (columnSubKey == null)
-                            {
-                                continue;
-                            }
+                    var descendingSort = (int)columnSubKey.GetValue(ColumnSortDown, 1) != 0;
+                    var sortPriority = (int)columnSubKey.GetValue(ColumnSortPriority, 0);
 
-                            var descendingSort = (int)columnSubKey.GetValue(ColumnSortDown, 1) != 0;
-                            var sortPriority = (int)columnSubKey.GetValue(ColumnSortPriority, 0);
+                    var groupingPriority = (int)columnSubKey.GetValue(ColumnGroupingPriority, 0);
 
-                            var groupingPriority = (int)columnSubKey.GetValue(ColumnGroupingPriority, 0);
+                    var columnOrder = (int)columnSubKey.GetValue(ColumnOrder, int.MaxValue);
+                    var visibility = (int)columnSubKey.GetValue(ColumnVisibility, 0) != 0;
+                    var width = (int)columnSubKey.GetValue(ColumnWidth, 20);
 
-                            var columnOrder = (int)columnSubKey.GetValue(ColumnOrder, int.MaxValue);
-                            var visibility = (int)columnSubKey.GetValue(ColumnVisibility, 0) != 0;
-                            var width = (int)columnSubKey.GetValue(ColumnWidth, 20);
+                    var state = new ColumnState2(columnName, visibility, width, sortPriority, descendingSort, groupingPriority);
 
-                            var state = new ColumnState2(columnName, visibility, width, sortPriority, descendingSort, groupingPriority);
-
-                            columns.Add(new Tuple<int, ColumnState>(columnOrder, state));
-                        }
-                    }
+                    columns.Add(new Tuple<int, ColumnState>(columnOrder, state));
                 }
             }
 
@@ -73,36 +69,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
             using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: true))
             {
-                using (var columnsSubKey = rootKey.CreateSubKey(CreateColumnsKey(window)))
+                using var columnsSubKey = rootKey.CreateSubKey(CreateColumnsKey(window));
+                if (columnsSubKey == null)
                 {
-                    if (columnsSubKey == null)
+                    return false;
+                }
+
+                for (var i = 0; i < columns.Count; i++)
+                {
+                    var column = columns[i];
+
+                    using var columnSubKey = columnsSubKey.CreateSubKey(column.Name);
+                    if (columnSubKey == null)
                     {
-                        return false;
+                        continue;
                     }
 
-                    for (var i = 0; i < columns.Count; i++)
+                    columnSubKey.SetValue(ColumnOrder, i, RegistryValueKind.DWord);
+                    columnSubKey.SetValue(ColumnVisibility, column.IsVisible ? 1 : 0, RegistryValueKind.DWord);
+                    columnSubKey.SetValue(ColumnWidth, (int)column.Width, RegistryValueKind.DWord);
+
+                    columnSubKey.SetValue(ColumnSortDown, column.DescendingSort ? 1 : 0, RegistryValueKind.DWord);
+                    columnSubKey.SetValue(ColumnSortPriority, column.SortPriority, RegistryValueKind.DWord);
+
+                    if (column is ColumnState2 cs2)
                     {
-                        var column = columns[i];
-
-                        using (var columnSubKey = columnsSubKey.CreateSubKey(column.Name))
-                        {
-                            if (columnSubKey == null)
-                            {
-                                continue;
-                            }
-
-                            columnSubKey.SetValue(ColumnOrder, i, RegistryValueKind.DWord);
-                            columnSubKey.SetValue(ColumnVisibility, column.IsVisible ? 1 : 0, RegistryValueKind.DWord);
-                            columnSubKey.SetValue(ColumnWidth, (int)column.Width, RegistryValueKind.DWord);
-
-                            columnSubKey.SetValue(ColumnSortDown, column.DescendingSort ? 1 : 0, RegistryValueKind.DWord);
-                            columnSubKey.SetValue(ColumnSortPriority, column.SortPriority, RegistryValueKind.DWord);
-
-                            if (column is ColumnState2 cs2)
-                            {
-                                columnSubKey.SetValue(ColumnGroupingPriority, cs2.GroupingPriority, RegistryValueKind.DWord);
-                            }
-                        }
+                        columnSubKey.SetValue(ColumnGroupingPriority, cs2.GroupingPriority, RegistryValueKind.DWord);
                     }
                 }
             }
@@ -112,24 +104,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public static void LoadSwitch(string window, string name, bool defaultValue, out bool value)
         {
-            using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: false))
-            {
-                using (var settingsSubKey = rootKey.OpenSubKey(CreateSettingsKey(window), writable: false))
-                {
-                    value = settingsSubKey == null ? defaultValue : (int) settingsSubKey.GetValue(name, 0) != 0;
-                }
-            }
+            using var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: false);
+            using var settingsSubKey = rootKey.OpenSubKey(CreateSettingsKey(window), writable: false);
+            value = settingsSubKey == null ? defaultValue : (int)settingsSubKey.GetValue(name, 0) != 0;
         }
 
         public static void SaveSwitch(string window, string name, bool value)
         {
-            using (var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: true))
-            {
-                using (var settingsSubKey = rootKey.CreateSubKey(CreateSettingsKey(window)))
-                {
-                    settingsSubKey?.SetValue(name, value ? 1 : 0);
-                }
-            }
+            using var rootKey = VSRegistry.RegistryRoot(ProjectSystemToolsPackage.ServiceProvider, __VsLocalRegistryType.RegType_UserSettings, writable: true);
+            using var settingsSubKey = rootKey.CreateSubKey(CreateSettingsKey(window));
+            settingsSubKey?.SetValue(name, value ? 1 : 0);
         }
     }
 }

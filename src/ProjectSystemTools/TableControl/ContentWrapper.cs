@@ -38,7 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
             // Show context menu blocks, so we need to yield out of this method
             // for e.Handled to be noticed by WPF
+#pragma warning disable VSTHRD001 // Avoid legacy thread switching APIs
             Dispatcher.BeginInvoke(new Action(() =>
+#pragma warning restore VSTHRD001 
                 ProjectSystemToolsPackage.VsUIShell.ShowContextMenu(0, ref guidContextMenu, _contextMenuId,
                     locationPoints, pCmdTrgtActive: null)));
         }

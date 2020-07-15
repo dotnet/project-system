@@ -172,12 +172,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         protected override void Dispose(bool disposing)
         {
-            if (IsDisposed)
+            try
             {
-                return;
-            }
+                if (IsDisposed)
+                {
+                    return;
+                }
 
-            TableSettingLoader.SaveSettings(BuildLogging, TableControl);
+                TableSettingLoader.SaveSettings(BuildLogging, TableControl);
+            }
+            finally
+            {
+                base.Dispose(disposing);
+            }
         }
 
         private void SaveLogs()
@@ -363,7 +370,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     BuildLoggingResources.FilterBuildDesignTimeBuilds, BuildLoggingResources.FilterBuildBuilds
                 };
 
-        private IEnumerable<string> GetExcluded(string include) => Enum.GetNames(typeof(BuildType))
+        private static IEnumerable<string> GetExcluded(string include) => Enum.GetNames(typeof(BuildType))
             .Where(name => name != nameof(BuildType.None) && name != nameof(BuildType.All))
             .Where(name => name != include);
 

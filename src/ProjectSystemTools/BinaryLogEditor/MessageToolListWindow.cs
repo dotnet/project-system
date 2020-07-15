@@ -32,15 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
         // _entries.Item1 == all entries from the last entries changed event;
         // _entries.Item2 == the filtered entries from the same event.
         // Save this as a tuple so that, if accessed from another thread, the tuple gives a consistent snapshot.
-        private Tuple<IReadOnlyCollection<ITableEntryHandle>, IReadOnlyCollection<ITableEntryHandle>> _entries = new Tuple<IReadOnlyCollection<ITableEntryHandle>, IReadOnlyCollection<ITableEntryHandle>>(new ITableEntryHandle[0], new ITableEntryHandle[0]);
+        private Tuple<IReadOnlyCollection<ITableEntryHandle>, IReadOnlyCollection<ITableEntryHandle>> _entries = new Tuple<IReadOnlyCollection<ITableEntryHandle>, IReadOnlyCollection<ITableEntryHandle>>(Array.Empty<ITableEntryHandle>(), Array.Empty<ITableEntryHandle>());
 
         private IReadOnlyList<ColumnState> _columnStates;
 
         private ITableDataSource _dataSource;
 
-        private static readonly IReadOnlyList<string> ErrorStrings = new[] { BinaryLogEditorResources.ErrorsCategory, BinaryLogEditorResources.ErrorActiveCategory, BinaryLogEditorResources.ErrorInactiveCategory };
-        private static readonly IReadOnlyList<string> WarningStrings = new[] { BinaryLogEditorResources.WarningsCategory, BinaryLogEditorResources.WarningActiveCategory, BinaryLogEditorResources.WarningInactiveCategory };
-        private static readonly IReadOnlyList<string> MessageStrings = new[] { BinaryLogEditorResources.MessagesCategory, BinaryLogEditorResources.MessageActiveCategory, BinaryLogEditorResources.MessageInactiveCategory };
+        private static readonly IReadOnlyList<string> s_errorStrings = new[] { BinaryLogEditorResources.ErrorsCategory, BinaryLogEditorResources.ErrorActiveCategory, BinaryLogEditorResources.ErrorInactiveCategory };
+        private static readonly IReadOnlyList<string> s_warningStrings = new[] { BinaryLogEditorResources.WarningsCategory, BinaryLogEditorResources.WarningActiveCategory, BinaryLogEditorResources.WarningInactiveCategory };
+        private static readonly IReadOnlyList<string> s_messageStrings = new[] { BinaryLogEditorResources.MessagesCategory, BinaryLogEditorResources.MessageActiveCategory, BinaryLogEditorResources.MessageInactiveCategory };
 
         private readonly IVsMonitorSelection _monitorSelection;
         private uint _eventsCookie;
@@ -53,23 +53,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         private bool AreErrorsShown
         {
-            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), ErrorStrings);
+            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), s_errorStrings);
 
-            set => SetIsShown(ErrorStrings, value);
+            set => SetIsShown(s_errorStrings, value);
         }
 
         private bool AreWarningsShown
         {
-            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), WarningStrings);
+            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), s_warningStrings);
 
-            set => SetIsShown(WarningStrings, value);
+            set => SetIsShown(s_warningStrings, value);
         }
 
         private bool AreMessagesShown
         {
-            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), MessageStrings);
+            get => FilterIncludes(TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity), s_messageStrings);
 
-            set => SetIsShown(MessageStrings, value);
+            set => SetIsShown(s_messageStrings, value);
         }
 
         protected override string SearchWatermark => BinaryLogEditorResources.MessageListSearchWatermark;

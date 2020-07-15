@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public TableSearchFilter(IVsSearchQuery searchQuery, IWpfTableControl control)
         {
-            _searchTokens = SearchUtilities.ExtractSearchTokens(searchQuery) ?? new IVsSearchToken[] { };
+            _searchTokens = SearchUtilities.ExtractSearchTokens(searchQuery) ?? Array.Empty<IVsSearchToken>();
 
             var newVisibleColumns = control.ColumnStates
                 .Where(c => c.IsVisible || (c as ColumnState2)?.GroupingPriority > 0)

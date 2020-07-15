@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             Metadata = tempMetadata.ToImmutableDictionary();
         }
 
-        public void AddMetadata(Dictionary<string, string> metadata, string key, string value) => 
+        public static void AddMetadata(Dictionary<string, string> metadata, string key, string value) => 
             metadata[key] = metadata.ContainsKey(key)
                 ? throw new LoggerException(Resources.OverwritingMetadata)
                 : value;

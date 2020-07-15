@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
     public sealed class ModelBuilder
     {
-        private static readonly Regex UsingTaskRegex = new Regex("Using \"(?<task>.+)\" task from (assembly|the task factory) \"(?<assembly>.+)\"\\.", RegexOptions.Compiled);
+        private static readonly Regex s_usingTaskRegex = new Regex("Using \"(?<task>.+)\" task from (assembly|the task factory) \"(?<assembly>.+)\"\\.", RegexOptions.Compiled);
 
         private bool _done;
         private readonly BuildInfo _buildInfo = new BuildInfo();
@@ -650,7 +650,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             if (message.StartsWith("Using"))
             {
                 // A task from assembly message (parses out the task name and assembly path).
-                var match = UsingTaskRegex.Match(args.Message);
+                var match = s_usingTaskRegex.Match(args.Message);
                 if (match.Success)
                 {
                     var taskName = Intern(match.Groups["task"].Value);
@@ -984,7 +984,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private static Item ConstructItem(ItemInfo itemInfo) =>
             new Item(
                 itemInfo.Name,
-                itemInfo.Metadata.ToImmutableDictionary());
+                itemInfo.Metadata);
 
         private static ItemGroup ConstructItemGroup(ItemGroupInfo itemGroupInfo) =>
             new ItemGroup(
