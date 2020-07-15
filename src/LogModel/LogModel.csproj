@@ -6,7 +6,6 @@
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.LogModel</RootNamespace>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.LogModel</AssemblyName>
     <IsProductComponent>false</IsProductComponent>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <!--

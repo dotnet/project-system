@@ -222,6 +222,7 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 dotnet_diagnostic.CA1801.severity = none
 dotnet_diagnostic.CA1804.severity = none
 dotnet_diagnostic.CA1806.severity = none
+dotnet_diagnostic.CA1812.severity = none        # Unused internal classes (noisy on COM-based codebase)
 dotnet_diagnostic.CA1821.severity = none
 dotnet_diagnostic.CA1823.severity = none
 dotnet_diagnostic.CA1824.severity = none
