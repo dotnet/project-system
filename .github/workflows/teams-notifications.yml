@@ -13,5 +13,7 @@ jobs:
     steps:
       - name: Notify
         uses: davidwengier/PostAdaptiveCard@v1.0.1
+        env:
+          WEBHOOK_FROM_SECRET: ${{ secrets.TeamsWebhook }}
         with:
-          webhook_uri: ${{ secrets.TeamsWebhook }}
+          webhook_uri: ${WEBHOOK_FROM_SECRET}
