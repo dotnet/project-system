@@ -8,7 +8,6 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1",
         "CPS_DiagnosticRuntime": "1",
         "CPS_MetricsCollection": "1"
       }
@@ -21,7 +20,6 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1",
         "CPS_DiagnosticRuntime": "1",
         "CPS_MetricsCollection": "1"
       },
@@ -35,7 +33,6 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1",
         "CPS_DiagnosticRuntime": "1",
         "CPS_MetricsCollection": "1",
         "COMPlus_ZapDisable": "1"
@@ -50,7 +47,6 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1",
         "CPS_DiagnosticRuntime": "1",
         "CPS_MetricsCollection": "1"
       }

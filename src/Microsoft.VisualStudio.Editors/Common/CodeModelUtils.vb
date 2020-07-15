@@ -2,7 +2,6 @@
 
 Imports EnvDTE
 
-
 Namespace Microsoft.VisualStudio.Editors.Common
 
     ''' <summary>
@@ -21,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Private Sub New()
         End Sub
-
 
         ''' <summary>
         ''' Searches through a code model tree for a given function that handles a particular event.
@@ -44,7 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return ExistingHandler
         End Function
-
 
         ''' <summary>
         ''' Helper function for FindEventHandler.
@@ -88,7 +85,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Adds an event handler to a given class, if it doesn't already exist.
         ''' </summary>
@@ -117,7 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return HandlerFunction
         End Function
 
-
         ''' <summary>
         ''' Navigates to the given function in the code editor.
         ''' </summary>
@@ -143,7 +138,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Searches for a class with a given name
         ''' </summary>
@@ -162,7 +156,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' Searches for a class with a given namespace and name

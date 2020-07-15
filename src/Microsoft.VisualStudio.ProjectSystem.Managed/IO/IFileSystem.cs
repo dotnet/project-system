@@ -26,7 +26,6 @@ namespace Microsoft.VisualStudio.IO
         void WriteAllText(string path, string content, Encoding encoding);
         void WriteAllBytes(string path, byte[] bytes);
 
-
         /// <summary>
         ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to, 
         ///     or <see cref="DateTime.MinValue"/> if the path does not exist or is not accessible.

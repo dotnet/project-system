@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         '  doc data.  It will automatically track changes and handle check-in/check-out (see the
         '  Modify property).
 #Disable Warning IDE1006 ' Naming Styles (Compat)
-        Protected m_DocDataService As DesignerDocDataService
+        Private m_DocDataService As DesignerDocDataService
 #Enable Warning IDE1006 ' Naming Styles
 
         Private _punkDocData As Object
@@ -155,7 +155,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #If DEBUG Then
         Private Declare Auto Function GetDC Lib "user32" (hWnd As IntPtr) As IntPtr
         Private Declare Auto Function ReleaseDC Lib "user32" (hWnd As IntPtr, hDC As IntPtr) As Integer
-        Private _designerChangeCount As Integer = 0
+        Private _designerChangeCount As Integer
         Private Sub OnActiveDesignerChanged(sender As Object, e As ActiveDesignerEventArgs)
             _designerChangeCount += 1
             If Common.Switches.PDDesignerActivations.TraceWarning Then
@@ -203,7 +203,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Dispose of managed and unmanaged resources
         ''' </summary>
         ''' <param name="disposing">True if calling from Dispose()</param>
-        Protected Overloads Sub Dispose(disposing As Boolean)
+        Private Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 LoaderHost.RemoveService(GetType(DesignerDocDataService))
 

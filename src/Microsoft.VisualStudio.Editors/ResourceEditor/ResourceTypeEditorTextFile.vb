@@ -167,8 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
         ''' <summary>
         ''' Gets the type name of the main resource type that this resource type editor handles
         ''' </summary>
@@ -182,8 +180,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetDefaultResourceTypeName(ResourceContentFile As IResourceContentFile) As String
             Return TextFileValueType.AssemblyQualifiedName
         End Function
-
-
 
         ''' <summary>
         ''' Returns an image for displaying to the user for this resource.
@@ -202,7 +198,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return s_thumbnailForTextFile
         End Function
 
-
         ''' <summary>
         ''' Returns whether a given file extension can be handled by this resource type editor, and at what
         '''   priority.
@@ -218,7 +213,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Gets a friendly description to display to the user that indicates the type of a
         '''   particular resource.  E.g., "BMP Image".
@@ -230,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Resource.IsLink)
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_TextFile
         End Function
-
 
         ''' <summary>
         ''' Gets a friendly size to display to the user for this particular resource.  E.g., "240 x 160".
@@ -245,7 +238,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return GetLinkedResourceFriendlySize(Resource)
         End Function
-
 
         ''' <summary>
         ''' Gets the proper file extension to use for a particular resource.  The extension returned
@@ -274,7 +266,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _safeExtensions
         End Function
 
-
         ''' <summary>
         ''' Gets a filter string for use with a file open dialog.  That filter should contain all commonly-supported
         '''   extensions handled by this resource type editor (but does not have to necessarily include all of
@@ -292,7 +283,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text, New String() {EXT_TXT})
         End Function
 
-
         ''' <summary>
         ''' Gets a filter string for use with a file save dialog.  That filter should contain all commonly-supported
         '''   extensions handled by this resource type editor (but does not have to necessarily include all of
@@ -308,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Too many text file extensions to show them all.  Just use *.txt
             Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Text, New String() {EXT_TXT})
         End Function
-
 
         ''' <summary>
         ''' Creates a new resource of the type handled by this ResourceTypeEditor at the file path 
@@ -328,7 +317,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Stream.Close()
         End Sub
 
-
         ''' <summary>
         ''' Gets the prefix that is used for suggesting resource names to the user.  For instance,
         '''   if this function returns "id", then as the user asks to create a new resource
@@ -338,7 +326,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetSuggestedNamePrefix() As String
             Return "TextFile"
         End Function
-
 
     End Class
 End Namespace

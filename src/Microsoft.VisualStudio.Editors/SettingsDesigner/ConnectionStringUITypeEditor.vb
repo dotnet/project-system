@@ -276,7 +276,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return ConnectionProperties.ToSafeString().Trim.Length < ConnectionProperties.ToString().Trim.Length()
         End Function
 
-
 #Region "Mapping provider GUIDs <-> display names"
 
         Private Shared Function GetInvariantProviderNameFromGuid(ProviderMapper As IDTAdoDotNetProviderMapper, providerGuid As Guid) As String

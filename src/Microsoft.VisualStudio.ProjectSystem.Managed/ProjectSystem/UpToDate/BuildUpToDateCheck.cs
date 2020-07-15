@@ -48,10 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        // Temporarily disable support for Additional Dependent Files
-        // TODO - pending to fix https://github.com/dotnet/project-system/issues/6227
-        private readonly bool _enableAdditionalDependentFile = false;
-
         private readonly object _stateLock = new object();
 
         private State _state = State.Empty;
@@ -109,7 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
-                linkOptions: DataflowOption.PropagateCompletion);
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: cancellationToken);
 
             return Task.CompletedTask;
         }
@@ -240,10 +237,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
+#if FALSE // https://github.com/dotnet/project-system/issues/6227
+
                 if (_enableAdditionalDependentFile && earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
                 {
                     return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
+#endif
 
                 foreach ((string input, bool isRequired) in inputs)
                 {
@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedAnalyzerReferencePaths.Count != 0)
+                if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedCompilationReferencePaths.Count != 0)
+                if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedCompilationReferencePaths)
@@ -352,6 +352,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
+#if FALSE // https://github.com/dotnet/project-system/issues/6227
+
                 if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
                 {
                     log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
@@ -361,6 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         yield return (Path: input, IsRequired: false);
                     }
                 }
+#endif
             }
 
             IEnumerable<string> CollectDefaultOutputs()
@@ -669,6 +672,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         /// <summary>For unit testing only.</summary>
+#pragma warning disable RS0043 // Do not call 'GetTestAccessor()'
         internal TestAccessor TestAccess => new TestAccessor(this);
+#pragma warning restore RS0043
     }
 }

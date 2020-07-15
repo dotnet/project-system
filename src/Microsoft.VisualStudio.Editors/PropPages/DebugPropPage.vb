@@ -26,7 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PageRequiresScaling = False
         End Sub
 
-
 #Region "Class MultilineTextBoxRejectsEnter"
 
         ''' <summary>
@@ -105,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     datalist.Add(data)
 
                     m_ControlData = datalist.ToArray()
-
 
                 End If
                 Return m_ControlData
@@ -226,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-
         ''' <summary>
         ''' Customizable processing done after base class has populated controls in the ControlData array
         ''' </summary>
@@ -270,7 +267,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     enableDebuggersTableLayoutPanel.Visible = False
                 End If
             End If
-
 
             'We want the page to grow as needed.  However, we can't use AutoSize, because
             '  if the container window is made too small to show all the controls, we need

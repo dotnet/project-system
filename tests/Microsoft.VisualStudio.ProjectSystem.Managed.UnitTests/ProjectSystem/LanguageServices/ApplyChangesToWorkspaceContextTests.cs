@@ -425,7 +425,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(0, callCount);
         }
 
-
         [Fact]
         public async Task ApplyProjectEvaluationAsync_IgnoresCommandLineHandlers()
         {
@@ -454,7 +453,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal(0, callCount);
         }
 
-
         [Fact]
         public async Task ApplyProjectBuildAsync_IgnoresEvaluationHandlers()
         {
@@ -482,7 +480,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             Assert.Equal(0, callCount);
         }
-
 
         [Fact]
         public async Task ApplyProjectBuildAsync_WhenDesignTimeBuildFails_SetsLastDesignTimeBuildSucceededToFalse()

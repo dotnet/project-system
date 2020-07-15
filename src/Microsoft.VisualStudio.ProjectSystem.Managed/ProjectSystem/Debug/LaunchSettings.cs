@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         _activeProfile = Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, _activeProfileName));
                     }
 
-                    _activeProfile ??= Profiles.Count > 0 ? Profiles[0] : null;
+                    _activeProfile ??= !Profiles.IsEmpty ? Profiles[0] : null;
                 }
 
                 return _activeProfile;

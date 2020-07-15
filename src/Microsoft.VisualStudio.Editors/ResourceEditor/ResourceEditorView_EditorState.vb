@@ -41,9 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Widths of the columns in the listview's details view (whether or not the listview is currently showing)
             Private _listViewColumnWidths() As Integer
 
-
-
-
             ''' <summary>
             ''' Public constructor.  Sets it to an empty state.
             ''' </summary>

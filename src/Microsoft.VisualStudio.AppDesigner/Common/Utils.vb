@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         '  is passed to GetManifestBitmap
         Public ReadOnly StandardTransparentColor As Color = Color.Lime
 
-        Public VBPackageInstance As IVBPackage = Nothing
+        Public VBPackageInstance As IVBPackage
 
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
         Private Const VSDPLMAXFILES As Integer = 200
@@ -56,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Public Shared ReadOnly GuidWAPWebPage As Guid = New Guid(&H909D16B3UI, &HC8E8US, &H43D1US, CByte(&HA2), CByte(&HB8), CByte(&H26), CByte(&HEA), CByte(&HD), CByte(&H4B), CByte(&H6B), CByte(&H57))
         End Class
 
-
         ''' <summary>
         ''' Helper to convert ItemIds or other 32 bit ID values
         ''' where it is sometimes treated as an Int32 and sometimes UInt32
@@ -88,7 +87,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return DirectCast(GetManifestImage(BitmapID, assembly), Bitmap)
         End Function
 
-
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
         ''' </summary>
@@ -107,7 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, BitmapID))
             End If
         End Function
-
 
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
@@ -144,7 +141,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Throw New Package.InternalException(String.Format(My.Resources.Designer.RSE_Err_Unexpected_NoResource_1Arg, ImageID))
         End Function
 
-
         ''' <summary>
         ''' Logical implies.  Often useful in Debug.Assert's.  Essentially, it is to be
         '''   read as "a being true implies that b is true".  Therefore, the function returns
@@ -154,7 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
-
 
         ''' <summary>
         ''' Retrieves the error message from an exception in a manner appropriate for the build.  For release, simply
@@ -174,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return ex.Message
 #End If
         End Function
-
 
         ''' <summary>
         ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
@@ -233,7 +227,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return True
         End Function
 
-
         ''' <summary>
         ''' Given an exception, returns True if it is a CheckOut exception.
         ''' </summary>
@@ -253,7 +246,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return False
         End Function
 
-
         ''' <summary>
         ''' If the given string is Nothing, return "", else return the original string.
         ''' </summary>
@@ -265,7 +257,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return Str
             End If
         End Function
-
 
         ''' <summary>
         ''' If the given string is "", return Nothing, else return the original string.
@@ -292,7 +283,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return FalseExpression
             End If
         End Function
-
 
         ''' <summary>
         ''' Set the drop-down width of a combobox wide enough to show the text of all entries in it
@@ -361,7 +351,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End If
         End Sub
 
-
         ''' <summary>
         ''' Sets focus to the first (or last) control inside of a parent HWND.
         ''' </summary>
@@ -424,7 +413,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return Path
             End If
         End Function
-
 
         ''' <summary>
         ''' Browses for a File.
@@ -528,7 +516,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return fileNames
         End Function
 
-
         ''' <summary>
         ''' Change the Filter String to the format we can use in IVsUIShell function
         ''' </summary>
@@ -574,7 +561,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End If
             Return InitialDirectory
         End Function
-
 
         ''' <summary>
         ''' Helper method to measure the maximum width of a collection of strings given a particular font...
@@ -678,7 +664,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End Sub
         End Class
 #End Region
-
 
     End Module
 End Namespace

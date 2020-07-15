@@ -278,7 +278,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Exit Sub
             End If
 
-
             ' Prompt the user if necessary.
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoAdd(assemblyFullName)
 
@@ -350,7 +349,6 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                     Exit Sub
                 End If
             End If
-
 
             ' Either there's a pending "Add Foo" activity or some project items to remove. Prompt if necessary.
             Dim assemblyOption As AssemblyOption = _extensibilitySettings.GetAssemblyAutoRemove(assemblyFullName)

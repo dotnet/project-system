@@ -136,7 +136,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 DirtyItems.Add(outputMoniker);
             }
-
         }
     }
 }

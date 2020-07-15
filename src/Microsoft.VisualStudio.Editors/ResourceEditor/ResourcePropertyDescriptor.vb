@@ -14,12 +14,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ResourcePropertyDescriptor
         Inherits PropertyDescriptor
 
-
         '======================================================================
         '= Fields =                                                           =
         '======================================================================
-
-
 
         ' Property names to show in Property Window.  Not localized.
         Public Const PROPERTY_NAME As String = "(Name)"
@@ -34,24 +31,18 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Category names to show in the Properties window
         Public Const CATEGORY_RESOURCE As String = "Resource"
 
-
-
-
         ' The type of the property
-        Private ReadOnly _propertyType As Type = Nothing
+        Private ReadOnly _propertyType As Type
 
         ' Indicates whether this property is read-only or not
-        Private ReadOnly _isReadOnly As Boolean = False
+        Private ReadOnly _isReadOnly As Boolean
 
         ' Indicates whether the property can be reset or not
-        Private ReadOnly _canReset As Boolean = False
-
-
+        Private ReadOnly _canReset As Boolean
 
         '======================================================================
         '= Constructors =                                                     =
         '======================================================================
-
 
         ''' <summary>
         ''' Initializes a new instance of ResourcePropertyDescriptor.
@@ -70,11 +61,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _canReset = CanReset
         End Sub
 
-
         '======================================================================
         '= Properties =                                                       =
         '======================================================================
-
 
         ''' <summary>
         ''' Returns the type of the instance this property is bound to, which is Resource.
@@ -86,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         '''  Returns a value indicating whether this property is read-only.
         ''' </summary>
@@ -96,7 +84,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _isReadOnly
             End Get
         End Property
-
 
         ''' <summary>
         '''  Returns the type of the property.
@@ -108,13 +95,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
         '======================================================================
         '= Methods =                                                          =
         '======================================================================
-
-
 
         ''' <summary>
         '''  Gets the current value of the property on the specified Resource instance.
@@ -127,7 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(TypeOf Component Is Resource, "component is not a Resource!!!")
             Return DirectCast(Component, Resource).GetPropertyValue(Name)
         End Function
-
 
         ''' <summary>
         '''  Sets the value of the property on the specified Resource instance to a different value.
@@ -189,7 +171,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         '''  Indicates whether the value of this property needs to be persisted.
         ''' </summary>
@@ -200,7 +181,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return False
         End Function
 
-
         ''' <summary>
         '''  Indicates whether resetting an object changes its value.
         ''' </summary>
@@ -210,7 +190,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function CanResetValue(Component As Object) As Boolean
             Return _canReset
         End Function
-
 
         ''' <summary>
         '''  Resets the value of this property of the Resource instance to the default value.

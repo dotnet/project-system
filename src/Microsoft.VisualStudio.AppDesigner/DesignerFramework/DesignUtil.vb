@@ -6,7 +6,6 @@ Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
     '**************************************************************************
@@ -46,7 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '**************************************************************************
         Public Overloads Shared Sub ReportError(ServiceProvider As IServiceProvider, ErrorMessage As String,
                 HelpLink As String)
-
 
             DesignerMessageBox.Show(ServiceProvider, ErrorMessage, GetDefaultCaption(ServiceProvider),
                     MessageBoxButtons.OK, MessageBoxIcon.Error, HelpLink:=HelpLink)
@@ -145,6 +143,4 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     End Class 'DesignUtil
 
 End Namespace
-
-
 

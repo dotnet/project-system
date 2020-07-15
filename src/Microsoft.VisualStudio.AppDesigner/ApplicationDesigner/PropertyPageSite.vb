@@ -7,7 +7,6 @@ Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
-
     ''' <summary>
     ''' Provides specific limited functionality we need from the owner of the
     '''   property page site (ApplicationDesignerView).
@@ -49,7 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _propPage = PropPage
             PropPage.SetPageSite(Me)
         End Sub
-
 
         ''' <summary>
         ''' The service provider to delegate to when responding to QueryService requests (for both
@@ -94,12 +92,10 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-
 #Region " IPropertyPageSite"
         Public Const PROPPAGESTATUS_DIRTY As Integer = 1
         Public Const PROPPAGESTATUS_VALIDATE As Integer = 2
         Public Const PROPPAGESTATUS_CLEAN As Integer = 4
-
 
         Public Sub GetLocaleID(ByRef pLocaleID As UInteger) Implements OleInterop.IPropertyPageSite.GetLocaleID
             'Try getting the locale ID from the shell

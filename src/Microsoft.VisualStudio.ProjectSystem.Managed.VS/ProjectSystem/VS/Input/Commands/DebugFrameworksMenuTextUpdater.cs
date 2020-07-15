@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         public void QueryStatus()
         {
             ImmutableArray<IActiveDebugFrameworkServices> activeDebugFrameworks = StartupProjectHelper.GetExportFromDotNetStartupProjects<IActiveDebugFrameworkServices>(ProjectCapability.LaunchProfiles);
-            if (activeDebugFrameworks.Length > 0)
+            if (!activeDebugFrameworks.IsEmpty)
             {
                 string? activeFramework = null;
                 List<string>? frameworks = null;

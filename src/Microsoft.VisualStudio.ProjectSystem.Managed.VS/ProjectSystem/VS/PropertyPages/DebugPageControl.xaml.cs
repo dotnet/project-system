@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal partial class DebugPageControl : PropertyPageControl
     {
-        private bool _customControlLayoutUpdateRequired = false;
+        private bool _customControlLayoutUpdateRequired;
 
         public DebugPageControl()
         {

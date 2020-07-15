@@ -33,7 +33,6 @@ namespace Microsoft.VisualStudio.Telemetry
             });
         }
 
-
         [Fact]
         public void PostProperty_NullAsEventName_ThrowArgumentNull()
         {

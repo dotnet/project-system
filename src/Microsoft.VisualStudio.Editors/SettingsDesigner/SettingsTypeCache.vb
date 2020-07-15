@@ -88,7 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return ResolveType(typeName, _caseSensitive)
         End Function
 
-
         ''' <summary>
         ''' Get the list of "well known" types (i.e. types that we don't need any type resolution service
         ''' in order to resolve...

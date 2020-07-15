@@ -71,7 +71,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         End Enum
 
-
         'The default name to use for the Resources file unless the registry says otherwise.
         Private Const DEFAULT_RESOURCE_FOLDER_NAME As String = "Resources"
 
@@ -86,9 +85,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Public API"
-
 
         ''' <summary>
         ''' Attempts to add a file to the project according to the registered ResourcesFolderBehavior for this project.
@@ -108,9 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Implementation"
-
 
 #Region "Constants from DTE.idl"
 
@@ -122,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'Trace switch for this class.
         Private Shared ReadOnly s_resourcesFolderServiceSwitch As New TraceSwitch("ResourcesFolderService", "Traces the behavior of the Resources Folder Service")
-
 
 #Region "Tracing"
 
@@ -141,7 +135,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Adding files to the project"
 
@@ -275,7 +268,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return FinalFilePath
         End Function
 
-
         ''' <summary>
         ''' Retrieves the given Project item's property, if it exists, else Nothing
         ''' </summary>
@@ -294,7 +286,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Tries to set the Build Action property of the given project item to None.  If this project system doesn't
         '''   have that property, this call is a NOP.
@@ -309,7 +300,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 BuildActionProperty.Value = BuildActionNone
             End If
         End Sub
-
 
         ''' <summary>
         ''' Makes a copy of a given file that is within a project's folders and adds the copy
@@ -334,7 +324,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return CopyFileWithinProjectHelper(Project, SourceFilePath, DestinationFolder, DestinationFolderPath)
         End Function
 
-
         ''' <summary>
         ''' Makes a copy of a given file that is within a project's folders and adds the copy
         '''   to the project.
@@ -355,7 +344,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return CopyFileWithinProjectHelper(Project, SourceFilePath, DestinationFolder, DestinationFolderPath)
         End Function
-
 
         ''' <summary>
         ''' Makes a copy of a given file that is within a project's folders and adds the copy
@@ -388,7 +376,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Throw New Exception(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RFS_CantAddFileToProject_File_ExMsg, SourceFilePath, ex.Message), ex)
             End Try
         End Function
-
 
         ''' <summary>
         ''' Adds a file from outside of the project subdirectories into the project, according to ResourcesFolderBehavior.
@@ -507,7 +494,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Function
 
-
         ''' <summary>
         ''' Finds the Resources folder within a project.  If one does not already exist, it is created.
         ''' </summary>
@@ -596,7 +582,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Determine behavior for the project"
 
         ''' <summary>
@@ -634,10 +619,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '
                 Dim VSProjectsKeyPath As New StringBuilder(VsRootKeyPath)
                 If VsRootKeyPath <> "" AndAlso Not VsRootKeyPath.EndsWith("\") Then
-                    VSProjectsKeyPath.Append("\")
+                    VSProjectsKeyPath.Append("\"c)
                 End If
                 VSProjectsKeyPath.Append(KEYPATH_PROJECTS)
-                VSProjectsKeyPath.Append("\")
+                VSProjectsKeyPath.Append("\"c)
                 VSProjectsKeyPath.Append(Project.Kind)
 
                 'Open the key
@@ -688,7 +673,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Trace("ResourcesFolderBehavior = " & [Enum].GetName(GetType(ResourcesFolderBehavior), Behavior))
             Trace("ResourcesFolderName= " & ResourcesFolderName)
         End Sub
-
 
         ''' <summary>
         ''' Determines the ProjectsItems collection in the project where an imported file should be placed, depending
@@ -741,7 +725,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Utilities"
 
         ''' <summary>
@@ -762,7 +745,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' Given a directory on disk and optionally a ProjectItems collection, creates a filename which
@@ -797,7 +779,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Loop
         End Function
 
-
         ''' <summary>
         ''' Retrieves the file name on disk for a ProjectItem.
         ''' </summary>
@@ -817,7 +798,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return ProjectItem.FileNames(1)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the file name on disk for a ProjectItem.
         ''' </summary>
@@ -834,7 +814,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ""
             End If
         End Function
-
 
         ''' <summary>
         ''' Retrieves the directory name on disk for a ProjectItems collection.
@@ -857,7 +836,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Given a project, determine if it is the Miscellaneous Files project
         ''' </summary>
@@ -874,7 +852,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return False
         End Function
-
 
         ''' <summary>
         ''' Given a project, returns the project's directory on disk.
@@ -902,7 +879,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Directory.Exists(ProjectDirectory), "Project's FullName property is not its path on disk?")
             Return ProjectDirectory
         End Function
-
 
         ''' <summary>
         ''' Determines whether one Directory path is a subdirectory of the other
@@ -933,7 +909,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return False
         End Function
 
-
         ''' <summary>
         ''' Given a ProjectItem, determines the parent ProjectItem collection that contains it.
         ''' </summary>
@@ -943,7 +918,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function FindProjectItemsForFolderPath(Project As Project, FolderPathToFind As String) As ProjectItems
             Return FindProjectItemsForFolderPathHelper(Project.ProjectItems, EnsureBackslash(Path.GetFullPath(FolderPathToFind)))
         End Function
-
 
         ''' <summary>
         ''' Searches for a ProjectItem within a Project collection and all of its contained ProjectItems collections
@@ -974,7 +948,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Given a file directory path, ensures that it ends with a backslash
         ''' </summary>
@@ -988,7 +961,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #End Region
 

@@ -12,7 +12,6 @@ Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.TextManager.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend MustInherit Class BaseDesignerLoader
         Inherits BasicDesignerLoader
@@ -32,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ' Support readOnly mode...
         Private _readOnlyMode As Boolean
         Private _readOnlyPrompt As String
-
 
         ''' <summary>
         ''' Attempts to check out the DocData manually (without dirtying the DocData).  
@@ -130,7 +128,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-
         ''' <summary>
         ''' Set ReadOnly Mode or prompt message
         ''' </summary>
@@ -140,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _readOnlyMode = ReadOnlyMode
             _readOnlyPrompt = Message
         End Sub
-
 
         ''' <summary>
         ''' This protected property indicates if there have been any
@@ -166,12 +162,11 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-
         Protected NotOverridable Overrides Sub PerformFlush(SerializationManager As IDesignerSerializationManager)
             HandleFlush(SerializationManager)
         End Sub
 
-        Private _loadDeferred As Boolean = False
+        Private _loadDeferred As Boolean
         Private _deferredLoaderService As IDesignerLoaderService
         Private _deferredLoadManager As IDesignerSerializationManager
         Protected NotOverridable Overrides Sub PerformLoad(SerializationManager As IDesignerSerializationManager)
@@ -265,10 +260,10 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Protected WithEvents m_DocData As DocData
 
         'The "base" editor caption.  See SetBaseEditorCaption for more details.
-        Private _baseEditorCaption As String = Nothing
+        Private _baseEditorCaption As String
 
         'The moniker of file that's loaded in the designer
-        Private _moniker As String = Nothing
+        Private _moniker As String
 
         Private _rdt As IVsRunningDocumentTable
         Private _rdtEventsCookie As UInteger
@@ -348,7 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #End Region
 
-
         ' <include file='doc\ShellTextBuffer.uex' path='docs/doc[@for="ShellTextBuffer.ReadOnly"]/*' />
         ' <devdoc>
         '      Determines if this file is read only.
@@ -396,7 +390,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Return Caption
         End Function
-
 
         Private Sub Disconnect()
             If _vsTextBufferDataEventsCookie IsNot Nothing Then
@@ -598,7 +591,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Reload(ReloadOptions.NoFlush)
         End Sub
 
-
         ''' <summary>
         ''' Indicates whether the window frame for this designer loader's designer should support the shell toolbox.
         ''' </summary>
@@ -684,7 +676,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End If
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called when the document's window is activated or deactivated

@@ -5,7 +5,6 @@ Option Explicit On
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.Common
 
     ''' <summary>
@@ -34,7 +33,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 _batchCount = 1
             End If
         End Sub
-
 
         ''' <summary>
         ''' Disposes the object, and end the batch process if necessary

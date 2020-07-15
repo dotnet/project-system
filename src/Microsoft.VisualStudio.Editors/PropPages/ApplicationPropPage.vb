@@ -771,7 +771,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
-
 #Region "Application icon"
 
         ''' <summary>
@@ -783,14 +782,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateIconList(FindIconsInProject, ApplicationIcon, CType(GetControlValueNative(Const_ApplicationIcon), String))
         End Sub
 
-
         ''' <summary>
         ''' Update the image displayed for the currently-selected application icon
         ''' </summary>
         Private Overloads Sub UpdateIconImage(AddToProject As Boolean)
             UpdateIconImage(ApplicationIcon, AppIconImage, AddToProject)
         End Sub
-
 
         Private Sub ApplicationIcon_DropDown(sender As Object, e As EventArgs) Handles ApplicationIcon.DropDown
             If GetPropertyControlData(Const_ApplicationIcon).IsDirty() Then
@@ -887,13 +884,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(VsProjPropId90.VBPROJPROPID_ApplicationManifest, False)
         End Sub
 
-
 #End Region
 
         Private Sub iconTableLayoutPanel_Paint(sender As Object, e As PaintEventArgs) Handles iconTableLayoutPanel.Paint
 
         End Sub
     End Class
-
 
 End Namespace

@@ -18,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
 
         private ImmutableHashSet<string> _previousIncludes = ImmutableHashSet<string>.Empty;
         private OrderingMoveAction _action = OrderingMoveAction.NoOp;
-        private IProjectTree? _target = null;
-        private bool _isHinting = false;
+        private IProjectTree? _target;
+        private bool _isHinting;
 
         [ImportingConstructor]
         public OrderAddItemHintReceiver(IProjectAccessor accessor)

@@ -92,7 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             command.MatchedCommandId = 0;
         }
 
-
         /// <summary>
         /// QueryStatus handler called to update the status of the menu items. Does some
         /// basic validation before calling the commands QueryStatusCommand to update

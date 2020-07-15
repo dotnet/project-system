@@ -7,9 +7,7 @@ Imports System.IO
 
 Imports Microsoft.VisualBasic.FileIO
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
-
 
     ''' <summary>
     ''' This class contains routines for reading and writing CSV format (for communicating
@@ -160,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Using
         End Function
 
-
         ''' <summary>
         ''' Given a set of Resources, encode all of the string-convertible ones and return a CSV text string containing them
         ''' </summary>
@@ -213,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return Results.ToString()
         End Function
-
 
         ''' <summary>
         ''' Given a string, escape it for use as a field in a CSV line

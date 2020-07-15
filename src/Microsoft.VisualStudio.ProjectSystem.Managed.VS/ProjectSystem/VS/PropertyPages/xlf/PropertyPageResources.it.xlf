@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationMode">
-        <source>Authentication mode:</source>
-        <target state="translated">Modalità di autenticazione:</target>
+        <source>Au_thentication mode:</source>
+        <target state="needs-review-translation">Modalità di autenticazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FindBtn">
-        <source>Find...</source>
-        <target state="translated">Trova:</target>
+        <source>_Find...</source>
+        <target state="needs-review-translation">Trova:</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="translated">Eseguibile</target>
+        <target state="needs-review-translation">Eseguibile</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
-        <source>Use remote m_achine:</source>
-        <target state="translated">Us_a computer remoto:</target>
+        <source>_Use remote machine:</source>
+        <target state="needs-review-translation">Us_a computer remoto:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -138,38 +138,38 @@
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
-        <source>Add</source>
-        <target state="translated">Aggiungi</target>
+        <source>_Add</source>
+        <target state="needs-review-translation">Aggiungi</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
-        <source>Application arguments:</source>
-        <target state="translated">Argomenti applicazione:</target>
+        <source>Application ar_guments:</source>
+        <target state="needs-review-translation">Argomenti applicazione:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
-        <source>Browse...</source>
-        <target state="translated">Sfoglia...</target>
+        <source>_Browse...</source>
+        <target state="needs-review-translation">Sfoglia...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
-        <source>Delete</source>
-        <target state="translated">Elimina</target>
+        <source>_Delete</source>
+        <target state="needs-review-translation">Elimina</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
-        <source>Environment variables:</source>
-        <target state="translated">Variabili di ambiente:</target>
+        <source>Environ_ment variables:</source>
+        <target state="needs-review-translation">Variabili di ambiente:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable:</source>
-        <target state="translated">File eseguibile:</target>
+        <source>_Executable:</source>
+        <target state="needs-review-translation">File eseguibile:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
-        <source>Launch:</source>
-        <target state="translated">Avvio:</target>
+        <source>_Launch:</source>
+        <target state="needs-review-translation">Avvio:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -183,18 +183,18 @@
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">
-        <source>New...</source>
-        <target state="translated">Nuovo...</target>
+        <source>_New...</source>
+        <target state="needs-review-translation">Nuovo...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
-        <source>Profile:</source>
-        <target state="translated">Profilo:</target>
+        <source>_Profile:</source>
+        <target state="needs-review-translation">Profilo:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
-        <source>Remove</source>
-        <target state="translated">Rimuovi</target>
+        <source>_Remove</source>
+        <target state="needs-review-translation">Rimuovi</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -203,8 +203,8 @@
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
-        <source>Working directory:</source>
-        <target state="translated">Directory di lavoro:</target>
+        <source>_Working directory:</source>
+        <target state="needs-review-translation">Directory di lavoro:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -248,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
-        <source>Enable native code debugging</source>
-        <target state="translated">Attiva il debug di codice nativo</target>
+        <source>Enable nati_ve code debugging</source>
+        <target state="needs-review-translation">Attiva il debug di codice nativo</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -258,8 +258,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
-        <source>Enable SQL Server debugging</source>
-        <target state="translated">Abilita debug SQL Server</target>
+        <source>Enable _SQL Server debugging</source>
+        <target state="needs-review-translation">Abilita debug SQL Server</target>
         <note />
       </trans-unit>
     </body>

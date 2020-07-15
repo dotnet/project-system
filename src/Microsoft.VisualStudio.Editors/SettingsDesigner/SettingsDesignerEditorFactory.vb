@@ -5,7 +5,6 @@ Imports Microsoft.VisualStudio.Shell
 Imports LOGVIEWID = Microsoft.VisualStudio.Editors.Interop.LOGVIEWID
 Imports NativeMethods = Microsoft.VisualStudio.Editors.Interop.NativeMethods
 
-
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
     ''' <summary>
