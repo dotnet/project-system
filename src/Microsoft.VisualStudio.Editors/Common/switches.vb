@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 str.Append(" """ & WindowText & """")
             End If
 
-            str.Append("}")
+            str.Append("}"c)
             Return str.ToString()
         End Function
 #End If

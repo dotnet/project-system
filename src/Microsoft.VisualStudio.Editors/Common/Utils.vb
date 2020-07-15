@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Filter.Append(")|")
             For i = 0 To Extensions.Length - 1
                 If i <> 0 Then
-                    Filter.Append(";")
+                    Filter.Append(";"c)
                 End If
 
                 Dim Extension As String = Extensions(i)
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             For Each Filter As String In Filters
                 If Filter <> "" Then
                     If CombinedFilter.Length <> 0 Then
-                        CombinedFilter.Append("|")
+                        CombinedFilter.Append("|"c)
                     End If
                     CombinedFilter.Append(Filter)
                 End If

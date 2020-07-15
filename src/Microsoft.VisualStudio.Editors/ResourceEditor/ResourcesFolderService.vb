@@ -634,10 +634,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '
                 Dim VSProjectsKeyPath As New StringBuilder(VsRootKeyPath)
                 If VsRootKeyPath <> "" AndAlso Not VsRootKeyPath.EndsWith("\") Then
-                    VSProjectsKeyPath.Append("\")
+                    VSProjectsKeyPath.Append("\"c)
                 End If
                 VSProjectsKeyPath.Append(KEYPATH_PROJECTS)
-                VSProjectsKeyPath.Append("\")
+                VSProjectsKeyPath.Append("\"c)
                 VSProjectsKeyPath.Append(Project.Kind)
 
                 'Open the key

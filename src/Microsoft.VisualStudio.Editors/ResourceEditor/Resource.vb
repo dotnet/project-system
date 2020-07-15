@@ -2789,7 +2789,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Comment
             Message.Append(", Comment=""")
             Message.Append(Comment)
-            Message.Append("""")
+            Message.Append(""""c)
 
             'Value
             Dim resourceTypeEditorStringBase = TryCast(ResourceTypeEditor, ResourceTypeEditorStringBase)
@@ -2813,7 +2813,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Message.Append(Value)
             End If
 
-            Message.Append("]")
+            Message.Append("]"c)
             Return Message.ToString()
 #Else
             Return MyBase.ToString()

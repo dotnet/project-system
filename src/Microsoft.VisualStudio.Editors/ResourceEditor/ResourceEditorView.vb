@@ -4518,7 +4518,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim FilterString As String = TypeEditor.GetOpenFileDialogFilter(_resourceFile)
                     If FilterString <> "" Then
                         If Filter.Length <> 0 Then
-                            Filter.Append("|")
+                            Filter.Append("|"c)
                         End If
                         Filter.Append(FilterString)
                         If Category Is DefaultCategory AndAlso FilterIndexForDefaultCategory <= 0 Then
