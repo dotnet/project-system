@@ -670,6 +670,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         /// <summary>For unit testing only.</summary>
+#pragma warning disable RS0043 // Do not call 'GetTestAccessor()'
         internal TestAccessor TestAccess => new TestAccessor(this);
+#pragma warning restore RS0043 
     }
 }
