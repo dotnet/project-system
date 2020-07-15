@@ -411,7 +411,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                                                                        .Select(pair => pair.Key)
                                                                        .ToImmutableHashSet();
 
-                    var currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
+                    IEnumerable<string> currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
                                                                         .Where(pair => pair.Value != DateTime.MinValue)
                                                                         .Select(pair => pair.Key);
 
