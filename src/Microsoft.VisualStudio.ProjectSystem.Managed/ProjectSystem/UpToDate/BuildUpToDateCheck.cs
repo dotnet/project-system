@@ -109,7 +109,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
-                linkOptions: DataflowOption.PropagateCompletion);
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: cancellationToken);
 
             return Task.CompletedTask;
         }
