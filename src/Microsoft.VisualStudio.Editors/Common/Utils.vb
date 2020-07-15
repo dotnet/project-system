@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '  is passed to GetManifestBitmap
         Public ReadOnly StandardTransparentColor As Color = Color.Lime
 
-
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
         Private Const VSDPLMAXFILES As Integer = 200
 
@@ -148,7 +147,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return DirectCast(GetManifestImage(BitmapID), Bitmap)
         End Function
 
-
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
         ''' </summary>
@@ -167,7 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
         ''' </summary>
@@ -177,7 +174,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function GetManifestBitmapTransparent(BitmapID As String) As Bitmap
             Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor)
         End Function
-
 
         ''' <summary>
         ''' Retrieves a given image from the manifest resources.
@@ -245,7 +241,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Get
         End Property
 
-
         ''' <summary>
         ''' Logical implies.  Often useful in Debug.Assert's.  Essentially, it is to be
         '''   read as "a being true implies that b is true".  Therefore, the function returns
@@ -255,7 +250,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
-
 
         ''' <summary>
         ''' Retrieves the error message from an exception in a manner appropriate for the build.  For release, simply
@@ -275,7 +269,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ex.Message
 #End If
         End Function
-
 
         ''' <summary>
         ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
@@ -357,7 +350,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
-
         ''' <summary>
         ''' If the given string is Nothing, return "", else return the original string.
         ''' </summary>
@@ -370,7 +362,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' If the given string is "", return Nothing, else return the original string.
         ''' </summary>
@@ -382,7 +373,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return Str
             End If
         End Function
-
 
         ''' <summary>
         ''' Does the same as System.IO.Path.GetFullPath(), except that if the filename
@@ -399,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             'If we hit an exception we want to be tolerant of, just return the original path
             Return Path
         End Function
-
 
         ''' <summary>
         ''' Given two namespace (either or both of which might be empty), combine them together into a single
@@ -424,7 +413,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Namespace1 & "." & Namespace2
         End Function
 
-
         ''' <summary>
         ''' Given a class name, prepends the given namespace, if any.  If the class given is empty,
         '''   returns empty.
@@ -441,7 +429,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return NothingToEmptyString(ClassName)
             End If
         End Function
-
 
         ''' <summary>
         ''' Given a fully-qualified namespace, and a root namespace, removes the root namespace
@@ -476,7 +463,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return FullyQualifiedNamespace
         End Function
-
 
         ''' <summary>
         ''' Given a single filter text and a set of extensions, creates a single filter entry
@@ -531,7 +517,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Filter.ToString()
         End Function
 
-
         ''' <summary>
         ''' Returns a localized "All Files (*.*)|*.*" dialog filter string.  Can be used with CombineDialogFilters.
         ''' </summary>
@@ -540,7 +525,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             '  We only want:  All Files|*.*
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.CMN_AllFilesFilter & "|*.*"
         End Function
-
 
         ''' <summary>
         ''' Give a set of filter lines for file dialogs (e.g., by using CreateSingleDialogFilter), combines them all into a single filter.
@@ -561,7 +545,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return CombinedFilter.ToString()
         End Function
 
-
         ''' <summary>
         ''' A better IIf
         ''' </summary>
@@ -575,7 +558,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return FalseExpression
             End If
         End Function
-
 
         ''' <summary>
         ''' Set the drop-down width of a combobox wide enough to show the text of all entries in it
@@ -975,7 +957,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' Check whether the screen reader is running
         ''' </summary>
@@ -1025,7 +1006,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return mappedBitmap
         End Function
-
 
         ''' <summary>
         ''' Sets the checked state of the checkbox to a determinate checked or unchecked value
@@ -1077,7 +1057,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
             End If
         End Sub
-
 
         ''' <summary>
         ''' Sets focus to the first (or last) control inside of a parent HWND.
@@ -1174,7 +1153,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             Debug.Assert(RootNamespace = "" OrElse IsVbProject(Hierarchy), "Only VB projects should have a root namespace property!")
-
 
             Dim CustomToolNamespace As String = ""
             Dim objDefaultNamespace As Object = Nothing
@@ -1369,7 +1347,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Not service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService))
 
         End Function
-
 
 #Region "Wrapper that allows indirect calls into the static helpers in order to help unit test our code"
 
@@ -1612,7 +1589,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return CType(zone, Security.SecurityZone)
         End Function
-
 
 #Region "Telemetry"
         Public Class TelemetryLogger

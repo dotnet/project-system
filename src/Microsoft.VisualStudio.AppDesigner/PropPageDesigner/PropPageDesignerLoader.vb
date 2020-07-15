@@ -75,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         End Sub
 
-
 #Region "Dispose/IDisposable"
         ''' <summary>
         ''' Dispose of managed and unmanaged resources

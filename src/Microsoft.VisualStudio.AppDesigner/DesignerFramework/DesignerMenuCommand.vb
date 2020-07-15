@@ -180,5 +180,4 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
     Public Delegate Function CheckCommandStatusHandler(menuCommand As DesignerMenuCommand) As Boolean
 
-
 End Namespace

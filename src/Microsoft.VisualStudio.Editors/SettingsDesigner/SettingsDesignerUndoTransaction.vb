@@ -70,7 +70,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-
         ''' <summary>
         ''' Cancel the transaction (if any)
         ''' </summary>

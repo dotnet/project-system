@@ -340,7 +340,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         Private Sub SetLicenseUrlWarningActive(setActive As Boolean)
             LicenseLineLabel.Visible = Not setActive
             LicenseUrlWarning.Visible = setActive

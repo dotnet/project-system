@@ -12,7 +12,6 @@ Imports Microsoft.VisualStudio.XmlEditor
 
 Namespace Microsoft.VisualStudio.Editors
 
-
     '*
     '* This is the Visual Studio package for the Microsoft.VisualStudio.Editors assembly.  It will be CoCreated by
     '* Visual Studio during package load in response to the GUID contained below.
@@ -466,8 +465,6 @@ Namespace Microsoft.VisualStudio.Editors
                 End Try
                 Return Interop.NativeMethods.S_OK
             End Function
-
-
 
 #Region "IVsSolutionEvents methods that simply return S_OK"
 

@@ -36,7 +36,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ';Methods
         '==========
 
-
         Protected Overrides Sub Dispose(Disposing As Boolean)
             If Disposing Then
                 RemoveMenuCommands()

@@ -8,11 +8,9 @@ Imports Microsoft.VisualStudio.Shell.Interop
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
-
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
     Public NotInheritable Class ProjectDesignerTabRenderer
-
 
         ' +---------+  +---------------------------------+
         ' |Selected  > |                                 |
@@ -130,7 +128,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _buttonPagePadding = New Padding(9, 5, 9, 5)
         End Sub 'New
 
-
         ''' <summary>
         ''' The service provider to use when querying for services related to hosting this control
         '''   instead of the Visual Studio shell.
@@ -191,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-
         ''' <summary>
         ''' The button, if any, which is the preferred button to show up in the switchable slot.
         '''   The switchable slot is the last button position if some buttons are not visible.  The
@@ -216,7 +212,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
-
         ''' <summary>
         ''' Creates GDI objects that we keep around, if they have not already been created
         ''' </summary>
@@ -239,7 +234,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 '  being used outside of Visual Studio, this is okay because we don't expect to fail to get colors from the
                 '  color service.  If we make the control available as a stand-alone component, we would need to add logic to
                 '  do the right thing when not hosted inside Visual Studio, and change according to the theme.
-
 
                 _controlBackgroundColor = Common.ShellUtil.GetProjectDesignerThemeColor(VsUIShell, "Background", __THEMEDCOLORTYPE.TCT_Background, SystemColors.Window)
 
@@ -272,7 +266,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     .DashStyle = DashStyle.Dash
                 }
 
-
                 If ForceUpdate Then
                     'Colors may have changed, need to update state.  Also, the gradient brushes are
                     '  created in UpdateCacheState (because they depend on button sizes), so we need
@@ -287,11 +280,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Try
         End Sub
 
-
-
-
 #Region "Size/position helpers"
-
 
         ''' <summary>
         ''' Performs layout for the associated tab control
@@ -301,7 +290,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             UpdateCacheState()
             Common.Switches.TracePDPerfEnd("ProjectDesignerTabRenderer.PerformLayout()")
         End Sub
-
 
         ''' <summary>
         ''' Computes all layout-related, cached state, if it is not currently valid.
@@ -331,7 +319,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     _visibleButtonSlots = 1 ' Must show at least one button
                 End If
 
-
                 _tabControlRect = _owner.ClientRectangle
 
                 'Reposition the tab panel
@@ -345,7 +332,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _updatingCache = False
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Retrieves the width in pixels of the widest text in any of the buttons.
@@ -393,8 +379,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Calculate width of tab button
             _buttonWidth = largestButtonTextSize.Width + _buttonPagePadding.Horizontal + 20
         End Sub
-
-
 
         ''' <summary>
         ''' Sets the positions of all the owner's buttons.
@@ -493,7 +477,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #Region "Paint routines"
 
-
         ''' <summary>
         ''' The main painting routine.
         ''' </summary>
@@ -510,7 +493,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             '... Background
             g.FillRectangle(_controlBackgroundBrush, _tabControlRect)
         End Sub
-
 
         ''' <summary>
         ''' Renders the UI for a button

@@ -20,8 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'All common file extensions handled by this resource type editor
         Private ReadOnly _extensions() As String = {EXT_ICO}
 
-
-
         '======================================================================
         '= METHODS =                                                          =
         '======================================================================
@@ -48,8 +46,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
-
         ''' <summary>
         ''' Determines whether a specific ResourceValue can be saved by this ResourceTypeEditor into 
         '''   a file or not.
@@ -60,9 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ValidateResourceValue(Resource)
             Return True
         End Function
-
-
-
 
         ''' <summary>
         ''' Saves a given resource value to a file.
@@ -87,7 +80,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Creates a new resource of the type handled by this ResourceTypeEditor at the file path 
         '''   specified.
@@ -103,7 +95,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Sub CreateNewResourceFile(FilePath As String)
             SaveFileFromManifestResource("BlankIcon", FilePath)
         End Sub
-
 
         ''' <summary>
         ''' Gets the proper file extension to use for a particular resource.  The extension returned
@@ -132,7 +123,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _extensions
         End Function
 
-
         ''' <summary>
         ''' Gets a filter string for use with a file open dialog.  That filter should contain all commonly-supported
         '''   extensions handled by this resource type editor (but does not have to necessarily include all of
@@ -149,7 +139,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Filter_Icon, _extensions)
         End Function
 
-
         ''' <summary>
         ''' Gets a filter string for use with a file save dialog.  That filter should contain all commonly-supported
         '''   extensions handled by this resource type editor (but does not have to necessarily include all of
@@ -164,7 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetSaveFileDialogFilter(Extension As String) As String
             Return CreateSingleDialogFilter(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FilterSave_Icon, New String() {EXT_ICO})
         End Function
-
 
         ''' <summary>
         ''' Returns an image for displaying to the user for this resource.
@@ -185,7 +173,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Icon.ToBitmap()
         End Function
 
-
         ''' <summary>
         ''' Returns whether a given file extension can be handled by this resource type editor, and at what
         '''   priority.
@@ -203,8 +190,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
-
         ''' <summary>
         ''' Gets a friendly description to display to the user that indicates the type of a
         '''   particular resource.  E.g., "BMP Image".
@@ -216,7 +201,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Type_Icon
         End Function
 
-
         ''' <summary>
         ''' Gets a friendly size to display to the user for this particular resource.  E.g., "240 x 160".
         ''' </summary>
@@ -227,7 +211,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Icon As Icon = DirectCast(Resource.GetValue(), Icon)
             Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_GraphicSizeFormat, Icon.Width, Icon.Height))
         End Function
-
 
         ''' <summary>
         ''' Gets the prefix that is used for suggesting resource names to the user.  For instance,

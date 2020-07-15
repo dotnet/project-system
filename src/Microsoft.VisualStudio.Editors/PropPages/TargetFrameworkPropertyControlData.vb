@@ -58,9 +58,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End Using
 
-
         End Sub
-
 
         Private Sub ComboBox_DropDownClosed(sender As Object, e As EventArgs)
 

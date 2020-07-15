@@ -19,7 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private ReadOnly _designerPanel As ApplicationDesignerPanel
         Private ReadOnly _specialFileId As Integer
 
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -72,7 +71,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-
         ''' <summary>
         ''' Returns the view control (if already created)
         ''' </summary>
@@ -112,7 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
         End Sub
 
-
 #Region "Dispose/IDisposable"
 
         ''' <summary>
@@ -130,8 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 #End Region
 
     End Class
-
-
 
     ''' <summary>
     ''' Returns the document of a special file by calling through the IVsProjectSpecialFiles interface
@@ -178,6 +173,5 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Function
 
     End Class
-
 
 End Namespace

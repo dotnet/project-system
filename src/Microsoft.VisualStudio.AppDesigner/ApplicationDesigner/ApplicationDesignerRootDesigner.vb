@@ -32,7 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 
-
         ''' <summary>
         ''' Designer initialization code
         ''' </summary>
@@ -52,7 +51,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Sub CommitAnyPendingChanges()
             GetView().CommitAnyPendingChanges()
         End Sub
-
 
         ''' <summary>
         ''' Disposes of the root designer

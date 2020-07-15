@@ -834,7 +834,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Nothing
         End Function
 
-
         Friend Shared Function GetCacheTimeout(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Integer
             Return TryGettingIntegerAttributeValue(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), CacheTimeout, CacheTimeoutDefault)
         End Function

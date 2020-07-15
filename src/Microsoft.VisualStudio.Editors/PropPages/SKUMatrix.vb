@@ -63,5 +63,4 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     End Class
 
-
 End Namespace

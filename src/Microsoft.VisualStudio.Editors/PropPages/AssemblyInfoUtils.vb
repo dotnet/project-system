@@ -104,7 +104,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '
                 'The fields which allow wildcards are passed in, so we only need to validate the following:
 
-
                 Dim AsteriskFound As Boolean = False
                 For Field As Integer = 0 To Fields.Length - 1
                     If AsteriskFound Then
@@ -143,7 +142,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Throw New ArgumentException(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AssemblyInfo_InvalidVersion)
             End If
         End Sub
-
 
 #Region "Neutral Language Combobox"
 
@@ -206,7 +204,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Return True
         End Function
-
 
         ''' <summary>
         ''' Convert the value displayed in the neutral language combobox into the string format to actually

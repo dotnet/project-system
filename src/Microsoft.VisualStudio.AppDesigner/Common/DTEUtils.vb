@@ -4,7 +4,6 @@ Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
     ''' <summary>
@@ -38,7 +37,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Given a DTE project, returns the active IVsCfg configuration for it
         ''' </summary>
@@ -51,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             End With
             Return VsCfg
         End Function
-
 
         ''' <summary>
         ''' Given a DTE project, returns the active DTE configuration object for it
@@ -68,7 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Return Project.ConfigurationManager.Item(1) '1-indexed
             End Try
         End Function
-
 
         ''' <summary>
         ''' Tries to set the Build Action property of the given project item to the given build action (enumeration).  

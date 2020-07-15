@@ -9,7 +9,6 @@ Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.Common
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
@@ -34,7 +33,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' Since all the file generation should happen on the main thread, it is OK to have this member shared...
         ''' </remarks>
         Friend Shared AllowSymbolRename As Boolean = False
-
 
         ''' <summary>
         ''' nothing to do since we don't really store any state...

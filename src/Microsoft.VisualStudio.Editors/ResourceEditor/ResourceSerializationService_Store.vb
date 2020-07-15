@@ -8,7 +8,6 @@ Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     'This class is private to ResourceSerializationService
@@ -62,20 +61,16 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Inherits Design.Serialization.SerializationStore
             Implements ISerializable
 
-
-
             'The set of objects (Resource instances or properties) that we wish to
             '  "serialize" into this store.  The actual values won't be serialized
             '  until we're Close'd, until then this just keeps track of what we
             '  want to serialize.  It will be cleared out when we Close.
             Private _resourcesToSerialize As Dictionary(Of Resource, ResourceDataToSerialize)
 
-
             'The actual "serialized" data (binary serialized Resource instances and
             '  property values) which is available after Close().  This data drives
             '  the deserialization process.
             Private _serializedState As ArrayList
-
 
             ' default impl of abstract base member.  see serialization store for details.
             '	
@@ -85,7 +80,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Get
             End Property
 
-
             ''' <summary>
             ''' Constructor.
             ''' </summary>
@@ -94,9 +88,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Trace("Created new store")
             End Sub
-
-
-
 
             ''' <summary>
             ''' The Close method closes this store and prevents any further objects 
@@ -137,7 +128,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End Sub
 
-
 #Region "ISerialization implementation"
 
             'Serialization keys for ISerializable
@@ -155,7 +145,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Trace("Serialized store (GetObjectData)")
             End Sub
 
-
             ''' <summary>
             ''' Constructor used to deserialize ourselves from binary serialization.
             '''   Only needed if you're using the store for copy/paste implementation.
@@ -169,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Sub
 
 #End Region
-
 
 #Region "Load/Save the store from/to a stream"
 
@@ -200,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Add Resources and Resource properties to be serialized at Close"
 
             ''' <summary>
@@ -225,7 +212,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Trace("Added Resource to serialize as entire object: {0}", Resource.ToString())
             End Sub
 
-
             ''' <summary>
             ''' Adds a new property serialization to our list of things to serialize.
             ''' </summary>
@@ -249,7 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Trace("Added Resource property to serialize: {0}, prop={1}", Resource.Name, Member.Name)
             End Sub
 
-
             ''' <summary>
             ''' Gets the current data for the given Resource object that is contained in
             '''   m_HashedObjectsToSerialize.  Or, if there isn't one already, creates a
@@ -272,10 +257,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
-
 #Region "Deserialization of the saved resources/properties (used at Undo/Redo time)"
-
 
             ''' <summary>
             ''' Deserializes the saved bits.
@@ -295,7 +277,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DeserializeHelper(Container, True)
             End Sub
 
-
             ''' <summary>
             ''' Deserializes the saved bits.
             '''     This method deserializes the store to produce a collection of 
@@ -306,7 +287,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Friend Function Deserialize() As ICollection
                 Return DeserializeHelper(Nothing, False)
             End Function
-
 
             ''' <summary>
             ''' Deserializes the saved bits.
@@ -319,7 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Friend Function Deserialize(Container As IContainer) As ICollection
                 Return DeserializeHelper(Container, False)
             End Function
-
 
             ''' <summary>
             ''' This method does the actual deserialization work, based on the given
@@ -411,8 +390,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
-
 #Region "Private class - ResourceDataToSerialize"
 
             ''' <summary>
@@ -427,8 +404,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Private _propertiesToSerialize As ArrayList 'Of PropertyDescriptor
                 Private ReadOnly _resource As Resource
 
-
-
                 ''' <summary>
                 ''' Constructor
                 ''' </summary>
@@ -441,8 +416,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _resource = Resource
                 End Sub
 
-
-
                 ''' <summary>
                 ''' The Resource from which we want to serialize stuff.
                 ''' </summary>
@@ -451,7 +424,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return _resource
                     End Get
                 End Property
-
 
                 ''' <summary>
                 ''' If True, the entire Resource instance should be serialized.  If false,
@@ -469,7 +441,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End Set
                 End Property
 
-
                 ''' <summary>
                 ''' A list of PropertyDescriptors representing the properties on
                 '''   the Resource which should be serialized.
@@ -482,7 +453,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return _propertiesToSerialize
                     End Get
                 End Property
-
 
                 ''' <summary>
                 ''' Adds a property to be serialized to the list.
@@ -504,7 +474,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Private class - SerializedResourceOrProperty"
 
             ''' <summary>
@@ -525,8 +494,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'The serialized property (if m_PropertyName <> "") or Resource instance
                 Private ReadOnly _serializedValue As Byte()
-
-
 
                 ''' <summary>
                 ''' Constructor used for serializing just one property from a Resource
@@ -552,7 +519,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End If
                 End Sub
 
-
                 ''' <summary>
                 ''' Constructor used for serializing an entire Resource
                 ''' </summary>
@@ -568,7 +534,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     _serializedValue = SerializeObject(ResourceAsEntireObject)
                 End Sub
 
-
                 ''' <summary>
                 ''' Gets the name of the resource from which this was serialized.
                 ''' </summary>
@@ -577,7 +542,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return _resourceName
                     End Get
                 End Property
-
 
                 ''' <summary>
                 ''' Gets the name of the property which was serialized (or Nothing if
@@ -589,7 +553,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End Get
                 End Property
 
-
                 ''' <summary>
                 ''' The name of the value type for this resource (needed to create a
                 '''   new resource if necessary)
@@ -599,7 +562,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         Return _resourceValueTypeName
                     End Get
                 End Property
-
 
                 ''' <summary>
                 ''' Returns True iff an entire Resource object has been serialized, as opposed
@@ -611,7 +573,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     End Get
                 End Property
 
-
                 ''' <summary>
                 ''' Serializes an object
                 ''' </summary>
@@ -622,7 +583,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End Function
-
 
                 ''' <summary>
                 ''' Deserializes an entire Resource instance which has been serialized.
@@ -636,7 +596,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), Resource)
                 End Function
-
 
                 ''' <summary>
                 ''' Deserializes a property value which has been serialized.

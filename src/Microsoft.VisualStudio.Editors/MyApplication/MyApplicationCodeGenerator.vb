@@ -120,7 +120,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return NativeMethods.E_FAIL
         End Function
 
-
         ''' <summary>
         ''' Creates the CodeCompileUnit for the given MyApplicationData using the given file-path to determine
         ''' the class name.
@@ -427,7 +426,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets the root namespace of the VB project
         ''' </summary>
@@ -716,7 +714,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             ' Always return an error code to disable parameter modifications for generated code
             Return NativeMethods.E_NOTIMPL
         End Function
-
 
         ''' <summary>
         ''' Returns the ProjectItem corresponding to the hierarchy and itemId

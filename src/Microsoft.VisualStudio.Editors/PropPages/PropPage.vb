@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #Region "Application property pages (VB and C#)"
 
-
     'Property page class hierarchy:
     '
     ' ApplicationPropPageBase
@@ -22,7 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     '   + ApplicationPropPage
     '       + CSharpApplicationPropPage
     '
-
 
 #Region "ApplicationPropPageComClass (Not directly used, inherited from by C#)"
 
@@ -85,7 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
     <ProvideObject(GetType(WPFApplicationWithMyPropPageComClass))>
     Public NotInheritable Class WPFApplicationWithMyPropPageComClass 'See class hierarchy comments above
         Inherits VBPropPageBase
-
 
         Protected Overrides ReadOnly Property Title As String
             Get
@@ -185,7 +182,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Overrides Function CreateControl() As Control
             Return New CompilePropPage2
         End Function
-
 
         Protected Overrides Property DefaultSize As Drawing.Size
             Get

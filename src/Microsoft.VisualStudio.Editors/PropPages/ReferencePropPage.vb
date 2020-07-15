@@ -177,7 +177,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         Public Overrides Function ReadUserDefinedProperty(PropertyName As String, ByRef Value As Object) As Boolean
             If PropertyName = "ImportList" Then
                 Value = GetCurrentImports()
@@ -274,7 +273,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 NativeMethods.PostMessage(Handle, CInt(messageId), 0, 0)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called when the page is activated or deactivated
@@ -1075,7 +1073,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-
         Private Sub serviceReferenceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles serviceReferenceToolStripMenuItem.Click
             Dim AddServiceRefDlg As IVsAddWebReferenceDlg3
 
@@ -1173,7 +1170,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     ' * The text in the add user import textbox isn't empty AND
                     ' * The import list box doesn't already contain this item
                     EnableAddImportButton = True
-
 
                     ' The "Update user import" button should be enabled iff:
                     ' * There is only one item selected in the imports list box
@@ -1275,7 +1271,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
             End Using
         End Sub
-
 
         Private Sub UnusedReferences_Click(sender As Object, e As EventArgs) Handles UnusedReferences.Click
             ' Take a snapshot of the user imports...

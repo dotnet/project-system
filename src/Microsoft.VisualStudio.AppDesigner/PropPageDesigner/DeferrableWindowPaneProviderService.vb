@@ -4,9 +4,7 @@ Imports System.ComponentModel.Design
 
 Imports Microsoft.VisualStudio.Shell.Design
 
-
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
-
 
     ''' <summary>
     ''' The only purpose of this class is to allow us to create a window pane
@@ -25,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Sub New(provider As IServiceProvider)
             MyBase.New(provider, Nothing)
         End Sub
-
 
         ''' <summary>
         ''' We override this so that we create a window pane specific to the 

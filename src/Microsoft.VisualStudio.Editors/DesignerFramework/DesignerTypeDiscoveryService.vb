@@ -155,7 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Return Nothing
         End Function
 
-
         ''' <devdoc>
         ''' This method takes a file URL and converts it to a local path.  The trick here is that
         ''' if there is a '#' in the path, everything after this is treated as a fragment.  So

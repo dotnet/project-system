@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _serviceProvider = serviceProvider
         End Sub
 
-
         <SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")>
         Public ReadOnly Property AuthenticationUrl As String
             Get

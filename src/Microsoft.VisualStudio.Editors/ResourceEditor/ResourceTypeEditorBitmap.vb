@@ -33,17 +33,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             EXT_JPEG, EXT_JPG,
             EXT_PNG}
 
-
         ' keep the mapping table from extension to resource ID
         Private Shared s_manifestResourceList As ListDictionary
-
 
         '======================================================================
         '= METHODS =                                                          =
         '======================================================================
-
-
-
 
         ''' <summary>
         ''' Gets the type name of the main resource type that this resource type editor handles
@@ -62,8 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return GetType(Byte()).AssemblyQualifiedName
             End If
         End Function
-
-
 
         ''' <summary>
         ''' Loads a resource that this resource type editor handles from a file on disk.
@@ -85,7 +78,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_UnexpectedResourceType, HelpIDs.Err_UnexpectedResourceType)
             End If
         End Function
-
 
         ''' <summary>
         ''' Creates a new resource of the type handled by this ResourceTypeEditor at the file path 
@@ -154,7 +146,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         '''  Returns a list of extensions. If the file matched one of them, it should be safe to open the file in VS. Otherwise, it could
         '''  be a harmful operation to open the file if it comes from someone else. For example, the resource file could link to a file containing script.
@@ -202,7 +193,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return CreateSingleDialogFilter(FilterText, New String() {Extension})
         End Function
 
-
         ''' <summary>
         ''' Returns an image for displaying to the user for this resource.
         ''' </summary>
@@ -220,7 +210,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return DirectCast(Resource.GetValue(), Bitmap)
         End Function
-
 
         ''' <summary>
         ''' Returns whether a given file extension can be handled by this resource type editor, and at what
