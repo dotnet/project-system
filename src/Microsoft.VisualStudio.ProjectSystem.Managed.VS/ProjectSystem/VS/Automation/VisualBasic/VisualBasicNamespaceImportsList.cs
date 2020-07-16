@@ -80,15 +80,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
-        [AppliesTo(ProjectCapability.VisualBasic)]
-        internal Task OnProjectFactoryCompletedAsync()
-        {
-            TryInitialize();
-
-            return Task.CompletedTask;
-        }
-
         protected override async Task ApplyAsync(IProjectVersionedValue<ImmutableList<string>> value)
         {
             await JoinableFactory.SwitchToMainThreadAsync();
