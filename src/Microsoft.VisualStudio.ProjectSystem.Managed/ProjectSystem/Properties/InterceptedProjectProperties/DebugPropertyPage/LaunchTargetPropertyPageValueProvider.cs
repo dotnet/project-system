@@ -41,15 +41,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             ConfiguredProject configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             IPropertyPagesCatalogProvider catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (catalogProvider == null)
             {
                 return null;
             }
 
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             Microsoft.Build.Framework.XamlTypes.Rule rule = catalog.GetSchema(unevaluatedPropertyValue);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (rule == null)
             {
                 return null;
@@ -63,7 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
                     IWritableLaunchSettings writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                     IWritableLaunchProfile activeProfile = writableLaunchSettings.ActiveProfile;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                     if (activeProfile != null)
                     {
                         activeProfile.CommandName = pageCommandName;
@@ -81,14 +89,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string> GetPropertyValueAsync()
         {
             ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string commandName = launchSettings.ActiveProfile?.CommandName;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (commandName == null)
             {
                 return string.Empty;
             }
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             ConfiguredProject configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             IPropertyPagesCatalogProvider catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             if (catalogProvider == null)
             {
@@ -98,7 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
             foreach (string schemaName in catalog.GetPropertyPagesSchemas())
             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 Microsoft.Build.Framework.XamlTypes.Rule rule = catalog.GetSchema(schemaName);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 if (rule != null
                     && string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                     && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj)

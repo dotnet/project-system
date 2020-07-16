@@ -47,7 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 IPropertyPagesCatalogProvider catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
                 if (catalogProvider == null)
                 {

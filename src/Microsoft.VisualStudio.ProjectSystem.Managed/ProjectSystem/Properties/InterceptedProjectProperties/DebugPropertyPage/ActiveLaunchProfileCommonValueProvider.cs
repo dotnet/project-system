@@ -66,7 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override bool SetPropertyValue(string propertyName, string value, IWritableLaunchSettings launchSettings)
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             IWritableLaunchProfile activeProfile = launchSettings.ActiveProfile;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (activeProfile == null)
             {
                 return false;

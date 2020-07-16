@@ -31,7 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             pfFilter = 0;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             UnconfiguredProject project = _project;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (project == null)
             {
                 return HResult.Unexpected;
