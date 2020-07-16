@@ -13,16 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         public IEnumerable<MessageInfo> Messages => _messages;
 
-        public void AddExecutedTarget(string name, TargetInfo targetInfo)
-        {
-            if (_executedTargets == null)
-            {
-                _executedTargets = new List<TargetInfo>();
-            }
-
-            _executedTargets.Add(targetInfo);
-        }
-
         public void AddMessage(MessageInfo message)
         {
             if (_messages == null)

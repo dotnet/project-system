@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
     internal sealed class ProjectInfo : BaseInfo
     {
-        private readonly List<TargetInfo> _executedTargets;
+        private List<TargetInfo> _executedTargets;
         private Dictionary<int, TargetInfo> _targetInfos;
 
         public int Id { get; }
@@ -68,6 +68,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             }
 
             _targetInfos[id] = targetInfo;
+        }
+
+        public void AddExecutedTarget(string name, TargetInfo targetInfo)
+        {
+            if (_executedTargets == null)
+            {
+                _executedTargets = new List<TargetInfo>();
+            }
+
+            _executedTargets.Add(targetInfo);
         }
     }
 }
