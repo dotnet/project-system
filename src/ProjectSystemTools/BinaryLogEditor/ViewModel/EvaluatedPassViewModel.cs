@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
         private string _text;
         private List<object> _children;
 
-        public override string Text => _text ?? (_text = $"{_evaluatedPass.Description} [{FormatTime(_evaluatedPass.Time)}]");
+        public override string Text => _text ??= $"{_evaluatedPass.Description} [{FormatTime(_evaluatedPass.Time)}]";
 
-        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
+        public override IEnumerable<object> Children => _children ??= GetChildren();
 
         public EvaluatedPassViewModel(EvaluatedPass evaluatedPass)
         {

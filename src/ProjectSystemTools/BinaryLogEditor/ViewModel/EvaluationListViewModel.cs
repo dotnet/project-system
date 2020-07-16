@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
         public TimeSpan Time { get; }
         public double Percentage { get; }
 
-        public SelectedObjectWrapper Properties => _properties ?? (_properties =
+        public SelectedObjectWrapper Properties => _properties ??=
                                                        new SelectedObjectWrapper(
                                                            Name ?? string.Empty,
                                                            Kind,
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                                                                        {"Description", Description}
                                                                    }
                                                                }
-                                                           }));
+                                                           });
 
         public EvaluationListViewModel(string name, string description, string kind, string sourceFilePath, int? line, int number, TimeSpan time, double percentage)
         {

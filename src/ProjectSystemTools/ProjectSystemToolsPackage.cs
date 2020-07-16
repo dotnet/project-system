@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
         public static IServiceProvider ServiceProvider { get; private set; }
 
-        public BuildLoggingToolWindow BuildLoggingToolWindow => _buildLoggingToolWindow ?? (_buildLoggingToolWindow = (BuildLoggingToolWindow)FindToolWindow(typeof(BuildLoggingToolWindow), 0, true));
+        public BuildLoggingToolWindow BuildLoggingToolWindow => _buildLoggingToolWindow ??= (BuildLoggingToolWindow)FindToolWindow(typeof(BuildLoggingToolWindow), 0, true);
 
         public static IVsUIShell VsUIShell { get; private set; }
 

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
 
         public override string Text { get; }
 
-        public override IEnumerable<object> Children => _children ?? (_children = _list.Select(_selector).ToArray());
+        public override IEnumerable<object> Children => _children ??= _list.Select(_selector).ToArray();
 
         public ListViewModel(string name, IEnumerable<TItem> list, Func<TItem, object> selector)
         {

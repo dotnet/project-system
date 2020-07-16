@@ -18,11 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
 
         protected override Node Node => _project;
 
-        public override string Text => _text ?? (_text = $"{_project.Name}");
+        public override string Text => _text ??= $"{_project.Name}";
 
-        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
+        public override IEnumerable<object> Children => _children ??= GetChildren();
 
-        public override SelectedObjectWrapper Properties => _properties ?? (_properties =
+        public override SelectedObjectWrapper Properties => _properties ??=
             new SelectedObjectWrapper(
                 _project.Name,
                 "Project",
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                      },
                     {"GlobalProperties", _project.GlobalProperties},
                     {"Properties", _project.Properties}
-                }));
+                });
 
         public ProjectViewModel(Project project)
         {

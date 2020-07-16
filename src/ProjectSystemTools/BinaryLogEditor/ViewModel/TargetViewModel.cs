@@ -21,11 +21,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
 
         public override bool IsPrimary => _target.IsRequestedTarget;
 
-        public override string Text => _text ?? (_text = $"Target {_target.Name}");
+        public override string Text => _text ??= $"Target {_target.Name}";
 
-        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
+        public override IEnumerable<object> Children => _children ??= GetChildren();
 
-        public override SelectedObjectWrapper Properties => _properties ?? (_properties =
+        public override SelectedObjectWrapper Properties => _properties ??=
             new SelectedObjectWrapper(
                 _target.Name,
                 "Target",
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                             {"Reason", _target.Reason.ToString() }
                         }
                     }
-                }));
+                });
 
         public TargetViewModel(Target target)
         {

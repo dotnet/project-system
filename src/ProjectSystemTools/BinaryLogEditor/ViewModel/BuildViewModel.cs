@@ -15,13 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
         private SelectedObjectWrapper _properties;
         private IEnumerable<object> _children;
 
-        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
+        public override IEnumerable<object> Children => _children ??= GetChildren();
 
         protected override Node Node => _build;
 
-        public override string Text => _text ?? (_text = "Build");
+        public override string Text => _text ??= "Build";
 
-        public override SelectedObjectWrapper Properties => _properties ?? (_properties =
+        public override SelectedObjectWrapper Properties => _properties ??=
             new SelectedObjectWrapper(
                 "Build",
                 "Build",
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                             {"Finished", _build.EndTime.ToString(CultureInfo.InvariantCulture)}
                         }
                     },
-                    {"Environment", _build.Environment}}));
+                    {"Environment", _build.Environment}});
 
         public BuildViewModel(LogModel.Build build)
         {

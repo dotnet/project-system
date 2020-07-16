@@ -18,11 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
 
         protected override Node Node => _task;
 
-        public override string Text => _text ?? (_text = $"Task {_task.Name}");
+        public override string Text => _text ??= $"Task {_task.Name}";
 
-        public override IEnumerable<object> Children => _children ?? (_children = GetChildren());
+        public override IEnumerable<object> Children => _children ??= GetChildren();
 
-        public override SelectedObjectWrapper Properties => _properties ?? (_properties =
+        public override SelectedObjectWrapper Properties => _properties ??=
             new SelectedObjectWrapper(
                 _task.Name,
                 "Task",
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor.ViewModel
                             {"Finished", _task.EndTime.ToString(CultureInfo.InvariantCulture)}
                         }
                     }
-                }));
+                });
 
         public TaskViewModel(Task task)
         {
