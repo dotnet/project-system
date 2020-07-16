@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 {
     internal sealed class ProjectInfo : BaseInfo
     {
-        private List<TargetInfo> _executedTargets;
+        private readonly List<TargetInfo> _executedTargets;
         private Dictionary<int, TargetInfo> _targetInfos;
 
         public int Id { get; }
