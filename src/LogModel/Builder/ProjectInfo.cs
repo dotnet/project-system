@@ -69,15 +69,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             _targetInfos[id] = targetInfo;
         }
-
-        public void AddExecutedTarget(string name, TargetInfo targetInfo)
-        {
-            if (_executedTargets == null)
-            {
-                _executedTargets = new List<TargetInfo>();
-            }
-
-            _executedTargets.Add(targetInfo);
-        }
     }
 }
