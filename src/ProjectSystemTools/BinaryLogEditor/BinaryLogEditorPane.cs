@@ -69,20 +69,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             {
                 _buildTreeViewItems.Add(new BuildViewModel(_documentData.Log.Build));
 
-                var allTargets = CollectTargets(_documentData.Log.Build.Project);
-                var groupedTargets = allTargets.GroupBy(target => Tuple.Create(target.Name, target.SourceFilePath));
-                var totalTime = _documentData.Log.Build.EndTime - _documentData.Log.Build.StartTime;
-                foreach (var groupedTarget in groupedTargets)
+                IEnumerable<Target> allTargets = CollectTargets(_documentData.Log.Build.Project);
+                IEnumerable<IGrouping<Tuple<string, string>, Target>> groupedTargets = allTargets.GroupBy(target => Tuple.Create(target.Name, target.SourceFilePath));
+                TimeSpan totalTime = _documentData.Log.Build.EndTime - _documentData.Log.Build.StartTime;
+                foreach (IGrouping<Tuple<string, string>, Target> groupedTarget in groupedTargets)
                 {
-                    var time = groupedTarget.Aggregate(TimeSpan.Zero, (current, target) => current + (target.EndTime - target.StartTime));
+                    TimeSpan time = groupedTarget.Aggregate(TimeSpan.Zero, (current, target) => current + (target.EndTime - target.StartTime));
                     _targetListViewItems.Add(new TargetListViewModel(groupedTarget.Key.Item1, groupedTarget.Key.Item2, groupedTarget.Count(), time, time.Ticks / (double)totalTime.Ticks));
                 }
 
-                var allTasks = CollectTasks(_documentData.Log.Build.Project);
-                var groupedTasks = allTasks.GroupBy(task => Tuple.Create(task.Name, task.SourceFilePath));
-                foreach (var groupedTask in groupedTasks)
+                IEnumerable<Task> allTasks = CollectTasks(_documentData.Log.Build.Project);
+                IEnumerable<IGrouping<Tuple<string, string>, Task>> groupedTasks = allTasks.GroupBy(task => Tuple.Create(task.Name, task.SourceFilePath));
+                foreach (IGrouping<Tuple<string, string>, Task> groupedTask in groupedTasks)
                 {
-                    var time = groupedTask.Aggregate(TimeSpan.Zero, (current, task) => current + (task.EndTime - task.StartTime));
+                    TimeSpan time = groupedTask.Aggregate(TimeSpan.Zero, (current, task) => current + (task.EndTime - task.StartTime));
                     _taskListViewItems.Add(new TaskListViewModel(groupedTask.Key.Item1, groupedTask.Key.Item2, groupedTask.Count(), time, time.Ticks / (double)totalTime.Ticks));
                 }
 
@@ -92,12 +92,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                     .Where(p => p != null)
                     .SelectMany(p => p.Passes)
                     .SelectMany(p => p.Locations)).ToList();
-                var totalEvaluationTime = allEvaluations.Aggregate(TimeSpan.Zero, (current, e) => current + e.Time.ExclusiveTime);
-                var groupedEvaluations =
+                TimeSpan totalEvaluationTime = allEvaluations.Aggregate(TimeSpan.Zero, (current, e) => current + e.Time.ExclusiveTime);
+                IEnumerable<IGrouping<Tuple<string, Microsoft.Build.Framework.Profiler.EvaluationLocationKind, string, int?>, EvaluatedLocation>> groupedEvaluations =
                     allEvaluations.GroupBy(e => Tuple.Create(e.ElementName, e.Kind, e.File, e.Line));
-                foreach (var groupedEvaluation in groupedEvaluations)
+                foreach (IGrouping<Tuple<string, Microsoft.Build.Framework.Profiler.EvaluationLocationKind, string, int?>, EvaluatedLocation> groupedEvaluation in groupedEvaluations)
                 {
-                    var time = groupedEvaluation.Aggregate(TimeSpan.Zero, (current, e) => current + e.Time.ExclusiveTime);
+                    TimeSpan time = groupedEvaluation.Aggregate(TimeSpan.Zero, (current, e) => current + e.Time.ExclusiveTime);
                     _evaluationListViewItems.Add(new EvaluationListViewModel(groupedEvaluation.Key.Item1, groupedEvaluation.First().ElementDescription, groupedEvaluation.Key.Item2.ToString(), groupedEvaluation.Key.Item3, groupedEvaluation.Key.Item4, groupedEvaluation.Count(), time, time.Ticks / (double)totalEvaluationTime.Ticks));
                 }
             }
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
             if (e.NewValue is BaseViewModel viewModel)
             {
-                var propertyObject = viewModel.Properties;
+                SelectedObjectWrapper propertyObject = viewModel.Properties;
                 if (propertyObject != null)
                 {
                     objects.Add(propertyObject);
@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             if (GetService(typeof(SVsUIShell)) is IVsUIShell shell)
             {
                 var propertyBrowser = new Guid(ToolWindowGuids.PropertyBrowser);
-                shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate, ref propertyBrowser, out var frame);
+                shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate, ref propertyBrowser, out IVsWindowFrame frame);
                 frame?.ShowNoActivate();
             }
         }
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
             if (e.AddedItems[0] is IViewModelWithProperties viewModel)
             {
-                var propertyObject = viewModel.Properties;
+                SelectedObjectWrapper propertyObject = viewModel.Properties;
                 if (propertyObject != null)
                 {
                     objects.Add(propertyObject);
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             if (GetService(typeof(SVsUIShell)) is IVsUIShell shell)
             {
                 var propertyBrowser = new Guid(ToolWindowGuids.PropertyBrowser);
-                shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate, ref propertyBrowser, out var frame);
+                shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate, ref propertyBrowser, out IVsWindowFrame frame);
                 frame?.ShowNoActivate();
             }
         }

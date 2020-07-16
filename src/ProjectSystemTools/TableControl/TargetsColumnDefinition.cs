@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+            if (entry.TryGetValue(TableKeyNames.Targets, out object value) &&
                 value is IEnumerable<string> targets)
             {
                 content = string.Join(";", targets);
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateToolTip(ITableEntryHandle entry, out object toolTip)
         {
-            if (entry.TryGetValue(TableKeyNames.Targets, out var value) &&
+            if (entry.TryGetValue(TableKeyNames.Targets, out object value) &&
                 value is IEnumerable<string> targets)
             {
                 toolTip = string.Join(Environment.NewLine, targets);

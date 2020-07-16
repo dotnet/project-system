@@ -107,11 +107,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         public IEnumerable<string> GetTaskParameter(string name)
         {
-            var values = ParameterItems?.SingleOrDefault(itemGroup => itemGroup.Name == name)?.Items.Select(item => item.Name);
+            IEnumerable<string> values = ParameterItems?.SingleOrDefault(itemGroup => itemGroup.Name == name)?.Items.Select(item => item.Name);
 
             if (values == null)
             {
-                var value = ParameterProperties?.SingleOrDefault(property => property.Key == name);
+                KeyValuePair<string, string>? value = ParameterProperties?.SingleOrDefault(property => property.Key == name);
                 if (string.IsNullOrEmpty(value?.Key))
                 {
                     return Enumerable.Empty<string>();

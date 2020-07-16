@@ -50,8 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
             Assumes.Present(componentModel);
             var dte = (EnvDTE.DTE)serviceProvider.GetService(typeof(SDTE));
 
-            var workspace = componentModel.GetService<VisualStudioWorkspace>();
-            var solution = workspace.CurrentSolution;
+            VisualStudioWorkspace workspace = componentModel.GetService<VisualStudioWorkspace>();
+            Solution solution = workspace.CurrentSolution;
 
             var threadedWaitDialog = (IVsThreadedWaitDialog3)serviceProvider.GetService(typeof(SVsThreadedWaitDialog));
             Assumes.Present(threadedWaitDialog);
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                 var workspaceElement = new XElement("workspace");
                 document.Add(workspaceElement);
 
-                foreach (var project in solution.GetProjectDependencyGraph().GetTopologicallySortedProjects(threadedWaitCallback.CancellationToken).Select(solution.GetProject))
+                foreach (Project project in solution.GetProjectDependencyGraph().GetTopologicallySortedProjects(threadedWaitCallback.CancellationToken).Select(solution.GetProject))
                 {
                     // Dump basic project attributes
                     var projectElement = new XElement("project");
@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                     projectElement.SetAttributeValue("path", SanitizePath(project.FilePath ?? "(none)"));
                     projectElement.SetAttributeValue("outputPath", SanitizePath(project.OutputFilePath ?? "(none)"));
 
-                    var hasSuccesfullyLoaded = TryGetHasSuccessfullyLoaded(project, threadedWaitCallback.CancellationToken);
+                    bool? hasSuccesfullyLoaded = TryGetHasSuccessfullyLoaded(project, threadedWaitCallback.CancellationToken);
 
                     if (hasSuccesfullyLoaded.HasValue)
                     {
@@ -101,14 +101,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                     }
 
                     // Dump DTE references
-                    var langProjProject = TryFindLangProjProject(dte, project);
+                    VSLangProj.VSProject langProjProject = TryFindLangProjProject(dte, project);
 
                     if (langProjProject != null)
                     {
                         var dteReferences = new XElement("dteReferences");
                         projectElement.Add(dteReferences);
 
-                        foreach (var reference in langProjProject.References.Cast<VSLangProj.Reference>())
+                        foreach (VSLangProj.Reference reference in langProjProject.References.Cast<VSLangProj.Reference>())
                         {
                             if (reference.SourceProject != null)
                             {
@@ -127,13 +127,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                     var workspaceReferencesElement = new XElement("workspaceReferences");
                     projectElement.Add(workspaceReferencesElement);
 
-                    foreach (var metadataReference in project.MetadataReferences)
+                    foreach (MetadataReference metadataReference in project.MetadataReferences)
                     {
                         workspaceReferencesElement.Add(CreateElementForPortableExecutableReference(metadataReference));
                     }
 
                     // Dump project references in the workspace
-                    foreach (var projectReference in project.AllProjectReferences)
+                    foreach (ProjectReference projectReference in project.AllProjectReferences)
                     {
                         var referenceElement = new XElement("projectReference", new XAttribute("id", SanitizePath(projectReference.ProjectId.ToString())));
 
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
                     // Read AnalyzerConfigDocuments via reflection, as our target version may not be on a Roslyn
                     // new enough to support it.
-                    var analyzerConfigDocumentsProperty = project.GetType().GetProperty("AnalyzerConfigDocuments");
+                    System.Reflection.PropertyInfo analyzerConfigDocumentsProperty = project.GetType().GetProperty("AnalyzerConfigDocuments");
 
                     if (analyzerConfigDocumentsProperty != null)
                     {
@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                     // Dump references from the compilation; this should match the workspace but can help rule out
                     // cross-language reference bugs or other issues like that
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits -- this is fine since it's a Roslyn API
-                    var compilation = project.GetCompilationAsync(threadedWaitCallback.CancellationToken).Result;
+                    Compilation compilation = project.GetCompilationAsync(threadedWaitCallback.CancellationToken).Result;
 #pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
 
                     if (compilation != null)
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                         var compilationReferencesElement = new XElement("compilationReferences");
                         projectElement.Add(compilationReferencesElement);
 
-                        foreach (var reference in compilation.References)
+                        foreach (MetadataReference reference in compilation.References)
                         {
                             compilationReferencesElement.Add(CreateElementForPortableExecutableReference(reference));
                         }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
                         var diagnosticsElement = new XElement("diagnostics");
                         projectElement.Add(diagnosticsElement);
 
-                        foreach (var diagnostic in compilation.GetDiagnostics(threadedWaitCallback.CancellationToken))
+                        foreach (Diagnostic diagnostic in compilation.GetDiagnostics(threadedWaitCallback.CancellationToken))
                         {
                             diagnosticsElement.Add(
                                 new XElement("diagnostic",
@@ -196,9 +196,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
                 File.Delete(path);
 
-                using var zipFile = ZipFile.Open(path, ZipArchiveMode.Create);
-                var zipFileEntry = zipFile.CreateEntry("Workspace.xml", CompressionLevel.Fastest);
-                using var stream = zipFileEntry.Open();
+                using ZipArchive zipFile = ZipFile.Open(path, ZipArchiveMode.Create);
+                ZipArchiveEntry zipFileEntry = zipFile.CreateEntry("Workspace.xml", CompressionLevel.Fastest);
+                using Stream stream = zipFileEntry.Open();
                 document.Save(stream);
             }
             catch (OperationCanceledException)
@@ -215,7 +215,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
         {
             // This method has not been made a public API, but is useful for analyzing some issues. Since it's non-public we'll
             // be careful to deal with it missing if/when it's updated.
-            var method = project.GetType().GetMethod("HasSuccessfullyLoadedAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            System.Reflection.MethodInfo method = project.GetType().GetMethod("HasSuccessfullyLoadedAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
             if (method == null)
             {
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var dteProject = dte.Solution.Projects.Cast<EnvDTE.Project>().FirstOrDefault(
+            EnvDTE.Project dteProject = dte.Solution.Projects.Cast<EnvDTE.Project>().FirstOrDefault(
                 p =>
                 {
                     ThreadHelper.ThrowIfNotOnUIThread();
@@ -315,14 +315,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
             while (namespaces.Count > 0)
             {
-                var @ns = namespaces.Dequeue();
+                INamespaceSymbol @ns = namespaces.Dequeue();
 
-                foreach (var type in @ns.GetTypeMembers())
+                foreach (INamedTypeSymbol type in @ns.GetTypeMembers())
                 {
                     typesElement.Add(new XElement("type", new XAttribute("name", type.ToDisplayString())));
                 }
 
-                foreach (var childNamespace in @ns.GetNamespaceMembers())
+                foreach (INamespaceSymbol childNamespace in @ns.GetNamespaceMembers())
                 {
                     namespaces.Enqueue(childNamespace);
                 }
@@ -336,7 +336,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.RoslynLogging
 
         public static IEnumerable<XElement> CreateElementsForDocumentCollection(IEnumerable<TextDocument> documents, string elementName)
         {
-            foreach (var document in documents)
+            foreach (TextDocument document in documents)
             {
                 yield return new XElement(elementName, new XAttribute("file", SanitizePath(document.FilePath ?? "(none)")));
             }

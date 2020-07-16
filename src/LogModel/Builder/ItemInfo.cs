@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             var tempMetadata = new Dictionary<string, string>();
             if (metadata != null)
             {
-                foreach (var pair in metadata)
+                foreach (KeyValuePair<string, string> pair in metadata)
                 {
                     AddMetadata(tempMetadata, pair.Key, pair.Value);
                 }

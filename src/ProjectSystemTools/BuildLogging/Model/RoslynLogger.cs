@@ -118,25 +118,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             {
                 try
                 {
-                    var assembly = GetAssembly("Microsoft.VisualStudio.LanguageServices");
+                    Assembly assembly = GetAssembly("Microsoft.VisualStudio.LanguageServices");
                     if (assembly == null)
                     {
                         return false;
                     }
 
-                    var type = assembly.GetType("Microsoft.VisualStudio.LanguageServices.RoslynActivityLogger");
+                    Type type = assembly.GetType("Microsoft.VisualStudio.LanguageServices.RoslynActivityLogger");
                     if (type == null)
                     {
                         return false;
                     }
 
-                    var setLoggerMethodInfo = type.GetMethod("SetLogger", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+                    MethodInfo setLoggerMethodInfo = type.GetMethod("SetLogger", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
                     if (setLoggerMethodInfo != null)
                     {
                         _setLoggerCall = (Action<TraceSource>)setLoggerMethodInfo.CreateDelegate(typeof(Action<TraceSource>));
                     }
 
-                    var removeLoggerMethodInfo = type.GetMethod("RemoveLogger", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+                    MethodInfo removeLoggerMethodInfo = type.GetMethod("RemoveLogger", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
                     if (removeLoggerMethodInfo != null)
                     {
                         _removeLoggerCall = (Action<TraceSource>)removeLoggerMethodInfo.CreateDelegate(typeof(Action<TraceSource>));
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             public override void TraceData(TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
             {
-                var functionId = (string)data[0];
+                string functionId = (string)data[0];
                 if (!_set.Contains(functionId))
                 {
                     return;

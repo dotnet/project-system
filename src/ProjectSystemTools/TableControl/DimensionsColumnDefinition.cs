@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.Dimensions, out var value) && value != null && 
+            if (entry.TryGetValue(TableKeyNames.Dimensions, out object value) && value != null && 
                 value is IEnumerable<string> dimensions &&
                 dimensions.Any())
             {

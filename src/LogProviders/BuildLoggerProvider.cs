@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
 
             if (_dataSource.IsLogging)
             {
-                var isDesignTime = properties.TryGetValue("DesignTimeBuild", out var value) &&
+                bool isDesignTime = properties.TryGetValue("DesignTimeBuild", out string value) &&
                    string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 
                 loggers = loggers.Add(_dataSource.CreateLogger(isDesignTime));

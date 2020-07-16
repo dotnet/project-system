@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override bool SetPropertyValue(string propertyName, string value, IWritableLaunchSettings launchSettings)
         {
-            var activeProfile = launchSettings.ActiveProfile;
+            IWritableLaunchProfile activeProfile = launchSettings.ActiveProfile;
             if (activeProfile == null)
             {
                 return false;

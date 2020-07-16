@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         public EvaluatedProjectInfo EndEvaluatingProject(string name)
         {
-            var evaluatedProject = _evaluatingProjects.FirstOrDefault(p => p.Name == name);
+            EvaluatedProjectInfo evaluatedProject = _evaluatingProjects.FirstOrDefault(p => p.Name == name);
             if (evaluatedProject == null)
             {
                 throw new LoggerException(Resources.CannotFindEvaluatedProject);

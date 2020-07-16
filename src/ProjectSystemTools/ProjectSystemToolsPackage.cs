@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
         private void ShowMessageListToolWindow(object sender, EventArgs e)
         {
-            var window = FindToolWindow(typeof(MessageListToolWindow), 0, true);
+            ToolWindowPane window = FindToolWindow(typeof(MessageListToolWindow), 0, true);
             if (window?.Frame == null)
             {
                 throw new NotSupportedException("Cannot create tool window");

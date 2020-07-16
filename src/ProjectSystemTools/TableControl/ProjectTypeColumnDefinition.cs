@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.ProjectType, out var value) && value != null && value is string projectType)
+            if (entry.TryGetValue(TableKeyNames.ProjectType, out object value) && value != null && value is string projectType)
             {
                 content = projectType;
                 return true;

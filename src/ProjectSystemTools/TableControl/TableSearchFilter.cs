@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public bool Match(ITableEntryHandle entry)
         {
-            var cachedColumnValues = new string[_visibleColumns.Count + 1];
+            string[] cachedColumnValues = new string[_visibleColumns.Count + 1];
 
             return _searchTokens.Where(searchToken => !(searchToken is IVsSearchFilterToken))
                 .All(searchToken => AtLeastOneColumnOrDetailsContentMatches(entry, searchToken,
@@ -44,20 +44,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
                 cachedColumnValues[0] = GetDetailsContentAsString(entry);
             }
 
-            var detailsContent = cachedColumnValues[0];
+            string detailsContent = cachedColumnValues[0];
             if (detailsContent != null && Match(detailsContent, searchToken))
             {
                 return true;
             }
 
-            for (var i = 0; i < _visibleColumns.Count; i++)
+            for (int i = 0; i < _visibleColumns.Count; i++)
             {
                 if (cachedColumnValues[i + 1] == null)
                 {
                     cachedColumnValues[i + 1] = GetColumnValueAsString(entry, _visibleColumns[i]);
                 }
 
-                var columnValue = cachedColumnValues[i + 1];
+                string columnValue = cachedColumnValues[i + 1];
                 System.Diagnostics.Debug.Assert(columnValue != null);
 
                 if (columnValue != null && Match(columnValue, searchToken))

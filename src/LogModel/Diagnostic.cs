@@ -32,27 +32,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel
 
         public override string ToString()
         {
-            var file = File ?? "";
+            string file = File ?? "";
 
-            var position = "";
+            string position = "";
             if (LineNumber != 0 || ColumnNumber != 0)
             {
                 position = $"({LineNumber},{ColumnNumber}):";
             }
 
-            var code = "";
+            string code = "";
             if (!string.IsNullOrWhiteSpace(Code))
             {
                 code = $" {GetType().Name.ToLowerInvariant()} {Code}:";
             }
 
-            var text = Text;
+            string text = Text;
             if (file.Length + position.Length + code.Length > 0)
             {
                 text = " " + text;
             }
 
-            var projectFile = "";
+            string projectFile = "";
             if (!string.IsNullOrWhiteSpace(ProjectFile))
             {
                 projectFile = $" [{ProjectFile}]";

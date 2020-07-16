@@ -23,10 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         protected static string GetLogPath(Build build)
         {
-            var dimensionsString =
+            string dimensionsString =
                 build.Dimensions.Any() ? $"{build.Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_" : string.Empty;
 
-            var filename = $"{Path.GetFileNameWithoutExtension(build.ProjectPath)}_{dimensionsString}{build.BuildType}_{build.StartTime:o}.binlog".Replace(':', '_');
+            string filename = $"{Path.GetFileNameWithoutExtension(build.ProjectPath)}_{dimensionsString}{build.BuildType}_{build.StartTime:o}.binlog".Replace(':', '_');
 
             return Path.Combine(Path.GetTempPath(), filename);
         }

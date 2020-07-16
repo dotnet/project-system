@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public void Clear()
         {
-            foreach (var build in _entries)
+            foreach (Build build in _entries)
             {
                 build.Dispose();
             }
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public void Dispose()
         {
-            foreach (var build in _entries)
+            foreach (Build build in _entries)
             {
                 build.Dispose();
             }

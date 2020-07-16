@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 return string.Empty;
             }
 
-            if (_strings.TryGetValue(text.Replace("\r\n", "\n").Replace("\r", "\n"), out var existing))
+            if (_strings.TryGetValue(text.Replace("\r\n", "\n").Replace("\r", "\n"), out string existing))
             {
                 return existing;
             }
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private ProjectInfo FindProjectContext(BuildEventArgs args)
         {
-            if (!_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out var projectInfo))
+            if (!_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out ProjectInfo projectInfo))
             {
                 throw new LoggerException(Resources.CannotFindProject);
             }
@@ -161,21 +161,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         }
 
         private TargetInfo FindTargetContext(BuildEventArgs args) => 
-            !_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out var projectInfo)
+            !_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out ProjectInfo projectInfo)
                 ? throw new LoggerException(Resources.CannotFindProject)
                 : projectInfo.GetTarget(args.BuildEventContext.TargetId);
 
         private TaskInfo FindTaskContext(BuildEventArgs args)
         {
-            if (!_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out var projectInfo))
+            if (!_projectInfos.TryGetValue(args.BuildEventContext.ProjectContextId, out ProjectInfo projectInfo))
             {
                 throw new LoggerException(Resources.CannotFindProject);
             }
 
-            var targetInfo = projectInfo.GetTarget(args.BuildEventContext.TargetId);
+            TargetInfo targetInfo = projectInfo.GetTarget(args.BuildEventContext.TargetId);
 
             if (targetInfo.TaskInfos == null ||
-                !targetInfo.TaskInfos.TryGetValue(args.BuildEventContext.TaskId, out var taskInfo))
+                !targetInfo.TaskInfos.TryGetValue(args.BuildEventContext.TaskId, out TaskInfo taskInfo))
             {
                 throw new LoggerException(Resources.CannotFindTask);
             }
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private EvaluationInfo FindEvaluationContext(BuildEventArgs args)
         {
             if (_evaluationInfos != null &&
-                _evaluationInfos.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluationInfo))
+                _evaluationInfos.TryGetValue(args.BuildEventContext.EvaluationId, out EvaluationInfo evaluationInfo))
             {
                 return evaluationInfo;
             }
@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             CheckProjectEventContext(args);
 
-            var projectInfo = FindProjectContext(args);
+            ProjectInfo projectInfo = FindProjectContext(args);
             projectInfo.EndProject(args.Timestamp, args.Succeeded);
             AddMessage(projectInfo, args);
 
@@ -312,7 +312,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 return;
             }
 
-            foreach (var target in projectInfo.TargetsToBuild)
+            foreach (string target in projectInfo.TargetsToBuild)
             {
                 var executedTargets = projectInfo.ExecutedTargets.Where(targetInfo =>
                     targetInfo.Name.Equals(target, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     continue;
                 }
 
-                foreach (var executedTarget in executedTargets)
+                foreach (TargetInfo executedTarget in executedTargets)
                 {
                     executedTarget.SetIsRequestedTarget();
                 }
@@ -342,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             CheckTargetEventContext(args);
 
-            var projectInfo = FindProjectContext(args);
+            ProjectInfo projectInfo = FindProjectContext(args);
 
             var targetInfo = new TargetInfo(
                 args.BuildEventContext.TargetId,
@@ -360,7 +360,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void OnTargetSkipped(TargetSkippedEventArgs args)
         {
-            var projectInfo = FindProjectContext(args);
+            ProjectInfo projectInfo = FindProjectContext(args);
 
             var targetInfo = new TargetInfo(
                 Intern(args.TargetName), 
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             CheckTargetEventContext(args);
 
-            var targetInfo = FindTargetContext(args);
+            TargetInfo targetInfo = FindTargetContext(args);
             targetInfo.EndTarget(
                 args.Timestamp, 
                 args.Succeeded,
@@ -396,14 +396,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             CheckTaskEventContext(args);
 
-            var targetInfo = FindTargetContext(args);
+            TargetInfo targetInfo = FindTargetContext(args);
 
             var taskInfo = new TaskInfo(
                 args.BuildEventContext.TaskId,
                 args.BuildEventContext.NodeId,
                 Intern(args.TaskName),
                 args.Timestamp,
-                _assemblies.TryGetValue(Intern(args.TaskName), out var assembly)
+                _assemblies.TryGetValue(Intern(args.TaskName), out string assembly)
                     ? Intern(assembly)
                     : string.Empty,
                 Intern(args.TaskFile));
@@ -416,7 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         {
             CheckTaskEventContext(args);
 
-            var taskInfo = FindTaskContext(args);
+            TaskInfo taskInfo = FindTaskContext(args);
             taskInfo.FinishTask(args.Timestamp, args.Succeeded);
             AddMessage(taskInfo, args);
         }
@@ -426,13 +426,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private static string ParseQuotedSubstring(string text)
         {
-            var firstQuote = text.IndexOf('"');
+            int firstQuote = text.IndexOf('"');
             if (firstQuote == -1)
             {
                 return text;
             }
 
-            var secondQuote = text.IndexOf('"', firstQuote + 1);
+            int secondQuote = text.IndexOf('"', firstQuote + 1);
             if (secondQuote == -1)
             {
                 return text;
@@ -448,20 +448,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private static KeyValuePair<string, string> ParseNameValue(string nameEqualsValue, int trimFromStart = 0)
         {
-            var equals = nameEqualsValue.IndexOf('=');
+            int equals = nameEqualsValue.IndexOf('=');
             if (equals == -1)
             {
                 return new KeyValuePair<string, string>(nameEqualsValue, "");
             }
 
-            var name = nameEqualsValue.Substring(trimFromStart, equals - trimFromStart);
-            var value = nameEqualsValue.Substring(equals + 1);
+            string name = nameEqualsValue.Substring(trimFromStart, equals - trimFromStart);
+            string value = nameEqualsValue.Substring(equals + 1);
             return new KeyValuePair<string, string>(name, value);
         }
 
         private static int GetNumberOfLeadingSpaces(string line)
         {
-            var result = 0;
+            int result = 0;
             while (result < line.Length && line[result] == ' ')
             {
                 result++;
@@ -472,7 +472,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private KeyValuePair<string, string> ParseProperty(string message, string prefix)
         {
-            var nameValue = ParseNameValue(message, trimFromStart: prefix.Length);
+            KeyValuePair<string, string> nameValue = ParseNameValue(message, trimFromStart: prefix.Length);
             var propertyInfo = new KeyValuePair<string, string>(Intern(nameValue.Key), Intern(nameValue.Value));
             return propertyInfo;
         }
@@ -488,10 +488,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             // If no items were produced, we only get one line.
             if (lines[0].Length > prefix.Length)
             {
-                var nameValue = ParseNameValue(lines[0].Substring(prefix.Length));
+                KeyValuePair<string, string> nameValue = ParseNameValue(lines[0].Substring(prefix.Length));
 
-                var name = Intern(nameValue.Key);
-                var items = ImmutableList<ItemInfo>.Empty;
+                string name = Intern(nameValue.Key);
+                ImmutableList<ItemInfo> items = ImmutableList<ItemInfo>.Empty;
 
                 if (!string.IsNullOrEmpty(nameValue.Value))
                 {
@@ -507,15 +507,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             }
 
             string currentGroupName = null;
-            var currentItems = ImmutableList<ItemInfo>.Empty;
+            ImmutableList<ItemInfo> currentItems = ImmutableList<ItemInfo>.Empty;
             string currentItemName = null;
             var currentMetadata = new List<KeyValuePair<string, string>>();
             string currentMetadataKey = null;
             string currentMetadataValue = null;
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
-                var numberOfLeadingSpaces = GetNumberOfLeadingSpaces(line);
+                int numberOfLeadingSpaces = GetNumberOfLeadingSpaces(line);
                 switch (numberOfLeadingSpaces)
                 {
                     case 4:
@@ -555,7 +555,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                         break;
 
                     case 16:
-                        var currentLine = line.Substring(16);
+                        string currentLine = line.Substring(16);
 
                         if (currentItemName == null)
                         {
@@ -577,7 +577,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                             {
                                 currentMetadata.Add(new KeyValuePair<string, string>(currentMetadataKey, currentMetadataValue));
                             }
-                            var nameValue = ParseNameValue(currentLine);
+                            KeyValuePair<string, string> nameValue = ParseNameValue(currentLine);
                             currentMetadataKey = Intern(nameValue.Key);
                             currentMetadataValue = Intern(nameValue.Value);
                         }
@@ -620,12 +620,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void ProcessProjectMessage(BuildEventArgs args)
         {
-            var message = args.Message;
-            var projectInfo = FindProjectContext(args);
+            string message = args.Message;
+            ProjectInfo projectInfo = FindProjectContext(args);
 
             if (message.StartsWith("Target") && message.Contains("skipped"))
             {
-                var targetName = Intern(ParseQuotedSubstring(message));
+                string targetName = Intern(ParseQuotedSubstring(message));
                 if (targetName == null)
                 {
                     throw new LoggerException(Resources.UnexpectedMessage);
@@ -646,24 +646,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             const string itemGroupRemoveMessagePrefix = @"Removed Item(s): ";
             const string propertyGroupMessagePrefix = @"Set Property: ";
 
-            var message = args.Message;
-            var targetInfo = FindTargetContext(args);
+            string message = args.Message;
+            TargetInfo targetInfo = FindTargetContext(args);
 
             if (message.StartsWith("Using"))
             {
                 // A task from assembly message (parses out the task name and assembly path).
-                var match = s_usingTaskRegex.Match(args.Message);
+                Match match = s_usingTaskRegex.Match(args.Message);
                 if (match.Success)
                 {
-                    var taskName = Intern(match.Groups["task"].Value);
-                    var assembly = Intern(match.Groups["assembly"].Value);
+                    string taskName = Intern(match.Groups["task"].Value);
+                    string assembly = Intern(match.Groups["assembly"].Value);
                     _assemblies.GetOrAdd(taskName, t => assembly);
                 }
             }
 
             if (message.StartsWith(itemGroupIncludeMessagePrefix))
             {
-                var itemGroupInfo = ParseItemGroupInfo(args.Message, itemGroupIncludeMessagePrefix);
+                ItemGroupInfo itemGroupInfo = ParseItemGroupInfo(args.Message, itemGroupIncludeMessagePrefix);
                 var itemActionInfo = new ItemActionInfo(true, itemGroupInfo, args.Timestamp);
                 AddMessage(itemActionInfo, args);
                 targetInfo.AddItemAction(itemActionInfo);
@@ -672,7 +672,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             if (message.StartsWith(itemGroupRemoveMessagePrefix))
             {
-                var itemGroupInfo = ParseItemGroupInfo(args.Message, itemGroupRemoveMessagePrefix);
+                ItemGroupInfo itemGroupInfo = ParseItemGroupInfo(args.Message, itemGroupRemoveMessagePrefix);
                 var itemActionInfo = new ItemActionInfo(false, itemGroupInfo, args.Timestamp);
                 AddMessage(itemActionInfo, args);
                 targetInfo.AddItemAction(itemActionInfo);
@@ -683,7 +683,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             {
                 message = args.Message.Substring(propertyGroupMessagePrefix.Length);
 
-                var kvp = ParseNameValue(message);
+                KeyValuePair<string, string> kvp = ParseNameValue(message);
                 var propertySetInfo = new PropertySetInfo(kvp.Key, kvp.Value, args.Timestamp);
                 AddMessage(propertySetInfo, args);
                 targetInfo.AddPropertySet(propertySetInfo);
@@ -692,7 +692,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             if (message.StartsWith("Task") && message.Contains("skipped"))
             {
-                var taskName = Intern(ParseQuotedSubstring(message));
+                string taskName = Intern(ParseQuotedSubstring(message));
                 if (taskName == null)
                 {
                     throw new LoggerException(Resources.UnexpectedMessage);
@@ -713,8 +713,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             const string outputItemsMessagePrefix = @"Output Item(s): ";
             const string outputPropertyMessagePrefix = @"Output Property: ";
 
-            var taskInfo = FindTaskContext(args);
-            var message = args.Message;
+            TaskInfo taskInfo = FindTaskContext(args);
+            string message = args.Message;
 
             if (message.StartsWith(outputItemsMessagePrefix))
             {
@@ -725,7 +725,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
             if (message.StartsWith(outputPropertyMessagePrefix))
             {
-                var property = ParseProperty(message, outputPropertyMessagePrefix);
+                KeyValuePair<string, string> property = ParseProperty(message, outputPropertyMessagePrefix);
                 taskInfo.AddOutputProperty(property.Key, property.Value);
                 AddMessage(taskInfo, args);
                 return;
@@ -735,7 +735,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             {
                 if (message.IndexOf('\n') != taskParameterMessagePrefix.Length)
                 {
-                    var property = ParseProperty(message, taskParameterMessagePrefix);
+                    KeyValuePair<string, string> property = ParseProperty(message, taskParameterMessagePrefix);
                     taskInfo.AddParameterProperty(property.Key, property.Value);
                 }
                 else
@@ -759,7 +759,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                 throw new LoggerException(Resources.UnexpectedMessage);
             }
 
-            var evaluationInfo = FindEvaluationContext(args);
+            EvaluationInfo evaluationInfo = FindEvaluationContext(args);
 
             evaluationInfo.AddMessage(args.Message, args.Timestamp);
         }
@@ -825,7 +825,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void OnProjectEvaluationStarted(object sender, ProjectEvaluationStartedEventArgs args)
         {
-            var evaluationInfo = FindEvaluationContext(args);
+            EvaluationInfo evaluationInfo = FindEvaluationContext(args);
             var evaluatedProject = new EvaluatedProjectInfo(args.ProjectFile, args.Timestamp);
             AddMessage(evaluatedProject, args);
             evaluationInfo.StartEvaluatingProject(evaluatedProject);
@@ -834,7 +834,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         private EvaluatedProfileInfo InterpretEvaluationProfile(ProfilerResult profilerResult)
         {
             var groups = profilerResult.ProfiledLocations.GroupBy(l => l.Key.ParentId).ToList();
-            var roots = groups.Where(g => g.Key == null).ToArray();
+            IGrouping<long?, KeyValuePair<EvaluationLocation, ProfiledLocation>>[] roots = groups.Where(g => g.Key == null).ToArray();
 
             if (roots.Length < 1 || roots.Length > 2 || roots.Any(r => r.Count() != 1) ||
                 profilerResult.ProfiledLocations.Any(l => l.Value.NumberOfHits != 0))
@@ -845,7 +845,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
             KeyValuePair<EvaluationLocation, ProfiledLocation> evaluationRoot = default;
             KeyValuePair<EvaluationLocation, ProfiledLocation> globRoot = default;
 
-            foreach (var root in roots.Select(root => root.Single()))
+            foreach (KeyValuePair<EvaluationLocation, ProfiledLocation> root in roots.Select(root => root.Single()))
             {
                 if (root.Key.Kind == EvaluationLocationKind.Element)
                 {
@@ -888,8 +888,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void OnProjectEvaluationFinished(object sender, ProjectEvaluationFinishedEventArgs args)
         {
-            var evaluationInfo = FindEvaluationContext(args);
-            var evaluatedProjectInfo = evaluationInfo.EndEvaluatingProject(args.ProjectFile);
+            EvaluationInfo evaluationInfo = FindEvaluationContext(args);
+            EvaluatedProjectInfo evaluatedProjectInfo = evaluationInfo.EndEvaluatingProject(args.ProjectFile);
             EvaluatedProfileInfo evaluationProfileInfo = null;
             if (args.ProfilerResult != null)
             {
@@ -921,7 +921,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void OnBuildWarning(object sender, BuildWarningEventArgs args)
         {
-            var info = FindMessageContext(args);
+            BaseInfo info = FindMessageContext(args);
 
             var warning = new DiagnosticInfo(
                 false, 
@@ -941,7 +941,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void OnBuildError(object sender, BuildErrorEventArgs args)
         {
-            var info = FindMessageContext(args);
+            BaseInfo info = FindMessageContext(args);
 
             var error = new DiagnosticInfo(
                 true, 
@@ -1124,13 +1124,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
 
         private void ConnectBuildTasks()
         {
-            foreach (var projectInfo in _projectInfos.Values.Where(projectInfo => projectInfo.ParentProject != BuildEventContext.InvalidProjectContextId))
+            foreach (ProjectInfo projectInfo in _projectInfos.Values.Where(projectInfo => projectInfo.ParentProject != BuildEventContext.InvalidProjectContextId))
             {
-                var parentProjectInfo = _projectInfos[projectInfo.ParentProject];
-                var parentDirectoryName = Path.GetDirectoryName(parentProjectInfo.ProjectFile) ?? "";
+                ProjectInfo parentProjectInfo = _projectInfos[projectInfo.ParentProject];
+                string parentDirectoryName = Path.GetDirectoryName(parentProjectInfo.ProjectFile) ?? "";
                 TaskInfo parentTask = null;
 
-                var tasks = parentProjectInfo.ExecutedTargets
+                TaskInfo[] tasks = parentProjectInfo.ExecutedTargets
                     .Where(target => target.TaskInfos != null)
                     .SelectMany(target => target.TaskInfos.Values).ToArray();
 
@@ -1146,11 +1146,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
                     return;
                 }
 
-                var msBuildTasks = tasks.Where(task => task.Name == "MSBuild" || task.Name == "MsBuild");
+                IEnumerable<TaskInfo> msBuildTasks = tasks.Where(task => task.Name == "MSBuild" || task.Name == "MsBuild");
 
-                foreach (var taskInfo in msBuildTasks)
+                foreach (TaskInfo taskInfo in msBuildTasks)
                 {
-                    var targets = taskInfo.GetTaskParameter("Targets");
+                    IEnumerable<string> targets = taskInfo.GetTaskParameter("Targets");
 
                     if (taskInfo
                         .GetTaskParameter("Projects")
@@ -1181,7 +1181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         public Log Finish()
         {
             Build build = null;
-            var evaluations = ImmutableList<Evaluation>.Empty;
+            ImmutableList<Evaluation> evaluations = ImmutableList<Evaluation>.Empty;
 
             try
             {

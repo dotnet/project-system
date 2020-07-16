@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 new ColumnState2(StandardTableColumnDefinitions.ErrorCategory, isVisible: false, width: 0)
             };
 
-            var columns = new[]
+            string[] columns = new[]
             {
                 StandardTableColumnDefinitions.DetailsExpander,
                 StandardTableColumnDefinitions.ErrorSeverity,
@@ -114,8 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 StandardTableColumnDefinitions.ProjectName
             };
 
-            var tableManager = ProjectSystemToolsPackage.TableManagerProvider.GetTableManager(MessageTable);
-            var columnState = TableSettingLoader.LoadSettings(MessageTable, defaultColumns);
+            ITableManager tableManager = ProjectSystemToolsPackage.TableManagerProvider.GetTableManager(MessageTable);
+            IEnumerable<ColumnState> columnState = TableSettingLoader.LoadSettings(MessageTable, defaultColumns);
             var tableControl = (IWpfTableControl2)ProjectSystemToolsPackage.TableControlProvider.CreateControl(tableManager, true, columnState, columns);
 
             tableControl.RaiseDataUnstableChangeDelay = TimeSpan.Zero;
@@ -124,9 +124,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
             SetTableControl(tableControl);
 
-            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreErrorsShown), true, out var areErrorsShown);
-            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreWarningsShown), true, out var areWarningsShown);
-            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreMessagesShown), true, out var areMessagesShown);
+            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreErrorsShown), true, out bool areErrorsShown);
+            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreWarningsShown), true, out bool areWarningsShown);
+            TableSettingLoader.LoadSwitch(MessageTable, nameof(AreMessagesShown), true, out bool areMessagesShown);
 
             AreErrorsShown = areErrorsShown;
             AreWarningsShown = areWarningsShown;
@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
         {
             var filter = TableControl.GetFilter(StandardTableColumnDefinitions.ErrorSeverity) as ColumnHashSetFilter;
 
-            var newFilter = value ? CloneAndRemove(filter, labels) : CloneAndAdd(filter, labels);
+            ColumnHashSetFilter newFilter = value ? CloneAndRemove(filter, labels) : CloneAndAdd(filter, labels);
 
             TableControl.SetFilter(StandardTableColumnDefinitions.ErrorSeverity, newFilter);
         }
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         private static ColumnHashSetFilter CloneAndRemove(ColumnHashSetFilter source, IReadOnlyList<string> labels)
         {
-            for (var i = 0; i < labels.Count && source != null; ++i)
+            for (int i = 0; i < labels.Count && source != null; ++i)
             {
                 source = source.CloneAndRemove(labels[i]);
             }
@@ -215,15 +215,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         private void UpdateLabels(int totalErrors, int visibleErrors, int totalWarnings, int visibleWarnings, int totalMessages, int visibleMessages)
         {
-            var newErrorsLabel = string.Format(CultureInfo.InvariantCulture,
+            string newErrorsLabel = string.Format(CultureInfo.InvariantCulture,
                                                   totalErrors == visibleErrors ? BinaryLogEditorResources.SameLabel : BinaryLogEditorResources.DifferentLabel,
                                                   totalErrors == 1 ? BinaryLogEditorResources.ErrorLabel : BinaryLogEditorResources.ErrorsLabel, visibleErrors, totalErrors);
 
-            var newWarningsLabel = string.Format(CultureInfo.InvariantCulture,
+            string newWarningsLabel = string.Format(CultureInfo.InvariantCulture,
                                                     totalWarnings == visibleWarnings ? BinaryLogEditorResources.SameLabel : BinaryLogEditorResources.DifferentLabel,
                                                     totalWarnings == 1 ? BinaryLogEditorResources.WarningLabel : BinaryLogEditorResources.WarningsLabel, visibleWarnings, totalWarnings);
 
-            var newMessagesLabel = string.Format(CultureInfo.InvariantCulture,
+            string newMessagesLabel = string.Format(CultureInfo.InvariantCulture,
                                                     totalMessages == visibleMessages ? BinaryLogEditorResources.SameLabel : BinaryLogEditorResources.DifferentLabel,
                                                     totalMessages == 1 ? BinaryLogEditorResources.MessageLabel : BinaryLogEditorResources.MessagesLabel, visibleMessages, totalMessages);
 
@@ -249,14 +249,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             }
 
             _entriesChangedEventCount++;
-            var currentEntriesChangedEventCount = _entriesChangedEventCount;
+            int currentEntriesChangedEventCount = _entriesChangedEventCount;
 
             var pinnedSnapshots = new Dictionary<ITableEntriesSnapshot, ITableEntryHandle>();
 
             // Pinning snapshots on the UI thread is cheaper because they are already created and all we need to do is to increase the ref count.
-            foreach (var entry in e.AllEntries)
+            foreach (ITableEntryHandle entry in e.AllEntries)
             {
-                if (!entry.TryGetSnapshot(out var snapshot, out var _) ||
+                if (!entry.TryGetSnapshot(out ITableEntriesSnapshot snapshot, out int _) ||
                     pinnedSnapshots.ContainsKey(snapshot))
                 {
                     continue;
@@ -274,7 +274,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
             RestorePreviousSelection(e);
 
-            var newColumnStates = TableControl.ColumnStates;
+            IReadOnlyList<ColumnState> newColumnStates = TableControl.ColumnStates;
             if (_columnStates != null && !ColumnStatesAreDifferent(_columnStates, newColumnStates))
             {
                 return;
@@ -288,15 +288,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
         {
             await TaskScheduler.Default;
 
-            var visibleErrors = 0;
-            var visibleWarnings = 0;
-            var visibleMessages = 0;
+            int visibleErrors = 0;
+            int visibleWarnings = 0;
+            int visibleMessages = 0;
 
-            var totalErrors = 0;
-            var totalWarnings = 0;
-            var totalMessages = 0;
+            int totalErrors = 0;
+            int totalWarnings = 0;
+            int totalMessages = 0;
 
-            foreach (var entry in e.AllEntries)
+            foreach (ITableEntryHandle entry in e.AllEntries)
             {
                 if (currentEntriesChangedEventCount != _entriesChangedEventCount)
                 {
@@ -330,7 +330,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             }
             else
             {
-                foreach (var entry in e.FilteredAndSortedEntries)
+                foreach (ITableEntryHandle entry in e.FilteredAndSortedEntries)
                 {
                     if (currentEntriesChangedEventCount != _entriesChangedEventCount)
                     {
@@ -357,7 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 }
             }
 
-            foreach (var entry in pinnedSnapshots.Values)
+            foreach (ITableEntryHandle entry in pinnedSnapshots.Values)
             {
                 entry.UnpinSnapshot();
             }
@@ -377,10 +377,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
         {
             // Find the index of the 1st selected item (if any)
             _previousSelectedItemIndex = -1;
-            var index = 0;
+            int index = 0;
 
             // At this point, _entries still holds the data from previous update
-            foreach (var entryHandle in _entries.Item2)
+            foreach (ITableEntryHandle entryHandle in _entries.Item2)
             {
                 if (entryHandle.IsSelected)
                 {
@@ -409,9 +409,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
             // No item was selected. Try and select the item at the previous selected index (or the item at the end of the list if
             // the list has shrunk to the point that the item no longer exists).
-            var index = 0;
+            int index = 0;
             ITableEntryHandle lastHandle = null;
-            foreach (var entryHandle in e.FilteredAndSortedEntries)
+            foreach (ITableEntryHandle entryHandle in e.FilteredAndSortedEntries)
             {
                 lastHandle = entryHandle;
 
@@ -435,16 +435,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         public int Compare(ITableEntryHandle left, ITableEntryHandle right)
         {
-            left.TryGetValue(StandardTableKeyNames.ErrorSeverity, out var leftCategory, __VSERRORCATEGORY.EC_MESSAGE);
-            right.TryGetValue(StandardTableKeyNames.ErrorSeverity, out var rightCategory, __VSERRORCATEGORY.EC_MESSAGE);
-            var compare = (int)leftCategory - (int)rightCategory;
+            left.TryGetValue(StandardTableKeyNames.ErrorSeverity, out __VSERRORCATEGORY leftCategory, __VSERRORCATEGORY.EC_MESSAGE);
+            right.TryGetValue(StandardTableKeyNames.ErrorSeverity, out __VSERRORCATEGORY rightCategory, __VSERRORCATEGORY.EC_MESSAGE);
+            int compare = (int)leftCategory - (int)rightCategory;
             if (compare != 0)
             {
                 return compare;
             }
 
-            left.TryGetValue(StandardTableKeyNames.ProjectName, out var leftString, string.Empty);
-            right.TryGetValue(StandardTableKeyNames.ProjectName, out var rightString, string.Empty);
+            left.TryGetValue(StandardTableKeyNames.ProjectName, out string leftString, string.Empty);
+            right.TryGetValue(StandardTableKeyNames.ProjectName, out string rightString, string.Empty);
 
             compare = string.Compare(leftString, rightString, StringComparison.Ordinal);
             if (compare != 0)
@@ -461,8 +461,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 return compare;
             }
 
-            left.TryGetValue(StandardTableKeyNames.Line, out var leftInt, 0);
-            right.TryGetValue(StandardTableKeyNames.Line, out var rightInt, 0);
+            left.TryGetValue(StandardTableKeyNames.Line, out int leftInt, 0);
+            right.TryGetValue(StandardTableKeyNames.Line, out int rightInt, 0);
 
             compare = leftInt - rightInt;
             if (compare != 0)
@@ -486,9 +486,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
 
         private void ClearAllActionableFilters()
         {
-            foreach (var filter in TableControl.GetAllFilters())
+            foreach (Tuple<string, IEntryFilter> filter in TableControl.GetAllFilters())
             {
-                var definition = ProjectSystemToolsPackage.TableControlProvider.GetFilterDefinition(filter.Item1);
+                EntryFilterDefinition definition = ProjectSystemToolsPackage.TableControlProvider.GetFilterDefinition(filter.Item1);
 
                 if (definition != null)
                 {
@@ -610,13 +610,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 TableControl?.Manager?.RemoveSource(_dataSource);
             }
 
-            if (newSelectionContainer.CountObjects(SelectionContainer.SELECTED, out var count) != VSConstants.S_OK ||
+            if (newSelectionContainer.CountObjects(SelectionContainer.SELECTED, out uint count) != VSConstants.S_OK ||
                 count != 1)
             {
                 return VSConstants.S_OK;
             }
 
-            var objects = new object[1];
+            object[] objects = new object[1];
 
             if (newSelectionContainer.GetObjects(SelectionContainer.SELECTED, 1, objects) != VSConstants.S_OK ||
                 !(objects[0] is SelectedObjectWrapper selectedObjectWrapper))

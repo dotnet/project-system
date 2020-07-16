@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 new ColumnState2(TableColumnNames.Status, isVisible: true, width: 100)
             };
 
-            var columns = new[]
+            string[] columns = new[]
             {
                 StandardTableColumnDefinitions.DetailsExpander,
                 StandardTableColumnDefinitions.ProjectName,
@@ -78,8 +78,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 TableColumnNames.Status
             };
 
-            var newManager = ProjectSystemToolsPackage.TableManagerProvider.GetTableManager(BuildLogging);
-            var columnStates = TableSettingLoader.LoadSettings(BuildLogging, defaultColumns);
+            ITableManager newManager = ProjectSystemToolsPackage.TableManagerProvider.GetTableManager(BuildLogging);
+            IEnumerable<ColumnState> columnStates = TableSettingLoader.LoadSettings(BuildLogging, defaultColumns);
             var tableControl = (IWpfTableControl2)ProjectSystemToolsPackage.TableControlProvider.CreateControl(newManager, true, columnStates, columns);
 
             tableControl.RaiseDataUnstableChangeDelay = TimeSpan.Zero;
@@ -199,14 +199,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 return;
             }
 
-            foreach (var entry in TableControl.SelectedEntries)
+            foreach (ITableEntryHandle entry in TableControl.SelectedEntries)
             {
                 if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
                 {
                     continue;
                 }
 
-                var filename = Path.GetFileName(logPath);
+                string filename = Path.GetFileName(logPath);
 
                 if (filename == null)
                 {
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 }
                 catch (Exception e)
                 {
-                    var title = $"Error saving {filename}";
+                    string title = $"Error saving {filename}";
                     ShowExceptionMessageDialog(e, title);
                 }
             }
@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         private void OpenLogs()
         {
-            foreach (var entry in TableControl.SelectedEntries)
+            foreach (ITableEntryHandle entry in TableControl.SelectedEntries)
             {
                 OpenLog(entry);
             }
@@ -258,14 +258,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 return;
             }
 
-            var guid = VSConstants.LOGVIEWID_Primary;
-            _openDocument.OpenDocumentViaProject(logPath, ref guid, out _, out _, out _, out var frame);
+            Guid guid = VSConstants.LOGVIEWID_Primary;
+            _openDocument.OpenDocumentViaProject(logPath, ref guid, out _, out _, out _, out IVsWindowFrame frame);
             frame?.Show();
         }
 
         private void OpenLogsExternal()
         {
-            foreach (var entry in TableControl.SelectedEntries)
+            foreach (ITableEntryHandle entry in TableControl.SelectedEntries)
             {
                 if (!entry.TryGetValue(TableKeyNames.LogPath, out string logPath))
                 {
@@ -278,7 +278,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 }
                 catch (Exception e)
                 {
-                    var title = $"Error opening {Path.GetFileName(logPath)}";
+                    string title = $"Error opening {Path.GetFileName(logPath)}";
                     ShowExceptionMessageDialog(e, title);
                 }
             }
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
 
         private static void ShowExceptionMessageDialog(Exception e, string title)
         {
-            var message = $@"{e.GetType().FullName}
+            string message = $@"{e.GetType().FullName}
 
 {e.Message}
 
@@ -302,12 +302,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 return (int)Constants.OLECMDERR_E_NOTSUPPORTED;
             }
 
-            var cmd = commands[0];
+            OLECMD cmd = commands[0];
 
-            var handled = true;
-            var enabled = false;
-            var visible = false;
-            var latched = false;
+            bool handled = true;
+            bool enabled = false;
+            bool visible = false;
+            bool latched = false;
 
             switch (cmd.cmdID)
             {
@@ -381,7 +381,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                 return (int)Constants.OLECMDERR_E_NOTSUPPORTED;
             }
 
-            var handled = true;
+            bool handled = true;
 
             switch (commandId)
             {
@@ -410,7 +410,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     break;
 
                 case ProjectSystemToolsPackage.BuildTypeComboCommandId:
-                    var selectedType = string.Empty;
+                    string selectedType = string.Empty;
                     if (pvaOut != IntPtr.Zero)
                     {
                         switch (_filterType)
@@ -436,10 +436,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     }
                     else
                     {
-                        var selectedItem = Marshal.GetObjectForNativeVariant(pvaIn);
+                        object selectedItem = Marshal.GetObjectForNativeVariant(pvaIn);
 
                         selectedType = selectedItem.ToString();
-                        var column = TableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
+                        ITableColumnDefinition column = TableControl.ColumnDefinitionManager.GetColumnDefinition(TableColumnNames.BuildType);
                         if (selectedType.Equals(BuildLoggingResources.FilterBuildAll))
                         {
                             TableControl.SetFilter(TableColumnNames.BuildType, new ColumnHashSetFilter(column));
@@ -465,7 +465,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging
                     break;
 
                 case ProjectSystemToolsPackage.BuildTypeComboGetListCommandId:
-                    var outParam = pvaOut;
+                    IntPtr outParam = pvaOut;
                     Marshal.GetNativeVariantForObject(GetBuildFilterComboItems(), outParam);
                     break;
 

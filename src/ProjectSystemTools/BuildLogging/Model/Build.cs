@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return 1;
             }
 
-            var startComparison = StartTime.CompareTo(other.StartTime);
+            int startComparison = StartTime.CompareTo(other.StartTime);
             return startComparison != 0 ? startComparison : string.Compare(ProjectPath, other.ProjectPath, StringComparison.Ordinal);
         }
 
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return;
             }
 
-            var logPath = LogPath;
+            string logPath = LogPath;
             LogPath = null;
             try
             {

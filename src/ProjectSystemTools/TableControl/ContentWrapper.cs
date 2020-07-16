@@ -32,9 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
                 return;
             }
 
-            var guidContextMenu = ProjectSystemToolsPackage.UIGuid;
-            var location = GetContextMenuLocation();
-            var locationPoints = new[] { new POINTS { x = (short)location.X, y = (short)location.Y } };
+            Guid guidContextMenu = ProjectSystemToolsPackage.UIGuid;
+            Point location = GetContextMenuLocation();
+            POINTS[] locationPoints = new[] { new POINTS { x = (short)location.X, y = (short)location.Y } };
 
             // Show context menu blocks, so we need to yield out of this method
             // for e.Handled to be noticed by WPF

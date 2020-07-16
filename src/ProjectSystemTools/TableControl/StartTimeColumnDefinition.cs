@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.StartTime, out var value) && value != null && value is DateTime startTime)
+            if (entry.TryGetValue(TableKeyNames.StartTime, out object value) && value != null && value is DateTime startTime)
             {
                 content = startTime.ToString("s");
                 return true;

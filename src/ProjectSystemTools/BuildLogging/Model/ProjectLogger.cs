@@ -69,9 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
         {
-            foreach (var dimension in s_dimensions)
+            foreach (string dimension in s_dimensions)
             {
-                if (globalProperties.TryGetValue(dimension, out var dimensionValue))
+                if (globalProperties.TryGetValue(dimension, out string dimensionValue))
                 {
                     yield return dimensionValue;
                 }
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
                 return;
             }
 
-            var dimensions = GatherDimensions(e.GlobalProperties);
+            IEnumerable<string> dimensions = GatherDimensions(e.GlobalProperties);
 
             var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e.Timestamp);
             _build = build;

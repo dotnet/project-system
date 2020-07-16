@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LogModel.Builder
         }
 
         public TargetInfo GetTarget(int id) => 
-            _targetInfos == null || !_targetInfos.TryGetValue(id, out var targetInfo)
+            _targetInfos == null || !_targetInfos.TryGetValue(id, out TargetInfo targetInfo)
                 ? throw new LoggerException(Resources.CannotFindTarget)
                 : targetInfo;
 

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
-                foreach (var propertyName in propertyNames)
+                foreach (string propertyName in propertyNames)
                 {
                     Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 

@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             commandGuid = Guid.Empty;
             flags = 0;
 
-            var oldCursor = Cursor.Current;
+            Cursor oldCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
 
             try

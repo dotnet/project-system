@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         int IOleCommandTarget.QueryStatus(ref Guid commandGroupGuid, uint commandCount, OLECMD[] commands, IntPtr commandText)
         {
-            var result = InnerQueryStatus(ref commandGroupGuid, commandCount, commands, commandText);
+            int result = InnerQueryStatus(ref commandGroupGuid, commandCount, commands, commandText);
 
             if (result == VSConstants.S_OK)
             {
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         int IOleCommandTarget.Exec(ref Guid commandGroupGuid, uint commandId, uint commandExecOption, IntPtr pvaIn, IntPtr pvaOut)
         {
-            var result = InnerExec(ref commandGroupGuid, commandId, commandExecOption, pvaIn, pvaOut);
+            int result = InnerExec(ref commandGroupGuid, commandId, commandExecOption, pvaIn, pvaOut);
 
             if (result == VSConstants.S_OK)
             {

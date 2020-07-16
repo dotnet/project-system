@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.TableControl
 
         public override bool TryCreateStringContent(ITableEntryHandle entry, bool truncatedText, bool singleColumnView, out string content)
         {
-            if (entry.TryGetValue(TableKeyNames.BuildType, out var value) && value != null && value is BuildType buildType)
+            if (entry.TryGetValue(TableKeyNames.BuildType, out object value) && value != null && value is BuildType buildType)
             {
                 content = buildType.ToString();
                 return true;
