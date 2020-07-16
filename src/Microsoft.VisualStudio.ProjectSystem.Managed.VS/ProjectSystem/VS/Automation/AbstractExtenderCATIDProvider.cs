@@ -11,9 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     internal abstract class AbstractExtenderCATIDProvider : IExtenderCATIDProvider
     {
         // TODO remove suppression once CPS annotation corrected
-#pragma warning disable CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         public string? GetExtenderCATID(ExtenderCATIDType extenderCATIDType, IProjectTree? treeNode)
-#pragma warning restore CS8613 // Nullability of reference types in return type doesn't match implicitly implemented member.
         {
             // CPS's implementation of ExtenderCATIDType incorrectly treats the same "instances" as distinct items based 
             // where they are accessed in CPS. It also incorrectly maps "HierarchyExtensionObject" and "HierarchyBrowseObject" 

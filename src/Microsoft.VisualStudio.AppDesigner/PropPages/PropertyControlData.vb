@@ -61,12 +61,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public AssociatedControls As Control()
 
         Protected Flags As ControlDataFlags
-#Disable Warning IDE1006 ' Naming Styles (Compat)
         Protected m_Initializing As Boolean
         Protected m_FormControl As Control
         Protected m_PropPage As PropPageUserControlBase
         Protected m_isCommitingChange As Boolean
-#Enable Warning IDE1006 ' Naming Styles
 
         'True if the controls associated with this property can be enabled/disabled
         '  (will be false e.g. if the property is hidden or read-only)

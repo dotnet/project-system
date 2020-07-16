@@ -33,9 +33,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private Function TrackInternal(projectHierarchy As IVsHierarchy) As MyApplicationProperties
             Dim cookie = GetProjectFileCookie(projectHierarchy)
 
-#Disable Warning CA2000 ' Dispose objects before losing scope
             Dim properties = ImmutableInterlocked.GetOrAdd(_managerInstances, cookie, Function() New MyApplicationProperties())
-#Enable Warning CA2000 ' Dispose objects before losing scope
             ' There is a chance that GetOrAdd will call the valueFactory function when its not needed
             ' and since MyApplicationProperties won't init itself twice, we can just Init it here when we're sure
             properties.Init(projectHierarchy)

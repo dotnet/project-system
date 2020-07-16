@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable RS0030 // Do not used banned APIs (this is the replacement)
-
 namespace Microsoft.VisualStudio
 {
     /// <summary>
