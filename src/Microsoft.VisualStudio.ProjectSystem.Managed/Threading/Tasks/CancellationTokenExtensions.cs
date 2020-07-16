@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </summary>
     internal static class CancellationTokenExtensions
     {
-#pragma warning disable CA1068 // CancellationToken parameters must come last
         /// <summary>
         ///     Registers a delegate that will be called when this <see cref="CancellationToken"/>
         ///     is canceled, executing the callback immediately if it has already been canceled 
@@ -36,7 +35,6 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ///     has been disposed.
         /// </exception>
         internal static CancellationTokenRegistration Register(this CancellationToken token, RegisterOptions options, Action callback)
-#pragma warning restore CA1068
         {
             Requires.NotNull(callback, nameof(callback));
 

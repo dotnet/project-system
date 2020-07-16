@@ -226,17 +226,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
-#pragma warning restore RS0030 // symbol LoadedProject is banned
+#pragma warning restore RS0030
             {
+#pragma warning disable RS0030 // https://github.com/dotnet/roslyn-analyzers/issues/3295
                 base.Initialize();
+#pragma warning restore RS0030
 
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
 #pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
                 UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
-#pragma warning restore RS0030 // symbol LoadedProjectAsync is banned
-                    async delegate
+#pragma warning restore RS0030
+                async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
                         UnconfiguredProjectAsynchronousTasksService
