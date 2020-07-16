@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+#nullable disable
+
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -11,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal class RoslynLogger
     {
-        private static readonly ImmutableHashSet<string> RoslynEventSet;
+        private static readonly ImmutableHashSet<string> s_roslynEventSet;
 
         private readonly BuildTableDataSource _dataSource;
 
@@ -25,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         static RoslynLogger()
         {
-            RoslynEventSet = ImmutableHashSet.Create(
+            s_roslynEventSet = ImmutableHashSet.Create(
                 "WorkCoordinator_DocumentWorker_Enqueue",
                 "WorkCoordinator_ProcessProjectAsync",
                 "WorkCoordinator_ProcessDocumentAsync",
@@ -82,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
             // add our own listener
             _roslynTraceSource.Listeners.Clear();
-            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(RoslynEventSet));
+            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(s_roslynEventSet));
 
             _setLoggerCall(_roslynTraceSource);
         }

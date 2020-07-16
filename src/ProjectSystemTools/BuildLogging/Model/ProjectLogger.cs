@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 {
     internal sealed class ProjectLogger : LoggerBase
     {
-        private static readonly string[] Dimensions = { "Configuration", "Platform", "TargetFramework" };
+        private static readonly string[] s_dimensions = { "Configuration", "Platform", "TargetFramework" };
 
         private readonly bool _isDesignTime;
         private int _projectInstanceId;
@@ -67,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
         {
-            foreach (var dimension in Dimensions)
+            foreach (var dimension in s_dimensions)
             {
                 if (globalProperties.TryGetValue(dimension, out var dimensionValue))
                 {

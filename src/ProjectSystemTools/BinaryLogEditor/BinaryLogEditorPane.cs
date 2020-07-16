@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
             _documentData.Loaded += OnDocumentDataLoaded;
             var logControl = new LogViewControl();
             logControl.AddHandler(TreeView.SelectedItemChangedEvent, (RoutedPropertyChangedEventHandler<object>)SelectionChanged);
-            logControl.AddHandler(DataGrid.SelectionChangedEvent, (SelectionChangedEventHandler)GridSelectionChanged);
+            logControl.AddHandler(System.Windows.Controls.Primitives.Selector.SelectionChangedEvent, (SelectionChangedEventHandler)GridSelectionChanged);
             logControl.BuildTreeTab.DataContext = new RootViewModel(_buildTreeViewItems);
             logControl.EvaluationTreeTab.DataContext = new RootViewModel(_evaluationTreeViewItems);
             logControl.TargetsTab.DataContext = _targetListViewItems;
@@ -174,7 +174,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BinaryLogEditor
                 shell.FindToolWindow((uint)__VSFINDTOOLWIN.FTW_fForceCreate, ref propertyBrowser, out var frame);
                 frame?.ShowNoActivate();
             }
-
         }
     }
 }
