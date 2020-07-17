@@ -13,7 +13,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Inherits SerializationStore
         Implements ISerializable
 
-
         'The set of objects (IComponent instances or properties) that we wish to
         '  "serialize" into this store.  The actual values won't be serialized
         '  until we're Close:d, until then this just keeps track of what we
@@ -35,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub New()
         End Sub
 
-
         ' default impl of abstract base member.  see serialization store for details.
         '	
         Public Overrides ReadOnly Property Errors As ICollection
@@ -43,7 +41,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return Array.Empty(Of Object)
             End Get
         End Property
-
 
         ''' <summary>
         ''' The Close method closes this store and prevents any further objects 
@@ -78,8 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-
-
 #Region "ISerialization implementation"
 
         'Serialization keys for ISerializable
@@ -95,7 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub GetObjectData(info As SerializationInfo, context As StreamingContext) Implements ISerializable.GetObjectData
             info.AddValue(KEY_STATE, _serializedState)
         End Sub
-
 
         ''' <summary>
         ''' Constructor used to deserialize ourselves from binary serialization.
@@ -161,7 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End With
         End Sub
 
-
         ''' <summary>
         ''' Adds a new property serialization to our list of things to serialize.
         ''' </summary>
@@ -185,7 +178,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 .Members.Add(Member)
             End With
         End Sub
-
 
         ''' <summary>
         ''' Gets the current data for the given object that is contained in
@@ -211,7 +203,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
 #Region "Deserialization of the saved objects/properties (used at Undo/Redo time)"
 
-
         ''' <summary>
         ''' Deserializes the saved bits.
         '''     This method deserializes the store, but rather than produce 
@@ -230,7 +221,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             DeserializeHelper(Container, True)
         End Sub
 
-
         ''' <summary>
         ''' Deserializes the saved bits.
         '''     This method deserializes the store to produce a collection of 
@@ -241,7 +231,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Function Deserialize() As ICollection
             Return DeserializeHelper(Nothing, False)
         End Function
-
 
         ''' <summary>
         ''' Deserializes the saved bits.
@@ -254,7 +243,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Function Deserialize(Container As IContainer) As ICollection
             Return DeserializeHelper(Container, False)
         End Function
-
 
         ''' <summary>
         ''' This method does the actual deserialization work, based on the given
@@ -382,7 +370,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 End Get
             End Property
 
-
             ''' <summary>
             ''' If True, the entire Resource instance should be serialized.  If false,
             '''   then only the properties in PropertiesToSerialize should be serialized.
@@ -398,7 +385,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     _isEntireObject = Value
                 End Set
             End Property
-
 
             ''' <summary>
             ''' A list of PropertyDescriptors representing the properties on

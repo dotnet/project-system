@@ -111,6 +111,7 @@
                           UserSourceItems;
                           SupportAvailableItemName;
                           IntegratedConsoleDebugging;
+                          DisableBuiltInDebuggerServices;
                           PersistDesignTimeDataOutOfProject;" />
 
     <!-- COM references are not supported in .NET Core before 3.0 -->
@@ -177,12 +178,8 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SpecialFolder.xaml">
       <Context>File;ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
     <!-- Project related settings -->
@@ -228,7 +225,7 @@
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -256,15 +253,15 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
       <Context>ConfiguredBrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SourceControl.xaml">
       <Context>Invisible</Context>
     </PropertyPageSchema>
 
@@ -345,7 +342,7 @@
     </PropertyPageSchema>
 
     <!-- Tool references -->
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DotNetCliToolReference.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DotNetCliToolReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 

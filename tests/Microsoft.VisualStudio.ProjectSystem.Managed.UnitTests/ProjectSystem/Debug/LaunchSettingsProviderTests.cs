@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
             var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
-            var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
+            var specialFilesManager = IActiveConfiguredValueFactory.ImplementValue<IAppDesignerFolderSpecialFileProvider?>(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
@@ -269,7 +269,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
-
 
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
@@ -884,7 +883,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-            ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider,
+            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
             IProjectFaultHandlerService? projectFaultHandler = null)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {
@@ -944,7 +943,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [JsonProperty(PropertyName = "iis")]
         public ServerBindingData? IISBindingData { get; set; }
-
 
         [JsonProperty(PropertyName = "iisExpress")]
         public ServerBindingData? IISExpressBindingData { get; set; }

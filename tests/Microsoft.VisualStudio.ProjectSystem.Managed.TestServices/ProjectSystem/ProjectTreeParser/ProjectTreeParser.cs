@@ -67,9 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             if (parent == null)
-#pragma warning disable IDE0016 // Use 'throw' expression
                 throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
-#pragma warning restore IDE0016 // Use 'throw' expression
 
             MutableProjectTree tree = ReadProjectItem();
             tree.Parent = parent;

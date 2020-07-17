@@ -9,7 +9,6 @@ Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
-
     ''' <summary>
     ''' In case we're building an editor, the editor's view will contain some user controls built from FX.
     '''   These user controls handles context menu in a different way. To show the context menu the correct way,
@@ -20,8 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend Class DesignerListView
         Inherits ListView
 
-
-
         ''' <summary>
         ''' ContextMenuShow will be raised when this list view needs to show its context menu.
         ''' The derived control simply needs to handle this event to know when to show a
@@ -30,9 +27,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Public Event ContextMenuShow(sender As Object, e As MouseEventArgs)
-
-
-
 
         ''' <summary>
         ''' We override Control.WndProc to raise the ContextMenuShow event.
@@ -51,8 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     MyBase.WndProc(m)
             End Select
         End Sub
-
-
 
     End Class
 

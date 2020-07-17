@@ -6,7 +6,6 @@ Imports EnvDTE
 
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.Common
 
     ''' <summary>

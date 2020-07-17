@@ -7,9 +7,7 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Interop
 {
     [Guid("1EAA526A-0898-11d3-B868-00C04F79F802"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-#pragma warning disable IDE1006 // Naming Styles
     internal interface SVsAppId
-#pragma warning restore IDE1006 // Naming Styles
     {
     }
 

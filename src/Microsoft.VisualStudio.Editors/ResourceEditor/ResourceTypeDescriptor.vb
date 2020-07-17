@@ -5,9 +5,7 @@ Option Strict On
 Option Compare Binary
 Imports System.ComponentModel
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
-
 
     ''' <summary>
     ''' Provides type description for Resource class.
@@ -20,16 +18,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ResourceTypeDescriptor
         Inherits CustomTypeDescriptor
 
-
         ' The instance of the Resource that we're providing type description information for.
-        Private ReadOnly _instance As Resource = Nothing
-
+        Private ReadOnly _instance As Resource
 
         '======================================================================
         '= Constructors =                                                     =
         '======================================================================
-
-
 
         ''' <summary>
         '''  Constructs a new instance of ResourceTypeDescriptor with the specified Resource.
@@ -42,13 +36,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _instance = Instance
         End Sub
 
-
-
         '======================================================================
         '= Properties =                                                       =
         '======================================================================
-
-
 
         ''' <summary>
         '''  Returns the properties of this Resource instance.
@@ -59,7 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _instance.GetProperties
         End Function
 
-
         ''' <summary>
         '''  Returns the properties for this Resource instance using the attribute array as a filter.
         ''' </summary>
@@ -69,7 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function GetProperties(attributes() As Attribute) As PropertyDescriptorCollection
             Return _instance.GetProperties
         End Function
-
 
         ''' <summary>
         ''' The GetComponentName method returns the name of the component instance 

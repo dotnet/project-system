@@ -176,7 +176,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
     Friend Delegate Function CheckCommandStatusHandler(menuCommand As DesignerMenuCommand) As Boolean
 
-
     ''' <summary>
     ''' A combobox control on a MSO command bar needs two commands, one to actually execute the command
     ''' and another to fill the combobox with items. This is a helper class that you can register with 

@@ -12,7 +12,6 @@ Imports Microsoft.VisualStudio.XmlEditor
 
 Namespace Microsoft.VisualStudio.Editors
 
-
     '*
     '* This is the Visual Studio package for the Microsoft.VisualStudio.Editors assembly.  It will be CoCreated by
     '* Visual Studio during package load in response to the GUID contained below.
@@ -467,8 +466,6 @@ Namespace Microsoft.VisualStudio.Editors
                 Return Interop.NativeMethods.S_OK
             End Function
 
-
-
 #Region "IVsSolutionEvents methods that simply return S_OK"
 
             Public Function OnAfterLoadProject(pStubHierarchy As IVsHierarchy, pRealHierarchy As IVsHierarchy) As Integer Implements IVsSolutionEvents.OnAfterLoadProject
@@ -506,7 +503,7 @@ Namespace Microsoft.VisualStudio.Editors
             End Function
 #End Region
 
-            Private _disposed As Boolean = False
+            Private _disposed As Boolean
 
             ' IDisposable
             Private Overloads Sub Dispose(disposing As Boolean)

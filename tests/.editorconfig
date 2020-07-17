@@ -13,6 +13,7 @@ csharp_style_var_elsewhere = true:none
 # where we want to marshal the continuations back to it.
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.CA2016.severity = none        # ForwardCancellationTokenToInvocations
 dotnet_diagnostic.CA2000.severity = none
 dotnet_diagnostic.CA2009.severity = none
 
@@ -43,3 +44,6 @@ dotnet_diagnostic.VSTHRD200.severity = none     # Naming stylesNaming styles:  B
 # xunit.analyzers
 dotnet_diagnostic.xUnit1026.severity = none     # Theory methods must use all parameters
 dotnet_diagnostic.xUnit1004.severity = none     # Test methods should not be skipped
+
+dotnet_diagnostic.RS0043.severity = none        # Do not call test accessors from production code
+dotnet_diagnostic.RS0100.severity = none        # Statements must be placed on their own line

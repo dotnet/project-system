@@ -22,7 +22,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _wrappedUndoSite As IVsProjectDesignerPageSite    'May be Nothing
         Private ReadOnly _nestedPropertyNamePrefix As String               'Prefix string to be placed at the beginning of PropertyName to distinguish properties from the page hosted by this child page site
 
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -43,7 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _nestedPropertyNamePrefix = childPage.GetType.FullName & NestingCharacter
         End Sub
 
-
         ''' <summary>
         ''' Returns whether or not the property page hosted in this site should be with 
         '''   immediate-apply mode or not)
@@ -55,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End Get
         End Property
-
 
         ''' <summary>
         ''' Delegate to the wrapped site
@@ -90,7 +87,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return _wrappedInternalSite.TranslateAccelerator(msg)
         End Function
 
-
 #Region "Undo/redo support for child pages"
 
         ''' <summary>
@@ -107,7 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Called by the child page when a change occurs on the page (during Apply).
         ''' </summary>
@@ -121,7 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' Called by the child page when a change occurs on the page (during Apply).
         ''' </summary>
@@ -132,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 _wrappedUndoSite.OnPropertyChanging(MungePropertyName(propertyName), propertyDescriptor)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Munges a property name into a form that combines that type name of the child page that the

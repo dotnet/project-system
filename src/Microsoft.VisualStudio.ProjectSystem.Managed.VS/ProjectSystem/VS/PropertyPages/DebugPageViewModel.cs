@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private readonly string _executableFilter = string.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*", PropertyPageResources.ExecutableFiles, PropertyPageResources.AllFiles);
         private IDisposable _debugProfileProviderLink;
         private bool _removeEnvironmentVariablesRow;
-        private bool _debugTargetsCoreInitialized = false;
+        private bool _debugTargetsCoreInitialized;
         private bool _environmentVariablesValid = true;
         private int _environmentVariablesRowSelectedIndex = -1;
         private ILaunchSettingsProvider _launchSettingsProvider;
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private List<LaunchType> _providerLaunchTypes;
         private LaunchType _selectedLaunchType;
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource = null;
+        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource;
         private ICommand _addEnvironmentVariableRowCommand;
         private ICommand _removeEnvironmentVariableRowCommand;
         private ICommand _browseDirectoryCommand;

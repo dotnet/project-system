@@ -52,7 +52,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Indicates whether check-out has failed once in this action...
         Private _checkOutFailedInTheAction As Boolean
 
-
         'Default column width percentages for each column.  Yes, this adds up to more than 100%
         '  if the type column is visible, but that's okay.
         Private Const DefaultColumnWidthPercentage_Name As Integer = 20
@@ -93,10 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             VirtualMode = True
         End Sub
-
-
-
-
 
 #Region "Properties"
 
@@ -155,7 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Return the ResourceEditorView which is the parent of this
         '''   control.
@@ -171,7 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Gets the ResourceFile that was used to populate this grid.
         ''' </summary>
@@ -183,11 +176,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
 #End Region
-
-
-
 
 #Region "Initialization"
 
@@ -201,7 +190,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  Type (hidden for "Strings" view, visible in "Other" view)
             '  Value
             '  Comment
-
 
             ' ==== Name Column
 
@@ -274,9 +262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '... We need to turn off autosizing of columns because that would mean users would not 
             '      be allowed to change the column widths.
 
-
         End Sub
-
 
         ''' <summary>
         ''' Populates the grid with all resources from a ResourceFile which are in the
@@ -332,7 +318,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         End Sub
 
-
         ''' <summary>
         ''' Clear all entries
         ''' </summary>
@@ -341,7 +326,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _virtualResourceList.Clear()
             _uncommittedResource = Nothing
         End Sub
-
 
         ''' <summary>
         ''' Creates a new row with blank values
@@ -376,10 +360,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return NewRow
         End Function
 
-
 #End Region
-
-
 
 #Region "General UI"
 
@@ -400,7 +381,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ParentView.DsMsgBox(Message, Buttons, Icon, DefaultButton, HelpLink)
             End If
         End Function
-
 
         ''' <summary>
         ''' Commits all pending changes that the user has made in the grid.
@@ -424,7 +404,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 EndEdit(DataGridViewDataErrorContexts.InitialValueRestoration)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Invalidates the row for a particular resource, causing it to be redrawn with
@@ -450,7 +429,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 #End Region
 
-
 #Region "Validation"
 
         ''' <summary>
@@ -463,7 +441,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Debug.Fail("DataError fired - do we need to handle this somehow?")
         End Sub
-
 
         ''' <summary>
         ''' Validates the data a user has typed into a single cell.
@@ -505,7 +482,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Fail("Shouldn't reach here")
         End Function
 
-
         ''' <summary>
         ''' This is called by the grid when a cell needs to be validated.  We try to 
         '''  validate it, and if the validation fails, we show a messagebox.
@@ -529,9 +505,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
 #End Region
-
 
 #Region "Source code control"
 
@@ -548,7 +522,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
         End Sub
-
 
         ''' <summary>
         ''' Occurs when the user starts to edit values in the grid.
@@ -670,9 +643,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Adding/Removing Resources"
-
 
         ''' <summary>
         ''' Adds a set of Resources to the grid (i.e., resources that were added since calling Populate).
@@ -686,7 +657,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Invalidate()
         End Sub
-
 
         ''' <summary>
         ''' Helper to add a set of Resources to the grid.
@@ -760,7 +730,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Else
                     'We can't share this row, so we'll have to add it separately.
 
-
                     'First add any copied rows that we've been accumulating
                     If SharedRowsToAdd > 0 Then
                         Debug.Assert(IndexOfFirstSharableRow >= 0, "IndexOfFirstSharableRow should have already been set")
@@ -824,7 +793,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Virtualization methods"
 
         ''' <summary>
@@ -852,7 +820,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Finds the row index of a given Resource.
         ''' </summary>
@@ -863,7 +830,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim IndexFound As Integer = _virtualResourceList.IndexOf(SearchResource)
             Return IndexFound
         End Function
-
 
         ''' <summary>
         ''' Finds the Row that contains a given Resource.
@@ -879,7 +845,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
         End Function
-
 
         ''' <summary>
         ''' Gets the Resource that is in the given row index.
@@ -901,7 +866,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Retrieves the Resource associated with a particular grid row.
         ''' </summary>
@@ -912,7 +876,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return GetResourceFromRowIndex(Row.Index, True)
         End Function
 
-
         ''' <summary>
         ''' Called by the grid when its need data for a particular grid cell.
         ''' </summary>
@@ -921,7 +884,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.OnCellValueNeeded(e)
             e.Value = GetCellStringValue(e.RowIndex, e.ColumnIndex)
         End Sub
-
 
         ''' <summary>
         '''  Get Cell String value from the original resource object
@@ -974,7 +936,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Value
         End Function
 
-
         ''' <summary>
         ''' Called by the grid when it needs the error text for a particular grid cell.
         ''' </summary>
@@ -1024,7 +985,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Debug.Fail("Unexpected column in OnCellErrorTextNeeded")
             End Select
         End Sub
-
 
         ''' <summary>
         ''' Called by the grid when the user has made a change to data and that data
@@ -1106,7 +1066,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Select
         End Sub
 
-
         ''' <summary>
         ''' Called by the grid when it needs to create a new row (i.e., the user has
         '''   typed data into the add/new row, causing a new row to be created).  We
@@ -1135,7 +1094,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _uncommittedResource = NewResource
         End Sub
 
-
         ''' <summary>
         ''' Called by the grid when it needs to know if a row is dirty.
         '''
@@ -1154,7 +1112,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Add/new row implementation (allows user to add new rows at the bottom of the grid)"
 
@@ -1193,7 +1150,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' This is called by the grid whenever the user adds a new row by typing in the
         '''   add/new row at the bottom of the grid.  We'll use this opportunity to commit
@@ -1212,7 +1168,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  So it's time to commit it.
             CommitTheUncommittedRow()
         End Sub
-
 
         ''' <summary>
         ''' Called by the grid when the user deletes a row from the grid, including when
@@ -1250,7 +1205,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Places the cursor on the bottom row of the string table, ready for the user to enter a new string.
         ''' </summary>
@@ -1265,7 +1219,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Selecting and highlighting resources"
 
@@ -1299,7 +1252,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Highlights (selects) the specified resource and scrolls it into view.
         ''' </summary>
@@ -1321,7 +1273,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Next
         End Sub
 
-
         ''' <summary>
         ''' Unselect all resources in this grid.
         ''' </summary>
@@ -1333,7 +1284,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Cell.Selected = False
             Next
         End Sub
-
 
         ''' <summary>
         ''' Gets all resources currently selected in this grid.
@@ -1401,7 +1351,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Never return Nothing
             Return Array.Empty(Of Resource)
         End Function
-
 
         ''' <summary>
         ''' Gets the find/replace field for the current cell.  Returns Name if there's no current cell or
@@ -1499,7 +1448,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
 
                 ClearSelection()
-
 
                 If columnIndex <> _sorter.ColumnIndex Then
                     Columns(_sorter.ColumnIndex).HeaderCell.SortGlyphDirection = SortOrder.None
@@ -1601,7 +1549,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 Return String.Empty
             End Function
-
 
         End Class
 

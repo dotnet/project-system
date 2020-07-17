@@ -194,7 +194,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Removes references to anything that was passed in to SetObjects
         ''' </summary>
@@ -206,13 +205,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _isMyApplicationPropertiesCached = False
         End Sub
 
-
         Private ReadOnly Property MyApplicationPropertiesSupported As Boolean
             Get
                 Return MyApplicationProperties IsNot Nothing
             End Get
         End Property
-
 
         ''' <summary>
         ''' Gets the MyApplication.MyApplicationProperties object returned by the project system (which the project system creates by calling into us)
@@ -241,7 +238,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Attempts to run the custom tool for the .myapp file.  If an exception
         '''   is thrown, it is displayed to the user and swallowed.
@@ -258,7 +254,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' This is a readonly property, so don't return anything
@@ -318,7 +313,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Gets the output type from the UI fields
@@ -395,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableUseApplicationFrameworkCheckBox(False)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Getter for the "CustSubMain" property.
@@ -659,7 +652,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns True iff the My Application framework should be supportable
         '''   in this project.  It does not necessarily mean that it's turned on,
@@ -683,7 +675,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Returns True iff the My Application framework stuff is supported
@@ -711,7 +702,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
 
         ''' <summary>
         ''' Retrieve the list of start-up forms (not start-up objects) from the VB compiler
@@ -1236,7 +1226,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-
         ''' <summary>
         ''' Get the current value of MyType from the project properties
         ''' </summary>
@@ -1248,7 +1237,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' If MyType is set to "Empty" or "Custom", then the property page should consider
@@ -1268,7 +1256,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return _isMyTypeDisabled
         End Function
-
 
         ''' <summary>
         ''' Sets the current value of MyType based on the application type
@@ -1345,7 +1332,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return MyType
         End Function
-
 
         ''' <summary>
         ''' Sets the text on the start-up object label to be either "Startup object" or "Startup form" depending
@@ -1478,7 +1464,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(sender, True)
         End Sub
 
-
         ''' <summary>
         ''' Handle the "View Code" button's click event.  On this, we navigate to the MyEvents.vb file
         ''' </summary>
@@ -1509,7 +1494,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Happens when the splash screen combobox box is opened.  Use this to populate it with the 
         '''   correct current choices.
@@ -1520,7 +1504,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             PopulateSplashScreenList(True)
             SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
-
 
         ''' <summary>
         ''' Happens when the start-up object combobox box is opened.  Use this to populate it with the 
@@ -1632,7 +1615,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  while our page is up, our functionality might be affected
             Return Value IsNot Nothing AndAlso Value.Equals(_noneText, StringComparison.Ordinal)
         End Function
-
 
         ''' <summary>
         ''' Fired when any of the MyApplicationProperty values has been changed

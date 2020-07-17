@@ -138,7 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Assert.Equal(0u, resolvedAssemblyPaths);
         }
 
-
         [Fact]
         public void ResolveAssemblyPathInTargetFx_MoreAssembliesToResolveThanAssemblySpecs_ReturnsE_INVALIDARG()
         {

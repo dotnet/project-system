@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// Buffer to preserve latest set of error messages to help diagnosing Watson bugs.
         /// </summary>
         private static readonly string[] s_criticalTraceBuffer = new string[CriticalTraceBufferSize];
-        private static volatile int s_currentTraceIndex = 0;
+        private static volatile int s_currentTraceIndex;
 
         /// <summary>
         /// Gives the current Travel Level setting for the CPS tracing

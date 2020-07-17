@@ -96,7 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
 
-
             Select Case unit
                 Case TimeUnit.Seconds
                     TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Seconds
@@ -140,7 +139,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private Sub UseCustomConnectionStringCheckBox_CheckStateChanged(sender As Object, e As EventArgs) Handles UseCustomConnectionStringCheckBox.CheckStateChanged
             UpdateCustomConnectionStringControlBasedOnCheckState()
         End Sub
-
 
         <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Sub UpdateCustomConnectionStringControlBasedOnCheckState()

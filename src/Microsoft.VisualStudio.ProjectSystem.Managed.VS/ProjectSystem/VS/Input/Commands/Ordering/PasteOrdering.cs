@@ -20,13 +20,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
     {
         public const int OrderPrecedence = 10000;
 
-        private readonly ActiveConfiguredProject<ConfiguredProject> _configuredProject;
+        private readonly IActiveConfiguredValue<ConfiguredProject> _configuredProject;
         private readonly IProjectAccessor _accessor;
 
         private IProjectTree? _dropTarget;
 
         [ImportingConstructor]
-        public PasteOrdering(UnconfiguredProject unconfiguredProject, ActiveConfiguredProject<ConfiguredProject> configuredProject, IProjectAccessor accessor)
+        public PasteOrdering(UnconfiguredProject unconfiguredProject, IActiveConfiguredValue<ConfiguredProject> configuredProject, IProjectAccessor accessor)
         {
             _configuredProject = configuredProject;
             _accessor = accessor;

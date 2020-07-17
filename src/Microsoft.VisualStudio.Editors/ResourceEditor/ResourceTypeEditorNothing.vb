@@ -17,14 +17,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ResourceTypeEditorNothing
         Inherits ResourceTypeEditorStringBase
 
-
-
-
         '======================================================================
         '= PROPERTIES =                                                       =
         '======================================================================
-
-
 
         ''' <summary>
         ''' Returns whether this resource type should be displayed in a string table or not.
@@ -38,16 +33,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
-
-
         '======================================================================
         '= METHODS =                                                          =
         '======================================================================
-
-
-
 
         ''' <summary>
         ''' Given a resource, returns a string formatted to display the value of the resource.  This is the inverse

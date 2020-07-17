@@ -15,13 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         private readonly DiagnosticLevel _diagnosticLevel;
 
-        public TargetDependencyViewModel(ITargetFramework targetFramework, DiagnosticLevel diagnosticLevel)
+        public TargetDependencyViewModel(TargetFramework targetFramework, DiagnosticLevel diagnosticLevel)
         {
-            Caption = targetFramework.FriendlyName;
+            Caption = targetFramework.ShortName;
             Flags = GetCachedFlags(targetFramework);
             _diagnosticLevel = diagnosticLevel;
 
-            static ProjectTreeFlags GetCachedFlags(ITargetFramework targetFramework)
+            static ProjectTreeFlags GetCachedFlags(TargetFramework targetFramework)
             {
                 return ImmutableInterlocked.GetOrAdd(
                     ref s_configurationFlags,
