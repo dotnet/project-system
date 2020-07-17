@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
@@ -1450,7 +1449,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Function
 
         'For debug tracing
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Function PreProcessMessage(ByRef msg As Message) As Boolean
             Switches.TracePDMessageRouting(TraceLevel.Warning, "PropPageDesignerView.PreProcessMessage", msg)
             Return MyBase.PreProcessMessage(msg)

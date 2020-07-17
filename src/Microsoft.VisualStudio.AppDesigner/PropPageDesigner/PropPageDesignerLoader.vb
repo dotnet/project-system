@@ -1,7 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel.Design.Serialization
-Imports System.Diagnostics.CodeAnalysis
 
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
 
@@ -91,7 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         ''' Semi-standard IDisposable implementation
         ''' </summary>
         ''' <remarks>MyBase.Dispose called since base does not implement IDisposable</remarks>
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             MyBase.Dispose() 'Necessary because the base does not implement IDisposable
