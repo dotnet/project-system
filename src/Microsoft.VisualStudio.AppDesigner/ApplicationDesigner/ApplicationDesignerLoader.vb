@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel.Design
 Imports System.ComponentModel.Design.Serialization
-Imports System.Diagnostics.CodeAnalysis
 
 #If DEBUG Then
 Imports System.Drawing
@@ -228,7 +227,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' Semi-standard IDisposable implementation
         ''' </summary>
         ''' <remarks>MyBase.Dispose called since base does not implement IDisposable</remarks>
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overloads Overrides Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
             MyBase.Dispose() 'Necessary because the base does not implement IDisposable
