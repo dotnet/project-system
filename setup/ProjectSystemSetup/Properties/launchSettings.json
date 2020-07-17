@@ -54,7 +54,7 @@
     "Start VS Online Client": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
-      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client \"vsls:?workspaceId=<workspace_ID>&remoteJoin=true\""
+      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client /joinworkspace \"vsls:?workspaceId=<workspace_ID>&remoteJoin=true\""
     }
   }
 }
