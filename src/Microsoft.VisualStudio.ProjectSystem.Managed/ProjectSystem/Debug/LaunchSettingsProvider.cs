@@ -885,7 +885,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // even though it can change over the lifetime of the project. We should fix this and convert to using dataflow
             // see: https://github.com/dotnet/project-system/issues/2316.
 
-            string folder = await _appDesignerSpecialFileProvider.Value?.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
+            string folder = null;
+            if (_appDesignerSpecialFileProvider.Value != null)
+                folder = await _appDesignerSpecialFileProvider.Value.GetFileAsync(SpecialFiles.AppDesigner, SpecialFileFlags.FullPath);
 
             if (folder == null)  // AppDesigner capability not present, or the project has set AppDesignerFolder to empty
                 folder = Path.GetDirectoryName(_commonProjectServices.Project.FullPath);
