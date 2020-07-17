@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="needs-review-translation">Vyřešené odkazy sestavení</target>
+        <target state="translated">Odkaz na sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">Vlastnosti odkazu</target>
+        <target state="translated">Vlastnosti odkazu na sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

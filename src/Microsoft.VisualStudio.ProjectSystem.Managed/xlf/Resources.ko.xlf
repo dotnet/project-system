@@ -76,7 +76,7 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">프로젝트 파일 '{0}'을(를) 열 수 없습니다. 
+        <target state="translated">프로젝트 파일 '{0}'을(를) 열 수 없습니다. 
 
 이 프로젝트는 Visual Studio 외부에서 프로젝트 확장명의 이름을 바꾼 결과로 잘못된 프로젝트 형식을 사용하여 로드된 것 같습니다. 솔루션에서 올바른 프로젝트 형식을 선택하도록 프로젝트를 제거했다가 다시 추가하세요.</target>
         <note />

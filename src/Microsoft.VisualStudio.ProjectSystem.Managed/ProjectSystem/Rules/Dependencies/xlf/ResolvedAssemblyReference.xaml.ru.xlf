@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="needs-review-translation">Разрешенная ссылка на сборку</target>
+        <target state="translated">Ссылка на сборку</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="needs-review-translation">Свойства ссылки</target>
+        <target state="translated">Свойства ссылок на сборки</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

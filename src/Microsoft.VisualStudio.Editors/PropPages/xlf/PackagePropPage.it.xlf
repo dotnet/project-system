@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="needs-review-translation">PackageIconUrl è stato rilevato ma è deprecato. In alternativa, usare PackageIcon.</target>
+        <target state="translated">PackageIconUrl è stato rilevato ma è deprecato. In alternativa, usare PackageIcon.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="needs-review-translation">La proprietà PackageLicenseURL è stata rilevata ma è deprecata. Modificare in un elemento Expression o File.</target>
+        <target state="translated">PackageLicenseURL è stato rilevato ma è deprecato. In alternativa, usare Expression o File.</target>
         <note />
       </trans-unit>
     </body>

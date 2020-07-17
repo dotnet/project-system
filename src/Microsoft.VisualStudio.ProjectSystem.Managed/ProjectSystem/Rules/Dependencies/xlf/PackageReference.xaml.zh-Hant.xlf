@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="Rule|PackageReference|DisplayName">
         <source>Package Reference</source>
-        <target state="needs-review-translation">套件</target>
+        <target state="translated">套件參考</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackageReference|Description">
         <source>Package Reference Properties</source>
-        <target state="needs-review-translation">套件屬性</target>
+        <target state="translated">套件參考屬性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to assembly references contained in this package.</source>
-        <target state="new">A comma-delimited list of aliases to assembly references contained in this package.</target>
+        <target state="translated">包含在此套件中，以逗號分隔的組件參考別名清單。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
+        <target state="translated">別名</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="new">Name</target>
+        <target state="translated">名稱</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|Description">
         <source>Location of the package being referenced.</source>
-        <target state="new">Location of the package being referenced.</target>
+        <target state="translated">目前參考的套件位置。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Path|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">路徑</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Included Assets</source>
-        <target state="needs-review-translation">包含的資產</target>
+        <target state="translated">包含的資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Excluded Assets</source>
-        <target state="needs-review-translation">排除的資產</target>
+        <target state="translated">排除的資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="needs-review-translation">私用資產</target>
+        <target state="translated">私用資產</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress Warnings</source>
-        <target state="needs-review-translation">隱藏警告</target>
+        <target state="translated">隱藏警告</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|DisplayName">
         <source>Generate Path Property</source>
-        <target state="needs-review-translation">產生路徑屬性</target>
+        <target state="translated">產生路徑屬性</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePathProperty|Description">

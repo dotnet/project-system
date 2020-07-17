@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <target state="needs-review-translation">Referencia de analizador resuelta</target>
+        <target state="translated">Referencia de analizador</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Reference Properties</source>
-        <target state="needs-review-translation">Propiedades del analizador</target>
+        <target state="translated">Propiedades de la referencia de analizador</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

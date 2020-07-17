@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="needs-review-translation">Vyřešené odkazy projektu</target>
+        <target state="translated">Odkaz na projekt</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
         <source>Project Reference Properties</source>
-        <target state="needs-review-translation">Vlastnosti odkazu</target>
+        <target state="translated">Vlastnosti odkazu na projekt</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

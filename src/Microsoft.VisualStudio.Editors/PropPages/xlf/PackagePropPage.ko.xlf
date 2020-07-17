@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="needs-review-translation">PackageIconUrl이 검색되었지만 사용되지 않습니다. 대신 PackageIcon을 사용합니다.</target>
+        <target state="translated">PackageIconUrl이 검색되었지만 사용되지 않습니다. 대신 PackageIcon을 사용하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="needs-review-translation">PackageLicenseURL 속성이 검색되었지만 사용되지 않습니다. 식 또는 파일로 변경하세요.</target>
+        <target state="translated">PackageLicenseURL이 검색되었지만 사용되지 않습니다. 대신 식이나 파일을 사용하세요.</target>
         <note />
       </trans-unit>
     </body>
