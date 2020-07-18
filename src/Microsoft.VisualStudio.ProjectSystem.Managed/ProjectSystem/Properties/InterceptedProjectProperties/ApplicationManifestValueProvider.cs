@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -58,16 +56,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Sets the application manifest property
         /// </summary>
-        public override async Task<string> OnSetPropertyValueAsync(
+        public override async Task<string?> OnSetPropertyValueAsync(
             string propertyName,
-            string unevaluatedPropertyValue,
+            string? unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
-            IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string returnValue = null;
+            string? returnValue = null;
 
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
-            if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            if (Strings.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
