@@ -14,8 +14,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Task = System.Threading.Tasks.Task;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     /// <summary>
@@ -65,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
         }
 
-        private Task<ConfiguredProject> GetConfiguredProjectForDebugAsync()
+        private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync()
         {
             return _activeDebugFramework.GetConfiguredProjectForActiveFrameworkAsync();
         }
@@ -110,7 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // pause to end of window when CTRL+F5'ing a console application
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
 
-            var actualOutputType = (IEnumValue)await configuration.OutputType.GetValueAsync();
+            var actualOutputType = (IEnumValue?)await configuration.OutputType.GetValueAsync();
+
+            Assumes.NotNull(actualOutputType);
 
             return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
         }
@@ -210,7 +210,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string executable, arguments;
 
             string projectFolder = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
-            ConfiguredProject configuredProject = await GetConfiguredProjectForDebugAsync();
+            ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
+
+            Assumes.NotNull(configuredProject);
 
             // If no working directory specified in the profile, we default to output directory. If for some reason the output directory
             // is not specified, fall back to the project folder.
@@ -289,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
                         string exeName = executable.EndsWith(".exe", StringComparisons.Paths) ? executable : executable + ".exe";
-                        string fullPath = _fileSystem.GetFullPath(exeName);
+                        string? fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
                             executable = fullPath;
@@ -360,10 +362,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 settings.RemoteMachine = resolvedProfile.RemoteDebugMachine();
 
-                string remoteAuthenticationMode = resolvedProfile.RemoteAuthenticationMode();
+                string? remoteAuthenticationMode = resolvedProfile.RemoteAuthenticationMode();
                 if (!Strings.IsNullOrEmpty(remoteAuthenticationMode))
                 {
-                    IRemoteAuthenticationProvider remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
+                    IRemoteAuthenticationProvider? remoteAuthenticationProvider = _remoteDebuggerAuthenticationService.FindProviderForAuthenticationMode(remoteAuthenticationMode);
                     if (remoteAuthenticationProvider != null)
                     {
                         settings.PortSupplierGuid = remoteAuthenticationProvider.PortSupplierGuid;
@@ -396,6 +398,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ConfiguredProject configuredProject,
             bool validateSettings)
         {
+            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
             string runCommand = await GetTargetCommandAsync(properties, validateSettings);
@@ -421,9 +425,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             bool validateSettings)
         {
             // First try "RunCommand" property
-            string runCommand = await GetRunCommandAsync(properties);
+            string? runCommand = await GetRunCommandAsync(properties);
 
-            if (string.IsNullOrEmpty(runCommand))
+            if (Strings.IsNullOrEmpty(runCommand))
             {
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
                 if (validateSettings && await IsClassLibraryAsync())
@@ -438,12 +442,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return runCommand;
         }
 
-        private async Task<string> GetRunCommandAsync(IProjectProperties properties)
+        private async Task<string?> GetRunCommandAsync(IProjectProperties properties)
         {
             string runCommand = await properties.GetEvaluatedPropertyValueAsync("RunCommand");
 
             if (string.IsNullOrEmpty(runCommand))
+            {
                 return null;
+            }
 
             // If dotnet.exe is used runCommand returns just "dotnet". The debugger is going to require a full path so we need to append the .exe
             // extension.
@@ -455,7 +461,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // If the path is just the name of an exe like dotnet.exe then we try to find it on the path
             if (runCommand.IndexOf(Path.DirectorySeparatorChar) == -1)
             {
-                string executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
+                string? executable = GetFullPathOfExeFromEnvironmentPath(runCommand);
                 if (executable != null)
                 {
                     runCommand = executable;
@@ -467,16 +473,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private static async Task<string> GetOutputDirectoryAsync(ConfiguredProject configuredProject)
         {
-            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string outdir = await properties.GetEvaluatedPropertyValueAsync("OutDir");
+            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
 
-            return outdir;
+            IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+
+            return await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.OutDirProperty);
         }
 
         private static async Task<Guid> GetDebuggingEngineAsync(ConfiguredProject configuredProject)
         {
+            Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+
             IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string framework = await properties.GetEvaluatedPropertyValueAsync("TargetFrameworkIdentifier");
+            string framework = await properties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
 
             return GetManagedDebugEngineForFramework(framework);
         }
@@ -485,7 +494,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Searches the path variable for the first match of exeToSearchFor. Returns
         /// null if not found.
         /// </summary>
-        public string GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
+        private string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
         {
             string pathEnv = _environment.GetEnvironmentVariable("Path");
 
