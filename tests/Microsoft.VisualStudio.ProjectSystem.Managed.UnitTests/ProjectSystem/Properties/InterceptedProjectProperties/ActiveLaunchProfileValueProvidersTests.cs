@@ -610,9 +610,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (activeProfileOtherSettings != null)
             {
-                foreach (var kvp in activeProfileOtherSettings)
+                Assumes.NotNull(profile.OtherSettings);
+
+                foreach ((string key, object value) in activeProfileOtherSettings)
                 {
-                    profile.OtherSettings.Add(kvp.Key, kvp.Value);
+                    profile.OtherSettings.Add(key, value);
                 }
             }
 

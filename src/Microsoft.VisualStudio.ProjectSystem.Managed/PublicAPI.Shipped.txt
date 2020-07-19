@@ -57,22 +57,22 @@ Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsUIProvider.ShouldEnabl
 Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption
 Microsoft.VisualStudio.ProjectSystem.Debug.IPersistOption.DoNotPersist.get -> bool
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandLineArgs.set -> void
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.CommandName.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.EnvironmentVariables.get -> System.Collections.Generic.Dictionary<string!, string!>!
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ExecutablePath.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.get -> bool
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchBrowser.set -> void
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.LaunchUrl.set -> void
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.Name.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.OtherSettings.get -> System.Collections.Generic.Dictionary<string!, object!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.ToLaunchProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile!
-Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile.WorkingDirectory.set -> void
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings
 Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile?

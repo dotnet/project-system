@@ -42,12 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string ErrorProfileCommandName = "ErrorProfile";
 
         private readonly UnconfiguredProject _project;
-        private readonly IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider> _appDesignerSpecialFileProvider;
+        private readonly IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> _appDesignerSpecialFileProvider;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
         private readonly AsyncLazy<string> _launchSettingsFilePath;
         private readonly IUnconfiguredProjectServices _projectServices;
         private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
-        private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
+        private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IUnconfiguredProjectServices projectServices,
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
-            IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider> appDesignerSpecialFileProvider,
+            IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
+            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerSpecialFileProvider,
             IProjectFaultHandlerService projectFaultHandler)
         {
             _project = project;
