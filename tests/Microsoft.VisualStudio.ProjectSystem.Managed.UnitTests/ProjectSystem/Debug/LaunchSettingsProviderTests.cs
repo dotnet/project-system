@@ -660,7 +660,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
-            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name.Equals("test")));
+            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name!.Equals("test")));
         }
 
         [Fact]

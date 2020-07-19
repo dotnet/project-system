@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string? finalExePath, out string? finalArguments);
             Assert.Equal(finalExePath, exeIn);
             Assert.Equal(finalArguments, argsIn);
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }

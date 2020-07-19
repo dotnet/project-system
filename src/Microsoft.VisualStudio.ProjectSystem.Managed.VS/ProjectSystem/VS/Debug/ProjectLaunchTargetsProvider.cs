@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
@@ -142,9 +143,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Does some basic validation of the settings. If we don't, the error messages are terrible.
         /// </summary>
-        public void ValidateSettings(string executable, string workingDir, string profileName)
+        public void ValidateSettings([NotNull] string? executable, string workingDir, string? profileName)
         {
-            if (string.IsNullOrEmpty(executable))
+            if (Strings.IsNullOrEmpty(executable))
             {
                 throw new Exception(string.Format(VSResources.NoDebugExecutableSpecified, profileName));
             }
@@ -161,12 +162,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Helper returns cmd.exe as the launcher for Ctrl-F5 (useCmdShell == true), otherwise just the exe and args passed in.
         /// </summary>
-        public static void GetExeAndArguments(bool useCmdShell, string debugExe, string debugArgs, out string finalExePath, out string finalArguments)
+        public static void GetExeAndArguments(bool useCmdShell, string? debugExe, string? debugArgs, out string? finalExePath, out string? finalArguments)
         {
             if (useCmdShell)
             {
                 // Escape the characters ^<>& so that they are passed to the application rather than interpreted by cmd.exe.
-                string escapedArgs = EscapeString(debugArgs, s_escapedChars);
+                string? escapedArgs = EscapeString(debugArgs, s_escapedChars);
                 finalArguments = $"/c \"\"{debugExe}\" {escapedArgs} & pause\"";
                 finalExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
             }
@@ -207,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
-            string executable, arguments;
+            string? executable, arguments;
 
             string projectFolder = Path.GetDirectoryName(_project.UnconfiguredProject.FullPath);
             ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
@@ -259,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             string workingDir;
-            if (string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
+            if (Strings.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
                 workingDir = defaultWorkingDir;
             }
@@ -272,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // IF the executable is not rooted, we want to make is relative to the workingDir unless is doesn't contain
             // any path elements. In that case we are going to assume it is in the current directory of the VS process, or on
             // the environment path. If we can't find it, we just launch it as before.
-            if (!string.IsNullOrWhiteSpace(executable))
+            if (!Strings.IsNullOrWhiteSpace(executable))
             {
                 executable = executable.Replace("/", "\\");
                 if (Path.GetPathRoot(executable) == "\\")
@@ -351,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 useCmdShell = UseCmdShellForConsoleLaunch(resolvedProfile, settings.LaunchOptions);
             }
 
-            GetExeAndArguments(useCmdShell, executable, arguments, out string finalExecutable, out string finalArguments);
+            GetExeAndArguments(useCmdShell, executable, arguments, out string? finalExecutable, out string? finalArguments);
 
             settings.Executable = finalExecutable;
             settings.Arguments = finalArguments;
@@ -528,10 +529,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <param name="unescaped">The string to escape.</param>
         /// <param name="toEscape">The characters to escape in the string.</param>
         /// <returns>The escaped string.</returns>
-        internal static string EscapeString(string unescaped, char[] toEscape)
+        [return: NotNullIfNotNull("unescaped")]
+        internal static string? EscapeString(string? unescaped, char[] toEscape)
         {
-            if (string.IsNullOrWhiteSpace(unescaped))
+            if (Strings.IsNullOrWhiteSpace(unescaped))
+            {
                 return unescaped;
+            }
 
             bool ShouldEscape(char c)
             {

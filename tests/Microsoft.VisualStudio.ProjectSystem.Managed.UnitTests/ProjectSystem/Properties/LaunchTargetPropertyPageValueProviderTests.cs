@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task  SetProperty_UpdatesActiveProfileCommand_WhenAPageWithAMatchingNameIsFound()
         {
-            string newLaunchTarget = string.Empty;
+            string? newLaunchTarget = string.Empty;
 
             var catalogProvider = GetCatalogProviderAndData();
 

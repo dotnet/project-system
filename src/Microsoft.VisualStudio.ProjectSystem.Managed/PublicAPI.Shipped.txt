@@ -19,15 +19,15 @@ Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection
 Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.JsonSection.get -> string!
 Microsoft.VisualStudio.ProjectSystem.Debug.IJsonSection.SerializationType.get -> System.Type!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandLineArgs.get -> string!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandName.get -> string!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableDictionary<string!, string!>!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.ExecutablePath.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandLineArgs.get -> string?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.CommandName.get -> string?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.EnvironmentVariables.get -> System.Collections.Immutable.ImmutableDictionary<string!, string!>?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.ExecutablePath.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchBrowser.get -> bool
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchUrl.get -> string!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.Name.get -> string!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.OtherSettings.get -> System.Collections.Immutable.ImmutableDictionary<string!, object!>!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.WorkingDirectory.get -> string!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.LaunchUrl.get -> string?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.Name.get -> string?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.OtherSettings.get -> System.Collections.Immutable.ImmutableDictionary<string!, object!>?
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.WorkingDirectory.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GetGlobalSetting(string! settingsName) -> object!

@@ -2,8 +2,6 @@
 
 using System.Collections.Immutable;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -62,22 +60,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             OtherSettings = writableProfile.OtherSettings.Count == 0 ? null : writableProfile.OtherSettings.ToImmutableDictionary();
         }
 
-        public string Name { get; set; }
-        public string CommandName { get; set; }
-        public string ExecutablePath { get; set; }
-        public string CommandLineArgs { get; set; }
-        public string WorkingDirectory { get; set; }
+        public string? Name { get; set; }
+        public string? CommandName { get; set; }
+        public string? ExecutablePath { get; set; }
+        public string? CommandLineArgs { get; set; }
+        public string? WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
-        public string LaunchUrl { get; set; }
+        public string? LaunchUrl { get; set; }
         public bool DoNotPersist { get; set; }
 
-        public ImmutableDictionary<string, string> EnvironmentVariables { get; set; }
-        public ImmutableDictionary<string, object> OtherSettings { get; set; }
+        public ImmutableDictionary<string, string>? EnvironmentVariables { get; set; }
+        public ImmutableDictionary<string, object>? OtherSettings { get; set; }
 
         /// <summary>
         /// Compares two profile names. Using this function ensures case comparison consistency
         /// </summary>
-        public static bool IsSameProfileName(string name1, string name2)
+        public static bool IsSameProfileName(string? name1, string? name2)
         {
             return string.Equals(name1, name2, StringComparisons.LaunchProfileNames);
         }

@@ -13,11 +13,6 @@ namespace Microsoft.VisualStudio.Collections
     internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
     {
         /// <summary>
-        /// Backing field for the <see cref="Instance"/> static property.
-        /// </summary>
-        private static readonly DictionaryEqualityComparer<TKey, TValue> s_defaultInstance = new DictionaryEqualityComparer<TKey, TValue>();
-
-        /// <summary>
         /// Initializes a new instance of the DictionaryEqualityComparer class.
         /// </summary>
         private DictionaryEqualityComparer()
@@ -27,15 +22,12 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Gets a dictionary equality comparer instance appropriate for dictionaries that use the default key comparer for the <typeparamref name="TKey"/> type.
         /// </summary>
-        internal static IEqualityComparer<IImmutableDictionary<TKey, TValue>> Instance
-        {
-            get { return s_defaultInstance; }
-        }
+        internal static DictionaryEqualityComparer<TKey, TValue> Instance { get; } = new DictionaryEqualityComparer<TKey, TValue>();
 
         /// <summary>
         /// Checks two dictionaries for equality.
         /// </summary>
-        public bool Equals(IImmutableDictionary<TKey, TValue> x, IImmutableDictionary<TKey, TValue> y)
+        public bool Equals(IImmutableDictionary<TKey, TValue>? x, IImmutableDictionary<TKey, TValue>? y)
         {
             return AreEquivalent(x, y);
         }
@@ -53,9 +45,9 @@ namespace Microsoft.VisualStudio.Collections
 
             if (obj != null)
             {
-                foreach (KeyValuePair<TKey, TValue> pair in obj)
+                foreach ((TKey key, TValue value) in obj)
                 {
-                    hashCode += keyComparer.GetHashCode(pair.Key) + valueComparer.GetHashCode(pair.Value);
+                    hashCode += keyComparer.GetHashCode(key) ^ valueComparer.GetHashCode(value);
                 }
             }
 
@@ -64,13 +56,16 @@ namespace Microsoft.VisualStudio.Collections
         /// <summary>
         /// Tests two dictionaries to see if their contents are identical.
         /// </summary>
-        private static bool AreEquivalent(IImmutableDictionary<TKey, TValue> dictionary1, IImmutableDictionary<TKey, TValue> dictionary2)
+        private static bool AreEquivalent(IImmutableDictionary<TKey, TValue>? dictionary1, IImmutableDictionary<TKey, TValue>? dictionary2)
         {
-            Requires.NotNull(dictionary1, "dictionary1");
-
-            if (dictionary1 == dictionary2)
+            if (ReferenceEquals(dictionary1, dictionary2))
             {
                 return true;
+            }
+
+            if (dictionary1 == null || dictionary2 == null)
+            {
+                return false;
             }
 
             IEqualityComparer<TValue> valueComparer = dictionary1 is ImmutableDictionary<TKey, TValue> concreteDictionary1 ? concreteDictionary1.ValueComparer : EqualityComparer<TValue>.Default;
@@ -84,7 +79,7 @@ namespace Microsoft.VisualStudio.Collections
         {
             Requires.NotNull(valueComparer, "valueComparer");
 
-            if (dictionary1 == dictionary2)
+            if (ReferenceEquals(dictionary1, dictionary2))
             {
                 return true;
             }
@@ -106,9 +101,9 @@ namespace Microsoft.VisualStudio.Collections
                 return true;
             }
 
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary1)
+            foreach ((TKey key, TValue value1) in dictionary1)
             {
-                if (!dictionary2.TryGetValue(pair.Key, out TValue value) || !valueComparer.Equals(value, pair.Value))
+                if (!dictionary2.TryGetValue(key, out TValue value2) || !valueComparer.Equals(value1, value2))
                 {
                     return false;
                 }
