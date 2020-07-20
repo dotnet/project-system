@@ -34,6 +34,10 @@
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ProjectSystem\VS\Utilities\UIThreadHelper.cs" Link="Utilities\UIThreadHelper.cs" />
+    <Compile Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ProjectSystem\VS\Utilities\UnitTestHelper.cs" Link="Utilities\UnitTestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Update="VSPackage.resx">
       <SubType>Designer</SubType>
       <MergeWithCTO>true</MergeWithCTO>

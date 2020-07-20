@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.ProjectSystem.VS;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
@@ -53,9 +54,7 @@ namespace Microsoft.VisualStudio.Packaging
             // TODO mouse wait cursor throughout this operation
             // TODO try/catch all this (dispose things created here as needed)
 
-#pragma warning disable RS0030 // Do not used banned APIs
-            ThreadHelper.ThrowIfNotOnUIThread();
-#pragma warning restore RS0030 // Do not used banned APIs
+            UIThreadHelper.VerifyOnUIThread();
 
             ppunkDocView = IntPtr.Zero;
             ppunkDocData = IntPtr.Zero;
@@ -150,9 +149,7 @@ namespace Microsoft.VisualStudio.Packaging
 
             protected override void OnCreate()
             {
-#pragma warning disable RS0030 // Do not used banned APIs
-                ThreadHelper.ThrowIfNotOnUIThread();
-#pragma warning restore RS0030 // Do not used banned APIs
+                UIThreadHelper.VerifyOnUIThread();
 
                 base.OnCreate();
 
