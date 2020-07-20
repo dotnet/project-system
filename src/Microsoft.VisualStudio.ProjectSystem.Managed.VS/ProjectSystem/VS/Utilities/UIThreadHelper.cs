@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// </summary>
         public static void VerifyOnUIThread([CallerMemberName] string memberName = "")
         {
+#if DEBUG
             try
             {
 #pragma warning disable RS0030 // Do not used banned APIs
@@ -28,6 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 System.Diagnostics.Debug.Fail("Call made on the Non-UI thread by " + memberName);
                 throw;
             }
+#else
+#pragma warning disable RS0030 // Do not used banned APIs
+            ThreadHelper.ThrowIfNotOnUIThread(memberName);
+#pragma warning restore RS0030 // Do not used banned APIs
+#endif
         }
     }
 }
