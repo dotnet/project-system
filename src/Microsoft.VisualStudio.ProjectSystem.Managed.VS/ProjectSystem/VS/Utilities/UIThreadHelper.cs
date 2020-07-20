@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static class UIThreadHelper
     {
         /// <summary>
-        /// Helper utility to ensure that we are on UI thread. Needs to be called 
-        /// in every method/propetrty needed UI thread for our protection (to avoid hangs 
+        /// Helper utility to ensure that we are on UI thread. Needs to be called
+        /// in every method/property with UI thread affinity (to avoid hangs
         /// which are hard to repro and investigate).
         /// </summary>
         public static void VerifyOnUIThread([CallerMemberName] string memberName = "")
