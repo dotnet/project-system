@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     Public NotInheritable Class ApplicationDesignerEditorFactory
         Implements IVsEditorFactory
 
-        Friend Const EditorGuidString = "04b8ab82-a572-4fef-95ce-5222444b6b64"
+        Friend Const EditorGuidString = "990036EB-F67A-4B8A-93D4-4663DB2A1033"
 
         'The all important GUIDs 
         Private Shared ReadOnly s_editorGuid As New Guid(EditorGuidString)
