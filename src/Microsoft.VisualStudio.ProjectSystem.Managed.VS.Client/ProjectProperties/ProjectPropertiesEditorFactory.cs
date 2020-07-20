@@ -20,7 +20,16 @@ namespace Microsoft.VisualStudio.Packaging
 
         // TODO if the new editor is not enabled, fall back to the legacy editor via this GUID
         private const string LegacyEditorFactoryGuidString = "990036EB-F67A-4B8A-93D4-4663DB2A1033";
-        
+
+        /// <summary>
+        /// Logical view identifier (passed to <see cref="MapLogicalView"/>) when the properties
+        /// pages are to be launched displaying the "debug" page.
+        /// </summary>
+        /// <remarks>
+        /// Triggered via menu item "Debug | [Project Name] Debug Properties".
+        /// </remarks>
+        private static readonly Guid DebugPageLogicalViewGuid = new Guid("0273C280-1882-4ED0-9308-52914672E3AA");
+
         private ProjectPropertiesWindowPaneData? _paneData;
 
         public int SetSite(IServiceProvider site)
@@ -104,8 +113,15 @@ namespace Microsoft.VisualStudio.Packaging
                 return HResult.OK;
             }
 
+            if (rguidLogicalView == DebugPageLogicalViewGuid)
+            {
+                // The UI should be launched with the "debug" page selected.
+                return HResult.OK;
+            }
+
             // We may also be called with other GUIDs for specific pages in the UI. Rather than list them all here,
             // just return success.
+
             // TODO determine whether we can handle those GUIDs in the new experience or not and potentially change this to return NotImplemented.
             return HResult.OK;
         }
