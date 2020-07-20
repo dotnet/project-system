@@ -20,22 +20,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     [ExportDebugger(ProjectDebugger.SchemaName)]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider
+    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
         private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private IDebugProfileLaunchTargetsProvider? _lastLaunchProvider;
-        private readonly IProjectThreadingService _threadingService;
 
         [ImportingConstructor]
         public LaunchProfilesDebugLaunchProvider(
-            IProjectThreadingService threadingService,
             ConfiguredProject configuredProject, 
             ILaunchSettingsProvider launchSettingsProvider, 
             IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
             : base(configuredProject)
         {
-            _threadingService = threadingService;
             _launchSettingsProvider = launchSettingsProvider;
             _vsDebuggerService = vsDebuggerService;
 
@@ -54,28 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public override Task<bool> CanLaunchAsync(DebugLaunchOptions launchOptions)
         {
             return TplExtensions.TrueTask;
-        }
-
-        /// <summary>
-        /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.
-        /// </summary>
-        public async Task<bool> IsProjectDebuggableAsync(DebugLaunchOptions launchOptions)
-        {
-            try
-            {
-                // Launch providers to enforce requirements for debuggable projects
-                await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
-            }
-            catch (ProjectNotRunnableDirectlyException)
-            {
-                return false;
-            }
-            catch (Exception)
-            {
-                // If other exception, just return true.
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -104,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Now find the DebugTargets provider for this profile
-            IDebugProfileLaunchTargetsProvider launchProvider = await GetLaunchTargetsProviderAsync(activeProfile) ??
+            IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
                 throw new Exception(string.Format(VSResources.DontKnowHowToRunProfile, activeProfile.Name));
 
             IReadOnlyList<IDebugLaunchSettings> launchSettings;
@@ -124,11 +99,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Returns the provider which knows how to launch the profile type.
         /// </summary>
-        public async Task<IDebugProfileLaunchTargetsProvider?> GetLaunchTargetsProviderAsync(ILaunchProfile profile)
+        public IDebugProfileLaunchTargetsProvider? GetLaunchTargetsProvider(ILaunchProfile profile)
         {
-            // WORKAROUND: https://devdiv.visualstudio.com/DevDiv/_workitems/edit/1152611
-            await _threadingService.SwitchToUIThread();
-
             // We search through the imports in order to find the one which supports the profile
             foreach (Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView> provider in LaunchTargetsProviders)
             {
@@ -176,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.NotNull(activeProfile);
 
-            IDebugProfileLaunchTargetsProvider? targetProfile = await GetLaunchTargetsProviderAsync(activeProfile);
+            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
             if (targetProfile != null)
             {
                 await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);

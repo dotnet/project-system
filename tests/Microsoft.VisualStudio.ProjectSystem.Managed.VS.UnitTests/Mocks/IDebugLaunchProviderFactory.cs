@@ -1,26 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public static class IDebugLaunchProviderFactory
     {
-        public static IDebugLaunchProvider ImplementIsProjectDebuggableAsync(Func<bool> action)
+        public static IDebugLaunchProvider ImplementCanLaunchAsync(Func<bool> action)
         {
-            var mock = new Mock<IDebugLaunchProviderMock>();
+            var mock = new Mock<IDebugLaunchProvider>();
 
-            mock.Setup(d => d.IsProjectDebuggableAsync(It.IsAny<DebugLaunchOptions>()))
+            mock.Setup(d => d.CanLaunchAsync(It.IsAny<DebugLaunchOptions>()))
                                 .ReturnsAsync(action);
 
             return mock.Object;
         }
-    }
-
-    public interface IDebugLaunchProviderMock : IDebugLaunchProvider, IStartupProjectProvider
-    {
-
     }
 }

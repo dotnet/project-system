@@ -428,7 +428,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
                 if (validateSettings && await IsClassLibraryAsync())
                 {
-                    throw new ProjectNotRunnableDirectlyException();
+                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
                 }
 
                 // Otherwise, fall back to "TargetPath"
@@ -628,24 +628,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private enum StringState
         {
             NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
-        }
-    }
-
-    internal class ProjectNotRunnableDirectlyException : Exception
-    {
-        public ProjectNotRunnableDirectlyException()
-            :this(VSResources.ProjectNotRunnableDirectly)
-        {
-        }
-
-        public ProjectNotRunnableDirectlyException(string message)
-            : base(message)
-        {
-        }
-
-        public ProjectNotRunnableDirectlyException(string message, Exception inner)
-            : base(message, inner)
-        {
         }
     }
 }

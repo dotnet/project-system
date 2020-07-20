@@ -1,7 +1,5 @@
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.get -> VSLangProj165.AuthenticationMode
 Microsoft.VisualStudio.ProjectSystem.VS.Automation.VSProject.AuthenticationMode.set -> void
-Microsoft.VisualStudio.ProjectSystem.VS.Debug.IStartupProjectProvider
-Microsoft.VisualStudio.ProjectSystem.VS.Debug.IStartupProjectProvider.IsProjectDebuggableAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp.CSharpProjectConfigurationProperties.ErrorReport.set -> void
