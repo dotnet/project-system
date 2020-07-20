@@ -51,8 +51,9 @@ namespace Microsoft.VisualStudio.Packaging
             out Guid pguidCmdUI,
             out int pgrfCDW)
         {
-            // TODO mouse wait cursor throughout this operation
             // TODO try/catch all this (dispose things created here as needed)
+
+            using var _ = new WaitCursor();
 
             UIThreadHelper.VerifyOnUIThread();
 
