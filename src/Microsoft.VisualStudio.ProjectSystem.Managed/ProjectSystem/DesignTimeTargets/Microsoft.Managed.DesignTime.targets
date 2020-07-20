@@ -111,7 +111,6 @@
                           UserSourceItems;
                           SupportAvailableItemName;
                           IntegratedConsoleDebugging;
-                          DisableBuiltInDebuggerServices;
                           PersistDesignTimeDataOutOfProject;" />
 
     <!-- COM references are not supported in .NET Core before 3.0 -->
