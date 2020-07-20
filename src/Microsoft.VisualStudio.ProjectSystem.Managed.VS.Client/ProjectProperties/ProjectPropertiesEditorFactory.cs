@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.Packaging
     [ProvideView(LogicalView.Designer, "Design")]
     internal sealed class ProjectPropertiesEditorFactory : IVsEditorFactory
     {
-        private const string EditorFactoryGuidString = "04B8AB82-A572-4FEF-95CE-5222444B6B64";
+        internal const string EditorFactoryGuidString = "04B8AB82-A572-4FEF-95CE-5222444B6B64";
 
         // TODO if the new editor is not enabled, fall back to the legacy editor via this GUID
-        private const string LegacyEditorFactoryGuidString = "990036EB-F67A-4B8A-93D4-4663DB2A1033";
+        internal const string LegacyEditorFactoryGuidString = "990036EB-F67A-4B8A-93D4-4663DB2A1033";
 
         /// <summary>
         /// Logical view identifier (passed to <see cref="MapLogicalView"/>) when the properties
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.Packaging
         /// <remarks>
         /// Triggered via menu item "Debug | [Project Name] Debug Properties".
         /// </remarks>
-        private static readonly Guid DebugPageLogicalViewGuid = new Guid("0273C280-1882-4ED0-9308-52914672E3AA");
+        internal static readonly Guid DebugPageLogicalViewGuid = new Guid("0273C280-1882-4ED0-9308-52914672E3AA");
 
         private ProjectPropertiesWindowPaneData? _paneData;
 
