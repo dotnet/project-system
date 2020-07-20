@@ -25,6 +25,8 @@ namespace Microsoft.VisualStudio.Packaging
         {
             await base.InitializeAsync(cancellationToken, progress);
 
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
+
             RegisterEditorFactory(new ProjectPropertiesEditorFactory());
         }
     }
