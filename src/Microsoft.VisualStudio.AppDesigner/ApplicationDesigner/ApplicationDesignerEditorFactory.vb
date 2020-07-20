@@ -15,8 +15,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ';ApplicationDesignerEditorFactory
     '
     'Remarks:
-    '   The editor factory for the resource editor.  The job of this class is
-    '   simply to create a new resource editor designer when requested by the
+    '   The editor factory for the application designer. The job of this class is
+    '   simply to create a new application designer when requested by the
     '   shell.
     '**************************************************************************
     <CLSCompliant(False),
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             ' The designer nominally supports VSConstants.LOGVIEWID.Designer_guid however it is also called with other GUIDs
             ' that are for the various sub-tabs of the property pages
-            ' Rather than hard code those here, we simply allow through everything TextView, as that is
+            ' Rather than hard code those here, we simply allow through everything except TextView, as that is
             ' used when opening files for text editing, and we want the project file to be editable as XML in that scenario
 
             If rguidLogicalView = VSConstants.LOGVIEWID.TextView_guid Then
