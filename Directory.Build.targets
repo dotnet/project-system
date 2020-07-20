@@ -9,7 +9,7 @@
   <Import Project="build\import\Workarounds.targets"/>
 
   <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)src\Common\BannedSymbols.txt" Condition="'$(BannedSymbolsOptOut)' != 'true'" />
   </ItemGroup>
 
   <!-- 
