@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.Packaging
             out int pgrfCDW)
         {
             // TODO mouse wait cursor throughout this operation
-            // TODO try/catch all this (dispose designerLoader on catch, if not null)
+            // TODO try/catch all this (dispose things created here as needed)
 
 #pragma warning disable RS0030 // Do not used banned APIs
             ThreadHelper.ThrowIfNotOnUIThread();
