@@ -20,13 +20,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     '   shell.
     '**************************************************************************
     <CLSCompliant(False),
-    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64"),
+    Guid(ApplicationDesignerEditorFactory.EditorGuidString),
     ProvideView(LogicalView.Designer, "Design")>
     Public NotInheritable Class ApplicationDesignerEditorFactory
         Implements IVsEditorFactory
 
+        Friend Const EditorGuidString = "04b8ab82-a572-4fef-95ce-5222444b6b64"
+
         'The all important GUIDs 
-        Private Shared ReadOnly s_editorGuid As New Guid("{04b8ab82-a572-4fef-95ce-5222444b6b64}")
+        Private Shared ReadOnly s_editorGuid As New Guid(EditorGuidString)
         Private Shared ReadOnly s_commandUIGuid As New Guid("{d06cd5e3-d961-44dc-9d80-c89a1a8d9d56}")
 
         'Exposing the GUID for the rest of the assembly to see
