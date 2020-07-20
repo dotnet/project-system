@@ -63,8 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             try
             {
-                // Launch providers to enforce requirements for debuggable projects
-                await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: true);
+                await QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: false);
             }
             catch (ProjectNotRunnableDirectlyException)
             {
@@ -90,6 +89,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
         /// which understands how to launch the currently active profile type. 
         /// </summary>
+        /// <param name="launchOptions">
+        /// Options to pass to the debugger.
+        /// </param>
+        /// <param name="fromDebugLaunch">
+        /// <c>true</c> to query the information by actually running the launch target; <c>false</c>
+        /// otherwise.
+        /// </param>
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
