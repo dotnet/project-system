@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.Packaging
         /// <remarks>
         /// Triggered via menu item "Debug | [Project Name] Debug Properties".
         /// </remarks>
+        // TODO if we need this value, try and source it from VSHPROPID_ProjectPropertiesDebugPageArg
         internal static readonly Guid DebugPageLogicalViewGuid = new Guid("0273C280-1882-4ED0-9308-52914672E3AA");
 
         private ProjectPropertiesWindowPaneData? _paneData;
