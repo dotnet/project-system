@@ -12,6 +12,11 @@
         <target state="new">Require license acceptance</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
+        <source>Assembly neutral language</source>
+        <target state="new">Assembly neutral language</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|PackagePropertyPage|Description">
         <source>Properties related to producing NuGet packages.</source>
         <target state="new">Properties related to producing NuGet packages.</target>
@@ -65,11 +70,6 @@
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>File version</source>
         <target state="new">File version</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|NeutralLanguage|DisplayName">
-        <source>Assembly neutral language</source>
-        <target state="new">Assembly neutral language</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
