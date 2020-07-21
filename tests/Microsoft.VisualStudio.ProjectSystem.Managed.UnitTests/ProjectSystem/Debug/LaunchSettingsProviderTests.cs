@@ -33,7 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
-            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
+            var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService);
             return provider;
         }
 
@@ -84,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(provider.ActiveProfile);
 
             provider.SetCurrentSnapshot(testProfiles.Object);
-            Assert.Equal(activeProfile, provider.ActiveProfile.Name);
+            Assert.NotNull(provider.ActiveProfile);
+            Assert.Equal(activeProfile, provider.ActiveProfile?.Name);
         }
 
         [Fact]
@@ -660,7 +662,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
-            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name.Equals("test")));
+            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name!.Equals("test")));
         }
 
         [Fact]
@@ -876,7 +878,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     // Derives from base class to be able to set protected members
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
-        // ECan pass null for all and a default will be created
         public LaunchSettingsUnderTest(
             UnconfiguredProject project,
             IUnconfiguredProjectServices projectServices,
@@ -884,7 +885,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
             IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
-            IProjectFaultHandlerService? projectFaultHandler = null)
+            IProjectFaultHandlerService projectFaultHandler)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually

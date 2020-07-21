@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Collections;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
@@ -40,13 +38,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
         }
 
-        public string Name { get; set; }
-        public string CommandName { get; set; }
-        public string ExecutablePath { get; set; }
-        public string CommandLineArgs { get; set; }
-        public string WorkingDirectory { get; set; }
+        public string? Name { get; set; }
+        public string? CommandName { get; set; }
+        public string? ExecutablePath { get; set; }
+        public string? CommandLineArgs { get; set; }
+        public string? WorkingDirectory { get; set; }
         public bool LaunchBrowser { get; set; }
-        public string LaunchUrl { get; set; }
+        public string? LaunchUrl { get; set; }
         public bool DoNotPersist { get; set; }
 
         public Dictionary<string, string> EnvironmentVariables { get; } = new Dictionary<string, string>(StringComparer.Ordinal);

@@ -628,8 +628,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     {
                         builder.Append(' ', indent * 4);
                         builder.Append("Caption=").Append(tree.Caption).Append(", ");
-                        builder.Append("IconHash=").Append(tree.Icon.GetHashCode()).Append(", ");
-                        builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon.GetHashCode()).Append(", ");
+                        builder.Append("IconHash=").Append(tree.Icon?.GetHashCode()).Append(", ");
+                        builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon?.GetHashCode()).Append(", ");
                         builder.Append("Rule=").Append(tree.BrowseObjectProperties?.Name ?? "").Append(", ");
                         builder.Append("IsProjectItem=").Append(tree.IsProjectItem).Append(", ");
                         builder.Append("CustomTag=").Append(tree.CustomTag);

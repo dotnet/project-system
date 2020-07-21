@@ -39,22 +39,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task<ILaunchProfile> ReplaceTokensInProfileAsync(ILaunchProfile profile)
         {
             var resolvedProfile = new LaunchProfile(profile);
-            if (!string.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
+            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.ExecutablePath))
             {
                 resolvedProfile.ExecutablePath = await ReplaceTokensInStringAsync(resolvedProfile.ExecutablePath, true);
             }
 
-            if (!string.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
+            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.CommandLineArgs))
             {
                 resolvedProfile.CommandLineArgs = await ReplaceTokensInStringAsync(resolvedProfile.CommandLineArgs, true);
             }
 
-            if (!string.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
+            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.WorkingDirectory))
             {
                 resolvedProfile.WorkingDirectory = await ReplaceTokensInStringAsync(resolvedProfile.WorkingDirectory, true);
             }
 
-            if (!string.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
+            if (!Strings.IsNullOrWhiteSpace(resolvedProfile.LaunchUrl))
             {
                 resolvedProfile.LaunchUrl = await ReplaceTokensInStringAsync(resolvedProfile.LaunchUrl, true);
             }

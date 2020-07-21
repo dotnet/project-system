@@ -98,7 +98,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider2.QueryDebugTargetsForDebugLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile) -> System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings!>!>!
 Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory
-Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string! filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy! hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory! containedLanguageFactory) -> int
+Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.IVsContainedLanguageComponentsFactory.GetContainedLanguageFactoryForFile(string! filePath, out Microsoft.VisualStudio.Shell.Interop.IVsHierarchy? hierarchy, out uint itemid, out Microsoft.VisualStudio.TextManager.Interop.IVsContainedLanguageFactory? containedLanguageFactory) -> int
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.__id.get -> string!
 Microsoft.VisualStudio.ProjectSystem.VS.Properties.AbstractProjectConfigurationProperties.AllowUnsafeBlocks.get -> bool

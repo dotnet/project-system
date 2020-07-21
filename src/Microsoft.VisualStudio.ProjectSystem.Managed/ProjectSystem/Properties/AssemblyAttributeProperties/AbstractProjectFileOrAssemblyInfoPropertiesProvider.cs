@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
@@ -43,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Gets the properties for a property or item.
         /// </summary>
-        public override IProjectProperties GetProperties(string file, string itemType, string item)
+        public override IProjectProperties GetProperties(string file, string? itemType, string? item)
         {
             IProjectProperties delegatedProperties = base.GetProperties(file, itemType, item);
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);

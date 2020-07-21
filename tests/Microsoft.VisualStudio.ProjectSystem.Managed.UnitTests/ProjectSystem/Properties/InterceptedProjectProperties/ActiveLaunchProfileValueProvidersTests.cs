@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ExecutablePath_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
-            string activeProfileExecutablePath = @"C:\user\bin\gamma.exe";
+            string? activeProfileExecutablePath = @"C:\user\bin\gamma.exe";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Gamma",
                 activeProfileExecutablePath: activeProfileExecutablePath,
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchTarget_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
-            string activeProfileLaunchTarget = "GammaCommand";
+            string? activeProfileLaunchTarget = "GammaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Gamma",
                 activeProfileLaunchTarget,
@@ -184,7 +184,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task CommandLineArguments_OnSetPropertyValueAsync_SetsArgumentsInActiveProfile()
         {
-            string activeProfileCommandLineArgs = "/orca:YES /bluewhale:NO";
+            string? activeProfileCommandLineArgs = "/orca:YES /bluewhale:NO";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "SeaMammals",
                 activeProfileCommandLineArgs: activeProfileCommandLineArgs,
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WorkingDirectory_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
         {
-            string activeProfileWorkingDirectory = @"C:\one\two\three";
+            string? activeProfileWorkingDirectory = @"C:\one\two\three";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Three",
                 activeProfileWorkingDirectory: activeProfileWorkingDirectory,
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchUrl_OnSetPropertyValueAsync_SetsUrlInActiveProfile()
         {
-            string activeProfileLaunchUrl = "https://incorrect.com";
+            string? activeProfileLaunchUrl = "https://incorrect.com";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Three",
                 activeProfileLaunchUrl: activeProfileLaunchUrl,
@@ -347,7 +347,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task AuthenticationMode_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
         {
-            string activeProfileAuthenticationMode = "Windows";
+            string? activeProfileAuthenticationMode = "Windows";
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileAuthenticationMode }
@@ -358,7 +358,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileAuthenticationMode = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileAuthenticationMode = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -404,7 +405,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileNativeDebugging = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileNativeDebugging = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -450,7 +452,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -496,7 +499,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileRemoteMachineName = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileRemoteMachineName = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -542,7 +546,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
                 });
 
             var project = UnconfiguredProjectFactory.Create();
@@ -605,9 +610,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (activeProfileOtherSettings != null)
             {
-                foreach (var kvp in activeProfileOtherSettings)
+                Assumes.NotNull(profile.OtherSettings);
+
+                foreach ((string key, object value) in activeProfileOtherSettings)
                 {
-                    profile.OtherSettings.Add(kvp.Key, kvp.Value);
+                    profile.OtherSettings.Add(key, value);
                 }
             }
 
