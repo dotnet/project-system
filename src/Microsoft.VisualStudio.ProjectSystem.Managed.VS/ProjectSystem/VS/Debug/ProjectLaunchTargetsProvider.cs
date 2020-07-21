@@ -292,17 +292,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     {
                         // Try to resolve against the current working directory (for compat) and failing that, the environment path.
                         string exeName = executable.EndsWith(".exe", StringComparisons.Paths) ? executable : executable + ".exe";
-                        string? fullPath = _fileSystem.GetFullPath(exeName);
+                        string fullPath = _fileSystem.GetFullPath(exeName);
                         if (_fileSystem.FileExists(fullPath))
                         {
                             executable = fullPath;
                         }
                         else
                         {
-                            fullPath = GetFullPathOfExeFromEnvironmentPath(exeName);
-                            if (fullPath != null)
+                            string? fullPathFromEnv = GetFullPathOfExeFromEnvironmentPath(exeName);
+                            if (fullPathFromEnv != null)
                             {
-                                executable = fullPath;
+                                executable = fullPathFromEnv;
                             }
                         }
                     }
