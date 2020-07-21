@@ -2,7 +2,6 @@
 
 Option Infer On
 Imports System.ComponentModel
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Drawing
 Imports System.Security.Permissions
 Imports System.Windows.Forms
@@ -83,7 +82,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             Return "vb.XmlToSchemaWizard"
         End Function
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub ShowHelp()
             Try
                 Dim f1Word = GetF1Keyword()

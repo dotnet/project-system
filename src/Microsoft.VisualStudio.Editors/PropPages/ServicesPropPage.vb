@@ -2,7 +2,6 @@
 
 Imports System.ComponentModel
 Imports System.ComponentModel.Design
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Windows.Forms
 Imports System.Xml
 
@@ -319,7 +318,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             EnsureXmlUpToDate()
         End Sub
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub InvokeHelp()
             Try
                 Dim sp As IServiceProvider = ServiceProvider

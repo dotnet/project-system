@@ -1,6 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Windows.Forms
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -10,7 +9,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _serviceProvider As IServiceProvider
         Private ReadOnly _authenticationUrl As String
 
-        <SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")>
         Public Sub New(authenticationUrl As String, authenticationHost As String, serviceProvider As IServiceProvider)
             InitializeComponent()
             AuthenticationServiceUrl.Text = authenticationHost
@@ -18,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _serviceProvider = serviceProvider
         End Sub
 
-        <SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")>
         Public ReadOnly Property AuthenticationUrl As String
             Get
                 Return _authenticationUrl
@@ -37,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-        <SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub ShowHelp()
             Try
                 If _serviceProvider IsNot Nothing Then
