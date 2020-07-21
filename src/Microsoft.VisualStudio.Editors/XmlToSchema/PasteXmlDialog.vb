@@ -15,7 +15,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Get
         End Property
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
             If Me.DialogResult = DialogResult.OK Then
                 Try

@@ -129,7 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
             End Using
         End Sub
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub _okButtonClick(sender As Object, e As EventArgs) Handles _okButton.Click
             If _listView.Items.Count = 0 Then
                 Return
