@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="PackagePropertyPage"
+      Description="Properties related to producing NuGet packages."
+      DisplayName="Package"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileWithInterception"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <BoolProperty Name="GeneratePackageOnBuild"
+                DisplayName="Generate NuGet package on build" />
+
+  <BoolProperty Name="PackageRequireLicenseAcceptance"
+                DisplayName="Require license acceptance" />
+
+  <StringProperty Name="PackageId"
+                  DisplayName="Package ID"
+                  Description="The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules."
+                  HelpUrl="https://docs.microsoft.com/nuget/create-packages/creating-a-package#choose-a-unique-package-identifier-and-setting-the-version-number" />
+
+  <StringProperty Name="Version"
+                  DisplayName="Package Version"
+                  Description="The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix."
+                  HelpUrl="https://docs.microsoft.com/nuget/concepts/package-versioning#pre-release-versions" />
+
+  <StringProperty Name="Authors"
+                  DisplayName="Authors"
+                  Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors." />
+
+  <StringProperty Name="Company"
+                  DisplayName="Company" />
+
+  <StringProperty Name="Product"
+                  DisplayName="Product" />
+
+  <StringProperty Name="Description"
+                  DisplayName="Description"
+                  Description="A description of the package for UI display." />
+
+  <StringProperty Name="Copyright"
+                  DisplayName="Copyright"
+                  Description="Copyright details for the package." />
+
+  <StringProperty Name="PackageLicenseExpression"
+                  DisplayName="License expression"
+                  Description="An SPDX license expression, often shown in UIs like nuget.org."
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-a-license-expression-or-a-license-file" />
+  
+  <StringProperty Name="PackageLicenseFile"
+                  DisplayName="License file"
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-a-license-expression-or-a-license-file" />
+
+  <StringProperty Name="PackageProjectUrl"
+                  DisplayName="Project URL"
+                  Description="A URL for the package's home page, often shown in UI displays as well as nuget.org." />
+
+  <!-- TODO (tomescht): 
+       We should re-think this. This property is the relative path to the icon file _within the package_; setting it does not guarantee
+       that the corresponding file in the project is correctly copied into the package. A better alternative may be to expose a property
+       with the path to the file in the project instead, and update this one appropriately when that one changes.
+  -->
+  <StringProperty Name="PackageIcon"
+                  DisplayName="Icon file"
+                  Description="The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended."
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-an-icon-image-file" />
+
+  <StringProperty Name="RepositoryUrl"
+                  DisplayName="Repository URL"
+                  Description="Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead."
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/nuspec#repository" />
+
+  <StringProperty Name="RepositoryType"
+                  DisplayName="Repository type"
+                  Description="Specifies the type of the repository. Default is 'git'."
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/nuspec#repository" />
+
+  <StringProperty Name="PackageTags"
+                  DisplayName="Tags"
+                  Description="A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering." />
+
+  <StringProperty Name="PackageReleaseNotes"
+                  DisplayName="Release notes"
+                  Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description." />
+
+  <DynamicEnumProperty Name="NeutralLanguage"
+                       DisplayName="Assembly neutral language"
+                       EnumProvider="NeutralLanguageEnumProvider"
+                       MultipleValuesAllowed="False" />
+
+  <StringProperty Name="AssemblyVersion"
+                  DisplayName="Assembly version" />
+
+  <StringProperty Name="FileVersion"
+                  DisplayName="File version" />
+</Rule>

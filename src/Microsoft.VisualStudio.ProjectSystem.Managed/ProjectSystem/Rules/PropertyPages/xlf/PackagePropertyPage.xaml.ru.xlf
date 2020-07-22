@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../PackagePropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
+        <source>Generate NuGet package on build</source>
+        <target state="new">Generate NuGet package on build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
+        <source>Require license acceptance</source>
+        <target state="new">Require license acceptance</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
+        <source>Assembly neutral language</source>
+        <target state="new">Assembly neutral language</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|PackagePropertyPage|Description">
+        <source>Properties related to producing NuGet packages.</source>
+        <target state="new">Properties related to producing NuGet packages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|PackagePropertyPage|DisplayName">
+        <source>Package</source>
+        <target state="new">Package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
+        <source>Assembly version</source>
+        <target state="new">Assembly version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|Description">
+        <source>A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</source>
+        <target state="new">A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Authors|DisplayName">
+        <source>Authors</source>
+        <target state="new">Authors</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Company|DisplayName">
+        <source>Company</source>
+        <target state="new">Company</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Copyright|Description">
+        <source>Copyright details for the package.</source>
+        <target state="new">Copyright details for the package.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Copyright|DisplayName">
+        <source>Copyright</source>
+        <target state="new">Copyright</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|Description">
+        <source>A description of the package for UI display.</source>
+        <target state="new">A description of the package for UI display.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Description|DisplayName">
+        <source>Description</source>
+        <target state="new">Description</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|FileVersion|DisplayName">
+        <source>File version</source>
+        <target state="new">File version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIcon|Description">
+        <source>The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
+        <target state="new">The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageIcon|DisplayName">
+        <source>Icon file</source>
+        <target state="new">Icon file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|Description">
+        <source>The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</source>
+        <target state="new">The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageId|DisplayName">
+        <source>Package ID</source>
+        <target state="new">Package ID</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseExpression|Description">
+        <source>An SPDX license expression, often shown in UIs like nuget.org.</source>
+        <target state="new">An SPDX license expression, often shown in UIs like nuget.org.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseExpression|DisplayName">
+        <source>License expression</source>
+        <target state="new">License expression</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageLicenseFile|DisplayName">
+        <source>License file</source>
+        <target state="new">License file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|Description">
+        <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
+        <target state="new">A URL for the package's home page, often shown in UI displays as well as nuget.org.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
+        <source>Project URL</source>
+        <target state="new">Project URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|Description">
+        <source>A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</source>
+        <target state="new">A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
+        <source>Release notes</source>
+        <target state="new">Release notes</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|Description">
+        <source>A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</source>
+        <target state="new">A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageTags|DisplayName">
+        <source>Tags</source>
+        <target state="new">Tags</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Product|DisplayName">
+        <source>Product</source>
+        <target state="new">Product</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|Description">
+        <source>Specifies the type of the repository. Default is 'git'.</source>
+        <target state="new">Specifies the type of the repository. Default is 'git'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryType|DisplayName">
+        <source>Repository type</source>
+        <target state="new">Repository type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|Description">
+        <source>Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</source>
+        <target state="new">Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
+        <source>Repository URL</source>
+        <target state="new">Repository URL</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|Description">
+        <source>The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</source>
+        <target state="new">The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Version|DisplayName">
+        <source>Package Version</source>
+        <target state="new">Package Version</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

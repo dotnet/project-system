@@ -167,8 +167,9 @@
     
     <!-- Property Pages -->
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
-    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\PackagePropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml" />
   </ItemGroup>
