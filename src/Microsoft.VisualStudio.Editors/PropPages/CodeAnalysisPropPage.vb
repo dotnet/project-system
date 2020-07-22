@@ -1,4 +1,4 @@
-﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.Windows.Forms
 
@@ -8,11 +8,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Inherits PropPageUserControlBase
 
         Private Const RoslynAnalyzersDocumentationLink As String = "https://docs.microsoft.com/visualstudio/code-quality/roslyn-analyzers-overview"
-
-        Private Shared ReadOnly s_latestStableVersion As Version = New Version(2, 9, 6)
-        Private Shared ReadOnly s_childPackageIds As HashSet(Of String) = New HashSet(Of String)(
-            {"Microsoft.CodeQuality.Analyzers", "Microsoft.NetCore.Analyzers", "Microsoft.NetFramework.Analyzers"},
-            StringComparer.OrdinalIgnoreCase)
 
         Public Sub New()
             MyBase.New()
