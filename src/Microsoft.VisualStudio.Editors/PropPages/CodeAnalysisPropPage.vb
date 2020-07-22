@@ -52,10 +52,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Process.Start(RoslynAnalyzersDocumentationLink)
         End Sub
 
-        Protected Overrides Sub OnPageActivated(activated As Boolean)
-            MyBase.OnPageActivated(activated)
-        End Sub
-
     End Class
 
 End Namespace
