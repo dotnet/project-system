@@ -2,8 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "https://github.com/dotnet/roslyn/issues/46075", Scope = "member", Target = "~M:Microsoft.VisualStudio.Resources.#ctor")]
-
 [assembly: SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Scope = "member", Target = "~M:Microsoft.VisualStudio.Threading.Tasks.CancellationSeries.CreateNext(System.Threading.CancellationToken)~System.Threading.CancellationToken")]
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.LanguageServices.FSharp.FSharpCommandLineParserService.HandleCommandLineNotifications(System.String,Microsoft.VisualStudio.ProjectSystem.LanguageServices.BuildOptions,Microsoft.VisualStudio.ProjectSystem.LanguageServices.BuildOptions)")]
 

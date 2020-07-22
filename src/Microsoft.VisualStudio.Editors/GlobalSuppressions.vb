@@ -1336,9 +1336,3 @@ Imports System.Diagnostics.CodeAnalysis
 
 ' Bugs
 <Assembly: SuppressMessage("Style", "IDE0070:Use 'System.HashCode'", Justification:="https://github.com/dotnet/roslyn/issues/45995", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.WPF.ApplicationPropPageVBWPF.StartupObject.GetHashCode~System.Int32")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.AddImports.#ctor")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.GeneralOptionPageResources.#ctor")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.Microsoft_VisualStudio_Editors_Designer.#ctor")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.MyExtensibilityRes.#ctor")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.Strings.#ctor")>
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropertyPages.ServicesAuthenticationForm.AuthenticationUrl")>

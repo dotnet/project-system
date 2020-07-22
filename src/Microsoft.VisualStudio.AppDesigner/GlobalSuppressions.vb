@@ -446,6 +446,3 @@ Imports System.Diagnostics.CodeAnalysis
 <Assembly: SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.ApplicationDesigner.PropertyPageInfo.Title")>
 <Assembly: SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPagePropertyDescriptor.Name")>
 <Assembly: SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Scope:="member", Target:="~P:Microsoft.VisualStudio.Editors.PropPageDesigner.PropertyPageSerializationService.PropertyPageSerializationStore.SerializedProperty.IsEntireComponentObject")>
-
-' Bugs
-<Assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification:="https://github.com/dotnet/roslyn/issues/46075", Scope:="member", Target:="~M:My.Resources.Designer.#ctor")>
