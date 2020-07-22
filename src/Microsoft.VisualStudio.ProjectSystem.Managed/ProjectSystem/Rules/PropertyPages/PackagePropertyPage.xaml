@@ -76,7 +76,8 @@
 
   <StringProperty Name="RepositoryType"
                   DisplayName="Repository type"
-                  Description="Specifies the type of the repository. Default is 'git'." />
+                  Description="Specifies the type of the repository. Default is 'git'."
+                  HelpUrl="https://docs.microsoft.com/nuget/reference/nuspec#repository" />
 
   <StringProperty Name="PackageTags"
                   DisplayName="Tags"
