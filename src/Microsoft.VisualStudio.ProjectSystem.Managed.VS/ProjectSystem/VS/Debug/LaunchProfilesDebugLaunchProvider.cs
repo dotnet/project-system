@@ -165,6 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
             if (launchSettingsNative.Length == 0)
             {
+                cb.OnComplete(0, 0, null);
                 return;
             }
 
