@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// </summary>
         protected override Task InitializeInnerCoreAsync(CancellationToken cancellationToken)
         {
+            AppliedValue = new ProjectVersionedValue<DesignTimeInputsDelta>(new DesignTimeInputsDelta(ImmutableHashSet.Create<string>(), ImmutableHashSet.Create<string>(), Enumerable.Empty<DesignTimeInputFileChange>(), ""), ImmutableDictionary.Create<NamedIdentity, IComparable>());
             return Task.CompletedTask;
         }
 
