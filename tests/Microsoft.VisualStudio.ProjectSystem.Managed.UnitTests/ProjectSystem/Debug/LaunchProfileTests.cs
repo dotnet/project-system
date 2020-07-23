@@ -34,8 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
             Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
             Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
-            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(data.OtherSettings.ToImmutableDictionary(), profile.OtherSettings));
+            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables!));
+            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(data.OtherSettings.ToImmutableDictionary(), profile.OtherSettings!));
             Assert.Equal(data.InMemoryProfile, profile.DoNotPersist);
 
             // Test overload
@@ -46,8 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(profile.WorkingDirectory, profile2.WorkingDirectory);
             Assert.Equal(profile.LaunchBrowser, profile2.LaunchBrowser);
             Assert.Equal(profile.LaunchUrl, profile2.LaunchUrl);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(profile.EnvironmentVariables, profile2.EnvironmentVariables));
-            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings.ToImmutableDictionary(), profile2.OtherSettings));
+            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(profile.EnvironmentVariables!, profile2.EnvironmentVariables!));
+            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings.ToImmutableDictionary(), profile2.OtherSettings!));
             Assert.Equal(profile.DoNotPersist, profile2.DoNotPersist);
         }
 
