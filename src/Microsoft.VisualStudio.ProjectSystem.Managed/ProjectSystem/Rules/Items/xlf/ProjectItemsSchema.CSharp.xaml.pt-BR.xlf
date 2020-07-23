@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../ProjectItemsSchema.CSharp.xaml">
+    <body>
+      <trans-unit id="ContentType|CSharpFile|DisplayName">
+        <source>C# file</source>
+        <target state="translated">Arquivo C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Compile|DisplayName">
+        <source>C# compiler</source>
+        <target state="translated">Compilador C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>C# analyzer additional file</source>
+        <target state="translated">Arquivo adicional do analisador C#</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
+        <source>.editorconfig file</source>
+        <target state="translated">Arquivo .editorconfig</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
