@@ -5,6 +5,7 @@
     <DisplayName>VisualStudio Editors</DisplayName>
     <Description>Microsoft VisualStudio Editors</Description>
     <PackageId>Microsoft.VisualStudio.Editors</PackageId>
+    <AllowClientRole>true</AllowClientRole>
   </Metadata>
   <Installation SystemComponent="true" Experimental="true">
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.Pro" />
