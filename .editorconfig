@@ -243,7 +243,7 @@ dotnet_diagnostic.CA1030.severity = none
 dotnet_diagnostic.CA1032.severity = none
 dotnet_diagnostic.CA1033.severity = none        # Interface methods should be callable by child types
 dotnet_diagnostic.CA1034.severity = none
-dotnet_diagnostic.CA1036.severity = error
+dotnet_diagnostic.CA1036.severity = warning     # Override methods on comparable types
 dotnet_diagnostic.CA1040.severity = none
 dotnet_diagnostic.CA1041.severity = none
 dotnet_diagnostic.CA1043.severity = none
@@ -285,9 +285,9 @@ dotnet_diagnostic.CA2231.severity = none
 dotnet_diagnostic.CA2234.severity = none
 
 # Microsoft.NetFramework.Analyzers
-dotnet_diagnostic.CA2153.severity = error       # Do not catch CorruptedStateExceptions
-dotnet_diagnostic.CA2235.severity = error
-dotnet_diagnostic.CA3075.severity = error
+dotnet_diagnostic.CA2153.severity = warning       # Do not catch CorruptedStateExceptions
+dotnet_diagnostic.CA2235.severity = warning
+dotnet_diagnostic.CA3075.severity = warning
 
 # Microsoft.CodeAnalysis.Analyzers
 # These diagnostics apply to the source code of analyzers themselves.
@@ -316,25 +316,25 @@ dotnet_diagnostic.RS1022.severity = none
 dotnet_diagnostic.RS1023.severity = none
 
 # Microsoft.Composition.Analyzers
-dotnet_diagnostic.RS0006.severity = error
-dotnet_diagnostic.RS0023.severity = error
+dotnet_diagnostic.RS0006.severity = error       # Do not mixing MEF versions
+dotnet_diagnostic.RS0023.severity = error       # MEF2 components must be shared
 
 # Roslyn.Core
-dotnet_diagnostic.AD0001.severity = error
+dotnet_diagnostic.AD0001.severity = warning     # Analyzer exception
 
 # Roslyn.Diagnostic.Analyzers
-dotnet_diagnostic.RS0001.severity = warning
-dotnet_diagnostic.RS0002.severity = warning
-dotnet_diagnostic.RS0005.severity = warning
-dotnet_diagnostic.RS0016.severity = error
-dotnet_diagnostic.RS0017.severity = error
-dotnet_diagnostic.RS0022.severity = error
-dotnet_diagnostic.RS0024.severity = error
-dotnet_diagnostic.RS0025.severity = error
-dotnet_diagnostic.RS0026.severity = error
-dotnet_diagnostic.RS0027.severity = error
+dotnet_diagnostic.RS0001.severity = warning     # Use 'SpecializedCollections.EmptyEnumerable()'
+dotnet_diagnostic.RS0002.severity = warning     # Use 'SpecializedCollections.SingletonEnumerable()'
+dotnet_diagnostic.RS0005.severity = warning     # Do not use generic 'CodeAction.Create' to create 'CodeAction'
+dotnet_diagnostic.RS0016.severity = warning     # Do not have undeclared API
+dotnet_diagnostic.RS0017.severity = warning     # API is declared but not public
+dotnet_diagnostic.RS0022.severity = warning     # Constructor make noninheritable base class inheritable
+dotnet_diagnostic.RS0024.severity = warning     # The contents of the public API files are invalid:
+dotnet_diagnostic.RS0025.severity = warning     # Do not duplicate symbols in public API files
+dotnet_diagnostic.RS0026.severity = warning     # Do not add multiple public overloads with optional parameters
+dotnet_diagnostic.RS0027.severity = warning     # Public API with optional parameter(s) should have the most parameters amongst its public overloads.
 dotnet_diagnostic.RS0030.severity = warning     # Do not use banned APIs
-dotnet_diagnostic.RS0031.severity = error       # The list of banned symbols contains a duplicate
+dotnet_diagnostic.RS0031.severity = warning     # The list of banned symbols contains a duplicate
 dotnet_diagnostic.RS0033.severity = none        # Importing constructor should be [Obsolete]
 dotnet_diagnostic.RS0034.severity = none        # Style rule that enforces public MEF constructor marked with [ImportingConstructor]
 
@@ -369,14 +369,14 @@ dotnet_diagnostic.RS0018.severity = warning
 dotnet_diagnostic.RS0010.severity = warning
 
 # Microsoft.CodeAnalysis.CSharp.Features
-                                                # Name:                                         Before:                                             After:
-dotnet_diagnostic.IDE0001.severity = error      # Simplify names                                System.Version version;                             Version version;
-dotnet_diagnostic.IDE0002.severity = error      # Simplify (member access)                      System.Version.Equals("1", "2");                    Version.Equals("1", "2");
-dotnet_diagnostic.IDE0005.severity = error      # Using directive is unnecessary                using System.Text;
-dotnet_diagnostic.IDE0030.severity = error      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
+                                                  # Name:                                         Before:                                             After:
+dotnet_diagnostic.IDE0001.severity = warning      # Simplify names                                System.Version version;                             Version version;
+dotnet_diagnostic.IDE0002.severity = warning      # Simplify (member access)                      System.Version.Equals("1", "2");                    Version.Equals("1", "2");
+dotnet_diagnostic.IDE0005.severity = warning      # Using directive is unnecessary                using System.Text;
+dotnet_diagnostic.IDE0030.severity = warning      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
-dotnet_diagnostic.IDE0079.severity = warning    # Unused suppresion
-dotnet_diagnostic.IDE1006.severity = error      # Naming styles                                 Task Open()                                         Task OpenAsync()
+dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
+dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
 
@@ -392,6 +392,6 @@ dotnet_diagnostic.VSTHRD111.severity = none     # Use ConfigureAwait(true).
 dotnet_diagnostic.VSSDK006.severity = none      # Check whether the result of GetService calls is null
 
 # Microsoft.CodeAnalysis.VisualBasic.CodeStyle/Microsoft.CodeAnalysis.CSharp.CodeStyle
-dotnet_diagnostic.IDE0073.severity = error      # Enforce file header
+dotnet_diagnostic.IDE0073.severity = warning      # Enforce file header
 file_header_template = Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
