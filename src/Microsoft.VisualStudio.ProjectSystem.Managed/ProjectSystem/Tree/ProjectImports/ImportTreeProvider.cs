@@ -70,6 +70,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
         }
 
+        public override string? GetPath(IProjectTree node)
+        {
+            // Only process nodes belonging to our tree.
+            // This test excludes the root which is fine as it doesn't have a file path.
+            if (node.Flags.Contains(ProjectImport))
+            {
+                return node.FilePath;
+            }
+
+            return null;
+        }
+
         public bool ShowAllFiles
         {
             get => _showAllFiles;

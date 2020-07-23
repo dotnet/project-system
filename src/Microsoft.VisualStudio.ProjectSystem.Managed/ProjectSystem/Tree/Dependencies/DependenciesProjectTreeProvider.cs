@@ -103,15 +103,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public override string? GetPath(IProjectTree node)
         {
-            // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
-            // while other dependency types (e.g. analyzers) do.
-            //
-            // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
-            // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
-            // and allows fast lookup. So in general we want to return null here unless there is a compelling
-            // requirement to use the path.
+            // If the node's FilePath is null, we are going to return null regardless of whether
+            // this node belongs to the dependencies tree or not, so avoid extra work by retuning
+            // immediately here.
+            if (node.FilePath == null)
+            {
+                return null;
+            }
 
-            return node.FilePath;
+            // Walk up from node through all its ancestors.
+            for (IProjectTree? step = node; step != null; step = step.Parent)
+            {
+                if (step.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
+                {
+                    // This node is contained within the Dependencies tree.
+                    //
+                    // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
+                    // while other dependency types (e.g. analyzers) do.
+                    //
+                    // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
+                    // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
+                    // and allows fast lookup. So in general we want to return null here unless there is a compelling
+                    // requirement to use the path.
+
+                    return node.FilePath;
+                }
+            }
+
+            return null;
         }
 
         public override IProjectTree? FindByPath(IProjectTree root, string path)
