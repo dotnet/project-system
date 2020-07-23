@@ -142,7 +142,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // File changes don't get project state, so they don't update it.
             var delta = new DesignTimeInputsDelta(state.Inputs, state.SharedInputs, changedInputs, state.TempPEOutputPath);
-            PostToOutput(delta);
+            PublishDelta(delta);
         }
 
         internal void ProcessDataflowChanges(IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
@@ -211,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // This is our only update to current state, and data flow protects us from overlaps. File changes don't update state
             _currentState = new DesignTimeInputsDelta(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
-            PostToOutput(_currentState);
+            PublishDelta(_currentState);
 
             void AddAllInputsToQueue(bool ignoreFileWriteTime)
             {
@@ -222,12 +222,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
-        private void PostToOutput(DesignTimeInputsDelta delta)
+        private void PublishDelta(DesignTimeInputsDelta delta)
         {
             _version++;
-            ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
-
-            _broadcastBlock.Post(new ProjectVersionedValue<DesignTimeInputsDelta>(delta, dataSources));
+            _broadcastBlock.Post(new ProjectVersionedValue<DesignTimeInputsDelta>(
+                delta, 
+                Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
         }
     }
 }
