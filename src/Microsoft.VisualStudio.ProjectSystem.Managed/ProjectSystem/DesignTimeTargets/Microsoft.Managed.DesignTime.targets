@@ -346,7 +346,7 @@
 
     <!-- Tool references -->
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DotNetCliToolReference.xaml">
-      <Context>ProjectSubscriptionService;BrowseObject</Context>
+      <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <!-- Analyzer references -->
