@@ -268,11 +268,6 @@
       <Context>Invisible</Context>
     </PropertyPageSchema>
 
-    <!-- .editorconfig files -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PotentialEditorConfigFiles.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
