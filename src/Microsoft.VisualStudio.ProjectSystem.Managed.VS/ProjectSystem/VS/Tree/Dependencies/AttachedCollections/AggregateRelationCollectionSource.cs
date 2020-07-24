@@ -3,8 +3,6 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Windows.Data;
-using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
 
@@ -75,55 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);
             };
 
-            // Work around inconsistent use of IPrioritizedComparable in the tree view control
-            // https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1158136
-            if (CollectionViewSource.GetDefaultView(_collection) is ListCollectionView view)
-            {
-                view.CustomSort = PrioritizedComparableComparer.Instance;
-            }
-
             PropertyChanged?.Invoke(this, KnownEventArgs.IsUpdatingItemsPropertyChanged);
             PropertyChanged?.Invoke(this, KnownEventArgs.HasItemsPropertyChanged);
-        }
-
-        private sealed class PrioritizedComparableComparer : IComparer
-        {
-            public static IComparer Instance { get; } = new PrioritizedComparableComparer();
-
-            public int Compare(object x, object y)
-            {
-                if (x == null || y == null)
-                {
-                    // We don't expect nulls
-                    return 0;
-                }
-
-                // Handle prioritized comparison
-                if (x is IPrioritizedComparable comparable1 && y is IPrioritizedComparable comparable2)
-                {
-                    int order = comparable1.Priority.CompareTo(comparable2.Priority);
-
-                    if (order != 0)
-                    {
-                        return order;
-                    }
-
-                    return comparable1.CompareTo(comparable2);
-                }
-
-                // Handle non-prioritized comparison
-                if (x is IComparable item1 && y is IComparable item2)
-                {
-                    int order = item1.CompareTo(item2);
-
-                    if (order != 0)
-                    {
-                        return order;
-                    }
-                }
-
-                return 0;
-            }
         }
     }
 }
