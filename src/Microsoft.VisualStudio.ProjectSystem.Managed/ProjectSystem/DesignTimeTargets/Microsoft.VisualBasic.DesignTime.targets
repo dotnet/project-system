@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.VisualBasic.xaml;"/>
 
       <!-- Namespace Import List-->
       <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)VisualBasic.NamespaceImport.xaml">

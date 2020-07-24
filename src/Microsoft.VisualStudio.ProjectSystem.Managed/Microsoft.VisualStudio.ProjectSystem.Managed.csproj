@@ -449,10 +449,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\ProjectItemsSchema.xaml" />
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\CSharp.ProjectItemsSchema.xaml" />
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\VisualBasic.ProjectItemsSchema.xaml" />
-    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\FSharp.ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\Items\ProjectItemsSchema.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\Items\ProjectItemsSchema.CSharp.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\Items\ProjectItemsSchema.VisualBasic.xaml" />
+    <XamlPropertyProjectItemsSchema Include="ProjectSystem\Rules\Items\ProjectItemsSchema.FSharp.xaml" />
   </ItemGroup>
 
   <ItemGroup>
