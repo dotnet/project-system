@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
+using EmptyCollections = Microsoft.VisualStudio.ProjectSystem.Empty;
+
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(IDesignTimeInputsChangeTracker))]
@@ -147,17 +149,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         internal void ProcessDataflowChanges(IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
         {
+            _currentState = GenerateOutputData(_currentState, input);
+
+            // Processed bad input data
+            if (_currentState is null)
+            {
+                // Lets return a default value to avoid hangs waiting on this.
+                _currentState = new DesignTimeInputsDelta(EmptyCollections.OrdinalStringSet,
+                    EmptyCollections.OrdinalStringSet, Enumerable.Empty<DesignTimeInputFileChange>(), string.Empty);
+            }
+
+            PublishDelta(_currentState);
+        }
+
+        private static DesignTimeInputsDelta? GenerateOutputData(
+            DesignTimeInputsDelta? previousState,
+            IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
+        {
             DesignTimeInputs inputs = input.Value.Item1;
 
             if (!input.Value.Item2.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription configChanges))
             {
                 // If this isn't an update we can deal with, just ignore it
-                _currentState = null;
-                return;
+                return null;
             }
-
-            // This can't change while we're running, but let's use a local so you don't have to take my word for it
-            DesignTimeInputsDelta? previousState = _currentState;
 
             var changedInputs = new List<DesignTimeInputFileChange>();
             // On the first call where we receive design time inputs we queue compilation of all of them, knowing that we'll only compile if the file write date requires it
@@ -205,13 +220,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // if the path is bad, or we couldn't get part of it, then we presume we wouldn't be able to act on any files
                 // so we can just clear _currentState to ensure file changes aren't processed, and return.
                 // If the path is ever fixed this block will trigger again and all will be right with the world.
-                _currentState = null;
-                return;
+                return null;
             }
 
             // This is our only update to current state, and data flow protects us from overlaps. File changes don't update state
-            _currentState = new DesignTimeInputsDelta(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
-            PublishDelta(_currentState);
+            return new DesignTimeInputsDelta(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
 
             void AddAllInputsToQueue(bool ignoreFileWriteTime)
             {
