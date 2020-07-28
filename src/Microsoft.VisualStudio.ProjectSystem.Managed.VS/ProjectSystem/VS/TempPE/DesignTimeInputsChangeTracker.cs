@@ -9,8 +9,6 @@ using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
-using EmptyCollections = Microsoft.VisualStudio.ProjectSystem.Empty;
-
 namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(IDesignTimeInputsChangeTracker))]
@@ -147,17 +145,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             PublishDelta(delta);
         }
 
+        // Should always produce output data to avoid hangs.
         internal void ProcessDataflowChanges(IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
         {
-            _currentState = GenerateOutputData(_currentState, input);
-
-            // Processed bad input data
-            if (_currentState is null)
-            {
-                // Lets return a default value to avoid hangs waiting on this.
-                _currentState = new DesignTimeInputsDelta(EmptyCollections.OrdinalStringSet,
-                    EmptyCollections.OrdinalStringSet, Enumerable.Empty<DesignTimeInputFileChange>(), string.Empty);
-            }
+            _currentState = GenerateOutputData(_currentState, input) ?? DesignTimeInputsDelta.Empty;
 
             PublishDelta(_currentState);
         }

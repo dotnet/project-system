@@ -67,7 +67,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             DesignTimeInputsDelta value = AppliedValue.Value;
 
-            return await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(relativeFileName, value.TempPEOutputPath, value.SharedInputs);
+            return string.IsNullOrEmpty(value.TempPEOutputPath) ? string.Empty :
+                await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(relativeFileName, value.TempPEOutputPath, value.SharedInputs);
         }
 
         /// <summary>
