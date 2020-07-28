@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
 
-            await Assert.ThrowsAsync<Exception>(() =>
+            await Assert.ThrowsAsync<ProjectNotRunnableDirectlyException>(() =>
             {
                 return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
             });

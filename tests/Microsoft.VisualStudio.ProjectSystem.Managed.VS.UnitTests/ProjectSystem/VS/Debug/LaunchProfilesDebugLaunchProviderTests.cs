@@ -16,6 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
         private readonly OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders =
             new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
+
+        private readonly IProjectThreadingService _threadingService = IProjectThreadingServiceFactory.Create();
+
         private readonly Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
         private readonly Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
         private readonly List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
@@ -63,12 +66,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public void GetLaunchTargetsProviderForProfileTests()
+        public void GetLaunchTargetsProviderForProfileTestsAsync()
         {
             var provider = CreateInstance();
-            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
+            Assert.Equal(_mockWebProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
+            Assert.Equal(_mockDockerProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
+            Assert.Equal(_mockExeProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
             Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
         }
 

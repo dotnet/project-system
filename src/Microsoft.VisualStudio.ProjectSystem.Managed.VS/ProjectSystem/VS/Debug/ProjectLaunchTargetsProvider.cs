@@ -133,7 +133,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return true;
         }
 
-
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
         {
             return QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: true);

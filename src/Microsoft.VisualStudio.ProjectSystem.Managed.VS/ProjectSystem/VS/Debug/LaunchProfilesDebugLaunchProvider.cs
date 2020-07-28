@@ -63,8 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 ILaunchProfile activeProfile = await GetActiveProfileAsync();
 
                 // Now find the DebugTargets provider for this profile
-                IDebugProfileLaunchTargetsProvider launchProvider =
-                    GetLaunchTargetsProvider(activeProfile) ?? throw new Exception();
+                IDebugProfileLaunchTargetsProvider? launchProvider = GetLaunchTargetsProvider(activeProfile);
+                if (launchProvider is null)
+                {
+                    return true;
+                }
 
                 if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
                 {
