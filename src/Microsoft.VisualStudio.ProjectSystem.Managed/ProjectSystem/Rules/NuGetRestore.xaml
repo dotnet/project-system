@@ -138,6 +138,14 @@
                   Visible="False" />
 
 
+  <StringProperty Name="TargetPlatformMoniker"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetPlatformMinVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="TreatWarningsAsErrors"
                   ReadOnly="True"
                   Visible="False" />
