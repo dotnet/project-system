@@ -4,13 +4,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Partial Class CodeAnalysisPropPage
         Friend WithEvents FxCopAnalyzersPanel As System.Windows.Forms.Panel
-        Friend WithEvents InstalledVersionLabel As System.Windows.Forms.Label
-        Friend WithEvents InstalledVersionTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents InstallCustomVersionButton As System.Windows.Forms.Button
-        Friend WithEvents InstallLatestVersionButton As System.Windows.Forms.Button
-        Friend WithEvents UninstallAnalyzersButton As System.Windows.Forms.Button
-        Friend WithEvents FxCopAnalyzersPackageNameTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents FxCopAnalyzersPackageNameLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLineLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersHelpLinkLabel As System.Windows.Forms.LinkLabel
@@ -35,13 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.RoslynAnalyzersLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersLineLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersHelpLinkLabel = New System.Windows.Forms.LinkLabel()
-            Me.FxCopAnalyzersPackageNameTextBox = New System.Windows.Forms.TextBox()
-            Me.FxCopAnalyzersPackageNameLabel = New System.Windows.Forms.Label()
-            Me.InstalledVersionTextBox = New System.Windows.Forms.TextBox()
-            Me.InstalledVersionLabel = New System.Windows.Forms.Label()
-            Me.InstallLatestVersionButton = New System.Windows.Forms.Button()
-            Me.InstallCustomVersionButton = New System.Windows.Forms.Button()
-            Me.UninstallAnalyzersButton = New System.Windows.Forms.Button()
             Me.FxCopAnalyzersPanel.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -52,13 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLineLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersHelpLinkLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameTextBox)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionTextBox)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstallLatestVersionButton)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstallCustomVersionButton)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.UninstallAnalyzersButton)
             resources.ApplyResources(Me.FxCopAnalyzersPanel, "FxCopAnalyzersPanel")
             Me.FxCopAnalyzersPanel.Name = "FxCopAnalyzersPanel"
             '
@@ -95,46 +74,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             resources.ApplyResources(Me.RoslynAnalyzersHelpLinkLabel, "RoslynAnalyzersHelpLinkLabel")
             Me.RoslynAnalyzersHelpLinkLabel.Name = "RoslynAnalyzersHelpLinkLabel"
             Me.RoslynAnalyzersHelpLinkLabel.TabStop = True
-            '
-            'FxCopAnalyzersPackageNameTextBox
-            '
-            resources.ApplyResources(Me.FxCopAnalyzersPackageNameTextBox, "FxCopAnalyzersPackageNameTextBox")
-            Me.FxCopAnalyzersPackageNameTextBox.Name = "FxCopAnalyzersPackageNameTextBox"
-            Me.FxCopAnalyzersPackageNameTextBox.ReadOnly = True
-            '
-            'FxCopAnalyzersPackageNameLabel
-            '
-            resources.ApplyResources(Me.FxCopAnalyzersPackageNameLabel, "FxCopAnalyzersPackageNameLabel")
-            Me.FxCopAnalyzersPackageNameLabel.Name = "FxCopAnalyzersPackageNameLabel"
-            '
-            'InstalledVersionTextBox
-            '
-            resources.ApplyResources(Me.InstalledVersionTextBox, "InstalledVersionTextBox")
-            Me.InstalledVersionTextBox.Name = "InstalledVersionTextBox"
-            Me.InstalledVersionTextBox.ReadOnly = True
-            '
-            'InstalledVersionLabel
-            '
-            resources.ApplyResources(Me.InstalledVersionLabel, "InstalledVersionLabel")
-            Me.InstalledVersionLabel.Name = "InstalledVersionLabel"
-            '
-            'InstallLatestVersionButton
-            '
-            resources.ApplyResources(Me.InstallLatestVersionButton, "InstallLatestVersionButton")
-            Me.InstallLatestVersionButton.Name = "InstallLatestVersionButton"
-            Me.InstallLatestVersionButton.UseVisualStyleBackColor = True
-            '
-            'InstallCustomVersionButton
-            '
-            resources.ApplyResources(Me.InstallCustomVersionButton, "InstallCustomVersionButton")
-            Me.InstallCustomVersionButton.Name = "InstallCustomVersionButton"
-            Me.InstallCustomVersionButton.UseVisualStyleBackColor = True
-            '
-            'UninstallAnalyzersButton
-            '
-            resources.ApplyResources(Me.UninstallAnalyzersButton, "UninstallAnalyzersButton")
-            Me.UninstallAnalyzersButton.Name = "UninstallAnalyzersButton"
-            Me.UninstallAnalyzersButton.UseVisualStyleBackColor = True
             '
             'CodeAnalysisPropPage
             '
