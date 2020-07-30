@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2
+    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2, IDebugProfileLaunchTargetsProvider3
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -114,6 +114,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assumes.NotNull(actualOutputType);
 
             return StringComparers.PropertyLiteralValues.Equals(actualOutputType.Name, outputType);
+        }
+
+        public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+        {
+            try
+            {
+                _ = await QueryDebugTargetsForDebugLaunchAsync(launchOptions, profile);
+            }
+            catch (ProjectNotRunnableDirectlyException)
+            {
+                return false;
+            }
+            catch (Exception)
+            {
+            }
+
+            return true;
         }
 
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)
@@ -433,7 +450,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 // If we're launching for debug purposes, prevent someone F5'ing a class library
                 if (validateSettings && await IsClassLibraryAsync())
                 {
-                    throw new Exception(VSResources.ProjectNotRunnableDirectly);
+                    throw new ProjectNotRunnableDirectlyException();
                 }
 
                 // Otherwise, fall back to "TargetPath"
@@ -641,6 +658,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private enum StringState
         {
             NormalCharacter, EscapedCharacter, QuotedString, QuotedStringEscapedCharacter
+        }
+    }
+
+    internal class ProjectNotRunnableDirectlyException : Exception
+    {
+        public ProjectNotRunnableDirectlyException()
+            :this(VSResources.ProjectNotRunnableDirectly)
+        {
+        }
+
+        public ProjectNotRunnableDirectlyException(string message)
+            : base(message)
+        {
+        }
+
+        public ProjectNotRunnableDirectlyException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }
