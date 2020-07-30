@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// Interface definition used by StartupProjectRegistrar to display only debuggable projects
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Extension)]
-    public interface IStartupProjectProvider
+    internal interface IStartupProjectProvider
     {
         /// <summary>
         /// Returns true if this project can be selected as a startup project.
