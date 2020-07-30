@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// Optional interface that is used to tell whether a project should appear in
     /// the Startup drop down list.
     /// </summary>
-    internal interface IDebugProfileLaunchTargetsProvider3
+    public interface IDebugProfileLaunchTargetsProvider3
     {
         Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
     }
