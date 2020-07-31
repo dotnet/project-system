@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <param name="tempPEOutputPath">The path in which to place the TempPE DLL if one is created</param>
         /// <param name="sharedInputs">The list of shared inputs to be included in the TempPE DLL</param>
         /// <returns>An XML description of the TempPE DLL for the specified file</returns>
-        public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
+        public async Task<string> BuildDesignTimeOutputAsync(string relativeFileName, string tempPEOutputPath, ImmutableHashSet<string> sharedInputs)
         {
             // A call to this method indicates that the TempPE system is in use for real, so we use it as a trigger for starting background compilation of things
             // This means we get a nicer experience for the user once they start using designers, without wasted cycles compiling things just because a project is loaded
