@@ -79,21 +79,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Not using use the ThreadingService property because unit tests
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            DesignTimeInputsDelta delta = value.Value;
+            IProjectVersionedValue<DesignTimeInputsDelta>? previous = AppliedValue;
 
-            ImmutableHashSet<string>? removedFiles = AppliedValue?.Value.Inputs.Except(delta.Inputs);
-
-            // As it happens the DesignTimeInputsDelta contains all of the state we need
             AppliedValue = value;
 
-            foreach (DesignTimeInputFileChange change in delta.ChangedInputs)
+            // To avoid callers seeing an inconsistent state where there are no monikers,
+            // we use BlockInitializeOnFirstAppliedValue to block on the first value
+            // being applied.
+            //
+            // Due to that, and to avoid a deadlock when event handlers call back into us
+            // while we're still initializing, we avoid firing the events the first time 
+            // a value is applied.
+            if (previous != null)
             {
-                _buildManager.OnDesignTimeOutputDirty(_project.MakeRelative(change.File));
-            }
+                DesignTimeInputsDelta currentValue = value.Value;
+                DesignTimeInputsDelta previousValue = previous.Value;
 
-            if (removedFiles != null)
-            {
-                foreach (string item in removedFiles)
+                foreach (DesignTimeInputFileChange change in currentValue.ChangedInputs)
+                {
+                    _buildManager.OnDesignTimeOutputDirty(_project.MakeRelative(change.File));
+                }
+
+  
+                foreach (string item in previousValue.Inputs.Except(currentValue.Inputs))
                 {
                     _buildManager.OnDesignTimeOutputDeleted(_project.MakeRelative(item));
                 }
