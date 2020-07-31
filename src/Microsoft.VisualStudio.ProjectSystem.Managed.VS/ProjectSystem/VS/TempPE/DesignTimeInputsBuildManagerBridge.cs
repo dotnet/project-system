@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -13,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(IDesignTimeInputsBuildManagerBridge))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>, IProjectVersionedValue<DesignTimeInputsDelta>>, IDesignTimeInputsBuildManagerBridge
+    internal class DesignTimeInputsBuildManagerBridge : UnconfiguredProjectHostBridge<IProjectVersionedValue<DesignTimeInputSnapshot>, IProjectVersionedValue<DesignTimeInputSnapshot>, IProjectVersionedValue<DesignTimeInputSnapshot>>, IDesignTimeInputsBuildManagerBridge
     {
         private readonly UnconfiguredProject _project;
         private readonly IDesignTimeInputsChangeTracker _designTimeInputsChangeTracker;
@@ -48,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             Assumes.NotNull(AppliedValue);
 
-            DesignTimeInputsDelta value = AppliedValue.Value;
+            DesignTimeInputSnapshot value = AppliedValue.Value;
 
             return value.Inputs.Select(_project.MakeRelative).ToArray();
         }
@@ -65,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             Assumes.NotNull(AppliedValue);
 
-            DesignTimeInputsDelta value = AppliedValue.Value;
+            DesignTimeInputSnapshot value = AppliedValue.Value;
 
             return string.IsNullOrEmpty(value.TempPEOutputPath) ? string.Empty :
                 await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(relativeFileName, value.TempPEOutputPath, value.SharedInputs);
@@ -74,12 +73,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// ApplyAsync is called on the UI thread and its job is to update AppliedValue to be correct based on the changes that have come through data flow after being processed
         /// </summary>
-        protected override async Task ApplyAsync(IProjectVersionedValue<DesignTimeInputsDelta> value)
+        protected override async Task ApplyAsync(IProjectVersionedValue<DesignTimeInputSnapshot> value)
         {
             // Not using use the ThreadingService property because unit tests
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            IProjectVersionedValue<DesignTimeInputsDelta>? previous = AppliedValue;
+            IProjectVersionedValue<DesignTimeInputSnapshot>? previous = AppliedValue;
 
             AppliedValue = value;
 
@@ -92,8 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // a value is applied.
             if (previous != null)
             {
-                DesignTimeInputsDelta currentValue = value.Value;
-                DesignTimeInputsDelta previousValue = previous.Value;
+                DesignTimeInputSnapshot currentValue = value.Value;
+                DesignTimeInputSnapshot previousValue = previous.Value;
 
                 foreach (DesignTimeInputFileChange change in currentValue.ChangedInputs)
                 {
@@ -121,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// <summary>
         /// This method is where we tell data flow which blocks we're interested in receiving updates for
         /// </summary>
-        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<DesignTimeInputsDelta>> targetBlock)
+        protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<DesignTimeInputSnapshot>> targetBlock)
         {
             JoinUpstreamDataSources(_designTimeInputsChangeTracker);
 
@@ -132,9 +131,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// Preprocess gets called as each data flow block updates and its job is to take the input from those blocks and do whatever work needed
         /// so that ApplyAsync has all of the info it needs to do its job.
         /// </summary>
-        protected override Task<IProjectVersionedValue<DesignTimeInputsDelta>> PreprocessAsync(IProjectVersionedValue<DesignTimeInputsDelta> input, IProjectVersionedValue<DesignTimeInputsDelta>? previousOutput)
+        protected override Task<IProjectVersionedValue<DesignTimeInputSnapshot>> PreprocessAsync(IProjectVersionedValue<DesignTimeInputSnapshot> input, IProjectVersionedValue<DesignTimeInputSnapshot>? previousOutput)
         {
-            // As it happens the DesignTimeInputsDelta contains all of the state we need
+            // No need to manipulate the data
             return Task.FromResult(input);
         }
     }

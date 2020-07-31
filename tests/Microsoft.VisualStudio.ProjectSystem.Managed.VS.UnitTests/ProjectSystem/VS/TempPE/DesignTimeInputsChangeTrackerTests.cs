@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string _intermediateOutputPath = "MyOutput";
         private readonly DesignTimeInputsChangeTracker _changeTracker;
 
-        private readonly List<DesignTimeInputsDelta> _outputProduced = new List<DesignTimeInputsDelta>();
+        private readonly List<DesignTimeInputSnapshot> _outputProduced = new List<DesignTimeInputSnapshot>();
         private readonly TaskCompletionSource<bool> _outputProducedSource = new TaskCompletionSource<bool>();
         private int _expectedOutput;
 
@@ -243,11 +243,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             };
 
             // Create a block to receive the output
-            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(OutputProduced);
+            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(OutputProduced);
             _changeTracker.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
         }
 
-        private void OutputProduced(IProjectVersionedValue<DesignTimeInputsDelta> val)
+        private void OutputProduced(IProjectVersionedValue<DesignTimeInputSnapshot> val)
         {
             _outputProduced.Add(val.Value);
 

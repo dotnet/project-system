@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly ITelemetryService _telemetryService;
         private readonly TaskDelayScheduler _scheduler;
 
-        private ITargetBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _deltaActionBlock;
+        private ITargetBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>? _compileActionBlock;
         private IDisposable? _changeTrackerLink;
 
         private readonly CompilationQueue _queue = new CompilationQueue();
@@ -66,23 +66,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            // Create an action block process the design time delta
-            _deltaActionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(ProcessDataflowChanges, _project);
+            _compileActionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(ProcessDataflowChanges, _project);
 
-            _changeTrackerLink = _changeTracker.SourceBlock.LinkTo(_deltaActionBlock, DataflowOption.PropagateCompletion);
+            _changeTrackerLink = _changeTracker.SourceBlock.LinkTo(_compileActionBlock, DataflowOption.PropagateCompletion);
 
             return Task.CompletedTask;
         }
 
-        internal void ProcessDataflowChanges(IProjectVersionedValue<DesignTimeInputsDelta> obj)
+        internal void ProcessDataflowChanges(IProjectVersionedValue<DesignTimeInputSnapshot> value)
         {
             // Cancel any in-progress queue processing
             _compilationCancellationSource?.Cancel();
 
-            DesignTimeInputsDelta delta = obj.Value;
+            DesignTimeInputSnapshot snapshot = value.Value;
 
             // add all of the changes to our queue
-            _queue.Update(delta.ChangedInputs, delta.Inputs, delta.SharedInputs, delta.TempPEOutputPath);
+            _queue.Update(snapshot.ChangedInputs, snapshot.Inputs, snapshot.SharedInputs, snapshot.TempPEOutputPath);
 
             Assumes.Present(_project.Services.ProjectAsynchronousTasks);
 
@@ -100,12 +99,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         protected override async Task DisposeCoreAsync(bool initialized)
         {
-            if (_deltaActionBlock != null)
+            if (_compileActionBlock != null)
             {
                 // This will stop our blocks taking any more input
-                _deltaActionBlock.Complete();
+                _compileActionBlock.Complete();
 
-                await _deltaActionBlock.Completion;
+                await _compileActionBlock.Completion;
             }
 
             _compilationCancellationSource?.Dispose();

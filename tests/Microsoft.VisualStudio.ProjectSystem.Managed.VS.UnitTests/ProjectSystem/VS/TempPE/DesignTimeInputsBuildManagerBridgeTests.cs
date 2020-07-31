@@ -22,13 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task ChangedFile_FiresTempPEDirty()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 ImmutableHashSet<DesignTimeInputFileChange>.Empty,
                 "C:\\TempPE"));
 
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
@@ -43,13 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task RemovedFile_FiresTempPEDeleted()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 Array.Empty<DesignTimeInputFileChange>(),
                 ""));
 
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                ImmutableHashSet<string>.Empty,
                ImmutableHashSet<string>.Empty,
                Array.Empty<DesignTimeInputFileChange>(),
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task GetDesignTimeInputXmlAsync_HasCorrectArguments()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
@@ -114,9 +114,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
             }
 
-            public Task ApplyAsync(DesignTimeInputsDelta delta)
+            public Task ApplyAsync(DesignTimeInputSnapshot value)
             {
-                var input = IProjectVersionedValueFactory.Create(delta);
+                var input = IProjectVersionedValueFactory.Create(value);
 
                 return base.ApplyAsync(input);
             }
