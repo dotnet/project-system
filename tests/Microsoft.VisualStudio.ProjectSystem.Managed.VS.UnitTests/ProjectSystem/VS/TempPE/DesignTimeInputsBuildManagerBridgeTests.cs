@@ -25,6 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await _bridge.ApplyAsync(new DesignTimeInputsDelta(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
+                ImmutableHashSet<DesignTimeInputFileChange>.Empty,
+                "C:\\TempPE"));
+
+            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+                ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
+                ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
                 "C:\\TempPE"));
 

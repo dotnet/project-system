@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         }
 
         [Import(typeof(VisualBasicVSImports))]
-        internal Lazy<VisualBasicVSImports>? VSImports { get; set; }
+        internal Lazy<VisualBasicVSImports> VSImports { get; set; } = null!;
 
         /// <summary>
         /// Get the global project collection version number, so we can make sure we are waiting for the latest build after a dependent project is updated.
@@ -84,24 +84,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         {
             await JoinableFactory.SwitchToMainThreadAsync();
 
-            ImmutableList<string> current = AppliedValue?.Value ?? ImmutableList<string>.Empty;
-            ImmutableList<string> input = value.Value;
-
-            IEnumerable<string> removed = current.Except(input);
-            IEnumerable<string> added = input.Except(current);
+            IProjectVersionedValue<ImmutableList<string>>? previous = AppliedValue;
 
             AppliedValue = value;
 
-            VisualBasicVSImports? imports = VSImports?.Value;
-
-            if (imports != null)
+            // To avoid callers seeing an inconsistent state where there are no Imports,
+            // we use BlockInitializeOnFirstAppliedValue to block on the first value
+            // being applied.
+            //
+            // Due to that, and to avoid a deadlock when event handlers call back into us
+            // while we're still initializing, we avoid firing the events the first time 
+            // a value is applied.
+            if (previous != null)
             {
-                foreach (string import in removed)
+                VisualBasicVSImports imports = VSImports.Value;
+                ImmutableList<string> currentValue = value.Value;
+                ImmutableList<string> previousValue = previous.Value;
+
+                foreach (string import in previousValue.Except(currentValue))
                 {
                     imports.OnImportRemoved(import);
                 }
 
-                foreach (string import in added)
+                foreach (string import in currentValue.Except(previousValue))
                 {
                     imports.OnImportAdded(import);
                 }
