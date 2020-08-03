@@ -5,5 +5,8 @@
   <PropertyGroup>
     <!-- Prevent vsix manifests from being copied to the shared output directory, makes build more deterministic -->
     <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    
+    <!-- Workaround: https://github.com/dotnet/sdk/issues/12739 -->
+    <ImportFrameworkWinFXTargets>true</ImportFrameworkWinFXTargets>
   </PropertyGroup>
 </Project>
