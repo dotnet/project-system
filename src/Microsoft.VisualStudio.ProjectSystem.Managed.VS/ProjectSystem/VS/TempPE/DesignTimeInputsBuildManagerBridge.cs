@@ -38,10 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _buildManager = buildManager;
         }
 
-        /// <summary>
-        /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
-        /// </summary>
-        public async Task<string[]> GetTempPEMonikersAsync()
+        public async Task<string[]> GetDesignTimeOutputMonikersAsync()
         {
             await InitializeAsync();
 
@@ -52,10 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             return value.Inputs.Select(_project.MakeRelative).ToArray();
         }
 
-        /// <summary>
-        /// Gets the XML that describes a TempPE DLL, including building it if necessary
-        /// </summary>
-        public async Task<string> GetDesignTimeInputXmlAsync(string relativeFileName)
+        public async Task<string> BuildDesignTimeOutputAsync(string outputMoniker)
         {
             if (!SkipInitialization)
             {
@@ -67,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             DesignTimeInputSnapshot value = AppliedValue.Value;
 
             return string.IsNullOrEmpty(value.TempPEOutputPath) ? string.Empty :
-                await _designTimeInputsCompiler.GetDesignTimeInputXmlAsync(relativeFileName, value.TempPEOutputPath, value.SharedInputs);
+                await _designTimeInputsCompiler.BuildDesignTimeOutputAsync(outputMoniker, value.TempPEOutputPath, value.SharedInputs);
         }
 
         /// <summary>

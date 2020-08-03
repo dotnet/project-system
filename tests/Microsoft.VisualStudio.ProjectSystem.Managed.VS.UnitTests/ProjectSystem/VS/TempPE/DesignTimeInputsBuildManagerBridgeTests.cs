@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
                 "C:\\TempPE"));
 
-            await _bridge.GetDesignTimeInputXmlAsync("Resources1.Designer.cs");
+            await _bridge.BuildDesignTimeOutputAsync("Resources1.Designer.cs");
 
             Assert.Equal("Resources1.Designer.cs", _lastCompiledFile);
             Assert.Equal("C:\\TempPE", _lastOutputPath);
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var changeTracker = Mock.Of<IDesignTimeInputsChangeTracker>();
 
             var compilerMock = new Mock<IDesignTimeInputsCompiler>();
-            compilerMock.Setup(c => c.GetDesignTimeInputXmlAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableHashSet<string>>()))
+            compilerMock.Setup(c => c.BuildDesignTimeOutputAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableHashSet<string>>()))
                 .Callback<string, string, ImmutableHashSet<string>>((file, outputPath, sharedInputs) =>
                 {
                     _lastCompiledFile = file;

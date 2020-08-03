@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             await VerifyCompilation(1, inputs);
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+            string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
 
             // This also validates that getting the description didn't force a compile, because the output is up to date
             Assert.Single(_compilationResults);
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Remove the output file, should mean that getting the XML forces a compile
             _fileSystem.RemoveFile(Path.Combine(_outputPath, "File1.cs.dll"));
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+            string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
 
             // Verify a second compile happened
             Assert.Equal(2, _compilationResults.Count);
