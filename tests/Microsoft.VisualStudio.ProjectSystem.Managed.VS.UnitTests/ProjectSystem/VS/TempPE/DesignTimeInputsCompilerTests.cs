@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _fileSystem = new IFileSystemMock();
 
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
-            using var designTimeInputsSource = ProjectValueDataSourceFactory.Create<DesignTimeInputsDelta>(services);
+            using var designTimeInputsSource = ProjectValueDataSourceFactory.Create<DesignTimeInputSnapshot>(services);
 
             var changeTrackerMock = new Mock<IDesignTimeInputsChangeTracker>();
             changeTrackerMock.SetupGet(s => s.SourceBlock)
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 changes = _designTimeInputs.Inputs.Select(f => new DesignTimeInputFileChange(f, false));
             }
 
-            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputsDelta>(new DesignTimeInputsDelta(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
         public void Dispose()
