@@ -17,8 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders =
             new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
 
-        private readonly IProjectThreadingService _threadingService = IProjectThreadingServiceFactory.Create();
-
         private readonly Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
         private readonly Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
         private readonly List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
