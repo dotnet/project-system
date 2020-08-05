@@ -78,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void ExportsFromSamePartMustApplyToSameCapabilities(Type type)
         {
             // Exports coming from a single part must apply to the same capabilities
-
             var definition = ComponentComposition.Instance.FindComposablePartDefinition(type);
 
             Assert.NotNull(definition);
@@ -87,6 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             var appliesToMetadata = new List<string>();
             foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
             {
+                if (exportDefinitionPair.Key?.IsStatic == true)
+                    continue;
+
                 ExportDefinition exportDefinition = exportDefinitionPair.Value;
                 exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata);
                 appliesToMetadata.Add((string)metadata);

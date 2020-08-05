@@ -182,45 +182,6 @@
       <Context>File;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <!-- Project related settings -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AppDesigner.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CompilerCommandLineArgs.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- NuGet Restore Properties -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)NuGetRestore.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- Up-to-date check -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ResolvedCompilationReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CopyUpToDateMarker.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckInput.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckOutput.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckBuilt.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
@@ -263,10 +224,6 @@
 
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SourceControl.xaml">
-      <Context>Invisible</Context>
     </PropertyPageSchema>
 
   </ItemGroup>

@@ -5,13 +5,30 @@
     <XamlPropertyRule>
       <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
       <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyProjectItemsSchema>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </XamlPropertyProjectItemsSchema>
+    <DesignTimeTargetsFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </DesignTimeTargetsFile>
   </ItemDefinitionGroup>
 
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
   <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
 
-    <Copy SourceFiles="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)"
+    <ItemGroup>
+      
+      <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" 
+                    Condition="'%(CopyToOutputDirectory)' != 'Never'"/>
+    
+    </ItemGroup>    
+
+    <Copy SourceFiles="@(_ItemsToCopy)"
           DestinationFolder="$(VisualStudioXamlRulesDir)"
           SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
           OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
