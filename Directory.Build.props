@@ -45,6 +45,7 @@
   <Import Project="build\import\ProjectLayout.props"/>
 
   <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
+  <Import Project="build\import\OverrideRepoToolsetVersions.props"/>
 
   <PropertyGroup>
     <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c)  Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project>
+
+  <!-- This is an exact copy of ReproToolset's Version.props [1.0.0-beta-62705-01] except 
+       we subtract 20200000 from BUILD_BUILDNUMBER instead of 20100000 to avoid overflowing 
+       UInt16.MaxValue for the next 10 years. -->
+  <!--
+
+  Required properties:
+    VersionBase
+    PreReleaseVersionLabel (empty for release build)
+    GitHeadSha
+
+  Optional properties:
+    CIBuild                     "true" if this is a CI build
+    UseShippingAssemblyVersion  "true" to set assembly version in a dev build to a shipping one instead of 42.42.42.42
+
+  Optional environment variables:
+    BUILD_BUILDNUMBER           Environment variable set by microbuild (format: "yyyymmdd.nn")
+    PB_IsStable                 If specified then NuGet package version suffixes used by the repo are overridden by the orchestrated build like so:
+                                   if 'true' then version suffixes have format '{base version}-{PB_VersionStamp}', 
+                                   if 'false' then version suffixes have format '{base version}-{PB_VersionStamp}-{build number}'
+    PB_VersionStamp             NuGet package pre-release version label e.g. 'beta', 'preview1', etc. May be empty.
+
+  Defined properties:
+    Version
+    AssemblyVersion
+    FileVersion
+    VsixVersion
+    InformationalVersion
+
+  -->
+
+  <PropertyGroup>
+    <AssemblyVersion>$(VersionBase).0</AssemblyVersion>
+    <OfficialBuild>false</OfficialBuild>
+    <OfficialBuild Condition="'$(BUILD_BUILDNUMBER)' != ''">true</OfficialBuild>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="'$(OfficialBuild)' == 'true'">
+      <PropertyGroup>
+        <!-- 
+          Split the build parts out from the BuildNumber which is given to us by MicroBuild in the format of yyyymmdd.nn
+          where BuildNumberFiveDigitDateStamp is mmmdd (such as 60615) and BuildNumberBuildOfTheDay is nn (which represents the nth build
+          started that day). So the first build of the day, 20160615.1, will produce something similar to BuildNumberFiveDigitDateStamp: 60615,
+          BuildNumberBuildOfTheDayPadded: 01;and the 12th build of the day, 20160615.12, will produce BuildNumberFiveDigitDateStamp: 60615, BuildNumberBuildOfTheDay: 12
+
+          Additionally, in order ensure the value fits in the 16-bit PE header fields, we will only take the last five digits of the BuildNumber, so
+          in the case of 20160615, we will set BuildNumberFiveDigitDateStamp to 60615. Further, if this would result in a number like 71201 or 81201, we
+          decrement the year and add 12 to the month to extend the time. 
+        -->
+        <_BuildNumberFiveDigitDateStamp>$([MSBuild]::Subtract($(BUILD_BUILDNUMBER.Split($([System.Convert]::ToString(`.`).ToCharArray())).GetValue($([System.Convert]::ToInt32(0)))), 20200000))</_BuildNumberFiveDigitDateStamp>
+        <_BuildNumberFiveDigitDateStampYearsToOffset>$([System.Math]::Max($([System.Convert]::ToInt32($([MSBuild]::Subtract($([MSBuild]::Divide($(_BuildNumberFiveDigitDateStamp), 10000)), 6)))), 0))</_BuildNumberFiveDigitDateStampYearsToOffset>
+        <_BuildNumberFiveDigitDateStamp>$([MSBuild]::Subtract($([System.Convert]::ToInt32($(_BuildNumberFiveDigitDateStamp))), $([MSBuild]::Multiply($(_BuildNumberFiveDigitDateStampYearsToOffset), 8800))))</_BuildNumberFiveDigitDateStamp>
+        <_BuildNumberBuildOfTheDayPadded>$(BUILD_BUILDNUMBER.Split($([System.Convert]::ToString(`.`).ToCharArray())).GetValue($([System.Convert]::ToInt32(1))).PadLeft($([System.Convert]::ToInt32(2)), $([System.Convert]::ToChar(`0`))))</_BuildNumberBuildOfTheDayPadded>
+
+        <Version>$(VersionBase)</Version>
+
+        <_DashPBVersionStamp>$(PB_VersionStamp)</_DashPBVersionStamp>
+        <_DashPBVersionStamp Condition="'$(_DashPBVersionStamp)' != ''">-$(_DashPBVersionStamp)</_DashPBVersionStamp>
+
+        <Version Condition="'$(PB_IsStable)' == 'true'">$(Version)$(_DashPBVersionStamp)</Version>
+        <Version Condition="'$(PB_IsStable)' == 'false'">$(Version)$(_DashPBVersionStamp)-$(_BuildNumberFiveDigitDateStamp)-$(_BuildNumberBuildOfTheDayPadded)</Version>
+        <Version Condition="'$(PB_IsStable)' == '' and '$(PreReleaseVersionLabel)' != ''">$(Version)-$(PreReleaseVersionLabel)-$(_BuildNumberFiveDigitDateStamp)-$(_BuildNumberBuildOfTheDayPadded)</Version>
+
+        <FileVersion>$(VersionBase).$(_BuildNumberFiveDigitDateStamp)</FileVersion>
+        <VsixVersion>$(VersionBase).$(_BuildNumberFiveDigitDateStamp)$(_BuildNumberBuildOfTheDayPadded)</VsixVersion>
+        <InformationalVersion>$(Version). Commit Hash: $(GitHeadSha)</InformationalVersion>
+      </PropertyGroup>
+    </When>
+
+    <When Condition="'$(CIBuild)' == 'true'">
+      <PropertyGroup>
+        <Version>$(VersionBase)-ci</Version>
+        <FileVersion>42.42.42.42</FileVersion>
+        <VsixVersion>42.42.42.42</VsixVersion>
+        <InformationalVersion>$(FileVersion)</InformationalVersion>
+      </PropertyGroup>
+    </When>
+
+    <Otherwise>
+      <PropertyGroup>
+        <Version>$(VersionBase)-dev</Version>
+        <AssemblyVersion Condition="'$(UseShippingAssemblyVersion)' != 'true'">42.42.42.42</AssemblyVersion>
+        <FileVersion>42.42.42.42</FileVersion>
+        <VsixVersion>42.42.42.42</VsixVersion>
+        <InformationalVersion>$(FileVersion)</InformationalVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>
