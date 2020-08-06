@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
@@ -170,11 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assumes.NotNull(_context);
 
             // We just pass all options to Roslyn
-            string commandlineArguments = string.Join(" ", snapshot.Items.Keys);
-
-#pragma warning disable CS0618 // https://github.com/dotnet/project-system/issues/6470
-            _context.SetOptions(commandlineArguments);
-#pragma warning restore CS0618
+            _context.SetOptions(snapshot.Items.Keys.ToImmutableArray());
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)
