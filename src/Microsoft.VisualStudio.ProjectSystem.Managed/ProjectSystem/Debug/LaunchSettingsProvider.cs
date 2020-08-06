@@ -822,7 +822,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
                     globalSettings = currentSettings.GlobalSettings.Remove(settingName);
                 }
@@ -847,7 +847,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
-                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object currentValue))
+                if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
                     ImmutableDictionary<string, object> globalSettings = currentSettings.GlobalSettings.Remove(settingName);

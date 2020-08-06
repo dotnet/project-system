@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(profile.LaunchBrowser, profile2.LaunchBrowser);
             Assert.Equal(profile.LaunchUrl, profile2.LaunchUrl);
             Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(profile.EnvironmentVariables!, profile2.EnvironmentVariables!));
-            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings.ToImmutableDictionary(), profile2.OtherSettings!));
+            Assert.True(DictionaryEqualityComparer<string, object>.Instance.Equals(profile.OtherSettings!.ToImmutableDictionary(), profile2.OtherSettings!));
             Assert.Equal(profile.DoNotPersist, profile2.DoNotPersist);
         }
 

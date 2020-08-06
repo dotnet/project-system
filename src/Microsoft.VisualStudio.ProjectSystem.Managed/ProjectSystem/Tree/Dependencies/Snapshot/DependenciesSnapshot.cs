@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
-            if (!builder.TryGetValue(changedTargetFramework, out TargetedDependenciesSnapshot previousTargetedSnapshot))
+            if (!builder.TryGetValue(changedTargetFramework, out TargetedDependenciesSnapshot? previousTargetedSnapshot))
             {
                 previousTargetedSnapshot = TargetedDependenciesSnapshot.CreateEmpty(changedTargetFramework, catalogs);
             }

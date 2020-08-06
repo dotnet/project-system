@@ -13,6 +13,7 @@
       https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
       https://dotnet.myget.org/F/symreader-converter/api/v3/index.json;
@@ -68,8 +69,8 @@
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"                   Version="15.8.1" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.16.6.DesignTime"                   Version="16.6.30107.105" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="8.0.0-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.6.13" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.6.13" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.7.29-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.7.29-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="16.6.30107.105" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="15.5.31" />
     <PackageReference Update="Microsoft.VisualStudio.VSHelp"                                          Version="16.0.28321-alpha" />
@@ -100,8 +101,8 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.7.232-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.7.0-2.20256.8" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.7.0-2.20256.8" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.8.0-2.20402.1" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.8.0-2.20402.1" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 

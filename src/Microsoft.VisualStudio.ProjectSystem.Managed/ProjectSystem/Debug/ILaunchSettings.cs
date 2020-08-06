@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// on the section being retrieved. The settingsName matches the section in the
         /// settings file.
         /// </summary>
-        object GetGlobalSetting(string settingsName);
+        object? GetGlobalSetting(string settingsName);
 
         /// <summary>
         /// Provides access to all the global settings.
