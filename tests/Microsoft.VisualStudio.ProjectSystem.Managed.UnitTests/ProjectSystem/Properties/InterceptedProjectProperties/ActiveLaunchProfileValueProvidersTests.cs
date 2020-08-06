@@ -573,9 +573,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "Alpha=Comma: /, Equals: /=,Beta=12345", actual: actualValue);
         }
@@ -594,9 +594,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(project, settingsProvider, threadingService);
 
-            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
             Assert.Equal(expected: "var1=value1,var2=value2,var3=value3", actual: actualValue);
         }
@@ -622,12 +622,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(project, settingsProvider, threadingService);
 
-            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, "Alpha=Equals: /= Comma: /,,Beta=two", Mock.Of<IProjectProperties>());
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, "Alpha=Equals: /= Comma: /, Slash: //,Beta=two", Mock.Of<IProjectProperties>());
 
             Assumes.NotNull(updatedEnvironmentVariables);
-            Assert.Equal(expected: "Equals: = Comma: ,", actual: updatedEnvironmentVariables["Alpha"]);
+            Assert.Equal(expected: "Equals: = Comma: , Slash: /", actual: updatedEnvironmentVariables["Alpha"]);
             Assert.Equal(expected: "two", actual: updatedEnvironmentVariables["Beta"]);
         }
 
