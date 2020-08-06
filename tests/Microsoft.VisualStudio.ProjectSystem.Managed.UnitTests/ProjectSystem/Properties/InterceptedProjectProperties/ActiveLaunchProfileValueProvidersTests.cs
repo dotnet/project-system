@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
@@ -559,6 +560,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.True(activeProfileSqlDebugEnabled);
         }
 
+        [Fact]
+        public async Task EnvironmentVariables_OnGetPropertyValueAsync_GetsEscapedValuesFromActiveProfile()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "Alpha", "Comma: , Equals: =" },
+                { "Beta", "12345" }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileEnvironmentVariables: activeProfileEnvironmentVariables);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "Alpha=Comma: /, Equals: /=,Beta=12345", actual: actualValue);
+        }
+
+        [Fact]
+        public async Task EnvironmentVariables_OnSetPropertyValueAsync_HandlesEscapeCharactersProperly()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "Alpha", "one" }
+            };
+
+            ImmutableDictionary<string, string>? updatedEnvironmentVariables = null;
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileEnvironmentVariables: activeProfileEnvironmentVariables,
+                updateLaunchSettingsCallback: s =>
+                {
+                    Assumes.NotNull(s.ActiveProfile?.EnvironmentVariables);
+                    updatedEnvironmentVariables = s.ActiveProfile?.EnvironmentVariables;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, "Alpha=Equals: /= Comma: /,,Beta=two", Mock.Of<IProjectProperties>());
+
+            Assumes.NotNull(updatedEnvironmentVariables);
+            Assert.Equal(expected: "Equals: = Comma: ,", actual: updatedEnvironmentVariables["Alpha"]);
+            Assert.Equal(expected: "two", actual: updatedEnvironmentVariables["Beta"]);
+        }
+
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(
             string activeProfileName,
             string? activeProfileLaunchTarget = null,
@@ -567,6 +618,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfileWorkingDirectory = null,
             bool? activeProfileLaunchBrowser = null,
             string? activeProfileLaunchUrl = null,
+            Dictionary<string, string>? activeProfileEnvironmentVariables = null,
             Dictionary<string, object>? activeProfileOtherSettings = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
@@ -615,6 +667,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 foreach ((string key, object value) in activeProfileOtherSettings)
                 {
                     profile.OtherSettings.Add(key, value);
+                }
+            }
+
+            if (activeProfileEnvironmentVariables != null)
+            {
+                Assumes.NotNull(profile.EnvironmentVariables);
+
+                foreach ((string key, string value) in activeProfileEnvironmentVariables)
+                {
+                    profile.EnvironmentVariables.Add(key, value);
                 }
             }
 

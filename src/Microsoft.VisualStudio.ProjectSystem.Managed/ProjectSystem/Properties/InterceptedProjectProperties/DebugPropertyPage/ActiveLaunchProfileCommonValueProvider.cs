@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -26,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         new[]
         {
             CommandLineArgumentsPropertyName,
+            EnvironmentVariablesPropertyName,
             ExecutablePathPropertyName,
             LaunchBrowserPropertyName,
             LaunchTargetPropertyName,
@@ -36,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class ActiveLaunchProfileCommonValueProvider : LaunchSettingsValueProviderBase
     {
         internal const string CommandLineArgumentsPropertyName = "CommandLineArguments";
+        internal const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
         internal const string ExecutablePathPropertyName = "ExecutablePath";
         internal const string LaunchBrowserPropertyName = "LaunchBrowser";
         internal const string LaunchTargetPropertyName = "LaunchTarget";
@@ -53,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfilePropertyValue = propertyName switch
             {
                 CommandLineArgumentsPropertyName => launchSettings.ActiveProfile?.CommandLineArgs,
+                EnvironmentVariablesPropertyName => ConvertDictionaryToString(launchSettings.ActiveProfile?.EnvironmentVariables),
                 ExecutablePathPropertyName => launchSettings.ActiveProfile?.ExecutablePath,
                 LaunchBrowserPropertyName => ConvertBooleanToString(launchSettings.ActiveProfile?.LaunchBrowser),
                 LaunchTargetPropertyName => launchSettings.ActiveProfile?.CommandName,
@@ -93,6 +99,90 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
+        private static string ConvertDictionaryToString(ImmutableDictionary<string, string>? value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(",", value.Select(kvp => $"{encode(kvp.Key)}={encode(kvp.Value)}"));
+
+            static string encode(string value)
+            {
+                return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
+            }
+        }
+
+        private static void ParseStringIntoDictionary(string value, Dictionary<string, string> dictionary)
+        {
+            dictionary.Clear();
+
+            foreach (var entry in readEntries(value))
+            {
+                var (entryKey, entryValue) = splitEntry(entry);
+                var decodedEntryKey = decode(entryKey);
+                var decodedEntryValue = decode(entryValue);
+
+                if (!string.IsNullOrEmpty(decodedEntryKey))
+                {
+                    dictionary[decodedEntryKey] = decodedEntryValue;
+                }
+            }
+
+            static IEnumerable<string> readEntries(string rawText)
+            {
+                bool escaped = false;
+                int entryStart = 0;
+                for (int i = 0; i < rawText.Length; i++)
+                {
+                    if (rawText[i] == ',' && !escaped)
+                    {
+                        yield return rawText.Substring(entryStart, i - entryStart);
+                        entryStart = i + 1;
+                        escaped = false;
+                    }
+                    else if (rawText[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+
+                yield return rawText.Substring(entryStart);
+            }
+
+            static (string encodedKey, string encodedValue) splitEntry(string entry)
+            {
+                bool escaped = false;
+                for (int i = 0; i < entry.Length; i++)
+                {
+                    if (entry[i] == '=' && !escaped)
+                    {
+                        return (entry.Substring(0, i), entry.Substring(i + 1));
+                    }
+                    else if (entry[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+
+                return (string.Empty, string.Empty);
+            }
+
+            static string decode(string value)
+            {
+                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
+            }
+        }
+
         private static void UpdateActiveLaunchProfile(IWritableLaunchProfile activeProfile, string propertyName, string newValue)
         {
             switch (propertyName)
@@ -103,6 +193,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 case ExecutablePathPropertyName:
                     activeProfile.ExecutablePath = newValue;
+                    break;
+
+                case EnvironmentVariablesPropertyName:
+                    ParseStringIntoDictionary(newValue, activeProfile.EnvironmentVariables);
                     break;
 
                 case LaunchBrowserPropertyName:
