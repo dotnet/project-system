@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return string.Empty;
             }
 
-            return string.Join(",", value.Select(kvp => $"{encode(kvp.Key)}={encode(kvp.Value)}"));
+            return string.Join(",", value.OrderBy(kvp => kvp.Key, StringComparer.Ordinal).Select(kvp => $"{encode(kvp.Key)}={encode(kvp.Value)}"));
 
             static string encode(string value)
             {

@@ -581,6 +581,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
+        public async Task EnvironmentVariables_OnGetPropertyValueAsync_VariablesAreSorted()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "var3", "value3" },
+                { "var2", "value2" },
+                { "var1", "value1" }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileEnvironmentVariables: activeProfileEnvironmentVariables);
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "var1=value1,var2=value2,var3=value3", actual: actualValue);
+        }
+
+        [Fact]
         public async Task EnvironmentVariables_OnSetPropertyValueAsync_HandlesEscapeCharactersProperly()
         {
             var activeProfileEnvironmentVariables = new Dictionary<string, string>
