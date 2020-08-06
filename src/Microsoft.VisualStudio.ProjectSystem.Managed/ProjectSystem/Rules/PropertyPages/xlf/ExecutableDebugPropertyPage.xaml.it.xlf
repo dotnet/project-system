@@ -52,6 +52,16 @@
         <target state="translated">Argomenti della riga di comando</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|Description">
+        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
+        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
+        <source>Environment variables</source>
+        <target state="new">Environment variables</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
         <target state="translated">Percorso dell'eseguibile da avviare.</target>
