@@ -81,9 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public ImmutableDictionary<string, object> GlobalSettings { get; }
 
-        public object GetGlobalSetting(string settingName)
+        public object? GetGlobalSetting(string settingName)
         {
-            GlobalSettings.TryGetValue(settingName, out object o);
+            GlobalSettings.TryGetValue(settingName, out object? o);
             return o;
         }
 

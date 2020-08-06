@@ -200,8 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string tempPEOutputPath;
             // Make sure we have the up to date output path. If either of these don't exist, they will be null and we'll handle the ArgumentException below
-            string basePath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.ProjectDirProperty);
-            string objPath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.IntermediateOutputPathProperty);
+            string? basePath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.ProjectDirProperty);
+            string? objPath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.IntermediateOutputPathProperty);
             try
             {
                 tempPEOutputPath = Path.Combine(basePath, objPath, "TempPE");

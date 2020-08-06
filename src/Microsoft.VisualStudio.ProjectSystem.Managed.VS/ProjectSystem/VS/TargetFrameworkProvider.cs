@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             // Fast path for an exact name match
-            if (_targetFrameworkByName.TryGetValue(shortOrFullName, out TargetFramework existing))
+            if (_targetFrameworkByName.TryGetValue(shortOrFullName, out TargetFramework? existing))
             {
                 return existing;
             }
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     return null;
                 }
 
-                if (_targetFrameworkByName.TryGetValue(frameworkName.FullName, out TargetFramework exitingByFullName))
+                if (_targetFrameworkByName.TryGetValue(frameworkName.FullName, out TargetFramework? exitingByFullName))
                 {
                     // The full name was known, so cache by the provided (unknown) name too for next time
                     ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, exitingByFullName);
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 string? shortName = _nuGetFrameworkParser.GetShortFrameworkName(frameworkName);
 
-                if (shortName != null && _targetFrameworkByName.TryGetValue(shortName, out TargetFramework exitingByShortName))
+                if (shortName != null && _targetFrameworkByName.TryGetValue(shortName, out TargetFramework? exitingByShortName))
                 {
                     // The short name was known, so cache by the provided (unknown) name too for next time
                     ImmutableInterlocked.TryAdd(ref _targetFrameworkByName, shortOrFullName, exitingByShortName);

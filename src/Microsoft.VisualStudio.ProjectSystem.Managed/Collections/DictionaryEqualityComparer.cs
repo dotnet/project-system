@@ -11,6 +11,7 @@ namespace Microsoft.VisualStudio.Collections
     /// <typeparam name="TKey">The type of key in the dictionaries to compare.</typeparam>
     /// <typeparam name="TValue">The type of value in the dictionaries to compare.</typeparam>
     internal class DictionaryEqualityComparer<TKey, TValue> : IEqualityComparer<IImmutableDictionary<TKey, TValue>>
+        where TKey : notnull
     {
         /// <summary>
         /// Initializes a new instance of the DictionaryEqualityComparer class.

@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio
         // that don't box to IEnumerable<T> and can therefore avoid allocation.
 
         public static int Count<TKey, TValue>(this ImmutableDictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, bool> predicate)
+            where TKey : notnull
         {
             int count = 0;
 
@@ -30,6 +31,7 @@ namespace Microsoft.VisualStudio
         }
 
         public static bool Any<TKey, TValue>(this ImmutableDictionary<TKey, TValue> source, Func<KeyValuePair<TKey, TValue>, bool> predicate)
+            where TKey : notnull
         {
             foreach (KeyValuePair<TKey, TValue> pair in source)
             {
