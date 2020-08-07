@@ -67,7 +67,6 @@ steps:
 # needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
 # Artifact -> publish to symweb
 
-#TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
