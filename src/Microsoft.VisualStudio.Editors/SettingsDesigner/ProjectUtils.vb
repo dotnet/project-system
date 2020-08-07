@@ -2,6 +2,7 @@
 
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
+Imports System.IO
 Imports System.Reflection
 
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -293,7 +294,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Debug.Assert(AddTo IsNot Nothing, "Must have a project items collection to add new item to!")
 
             ' Create new document...
-            Using Writer As New IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
+            Using Writer As New StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
                 Dim ExtendingNamespace As CodeNamespace = Nothing
                 If cc2.Namespace IsNot Nothing Then
                     Debug.Assert(cc2.Namespace.FullName IsNot Nothing, "Couldn't get a FullName from the CodeClass2.Namespace!?")
@@ -695,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             End If
 
             Dim sb As New System.Text.StringBuilder
-            Dim sw As New IO.StringWriter(sb)
+            Dim sw As New StringWriter(sb)
 
             generator.GenerateCodeFromStatement(statement, sw, New CodeGeneratorOptions())
             sw.Flush()

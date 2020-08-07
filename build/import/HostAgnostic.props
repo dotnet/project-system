@@ -13,16 +13,16 @@
     <Reference Include="System.Xml.Linq" />
     
     <!-- Toolset -->
-    <PackageReference Include="MicroBuild.Core" ExcludeAssets="All" />
-    <PackageReference Include="MicroBuild.Core.Sentinel" ExcludeAssets="All" />
-    <PackageReference Include="MicroBuild.Plugins.SwixBuild" ExcludeAssets="All"/>
+    <PackageReference Include="MicroBuild.Core"                     ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Core.Sentinel"            ExcludeAssets="All" />
+    <PackageReference Include="MicroBuild.Plugins.SwixBuild"        ExcludeAssets="All"/>
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
     <PackageReference Include="XliffTasks" />
     <PackageReference Include="RoslynTools.SignTool" />
-    <PackageReference Include="RoslynTools.RepoToolset" ExcludeAssets="all" />
-    <PackageReference Include="Codecov" ExcludeAssets="all" />
-    <PackageReference Include="OpenCover" ExcludeAssets="all" />
-    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" ExcludeAssets="all" />
+    <PackageReference Include="RoslynTools.RepoToolset"             ExcludeAssets="all" />
+    <PackageReference Include="Codecov"                             ExcludeAssets="all" />
+    <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
     
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
@@ -45,19 +45,16 @@
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
 
-    <!-- MSBuild -->
-    <PackageReference Include="Microsoft.Build" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" />
-    <PackageReference Include="Microsoft.Build.Engine" />
-
+    <!-- Framework packages -->
+    <PackageReference Include="Microsoft.IO.Redist" />
+    
     <!-- 3rd party -->
     <PackageReference Include="Newtonsoft.Json" />
 
     <!-- Host-Agnostic Visual Studio -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
     <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" />
     <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" />
-    <PackageReference Include="StreamJsonRpc" />
 
   </ItemGroup>
 
@@ -70,4 +67,52 @@
     <PackageReference Include="xunit.runner.visualstudio" GeneratePathProperty="true" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
+
+ <!--
+    Some of the VSSDK packages may pull in Microsoft.VisualStudio.SDK.EmbedInteropTypes which essentially
+    does the below but for all of the listed references. We can't just use what they have since they include
+    things like EnvDTE which is reasonable for consumers, but strange since we actually _implement_ DTE and
+    use it as an exchange type with generics in a few places. Instead, we run directly after the target declared
+    in the EmbedInteropTypes package and ensure only the dependencies we need are embedded and the others are
+    skipped.
+  -->
+  <Target Name="CustomLinkVSSDKEmbeddableAssemblies" AfterTargets="LinkVSSDKEmbeddableAssemblies">
+    <ItemGroup>
+      <ReferencePath Condition="
+              '%(FileName)' == 'Microsoft.VisualStudio.Setup.Configuration.Interop'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
+           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
+           or '%(FileName)' == 'stdole'
+           or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
+           or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
+           or '%(FileName)' == 'NuGet.VisualStudio'
+           or '%(FileName)' == 'VSLangProj110'
+           or '%(FileName)' == 'VSLangProj165'
+           ">
+        <EmbedInteropTypes>true</EmbedInteropTypes>
+      </ReferencePath>
+      <ReferencePath Condition="
+              '%(FileName)' == 'Microsoft.VisualStudio.Imaging.Interop.15.0.DesignTime'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.10.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.11.0'
+           or '%(FileName)' == 'Microsoft.VisualStudio.Feedback.Interop.12.0.DesignTime'
+           or '%(FileName)' == 'microsoft.visualstudio.designer.interfaces'
+           or '%(FileName)' == 'EnvDTE80'
+           or '%(FileName)' == 'EnvDTE90'
+           or '%(FileName)' == 'EnvDTE100'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
+           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
+        <EmbedInteropTypes>false</EmbedInteropTypes>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
 </Project>

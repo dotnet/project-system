@@ -3,6 +3,7 @@
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports System.IO
 Imports System.Windows.Forms
 
 Imports EnvDTE
@@ -291,8 +292,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  which we don't want.  Make a copy of the file as a memory stream and use that to
                 '  create the Image.
                 Try
-                    Dim IconContents As Byte() = IO.File.ReadAllBytes(path)
-                    Dim IconStream As New IO.MemoryStream(IconContents, 0, IconContents.Length)
+                    Dim IconContents As Byte() = File.ReadAllBytes(path)
+                    Dim IconStream As New MemoryStream(IconContents, 0, IconContents.Length)
                     ApplicationIconPictureBox.Image = IconToImage(New Icon(IconStream), ApplicationIconPictureBox.ClientSize)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase))
                     'This could mean a bad icon file, I/O problems, etc.  At any rate, it doesn't make sense to

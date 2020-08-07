@@ -1,6 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel.Design
+Imports System.IO
 Imports System.Runtime.InteropServices
 
 Imports Microsoft.VisualStudio.Editors.OptionPages
@@ -260,9 +261,9 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="key">Added in the constructor using AddOptionKey </param>
         ''' <param name="stream">Stream to read from</param>
-        Protected Overrides Sub OnLoadOptions(key As String, stream As IO.Stream)
+        Protected Overrides Sub OnLoadOptions(key As String, stream As Stream)
             If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
-                Dim reader As New IO.BinaryReader(stream)
+                Dim reader As New BinaryReader(stream)
                 Dim buf(15) As Byte ' Space enough for a GUID - 16 bytes...
                 Try
                     While reader.Read(buf, 0, buf.Length) = buf.Length
@@ -286,7 +287,7 @@ Namespace Microsoft.VisualStudio.Editors
         ''' </summary>
         ''' <param name="key">Added in the constructor using AddOptionKey</param>
         ''' <param name="stream">Stream to read data from</param>
-        Protected Overrides Sub OnSaveOptions(key As String, stream As IO.Stream)
+        Protected Overrides Sub OnSaveOptions(key As String, stream As Stream)
             If String.Equals(key, ProjectDesignerSUOKey, StringComparison.Ordinal) Then
                 ' This is the project designer's last active tab
                 If _lastViewedProjectDesignerTab IsNot Nothing Then

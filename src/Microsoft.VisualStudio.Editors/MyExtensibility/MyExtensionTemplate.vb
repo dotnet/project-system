@@ -2,6 +2,7 @@
 
 Option Strict On
 Option Explicit On
+Imports System.IO
 Imports System.Xml
 
 Imports EnvDTE90
@@ -44,7 +45,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
                 Dim xmlDocument As New XmlDocument With {
                     .XmlResolver = Nothing
                 }
-                Using reader As XmlReader = XmlReader.Create(New IO.StringReader(template.CustomData))
+                Using reader As XmlReader = XmlReader.Create(New StringReader(template.CustomData))
                     xmlDocument.Load(reader)
                 End Using
 

@@ -33,8 +33,7 @@
     <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" />
     <PackageReference Include="Microsoft.VisualStudio.Designer.Interfaces" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />
-    <PackageReference Include="Microsoft.VisualStudio.SDK.EmbedInteropTypes" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />    
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" />
@@ -52,52 +51,5 @@
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
     <PackageReference Include="NuGet.VisualStudio" />    
   </ItemGroup>
-
-  <!--
-    Some of the VSSDK packages may pull in Microsoft.VisualStudio.SDK.EmbedInteropTypes which essentially
-    does the below but for all of the listed references. We can't just use what they have since they include
-    things like EnvDTE which is reasonable for consumers, but strange since we actually _implement_ DTE and
-    use it as an exchange type with generics in a few places. Instead, we run directly after the target declared
-    in the EmbedInteropTypes package and ensure only the dependencies we need are embedded and the others are
-    skipped.
-  -->
-  <Target Name="CustomLinkVSSDKEmbeddableAssemblies" AfterTargets="LinkVSSDKEmbeddableAssemblies">
-    <ItemGroup>
-      <ReferencePath Condition="
-              '%(FileName)' == 'Microsoft.VisualStudio.Setup.Configuration.Interop'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Embeddable'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.0'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
-           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
-           or '%(FileName)' == 'stdole'
-           or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
-           or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
-           or '%(FileName)' == 'NuGet.VisualStudio'
-           or '%(FileName)' == 'VSLangProj110'
-           or '%(FileName)' == 'VSLangProj165'
-           ">
-        <EmbedInteropTypes>true</EmbedInteropTypes>
-      </ReferencePath>
-      <ReferencePath Condition="
-              '%(FileName)' == 'Microsoft.VisualStudio.Imaging.Interop.15.0.DesignTime'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.10.0'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.11.0'
-           or '%(FileName)' == 'Microsoft.VisualStudio.Feedback.Interop.12.0.DesignTime'
-           or '%(FileName)' == 'microsoft.visualstudio.designer.interfaces'
-           or '%(FileName)' == 'EnvDTE80'
-           or '%(FileName)' == 'EnvDTE90'
-           or '%(FileName)' == 'EnvDTE100'
-           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
-           or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
-        <EmbedInteropTypes>false</EmbedInteropTypes>
-      </ReferencePath>
-    </ItemGroup>
-  </Target>
+ 
 </Project>
