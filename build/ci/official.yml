@@ -81,12 +81,10 @@ steps:
   displayName: Archive symbols to VSTS
   inputs:
     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
-    SearchPattern: 
-      '**/*.pdb
-      **/*.dll
-      **/*.exe'
+    SearchPattern: '**/*.pdb'
+    indexSources: false
+    publishSymbols: true
     SymbolServerType: TeamServices
-    SkipIndexing: true
     SymbolsProduct: 'Roslyn Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
