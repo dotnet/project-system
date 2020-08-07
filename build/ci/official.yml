@@ -110,11 +110,9 @@ steps:
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
 
-#TODO deprecate this with PublishBuildArtifacts@1
-- task: CopyPublishBuildArtifacts@1
-  displayName: Publish Drop
+- task: CopyFiles@2
   inputs:
-    CopyRoot: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
      artifacts\$(BuildConfiguration)\bin
      artifacts\$(BuildConfiguration)\DevDivInsertionFiles
@@ -122,8 +120,16 @@ steps:
      artifacts\$(BuildConfiguration)\packages
      artifacts\$(BuildConfiguration)\VSSetup
      artifacts\$(BuildConfiguration)\TestResults
+    TargetFolder: $(Build.ArtifactStagingDirectory)/drop
+  displayName: Copy Drop
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
     ArtifactName: '$(Build.BuildNumber)'
-    ArtifactType: Container
+    publishLocation: Container
+  displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0
