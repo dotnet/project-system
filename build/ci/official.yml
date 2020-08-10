@@ -114,12 +114,12 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-     artifacts\$(BuildConfiguration)\bin
-     artifacts\$(BuildConfiguration)\DevDivInsertionFiles
-     artifacts\$(BuildConfiguration)\log
-     artifacts\$(BuildConfiguration)\packages
-     artifacts\$(BuildConfiguration)\VSSetup
-     artifacts\$(BuildConfiguration)\TestResults
+     artifacts\$(BuildConfiguration)\bin\**
+     artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
+     artifacts\$(BuildConfiguration)\log\**
+     artifacts\$(BuildConfiguration)\packages\**
+     artifacts\$(BuildConfiguration)\VSSetup\**
+     artifacts\$(BuildConfiguration)\TestResults\**
     TargetFolder: $(Build.ArtifactStagingDirectory)/drop
   displayName: Copy Drop
   condition: succeededOrFailed()
