@@ -236,6 +236,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Implements IVsEditorFactory.CreateEditorInstance
 
             Try
+                Dim ServiceProvider As System.IServiceProvider = _serviceProvider
+                Hierarchy = ClientShimUtils.VSHierarchyShim(Itemid, Hierarchy, ServiceProvider)
+
                 Dim ExistingDocData As Object = Nothing
                 DocViewPtr = IntPtr.Zero
                 DocDataPtr = IntPtr.Zero
