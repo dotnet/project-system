@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
 
         [ImportingConstructor]
-        public ActiveLaunchProfileEnvironmentVariableValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
-            : base(project, launchSettingsProvider, projectThreadingService)
+        public ActiveLaunchProfileEnvironmentVariableValueProvider(ILaunchSettingsProvider launchSettingsProvider)
+            : base(launchSettingsProvider)
         {
         }
 

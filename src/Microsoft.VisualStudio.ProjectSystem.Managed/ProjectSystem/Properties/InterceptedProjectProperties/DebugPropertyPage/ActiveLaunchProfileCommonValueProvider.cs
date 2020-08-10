@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string WorkingDirectoryPropertyName = "WorkingDirectory";
 
         [ImportingConstructor]
-        public ActiveLaunchProfileCommonValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
-            : base(project, launchSettingsProvider, projectThreadingService)
+        public ActiveLaunchProfileCommonValueProvider(ILaunchSettingsProvider launchSettingsProvider)
+            : base(launchSettingsProvider)
         {
         }
 
