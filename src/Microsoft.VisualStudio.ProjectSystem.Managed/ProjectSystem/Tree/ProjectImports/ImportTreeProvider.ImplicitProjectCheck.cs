@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                     if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
                     {
                         _nuGetPackageFoldersString = value;
-                        _nuGetPackageFolders = value.Split(';');
+                        _nuGetPackageFolders = value.Split(Delimiter.Semicolon);
                     }
                 }
             }
