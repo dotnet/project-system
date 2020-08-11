@@ -267,7 +267,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Value given us for "MyApplication" property 
+        ''' Value given us for "MyApplication" property
         ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
@@ -289,7 +289,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Value given us for "MyType" property 
+        ''' Value given us for "MyType" property
         ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
@@ -366,7 +366,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Make sure the application type combobox is showing the appropriate 
+        ''' Make sure the application type combobox is showing the appropriate
         ''' value
         ''' </summary>
         Private Sub UpdateApplicationTypeUI()
@@ -555,7 +555,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         Protected Function StartupObjectSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             'This is handled by the ApplicationType set, so do nothing here
-            'CONSIDER: The start-up object/MainForm-handling code needs to be reworked - it makes undo/redo/external property changes 
+            'CONSIDER: The start-up object/MainForm-handling code needs to be reworked - it makes undo/redo/external property changes
             '  more difficult than they should be.  Get code should not be changing the value of other properties.
 
             If Not m_fInsideInit Then
@@ -915,7 +915,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override this to implement custom processing.
         ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
         '''   it is called on every SetObjects call, which means that when the user changes the
-        '''   selected configuration, it is called again. 
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
@@ -954,7 +954,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override this to implement custom processing.
         ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
         '''   it is called on every SetObjects call, which means that when the user changes the
-        '''   selected configuration, it is called again. 
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
@@ -1270,7 +1270,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim CurrentMyType As Object = Nothing
             If MyTypeGet(Nothing, Nothing, CurrentMyType) Then
                 If CurrentMyType Is Nothing OrElse Not TypeOf CurrentMyType Is String OrElse Not String.Equals(NewMyType, CStr(CurrentMyType), StringComparison.Ordinal) Then
-                    'The value has changed - 
+                    'The value has changed -
                     ' now poke it into our storage thru the same mechanism that the page-hosting
                     '   infrastructure does.
                     '
@@ -1495,7 +1495,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
-        ''' Happens when the splash screen combobox box is opened.  Use this to populate it with the 
+        ''' Happens when the splash screen combobox box is opened.  Use this to populate it with the
         '''   correct current choices.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -1506,7 +1506,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         ''' <summary>
-        ''' Happens when the start-up object combobox box is opened.  Use this to populate it with the 
+        ''' Happens when the start-up object combobox box is opened.  Use this to populate it with the
         '''   correct current choices.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -1562,7 +1562,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked Then
                 'Having the application framework enabled requires that the start-up object be a form.  If there
-                '  is no such form available, the code in StartupObjectGet will not be able to correct the Start-up 
+                '  is no such form available, the code in StartupObjectGet will not be able to correct the Start-up
                 '  object to be a form, and we'll end up possibly with compiler errors in the generated code which will
                 '  be confusing to the user.  So if there is no start-up form available in the project, then disable
                 '  the application framework again and tell the user why.
