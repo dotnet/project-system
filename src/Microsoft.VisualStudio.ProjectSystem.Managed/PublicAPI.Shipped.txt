@@ -101,7 +101,7 @@ Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvid
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.InterceptingPropertyValueProviderBase() -> void
 Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase
-Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject! project, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider! launchSettingsProvider, Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService! projectThreadingService) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider! launchSettingsProvider) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string! projectFilePath) -> T?
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers

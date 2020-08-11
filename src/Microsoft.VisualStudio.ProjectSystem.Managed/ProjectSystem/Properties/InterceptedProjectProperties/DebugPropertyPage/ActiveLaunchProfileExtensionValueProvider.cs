@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string False = "false";
 
         [ImportingConstructor]
-        public ActiveLaunchProfileExtensionValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
-            : base(project, launchSettingsProvider, projectThreadingService)
+        public ActiveLaunchProfileExtensionValueProvider(ILaunchSettingsProvider launchSettingsProvider)
+            : base(launchSettingsProvider)
         {
         }
 
