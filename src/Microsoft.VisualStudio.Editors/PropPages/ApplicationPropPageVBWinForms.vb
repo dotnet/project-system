@@ -223,8 +223,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Set a flag so we don't keep trying to query for this property
                     _isMyApplicationPropertiesCached = True
 
-                    ' TODO: Remove this condition once VB property pages are fully supported on CPS
-                    If Not ProjectHierarchy.IsCapabilityMatch("PreventAutomaticMyApplication") Then
+                    'Only enable MyApplication when capability is present.
+                    If ProjectHierarchy.IsCapabilityMatch("EnableMyApplication") Then
                         _myApplicationPropertiesCache = MyApplicationProjectLifetimeTracker.Track(ProjectHierarchy)
                         _myApplicationPropertiesNotifyPropertyChanged = TryCast(_myApplicationPropertiesCache, INotifyPropertyChanged)
                     Else
