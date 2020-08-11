@@ -61,16 +61,14 @@
 
   <PropertyGroup Condition="'$(Language)' == 'C#'">
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <Features>strict</Features>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Language)' == 'VB'">
-    <!-- Build machines only have Visual Studio 15.5 (which comes with VB 15.3) -->
-    <LangVersion>15.3</LangVersion>
-    <!-- The default is Embed -->
-    <VBRuntime>Default</VBRuntime>
+    <LangVersion>16</LangVersion>
+    <VBRuntime>Default</VBRuntime>  <!-- The default is Embed -->
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <Features>strict</Features>
   </PropertyGroup>
