@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (Path.IsPathRooted(unevaluatedPropertyValue) &&
-                _unconfiguredProject.TryMakeRelativeToProjectDirectory(unevaluatedPropertyValue, out string relativePath))
+                _unconfiguredProject.TryMakeRelativeToProjectDirectory(unevaluatedPropertyValue, out string? relativePath))
             {
                 unevaluatedPropertyValue = relativePath;
             }

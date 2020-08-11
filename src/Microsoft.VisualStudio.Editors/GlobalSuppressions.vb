@@ -1333,6 +1333,8 @@ Imports System.Diagnostics.CodeAnalysis
 <Assembly: SuppressMessage("Naming", "CA1713:Events should not have 'Before' or 'After' prefix", Justification:="<Pending>", Scope:="member", Target:="~E:Microsoft.VisualStudio.Editors.MyExtensibility.TrackProjectDocumentsEventsHelper.AfterRemoveFiles")>
 <Assembly: SuppressMessage("Naming", "CA1713:Events should not have 'Before' or 'After' prefix", Justification:="<Pending>", Scope:="member", Target:="~E:Microsoft.VisualStudio.Editors.MyExtensibility.TrackProjectDocumentsEventsHelper.AfterRenameDirectories")>
 <Assembly: SuppressMessage("Naming", "CA1713:Events should not have 'Before' or 'After' prefix", Justification:="<Pending>", Scope:="member", Target:="~E:Microsoft.VisualStudio.Editors.MyExtensibility.TrackProjectDocumentsEventsHelper.AfterRenameFiles")>
+<Assembly: SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.XmlIntellisense.XmlIntellisenseSchemas.CompileCallBack(Microsoft.VisualStudio.Editors.XmlIntellisense.XmlIntellisenseSchemasData)")>
 
 ' Bugs
 <Assembly: SuppressMessage("Style", "IDE0070:Use 'System.HashCode'", Justification:="https://github.com/dotnet/roslyn/issues/45995", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropertyPages.WPF.ApplicationPropPageVBWPF.StartupObject.GetHashCode~System.Int32")>
+

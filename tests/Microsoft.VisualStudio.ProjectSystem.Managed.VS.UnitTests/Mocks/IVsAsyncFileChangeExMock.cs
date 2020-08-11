@@ -59,5 +59,10 @@ namespace Microsoft.VisualStudio.Shell
         {
             throw new NotImplementedException();
         }
+
+        public System.Threading.Tasks.Task FilterDirectoryChangesAsync(uint cookie, string[] extensions, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

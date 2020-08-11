@@ -439,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // here if the project actually produced a marker and we only check it against references that
             // actually produced a marker.
 
-            if (string.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem) || !state.CopyReferenceInputs.Any())
+            if (Strings.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem) || !state.CopyReferenceInputs.Any())
             {
                 return true;
             }
