@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
             string value = await configuration.OutputType.GetEvaluatedValueAtEndAsync();
-            if (GetMap.TryGetValue(value, out string returnValue))
+            if (GetMap.TryGetValue(value, out string? returnValue))
             {
                 return returnValue;
             }

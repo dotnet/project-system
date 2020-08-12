@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 {
                     foreach (DesignTimeInputFileChange item in addOrUpdateItems)
                     {
-                        if (queue.TryGetValue(item.File, out QueueItem existing))
+                        if (queue.TryGetValue(item.File, out QueueItem? existing))
                         {
                             // If the item exists, ensure that if anyone wanted us to ignore the file write time, we don't lose that info
                             // If the item doesn't need to be tracked, we'll clean it up later (we have to loop through everything then anyway)

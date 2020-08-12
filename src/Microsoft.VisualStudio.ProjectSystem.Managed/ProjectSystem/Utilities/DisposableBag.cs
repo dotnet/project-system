@@ -16,14 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         /// <summary>
         /// The set of disposable blocks. If <see langword="null" />, then this disposable bag has been disposed.
         /// </summary>
-        private ImmutableHashSet<IDisposable?>? _disposables = ImmutableHashSet.Create<IDisposable?>();
+        private ImmutableHashSet<IDisposable>? _disposables = ImmutableHashSet.Create<IDisposable>();
 
         /// <summary>
         /// Disposes of all contained disposable items.
         /// </summary>
         public void Dispose()
         {
-            ImmutableHashSet<IDisposable?>? disposables = Interlocked.Exchange(ref _disposables, null);
+            ImmutableHashSet<IDisposable>? disposables = Interlocked.Exchange(ref _disposables, null);
 
             if (disposables != null)
             {
@@ -49,8 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             }
 
             bool shouldDisposeArgument = false;
-
+#pragma warning disable CS8634 // https://github.com/dotnet/runtime/issues/40442
             ImmutableInterlocked.Update(
+#pragma warning restore CS8634
                 ref _disposables,
                 (set, item) =>
                 {
@@ -95,7 +96,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 return;
             }
 
+#pragma warning disable CS8634 // https://github.com/dotnet/runtime/issues/40442
             ImmutableInterlocked.Update(
+#pragma warning restore CS8634 
                 ref _disposables,
                 (set, item) => set?.Remove(item),
                 disposable);

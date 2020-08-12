@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot? targetedSnapshot))
             {
                 return;
             }

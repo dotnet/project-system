@@ -1,7 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel.Design
-
+Imports System.IO
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -194,7 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             ' No settings class provided - let's crack open the .settings file... 
                             '
                             Settings = New DesignTimeSettings()
-                            Using Reader As New IO.StreamReader(FullPath)
+                            Using Reader As New StreamReader(FullPath)
                                 SettingsSerializer.Deserialize(Settings, Reader, True)
                             End Using
                         End If

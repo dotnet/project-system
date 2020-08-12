@@ -46,9 +46,11 @@ if /I "%1" == "/configuration"        set "BuildConfiguration=%2"               
 call :Usage && exit /b 1
 :DoneParsing
 
+set LogFile=%Root%artifacts\%BuildConfiguration%\log\Build.binlog
+
 REM The logging command-line needs to factor in build configuration, so calculate it after that's been determined
 if "%OptDiagnostic%" == "true" (
-    set LogCmdLine=/v:normal /bl:%Root%artifacts\%BuildConfiguration%\log\Build.binlog
+    set LogCmdLine=/v:normal /bl:%LogFile%
 ) else (
     set LogCmdLine=/v:minimal
 )
@@ -59,7 +61,13 @@ REM WORKAROUND: See https://github.com/dotnet/project-system/issues/5177
 SET LIB=
 
 msbuild %Root%build\proj\Build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
-exit /b %ERRORLEVEL%
+set MSBuildErrorLevel=%ERRORLEVEL%
+
+if "%OptDiagnostic%" == "true" if "%OptCI%" == "false" (
+    start %LogFile%
+)
+
+exit /b %MSBuildErrorLevel%
 
 :Usage
 echo Usage: %BatchFile% [options]

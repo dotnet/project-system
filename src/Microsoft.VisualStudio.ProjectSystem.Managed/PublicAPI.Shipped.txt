@@ -30,7 +30,7 @@ Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.OtherSettings.get -> S
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile.WorkingDirectory.get -> string?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile?
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GetGlobalSetting(string! settingsName) -> object!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GetGlobalSetting(string! settingsName) -> object?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.GlobalSettings.get -> System.Collections.Immutable.ImmutableDictionary<string!, object!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings.Profiles.get -> System.Collections.Immutable.ImmutableList<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider
@@ -101,7 +101,7 @@ Microsoft.VisualStudio.ProjectSystem.Properties.IInterceptingPropertyValueProvid
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase
 Microsoft.VisualStudio.ProjectSystem.Properties.InterceptingPropertyValueProviderBase.InterceptingPropertyValueProviderBase() -> void
 Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase
-Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.UnconfiguredProject! project, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider! launchSettingsProvider, Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService! projectThreadingService) -> void
+Microsoft.VisualStudio.ProjectSystem.Properties.LaunchSettingsValueProviderBase.LaunchSettingsValueProviderBase(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider! launchSettingsProvider) -> void
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider
 Microsoft.VisualStudio.ProjectSystem.VS.Extensibility.IProjectExportProvider.GetExport<T>(string! projectFilePath) -> T?
 Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers

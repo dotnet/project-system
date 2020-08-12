@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 string[] propertyNames = valueProvider.Metadata.PropertyNames;
 
-                foreach (var propertyName in propertyNames)
+                foreach (string propertyName in propertyNames)
                 {
                     Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
+            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
                 evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
             }
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             string? unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
-            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
+            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
                 unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty ?? "", DelegatedProperties);
             }
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             string? valueToSet;
-            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider))
+            if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
                 valueToSet = await valueProvider.Value.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }

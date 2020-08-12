@@ -715,9 +715,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             // Check snapshot
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
 
-            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
         }
 
         [Theory]
@@ -750,9 +750,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
 
-            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
         }
         [Fact]
         public async Task RemoveGlobalSettingAsync_SettingDoesntExist()

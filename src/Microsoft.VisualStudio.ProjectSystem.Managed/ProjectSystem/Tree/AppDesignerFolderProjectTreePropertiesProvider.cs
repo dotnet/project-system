@@ -68,15 +68,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
             string folderName = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.FolderNameProperty, "Properties");
             string contextsVisibleOnlyInShowAllFiles = ruleSnapshots.GetPropertyOrDefault(AppDesigner.SchemaName, AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, "false");
 
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.FolderNameProperty, folderName);
-            projectTreeSettings = projectTreeSettings.SetItem(AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty, contextsVisibleOnlyInShowAllFiles);
+            projectTreeSettings = projectTreeSettings.SetItem($"{AppDesigner.SchemaName}.{AppDesigner.FolderNameProperty}", folderName);
+            projectTreeSettings = projectTreeSettings.SetItem($"{AppDesigner.SchemaName}.{AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty}", contextsVisibleOnlyInShowAllFiles);
         }
 
         protected sealed override bool IsCandidateSpecialFolder(IProjectTreeCustomizablePropertyContext propertyContext, ProjectTreeFlags flags)
         {
             if (propertyContext.ParentNodeFlags.IsProjectRoot() && flags.IsFolder() && flags.IsIncludedInProject())
             {
-                string folderName = propertyContext.ProjectTreeSettings[AppDesigner.FolderNameProperty];
+                string folderName = propertyContext.ProjectTreeSettings[$"{AppDesigner.SchemaName}.{AppDesigner.FolderNameProperty}"];
 
                 return StringComparers.Paths.Equals(folderName, propertyContext.ItemName);
             }
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         protected override bool AreContentsVisibleOnlyInShowAllFiles(IImmutableDictionary<string, string> projectTreeSettings)
         {
-            return StringComparers.PropertyLiteralValues.Equals(projectTreeSettings[AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty], "true");
+            return StringComparers.PropertyLiteralValues.Equals(projectTreeSettings[$"{AppDesigner.SchemaName}.{AppDesigner.ContentsVisibleOnlyInShowAllFilesProperty}"], "true");
         }
     }
 }

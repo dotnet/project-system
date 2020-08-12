@@ -12,13 +12,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     internal interface IDesignTimeInputsBuildManagerBridge
     {
         /// <summary>
-        /// Get the list of design time monikers that need to have TempPE libraries created. Needs to be called on the UI thread.
+        /// Get the list of design time monikers that need to have TempPE libraries created.
         /// </summary>
-        Task<string[]> GetTempPEMonikersAsync();
+        Task<string[]> GetDesignTimeOutputMonikersAsync();
 
         /// <summary>
-        /// Gets the XML that describes a TempPE DLL, including building it if necessary
+        /// Builds a temporary portable executable (PE) and returns its description in an XML string.
         /// </summary>
-        Task<string> GetDesignTimeInputXmlAsync(string relativeFileName);
+        Task<string> BuildDesignTimeOutputAsync(string outputMoniker);
     }
 }

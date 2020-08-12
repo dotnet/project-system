@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -46,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                _projectLoadedInHost.TrySetResult(null);
+                _projectLoadedInHost.TrySetResult();
                 return Task.CompletedTask;
             }
         }
@@ -116,12 +117,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnProjectLoadedInHost()
         {
-            _projectLoadedInHost.SetResult(null);
+            _projectLoadedInHost.SetResult();
         }
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _prioritizedProjectLoadedInHost.SetResult(null);
+            _prioritizedProjectLoadedInHost.SetResult();
 
             _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
         }

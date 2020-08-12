@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -93,13 +94,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
-            
+            var hintService = new Lazy<IProjectChangeHintSubmissionService>(() => IProjectChangeHintSubmissionServiceFactory.Create());
+            var projectAccessor = IProjectAccessorFactory.Create();
+
             return new PackageRestoreDataSource(
                 project,
                 dataSource,
                 projectAsynchronousTasksService,
                 solutionRestoreService,
                 fileSystem,
+                hintService,
+                projectAccessor,
                 logger);
         }
     }

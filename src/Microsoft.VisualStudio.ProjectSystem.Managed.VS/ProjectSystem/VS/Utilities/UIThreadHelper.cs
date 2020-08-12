@@ -11,26 +11,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     internal static class UIThreadHelper
     {
         /// <summary>
-        /// Helper utility to ensure that we are on UI thread. Needs to be called 
-        /// in every method/propetrty needed UI thread for our protection (to avoid hangs 
+        /// Helper utility to ensure that we are on UI thread. Needs to be called
+        /// in every method/property with UI thread affinity (to avoid hangs
         /// which are hard to repro and investigate).
         /// </summary>
         public static void VerifyOnUIThread([CallerMemberName] string memberName = "")
         {
-            if (!UnitTestHelper.IsRunningUnitTests)
+#if DEBUG
+            try
             {
-                try
-                {
 #pragma warning disable RS0030 // Do not used banned APIs
-                    ThreadHelper.ThrowIfNotOnUIThread(memberName);
+                ThreadHelper.ThrowIfNotOnUIThread(memberName);
 #pragma warning restore RS0030 // Do not used banned APIs
-                }
-                catch
-                {
-                    System.Diagnostics.Debug.Fail("Call made on the Non-UI thread by " + memberName);
-                    throw;
-                }
             }
+            catch
+            {
+                System.Diagnostics.Debug.Fail("Call made on the Non-UI thread by " + memberName);
+                throw;
+            }
+#else
+#pragma warning disable RS0030 // Do not used banned APIs
+            ThreadHelper.ThrowIfNotOnUIThread(memberName);
+#pragma warning restore RS0030 // Do not used banned APIs
+#endif
         }
     }
 }

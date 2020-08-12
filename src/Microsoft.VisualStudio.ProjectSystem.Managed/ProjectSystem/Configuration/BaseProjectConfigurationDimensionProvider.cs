@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider4
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider5
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.

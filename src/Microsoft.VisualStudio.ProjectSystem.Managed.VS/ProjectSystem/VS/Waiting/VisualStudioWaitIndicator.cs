@@ -96,17 +96,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             }
             catch (OperationCanceledException)
             {
-                // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
-#pragma warning disable CS8653
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
                 return (WaitIndicatorResult.Canceled, default);
-#pragma warning restore CS8653
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
             }
             catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
             {
-                // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
-#pragma warning disable CS8653
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
                 return (WaitIndicatorResult.Canceled, default);
-#pragma warning restore CS8653
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
             }
         }
 
