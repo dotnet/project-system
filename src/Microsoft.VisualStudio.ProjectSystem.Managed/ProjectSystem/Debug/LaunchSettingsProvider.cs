@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
         private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompletionSource = new TaskCompletionSource<bool>();
+        private readonly TaskCompletionSource _firstSnapshotCompletionSource = new TaskCompletionSource();
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // If this is the first snapshot, complete the taskCompletionSource
                 if (_currentSnapshot == null)
                 {
-                    _firstSnapshotCompletionSource.TrySetResult(true);
+                    _firstSnapshotCompletionSource.TrySetResult();
                 }
                 _currentSnapshot = value;
             }

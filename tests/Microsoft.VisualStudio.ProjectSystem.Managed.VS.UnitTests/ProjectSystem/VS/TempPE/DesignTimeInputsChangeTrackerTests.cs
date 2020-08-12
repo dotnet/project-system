@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
@@ -22,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly DesignTimeInputsChangeTracker _changeTracker;
 
         private readonly List<DesignTimeInputSnapshot> _outputProduced = new List<DesignTimeInputSnapshot>();
-        private readonly TaskCompletionSource<bool> _outputProducedSource = new TaskCompletionSource<bool>();
+        private readonly TaskCompletionSource _outputProducedSource = new TaskCompletionSource();
         private int _expectedOutput;
 
         [Fact]
@@ -253,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             if (_outputProduced.Count == _expectedOutput)
             {
-                _outputProducedSource?.SetResult(true);
+                _outputProducedSource?.SetResult();
             }
         }
 

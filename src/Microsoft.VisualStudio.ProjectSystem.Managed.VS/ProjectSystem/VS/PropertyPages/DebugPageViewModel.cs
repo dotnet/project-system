@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading.Tasks;
 using DialogResult = System.Windows.Forms.DialogResult;
 using Task = System.Threading.Tasks.Task;
 
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private List<LaunchType> _providerLaunchTypes;
         private LaunchType _selectedLaunchType;
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource;
+        private readonly TaskCompletionSource _firstSnapshotCompleteSource;
         private ICommand _addEnvironmentVariableRowCommand;
         private ICommand _removeEnvironmentVariableRowCommand;
         private ICommand _browseDirectoryCommand;
@@ -56,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         // for unit testing
-        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject project)
+        internal DebugPageViewModel(TaskCompletionSource snapshotComplete, UnconfiguredProject project)
         {
             _firstSnapshotCompleteSource = snapshotComplete;
             Project = project;
@@ -918,7 +919,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
-                _firstSnapshotCompleteSource?.TrySetResult(true);
+                _firstSnapshotCompleteSource?.TrySetResult();
                 _debugTargetsCoreInitialized = true;
             }
         }

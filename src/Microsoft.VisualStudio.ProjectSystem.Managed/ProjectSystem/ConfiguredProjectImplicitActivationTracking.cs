@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource<object?> _isImplicitlyActiveSource = new TaskCompletionSource<object?>();
+        private TaskCompletionSource _isImplicitlyActiveSource = new TaskCompletionSource();
         private IDisposable? _subscription;
 
         [ImportingConstructor]
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyActivated()
         {
-            _isImplicitlyActiveSource.TrySetResult(null);
+            _isImplicitlyActiveSource.TrySetResult();
 
             IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
 
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private Task OnImplicitlyDeactivated()
         {
-            var source = new TaskCompletionSource<object?>();
+            var source = new TaskCompletionSource();
 
             // Make sure the writes in constructor don't 
             // move to after we publish the value

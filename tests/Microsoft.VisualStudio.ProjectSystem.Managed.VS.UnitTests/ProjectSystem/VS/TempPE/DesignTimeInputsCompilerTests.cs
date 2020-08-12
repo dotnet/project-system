@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         // For tracking compilation events that occur, to verify
         private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new List<(string, string[])>();
-        private TaskCompletionSource<bool>? _compilationOccurredCompletionSource;
+        private TaskCompletionSource? _compilationOccurredCompletionSource;
         private int _expectedCompilations;
         private Func<string, ISet<string>, bool> _compilationCallback;
 
@@ -294,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _compilationResults.Add((output, files.Select(f => Path.GetFileName(f)).ToArray()));
             if (_compilationResults.Count == _expectedCompilations)
             {
-                _compilationOccurredCompletionSource?.SetResult(true);
+                _compilationOccurredCompletionSource?.SetResult();
             }
 
             return true;
@@ -326,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             int initialCompilations = _compilationResults.Count;
             _expectedCompilations = initialCompilations + numberOfDLLsExpected;
-            _compilationOccurredCompletionSource = new TaskCompletionSource<bool>();
+            _compilationOccurredCompletionSource = new TaskCompletionSource();
 
             actionThatCausesCompilation();
 

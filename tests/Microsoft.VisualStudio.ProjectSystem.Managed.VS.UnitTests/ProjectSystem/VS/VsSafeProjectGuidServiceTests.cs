@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Fact]
         public async Task GetProjectGuidAsync_WhenProjectUnloads_CancelsTask()
         {
-            var projectUnloaded = new TaskCompletionSource<object>();
+            var projectUnloaded = new TaskCompletionSource();
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementPrioritizedProjectLoadedInHost(() => projectUnloaded.Task);
 
             var accessor = CreateInstance(tasksService);
