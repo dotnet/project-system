@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -16,8 +17,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener? _loadedInHostListener;
-        private readonly TaskCompletionSource<object?> _projectLoadedInHost = new TaskCompletionSource<object?>();
-        private readonly TaskCompletionSource<object?> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object?>();
+        private readonly TaskCompletionSource _projectLoadedInHost = new TaskCompletionSource();
+        private readonly TaskCompletionSource _prioritizedProjectLoadedInHost = new TaskCompletionSource();
         private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                _projectLoadedInHost.TrySetResult(null);
+                _projectLoadedInHost.TrySetResult();
                 return Task.CompletedTask;
             }
         }
@@ -108,12 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnProjectLoadedInHost()
         {
-            _projectLoadedInHost.SetResult(null);
+            _projectLoadedInHost.SetResult();
         }
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _prioritizedProjectLoadedInHost.SetResult(null);
+            _prioritizedProjectLoadedInHost.SetResult();
 
             _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
         }

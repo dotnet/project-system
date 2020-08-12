@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             public ILaunchSettingsProvider? ProfileProvider { get; set; }
             public ILaunchSettings? LaunchProfiles { get; set; }
             public IList<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>> UIProviders { get; set; } = new List<Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView>>();
-            public TaskCompletionSource<bool>? FirstSnapshotComplete { get; set; }
+            public TaskCompletionSource? FirstSnapshotComplete { get; set; }
         }
 
         private static Mock<DebugPageViewModel> CreateViewModel(ViewModelData data)
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             var mockProfiles = new Mock<ILaunchSettings>();
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Foo\foo.proj");
 
-            data.FirstSnapshotComplete = new TaskCompletionSource<bool>();
+            data.FirstSnapshotComplete = new TaskCompletionSource();
             var viewModel = new Mock<DebugPageViewModel>(data.FirstSnapshotComplete, project);
 
             mockSourceBlock.Setup(m => m.LinkTo(It.IsAny<ITargetBlock<ILaunchSettings>>(), It.IsAny<DataflowLinkOptions>())).Callback
