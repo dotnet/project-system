@@ -24,6 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         CancellationToken UnloadCancellationToken { get; }
 
         /// <summary>
+        ///     Gets a task that completes when the host recognizes that the solution is loaded, 
+        ///     or is cancelled if the project is unloaded before that occurs.
+        /// </summary>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was unloaded before the solution finished loading.
+        /// </exception>
+        Task SolutionLoadedInHost { get; }
+
+        /// <summary>
         ///     Gets a task that completes when the host recognizes that the project is loaded, 
         ///     or is cancelled if the project is unloaded before that occurs.
         /// </summary>
