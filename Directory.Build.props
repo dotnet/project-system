@@ -81,4 +81,7 @@
      
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
+
+  <!-- Workaround https://github.com/dotnet/wpf/issues/810 -->
+  <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).props" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).props')"/>
 </Project>
