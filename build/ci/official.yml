@@ -136,7 +136,7 @@ steps:
 # Authenticate with service connections to be able to publish packages to external nuget feeds.
 - task: NuGetAuthenticate@0
   inputs:
-    nuGetServiceConnections: azure-public/vs-impl, azure-public/vssdk
+    nuGetServiceConnections: azure-public/vs-impl
 
 # TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
 - task: NuGetCommand@2
