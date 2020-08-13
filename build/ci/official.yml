@@ -131,12 +131,12 @@ steps:
 
 - task: NuGetToolInstaller@0
   inputs:
-  versionSpec: '4.9.2'
+    versionSpec: '4.9.2'
 
 # Authenticate with service connections to be able to publish packages to external nuget feeds.
 - task: NuGetAuthenticate@0
   inputs:
-  nuGetServiceConnections: azure-public/vs-impl, azure-public/vssdk
+    nuGetServiceConnections: azure-public/vs-impl, azure-public/vssdk
 
 # TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
 - task: NuGetPublisher@0
