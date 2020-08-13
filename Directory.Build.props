@@ -47,6 +47,8 @@
   <Import Project="$(RepoToolsetDir)Settings.props" Condition="'$(ExcludeRestorePackageImports)' != 'true' AND Exists('$(RepoToolsetDir)Settings.props')" />
   <Import Project="build\import\OverrideRepoToolsetVersions.props"/>
 
+  <Import Project="build\import\Workarounds.props"/>
+    
   <PropertyGroup>
     <_IsVisualStudioDeveloperBuild Condition="'$(OfficialBuild)' != 'true' AND '$(CIBuild)' != 'true' AND '$(BuildingInsideVisualStudio)' == 'true'">true</_IsVisualStudioDeveloperBuild>
 
@@ -82,6 +84,4 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>
   </PropertyGroup>
 
-  <!-- Workaround https://github.com/dotnet/wpf/issues/810 -->
-  <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).props" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).props')"/>
 </Project>
