@@ -139,12 +139,13 @@ steps:
     nuGetServiceConnections: azure-public/vs-impl, azure-public/vssdk
 
 # TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
-- task: NuGetPublisher@0
-  displayName: NuGet Publisher - vs-impl
+- task: NuGetCommand@2
+  displayName: NuGet push - vs-impl
   inputs:
-    searchPattern: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    connectedServiceName: azure-public/vs-impl
-    nuGetVersion: 4.0.0.2283
+    command: push
+    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: azure-public/vs-impl
 
 - task: NuGetCommand@2
   displayName: NuGet CoreXT publish
