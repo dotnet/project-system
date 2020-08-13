@@ -6,10 +6,10 @@
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
-        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
-        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "CPS_DiagnosticRuntime": "1",
-        "CPS_MetricsCollection": "1"
+        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
+        "CPS_MetricsCollection": "1",
+        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets"
       }
     },
     "Start (with native debugging)": {
@@ -18,10 +18,10 @@
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
-        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
-        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "CPS_DiagnosticRuntime": "1",
-        "CPS_MetricsCollection": "1"
+        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
+        "CPS_MetricsCollection": "1",
+        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets"
       },
       "nativeDebugging": true
     },
@@ -31,10 +31,10 @@
       "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
-        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
-        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "CPS_DiagnosticRuntime": "1",
+        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CPS_MetricsCollection": "1",
+        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "COMPlus_ZapDisable": "1"
       },
       "nativeDebugging": true
@@ -45,16 +45,16 @@
       "commandLineArgs": "<path_to_folder_or_solution> /rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /server",
       "environmentVariables": {
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
-        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
-        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
         "CPS_DiagnosticRuntime": "1",
-        "CPS_MetricsCollection": "1"
+        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
+        "CPS_MetricsCollection": "1",
+        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets"
       }
     },
     "Start VS Online Client": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
-      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client /joinworkspace \"vsls:?workspaceId=<workspace_ID>&remoteJoin=true\""
+      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client /joinworkspace \"vsls:?workspaceId=49F172C8DCEC03BA1C67F718A01C1E947908&remoteJoin=true\""
     }
   }
 }
