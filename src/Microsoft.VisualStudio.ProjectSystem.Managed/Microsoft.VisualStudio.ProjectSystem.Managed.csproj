@@ -172,6 +172,7 @@
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\PackagePropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ParentDebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ProjectDebugPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\SigningPropertyPage.xaml" />
   </ItemGroup>
 
   <!-- Items -->
