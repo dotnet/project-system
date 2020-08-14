@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../SigningPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="new">Delay sign only</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="new">Sign the assembly</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|Description">
+        <source>Properties related to producing signing assemblies.</source>
+        <target state="new">Properties related to producing signing assemblies.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+        <source>Signing</source>
+        <target state="new">Signing</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="new">Strong name key file</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
