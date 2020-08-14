@@ -64,12 +64,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public void GetLaunchTargetsProviderForProfileTestsAsync()
+        public void GetLaunchTargetsProviderForProfileTests()
         {
             var provider = CreateInstance();
-            Assert.Equal(_mockWebProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
             Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
         }
 
