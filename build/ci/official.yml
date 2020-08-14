@@ -132,7 +132,8 @@ steps:
 - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
   displayName: Verify Signed Files
   inputs:
-    TargetFolders: artifacts\$(BuildConfiguration)\packages
+    TargetFolders: |
+      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
 
 - task: NuGetToolInstaller@0
   inputs:
