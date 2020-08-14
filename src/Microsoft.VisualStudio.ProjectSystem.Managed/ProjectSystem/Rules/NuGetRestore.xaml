@@ -146,6 +146,14 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="TargetPlatformIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetPlatformVersion"
+                  ReadOnly="True"
+                  Visible="False" />                  
+
   <StringProperty Name="TreatWarningsAsErrors"
                   ReadOnly="True"
                   Visible="False" />
