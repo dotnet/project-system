@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// </summary>
     [ExportDebugger(ProjectDebugger.SchemaName)]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider, IStartupProjectProvider
+    internal class LaunchProfilesDebugLaunchProvider : DebugLaunchProviderBase, IDeployedProjectItemMappingProvider
     {
         private readonly IVsService<IVsDebuggerLaunchAsync> _vsDebuggerService;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
@@ -54,34 +54,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Called by StartupProjectRegistrar to determine whether this project should appear in the Startup list.
+        /// This is called to query the list of debug targets  
         /// </summary>
-        public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions)
+        public override Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)
         {
-            try
-            {
-                ILaunchProfile activeProfile = await GetActiveProfileAsync();
-
-                // Now find the DebugTargets provider for this profile
-                IDebugProfileLaunchTargetsProvider launchProvider =
-                    GetLaunchTargetsProvider(activeProfile) ?? throw new Exception();
-
-                if (launchProvider is IDebugProfileLaunchTargetsProvider3 provider3)
-                {
-                    return await provider3.CanBeStartupProjectAsync(launchOptions, activeProfile);
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            // Maintain backwards compat
-            return true;
+            return QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: false);
         }
 
-        private async Task<ILaunchProfile> GetActiveProfileAsync()
+        /// <summary>
+        /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
+        /// which understands how to launch the currently active profile type. 
+        /// </summary>
+        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
         {
-            // Launch providers to enforce requirements for debuggable projects
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
             ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(5000);
@@ -92,25 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 throw new Exception(VSResources.ActiveLaunchProfileNotFound);
             }
-
-            return activeProfile;
-        }
-
-        /// <summary>
-        /// This is called to query the list of debug targets
-        /// </summary>
-        public override Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions)
-        {
-            return QueryDebugTargetsInternalAsync(launchOptions, fromDebugLaunch: false);
-        }
-
-        /// <summary>
-        /// This is called on F5 to return the list of debug targets. What is returned depends on the debug provider extensions
-        /// which understands how to launch the currently active profile type.
-        /// </summary>
-        private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsInternalAsync(DebugLaunchOptions launchOptions, bool fromDebugLaunch)
-        {
-            ILaunchProfile activeProfile = await GetActiveProfileAsync();
 
             // Now find the DebugTargets provider for this profile
             IDebugProfileLaunchTargetsProvider launchProvider = GetLaunchTargetsProvider(activeProfile) ??
