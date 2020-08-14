@@ -5,6 +5,7 @@
       DisplayName="General"
       OverrideMode="Replace"
       PageTemplate="generic"
+      PropertyPagesHidden="True"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.Categories>
     <Category Name="General"

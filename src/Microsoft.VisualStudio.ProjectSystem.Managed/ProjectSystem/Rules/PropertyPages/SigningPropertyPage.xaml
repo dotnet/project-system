@@ -4,6 +4,7 @@
       Description="Properties related to producing signing assemblies."
       DisplayName="Signing"
       PageTemplate="generic"
+      Order="700"
       xmlns="http://schemas.microsoft.com/build/2009/properties" >
 
   <Rule.DataSource>
