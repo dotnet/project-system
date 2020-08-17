@@ -20,13 +20,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Shared Function VSHierarchyShim(itemId As UInteger, vsHierarchy As IVsHierarchy, serviceProvider As System.IServiceProvider) As IVsHierarchy
 
-            Dim tmpService As IServiceProvider
-            vsHierarchy.GetSite(tmpService)
-
-            'TODO - do we need to check if on nexus client ? If yes, how to check ?
-            ' If isClient = true Then
-            '   Return vsHierarchy
-            ' End If
+            If KnownUIContexts.CloudEnvironmentConnectedContext.IsActive = False Then
+                Return vsHierarchy
+            End If
 
             ' Is Misc File and is nexus client then create the cps object
             If IsMiscProjectFile(itemId, vsHierarchy) Then
@@ -72,8 +68,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                         Dim queryableSpace = Await systemQueryService.GetProjectModelQueryableSpaceAsync()
                         '' TODO : Exception. this operation is not valid
-                        'Dim projectQuery = queryableSpace.Projects.With(Function(project) project.SourceFiles.Where(Function(f) f.FileName = resxFilename))
-                        'Dim projects = Await projectQuery.ExecuteQueryAsync()
+                        Dim projectQuery = queryableSpace.Projects.
+                                With(Function(project) project.Name).
+                                    With(Function(project) project.SourceFiles.
+                                    Where(Function(source) source.Filename = resxFilename), isRequiredNotEmpty := True)
+
+                        Dim projects = Await projectQuery.ExecuteQueryAsync()
                         '_project = projects.SingleOrDefault()
 
                         '_projectFilePath = _project.Path
