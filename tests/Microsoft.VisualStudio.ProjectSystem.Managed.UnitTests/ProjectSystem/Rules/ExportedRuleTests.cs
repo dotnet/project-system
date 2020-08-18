@@ -39,7 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             Assert.True(attribute != null, $"'{GetTypeQualifiedName(member)}' must be marked with [AppliesTo]");
         }
 
-
         [Theory]
         [MemberData(nameof(GetAllExportedMembers))]
         public void ExportedRulesMustBeMarkedWithOrder(MemberInfo member)
@@ -54,6 +53,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         public void ExportedFieldsMustEndInRule(MemberInfo member)
         {
             Assert.True(member.Name.EndsWith("Rule"), $"'{GetTypeQualifiedName(member)}' must be end in 'Rule' so that the '[ExportRule(nameof(RuleName))]' expression refers to the rule itself");
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllExportedMembersWithDeclaringType))]
+        public void MembersInSameTypeMustBeMarkedWithSameAppliesTo(Type declaringType, IEnumerable<MemberInfo> members)
+        {
+            string? appliesTo = null;
+
+            foreach (MemberInfo member in members)
+            {
+                var attribute = member.GetCustomAttribute<AppliesToAttribute>();
+                if (attribute == null)
+                    continue; // Another test will catch this
+
+                if (appliesTo == null)
+                {
+                    appliesTo = attribute.AppliesTo;
+                }
+                else
+                {
+                    Assert.True(appliesTo == attribute.AppliesTo, $"{declaringType}'s member must be all have the same value for [AppliesTo]");
+                }
+            }
         }
 
         [Theory]
@@ -92,12 +114,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         public static IEnumerable<object[]> GetAllExportedMembers()
         {
-            return GetAllExportedMembersCore().Select(member => new[] { member });
+            return RuleServices.GetAllExportedMembers().Select(member => new[] { member });
         }
 
         public static IEnumerable<object[]> GetAllExportedMembersWithAttribute()
         {
-            foreach (MemberInfo member in GetAllExportedMembersCore())
+            foreach (MemberInfo member in RuleServices.GetAllExportedMembers())
             {
                 Attribute attribute = member.GetCustomAttribute<ExportPropertyXamlRuleDefinitionAttribute>();
 
@@ -106,27 +128,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        public static IEnumerable<object[]> GetAllExportedMembersWithDeclaringType()
+        {
+            foreach (Type type in RuleServices.GetAllExportedTypes())
+            {
+                yield return new object[] { type, RuleServices.GetDeclaredMembers(type) };
+            }
+        }
+
         private static IEnumerable<object[]> GetAllRules()
         {
             return Project(GetRules(suffix: string.Empty, recursive: true));
-        }
-
-        private static IEnumerable<MemberInfo> GetAllExportedMembersCore()
-        {
-            foreach (var type in typeof(RuleExporter).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public))
-            {
-                foreach (var member in type.GetMembers())
-                {
-                    if (member.DeclaringType == type)
-                        yield return member;
-                }
-            }
-
-            foreach (var member in typeof(RuleExporter).GetMembers())
-            {
-                if (member.DeclaringType == typeof(RuleExporter))
-                    yield return member;
-            }
-        }
+        }   
     }
 }
