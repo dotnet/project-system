@@ -1,15 +1,13 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.IO
 Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.OLE.Interop
 Imports Microsoft.VisualStudio.ProjectSystem.Query
 Imports Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation
-Imports Microsoft.VisualStudio.ProjectSystem.Query.ServiceHub
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Editors.Interop
+Imports System.IO
 
 Namespace Microsoft.VisualStudio.Editors.Common
 
@@ -26,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ' Is Misc File and is nexus client then create the cps object
             If IsMiscProjectFile(itemId, vsHierarchy) Then
-                Dim path As String
+                Dim path As String = ""
                 vsHierarchy.GetCanonicalName(itemId, path)
                 Return New ClientVsHierarchy(vsHierarchy, path, serviceProvider)
             End If
@@ -53,8 +51,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private ReadOnly _nexusClientHierarchy As IVsHierarchy
         Private ReadOnly _vsProject As IVsProject
+        Private _file As ISourceFile
         Private _project As IProject
-        Private _projectFilePath As String = "TESTING"
 
         Public Sub New(vsHierarchy As IVsHierarchy, resxFilename As String, serviceProvider As System.IServiceProvider)
             _nexusClientHierarchy = vsHierarchy
@@ -64,28 +62,45 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Async Function() As Task(Of Task)
                     Dim systemQueryService As IProjectSystemQueryService = CType(serviceProvider.GetService(GetType(IProjectSystemQueryService)), IProjectSystemQueryService)
 
-                    If systemQueryService IsNot Nothing Then
-
-                        Dim queryableSpace = Await systemQueryService.GetProjectModelQueryableSpaceAsync()
-                        '' TODO : Exception. this operation is not valid
-                        Dim projectQuery = queryableSpace.Projects.
-                                With(Function(project) project.Name).
-                                    With(Function(project) project.SourceFiles.
-                                    Where(Function(source) source.Filename = resxFilename), isRequiredNotEmpty := True)
-
-                        Dim projects = Await projectQuery.ExecuteQueryAsync()
-                        '_project = projects.SingleOrDefault()
-
-                        '_projectFilePath = _project.Path
-                        ' 
-                        ' Which properties should I set/change in _nexusClientHierarchy to make it consisten
-                        'Dim pguid As Guid ' ??????
-                        '_nexusClientHierarchy.SetGuidProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ProjectDir, pguid)
+                    If systemQueryService Is Nothing Then
+                        'TODO : Replace it with a known exception or localization message
+                        Throw New Exception("Cannot get service IProjectSystemQueryService")
                     End If
+
+                    Dim queryableSpace = Await systemQueryService.GetProjectModelQueryableSpaceAsync()
+
+                    _project = Await GetProjectFromQueryAsync(queryableSpace, Path.GetFileName(resxFilename))
+
+                    _file = _project.SourceFiles.Single()
+
+                    SetPropertiesFromQueriedValues()
 
                 End Function)
 
         End Sub
+
+        Private Shared Async Function GetProjectFromQueryAsync(queryableSpace As IProjectModelQueryableSpace, filename As String) As Task(Of IProject)
+            'Exception!!. this operation is not valid
+            'https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/268584
+            Dim queryResult = Await queryableSpace.Projects.
+                    With(Function(project) project.Name).
+                    With(Function(project) project.Path).
+                    With(Function(project) project.Guid).
+                    With(Function(project) project.SourceFiles.
+                            Where(Function(source) source.FileName.Contains(filename))).
+                    ExecuteQueryAsync()
+
+            return queryResult.Single()
+
+        End Function
+
+        Private Function SetPropertiesFromQueriedValues() As Boolean
+
+            _nexusClientHierarchy.SetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ProjectDir, _project.Path)
+            _nexusClientHierarchy.SetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_Name, _project.Name)
+            _nexusClientHierarchy.SetProperty(VSConstants.VSITEMID.Root, __VSHPROPID.VSHPROPID_ProjectIDGuid, _project.Guid)
+
+        End Function
 
         Public Function SetSite(psp As IServiceProvider) As Integer Implements IVsHierarchy.SetSite
             _nexusClientHierarchy.SetSite(psp)
@@ -104,8 +119,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Public Function GetGuidProperty(itemid As UInteger, propid As Integer, ByRef pguid As Guid) As Integer Implements IVsHierarchy.GetGuidProperty
-            ' If trying to get the Project name, path
-            ' We should return _projectFilePath
             _nexusClientHierarchy.GetGuidProperty(itemid, propid, pguid)
         End Function
 
@@ -126,10 +139,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         Public Function GetCanonicalName(itemid As UInteger, ByRef pbstrName As String) As Integer Implements IVsHierarchy.GetCanonicalName
-            
+
             'We should return a valid pbstrName that matches the one in the server
             If itemid = VSConstants.VSITEMID.Root Then
-                pbstrName = _projectFilePath
+                pbstrName = _project.Path
                 pbstrName = pbstrName.ToLower()
                 Return NativeMethods.S_OK
             End If
