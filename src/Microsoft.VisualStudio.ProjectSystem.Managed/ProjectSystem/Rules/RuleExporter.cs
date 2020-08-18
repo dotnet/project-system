@@ -14,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(AppDesigner), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.AppDesigner)]
+        [Order(Order.Default)]
         public static int AppDesignerRule;
 
         /// <summary>
@@ -21,6 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(CompilerCommandLineArgs), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
+        [Order(Order.Default)]
         public static int CompilerCommandLineArgsRule;
 
         /// <summary>
@@ -28,6 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(LanguageService), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
+        [Order(Order.Default)]
         public static int LanguageServiceRule;
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(ResolvedCompilationReference), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [Order(Order.Default)]
         public static int ResolvedCompilationReferencedRule;        
 
         /// <summary>
@@ -42,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(NuGetRestore), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.PackageReferences)]
+        [Order(Order.Default)]
         public static int NuGetRestoreRule;
 
         /// <summary>
@@ -49,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(CopyUpToDateMarker), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [Order(Order.Default)]
         public static int CopyUpToDateMarkerRule;
 
         /// <summary>
@@ -56,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(UpToDateCheckInput), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [Order(Order.Default)]
         public static int UpToDateCheckInputRule;
 
         /// <summary>
@@ -63,6 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(UpToDateCheckOutput), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [Order(Order.Default)]
         public static int UpToDateCheckOutputRule;
 
         /// <summary>
@@ -70,6 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(UpToDateCheckBuilt), PropertyPageContexts.ProjectSubscriptionService)]
         [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+        [Order(Order.Default)]
         public static int UpToDateCheckBuiltRule;
 
         /// <summary>
@@ -78,6 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// </summary>
         [ExportRule(nameof(SourceControl), PropertyPageContexts.Invisible)]
         [AppliesTo(ProjectCapability.DotNet)]
+        [Order(Order.Default)]
         public static int SourceControlRule;
     }
 }
