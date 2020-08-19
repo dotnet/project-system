@@ -1269,7 +1269,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             NewMyType = NothingToEmptyString(NewMyType)
             Dim CurrentMyType As Object = Nothing
             If MyTypeGet(Nothing, Nothing, CurrentMyType) Then
-                If CurrentMyType Is Nothing OrElse Not TypeOf CurrentMyType Is String OrElse Not String.Equals(NewMyType, CStr(CurrentMyType), StringComparison.Ordinal) Then
+                If CurrentMyType Is Nothing OrElse TypeOf CurrentMyType IsNot String OrElse Not String.Equals(NewMyType, CStr(CurrentMyType), StringComparison.Ordinal) Then
                     'The value has changed - 
                     ' now poke it into our storage thru the same mechanism that the page-hosting
                     '   infrastructure does.

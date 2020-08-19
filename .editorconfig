@@ -376,6 +376,8 @@ dotnet_diagnostic.IDE0005.severity = warning      # Using directive is unnecessa
 dotnet_diagnostic.IDE0030.severity = warning      # Use coalesce expression (nullable)            int? y = x.HasValue ? x.Value : 0                   int? y = x ?? 0;
 dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
+dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
+dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 

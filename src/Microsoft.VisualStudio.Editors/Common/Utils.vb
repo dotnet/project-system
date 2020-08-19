@@ -1490,7 +1490,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return False
             End If
 
-            If Not TypeOf propertyValue Is String Then
+            If TypeOf propertyValue IsNot String Then
                 Return False
             End If
 
@@ -1514,7 +1514,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return False
             End If
 
-            If Not TypeOf propertyValue Is Boolean Then
+            If TypeOf propertyValue IsNot Boolean Then
                 Return False
             End If
 

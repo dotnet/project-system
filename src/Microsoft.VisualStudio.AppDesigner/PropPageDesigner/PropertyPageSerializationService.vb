@@ -73,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Value, NameOf(Value))
 
-            If Not TypeOf Value Is PropPageDesignerRootComponent Then
+            If TypeOf Value IsNot PropPageDesignerRootComponent Then
                 Throw AppDesCommon.CreateArgumentException(NameOf(Value))
             End If
             Dim Component As PropPageDesignerRootComponent = DirectCast(Value, PropPageDesignerRootComponent)
