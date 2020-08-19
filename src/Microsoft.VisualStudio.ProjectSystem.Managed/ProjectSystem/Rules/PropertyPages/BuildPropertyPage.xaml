@@ -4,6 +4,7 @@
       Description="General"
       DisplayName="Build"
       PageTemplate="generic"
+      Order="200"
       xmlns="http://schemas.microsoft.com/build/2009/properties" >
 
   <Rule.Categories>

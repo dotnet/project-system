@@ -313,7 +313,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _noWarn = Nothing
             Else
-                If Not TypeOf value Is String Then
+                If TypeOf value IsNot String Then
                     Debug.Fail("Expected a string value for property NoWarn")
                     Throw Common.CreateArgumentException(NameOf(value))
                 End If
@@ -354,7 +354,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If value Is PropertyControlData.Indeterminate OrElse value Is PropertyControlData.MissingProperty Then
                 _specWarnAsError = Nothing
             Else
-                If Not TypeOf value Is String Then
+                If TypeOf value IsNot String Then
                     Debug.Fail("Expected a string value for property SpecWarnAsError")
                     Throw Common.CreateArgumentException(NameOf(value))
                 End If

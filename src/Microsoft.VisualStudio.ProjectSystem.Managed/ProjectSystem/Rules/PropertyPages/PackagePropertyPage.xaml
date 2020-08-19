@@ -4,6 +4,7 @@
       Description="Properties related to producing NuGet packages."
       DisplayName="Package"
       PageTemplate="generic"
+      Order="400"
       xmlns="http://schemas.microsoft.com/build/2009/properties" >
 
   <Rule.DataSource>

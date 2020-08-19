@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 return false;
             }
 
-            if (!(obj is LogMessage other))
+            if (obj is not LogMessage other)
             {
                 return false;
             }

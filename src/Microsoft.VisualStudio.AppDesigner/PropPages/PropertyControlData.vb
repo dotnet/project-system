@@ -1209,7 +1209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End If
 
-            If (value IsNot Nothing) And (Not value Is Indeterminate) Then
+            If (value IsNot Nothing) And (value IsNot Indeterminate) Then
                 If _TypeConverter IsNot Nothing Then
                     If _TypeConverter.CanConvertFrom(Nothing, value.GetType()) Then
                         'If Not _TypeConverter.IsValid(value) AndAlso _
