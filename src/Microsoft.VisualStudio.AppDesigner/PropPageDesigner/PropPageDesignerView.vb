@@ -1245,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             '  have tried to call the multi-value undo stuff in this case, but if it does happen, let's tolerate 
                             '  it by reverting to single-value undo behavior.  MultipleValues will have already asserted in this case, so 
                             '  we don't need to unless this assumption is wrong.
-                            Debug.Assert(Objects IsNot Nothing AndAlso Objects.Length = 1 AndAlso Not TypeOf Objects(0) Is IVsCfg,
+                            Debug.Assert(Objects IsNot Nothing AndAlso Objects.Length = 1 AndAlso TypeOf Objects(0) IsNot IVsCfg,
                                 "Unexpected exception in MultipleValues constructor.  Reverting to single-value undo/redo.")
                         End Try
                     Else

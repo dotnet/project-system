@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return;
             }
 
-            if (!(projectHierarchy is IVsHierarchyRefactorNotify refactorNotify))
+            if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
             {
                 return;
             }
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Refactor
                 return;
             }
 
-            if (!(projectHierarchy is IVsHierarchyRefactorNotify refactorNotify))
+            if (projectHierarchy is not IVsHierarchyRefactorNotify refactorNotify)
             {
                 return;
             }

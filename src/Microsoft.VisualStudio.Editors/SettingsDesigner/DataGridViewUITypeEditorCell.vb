@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                  CellStyle As DataGridViewCellStyle,
                                                  valueTypeConverter As TypeConverter,
                                                  formattedTypeConverter As TypeConverter) As Object
-            If Not TypeOf FormattedValue Is String Then
+            If TypeOf FormattedValue IsNot String Then
                 Debug.Fail("Unknown formatted value type!")
                 Throw Common.CreateArgumentException(NameOf(FormattedValue))
             End If

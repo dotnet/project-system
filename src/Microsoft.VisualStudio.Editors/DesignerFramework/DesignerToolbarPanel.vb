@@ -144,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '  back to the last child control which had it.
                 If Parent IsNot Nothing Then
                     Dim c As Control = Parent
-                    While c IsNot Nothing AndAlso Not TypeOf c Is ContainerControl
+                    While c IsNot Nothing AndAlso TypeOf c IsNot ContainerControl
                         c = c.Parent
                     End While
                     If c IsNot Nothing Then
