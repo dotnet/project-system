@@ -383,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 current = defaultValue;
             }
 
-            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            if (current is not T currentTyped || !Equals(currentTyped, value))
             {
                 SelectedDebugProfile.OtherSettings[propertyName] = value;
                 return true;

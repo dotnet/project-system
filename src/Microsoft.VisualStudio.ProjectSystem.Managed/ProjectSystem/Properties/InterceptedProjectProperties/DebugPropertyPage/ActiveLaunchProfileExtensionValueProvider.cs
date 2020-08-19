@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 current = defaultValue;
             }
 
-            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            if (current is not T currentTyped || !Equals(currentTyped, value))
             {
                 launchProfile.OtherSettings[propertyName] = value;
                 return true;

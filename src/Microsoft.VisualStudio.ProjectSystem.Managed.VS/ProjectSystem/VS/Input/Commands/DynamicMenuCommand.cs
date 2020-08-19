@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected static void ExecHandler(object sender, EventArgs e)
         {
-            if (!(sender is DynamicMenuCommand command))
+            if (sender is not DynamicMenuCommand command)
             {
                 return;
             }
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected static void QueryStatusHandler(object sender, EventArgs e)
         {
-            if (!(sender is DynamicMenuCommand command))
+            if (sender is not DynamicMenuCommand command)
             {
                 return;
             }
