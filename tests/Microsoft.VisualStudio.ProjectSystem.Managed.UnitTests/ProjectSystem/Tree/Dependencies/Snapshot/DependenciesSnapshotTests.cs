@@ -180,8 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_FromEmpty()
         {
-            TargetFramework tfm1 = new TargetFramework("tfm1");
-            TargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var snapshot = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -195,8 +195,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_SameMembers_DifferentActive()
         {
-            TargetFramework tfm1 = new TargetFramework("tfm1");
-            TargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -210,8 +210,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_SameMembers_SameActive()
         {
-            TargetFramework tfm1 = new TargetFramework("tfm1");
-            TargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -224,9 +224,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_DifferentMembers_DifferentActive()
         {
-            TargetFramework tfm1 = new TargetFramework("tfm1");
-            TargetFramework tfm2 = new TargetFramework("tfm2");
-            TargetFramework tfm3 = new TargetFramework("tfm3");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);

@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         [Fact]
         public void WhenCommandSetIsWrong_QueryStatusReturnsFalse()
         {
-            Guid commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
+            var commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
             uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         [Fact]
         public void WhenCommandSetIsWrong_ExecReturnsNotSupported()
         {
-            Guid commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
+            var commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
             uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
