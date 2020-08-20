@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())
                 .Returns(() => Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.Create()));
 
-            string projectFile = @"<Project>
+            const string projectFile = @"<Project>
                 <PropertyGroup>
                     <msbuildProperty1>Property1</msbuildProperty1>
                     <msbuildProperty2>Property2</msbuildProperty2>

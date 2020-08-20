@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public async Task OnRestoreCompleted_WhenEvaluationRanWithOlderAssetsFile_IsNotUpToDate()
         {
-            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+            const string projectAssetsFile = @"C:\Project\obj\project.assets.json";
 
             var currentTimestamp = DateTime.Now;
             var evaluationTimestamp = DateTime.Now.AddDays(-1);
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public async Task OnRestoreCompleted_WhenEvaluationRanWithNewerAssetsFile_IsUpToDate()
         {
-            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+            const string projectAssetsFile = @"C:\Project\obj\project.assets.json";
 
             var currentTimestamp = DateTime.Now;
             var evaluationTimestamp = DateTime.Now.AddDays(1);
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public async Task OnRestoreCompleted_WhenEvaluationRanSameAssetsFile_IsUpToDate()
         {
-            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+            const string projectAssetsFile = @"C:\Project\obj\project.assets.json";
 
             var currentTimestamp = DateTime.Now;
             var evaluationTimestamp = currentTimestamp;
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public async Task OnRestoreCompleted_WhenEvaluationIsMissingProjectAssetsFile_IsUpToDate()
         {
-            string projectAssetsFile = @"C:\Project\obj\project.assets.json";
+            const string projectAssetsFile = @"C:\Project\obj\project.assets.json";
 
             var currentTimestamp = DateTime.Now;
 

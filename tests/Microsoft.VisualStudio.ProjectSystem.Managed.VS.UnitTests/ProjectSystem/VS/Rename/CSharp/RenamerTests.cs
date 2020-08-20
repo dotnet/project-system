@@ -63,9 +63,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
         [Fact]
         public async Task Rename_Symbol_Should_ExitEarlyInVSOnlineAsync()
         {
-            string sourceCode = "class Foo { }";
-            string oldFilePath = "Foo.cs";
-            string newFilePath = "Bar.cs";
+            const string sourceCode = "class Foo { }";
+            const string oldFilePath = "Foo.cs";
+            const string newFilePath = "Bar.cs";
 
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());

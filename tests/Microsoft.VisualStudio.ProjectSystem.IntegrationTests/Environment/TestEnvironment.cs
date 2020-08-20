@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio
 
         private static void SetTestInstallationDirectoryIfUnset()
         {
-            string installationUnderTest = "VisualStudio.InstallationUnderTest.Path";
+            const string installationUnderTest = "VisualStudio.InstallationUnderTest.Path";
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(installationUnderTest)))
             {
                 string vsDirectory = Environment.GetEnvironmentVariable("VSAPPIDDIR");

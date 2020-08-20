@@ -126,11 +126,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         [Fact]
         public async Task Rename_Symbol_Should_ExitEarlyInVSOnlineAsync()
         {
-            string sourceCode =
+            const string sourceCode =
                 @"Class Foo
                 End Class";
-            string oldFilePath = "Foo.vb";
-            string newFilePath = "Bar.vb";
+            const string oldFilePath = "Foo.vb";
+            const string newFilePath = "Bar.vb";
 
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService());

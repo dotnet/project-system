@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetProperty_MissingProperty()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>MyPropertyValue</MyProperty>
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetProperty_ExistentProperty()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>MyPropertyValue</MyProperty>
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetOrAddProperty_FirstGroup()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup/>
   <PropertyGroup/>
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetOrAddProperty_ExistingProperty()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <MyProperty>1</MyProperty>
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void AppendPropertyValue_DefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1;2</MyProperty>
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void AppendPropertyValue_EmptyProperty()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty/>
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void AppendPropertyValue_NonDefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1</MyProperty>
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void RemovePropertyValue_DefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1;2</MyProperty>
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void RemovePropertyValue_NonDefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1|2|3</MyProperty>
@@ -253,7 +253,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void RemovePropertyValue_EmptyAfterRemove()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1</MyProperty>
@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void RenamePropertyValue_DefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1;2</MyProperty>
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void RenamePropertyValue_NonDefaultDelimiter()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
      <MyProperty>1|2|3</MyProperty>

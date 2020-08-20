@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public static async Task GetPropertyAsync_ExistingPropertiesAsync()
         {
-            var expected = "echo $(ProjectDir)";
+            const string expected = "echo $(ProjectDir)";
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", expected);
             var (success, actual) = await systemUnderTest.TryGetPropertyAsync(projectProperties);
             Assert.True(success);
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build output""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(string.Empty, root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -394,7 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var stringWriter = new System.IO.StringWriter();
             root.Save(stringWriter);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -419,7 +419,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty("\t\t\t", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -445,7 +445,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
             systemUnderTest.SetProperty("\r\n", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -473,7 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -504,7 +504,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -537,7 +537,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 </Project>".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""pre build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -563,7 +563,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             var success = await systemUnderTest.TrySetPropertyAsync(@"echo ""post build $(OutDir)""", prebuildEventProjectProperties);
             Assert.True(success);
 
-            var expected = @"echo ""post build $(OutDir)""";
+            const string expected = @"echo ""post build $(OutDir)""";
             var actual = await prebuildEventProjectProperties.GetUnevaluatedPropertyValueAsync("PreBuildEvent");
             Assert.Equal(expected, actual);
         }
@@ -595,7 +595,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
             systemUnderTest.SetProperty(@"echo ""post build $(OutDir)""", root);
 
-            var expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            const string expected = @"<Project Sdk=""Microsoft.NET.Sdk"">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>

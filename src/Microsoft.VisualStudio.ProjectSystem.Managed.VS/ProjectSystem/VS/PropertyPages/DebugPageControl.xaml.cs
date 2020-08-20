@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             try
             {
-                BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
+                const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
                 PropertyInfo cellErrorInfo = dataGrid.GetType().GetProperty("HasCellValidationError", bindingFlags);
                 PropertyInfo rowErrorInfo = dataGrid.GetType().GetProperty("HasRowValidationError", bindingFlags);
                 cellErrorInfo?.SetValue(dataGrid, false, null);

@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         [Fact]
         public async Task VerifySetKeyFilePropertyAsync()
         {
-            string projectFolder = @"C:\project\root";
+            const string projectFolder = @"C:\project\root";
             string projectFullPath = $@"{projectFolder}\project.testproj";
-            string keyFileName = "KeyFile.snk";
+            const string keyFileName = "KeyFile.snk";
             string keyFileFullPath = $@"{projectFolder}\{keyFileName}";
             var instancePropertiesMock = IProjectPropertiesFactory.MockWithPropertiesAndValues(
                 new Dictionary<string, string?>
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
             Assert.Single(propertyNames);
             Assert.Equal(AssemblyOriginatorKeyFilePropertyName, propertyNames.First());
             properties = interceptedProvider.GetCommonProperties(null!);
-            string newKeyFileName = "KeyFile2.snk";
+            const string newKeyFileName = "KeyFile2.snk";
             string newKeyFileFullPath = $@"{projectFolder}\{newKeyFileName}";
             await properties.SetPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName, newKeyFileFullPath);
             propertyValue = await properties.GetEvaluatedPropertyValueAsync(AssemblyOriginatorKeyFilePropertyName);

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ActiveLaunchProfileName_OnGetEvaluatedProperty_GetsActiveProfileName()
         {
-            string activeProfileName = "Alpha";
+            const string activeProfileName = "Alpha";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName);
 
             var launchProfileProvider = new ActiveLaunchProfileNameValueProvider(settingsProvider);
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ActiveLaunchProfileName_OnGetUnevaluatedProperty_GetsActiveProfileName()
         {
-            string activeProfileName = "Beta";
+            const string activeProfileName = "Beta";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName);
             var launchProfileProvider = new ActiveLaunchProfileNameValueProvider(settingsProvider);
 
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ExecutablePath_OnGetEvaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
         {
-            string activeProfileExecutablePath = @"C:\user\bin\alpha.exe";
+            const string activeProfileExecutablePath = @"C:\user\bin\alpha.exe";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileExecutablePath: activeProfileExecutablePath);
 
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ExecutablePath_OnGetUnevaluatedPropertyValueAsync_GetsExecutableFromActiveProfile()
         {
-            string activeProfileExecutablePath = @"C:\user\bin\beta.exe";
+            const string activeProfileExecutablePath = @"C:\user\bin\beta.exe";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileExecutablePath: activeProfileExecutablePath);
 
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchTarget_OnGetEvaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
-            string activeProfileLaunchTarget = "AlphaCommand";
+            const string activeProfileLaunchTarget = "AlphaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchTarget_OnGetUnevaluatedPropertyValueAsync_GetsTargetFromActiveProfile()
         {
-            string activeProfileLaunchTarget = "BetaCommand";
+            const string activeProfileLaunchTarget = "BetaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
             var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task CommandLineArguments_OnGetEvaluatedPropertyValueAsync_GetsArgumentsFromActiveProfile()
         {
-            string activeProfileCommandLineArguments = "/bird:YES /giraffe:NO";
+            const string activeProfileCommandLineArguments = "/bird:YES /giraffe:NO";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "ZooAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
 
             var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task CommandLineArguments_OnGetUnevaluatedPropertyValueAsync_GetsArgumentsFromActiveProfile()
         {
-            string activeProfileCommandLineArguments = "/alpaca:YES /llama:NO /vicuña:NONONO";
+            const string activeProfileCommandLineArguments = "/alpaca:YES /llama:NO /vicuña:NONONO";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "SortOfFarmAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
 
             var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WorkingDirectory_OnGetEvaluatedPropertyValueAsync_GetsDirectoryFromActiveProfile()
         {
-            string activeProfileWorkingDirectory = @"C:\alpha\beta\gamma";
+            const string activeProfileWorkingDirectory = @"C:\alpha\beta\gamma";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
 
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WorkingDirectory_OnGetUnevaluatedPropertyValueAsync_GetsDirectoryFromActiveProfile()
         {
-            string activeProfileWorkingDirectory = @"C:\delta\epsilon\phi";
+            const string activeProfileWorkingDirectory = @"C:\delta\epsilon\phi";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Two", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
 
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchBrowser_OnGetEvaluatedPropertyValueAsync_GetsValueFromActiveProfile()
         {
-            bool activeProfileLaunchBrowser = true;
+            const bool activeProfileLaunchBrowser = true;
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchBrowser: activeProfileLaunchBrowser);
 
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchUrl_OnGetEvaluatedPropertyValueAsync_GetsUrlFromActiveProfile()
         {
-            string activeProfileLaunchUrl = "https://microsoft.com";
+            const string activeProfileLaunchUrl = "https://microsoft.com";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchUrl: activeProfileLaunchUrl);
 
             var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task AuthenticationMode_OnGetEvaluatedPropertyValueAsync_GetsModeFromActiveProfile()
         {
-            string activeProfileAuthenticationMode = "Windows";
+            const string activeProfileAuthenticationMode = "Windows";
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileAuthenticationMode }
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task NativeDebugging_OnGetEvaluatedPropertyValueAsync_GetsNativeDebuggingFromActiveProfile()
         {
-            bool activeProfileNativeDebugging = true;
+            const bool activeProfileNativeDebugging = true;
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.NativeDebuggingProperty, activeProfileNativeDebugging }
@@ -386,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task RemoteDebugEnabled_OnGetEvaluatedPropertyValueAsync_GetsNativeDebuggingFromActiveProfile()
         {
-            bool activeProfileRemoteDebugEnabled = true;
+            const bool activeProfileRemoteDebugEnabled = true;
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.RemoteDebugEnabledProperty, activeProfileRemoteDebugEnabled }
@@ -429,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task RemoteMachineName_OnGetEvaluatedPropertyValueAsync_GetsNameFromActiveProfile()
         {
-            string activeProfileRemoteMachineName = "alphaMachine";
+            const string activeProfileRemoteMachineName = "alphaMachine";
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.RemoteDebugMachineProperty, activeProfileRemoteMachineName }
@@ -472,7 +472,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task SqlDebugEnabled_OnGetEvaluatedPropertyValueAsync_GetsSettingFromActiveProfile()
         {
-            bool activeProfileSqlDebugEnabled = true;
+            const bool activeProfileSqlDebugEnabled = true;
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.SqlDebuggingProperty, activeProfileSqlDebugEnabled }

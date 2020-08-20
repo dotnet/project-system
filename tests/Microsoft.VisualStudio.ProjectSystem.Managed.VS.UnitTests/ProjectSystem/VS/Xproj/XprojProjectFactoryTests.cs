@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Xproj
         [Fact]
         public void UpgradeCheck()
         {
-            string projectPath = "foo\\bar.xproj";
+            const string projectPath = "foo\\bar.xproj";
 
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
             var factory = new XprojProjectFactory(new Threading.JoinableTaskContext());

@@ -51,8 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [InlineData(null, false)]
         public async Task CreateFile(string templateFilePath, bool expectedResult)
         {
-            string templateName = "SettingsInternal.zip";
-            string fileName = "Settings.settings";
+            const string templateName = "SettingsInternal.zip";
+            const string fileName = "Settings.settings";
 
             var hierarchy = IVsHierarchyFactory.Create();
             var solution = (Solution)SolutionFactory.CreateWithGetProjectItemTemplate((templateFile, language) =>

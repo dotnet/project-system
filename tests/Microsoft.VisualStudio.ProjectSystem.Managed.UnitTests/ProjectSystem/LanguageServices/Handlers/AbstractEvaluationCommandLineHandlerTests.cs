@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var logger = IProjectLoggerFactory.Create();
 
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.Create();
             var currentMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var logger = IProjectLoggerFactory.Create();
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.Create();
             var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var logger = IProjectLoggerFactory.Create();
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.Create();
             var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
 
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var logger = IProjectLoggerFactory.Create();
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.Create();
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.WithNoChanges();
 
             ApplyProjectEvaluation(handler, version, difference);
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
 
-            var version = 1;
+            const int version = 1;
             var difference = IProjectChangeDiffFactory.WithNoChanges();
 
             ApplyProjectBuild(handler, version, difference);
@@ -395,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [Fact]
         public void ApplyProjectEvaluationChanges_WithExistingEvaluationChanges_CanAddChangeMetadata()
         {
-            var file = "A.cs";
+            const string file = "A.cs";
             var handler = CreateInstanceWithEvaluationItems(@"C:\Project\Project.csproj", file);
 
             var difference = IProjectChangeDiffFactory.WithChangedItems(file);
@@ -413,12 +413,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
 
-            int evaluationVersion = 1;
+            const int evaluationVersion = 1;
 
             // Setup the "current state"
             ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
-            int designTimeVersion = 0;
+            const int designTimeVersion = 0;
 
             ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
@@ -430,12 +430,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
 
-            int evaluationVersion = 1;
+            const int evaluationVersion = 1;
 
             // Setup the "current state"
             ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
-            int designTimeVersion = 0;
+            const int designTimeVersion = 0;
 
             ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
@@ -447,12 +447,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance(@"C:\Project\Project.csproj");
 
-            int evaluationVersion = 0;
+            const int evaluationVersion = 0;
 
             // Setup the "current state"
             ApplyProjectEvaluation(handler, evaluationVersion, IProjectChangeDiffFactory.WithRemovedItems("Source.cs"));
 
-            int designTimeVersion = 1;
+            const int designTimeVersion = 1;
 
             ApplyProjectBuild(handler, designTimeVersion, IProjectChangeDiffFactory.WithAddedItems("Source.cs"));
 
@@ -463,7 +463,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            bool isActiveContext = true;
+            const bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 
             handler.ApplyProjectEvaluation(version, difference, previousMetadata, metadata, isActiveContext, logger);
@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private static void ApplyProjectBuild(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference)
         {
-            bool isActiveContext = true;
+            const bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 
             handler.ApplyProjectBuild(version, difference, isActiveContext, logger);

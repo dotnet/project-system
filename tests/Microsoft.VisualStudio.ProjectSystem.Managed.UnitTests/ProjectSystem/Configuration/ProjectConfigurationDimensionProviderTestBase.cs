@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetDefaultValuesForDimensionsAsync()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task GetProjectConfigurationDimensionsAsync()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task OnDimensionValueChanged_Add()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task OnDimensionValueChanged_Remove()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task OnDimensionValueChanged_Remove_UnknownValue()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task OnDimensionValueChanged_Rename()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         [Fact]
         public async Task OnDimensionValueChanged_Rename_UnknownValue()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>A;B;C</PROP>
@@ -351,7 +351,7 @@ $@"<Project>
         [Fact]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_ReturnsFirstValueFromLastElement()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
     <PROP>first</PROP>
@@ -371,7 +371,7 @@ $@"<Project>
         [Fact]
         public async Task GetBestGuessDefaultValuesForDimensionsAsync_WhenPropertyIsMissing_ReturnsDefaultOrEmpty()
         {
-            string projectXml =
+            const string projectXml =
 @"<Project>
   <PropertyGroup>
   </PropertyGroup>

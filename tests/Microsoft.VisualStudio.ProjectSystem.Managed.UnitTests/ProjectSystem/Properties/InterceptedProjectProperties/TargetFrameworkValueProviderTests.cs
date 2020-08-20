@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
         public async Task VerifyGetTargetFrameworkPropertyAsync()
         {
             var configuredTargetFramework = new FrameworkName(".NETFramework", new Version(4, 5));
-            var expectedTargetFrameworkPropertyValue = (uint)0x40005;
+            const uint expectedTargetFrameworkPropertyValue = (uint)0x40005;
             var provider = CreateInstance(configuredTargetFramework);
             var properties = provider.GetCommonProperties(null!);
             var propertyValueStr = await properties.GetEvaluatedPropertyValueAsync(TargetFrameworkPropertyName);

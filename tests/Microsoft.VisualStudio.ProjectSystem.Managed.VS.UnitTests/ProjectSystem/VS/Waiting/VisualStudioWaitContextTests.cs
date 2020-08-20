@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Fact]
         public static void SetPropertyAllowCancel_Test()
         {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
+            const string title = "Test001";
+            const string message = "Testing001";
+            const bool isCancelable = true;
             var context = Create(title, message, isCancelable);
             Assert.True(context.AllowCancel);
             context.AllowCancel = false;
@@ -24,12 +24,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [Fact]
         public static void SetPropertyMessage_Test()
         {
-            string title = "Test001";
-            string message = "Testing001";
-            bool isCancelable = true;
+            const string title = "Test001";
+            const string message = "Testing001";
+            const bool isCancelable = true;
             var context = Create(title, message, isCancelable);
             Assert.Equal(message, context.Message);
-            var message2 = "Testing002";
+            const string message2 = "Testing002";
             context.Message = message2;
             Assert.Equal(message2, context.Message);
         }

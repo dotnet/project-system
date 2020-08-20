@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task GetListedValuesAsync_ReturnsSupportedTargetFrameworksItems()
         {
-            string project =
+            const string project =
 @"<Project>
     <ItemGroup>
         <SupportedTargetFramework Include="".NETCoreApp,Version=v1.0"" DisplayName="".NET Core 1.0"" />

@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
             var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
             Assert.Equal("Blah", vsLangProjectProperties.CodeAnalysisRuleSet);
 
-            var testValue = "Testing";
+            const string testValue = "Testing";
             vsLangProjectProperties.CodeAnalysisRuleSet = testValue;
             Assert.Equal(setValues.Single(), testValue);
         }
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
             var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
             Assert.Equal("6", vsLangProjectProperties.LanguageVersion);
 
-            var testValue = "7.1";
+            const string testValue = "7.1";
             vsLangProjectProperties.LanguageVersion = testValue;
             Assert.Equal(setValues.Single(), testValue);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.CSharp
             var vsLangProjectProperties = CreateInstance(projectProperties, IProjectThreadingServiceFactory.Create());
             Assert.Equal("OldPath", vsLangProjectProperties.OutputPath);
 
-            var testValue = "newPath";
+            const string testValue = "newPath";
             vsLangProjectProperties.OutputPath = testValue;
             Assert.Equal(setValues.Single(), testValue);
         }

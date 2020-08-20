@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             var vsLangProjectProperties = CreateInstance(Mock.Of<VSLangProj.VSProject>(), IProjectThreadingServiceFactory.Create(), activeConfiguredProject);
             Assert.Equal("Blah", vsLangProjectProperties.AssemblyName);
 
-            var testValue = "Testing";
+            const string testValue = "Testing";
             vsLangProjectProperties.AssemblyName = testValue;
             Assert.Equal(setValues.Single(), testValue);
         }

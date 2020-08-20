@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void GetExeAndArguments()
         {
-            string exeIn = @"c:\foo\bar.exe";
-            string argsIn = "/foo /bar";
+            const string exeIn = @"c:\foo\bar.exe";
+            const string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string? finalExePath, out string? finalArguments);
@@ -42,8 +42,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void GetExeAndArgumentsWithEscapedArgs()
         {
-            string exeIn = @"c:\foo\bar.exe";
-            string argsInWithEscapes = "/foo /bar ^ < > &";
+            const string exeIn = @"c:\foo\bar.exe";
+            const string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string? finalExePath, out string? finalArguments);
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void GetExeAndArgumentsWithNullArgs()
         {
-            string exeIn = @"c:\foo\bar.exe";
+            const string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string? finalExePath, out string? finalArguments);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void GetExeAndArgumentsWithEmptyArgs()
         {
-            string exeIn = @"c:\foo\bar.exe";
+            const string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
@@ -535,10 +535,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void ValidateSettings_WhenNoExe_Throws()
         {
-            string? executable = null;
-            string? workingDir = null;
+            const string? executable = null;
+            const string? workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName = "run";
+            const string profileName = "run";
 
             Assert.Throws<Exception>(() =>
             {
@@ -549,10 +549,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void ValidateSettings_WhenExeNotFoundThrows()
         {
-            string executable = @"c:\foo\bar.exe";
-            string? workingDir = null;
+            const string executable = @"c:\foo\bar.exe";
+            const string? workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName = "run";
+            const string profileName = "run";
 
             Assert.Throws<Exception>(() =>
             {
@@ -563,10 +563,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void ValidateSettings_WhenExeFound_DoesNotThrow()
         {
-            string executable = @"c:\foo\bar.exe";
-            string? workingDir = null;
+            const string executable = @"c:\foo\bar.exe";
+            const string? workingDir = null;
             var debugger = GetDebugTargetsProvider();
-            var profileName = "run";
+            const string profileName = "run";
             _mockFS.WriteAllText(executable, "");
 
             debugger.ValidateSettings(executable, workingDir!, profileName);
@@ -576,10 +576,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void ValidateSettings_WhenWorkingDirNotFound_Throws()
         {
-            string executable = "bar.exe";
-            string workingDir = "c:\foo";
+            const string executable = "bar.exe";
+            const string workingDir = "c:\foo";
             var debugger = GetDebugTargetsProvider();
-            var profileName = "run";
+            const string profileName = "run";
 
             Assert.Throws<Exception>(() =>
             {
@@ -590,10 +590,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public void ValidateSettings_WhenWorkingDirFound_DoesNotThrow()
         {
-            string executable = "bar.exe";
-            string workingDir = "c:\foo";
+            const string executable = "bar.exe";
+            const string workingDir = "c:\foo";
             var debugger = GetDebugTargetsProvider();
-            var profileName = "run";
+            const string profileName = "run";
 
             _mockFS.AddFolder(workingDir);
 

@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.Setup
         {
             var rootPath = RepoUtil.FindRepoRootPath();
 
-            var commonFilesFileName = "CommonFiles.swr";
+            const string commonFilesFileName = "CommonFiles.swr";
             var swrPath = Path.Combine(
                 rootPath,
                 "setup",

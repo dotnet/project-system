@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         [Fact]
         public void DataCorrectlySerializes()
         {
-            string expectedSupportedMessage = "A newer version of Visual Studio is recommended for projects targetting .NET Core projects later then 2.2.";
+            const string expectedSupportedMessage = "A newer version of Visual Studio is recommended for projects targetting .NET Core projects later then 2.2.";
             string versionDataString = $@" {{
   ""vsVersions"": {{
     ""15.6"": {{
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
         [Fact]
         public void DataCorrectlySerializes_PreviewVersion()
         {
-            string expectedSupportedMessage = "A newer version of Visual Studio is recommended for projects targetting .NET Core projects later then 2.2.";
+            const string expectedSupportedMessage = "A newer version of Visual Studio is recommended for projects targetting .NET Core projects later then 2.2.";
             string versionDataString = $@" {{
   ""vsVersions"": {{
     ""16.1"": {{

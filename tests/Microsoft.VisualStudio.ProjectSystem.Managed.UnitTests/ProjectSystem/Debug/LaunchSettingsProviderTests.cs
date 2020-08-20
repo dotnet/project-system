@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void ActiveProfileTests()
         {
-            string activeProfile = "MyCommand";
+            const string activeProfile = "MyCommand";
             var testProfiles = new Mock<ILaunchSettings>();
             testProfiles.Setup(m => m.ActiveProfile).Returns(new LaunchProfile() { Name = activeProfile });
 

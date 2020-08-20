@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandSetIsWrong_QueryStatusReturnsFalse()
         {
             Guid commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
-            uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
+            const uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
             uint commandFlags = 0;
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandIdIsWrong_QueryStatusReturnsFalse()
         {
             Guid commandSet = CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid;
-            uint commandId = 0xFFFF;
+            const uint commandId = 0xFFFF;
 
             var commandHandler = CreateCommandHandler();
             uint commandFlags = 0;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandIsEditProjectFile_QueryStatusReturnsTrue()
         {
             Guid commandSet = CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid;
-            uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
+            const uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
             uint commandFlags = 0;
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandSetIsWrong_ExecReturnsNotSupported()
         {
             Guid commandSet = Guid.Parse("{4D4BC677-DF3C-490A-97AB-47F92F19E83B}");
-            uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
+            const uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
             var result = RunExec(commandSet, commandId, commandHandler);
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandIdIsWrong_ExecReturnsNotSupported()
         {
             Guid commandSet = CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid;
-            uint commandId = 0xFFFF;
+            const uint commandId = 0xFFFF;
 
             var commandHandler = CreateCommandHandler();
 
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         public void WhenCommandIsEditProjectFile_ExecReturnsOK()
         {
             Guid commandSet = CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid;
-            uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
+            const uint commandId = ManagedProjectSystemClientProjectCommandIds.EditProjectFile;
 
             var commandHandler = CreateCommandHandler();
 

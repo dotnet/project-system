@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var additionalProps = new Dictionary<string, string?>() { { "AssemblyName", assemblyName } };
 
-            string code = "";
+            const string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: additionalProps);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             Assumes.NotNull(projectFilePath);
@@ -363,7 +363,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     metadata: IInterceptingPropertyValueProviderMetadataFactory.Create(propertyName)) :
                 null;
 
-            string code = "";
+            const string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
             Assumes.NotNull(projectFilePath);

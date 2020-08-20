@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await CreateProvider().BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy = "Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
+            const string expectedFlatHierarchy = "Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             AssertTestData(expectedFlatHierarchy, resultTree);
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.Icon);
             Assert.Equal(s_rootImage.ToProjectSystemType(), resultTree.ExpandedIcon);
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
+            const string expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=, IsProjectItem=False, CustomTag=Untouched";
@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
+            const string expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248665, ExpandedIconHash=325248817, Rule=, IsProjectItem=False, CustomTag=Untouched";
@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
+            const string expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=
         Caption=DependencyExisting, IconHash=325248088, ExpandedIconHash=325248260, Rule=Yyy, IsProjectItem=False, CustomTag=";
@@ -357,7 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
+            const string expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=
     Caption=YyyDependencyRoot, IconHash=0, ExpandedIconHash=0, Rule=, IsProjectItem=False, CustomTag=";
             AssertTestData(expectedFlatHierarchy, resultTree);
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var resultTree = await provider.BuildTreeAsync(dependenciesRoot, snapshot);
 
             // Assert
-            var expectedFlatHierarchy =
+            const string expectedFlatHierarchy =
 @"Caption=MyDependencies, IconHash=325248080, ExpandedIconHash=325248080, Rule=, IsProjectItem=False, CustomTag=";
             AssertTestData(expectedFlatHierarchy, resultTree);
         }

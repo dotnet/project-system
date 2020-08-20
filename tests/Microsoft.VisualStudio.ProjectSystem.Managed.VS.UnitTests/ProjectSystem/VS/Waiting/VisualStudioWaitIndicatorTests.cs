@@ -84,8 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitForAsyncFunction_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test01";
-            string message = "Testing01";
+            const string title = "Test01";
+            const string message = "Testing01";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
@@ -101,8 +101,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void Wait_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test01";
-            string message = "Testing01";
+            const string title = "Test01";
+            const string message = "Testing01";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.Wait(title, message, isCancelable, _ =>
             {
@@ -119,8 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitWithResult_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test02";
-            string message = "Testing02";
+            const string title = "Test02";
+            const string message = "Testing02";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.WaitWithResult(title, message, isCancelable, _ =>
             {
@@ -135,8 +135,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitWithResult_Canceled_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test02";
-            string message = "Testing02";
+            const string title = "Test02";
+            const string message = "Testing02";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.WaitWithResult(title, message, isCancelable, _ =>
             {
@@ -152,8 +152,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitForAsyncFunction_Test2(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test03";
-            string message = "Testing03";
+            const string title = "Test03";
+            const string message = "Testing03";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
@@ -169,8 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitForAsyncFunction_Canceled_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test03";
-            string message = "Testing03";
+            const string title = "Test03";
+            const string message = "Testing03";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
@@ -186,8 +186,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitForAsyncFunctionWithResult_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test04";
-            string message = "Testing04";
+            const string title = "Test04";
+            const string message = "Testing04";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var result = instance.WaitForAsyncFunctionWithResult(title, message, isCancelable, _ =>
             {
@@ -204,8 +204,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void WaitForAsyncFunctionWithResult_Canceled_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test04";
-            string message = "Testing04";
+            const string title = "Test04";
+            const string message = "Testing04";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var result = instance.WaitForAsyncFunctionWithResult(title, message, isCancelable, _ =>
             {
@@ -221,8 +221,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(false)]
         public static void Wait_Returns_Test(bool isCancelable)
         {
-            string title = "Test05";
-            string message = "Testing05";
+            const string title = "Test05";
+            const string message = "Testing05";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var result = instance.Wait(title, message, isCancelable, _ =>
             {
@@ -235,8 +235,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(true)]
         public static void WaitReturns_Canceled_Test(bool isCancelable)
         {
-            string title = "Test05";
-            string message = "Testing05";
+            const string title = "Test05";
+            const string message = "Testing05";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var result = instance.Wait(title, message, isCancelable, _ =>
             {
@@ -255,8 +255,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(false)]
         public static void WaitWithResult_Returns_Test(bool isCancelable)
         {
-            string title = "Test06";
-            string message = "Testing06";
+            const string title = "Test06";
+            const string message = "Testing06";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var (cancelled, result) = instance.WaitWithResult(title, message, isCancelable, _ =>
             {
@@ -269,8 +269,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(true)]
         public static void WaitWithResult_Canceled_Test2(bool isCancelable)
         {
-            string title = "Test06";
-            string message = "Testing06";
+            const string title = "Test06";
+            const string message = "Testing06";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var (cancelled, result) = instance.WaitWithResult(title, message, isCancelable, _ =>
             {
@@ -290,8 +290,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(false)]
         public static void WaitForAsyncOperation_Returns_Test(bool isCancelable)
         {
-            string title = "Test07";
-            string message = "Testing07";
+            const string title = "Test07";
+            const string message = "Testing07";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var result = instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
@@ -304,8 +304,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(true)]
         public static void WaitForAsyncFunctionReturns_Canceled_Test(bool isCancelable)
         {
-            string title = "Test07";
-            string message = "Testing07";
+            const string title = "Test07";
+            const string message = "Testing07";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             object? result = instance.WaitForAsyncFunction(title, message, isCancelable, _ =>
             {
@@ -324,8 +324,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(false)]
         public static void WaitForAsyncFunctionWithResult_Returns_Test(bool isCancelable)
         {
-            string title = "Test08";
-            string message = "Testing08";
+            const string title = "Test08";
+            const string message = "Testing08";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var (_, result) = instance.WaitForAsyncFunctionWithResult(title, message, isCancelable, _ =>
             {
@@ -338,8 +338,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         [InlineData(true)]
         public static void WaitForAsyncFunctionWithResult_Returns_Canceled_Test(bool isCancelable)
         {
-            string title = "Test08";
-            string message = "Testing08";
+            const string title = "Test08";
+            const string message = "Testing08";
             var (instance, _) = CreateInstance(title, message, isCancelable);
             var (canceled, result) = instance.WaitForAsyncFunctionWithResult(title, message, isCancelable, _ =>
             {
@@ -360,8 +360,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
         public static void Wait_Cancellation_Test(bool isCancelable)
         {
             bool wasCalled = false;
-            string title = "Test01";
-            string message = "Testing01";
+            const string title = "Test01";
+            const string message = "Testing01";
             var (instance, cancel) = CreateInstance(title, message, isCancelable);
             instance.Wait(title, message, isCancelable, token =>
             {

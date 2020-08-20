@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 // Turn off "GeneratePackageOnBuild" because otherwise the Pack target will not do a build, even if there is no built output
                 _generatePackageOnBuildPropertyProvider.OverrideGeneratePackageOnBuild(false);
 
-                uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
+                const uint dwFlags = (uint)(VSSOLNBUILDUPDATEFLAGS.SBF_SUPPRESS_SAVEBEFOREBUILD_QUERY | VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD);
 
                 uint[] buildFlags = new uint[projects.Count];
                 // We tell the Solution Build Manager to Package our project, which will call the Pack target, which will build if necessary.

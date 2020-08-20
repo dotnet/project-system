@@ -80,7 +80,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveUp(project, tree.Children[1]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -123,7 +123,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(OrderingHelper.TryMoveUp(project, tree.Children[0]));
             Assert.False(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -170,7 +170,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveUp(project, tree.Children[2]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -215,7 +215,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveDown(project, tree.Children[0]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -258,7 +258,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.False(OrderingHelper.TryMoveDown(project, tree.Children[1]));
             Assert.False(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -305,7 +305,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveDown(project, tree.Children[0]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -357,7 +357,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveDown(project, tree.Children[0]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -407,7 +407,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveElementsAbove(project, elements, tree.Children[2]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -455,7 +455,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveElementsBelow(project, elements, tree.Children[2]));
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -512,7 +512,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -574,7 +574,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -641,7 +641,7 @@ Root (flags: {ProjectRoot}), FilePath: ""C:\Foo\testing.fsproj""
             Assert.True(OrderingHelper.TryMoveElementsToTop(project, elements, tree), "TryMoveElementsToTop returned false.");
             Assert.True(project.IsDirty);
 
-            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+            const string expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>

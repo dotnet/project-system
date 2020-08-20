@@ -604,8 +604,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var inputTime      = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-1);
 
-            var outputItem = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
-            var analyzerItem = "C:\\Dev\\Solution\\Project\\Analyzer1ResolvedPath";
+            const string outputItem = "C:\\Dev\\Solution\\Project\\BuiltOutputPath1";
+            const string analyzerItem = "C:\\Dev\\Solution\\Project\\Analyzer1ResolvedPath";
 
             _fileSystem.AddFile(outputItem, outputTime);
             _fileSystem.AddFile(analyzerItem, inputTime);
@@ -875,8 +875,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot);
 
-            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
-            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+            const string destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            const string sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -914,8 +914,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             BroadcastChange(outDir: outDirSnapshot, sourceRuleSnapshot: sourceSnapshot);
 
-            var destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            const string destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
+            const string sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-3);
@@ -949,8 +949,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot);
 
-            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
-            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+            const string destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            const string sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
 
             _fileSystem.AddFile(destinationPath);
 
@@ -974,8 +974,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(projectSnapshot);
 
-            var destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
-            var sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
+            const string destinationPath = @"C:\Dev\Solution\Project\CopiedOutputDestination";
+            const string sourcePath = @"C:\Dev\Solution\Project\CopiedOutputSource";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-3);
@@ -1006,8 +1006,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            const string destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            const string sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1041,8 +1041,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            const string destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            const string sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime  = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime   = DateTime.UtcNow.AddMinutes(-3);
@@ -1072,8 +1072,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await SetupAsync(sourceSnapshot: sourceSnapshot);
 
-            var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
-            var sourcePath = @"C:\Dev\Solution\Project\Item1";
+            const string destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
+            const string sourcePath = @"C:\Dev\Solution\Project\Item1";
 
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -1103,7 +1103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
 
             var dependentTime = DateTime.UtcNow.AddMinutes(-1);
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
             _fileSystem.AddFile(dependentPath, dependentTime);
             var dependentTimeFiles = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths).Add(dependentPath, dependentTime);
 
@@ -1137,8 +1137,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-3);
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
 
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
@@ -1180,8 +1180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var dependentTime = DateTime.UtcNow.AddMinutes(-2);
             var lastAdditionalDependentFileTimesChanged = DateTime.UtcNow.AddMinutes(-1);
 
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
@@ -1214,8 +1214,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // NOTE This delay is neeed to bypass lastAdditionalDependentFileTimesChangedAtUtc
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
 
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
@@ -1246,8 +1246,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
 
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var outputPath = @"C:\Dev\Solution\Project\Output";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string outputPath = @"C:\Dev\Solution\Project\Output";
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,
@@ -1277,8 +1277,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var outputTime = DateTime.UtcNow.AddMinutes(-2);
             var lastCheckTime = DateTime.UtcNow.AddMinutes(-1);
 
-            var dependentPath = @"C:\Dev\Solution\Project\Dependent";
-            var outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
+            const string dependentPath = @"C:\Dev\Solution\Project\Dependent";
+            const string outputPath = @"C:\Dev\Solution\Project\BuiltOutputPath1";
 
             await SetupAsync(
                 projectSnapshot: projectSnapshot,

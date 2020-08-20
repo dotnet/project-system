@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentSDKVersionDefined()
         {
             var guid = Guid.NewGuid();
-            var version = "42.42.42.42";
+            const string version = "42.42.42.42";
             var (success, result) = await CreateComponentAndGetResult(guid, version);
             Assert.True(success);
             Assert.Equal("vs/projectsystem/managed/sdkversion", result!.EventName);
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static async Task TestCreateComponentSDKVersionDefinedInvalidProjectGuid()
         {
             var guid = Guid.Empty;
-            var version = "42.42.42.42";
+            const string version = "42.42.42.42";
             var (success, _) = await CreateComponentAndGetResult(guid, version);
             Assert.False(success);
         }
