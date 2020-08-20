@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     <paramref name="contextId"/> is an empty string ("").
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        ///     <paramref name="contextId"/> has already been been registered.
+        ///     <paramref name="contextId"/> has already been registered.
         /// </exception>
         void RegisterContext(string contextId);
 
