@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         private static JoinableTaskContext GetJoinableTaskContext()
         {
 #pragma warning disable VSSDK005 // Avoid instantiating JoinableTaskContext
-            return new Threading.JoinableTaskContext();
+            return new JoinableTaskContext();
 #pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
         }
 

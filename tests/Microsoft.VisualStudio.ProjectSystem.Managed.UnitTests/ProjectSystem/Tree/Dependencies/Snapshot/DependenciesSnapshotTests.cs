@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 targetFramework,
                 targetChanges.TryBuildChanges()!,
                 catalogs,
-                targetFrameworks: ImmutableArray.Create<TargetFramework>(targetFramework),
+                targetFrameworks: ImmutableArray.Create(targetFramework),
                 activeTargetFramework: targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
