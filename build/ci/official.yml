@@ -81,7 +81,10 @@ steps:
   displayName: Archive symbols to VSTS
   inputs:
     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
-    SearchPattern: '**/*.pdb'
+    SearchPattern: 
+      '**/*.pdb
+      **/*.dll
+      **/*.exe'
     indexSources: false
     publishSymbols: true
     SymbolServerType: TeamServices
