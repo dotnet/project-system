@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
-            if (result == false || documentRenameResult == null)
+            if (!result || documentRenameResult == null)
             {
                 return;
             }
