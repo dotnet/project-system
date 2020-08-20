@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.Shell
 
         public ServiceProviderToOleServiceProviderAdapter(IServiceProvider serviceProvider)
         {
-            Requires.NotNull(serviceProvider, "serviceProvider");
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
 
             _serviceProvider = serviceProvider;
         }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.Shell
 
         private static HResult GetComInterfaceForObject(object instance, Guid iid, out IntPtr ppvObject)
         {
-            Requires.NotNull(instance, "instance");
+            Requires.NotNull(instance, nameof(instance));
 
             IntPtr unknown = Marshal.GetIUnknownForObject(instance);
             if (iid.Equals(VSConstants.IID_IUnknown))
