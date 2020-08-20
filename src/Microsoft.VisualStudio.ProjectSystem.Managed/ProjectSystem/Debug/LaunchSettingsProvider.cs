@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// IDebugProfileProvider
         /// Access to the current set of profile information
-        /// </summary>        
+        /// </summary>
         public ILaunchSettings CurrentSnapshot
         {
             get
@@ -729,7 +729,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout);
-            
+
             Assumes.NotNull(CurrentSnapshot);
             return CurrentSnapshot;
         }

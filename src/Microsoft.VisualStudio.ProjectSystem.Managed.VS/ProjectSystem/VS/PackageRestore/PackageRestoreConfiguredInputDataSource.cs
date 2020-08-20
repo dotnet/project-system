@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
     ///     Provides an implementation of <see cref="IPackageRestoreConfiguredInputDataSource"/> that combines evaluations results
-    ///     of <see cref="DotNetCliToolReference"/>, <see cref="ProjectReference"/> and project build versions of <see cref="PackageReference"/> 
+    ///     of <see cref="DotNetCliToolReference"/>, <see cref="ProjectReference"/> and project build versions of <see cref="PackageReference"/>
     ///     into <see cref="PackageRestoreConfiguredInput"/>.
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]

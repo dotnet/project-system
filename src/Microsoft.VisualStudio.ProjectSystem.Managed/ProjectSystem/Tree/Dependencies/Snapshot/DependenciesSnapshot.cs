@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             get
             {
                 DiagnosticLevel max = DiagnosticLevel.None;
-                
+
                 foreach ((_, TargetedDependenciesSnapshot snapshot) in DependenciesByTargetFramework)
                 {
                     if (snapshot.MaximumVisibleDiagnosticLevel > max)

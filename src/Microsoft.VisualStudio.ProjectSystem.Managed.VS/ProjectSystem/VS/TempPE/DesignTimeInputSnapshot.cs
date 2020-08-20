@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     {
         public static readonly DesignTimeInputSnapshot Empty = new DesignTimeInputSnapshot(
             EmptyCollections.OrdinalStringSet,
-            EmptyCollections.OrdinalStringSet, 
+            EmptyCollections.OrdinalStringSet,
             Enumerable.Empty<DesignTimeInputFileChange>(), string.Empty);
 
         public DesignTimeInputSnapshot(ImmutableHashSet<string> inputs, ImmutableHashSet<string> sharedInputs, IEnumerable<DesignTimeInputFileChange> changedInputs, string tempPEOutputPath)

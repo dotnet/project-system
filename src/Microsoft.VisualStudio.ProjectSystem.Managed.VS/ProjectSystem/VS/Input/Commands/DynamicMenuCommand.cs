@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
-    /// Implementation of an OleMenuCommand which supports the DynamicStart (like an MRU list) type 
+    /// Implementation of an OleMenuCommand which supports the DynamicStart (like an MRU list) type
     /// of commands
     /// </summary>
     internal abstract class DynamicMenuCommand : OleMenuCommand
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         /// <summary>
-        /// Returns the current index (0 based) of the command that is currently selected (set by 
+        /// Returns the current index (0 based) of the command that is currently selected (set by
         /// MatchedCommandId).
         /// </summary>
         public int CurrentIndex

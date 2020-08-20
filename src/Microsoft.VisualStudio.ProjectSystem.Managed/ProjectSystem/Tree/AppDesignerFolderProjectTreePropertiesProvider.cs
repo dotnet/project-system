@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree
 {
     /// <summary>
-    ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner 
+    ///     Provides a <see cref="IProjectTreePropertiesProvider"/> that handles the AppDesigner
     ///     folder, called "Properties" in C# and "My Project" in Visual Basic.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProvider))]

@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     the time the <see cref="IProjectChangeDescription"/> was produced.
         /// </param>
         /// <param name="projectChange">
-        ///     A <see cref="IProjectChangeDescription"/> representing the set of 
+        ///     A <see cref="IProjectChangeDescription"/> representing the set of
         ///     changes made to the project.
         /// </param>
         /// <param name="isActiveContext">

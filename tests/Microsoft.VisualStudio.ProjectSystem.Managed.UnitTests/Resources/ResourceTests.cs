@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Resources
             // this test ensures the expected name is used. This will catch cases when code gen
             // produces invalid code before merging/insertion.
 
-            string pattern = sourcePath.Substring(sourcePath.Length - 2, 2) switch 
+            string pattern = sourcePath.Substring(sourcePath.Length - 2, 2) switch
             {
                 "cs" => $"global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager(\"{baseName}\"",
                 "vb" => $"Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager(\"{baseName}\"",

@@ -35,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Returns the ordered list of configured projects that are active for the current project, loading them if needed.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ConfiguredProject"/> objects 
-        ///     with the names of the configuration dimensions that participated in the calculation of the active 
+        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ConfiguredProject"/> objects
+        ///     with the names of the configuration dimensions that participated in the calculation of the active
         ///     <see cref="ConfiguredProject"/> objects, or <see langword="null"/> if there are no active <see cref="ConfiguredProject"/>
         ///     objects.
         /// </returns>
@@ -50,9 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Returns the ordered list of project configurations that are active for the current project.
         /// </summary>
         /// <returns>
-        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ProjectConfiguration"/> objects 
-        ///     with the names of the configuration dimensions that participated in the calculation of the active 
-        ///     <see cref="ProjectConfiguration"/> objects, or <see langword="null"/> if there are no active 
+        ///     An <see cref="ActiveConfiguredObjects{T}"/> containing the ordered set of <see cref="ProjectConfiguration"/> objects
+        ///     with the names of the configuration dimensions that participated in the calculation of the active
+        ///     <see cref="ProjectConfiguration"/> objects, or <see langword="null"/> if there are no active
         ///     <see cref="ProjectConfiguration"/> objects.
         /// </returns>
         /// <remarks>

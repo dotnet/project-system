@@ -12,8 +12,8 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Responsible for listening to project and solution loaded events and firing 
-    ///     <see cref="IUnconfiguredProjectTasksService.PrioritizedProjectLoadedInHost"/>, 
+    ///     Responsible for listening to project and solution loaded events and firing
+    ///     <see cref="IUnconfiguredProjectTasksService.PrioritizedProjectLoadedInHost"/>,
     ///     <see cref="IUnconfiguredProjectTasksService.ProjectLoadedInHost"/> and
     ///     <see cref="LoadedInHost"/>.
     /// </summary>
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // an unloaded project or the first CPS project is loaded in the Add New/Existing Project 
             // case.
             Verify.HResult(_solution.Value.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded));
-            
+
             if ((bool)isFullyLoaded)
             {
                 _loadedInHost.SetResult();
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
             UnconfiguredProjectTasksService? tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
-            tasksService?.OnProjectLoadedInHost();        
+            tasksService?.OnProjectLoadedInHost();
 
             return HResult.OK;
         }

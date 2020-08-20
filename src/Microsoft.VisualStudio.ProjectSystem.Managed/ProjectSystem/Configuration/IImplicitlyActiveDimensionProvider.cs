@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
-    ///     Provides the implicitly active dimensions from a list of dimension names. 
+    ///     Provides the implicitly active dimensions from a list of dimension names.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IImplicitlyActiveDimensionProvider
@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         ///     <paramref name="dimensionNames"/> is <see langword="null"/>.
         /// </exception>
         /// <remarks>
-        ///     NOTE: The returned order matches the order in which the dimension names and values 
+        ///     NOTE: The returned order matches the order in which the dimension names and values
         ///     should be displayed to the user.
         /// </remarks>
         IEnumerable<string> GetImplicitlyActiveDimensions(IEnumerable<string> dimensionNames);

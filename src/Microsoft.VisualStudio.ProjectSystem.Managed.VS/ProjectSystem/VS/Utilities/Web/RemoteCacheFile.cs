@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         }
 
         /// <summary>
-        /// Downloads from the downloadUri to the cached file. 
+        /// Downloads from the downloadUri to the cached file.
         /// </summary>
         public async Task TryToUpdateCacheFileAsync(Action? callBackOnSuccess = null)
         {

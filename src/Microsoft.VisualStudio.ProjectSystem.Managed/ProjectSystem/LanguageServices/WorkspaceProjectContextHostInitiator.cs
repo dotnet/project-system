@@ -7,12 +7,12 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Ensures that the <see cref="IWorkspaceProjectContext"/> for the "active" configuration has 
+    ///     Ensures that the <see cref="IWorkspaceProjectContext"/> for the "active" configuration has
     ///     been loaded by the time users and extensions can interact with the project.
     /// </summary>
     /// <remarks>
-    ///     It is important to make sure Roslyn is aware of the project by the time the project can be 
-    ///     interacted with so that restored documents and other features used quickly after solution 
+    ///     It is important to make sure Roslyn is aware of the project by the time the project can be
+    ///     interacted with so that restored documents and other features used quickly after solution
     ///     load behave correctly and have "project context".
     /// </remarks>
     internal class WorkspaceProjectContextHostInitiator

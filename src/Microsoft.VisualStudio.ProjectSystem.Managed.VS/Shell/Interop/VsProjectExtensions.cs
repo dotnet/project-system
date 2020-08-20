@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
     internal static class VsProjectExtensions
     {
         /// <summary>
-        ///     Returns the <see cref="HierarchyId"/> of the given document moniker, or 
+        ///     Returns the <see cref="HierarchyId"/> of the given document moniker, or
         ///     <see cref="HierarchyId.Nil"/> if the document moniker is not part of the project.
         /// </summary>
         public static HierarchyId GetHierarchyId(this IVsProject project, string documentMoniker)

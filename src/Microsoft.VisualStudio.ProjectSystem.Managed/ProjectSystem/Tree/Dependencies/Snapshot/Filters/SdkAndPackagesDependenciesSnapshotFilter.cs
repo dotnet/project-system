@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     /// <summary>
     /// Sdk nodes are actually packages and their hierarchy of dependencies is resolved from
     /// NuGet's assets json file. However Sdk themselves are brought by DesignTime build for rules
-    /// SdkReference. This filter matches Sdk to their corresponding NuGet package and sets  
+    /// SdkReference. This filter matches Sdk to their corresponding NuGet package and sets
     /// of top level sdk dependencies from the package. Packages are invisible to avoid visual
     /// duplication and confusion.
     /// </summary>
