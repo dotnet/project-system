@@ -123,10 +123,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception ex) when (TryTranslateException(ex, cancellationToken, DisposalToken))
             {
-                if (!TryTranslateException(ex, cancellationToken, DisposalToken))
-                    throw;
             }
 
             throw Assumes.NotReachable();
@@ -143,10 +141,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 await _semaphore.ExecuteAsync(() => action(jointCancellationToken), jointCancellationToken);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (TryTranslateException(ex, cancellationToken, DisposalToken))
             {
-                if (!TryTranslateException(ex, cancellationToken, DisposalToken))
-                    throw;
             }
         }
 
