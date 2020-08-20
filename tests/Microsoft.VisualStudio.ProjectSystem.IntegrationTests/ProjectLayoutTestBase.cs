@@ -110,10 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .Append(' ', depth * 4)
                         .Append(expect.Text ?? actual!.Name)
                         .Append(' ')
-                        .Append(expect.Icon != null
+                        .AppendLine(expect.Icon != null
                             ? ManagedImageMonikers.ImageMonikerDebugDisplay(expect.Icon.Value)
-                            : actualIcon)
-                        .AppendLine();
+                            : actualIcon);
                 }
 
                 if (actual != null)
@@ -123,8 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .Append(actual.Name)
                         .Append(' ')
                         .Append(actualIcon)
-                        .Append(thisSame ? "" : " 🐛")
-                        .AppendLine();
+                        .AppendLine(thisSame ? "" : " 🐛");
                 }
 
                 if (expect?.Children != null)
