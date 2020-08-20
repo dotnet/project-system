@@ -12,6 +12,7 @@ resources:
 queue:
   name: VSEng-MicroBuildVS2019
   demands: Cmd
+  timeoutInMinutes: 90
 variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
