@@ -43,7 +43,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" />
-    <PackageReference Include="Roslyn.Diagnostics.Analyzers" />
+    <PackageReference Include="Roslyn.Diagnostics.Analyzers" PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
     <!-- Framework packages -->
     <PackageReference Include="Microsoft.IO.Redist" />
