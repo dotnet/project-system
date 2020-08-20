@@ -79,6 +79,8 @@
                DisplayName="3" />
     <EnumValue Name="4"
                DisplayName="4" />
+    <EnumValue Name="5"
+               DisplayName="5" />
   </EnumProperty>
 
   <StringProperty Name="NoWarn"

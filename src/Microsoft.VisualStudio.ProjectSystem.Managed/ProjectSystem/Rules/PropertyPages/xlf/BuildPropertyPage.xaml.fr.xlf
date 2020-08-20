@@ -132,6 +132,11 @@
         <target state="translated">4</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
+        <source>5</source>
+        <target state="new">5</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>General</source>
         <target state="translated">Général</target>
