@@ -58,12 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return null;
 
             MutableProjectTree? parent = current;
-            int indent = ReadIndentLevel(out int previousIndentLevel);
-
-            while (indent <= previousIndentLevel)
+            for (int indent = ReadIndentLevel(out int previousIndentLevel); indent <= previousIndentLevel; indent++)
             {
                 parent = parent?.Parent;
-                indent++;
             }
 
             if (parent == null)
