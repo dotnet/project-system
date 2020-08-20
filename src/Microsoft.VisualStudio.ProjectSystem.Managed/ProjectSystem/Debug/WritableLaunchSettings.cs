@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (settings.ActiveProfile != null)
             {
-                ActiveProfile = Profiles.FirstOrDefault(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
+                ActiveProfile = Profiles.Find(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
             }
         }
 

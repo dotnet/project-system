@@ -891,7 +891,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is
-                if (curProfileName == null || newSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
+                if (curProfileName == null || newSettings.Profiles.Find(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
                 {
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
@@ -1042,7 +1042,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.FirstOrDefault(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.Find(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
                     {
                         _providerLaunchTypes.Add(new LaunchType(provider.Value.CommandName, provider.Value.FriendlyName));
                     }
@@ -1057,7 +1057,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 _launchTypes.AddRange(_providerLaunchTypes);
 
-                selectedLaunchType = _launchTypes.FirstOrDefault(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
+                selectedLaunchType = _launchTypes.Find(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
                 if (selectedLaunchType == null)
                 {
                     selectedLaunchType = new LaunchType(selectedProfile.CommandName, selectedProfile.CommandName);
