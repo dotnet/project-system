@@ -1155,7 +1155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 bool hasRemoteDebugMachineError = RemoteDebugEnabled && Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown;
 
                 return hasRemoteDebugMachineError ||
-                    ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
+                    (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors);
             }
         }
 

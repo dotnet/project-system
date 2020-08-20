@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             Verify.HResult(project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId));
 
             // We only return items that are actually part of the project. CPS returns non-member from this API.
-            if (isFound == 0 || priority[0] != VSDOCUMENTPRIORITY.DP_Standard && priority[0] != VSDOCUMENTPRIORITY.DP_Intrinsic)
+            if (isFound == 0 || (priority[0] != VSDOCUMENTPRIORITY.DP_Standard && priority[0] != VSDOCUMENTPRIORITY.DP_Intrinsic))
                 return HierarchyId.Nil;
 
             HierarchyId id = itemId;
