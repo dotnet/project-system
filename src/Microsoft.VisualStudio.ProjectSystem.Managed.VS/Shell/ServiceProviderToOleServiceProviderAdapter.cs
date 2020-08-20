@@ -38,10 +38,7 @@ namespace Microsoft.VisualStudio.Shell
 #pragma warning disable RS0030 // Do not used banned APIs (deliberately adapting)
             service = _serviceProvider.GetService(serviceType);
 #pragma warning restore RS0030 // Do not used banned APIs
-            if (service == null)
-                return false;
-
-            return true;
+            return service != null;
         }
 
         private static HResult GetComInterfaceForObject(object instance, Guid iid, out IntPtr ppvObject)
