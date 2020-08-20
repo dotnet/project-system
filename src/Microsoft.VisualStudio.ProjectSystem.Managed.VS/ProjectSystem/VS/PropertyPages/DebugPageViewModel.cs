@@ -487,7 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_environmentVariablesValid != value)
                 {
                     _environmentVariablesValid = value;
-                    if (value == true)
+                    if (value)
                     {
                         ClearEnvironmentVariablesGridError?.Invoke(this, EventArgs.Empty);
                     }
