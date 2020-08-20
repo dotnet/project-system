@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             Assert.Equal(prjOutputTypeEx.prjOutputTypeEx_AppContainerExe, vsLangProjectProperties.OutputTypeEx);
 
             vsLangProjectProperties.OutputTypeEx = prjOutputTypeEx.prjOutputTypeEx_WinExe;
-            Assert.Equal(setValues.Single().ToString(), prjOutputTypeEx.prjOutputTypeEx_WinExe.ToString());
+            Assert.Equal(setValues.Single().ToString(), nameof(prjOutputTypeEx.prjOutputTypeEx_WinExe));
         }
 
         [Fact]
