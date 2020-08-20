@@ -66,7 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                     Task.Run(() => throw new OperationCanceledException()),
                     Task.Run(() => throw new OperationCanceledException()));
             });
-
         }
 
         [Fact]

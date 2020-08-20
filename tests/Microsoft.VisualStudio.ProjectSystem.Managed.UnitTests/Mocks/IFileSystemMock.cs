@@ -273,7 +273,6 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllBytes(string path, byte[] bytes)
         {
-
         }
 
         public long FileLength(string filename)

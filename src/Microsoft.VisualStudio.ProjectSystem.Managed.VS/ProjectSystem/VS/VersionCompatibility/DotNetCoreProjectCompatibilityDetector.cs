@@ -234,7 +234,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (finalCompatLevel != CompatibilityLevel.Recommended)
             {
-
                 // Warn the user.
                 await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse, isPreviewSDKInUse);
             }
@@ -473,7 +472,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             catch
             {
-
             }
 
             if (CurrentVersionCompatibilityData == null)
@@ -505,7 +503,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             catch
             {
-
             }
             return null;
         }

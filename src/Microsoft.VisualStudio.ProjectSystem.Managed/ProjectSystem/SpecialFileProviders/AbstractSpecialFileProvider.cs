@@ -90,13 +90,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
             if (!node.Flags.IsIncludedInProject())
             {   // Excluded from project
-
                 return AddFileAsync(path);
             }
 
             if (node.Flags.IsMissingOnDisk())
             {   // Project includes it, but missing from disk
-
                 return CreateFileAsync(path);
             }
 

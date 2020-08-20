@@ -180,7 +180,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService = null,
             IActiveConfiguredValues<IDebugLaunchProvider>? launchProviders = null)
         {
-
             var project = UnconfiguredProjectFactory.Create();
             var instance = new StartupProjectRegistrar(
                 project,

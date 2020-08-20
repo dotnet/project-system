@@ -44,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             }
             catch (System.IO.IOException)
             {
-
             }
             return null;
         }

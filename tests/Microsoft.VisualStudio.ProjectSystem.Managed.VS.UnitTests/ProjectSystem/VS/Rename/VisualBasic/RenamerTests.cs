@@ -66,7 +66,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
                       End Class")]
         public async Task Rename_Symbol_Should_Not_HappenAsync(string oldFilePath, string newFilePath, string sourceCode)
         {
-
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new VisualBasicSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);

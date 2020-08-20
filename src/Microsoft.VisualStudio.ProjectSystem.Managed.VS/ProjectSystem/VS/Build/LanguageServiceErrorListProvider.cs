@@ -94,7 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
 
                 return Task.CompletedTask;
             });
-
         }
 
         /// <summary>
