@@ -5,7 +5,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides an <see cref="UnconfiguredProject"/> access to an export from the active 
+    ///     Provides an <see cref="UnconfiguredProject"/> access to an export from the active
     ///     <see cref="ConfiguredProject"/>. This is the singular version of <see cref="IActiveConfiguredValues{T}"/>.
     /// </summary>
     /// <remarks>
@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///         instead of throwing when the value does not exist.
     ///     </para>
     ///     <para>
-    ///         Consumers should specify a nullable type for <typeparamref name="T"/> if that import will be 
+    ///         Consumers should specify a nullable type for <typeparamref name="T"/> if that import will be
     ///         satisfied by an export that will be applied to a particular capability.
     ///     </para>
     /// </remarks>
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         where T : class?
     {
         /// <summary>
-        ///     Gets the value from the active <see cref="ConfiguredProject"/>; otherwise, 
+        ///     Gets the value from the active <see cref="ConfiguredProject"/>; otherwise,
         ///     <see langword="null"/> if it does not exist.
         /// </summary>
         public T Value

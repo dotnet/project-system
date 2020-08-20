@@ -509,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Provides binding to the current UI Provider user control. 
+        /// Provides binding to the current UI Provider user control.
         /// </summary>
         public UserControl ActiveProviderUserControl => ActiveProvider?.CustomUI;
 
@@ -1029,11 +1029,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         /// <summary>
         /// Called after every profile change to update the list of launch types based on the following:
-        /// 
+        ///
         ///     The list of UI providers as each provider provides a name
         ///     The command name in the profile if it doesn't match one of the existing providers.
-        ///     
-        /// </summary>        
+        ///
+        /// </summary>
         private void UpdateLaunchTypes()
         {
             // Populate the set of unique launch types from the list of providers since there can be duplicates with different priorities. However,

@@ -644,7 +644,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
+        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
         /// This information should come from the targets file.
         /// </summary>
         private static bool IsDotNetCoreFramework(string targetFramework)

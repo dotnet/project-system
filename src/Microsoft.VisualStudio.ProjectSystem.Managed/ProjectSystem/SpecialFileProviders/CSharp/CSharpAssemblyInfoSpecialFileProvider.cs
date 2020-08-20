@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders.CSharp
 {
     /// <summary>
-    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'AssemblyInfo.cs' file; 
-    ///     which contains attributes for assembly versioning, COM exposure, and other assembly-level 
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the default 'AssemblyInfo.cs' file;
+    ///     which contains attributes for assembly versioning, COM exposure, and other assembly-level
     ///     directives and typically found under the 'AppDesigner' folder.
     /// </summary>
     [ExportSpecialFileProvider(SpecialFiles.AssemblyInfo)]

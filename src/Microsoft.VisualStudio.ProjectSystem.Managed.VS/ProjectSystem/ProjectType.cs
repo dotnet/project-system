@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio
     ///     Represents the managed project types in Visual Studio.
     /// </summary>
     /// <remarks>
-    ///     A project type points to a factory that implements <see cref="IVsProjectFactory"/> and is responsible for creating an in-memory 
-    ///     representation (implementing <see cref="IVsHierarchy"/>, <see cref="IVsProject"/>) that features through out Visual Studio 
+    ///     A project type points to a factory that implements <see cref="IVsProjectFactory"/> and is responsible for creating an in-memory
+    ///     representation (implementing <see cref="IVsHierarchy"/>, <see cref="IVsProject"/>) that features through out Visual Studio
     ///     interact with.
     /// </remarks>
     internal static class ProjectType

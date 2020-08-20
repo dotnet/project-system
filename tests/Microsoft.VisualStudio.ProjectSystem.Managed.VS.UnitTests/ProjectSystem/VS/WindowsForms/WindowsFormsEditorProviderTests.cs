@@ -192,7 +192,7 @@ Project
 
         [Fact]
         public async Task SetUseGlobalEditorAsync_WhenParentIsSourceFile_ReturnsFalse()
-        {   
+        {
             var provider = CreateInstanceWithDefaultEditorProvider(@"
 Project
     Foo.cs (flags: {SourceFile})

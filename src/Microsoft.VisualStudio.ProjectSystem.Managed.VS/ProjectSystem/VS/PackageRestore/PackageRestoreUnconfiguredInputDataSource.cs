@@ -186,8 +186,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 if (!RestoreComparer.ReferenceItems.Equals(existingReference, reference))
                 {
                     ReportUserFault(string.Format(
-                        CultureInfo.CurrentCulture, 
-                        VSResources.Restore_DuplicateToolReferenceItems, 
+                        CultureInfo.CurrentCulture,
+                        VSResources.Restore_DuplicateToolReferenceItems,
                         existingReference.Name));
                 }
 
@@ -202,8 +202,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             if (framework.TargetFrameworkMoniker.Length == 0)
             {
                 ReportUserFault(string.Format(
-                    CultureInfo.CurrentCulture, 
-                    VSResources.Restore_EmptyTargetFrameworkMoniker, 
+                    CultureInfo.CurrentCulture,
+                    VSResources.Restore_EmptyTargetFrameworkMoniker,
                     projectConfiguration.Name));
 
                 return false;

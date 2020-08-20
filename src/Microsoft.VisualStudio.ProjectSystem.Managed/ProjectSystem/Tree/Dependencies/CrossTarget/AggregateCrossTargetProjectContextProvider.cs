@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 {
     /// <summary>
-    ///     Creates <see cref="AggregateCrossTargetProjectContext"/> instances based on the 
+    ///     Creates <see cref="AggregateCrossTargetProjectContext"/> instances based on the
     ///     current <see cref="UnconfiguredProject"/>.
     /// </summary>
     [Export(typeof(AggregateCrossTargetProjectContextProvider))]

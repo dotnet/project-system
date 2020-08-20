@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Build
     internal static class BuildUtilities
     {
         /// <summary>
-        ///     Returns a value indicating whether the specified property has a condition that 
+        ///     Returns a value indicating whether the specified property has a condition that
         ///     always evaluates to <see langword="true"/>.
         /// </summary>
         public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(ProjectPropertyElement element)

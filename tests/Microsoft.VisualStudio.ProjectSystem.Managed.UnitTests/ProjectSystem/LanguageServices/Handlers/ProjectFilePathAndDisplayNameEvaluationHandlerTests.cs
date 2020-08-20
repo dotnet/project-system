@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.DisplayName = "DisplayName";
 
             var handler = CreateInstance(context: context);
-            
+
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
 @"{
     ""Difference"": { 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides a single property; <see cref="LoadedInHost"/>, which completes when the host 
+    ///     Provides a single property; <see cref="LoadedInHost"/>, which completes when the host
     ///     recognizes that the solution is loaded.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Gets a task that completes when the host recognizes that the solution is loaded.
         /// </summary>
         /// <remarks>
-        ///     Use <see cref="IUnconfiguredProjectTasksService.SolutionLoadedInHost"/> if 
+        ///     Use <see cref="IUnconfiguredProjectTasksService.SolutionLoadedInHost"/> if
         ///     within project context.
         /// </remarks>
         /// <exception cref="OperationCanceledException">

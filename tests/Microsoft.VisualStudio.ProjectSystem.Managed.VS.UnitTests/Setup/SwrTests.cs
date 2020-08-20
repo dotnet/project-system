@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.Setup
 
                 return (null, null);
             }
-        }        
+        }
 
         private static IEnumerable<(string Folder, string File)> ReadSwrFiles(string path)
         {

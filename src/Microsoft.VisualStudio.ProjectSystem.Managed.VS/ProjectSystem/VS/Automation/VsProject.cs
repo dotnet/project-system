@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
     /// <see cref="VSProject"/> imports <see cref="VSLangProj.VSProject"/> provided by CPS
-    /// and wraps it into an object that implements both <see cref="VSLangProj.VSProject"/> and 
+    /// and wraps it into an object that implements both <see cref="VSLangProj.VSProject"/> and
     /// <see cref="VSLangProj.ProjectProperties"/>. This enables us to provide
     /// ProjectProperties to the Project Property Pages and maintain Backward Compatibility.
     /// </summary>

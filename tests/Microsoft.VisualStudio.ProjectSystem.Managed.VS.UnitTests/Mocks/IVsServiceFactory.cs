@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return mock.Object;
         }
 
-        public static IVsService<TService, TInterface> Create<TService, TInterface>(TInterface value) 
+        public static IVsService<TService, TInterface> Create<TService, TInterface>(TInterface value)
             where TService : class where TInterface : class?
         {
             var mock = new Mock<IVsService<TService, TInterface>>();

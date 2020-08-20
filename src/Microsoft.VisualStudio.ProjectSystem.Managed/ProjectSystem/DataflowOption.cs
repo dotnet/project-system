@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class DataflowOption
     {
         /// <summary>
-        ///     Returns a new instance of <see cref="DataflowLinkOptions"/> with 
+        ///     Returns a new instance of <see cref="DataflowLinkOptions"/> with
         ///     <see cref="DataflowLinkOptions.PropagateCompletion"/> set to <see langword="true"/>.
         /// </summary>
         public static DataflowLinkOptions PropagateCompletion

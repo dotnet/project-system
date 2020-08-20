@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (profile?.OtherSettings != null
                && profile.OtherSettings.TryGetValue(RemoteAuthenticationModeProperty, out object? value)
-               && value is string s)               
+               && value is string s)
             {
                 return s;
             }

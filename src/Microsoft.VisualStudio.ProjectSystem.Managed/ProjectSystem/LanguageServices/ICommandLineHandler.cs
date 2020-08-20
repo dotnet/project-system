@@ -7,13 +7,13 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Handles changes within the command-line, and applies them to a 
+    ///     Handles changes within the command-line, and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
     internal interface ICommandLineHandler : IWorkspaceContextHandler
     {
         /// <summary>
-        ///     Handles the specified added and removed command-line arguments, and applies 
+        ///     Handles the specified added and removed command-line arguments, and applies
         ///     them to the underlying <see cref="IWorkspaceProjectContext"/>.
         /// </summary>
         /// <param name="version">

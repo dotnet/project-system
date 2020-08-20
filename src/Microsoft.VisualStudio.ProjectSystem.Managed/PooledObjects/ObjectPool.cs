@@ -10,18 +10,18 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
     /// Generic implementation of object pooling pattern with predefined pool size limit. The main
     /// purpose is that limited number of frequently used objects can be kept in the pool for
     /// further recycling.
-    /// 
-    /// Notes: 
+    ///
+    /// Notes:
     /// 1) it is not the goal to keep all returned objects. Pool is not meant for storage. If there
     ///    is no space in the pool, extra returned objects will be dropped.
-    /// 
+    ///
     /// 2) it is implied that if object was obtained from a pool, the caller will return it back in
-    ///    a relatively short time. Keeping checked out objects for long durations is ok, but 
+    ///    a relatively short time. Keeping checked out objects for long durations is ok, but
     ///    reduces usefulness of pooling. Just new up your own.
-    /// 
-    /// Not returning objects to the pool in not detrimental to the pool's work, but is a bad practice. 
-    /// Rationale: 
-    ///    If there is no intent for reusing the object, do not use pool - just use "new". 
+    ///
+    /// Not returning objects to the pool in not detrimental to the pool's work, but is a bad practice.
+    /// Rationale:
+    ///    If there is no intent for reusing the object, do not use pool - just use "new".
     /// </summary>
     internal class ObjectPool<T> where T : class
     {
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         /// </summary>
         /// <remarks>
         /// Search strategy is a simple linear probing which is chosen for it cache-friendliness.
-        /// Note that Free will try to store recycled objects close to the start thus statistically 
+        /// Note that Free will try to store recycled objects close to the start thus statistically
         /// reducing how far we will typically search.
         /// </remarks>
         internal T Allocate()
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         /// </summary>
         /// <remarks>
         /// Search strategy is a simple linear probing which is chosen for it cache-friendliness.
-        /// Note that Free will try to store recycled objects close to the start thus statistically 
+        /// Note that Free will try to store recycled objects close to the start thus statistically
         /// reducing how far we will typically search in Allocate.
         /// </remarks>
         internal void Free(T obj)

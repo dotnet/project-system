@@ -1074,7 +1074,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
-            
+
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-3);

@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             bool result = false;
-            await instance.ExecuteUnderLockAsync(ct => 
+            await instance.ExecuteUnderLockAsync(ct =>
             {
                 cancellationTokenSource.Cancel();
 
@@ -405,7 +405,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private readonly Func<Task> _disposed;
 
-            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed) 
+            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed)
                 : base(joinableTaskContextNode)
             {
                 disposed ??= () => Task.CompletedTask;

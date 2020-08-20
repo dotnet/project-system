@@ -196,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (), FilePath: """"",                                                     @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         [InlineData(@"This is the project root (), FilePath: """"",                                 @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
-        
+
         public void Parse_RootWithEmptyProperties_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);

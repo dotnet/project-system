@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         string Name { get; }
 
         /// <summary>
-        /// ItemSpec by which dependency could be found in msbuild Project. 
-        ///     - If dependency is "Resolved" then resolved path will be in Path property, 
+        /// ItemSpec by which dependency could be found in msbuild Project.
+        ///     - If dependency is "Resolved" then resolved path will be in Path property,
         ///       and unresolved in OriginalItemSpec.
         ///     - if dependency is "Unresolved" then Path and OriginalItemSpec are the same.
         ///     - if dependency is "custom", i.e. does not have item in the msbuild project or

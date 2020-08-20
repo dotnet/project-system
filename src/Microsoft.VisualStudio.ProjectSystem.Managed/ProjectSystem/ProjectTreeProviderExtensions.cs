@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class ProjectTreeProviderExtensions
     {
         /// <summary>
-        ///     Returns a rooted directory that new files should added to the project under when the user 
+        ///     Returns a rooted directory that new files should added to the project under when the user
         ///     initiates an Add New Item operation on a particular node in the tree.
         /// </summary>
         /// <param name="provider">

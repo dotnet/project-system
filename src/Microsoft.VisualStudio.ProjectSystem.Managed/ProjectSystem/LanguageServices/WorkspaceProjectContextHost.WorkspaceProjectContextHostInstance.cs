@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a 
+        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
         internal class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _applyChangesToWorkspaceContext,
                     _evaluationProgressRegistration,
                     _projectBuildProgressRegistration,
-                    
+
                     // We avoid suppressing version updates, so that progress tracker doesn't
                     // think we're still "in progress" in the case of an empty change
                     _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(

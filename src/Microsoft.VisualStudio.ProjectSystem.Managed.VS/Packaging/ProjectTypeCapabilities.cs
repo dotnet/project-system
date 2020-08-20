@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.Packaging
         ///     in CPS under codesharingproj.pkgdef.
         /// </remarks>
         public const string CSharp = Default + "; " +
-                                     ProjectCapability.CSharp + "; " + 
+                                     ProjectCapability.CSharp + "; " +
                                      ProjectCapabilities.SharedImports;
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.Packaging
         ///     NOTE: Visual Basic Shared Project's (shproj) see a limited set of fixed capabilities defined
         ///     in CPS under codesharingproj.pkgdef.
         /// </remarks>
-        public const string VisualBasic = Default + "; " + 
-                                          ProjectCapability.VisualBasic + "; " + 
+        public const string VisualBasic = Default + "; " +
+                                          ProjectCapability.VisualBasic + "; " +
                                           ProjectCapabilities.SharedImports;
     }
 }

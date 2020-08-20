@@ -4,7 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     /// <summary>
     /// Provides an abstraction over dialogs to make them unit testable. Each dialog will have its own abstraction which
-    /// can be retrieved from this service. 
+    /// can be retrieved from this service.
     /// </summary>
     internal interface IDialogServices
     {

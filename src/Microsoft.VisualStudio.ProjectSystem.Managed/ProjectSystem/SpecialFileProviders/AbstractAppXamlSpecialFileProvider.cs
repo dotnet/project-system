@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    ///     Provides the <see langword="abstract"/> base class for <see cref="ISpecialFileProvider"/> instances 
+    ///     Provides the <see langword="abstract"/> base class for <see cref="ISpecialFileProvider"/> instances
     ///     that handle the WPF Application Definition file.
     /// </summary>
     internal abstract class AbstractAppXamlSpecialFileProvider : AbstractFindByNameSpecialFileProvider
