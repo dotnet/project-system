@@ -125,12 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName);
-            if (!bool.TryParse(propertyValue, out value) || !value)
-            {
-                return false;
-            }
-
-            return true;
+            return bool.TryParse(propertyValue, out value) && value;
         }
     }
 }
