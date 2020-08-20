@@ -44,7 +44,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
                     IVsOutputWindowPane? pane = await _outputWindowProvider.GetOutputWindowPaneAsync();
 
                     pane?.OutputStringNoPump(text);
-
                 }, options: ForkOptions.HideLocks | ForkOptions.StartOnMainThread,
                    configuredProject: null);    // Not tied to one particular project
             }

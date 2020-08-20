@@ -15,7 +15,6 @@ namespace System.ComponentModel.Composition
                     if (value is IDisposable disposable)
                         disposable.Dispose();
                 });
-
             });
         }
 
@@ -30,7 +29,6 @@ namespace System.ComponentModel.Composition
                     if (value is IDisposable disposable)
                         disposable.Dispose();
                 });
-
             }, metadata);
         }
     }

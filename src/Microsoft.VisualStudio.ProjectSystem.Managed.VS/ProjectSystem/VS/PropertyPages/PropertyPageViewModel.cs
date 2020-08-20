@@ -76,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public virtual void ViewModelDetached()
         {
-
         }
     }
 }

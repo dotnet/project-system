@@ -43,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
                 if (items.Any(tree => tree.IsFolder))
                 {   // Hide these commands for Folder -> Add
-
                     progressiveStatus |= CommandStatus.InvisibleOnContextMenu;
                 }
 

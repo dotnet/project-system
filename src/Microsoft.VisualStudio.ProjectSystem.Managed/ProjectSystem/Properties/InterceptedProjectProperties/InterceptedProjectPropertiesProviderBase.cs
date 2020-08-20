@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// An intercepting project properties provider that validates and/or transforms the default <see cref="IProjectProperties"/>
     /// using the exported <see cref="IInterceptingPropertyValueProvider"/>s.
     /// </summary>
-
     internal abstract class InterceptedProjectPropertiesProviderBase : DelegatedProjectPropertiesProviderBase
     {
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;

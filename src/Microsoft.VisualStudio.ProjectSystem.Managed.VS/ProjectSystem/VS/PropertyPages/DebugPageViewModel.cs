@@ -745,7 +745,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PushIgnoreEvents();
             try
             {
-
                 // these have no backing store in the viewmodel, we need to send notifications when we change selected profiles
                 // consider a better way of doing this
                 OnPropertyChanged(nameof(SelectedDebugProfile));

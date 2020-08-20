@@ -143,7 +143,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         [Fact]
         public void ToProjectRestoreInfo_SetsTargetFrameworkProperties()
         {   // All NuGetRestore properties end up in the "target framework" property bag
-
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"
 {
     ""CurrentState"": {

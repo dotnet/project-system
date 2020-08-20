@@ -77,7 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                         await _projectAccessor.OpenProjectXmlForWriteAsync(_project, (root) =>
                         {
                             property.Value = ProjectCollection.Escape(value.ToString("B").ToUpperInvariant());
-
                         }, cancellationToken);
                     }
                 }

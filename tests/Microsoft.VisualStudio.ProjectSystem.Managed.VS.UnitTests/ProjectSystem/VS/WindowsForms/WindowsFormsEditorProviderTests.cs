@@ -178,7 +178,6 @@ Project
         [Fact]
         public async Task GetSpecificEditorAsync_WhenParentIsSourceFile_ReturnsNull()
         {   // Let's folks double-click the designer file to open it as text
-
             var provider = CreateInstanceWithDefaultEditorProvider(@"
 Project
     Foo.cs (flags: {SourceFile})

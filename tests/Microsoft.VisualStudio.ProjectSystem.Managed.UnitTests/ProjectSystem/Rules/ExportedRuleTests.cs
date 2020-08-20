@@ -124,7 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 Attribute attribute = member.GetCustomAttribute<ExportPropertyXamlRuleDefinitionAttribute>();
 
                 yield return new object[] { member, attribute };
-
             }
         }
 

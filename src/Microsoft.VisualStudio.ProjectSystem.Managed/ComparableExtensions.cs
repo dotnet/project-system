@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio
             Requires.NotNull(comparable, nameof(comparable));
 
             return source.CompareTo(comparable) >= 0;
-
         }
+
         /// <summary>
         ///     Returns a value indicating whether the current instance is earlier than the 
         ///     specified <see cref="IComparable"/> instance.

@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     public class DotNetCoreProjectCompatibilityDetectorTests
     {
-
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
