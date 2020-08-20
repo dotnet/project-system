@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             var mock = new Mock<IProjectTreeCustomizablePropertyContext>();
             mock.Setup(x => x.ItemName).Returns(itemName ?? string.Empty);
-            mock.Setup<string?>(x => x.ItemType).Returns(itemType);
+            mock.Setup(x => x.ItemType).Returns(itemType);
             mock.Setup(x => x.IsFolder).Returns(isFolder);
             mock.Setup(x => x.ParentNodeFlags).Returns(flags);
             mock.Setup(x => x.Metadata).Returns(metadata ?? ImmutableStringDictionary<string>.EmptyOrdinal);

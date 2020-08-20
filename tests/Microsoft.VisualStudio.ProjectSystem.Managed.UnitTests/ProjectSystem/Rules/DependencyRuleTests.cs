@@ -162,8 +162,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [MemberData(nameof(GetResolvedAndUnresolvedDependencyRulePairs))]
         public void ResolvedAndUnresolvedDependencyRulesHaveSameVisibleProperties(string unresolvedName, string resolvedName, string unresolvedPath, string resolvedPath)
         {
-            Dictionary<string, XElement> unresolvedPropertyByName = GetVisibleProperties(LoadXamlRule(unresolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
-            Dictionary<string, XElement> resolvedPropertyByName = GetVisibleProperties(LoadXamlRule(resolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
+            var unresolvedPropertyByName = GetVisibleProperties(LoadXamlRule(unresolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
+            var resolvedPropertyByName = GetVisibleProperties(LoadXamlRule(resolvedPath)).ToDictionary(prop => prop.Attribute("Name").Value);
 
             var missingInUnresolved = resolvedPropertyByName.Keys.Except(unresolvedPropertyByName.Keys).ToList();
             var missingInResolved = unresolvedPropertyByName.Keys.Except(resolvedPropertyByName.Keys).ToList();
@@ -202,10 +202,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
         public static IEnumerable<object[]> GetResolvedAndUnresolvedDependencyRulePairs()
         {
-            List<string> rules = GetRules("Dependencies").ToList();
+            var rules = GetRules("Dependencies").ToList();
 
-            HashSet<string> unresolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1).ToHashSet(StringComparer.Ordinal);
-            HashSet<string> resolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1).ToHashSet(StringComparer.Ordinal);
+            var unresolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) == -1).ToHashSet(StringComparer.Ordinal);
+            var resolvedPaths = rules.Where(fileName => fileName.IndexOf("Resolved", StringComparisons.Paths) != -1).ToHashSet(StringComparer.Ordinal);
 
             Assert.Equal(resolvedPaths.Count, unresolvedPaths.Count);
 
