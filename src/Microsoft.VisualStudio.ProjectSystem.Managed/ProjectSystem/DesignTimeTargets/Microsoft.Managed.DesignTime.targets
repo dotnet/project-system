@@ -337,6 +337,27 @@
   <Target Name="ResolveFrameworkReferences" />
 
   <Target
+    Name="ResolveProjectReferencesDesignTime2"
+    Returns="@(_ProjectReferencesFromRAR2);@(_ProjectReferencesWithoutOutputAssembly)"
+    DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+    <!-- This is similar to ResolveProjectReferencesDesignTime, except it also returns projects that do not get
+         resolved (hence do not appear in ReferencePath) because ReferenceOutputAssembly is set to false. -->
+    <ItemGroup>
+      <!-- We need to do this here because we only want project references which have passed through RAR and have
+           not been unresolved due to violating some multi-targeting rule which means we need to pull the project
+           references out of the referencepath item because they will only exist there if they were correctly
+           resolved. -->
+      <_ProjectReferencesFromRAR2 Include="@(ReferencePath->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
+        <OriginalItemSpec>%(ReferencePath.ProjectReferenceOriginalItemSpec)</OriginalItemSpec>
+      </_ProjectReferencesFromRAR2>
+
+      <_ProjectReferencesWithoutOutputAssembly Include="@(ProjectReference->WithMetadataValue('ReferenceOutputAssembly', 'false'))">
+        <OriginalItemSpec>%(ProjectReference.Identity)</OriginalItemSpec>
+      </_ProjectReferencesWithoutOutputAssembly>
+    </ItemGroup>
+  </Target>
+
+  <Target
     Name="ResolveFrameworkReferencesDesignTime"
     Returns="@(ResolvedFrameworkReference)"
     DependsOnTargets="ResolveFrameworkReferences" />
