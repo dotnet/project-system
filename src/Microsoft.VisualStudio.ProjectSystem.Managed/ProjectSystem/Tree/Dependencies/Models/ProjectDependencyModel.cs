@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
-                caption: System.IO.Path.GetFileNameWithoutExtension(path),
+                caption: System.IO.Path.GetFileNameWithoutExtension(originalItemSpec),
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{System.IO.Path.GetFileNameWithoutExtension(path)}"),
