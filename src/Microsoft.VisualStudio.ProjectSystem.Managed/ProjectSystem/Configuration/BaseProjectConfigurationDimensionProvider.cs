@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 // First value is the default one.
                 var defaultValues = PooledArray<KeyValuePair<string, string>>.GetInstance();
-                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values.First()));
+                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values[0]));
                 return defaultValues.ToImmutableAndFree();
             }
         }
