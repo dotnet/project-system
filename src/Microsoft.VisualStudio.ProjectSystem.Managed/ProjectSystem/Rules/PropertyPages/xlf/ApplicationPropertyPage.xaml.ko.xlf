@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ApplicationPropertyPage.xaml">
     <body>
       <trans-unit id="Category|General|Description">
-        <source>General</source>
-        <target state="translated">일반</target>
+        <source>General settings for the application.</source>
+        <target state="needs-review-translation">일반</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
-        <source>Resources</source>
-        <target state="translated">리소스</target>
+        <source>Resource settings for the application.</source>
+        <target state="needs-review-translation">리소스</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
@@ -22,9 +22,19 @@
         <target state="translated">리소스</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
         <target state="translated">시작 개체</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
@@ -32,9 +42,19 @@
         <target state="translated">대상 프레임워크</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifest|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="new">Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
         <source>Manifest</source>
         <target state="translated">매니페스트</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|Description">
+        <source>Specifies the type of application to build.</source>
+        <target state="new">Specifies the type of application to build.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
@@ -68,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
-        <source>General</source>
-        <target state="translated">일반</target>
+        <source>Specifies the project's application settings and properties.</source>
+        <target state="needs-review-translation">일반</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
@@ -77,9 +97,19 @@
         <target state="translated">애플리케이션</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|Description">
+        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="new">Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
         <target state="translated">아이콘</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|Description">
+        <source>Specifies the name of the output file that will hold the assembly manifest.</source>
+        <target state="new">Specifies the name of the output file that will hold the assembly manifest.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
@@ -87,9 +117,19 @@
         <target state="translated">어셈블리 이름</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|Description">
+        <source>Specifies the base namespace for files added to the project.</source>
+        <target state="new">Specifies the base namespace for files added to the project.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
         <target state="translated">기본 네임스페이스</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="new">Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">
