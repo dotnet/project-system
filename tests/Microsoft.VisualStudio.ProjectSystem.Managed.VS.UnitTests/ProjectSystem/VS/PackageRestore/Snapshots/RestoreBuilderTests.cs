@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             var update = IProjectSubscriptionUpdateFactory.FromJson(@"
 {
     ""CurrentState"": {
-        ""PackageReference"": {
+        ""CollectedPackageReference"": {
             ""Items"" : {
                 ""PackageReference1"" : {
                     ""Version"" : ""1.0.0.0"",

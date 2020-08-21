@@ -255,20 +255,6 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- Package downloads -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageDownload.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-    
-    <!-- Central Package Versions -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageVersion.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
     
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
