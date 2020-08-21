@@ -42,6 +42,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class PackageRestoreRules
         {
             /// <summary>
+            ///     Represents the design-time build items containing CLI tool references (legacy) that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(DotNetCliToolReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int DotNetCliToolReferenceRule;
+
+            /// <summary>
             ///     Represents the design-time build items containing references to frameworks that are passed to restore.
             /// </summary>
             [ExportRule(nameof(CollectedFrameworkReference), PropertyPageContexts.ProjectSubscriptionService)]
