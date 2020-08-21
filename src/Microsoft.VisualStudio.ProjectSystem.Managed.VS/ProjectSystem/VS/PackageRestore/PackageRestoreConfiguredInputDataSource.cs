@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(CollectedFrameworkReference.SchemaName)        // Project Build
                                                                         .Add(CollectedPackageDownload.SchemaName)           // Project Build                                                                        
                                                                         .Add(CollectedPackageVersion.SchemaName)            // Project Build
-                                                                        .Add(PackageReference.SchemaName);                  // Project Build
+                                                                        .Add(CollectedPackageReference.SchemaName);         // Project Build
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="CollectedPackageReference"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <!-- Represents the set of <PackageReference /> items that are gathered during a design-time build to be pushed to Solution Restore service -->
+  
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False"
+                ItemType="PackageReference"
+                MSBuildTarget="CollectPackageReferences"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringListProperty Name="Aliases"
+                      ReadOnly="true" 
+                      Visible="false" />
+
+  <StringProperty Name="ExcludeAssets"
+                  ReadOnly="true"
+                  Visible="false" />
+
+  <BoolProperty Name="GeneratePathProperty"
+                ReadOnly="true"
+                Visible="false" />
+
+  <StringProperty Name="IncludeAssets"
+                  ReadOnly="true"
+                  Visible="false" />
+
+  <StringProperty Name="IsImplicitlyDefined"
+                  ReadOnly="true"
+                  Visible="false" />
+
+  <StringProperty Name="Name"
+                  ReadOnly="True"
+                  Visible="false" >
+    <StringProperty.DataSource>
+      <DataSource PersistedName="{}{Identity}"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="NoWarn"
+                  ReadOnly="True"
+                  Visible="false" />
+
+  <StringProperty Name="PrivateAssets"
+                  ReadOnly="True"
+                  Visible="false" />
+
+  <StringProperty Name="Version"
+                  ReadOnly="True"
+                  Visible="false" />
+
+  <BoolProperty Name="Visible"
+                ReadOnly="True"
+                Visible="False" />
+
+</Rule>
