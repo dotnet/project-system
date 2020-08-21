@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
         {
-            if (pPageInfo != null && pPageInfo.Length > 0)
+            if (pPageInfo?.Length > 0)
             {
                 pPageInfo[0] = new PROPPAGEINFO
                 {

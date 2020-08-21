@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                         }
                     }
 
-                    if (frameworks != null && frameworks.Count > 1 && cmdIndex < frameworks.Count)
+                    if (frameworks?.Count > 1 && cmdIndex < frameworks.Count)
                     {
                         // Only call this if we will need it down below.
                         activeFramework = await activeDebugFrameworks[0].GetActiveDebuggingFrameworkPropertyAsync();

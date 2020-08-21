@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Apply environment variables.
-            if (resolvedProfile.EnvironmentVariables != null && !resolvedProfile.EnvironmentVariables.IsEmpty)
+            if (resolvedProfile.EnvironmentVariables?.IsEmpty == false)
             {
                 foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
                 {

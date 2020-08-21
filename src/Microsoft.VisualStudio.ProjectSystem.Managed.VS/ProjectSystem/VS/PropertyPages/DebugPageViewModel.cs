@@ -417,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                return CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0;
+                return CurrentLaunchSettings?.Profiles.Count > 0;
             }
         }
 
@@ -794,7 +794,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public virtual async Task SaveLaunchSettings()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
-            if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
+            if (EnvironmentVariables?.Count > 0 && SelectedDebugProfile != null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
                 foreach (NameValuePair kvp in EnvironmentVariables)
@@ -860,7 +860,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
             // Since this get's reentered if the user saves or the user switches active profiles.
-            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SettingsDiffer(newSettings))
+            if (CurrentLaunchSettings?.SettingsDiffer(newSettings) == false)
             {
                 return;
             }

@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 if (expect?.Children != null)
                 {
-                    if (actual != null && !actual.IsExpanded && expect.Children != null && expect.Children.Count != 0)
+                    if (actual?.IsExpanded == false && expect.Children != null && expect.Children.Count != 0)
                     {
                         actual.Expand();
                     }

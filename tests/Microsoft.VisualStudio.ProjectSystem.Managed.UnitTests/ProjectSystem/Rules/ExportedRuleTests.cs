@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             var attribute = member.GetCustomAttribute<OrderAttribute>();
 
-            Assert.True(attribute != null && attribute.OrderPrecedence == Order.Default, $"'{GetTypeQualifiedName(member)}' must be marked with [Order(Order.Default)]");
+            Assert.True(attribute?.OrderPrecedence == Order.Default, $"'{GetTypeQualifiedName(member)}' must be marked with [Order(Order.Default)]");
         }
 
         [Theory]
