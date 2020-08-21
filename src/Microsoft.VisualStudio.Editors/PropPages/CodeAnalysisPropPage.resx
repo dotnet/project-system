@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="NETAnalyzersLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>43, 154</value>
+    <value>39, 154</value>
   </data>
   <data name="NETAnalyzersLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 13</value>
@@ -157,7 +157,7 @@
     <value>NoControl</value>
   </data>
   <data name="EnableNETAnalyzersCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>42, 182</value>
+    <value>41, 182</value>
   </data>
   <data name="EnableNETAnalyzersCheckBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>134, 17</value>
@@ -238,7 +238,7 @@
     <value>True</value>
   </data>
   <data name="AnalysisLevelLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>43, 209</value>
+    <value>38, 208</value>
   </data>
   <data name="AnalysisLevelLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
@@ -274,7 +274,7 @@
     <value>none</value>
   </data>
   <data name="AnalysisLevelComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 205</value>
+    <value>118, 205</value>
   </data>
   <data name="AnalysisLevelComboBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>
