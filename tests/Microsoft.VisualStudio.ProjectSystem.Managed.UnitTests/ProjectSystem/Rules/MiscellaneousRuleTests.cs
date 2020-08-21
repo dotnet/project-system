@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 var visibleAttribute = element.Attribute("Visible");
 
-                if (visibleAttribute != null && visibleAttribute.Value.Equals("false", StringComparison.OrdinalIgnoreCase))
+                if (visibleAttribute?.Value.Equals("false", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     Assert.Null(element.Attribute("DisplayName"));
                     Assert.Null(element.Attribute("Description"));

@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
                 {
                     _solution.Value.GetProjectOfUniqueName(projectName, out IVsHierarchy hier);
 
-                    if (hier != null && hier.IsCapabilityMatch(capabilityMatch))
+                    if (hier?.IsCapabilityMatch(capabilityMatch) == true)
                     {
                         string? projectPath = hier.GetProjectFilePath();
 

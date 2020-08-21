@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // targetFrameworks property. So we need the order as returned by GetProjectFrameworks()
             List<string>? frameworks = await GetProjectFrameworksAsync();
 
-            if (frameworks != null && frameworks.Count > 0)
+            if (frameworks?.Count > 0)
             {
                 if (configProjects.TryGetValue(frameworks[0], out ConfiguredProject? configuredProject))
                 {

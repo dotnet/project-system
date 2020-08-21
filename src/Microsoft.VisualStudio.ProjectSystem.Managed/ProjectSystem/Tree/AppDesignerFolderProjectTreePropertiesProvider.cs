@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
 
         public override bool IsSupported
         {
-            get { return _designerService == null || _designerService.SupportsProjectDesigner; }
+            get { return _designerService?.SupportsProjectDesigner != false; }
         }
 
         public override ProjectTreeFlags FolderFlags

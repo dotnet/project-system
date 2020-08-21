@@ -440,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Dictionary<Version, VersionCompatibilityData>? versionCompatData = GetCompatibilityDataFromCacheFile();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
-                if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
+                if (_versionDataCacheFile?.CacheFileIsStale() == true)
                 {
                     _ = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
