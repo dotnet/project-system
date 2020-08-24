@@ -45,9 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests.csproj", "{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogProviders", "src\LogProviders\LogProviders.csproj", "{2F25C671-1718-4889-A9DF-718E70C4099A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystemTools.BackEnd", "src\LogProviders\Microsoft.VisualStudio.ProjectSystemTools.BackEnd.csproj", "{2F25C671-1718-4889-A9DF-718E70C4099A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogModel", "src\LogModel\LogModel.csproj", "{68EAF9CB-3FCB-4BFA-B162-DE62EEEE1EA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystemTools.Shared", "src\LogModel\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj", "{68EAF9CB-3FCB-4BFA-B162-DE62EEEE1EA8}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
