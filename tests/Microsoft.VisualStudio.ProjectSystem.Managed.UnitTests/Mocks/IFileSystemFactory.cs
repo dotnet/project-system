@@ -8,6 +8,16 @@ namespace Microsoft.VisualStudio.IO
 {
     internal static class IFileSystemFactory
     {
+        public static IFileSystem ImplementTryGetLastFileWriteTimeUtc(FuncWithOut<string, DateTime?, bool> action)
+        {
+            DateTime? result;
+            var mock = new Mock<IFileSystem>();
+            mock.Setup(f => f.TryGetLastFileWriteTimeUtc(It.IsAny<string>(), out result))
+                .Returns(action);
+
+            return mock.Object;
+        }
+
         public static IFileSystem Create()
         {
             return Mock.Of<IFileSystem>();
