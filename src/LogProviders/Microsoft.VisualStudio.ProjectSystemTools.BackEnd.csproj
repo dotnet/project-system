@@ -5,6 +5,11 @@
   <PropertyGroup>
     <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</AssemblyName>
     <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</RootNamespace>
+    
+    <!-- VSIX -->
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    
     <IsProductComponent>false</IsProductComponent>
   </PropertyGroup>
 
