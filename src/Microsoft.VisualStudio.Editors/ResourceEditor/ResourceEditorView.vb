@@ -3489,9 +3489,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  stuff from the "other" category or stuff that doesn't have a defined extension.
                 If _
                     Not Resource.IsResXNullRef _
-                    AndAlso Not TypeOf Resource.ResourceTypeEditor Is ResourceTypeEditorStringBase _
+                    AndAlso TypeOf Resource.ResourceTypeEditor IsNot ResourceTypeEditorStringBase _
                     AndAlso Not Resource.IsLink _
-                    AndAlso Not Resource.GetCategory(_categories) Is _categoryOther _
+                    AndAlso Resource.GetCategory(_categories) IsNot _categoryOther _
                 Then
                     If Resource.ResourceTypeEditor.TryCanSaveResourceToFile(Resource) Then
                         'This one's okay

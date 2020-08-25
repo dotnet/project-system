@@ -17,16 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
 
@@ -49,16 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ProjectReference.SchemaName, model.SchemaName);
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
 
@@ -81,16 +81,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: true,
                 isImplicit: true,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
     }

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Applies <see cref="IProjectVersionedValue{T}"/> values to a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
     /// <remarks>
-    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to 
+    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
     ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/> and
     ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
     /// </remarks>

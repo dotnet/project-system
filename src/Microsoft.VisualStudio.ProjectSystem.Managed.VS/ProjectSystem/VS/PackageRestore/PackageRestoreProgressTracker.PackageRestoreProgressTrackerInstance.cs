@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
                 _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _dataSource);
-                
+
                 _progressRegistration = _dataProgressTrackerService.RegisterOutputDataSource(this);
 
                 Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>>> action = OnRestoreCompleted;

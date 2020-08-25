@@ -371,7 +371,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <param name="Name">The resource name to look for (case insensitive)</param>
         Public Function Contains(Name As String) As Boolean
-            Return Not FindResource(Name) Is Nothing
+            Return FindResource(Name) IsNot Nothing
         End Function
 
         ''' <summary>
@@ -530,7 +530,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </remarks>
         Private Sub ComponentChangeService_ComponentAdded(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentAdded
             Dim ResourceObject As Object = e.Component
-            If Not TypeOf ResourceObject Is Resource Then
+            If TypeOf ResourceObject IsNot Resource Then
                 Debug.Fail("How could we be adding a component that's not a Resource?")
                 Exit Sub
             End If
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Debug.WriteLineIf(Switches.RSEAddRemoveResources.TraceVerbose, "Add/Remove Resources: Adding " & Resource.ToString())
 
-            Debug.Assert(Not FindResource(Resource.Name) Is Resource, "already a resource by that name")
+            Debug.Assert(FindResource(Resource.Name) IsNot Resource, "already a resource by that name")
             Debug.Assert(Not _resources.ContainsValue(Resource), "already exists in our list")
 
             'Add it to our list (upper-case the key to normalize for in-case-sensitive look-ups)
@@ -596,7 +596,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="e">Event args</param>
         Private Sub ComponentChangeService_ComponentRemoved(sender As Object, e As ComponentEventArgs) Handles _componentChangeService.ComponentRemoved
             Dim ResourceObject As Object = e.Component
-            If Not TypeOf ResourceObject Is Resource Then
+            If TypeOf ResourceObject IsNot Resource Then
                 Debug.Assert(TypeOf ResourceObject Is ResourceEditorRootComponent, "How could we be removing a component that's not a Resource?")
                 Exit Sub
             End If
@@ -711,7 +711,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         Private Sub ComponentChangeService_ComponentRename(sender As Object, e As ComponentRenameEventArgs) Handles _componentChangeService.ComponentRename
-            If Not TypeOf e.Component Is Resource Then
+            If TypeOf e.Component IsNot Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
             End If
@@ -771,7 +771,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="sender">Event sender</param>
         ''' <param name="e">Event args</param>
         Private Sub ComponentChangeService_ComponentChanged(sender As Object, e As ComponentChangedEventArgs) Handles _componentChangeService.ComponentChanged
-            If Not TypeOf e.Component Is Resource Then
+            If TypeOf e.Component IsNot Resource Then
                 Debug.Fail("Got component rename event for a component that isn't a resource")
                 Exit Sub
             End If

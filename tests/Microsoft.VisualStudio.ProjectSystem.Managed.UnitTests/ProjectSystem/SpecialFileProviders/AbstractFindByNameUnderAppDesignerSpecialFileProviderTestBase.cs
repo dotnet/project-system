@@ -49,7 +49,6 @@ Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenAppDesignerNotSupported_ReturnsPathUnderProjectRoot()
         {   // AppDesigner is turned off
-
             var tree = ProjectTreeParser.Parse($@"
 Project (flags: {{ProjectRoot}}), FilePath: ""C:\Project\Project.csproj""
 ");

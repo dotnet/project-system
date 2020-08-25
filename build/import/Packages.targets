@@ -108,11 +108,11 @@
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0-beta1.final" />
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.6.0-2.20157.5" />
-    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.6.0-2.20157.5" />
-    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0-beta2.final" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.0-beta2.final" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-1.20330.4" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-1.20330.4" />
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.0" />
 
     <!-- NuGet -->
     <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.8.0-preview.2.6767" />

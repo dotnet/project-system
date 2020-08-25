@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Shows a Yes/No confirmation box to the user.
         /// </summary>
         /// <returns>
-        ///     <see langword="true"/> if the user clicked the Yes button, otherwise; 
+        ///     <see langword="true"/> if the user clicked the Yes button, otherwise;
         ///     <see langword="false"/> if the user clicked the No button.
         /// </returns>
         ///<exception cref="COMException">

@@ -28,16 +28,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             private ExportFactory<UnconfiguredProject>? UnconfiguredProjectFactory { get; set; }
         }
 
-        [Export(typeof(ProjectSystem.UnconfiguredProject))]
+        [Export(typeof(UnconfiguredProject))]
         [Shared(ExportContractNames.Scopes.UnconfiguredProject)]
         private class UnconfiguredProjectScope
         {
             [Import]
             [SharingBoundary(ExportContractNames.Scopes.ConfiguredProject)]
-            private ExportFactory<ProjectSystem.ConfiguredProject>? ConfiguredProjectFactory { get; set; }
+            private ExportFactory<ConfiguredProject>? ConfiguredProjectFactory { get; set; }
         }
 
-        [Export(typeof(ProjectSystem.ConfiguredProject))]
+        [Export(typeof(ConfiguredProject))]
         [Shared(ExportContractNames.Scopes.ConfiguredProject)]
         private class ConfiguredProjectScope
         {

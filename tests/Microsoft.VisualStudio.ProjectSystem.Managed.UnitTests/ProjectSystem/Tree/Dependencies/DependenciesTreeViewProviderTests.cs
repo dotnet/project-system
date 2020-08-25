@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     {
         private readonly TargetFramework _tfm1 = new TargetFramework("tfm1");
         private readonly TargetFramework _tfm2 = new TargetFramework("tfm2");
-        
+
         private readonly ITestOutputHelper _output;
 
         private static readonly ImageMoniker s_rootImage = KnownMonikers.AboutBox;

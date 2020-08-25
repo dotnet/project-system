@@ -518,7 +518,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return _changeService
             End Get
             Set
-                If Not Value Is _changeService Then
+                If Value IsNot _changeService Then
                     UnSubscribeChangeServiceNotifications()
                     _changeService = Value
                     SubscribeChangeServiceNotifications()

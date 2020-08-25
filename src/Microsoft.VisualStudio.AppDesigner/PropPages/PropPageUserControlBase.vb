@@ -1144,7 +1144,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            If Not TypeOf objects Is Object() Then
+            If TypeOf objects IsNot Object() Then
                 Debug.Fail("Objects must be an array of Object, not an array of anything else!")
                 Throw New ArgumentException
             End If

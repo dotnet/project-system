@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class DataflowUtilities
     {
         /// <summary>
-        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project 
-        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by
         ///     specified rules.
         /// </summary>
         /// <param name="source">
@@ -68,8 +68,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project 
-        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by
         ///     specified rules.
         /// </summary>
         /// <param name="source">
@@ -122,8 +122,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project 
-        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by
         ///     specified rules.
         /// </summary>
         /// <param name="source">
@@ -172,8 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project 
-        ///     data,  including detailed descriptions of what changed between snapshots, as described by 
+        ///     Links to the specified <see cref="Func{T, TResult}" /> to receive a cross-sectional slice of project
+        ///     data,  including detailed descriptions of what changed between snapshots, as described by
         ///     specified rules.
         /// </summary>
         /// <param name="source">
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" /> 
+        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Action{T}" />
         ///     that can process messages, propagating completion and faults.
         /// </summary>
         /// <param name="source">
@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Func{T, TResult}" /> 
+        ///     Links the <see cref="ISourceBlock{TOutput}" /> to the specified <see cref="Func{T, TResult}" />
         ///     that can process messages, propagating completion and faults.
         /// </summary>
         /// <returns>
@@ -285,7 +285,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </exception>
         public static IDisposable LinkToAsyncAction<T>(
             this ISourceBlock<T> source,
-            Func<T, Task> target,            
+            Func<T, Task> target,
             UnconfiguredProject project)
         {
             Requires.NotNull(source, nameof(source));
@@ -336,8 +336,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Creates a source block that produces multiple transformed values for each value from original source block, 
-        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming 
+        ///     Creates a source block that produces multiple transformed values for each value from original source block,
+        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming
         ///     deltas.
         /// </summary>
         /// <typeparam name="TInput">
@@ -377,8 +377,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Creates a source block that produces a transformed value for each value from original source block, 
-        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming 
+        ///     Creates a source block that produces a transformed value for each value from original source block,
+        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming
         ///     deltas.
         /// </summary>
         /// <typeparam name="TInput">
@@ -418,8 +418,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Creates a source block that produces a transformed value for each value from original source block, 
-        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming 
+        ///     Creates a source block that produces a transformed value for each value from original source block,
+        ///     skipping intermediate input and output states, and hence is not suitable for producing or consuming
         ///     deltas.
         /// </summary>
         /// <typeparam name="TOut">

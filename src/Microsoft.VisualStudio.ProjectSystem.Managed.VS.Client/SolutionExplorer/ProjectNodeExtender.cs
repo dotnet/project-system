@@ -70,8 +70,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         /// </summary>
         private static bool NodeRepresentsAManagedProject(WorkspaceVisualNodeBase node)
         {
-            return node != null
-                && node.VSSelectionMoniker != null
+            return node?.VSSelectionMoniker != null
                 && node.VSSelectionKind == CloudEnvironment.SolutionViewProjectGuid
                 && node.NodeMoniker != null
                 && s_supportedProjectExtensions.Any(extension => node.NodeMoniker.EndsWith(extension, StringComparison.OrdinalIgnoreCase));

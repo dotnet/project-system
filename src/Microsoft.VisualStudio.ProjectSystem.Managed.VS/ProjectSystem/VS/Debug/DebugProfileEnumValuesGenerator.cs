@@ -17,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
     /// the debug target selection dropdown.
     /// </summary>
-
     internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
     {
         private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;

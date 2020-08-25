@@ -152,7 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await storage.AddFileAsync("File.cs");
 
             Assert.Equal(@"C:\File.cs", result);
-
         }
 
         [Fact]

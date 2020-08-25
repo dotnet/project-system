@@ -161,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// <remarks>
         /// Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
         /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
-        /// We can remove only nodes that are standard and based on project items, i.e. nodes that 
-        /// are created by default IProjectDependenciesSubTreeProvider implementations and have 
-        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain 
+        /// We can remove only nodes that are standard and based on project items, i.e. nodes that
+        /// are created by default IProjectDependenciesSubTreeProvider implementations and have
+        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain
         /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
         /// </remarks>
         public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)

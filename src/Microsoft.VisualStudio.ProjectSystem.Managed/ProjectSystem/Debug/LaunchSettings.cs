@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly string? _activeProfileName;
 
         /// <summary>
-        /// Represents the current set of launch settings. Creation from an existing set of profiles. 
+        /// Represents the current set of launch settings. Creation from an existing set of profiles.
         /// </summary>
         public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null)
         {

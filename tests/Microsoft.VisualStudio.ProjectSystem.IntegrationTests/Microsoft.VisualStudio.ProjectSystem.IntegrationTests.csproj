@@ -12,13 +12,4 @@
     <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
     <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Resources\ManagedImageMonikers.cs" Link="ManagedImageMonikers.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.VisualStudio.Composition" Version="16.4.11" />
-  </ItemGroup>
 </Project>

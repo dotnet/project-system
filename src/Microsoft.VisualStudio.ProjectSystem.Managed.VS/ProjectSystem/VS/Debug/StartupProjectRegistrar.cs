@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly UnconfiguredProject _project;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
+        private readonly IProjectThreadingService _threadingService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IActiveConfiguredValues<IDebugLaunchProvider> _launchProviders;
@@ -39,6 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _project = project;
             _projectTasksService = projectTasksService;
             _startupProjectsListService = startupProjectsListService;
+            _threadingService = threadingService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
@@ -48,7 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [AppliesTo(ProjectCapability.DotNet)]
         public Task InitializeAsync()
         {
-            return InitializeAsync(CancellationToken.None);
+            _threadingService.RunAndForget(async () =>
+            {
+                await _projectTasksService.SolutionLoadedInHost;
+
+                await InitializeAsync(CancellationToken.None);
+            }, _project);
+
+            return Task.CompletedTask;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)

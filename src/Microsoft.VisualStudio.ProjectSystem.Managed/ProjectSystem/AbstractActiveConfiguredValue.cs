@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected AbstractActiveConfiguredValue(UnconfiguredProject project, IActiveConfiguredProjectProvider activeConfiguredProjectProvider, IProjectThreadingService threadingService)
         {
-            _project = project;            
+            _project = project;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _threadingService = threadingService;
         }

@@ -8,10 +8,8 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="PackageReference"
-                MSBuildTarget="CollectPackageReferences"
                 Persistence="ProjectFile"
-                SourceOfDefaultValue="AfterContext"
-                SourceType="TargetResults" />
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
   <StringListProperty Name="Aliases"

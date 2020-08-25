@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
@@ -42,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (settings.ActiveProfile != null)
             {
-                ActiveProfile = Profiles.FirstOrDefault(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
+                ActiveProfile = Profiles.Find(profile => LaunchProfile.IsSameProfileName(profile.Name, settings.ActiveProfile.Name));
             }
         }
 

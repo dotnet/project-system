@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Build;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
     /// <summary>
-    ///     Implementation of <see cref="IProjectGuidStorageProvider"/> that avoids persisting the 
+    ///     Implementation of <see cref="IProjectGuidStorageProvider"/> that avoids persisting the
     ///     project GUID property to the project file if isn't already present in the file.
     /// </summary>
     [Export(typeof(IProjectGuidStorageProvider))]
@@ -77,7 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
                         await _projectAccessor.OpenProjectXmlForWriteAsync(_project, (root) =>
                         {
                             property.Value = ProjectCollection.Escape(value.ToString("B").ToUpperInvariant());
-
                         }, cancellationToken);
                     }
                 }

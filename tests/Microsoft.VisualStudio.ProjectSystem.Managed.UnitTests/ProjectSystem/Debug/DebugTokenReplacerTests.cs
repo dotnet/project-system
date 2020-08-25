@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         };
 
         private readonly Mock<IEnvironmentHelper> _envHelper;
-        
+
         public DebugTokenReplacerTests()
         {
             _envHelper = new Mock<IEnvironmentHelper>();
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private DebugTokenReplacer CreateInstance()
         {
             var environmentHelper = _envHelper.Object;
-            
+
             var activeDebugFramework = new Mock<IActiveDebugFrameworkServices>();
             activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())
                 .Returns(() => Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.Create()));

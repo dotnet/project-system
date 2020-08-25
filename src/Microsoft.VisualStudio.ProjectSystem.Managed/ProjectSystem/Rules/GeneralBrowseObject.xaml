@@ -428,4 +428,24 @@
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <BoolProperty Name="EnableNETAnalyzers"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="EnableNETAnalyzers"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="AnalysisLevel"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="AnalysisLevel"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>

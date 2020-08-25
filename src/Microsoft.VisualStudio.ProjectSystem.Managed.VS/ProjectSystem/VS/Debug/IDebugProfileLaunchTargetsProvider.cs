@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// <summary>
     /// Interface definition used by the ProjectDebugger to decide how to launch a profile. The order
     /// of the imports is important in that this determines the order which profiles will be tested
-    /// for support 
+    /// for support
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IDebugProfileLaunchTargetsProvider

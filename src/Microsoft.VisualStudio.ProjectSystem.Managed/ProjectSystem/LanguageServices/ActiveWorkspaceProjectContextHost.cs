@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IActiveWorkspaceProjectContextHost"/> that delegates 
+    ///     Provides an implementation of <see cref="IActiveWorkspaceProjectContextHost"/> that delegates
     ///     onto the active configuration's <see cref="IWorkspaceProjectContextHost"/>.
     /// </summary>
     [Export(typeof(IActiveWorkspaceProjectContextHost))]
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 catch (OperationCanceledException) when (activeConfigChangedToken.IsCancellationRequested)
                 {
                 }
-            } 
+            }
         }
 
         public async Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action)

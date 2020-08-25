@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override bool Equals(object? obj)
         {
-            return ReferenceEquals(this, obj) || obj is FrameworkReferenceIdentity other && Equals(other);
+            return ReferenceEquals(this, obj) || (obj is FrameworkReferenceIdentity other && Equals(other));
         }
 
         public override int GetHashCode()

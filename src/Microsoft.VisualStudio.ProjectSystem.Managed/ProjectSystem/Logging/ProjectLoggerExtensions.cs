@@ -54,8 +54,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
         /// <summary>
         ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the text representation of the specified object, followed 
-        ///     by the current line terminator, to the log using the specified 
+        ///     writes the text representation of the specified object, followed
+        ///     by the current line terminator, to the log using the specified
         ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
         /// <summary>
         ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the text representation of the specified objects, followed 
+        ///     writes the text representation of the specified objects, followed
         ///     by the current line terminator, to the log using the specified format
         ///     information.
         /// </summary>
@@ -100,8 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
         /// <summary>
         ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the text representation of the specified objects, followed 
-        ///     by the current line terminator, to the log using the specified 
+        ///     writes the text representation of the specified objects, followed
+        ///     by the current line terminator, to the log using the specified
         ///     format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -123,8 +123,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
 
         /// <summary>
         ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the  text representation of the specified array of objects, 
-        ///     followed  by the current line terminator, to the log using the 
+        ///     writes the  text representation of the specified array of objects,
+        ///     followed  by the current line terminator, to the log using the
         ///     specified format information.
         /// </summary>
         /// <exception cref="ArgumentNullException">

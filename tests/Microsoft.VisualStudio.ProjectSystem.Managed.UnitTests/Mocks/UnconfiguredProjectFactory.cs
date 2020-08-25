@@ -37,10 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 unconfiguredProjectServicesMock.SetupGet<object?>(u => u.FaultHandler)
                                            .Returns(IProjectFaultHandlerServiceFactory.Create());
 
-                unconfiguredProjectServicesMock.SetupGet<object?>(u => u.HostObject)
+                unconfiguredProjectServicesMock.SetupGet(u => u.HostObject)
                                            .Returns(hostObject);
 
-                unconfiguredProjectServicesMock.SetupGet<IProjectConfigurationsService?>(u => u.ProjectConfigurationsService)
+                unconfiguredProjectServicesMock.SetupGet(u => u.ProjectConfigurationsService)
                                            .Returns(projectConfigurationsService);
 
                 var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);

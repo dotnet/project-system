@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading.Tasks;
 using DialogResult = System.Windows.Forms.DialogResult;
 using Task = System.Threading.Tasks.Task;
 
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         private List<LaunchType> _providerLaunchTypes;
         private LaunchType _selectedLaunchType;
         private OrderPrecedenceImportCollection<ILaunchSettingsUIProvider> _uiProviders;
-        private readonly TaskCompletionSource<bool> _firstSnapshotCompleteSource;
+        private readonly TaskCompletionSource _firstSnapshotCompleteSource;
         private ICommand _addEnvironmentVariableRowCommand;
         private ICommand _removeEnvironmentVariableRowCommand;
         private ICommand _browseDirectoryCommand;
@@ -56,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         // for unit testing
-        internal DebugPageViewModel(TaskCompletionSource<bool> snapshotComplete, UnconfiguredProject project)
+        internal DebugPageViewModel(TaskCompletionSource snapshotComplete, UnconfiguredProject project)
         {
             _firstSnapshotCompleteSource = snapshotComplete;
             Project = project;
@@ -382,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 current = defaultValue;
             }
 
-            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            if (current is not T currentTyped || !Equals(currentTyped, value))
             {
                 SelectedDebugProfile.OtherSettings[propertyName] = value;
                 return true;
@@ -416,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             get
             {
-                return CurrentLaunchSettings != null && CurrentLaunchSettings.Profiles.Count > 0;
+                return CurrentLaunchSettings?.Profiles.Count > 0;
             }
         }
 
@@ -486,7 +487,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 if (_environmentVariablesValid != value)
                 {
                     _environmentVariablesValid = value;
-                    if (value == true)
+                    if (value)
                     {
                         ClearEnvironmentVariablesGridError?.Invoke(this, EventArgs.Empty);
                     }
@@ -508,7 +509,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         }
 
         /// <summary>
-        /// Provides binding to the current UI Provider user control. 
+        /// Provides binding to the current UI Provider user control.
         /// </summary>
         public UserControl ActiveProviderUserControl => ActiveProvider?.CustomUI;
 
@@ -744,7 +745,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             PushIgnoreEvents();
             try
             {
-
                 // these have no backing store in the viewmodel, we need to send notifications when we change selected profiles
                 // consider a better way of doing this
                 OnPropertyChanged(nameof(SelectedDebugProfile));
@@ -794,7 +794,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public virtual async Task SaveLaunchSettings()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
-            if (EnvironmentVariables != null && EnvironmentVariables.Count > 0 && SelectedDebugProfile != null)
+            if (EnvironmentVariables?.Count > 0 && SelectedDebugProfile != null)
             {
                 SelectedDebugProfile.EnvironmentVariables.Clear();
                 foreach (NameValuePair kvp in EnvironmentVariables)
@@ -860,7 +860,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             IWritableLaunchSettings newSettings = profiles.ToWritableLaunchSettings();
 
             // Since this get's reentered if the user saves or the user switches active profiles.
-            if (CurrentLaunchSettings != null && !CurrentLaunchSettings.SettingsDiffer(newSettings))
+            if (CurrentLaunchSettings?.SettingsDiffer(newSettings) == false)
             {
                 return;
             }
@@ -891,7 +891,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 NotifyProfileCollectionChanged();
 
                 // If we have a selection, we want to leave it as is
-                if (curProfileName == null || newSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
+                if (curProfileName == null || newSettings.Profiles.Find(p => LaunchProfile.IsSameProfileName(p.Name, curProfileName)) == null)
                 {
                     // Note that we have to be careful since the collection can be empty. 
                     if (profiles.ActiveProfile != null && !string.IsNullOrEmpty(profiles.ActiveProfile.Name))
@@ -918,7 +918,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             finally
             {
                 PopIgnoreEvents();
-                _firstSnapshotCompleteSource?.TrySetResult(true);
+                _firstSnapshotCompleteSource?.TrySetResult();
                 _debugTargetsCoreInitialized = true;
             }
         }
@@ -1028,11 +1028,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         /// <summary>
         /// Called after every profile change to update the list of launch types based on the following:
-        /// 
+        ///
         ///     The list of UI providers as each provider provides a name
         ///     The command name in the profile if it doesn't match one of the existing providers.
-        ///     
-        /// </summary>        
+        ///
+        /// </summary>
         private void UpdateLaunchTypes()
         {
             // Populate the set of unique launch types from the list of providers since there can be duplicates with different priorities. However,
@@ -1042,7 +1042,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 _providerLaunchTypes = new List<LaunchType>();
                 foreach (Lazy<ILaunchSettingsUIProvider, IOrderPrecedenceMetadataView> provider in _uiProviders)
                 {
-                    if (_providerLaunchTypes.FirstOrDefault(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
+                    if (_providerLaunchTypes.Find(launchType => launchType.CommandName.Equals(provider.Value.CommandName)) == null)
                     {
                         _providerLaunchTypes.Add(new LaunchType(provider.Value.CommandName, provider.Value.FriendlyName));
                     }
@@ -1057,7 +1057,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 _launchTypes.AddRange(_providerLaunchTypes);
 
-                selectedLaunchType = _launchTypes.FirstOrDefault(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
+                selectedLaunchType = _launchTypes.Find(launchType => string.Equals(launchType.CommandName, selectedProfile.CommandName));
                 if (selectedLaunchType == null)
                 {
                     selectedLaunchType = new LaunchType(selectedProfile.CommandName, selectedProfile.CommandName);
@@ -1155,7 +1155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 bool hasRemoteDebugMachineError = RemoteDebugEnabled && Uri.CheckHostName(RemoteDebugMachine) == UriHostNameType.Unknown;
 
                 return hasRemoteDebugMachineError ||
-                    ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors;
+                    (ActiveProvider?.CustomUI?.DataContext is INotifyDataErrorInfo notifyDataError && notifyDataError.HasErrors);
             }
         }
 

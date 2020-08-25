@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     {
         /// <summary>
         ///     Registers a delegate that will be called when this <see cref="CancellationToken"/>
-        ///     is canceled, executing the callback immediately if it has already been canceled 
+        ///     is canceled, executing the callback immediately if it has already been canceled
         ///     and <see cref="RegisterOptions.ExecuteImmediatelyIfAlreadyCanceledAndDisposed"/> is specified.
         /// </summary>
         /// <param name="token">
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         ///     <paramref name="callback"/> is <see langword="null"/>
         /// </exception>
         /// <exception cref="ObjectDisposedException">
-        ///     <paramref name="options"/> is <see cref="RegisterOptions.None"/> and the <see cref="CancellationTokenSource"/> 
+        ///     <paramref name="options"/> is <see cref="RegisterOptions.None"/> and the <see cref="CancellationTokenSource"/>
         ///     has been disposed.
         /// </exception>
         internal static CancellationTokenRegistration Register(this CancellationToken token, RegisterOptions options, Action callback)

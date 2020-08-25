@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var projectLockService = IProjectLockServiceFactory.Create();
 
             var mock = new Mock<UnconfiguredProjectServices>();
-            
+
             projectService ??= IProjectServiceFactory.Create(ProjectServicesFactory.Create(threadingService, projectLockService: projectLockService));
-            
+
             mock.SetupGet(p => p.ProjectService)
                 .Returns(projectService);
 

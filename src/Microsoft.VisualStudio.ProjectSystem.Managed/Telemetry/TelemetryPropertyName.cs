@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string TreeUpdatedResolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "Project");
 
         /// <summary>
-        ///     Indicates the project when when the dependency tree is updated with unresolved dependencies.
+        ///     Indicates the project when the dependency tree is updated with unresolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedUnresolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedUnresolved, "Project");
 

@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             ActiveConfiguredObjects<ConfiguredProject>? projects = await GetActiveConfiguredProjectsAsync();
 
-            if (projects == null || projects.Objects.IsEmpty)
+            if (projects?.Objects.IsEmpty != false)
             {
                 return null;
             }

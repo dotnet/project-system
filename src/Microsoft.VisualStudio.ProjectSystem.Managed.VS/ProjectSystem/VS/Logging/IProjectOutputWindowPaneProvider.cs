@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
         ///     Returns the project output window pane.
         /// </summary>
         /// <returns>
-        ///     The project <see cref="IVsOutputWindowPane"/> object, or <see langword="null"/> 
+        ///     The project <see cref="IVsOutputWindowPane"/> object, or <see langword="null"/>
         ///     if the <see cref="IVsOutputWindow"/> service is not present.
         /// </returns>
         Task<IVsOutputWindowPane?> GetOutputWindowPaneAsync();

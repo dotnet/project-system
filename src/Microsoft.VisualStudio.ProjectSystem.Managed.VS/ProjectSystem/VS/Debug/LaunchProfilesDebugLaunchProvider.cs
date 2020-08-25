@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         [ImportingConstructor]
         public LaunchProfilesDebugLaunchProvider(
-            ConfiguredProject configuredProject, 
-            ILaunchSettingsProvider launchSettingsProvider, 
+            ConfiguredProject configuredProject,
+            ILaunchSettingsProvider launchSettingsProvider,
             IVsService<IVsDebuggerLaunchAsync> vsDebuggerService)
             : base(configuredProject)
         {

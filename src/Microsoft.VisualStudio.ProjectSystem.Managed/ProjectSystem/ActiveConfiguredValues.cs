@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [Export(typeof(IActiveConfiguredValues<>))]
-    internal class ActiveConfiguredValues<T> : 
+    internal class ActiveConfiguredValues<T> :
         AbstractActiveConfiguredValue<object>,  // NOTE: Typed as 'object' because of https://github.com/microsoft/vs-mef/issues/180
         IActiveConfiguredValues<T>
         where T : class

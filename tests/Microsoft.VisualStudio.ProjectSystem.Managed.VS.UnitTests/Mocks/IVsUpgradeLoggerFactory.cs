@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 return false;
             }
 
-            if (!(obj is LogMessage other))
+            if (obj is not LogMessage other)
             {
                 return false;
             }
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
         public override int GetHashCode()
         {
-            return Level.GetHashCode() * 31 + Project.GetHashCode() * 3 + File.GetHashCode() * 7 + Message.GetHashCode() * 5;
+            return (Level.GetHashCode() * 31) + (Project.GetHashCode() * 3) + (File.GetHashCode() * 7) + (Message.GetHashCode() * 5);
         }
     }
 }

@@ -70,11 +70,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         [InlineData(new [] { "A", "B", "C", "E"},        new [] { "A", "B", "C", "D", "E" } , new [] { "D" },                new string[0]       )] // Add in the middle
         [InlineData(new [] { "A", "B", "C", "D", "E" },  new [] { "A", "B", "D", "E" }      , new string[0],                 new [] { "C" }      )] // Remove from the middle
         [InlineData(new [] { "A", "B", "D", "E" },       new [] { "B", "C", "E", "F" }      , new [] { "C", "F" },           new [] { "A", "D" } )] // Addition and deletion in jumbled order with the same no of elements as before
-        
+
         public void UpdateNamespaceImportListTest(string[] initialState, string[] updateToApply, string[] expectedAdded, string[] expectedRemoved)
         {
             var list = VisualBasicNamespaceImportsListFactory.CreateInstance(initialState);
-            
+
             var json = ConstructNamespaceImportChangeJson(updateToApply);
             var projectSubscriptionUpdate = IProjectSubscriptionUpdateFactory.FromJson(json);
 
