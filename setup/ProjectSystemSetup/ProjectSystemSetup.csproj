@@ -18,11 +18,6 @@
     <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LogProviders\Microsoft.VisualStudio.ProjectSystemTools.BackEnd.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>

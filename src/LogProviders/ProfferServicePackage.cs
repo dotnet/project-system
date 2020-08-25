@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContracts;
 using ProvideBrokeredServiceAttribute = Microsoft.VisualStudio.Shell.ServiceBroker.ProvideBrokeredServiceAttribute;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
@@ -22,7 +23,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             await base.InitializeAsync(cancellationToken, progress);
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             IComponentModel componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
             Assumes.Present(componentModel);
             IBuildLoggerService loggerService = componentModel.GetService<IBuildLoggerService>();
