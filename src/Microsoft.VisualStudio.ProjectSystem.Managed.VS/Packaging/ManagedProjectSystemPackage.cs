@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
+//using Microsoft.VisualStudio.ProjectSystem.Tools;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.Packaging
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
-
+            
             IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
 
             await JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -40,6 +41,9 @@ namespace Microsoft.VisualStudio.Packaging
             {
                 await packageService.InitializeAsync(this);
             }
+
+            //ProfferServicePackage package = new ProfferServicePackage();
+            //await package.RunProffer(cancellationToken, progress);
         }
     }
 }

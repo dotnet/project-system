@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContracts;
 using ProvideBrokeredServiceAttribute = Microsoft.VisualStudio.Shell.ServiceBroker.ProvideBrokeredServiceAttribute;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.PlatformUI;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
@@ -29,6 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
             IBrokeredServiceContainer brokeredServiceContainer = await this.GetServiceAsync<SVsBrokeredServiceContainer, IBrokeredServiceContainer>();
             brokeredServiceContainer.Proffer(RpcDescriptors.LoggerServiceDescriptor, (mk, options, sb, ct) => new ValueTask<object>(loggerService));
+        }
+
+        public System.Threading.Tasks.Task RunProffer(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            return InitializeAsync(cancellationToken, progress);
         }
     }
 }
