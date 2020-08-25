@@ -38,8 +38,9 @@
                           VB;
                           Managed;
                           ClassDesigner;
-                          PreventAutomaticMyApplication;
                           SharedProjectReferences;" />
+
+      <ProjectCapability Include="EnableMyApplication" Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)','5.0')) And '$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(UseWindowsForms)' == 'true'" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
