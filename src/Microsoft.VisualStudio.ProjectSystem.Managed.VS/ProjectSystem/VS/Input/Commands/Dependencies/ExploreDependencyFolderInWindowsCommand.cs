@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected override bool CanOpen(IProjectTree node)
         {
-            return node.Flags.Contains(DependencyTreeFlags.GenericDependency | DependencyTreeFlags.SupportsFolderBrowse);
+            return node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsFolderBrowse);
         }
 
         protected override void Open(string path)

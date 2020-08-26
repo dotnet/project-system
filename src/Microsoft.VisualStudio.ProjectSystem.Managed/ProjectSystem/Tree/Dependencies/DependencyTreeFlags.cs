@@ -60,30 +60,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
                 = Dependency
+                + ProjectTreeFlags.Reference
                 + SupportsRuleProperties
                 + SupportsRemove;
-
-        internal static readonly ProjectTreeFlags Unresolved = ProjectTreeFlags.Create("Unresolved");
-        internal static readonly ProjectTreeFlags Resolved = ProjectTreeFlags.Create("Resolved");
-
-        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = Unresolved + DependencyFlags;
-        public static readonly ProjectTreeFlags ResolvedDependencyFlags = Resolved + DependencyFlags;
 
         /// <summary>
         /// The set of flags to assign to unresolved Reference nodes.
         /// </summary>
-        internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
-                = ProjectTreeFlags.Reference
-                + ProjectTreeFlags.BrokenReference
-                + UnresolvedDependencyFlags;
-
+        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = ProjectTreeFlags.BrokenReference + DependencyFlags;
+        
         /// <summary>
         /// The set of flags to assign to resolved Reference nodes.
         /// </summary>
-        internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
-                = ProjectTreeFlags.Reference
-                + ProjectTreeFlags.ResolvedReference
-                + ResolvedDependencyFlags;
+        public static readonly ProjectTreeFlags ResolvedDependencyFlags = ProjectTreeFlags.ResolvedReference + DependencyFlags;
 
         /// <summary>
         /// Identifies nodes used to group dependencies specific to a given implicit configuration,

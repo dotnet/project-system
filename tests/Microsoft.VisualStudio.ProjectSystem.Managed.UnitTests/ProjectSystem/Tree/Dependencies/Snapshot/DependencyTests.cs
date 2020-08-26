@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Equal(mockModel.Visible, dependency.Visible);
             Assert.Single(dependency.BrowseObjectProperties);
             Assert.True(dependency.BrowseObjectProperties.ContainsKey("prop1"));
-            Assert.Equal(DependencyTreeFlags.Resolved + DependencyTreeFlags.Dependency, dependency.Flags);
+            Assert.Equal(ProjectTreeFlags.ResolvedReference + DependencyTreeFlags.Dependency, dependency.Flags);
         }
 
         [Fact]

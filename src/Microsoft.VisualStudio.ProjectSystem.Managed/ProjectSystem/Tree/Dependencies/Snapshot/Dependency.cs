@@ -35,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // in the tree to avoid flicks).
             if (Resolved)
             {
-                if (!Flags.Contains(DependencyTreeFlags.Resolved))
+                if (!Flags.Contains(ProjectTreeFlags.ResolvedReference))
                 {
-                    Flags += DependencyTreeFlags.Resolved;
+                    Flags += ProjectTreeFlags.ResolvedReference;
                 }
             }
             else
             {
-                if (!Flags.Contains(DependencyTreeFlags.Unresolved))
+                if (!Flags.Contains(ProjectTreeFlags.BrokenReference))
                 {
-                    Flags += DependencyTreeFlags.Unresolved;
+                    Flags += ProjectTreeFlags.BrokenReference;
                 }
             }
 

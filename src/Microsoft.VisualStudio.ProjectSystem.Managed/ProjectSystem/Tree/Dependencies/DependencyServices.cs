@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         private static async Task<string?> GetMaybeRelativeBrowsePath(UnconfiguredProject project, IProjectTree node)
         {
-            Assumes.True(node.Flags.Contains(DependencyTreeFlags.GenericDependency));
+            Assumes.True(node.Flags.Contains(DependencyTreeFlags.Dependency));
 
             // Shared Projects are special, the file path points directly to the import
             if (node.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))

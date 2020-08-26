@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
         {
             Requires.NotNull(treeNodes, nameof(treeNodes));
 
-            return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.GenericDependency | DependencyTreeFlags.SupportsBrowse));
+            return treeNodes.All(node => node.Flags.Contains(DependencyTreeFlags.Dependency | DependencyTreeFlags.SupportsBrowse));
         }
     }
 }

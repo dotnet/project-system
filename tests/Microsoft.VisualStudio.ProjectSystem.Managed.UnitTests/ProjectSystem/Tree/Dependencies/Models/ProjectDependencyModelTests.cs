@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                DependencyTreeFlags.ResolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                DependencyTreeFlags.UnresolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove +
                 ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);

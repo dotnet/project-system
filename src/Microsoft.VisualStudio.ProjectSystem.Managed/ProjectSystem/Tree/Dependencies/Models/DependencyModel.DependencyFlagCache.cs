@@ -24,8 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 // The 'isResolved' dimension determines whether we start with generic resolved or unresolved dependency flags.
                 // We then add (union) and remove (except) any other flags as instructed.
 
-                ProjectTreeFlags combinedResolved = DependencyTreeFlags.GenericResolvedDependencyFlags.Union(resolved).Except(remove);
-                ProjectTreeFlags combinedUnresolved = DependencyTreeFlags.GenericUnresolvedDependencyFlags.Union(unresolved).Except(remove);
+                ProjectTreeFlags combinedResolved = DependencyTreeFlags.ResolvedDependencyFlags.Union(resolved).Except(remove);
+                ProjectTreeFlags combinedUnresolved = DependencyTreeFlags.UnresolvedDependencyFlags.Union(unresolved).Except(remove);
 
                 // The 'isImplicit' dimension only enforces, when true, that the dependency cannot be removed.
 

@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
         }
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags -
+                DependencyTreeFlags.UnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
         }
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
                 DependencyTreeFlags.SupportsBrowse +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);
