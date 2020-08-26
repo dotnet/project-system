@@ -60,8 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
                 = Dependency
-                + ProjectTreeFlags.VirtualFolder
-                + ProjectTreeFlags.BubbleUp
                 + SupportsRuleProperties
                 + SupportsRemove;
 
