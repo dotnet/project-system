@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec)
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
-                && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
+                && dependency.Flags.Contains(DependencyTreeFlags.Dependency)          // dependency
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectDependency) // except for shared projects
                 && !projectItemSpecs.Contains(dependency.OriginalItemSpec)            // is not a known item spec
                 && subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider)

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Id = "dependency1",
             Implicit = false,
             Resolved = true,
-            Flags = DependencyTreeFlags.GenericDependency,
+            Flags = DependencyTreeFlags.Dependency,
             OriginalItemSpec = ProjectItemSpec
         };
 

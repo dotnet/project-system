@@ -19,7 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         internal static readonly ProjectTreeFlags DependenciesRootNode = ProjectTreeFlags.Create("DependenciesRootNode");
 
-        internal static readonly ProjectTreeFlags GenericDependency = ProjectTreeFlags.Create("GenericDependency");
+        /// <summary>
+        /// Applied to all top-level dependency items under the dependencies tree.
+        /// </summary>
+        internal static readonly ProjectTreeFlags Dependency = ProjectTreeFlags.Create("Dependency");
 
         /// <summary>
         /// Added to dependency tree items which can be removed from the project.
@@ -56,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// implementations. This is to have a way to distinguish dependency nodes in general.
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
-                = ProjectTreeFlags.Create("Dependency")
+                = Dependency
                 + ProjectTreeFlags.VirtualFolder
                 + ProjectTreeFlags.BubbleUp
                 + SupportsRuleProperties
@@ -74,8 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
                 = ProjectTreeFlags.Reference
                 + ProjectTreeFlags.BrokenReference
-                + UnresolvedDependencyFlags
-                + GenericDependency;
+                + UnresolvedDependencyFlags;
 
         /// <summary>
         /// The set of flags to assign to resolved Reference nodes.
@@ -83,8 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
                 = ProjectTreeFlags.Reference
                 + ProjectTreeFlags.ResolvedReference
-                + ResolvedDependencyFlags
-                + GenericDependency;
+                + ResolvedDependencyFlags;
 
         /// <summary>
         /// Identifies nodes used to group dependencies specific to a given implicit configuration,
