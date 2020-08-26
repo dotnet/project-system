@@ -130,7 +130,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
     ArtifactName: '$(Build.BuildNumber)'
     publishLocation: Container
   displayName: 'Publish Artifact: drop'
