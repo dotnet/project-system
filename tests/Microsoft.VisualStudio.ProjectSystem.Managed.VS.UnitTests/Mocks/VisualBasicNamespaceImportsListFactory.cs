@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             newList.VSImports = new Lazy<VisualBasicVSImports>(() => new TestVisualBasicVSImports(
                 Mock.Of<VSLangProj.VSProject>(),
                 IProjectThreadingServiceFactory.Create(),
-                IActiveConfiguredValueFactory.ImplementValue<ConfiguredProject>(()=> ConfiguredProjectFactory.Create()),
+                IActiveConfiguredValueFactory.ImplementValue(()=> ConfiguredProjectFactory.Create()),
                 IProjectAccessorFactory.Create(),
                 IUnconfiguredProjectVsServicesFactory.Create(),
                 newList));

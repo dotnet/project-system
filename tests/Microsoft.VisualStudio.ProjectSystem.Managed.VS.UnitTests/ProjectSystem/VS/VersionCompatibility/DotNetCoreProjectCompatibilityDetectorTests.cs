@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     public class DotNetCoreProjectCompatibilityDetectorTests
     {
-
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -182,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-            
+
             var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
                                                                                        lazyDialogServices,
                                                                                        threadHandling,

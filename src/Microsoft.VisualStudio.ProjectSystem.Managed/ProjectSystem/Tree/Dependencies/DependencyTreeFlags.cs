@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
                 = ProjectTreeFlags.Reference
-                + ProjectTreeFlags.BrokenReference 
+                + ProjectTreeFlags.BrokenReference
                 + UnresolvedDependencyFlags
                 + GenericDependency;
 
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </para>
         /// </remarks>
         internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
-        
+
         /// <summary>
         /// Present on nodes that group dependencies of a given provider (e.g. "Packages", "Assemblies", ...).
         /// </summary>

@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         /// <summary>
-        ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying 
+        ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
         /// <exception cref="ArgumentNullException">

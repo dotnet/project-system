@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     /// <summary>
-    /// This class is used to hold the data serialized from the json file.  
+    /// This class is used to hold the data serialized from the json file.
     /// </summary>
     internal class LaunchSettingsData
     {

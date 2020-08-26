@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.Buffers.PooledObjects
         }
 
         /// <summary>
-        /// Write <paramref name="value"/> to slot <paramref name="index"/>. 
+        /// Write <paramref name="value"/> to slot <paramref name="index"/>.
         /// Fills in unallocated slots preceding the <paramref name="index"/>, if any.
         /// </summary>
         public void SetItem(int index, T value)

@@ -88,7 +88,6 @@ Root (flags: {ProjectRoot})
 ")]
         public void ChangePropertyValues_TreeWithMyProjectFolder_ReturnsUnmodifiedTree(string input)
         {   // "Properties" is the default, so we shouldn't find "My Project"
-
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
 
@@ -593,7 +592,6 @@ Root (flags: {ProjectRoot})
 ")]
         public void ChangePropertyValues_TreeWithMyProjectCandidateAndContentVisibleOnlyInShowAllFiles_ReturnsCandidateMarkedWithAppDesignerFolderAndBubbleUp(string input, string expected)
         {   // Mimic's Visual Basic projects
-
             var designerService = IProjectDesignerServiceFactory.ImplementSupportsProjectDesigner(() => true);
             var propertiesProvider = CreateInstance(designerService);
 

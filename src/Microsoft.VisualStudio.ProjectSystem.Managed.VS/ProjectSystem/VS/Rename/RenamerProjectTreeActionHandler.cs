@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
+using Solution = Microsoft.CodeAnalysis.Solution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
-            if (result == false || documentRenameResult == null)
+            if (!result || documentRenameResult == null)
             {
                 return;
             }
@@ -116,26 +117,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 await stageStatus.WaitForCompletionAsync();
 
                 // Apply actions and notify other VS features
-                CodeAnalysis.Solution? currentSolution = GetCurrentProject()?.Solution;
+                Solution? currentSolution = GetCurrentProject()?.Solution;
                 if (currentSolution == null)
                 {
                     return;
                 }
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
-                (WaitIndicatorResult result, CodeAnalysis.Solution renamedSolution) = _waitService.WaitForAsyncFunctionWithResult(
+                WaitIndicatorResult<Solution> result = _waitService.Run(
                                 title: VSResources.Renaming_Type,
                                 message: renameOperationName,
                                 allowCancel: true,
                                 token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
 
                 // Do not warn the user if the rename was cancelled by the user	
-                if (result.WasCanceled())
+                if (result.IsCancelled)
                 {
                     return;
                 }
 
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
-                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, renamedSolution))
+                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result))
                 {
                     string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                     _userNotificationServices.ShowWarning(failureMessage);

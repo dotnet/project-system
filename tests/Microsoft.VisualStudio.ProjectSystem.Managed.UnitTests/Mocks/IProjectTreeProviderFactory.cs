@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTreeProvider ImplementFindByPath(Func<IProjectTree, string, IProjectTree?> action)
         {
             var mock = new Mock<IProjectTreeProvider>();
-            mock.Setup<IProjectTree?>(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
+            mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
                 .Returns(action);
 
             return mock.Object;
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return Task.CompletedTask;
                 });
 
-            mock.Setup<string?>(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
+            mock.Setup(t => t.GetAddNewItemDirectory(It.IsAny<IProjectTree>())).Returns(addNewItemDirectoryReturn);
 
             mock.Setup(p => p.FindByPath(It.IsAny<IProjectTree>(), It.IsAny<string>()))
                 .Returns(findByPathAction);

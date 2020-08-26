@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
         /// </exception>
         /// <exception cref="ActiveProjectConfigurationChangedException">
-        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and 
+        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and
         ///     the configuration changed.
         /// </exception>
         Task OpenContextForWriteAsync(Func<IWorkspaceProjectContextAccessor, Task> action);
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The result is awaited and the <see cref="ConfiguredProject"/> is unloaded.
         /// </exception>
         /// <exception cref="ActiveProjectConfigurationChangedException">
-        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and 
+        ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and
         ///     the configuration changed.
         /// </exception>
         Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action);

@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Extensibility
     public interface IProjectExportProvider
     {
         /// <summary>
-        /// Returns the export for the given project without having to go to the 
+        /// Returns the export for the given project without having to go to the
         /// UI thread. This is the preferred method for getting access to project specific
         /// exports.
         /// </summary>

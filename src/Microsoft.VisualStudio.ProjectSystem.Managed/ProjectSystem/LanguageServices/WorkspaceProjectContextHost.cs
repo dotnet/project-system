@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Responsible for creating and initializing <see cref="IWorkspaceProjectContext"/> and sending 
+    ///     Responsible for creating and initializing <see cref="IWorkspaceProjectContext"/> and sending
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]

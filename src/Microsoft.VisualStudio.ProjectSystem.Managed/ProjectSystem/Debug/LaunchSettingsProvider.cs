@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// <summary>
         /// IDebugProfileProvider
         /// Access to the current set of profile information
-        /// </summary>        
+        /// </summary>
         public ILaunchSettings CurrentSnapshot
         {
             get
@@ -729,7 +729,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout);
-            
+
             Assumes.NotNull(CurrentSnapshot);
             return CurrentSnapshot;
         }
@@ -782,7 +782,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 // If the new profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based
                 // profile
-                bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile != null && !existingProfile.IsInMemoryObject());
+                bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile?.IsInMemoryObject() == false);
 
                 var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
@@ -831,7 +831,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     globalSettings = currentSettings.GlobalSettings;
                 }
 
-                bool saveToDisk = !settingContent.IsInMemoryObject() || (currentValue != null && !currentValue.IsInMemoryObject());
+                bool saveToDisk = !settingContent.IsInMemoryObject() || (currentValue?.IsInMemoryObject() == false);
 
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);

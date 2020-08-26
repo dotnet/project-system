@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Token? token = ReadToken();    // Consume token, so "position" is correct
             if (token == null)
             {
-                throw FormatException(ProjectTreeFormatError.IdExpected_EncounteredEndOfString, $"Expected identifier, but encountered end-of-string.");
+                throw FormatException(ProjectTreeFormatError.IdExpected_EncounteredEndOfString, "Expected identifier, but encountered end-of-string.");
             }
 
             // Otherwise, we must have hit a delimiter as whitespace will have been consumed as part of the identifier

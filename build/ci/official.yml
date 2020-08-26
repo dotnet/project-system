@@ -12,6 +12,7 @@ resources:
 queue:
   name: VSEng-MicroBuildVS2019
   demands: Cmd
+  timeoutInMinutes: 90
 variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
@@ -67,7 +68,6 @@ steps:
 # needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
 # Artifact -> publish to symweb
 
-#TODO change the targetfolder - perhaps use ArtifactStagingDirectory variable
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
@@ -86,8 +86,9 @@ steps:
       '**/*.pdb
       **/*.dll
       **/*.exe'
+    indexSources: false
+    publishSymbols: true
     SymbolServerType: TeamServices
-    SkipIndexing: true
     SymbolsProduct: 'Roslyn Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
@@ -99,34 +100,40 @@ steps:
     ArtifactName: symbols
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
-  
-- task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
+
+- task: artifactDropTask@0
   displayName: Publish Symbols to Artifact Services (symweb)
   inputs:
-    symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
-    requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: $(Build.ArtifactStagingDirectory)/symbols
+    dropServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
+    buildNumber: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
+    sourcePath: '$(Build.ArtifactStagingDirectory)/symbols'
     usePat: false
-    
+        
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
 
-#TODO deprecate this with PublishBuildArtifacts@1
-- task: CopyPublishBuildArtifacts@1
-  displayName: Publish Drop
+- task: CopyFiles@2
   inputs:
-    CopyRoot: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-     artifacts\$(BuildConfiguration)\bin
-     artifacts\$(BuildConfiguration)\DevDivInsertionFiles
-     artifacts\$(BuildConfiguration)\log
-     artifacts\$(BuildConfiguration)\packages
-     artifacts\$(BuildConfiguration)\VSSetup
-     artifacts\$(BuildConfiguration)\TestResults
+     artifacts\$(BuildConfiguration)\bin\**
+     artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
+     artifacts\$(BuildConfiguration)\log\**
+     artifacts\$(BuildConfiguration)\packages\**
+     artifacts\$(BuildConfiguration)\VSSetup\**
+     artifacts\$(BuildConfiguration)\TestResults\**
+    TargetFolder: $(Build.ArtifactStagingDirectory)/drop
+  displayName: Copy Drop
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
     ArtifactName: '$(Build.BuildNumber)'
-    ArtifactType: Container
+    publishLocation: Container
+  displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
 - task: NuGetPublisher@0

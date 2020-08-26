@@ -93,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _buildManager.OnDesignTimeOutputDirty(_project.MakeRelative(change.File));
                 }
 
-  
                 foreach (string item in previousValue.Inputs.Except(currentValue.Inputs))
                 {
                     _buildManager.OnDesignTimeOutputDeleted(_project.MakeRelative(item));

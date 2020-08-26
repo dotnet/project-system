@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // Apply environment variables.
-            if (resolvedProfile.EnvironmentVariables != null && !resolvedProfile.EnvironmentVariables.IsEmpty)
+            if (resolvedProfile.EnvironmentVariables?.IsEmpty == false)
             {
                 foreach ((string key, string value) in resolvedProfile.EnvironmentVariables)
                 {
@@ -644,7 +644,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed. 
+        /// TODO: This is a placeholder until issue https://github.com/dotnet/project-system/issues/423 is addressed.
         /// This information should come from the targets file.
         /// </summary>
         private static bool IsDotNetCoreFramework(string targetFramework)

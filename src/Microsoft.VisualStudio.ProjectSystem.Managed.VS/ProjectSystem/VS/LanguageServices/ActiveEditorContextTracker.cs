@@ -12,8 +12,8 @@ using HierarchyId = Microsoft.VisualStudio.Shell.HierarchyId;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the 
-    ///     "active" context for the editor by handling the VSHPROPID_ActiveIntellisenseProjectContext 
+    ///     Provides an implementation of <see cref="IActiveEditorContextTracker"/> that tracks the
+    ///     "active" context for the editor by handling the VSHPROPID_ActiveIntellisenseProjectContext
     ///     hierarchy property.
     /// </summary>
     [Export(typeof(IActiveIntellisenseProjectProvider))]

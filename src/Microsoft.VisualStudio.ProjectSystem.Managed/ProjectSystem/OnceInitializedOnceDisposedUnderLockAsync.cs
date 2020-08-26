@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="OnceInitializedOnceDisposedAsync"/> that lets 
+    ///     Provides an implementation of <see cref="OnceInitializedOnceDisposedAsync"/> that lets
     ///     implementers protect themselves from being disposed while doing work.
     /// </summary>
     /// <remarks>
     ///     <see cref="OnceInitializedOnceDisposed"/> lets implementors prevent themselves from being disposed
-    ///     by locking <see cref="OnceInitializedOnceDisposed.SyncObject"/>. This class provides a similar 
+    ///     by locking <see cref="OnceInitializedOnceDisposed.SyncObject"/>. This class provides a similar
     ///     mechanism by passing a delegate into <see cref="ExecuteUnderLockAsync"/>.
     /// </remarks>
     internal abstract class OnceInitializedOnceDisposedUnderLockAsync : OnceInitializedOnceDisposedAsync
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         ///     Disposes of managed and unmanaged resources owned by this instance, under a lock
-        ///     that prevents overlap with any currently executing actions passed to 
+        ///     that prevents overlap with any currently executing actions passed to
         ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/>.
         /// </summary>
         /// <param name="initialized">
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         ///     Executes the specified action under a lock that prevents overlap with any currently executing actions passed to
-        ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and 
+        ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <para>
         ///         -or-
         ///     </para>
-        ///     The result is awaited and the <see cref="OnceInitializedOnceDisposedUnderLockAsync"/> 
+        ///     The result is awaited and the <see cref="OnceInitializedOnceDisposedUnderLockAsync"/>
         ///     has been disposed of.
         /// </exception>
         protected Task<T> ExecuteUnderLockAsync<T>(Func<CancellationToken, Task<T>> action, CancellationToken cancellationToken = default)
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         /// <summary>
         ///     Executes the specified action under a lock that prevents overlap with any currently executing actions passed to
-        ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and 
+        ///     <see cref="ExecuteUnderLockAsync(Func{CancellationToken, Task}, CancellationToken)"/> and
         ///     <see cref="OnceInitializedOnceDisposedAsync.DisposeAsync"/>.
         /// </summary>
         /// <param name="action">
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     <para>
         ///         -or-
         ///     </para>
-        ///     The result is awaited and the <see cref="OnceInitializedOnceDisposedUnderLockAsync"/> 
+        ///     The result is awaited and the <see cref="OnceInitializedOnceDisposedUnderLockAsync"/>
         ///     has been disposed of.
         /// </exception>
         protected Task ExecuteUnderLockAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)

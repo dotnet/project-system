@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class ProjectRules
         {
             /// <summary>
-            ///     Represents the evaluation properties representings source control bindings, 
+            ///     Represents the evaluation properties representings source control bindings,
             ///     typically used in projects connected to Team Foundation Source Control.
             /// </summary>
             [ExportRule(nameof(SourceControl), PropertyPageContexts.Invisible)]
@@ -42,7 +42,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static class PackageRestoreRules
         {
             /// <summary>
-            ///     Represents the evaluation properties that are passed to NuGet.
+            ///     Represents the design-time build items containing CLI tool references (legacy) that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(DotNetCliToolReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int DotNetCliToolReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing references to frameworks that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedFrameworkReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedFrameworkReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing packages to be downloaded that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedPackageDownload), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedPackageDownloadRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing the packages that the project references that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedPackageReference), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedPackageReferenceRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing the versions of direct and indirect package references that are passed to restore.
+            /// </summary>
+            [ExportRule(nameof(CollectedPackageVersion), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.PackageReferences)]
+            [Order(Order.Default)]
+            public static int CollectedPackageVersionRule;
+
+            /// <summary>
+            ///     Represents the evaluation properties that are passed that are passed to restore.
             /// </summary>
             [ExportRule(nameof(NuGetRestore), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.PackageReferences)]

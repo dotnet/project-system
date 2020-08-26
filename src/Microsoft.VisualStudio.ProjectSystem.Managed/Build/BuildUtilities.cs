@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.Build
     internal static class BuildUtilities
     {
         /// <summary>
-        ///     Returns a value indicating whether the specified property has a condition that 
+        ///     Returns a value indicating whether the specified property has a condition that
         ///     always evaluates to <see langword="true"/>.
         /// </summary>
         public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(ProjectPropertyElement element)
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.Build
         /// <returns>Requested project property. Null if the property is not present.</returns>
         public static ProjectPropertyElement? GetProperty(ProjectRootElement project, string propertyName)
         {
-            Requires.NotNull(project, "project");
+            Requires.NotNull(project, nameof(project));
 
             return project.Properties
                 .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparisons.PropertyNames));
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="propertyName">Property name.</param>
         public static ProjectPropertyElement GetOrAddProperty(ProjectRootElement project, string propertyName)
         {
-            Requires.NotNull(project, "project");
+            Requires.NotNull(project, nameof(project));
             ProjectPropertyElement? property = GetProperty(project, propertyName);
 
             if (property != null)

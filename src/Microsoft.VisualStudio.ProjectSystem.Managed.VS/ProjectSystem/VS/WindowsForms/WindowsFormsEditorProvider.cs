@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
 {
     /// <summary>
     ///     A project-specific editor provider that is responsible for handling two things;
-    ///     
-    ///     1) Add the Windows Forms designer to the list of editor factories for a "designable" source file, and 
+    ///
+    ///     1) Add the Windows Forms designer to the list of editor factories for a "designable" source file, and
     ///        determines whether it opens by default.
-    ///     
+    ///
     ///     2) Persists whether the designer opens by default when the user uses Open With -> Set As Default.
     /// </summary>
     [Export(typeof(IProjectSpecificEditorProvider))]
@@ -114,8 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             IProjectTreeServiceState result = await _projectTree.Value.TreeService.PublishAnyNonLoadingTreeAsync();
 
             if (result.TreeProvider.FindByPath(result.Tree, documentMoniker) is IProjectItemTree treeItem &&
-                treeItem.Parent != null &&
-                !treeItem.Parent.Flags.Contains(ProjectTreeFlags.SourceFile) &&
+                treeItem.Parent?.Flags.Contains(ProjectTreeFlags.SourceFile) == false &&
                 StringComparers.ItemTypes.Equals(treeItem.Item?.ItemType, Compile.SchemaName))
             {
                 return treeItem;

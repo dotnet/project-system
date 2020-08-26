@@ -8,7 +8,7 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="ProjectReference"
-                MSBuildTarget="ResolveProjectReferencesDesignTime"
+                MSBuildTarget="ResolveProjectReferencesDesignTime2"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />

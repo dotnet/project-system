@@ -137,8 +137,8 @@ Root (flags: {ProjectRoot})
             await command.TryHandleCommandAsync(nodes, TestAddItemCommand.CommandId, true, 0, IntPtr.Zero, IntPtr.Zero);
 
             Assert.Equal(1, callCount);
-            Assert.Equal(TestAddItemCommand.ResourceIds.DirName.ToString(), localizedDirectoryNameResult);
-            Assert.Equal(TestAddItemCommand.ResourceIds.TemplateName.ToString(), localizedTemplateNameResult);
+            Assert.Equal(nameof(TestAddItemCommand.ResourceIds.DirName), localizedDirectoryNameResult);
+            Assert.Equal(nameof(TestAddItemCommand.ResourceIds.TemplateName), localizedTemplateNameResult);
             Assert.Same(tree.Children[0], nodeResult);
         }
 

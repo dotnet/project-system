@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
         {
             // Package content items always come in as linked items, so to reduce
             // the number of items we look at, we limit ourselves to them
-            if (propertyValues.Flags.Contains(ProjectTreeFlags.LinkedItem) && 
+            if (propertyValues.Flags.Contains(ProjectTreeFlags.LinkedItem) &&
                 propertyContext.Metadata != null &&
                 propertyContext.Metadata.TryGetValue(None.NuGetPackageIdProperty, out string packageId) && packageId.Length > 0)
             {

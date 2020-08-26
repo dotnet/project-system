@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
     /// <summary>
-    ///     Influences design-time builds that causes CoreCompile to return the command-line 
+    ///     Influences design-time builds that causes CoreCompile to return the command-line
     ///     arguments that it would have passed to the compiler, instead of calling it.
     /// </summary>
     [ExportBuildGlobalPropertiesProvider(designTimeBuildProperties: true)]

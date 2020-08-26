@@ -348,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private static bool ContainsExpression(string? capability)
         {
-            return capability != null && capability.IndexOfAny(new char[] { '&', '|', '!' }) >= 0;
+            return capability?.IndexOfAny(new char[] { '&', '|', '!' }) >= 0;
         }
 
         /// <summary>

@@ -16,8 +16,8 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Responsible for pushing ("nominating") project data such as referenced packages and 
-    ///     target frameworks to NuGet so that it can perform a package restore and returns the 
+    ///     Responsible for pushing ("nominating") project data such as referenced packages and
+    ///     target frameworks to NuGet so that it can perform a package restore and returns the
     ///     result.
     /// </summary>
     [Export(typeof(IPackageRestoreDataSource))]
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         // |            (Debug|AnyCPU|net45)         |    |       (Debug|AnyCPU|netcoreapp30)       |
         // |_________________________________________|    |_________________________________________|
         //
-        
+
         private readonly UnconfiguredProject _project;
         private readonly IPackageRestoreUnconfiguredInputDataSource _dataSource;
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _projectAccessor = projectAccessor;
             _logger = logger;
         }
-        
+
         protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<RestoreData>> targetBlock)
         {
             JoinUpstreamDataSources(_dataSource);
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return Enumerable.Empty<IProjectVersionedValue<RestoreData>>();
 
             bool succeeded = await RestoreCoreAsync(e.Value.RestoreInfo);
-             
+
             RestoreData restoreData = CreateRestoreData(e.Value.RestoreInfo, succeeded);
 
             return new[]

@@ -161,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 srcConsumed = true;
             }
 
-            if (Items != null && Items.Count == 0)
+            if (Items?.Count == 0)
             {
                 Items = null;
             }

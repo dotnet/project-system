@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                             threadingService: threadingService)));
 
             // Create our class under test
-            return new DesignTimeInputsFileWatcher(unconfiguredProject, unconfiguredProjectServices, threadingService, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService));
+            return new DesignTimeInputsFileWatcher(unconfiguredProject, unconfiguredProjectServices, threadingService, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService));
         }
     }
 }

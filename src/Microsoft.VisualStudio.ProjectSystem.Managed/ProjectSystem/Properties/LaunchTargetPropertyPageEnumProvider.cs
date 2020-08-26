@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Provides the names and display names of "debugger" property pages that specify a
-    /// launch target. 
+    /// launch target.
     /// </summary>
     /// <remarks>
     /// Specifically, we look for pages with a "commandNameBasedDebugger" <see cref="Rule.PageTemplate"/>

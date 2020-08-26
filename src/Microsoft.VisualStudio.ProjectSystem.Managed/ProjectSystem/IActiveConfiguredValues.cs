@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides an <see cref="UnconfiguredProject"/> access to exports from the active 
+    ///     Provides an <see cref="UnconfiguredProject"/> access to exports from the active
     ///     <see cref="ConfiguredProject"/>. This is the plural version of <see cref="IActiveConfiguredValue{T}"/>.
     /// </summary>
     internal interface IActiveConfiguredValues<T>

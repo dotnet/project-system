@@ -42,10 +42,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         [Theory]
         [MemberData(nameof(GetAllExportedMembers))]
         public void ExportedRulesMustBeMarkedWithOrder(MemberInfo member)
-        {   
+        {
             var attribute = member.GetCustomAttribute<OrderAttribute>();
 
-            Assert.True(attribute != null && attribute.OrderPrecedence == Order.Default, $"'{GetTypeQualifiedName(member)}' must be marked with [Order(Order.Default)]");
+            Assert.True(attribute?.OrderPrecedence == Order.Default, $"'{GetTypeQualifiedName(member)}' must be marked with [Order(Order.Default)]");
         }
 
         [Theory]
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             if (!member.Name.Contains("BrowseObject"))
                 return;
-            
+
             foreach (string context in attribute.Context.Split(';'))
             {
                 if (context == PropertyPageContexts.BrowseObject)
@@ -124,7 +124,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
                 Attribute attribute = member.GetCustomAttribute<ExportPropertyXamlRuleDefinitionAttribute>();
 
                 yield return new object[] { member, attribute };
-
             }
         }
 
@@ -139,6 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         private static IEnumerable<object[]> GetAllRules()
         {
             return Project(GetRules(suffix: string.Empty, recursive: true));
-        }   
+        }
     }
 }

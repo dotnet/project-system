@@ -255,20 +255,6 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- Package downloads -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageDownload.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-    
-    <!-- Central Package Versions -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageVersion.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
     
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
@@ -295,11 +281,6 @@
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedPackageReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <!-- Tool references -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DotNetCliToolReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
     <!-- Analyzer references -->
@@ -349,6 +330,27 @@
   <Target Name="CollectSDKReferencesDesignTime" />
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
   <Target Name="ResolveFrameworkReferences" />
+
+  <Target
+    Name="ResolveProjectReferencesDesignTime2"
+    Returns="@(_ProjectReferencesFromRAR2);@(_ProjectReferencesWithoutOutputAssembly)"
+    DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+    <!-- This is similar to ResolveProjectReferencesDesignTime, except it also returns projects that do not get
+         resolved (hence do not appear in ReferencePath) because ReferenceOutputAssembly is set to false. -->
+    <ItemGroup>
+      <!-- We need to do this here because we only want project references which have passed through RAR and have
+           not been unresolved due to violating some multi-targeting rule which means we need to pull the project
+           references out of the referencepath item because they will only exist there if they were correctly
+           resolved. -->
+      <_ProjectReferencesFromRAR2 Include="@(ReferencePath->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
+        <OriginalItemSpec>%(ReferencePath.ProjectReferenceOriginalItemSpec)</OriginalItemSpec>
+      </_ProjectReferencesFromRAR2>
+
+      <_ProjectReferencesWithoutOutputAssembly Include="@(ProjectReference->WithMetadataValue('ReferenceOutputAssembly', 'false'))">
+        <OriginalItemSpec>%(ProjectReference.Identity)</OriginalItemSpec>
+      </_ProjectReferencesWithoutOutputAssembly>
+    </ItemGroup>
+  </Target>
 
   <Target
     Name="ResolveFrameworkReferencesDesignTime"

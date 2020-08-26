@@ -21,6 +21,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
     internal interface IDebugLaunchProviderMock : IDebugLaunchProvider, IStartupProjectProvider
     {
-
     }
 }

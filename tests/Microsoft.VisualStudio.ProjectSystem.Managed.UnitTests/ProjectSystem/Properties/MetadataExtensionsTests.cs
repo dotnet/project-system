@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var dic = ImmutableDictionary<string, string>.Empty;
             Assert.Null(dic.GetBoolProperty("key"));
         }
-        
+
         [Theory]
         [InlineData("True",   true)]
         [InlineData("true",   true)]

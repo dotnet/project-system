@@ -101,7 +101,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         [Fact]
         public Task ShowProjectDesignerAsync_WhenOpenedInExternalEditor_DoesNotAttemptToShowWindow()
         {   // OpenItemWithSpecific returns null frame when opened in external editor
-
             var vsProjectDesignerPageService = IVsProjectDesignerPageServiceFactory.ImplementIsProjectDesignerSupported(() => true);
 
             var editorGuid = Guid.NewGuid();

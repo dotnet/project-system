@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Moq;
@@ -36,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // One file should have been added
             Assert.Single(_buildManager.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", _buildManager.DirtyItems.First());
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DirtyItems[0]);
             Assert.Empty(_buildManager.DeletedItems);
         }
 
@@ -58,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // One file should have been added
             Assert.Empty(_buildManager.DirtyItems);
             Assert.Single(_buildManager.DeletedItems);
-            Assert.Equal("Resources1.Designer.cs", _buildManager.DeletedItems.First());
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DeletedItems[0]);
         }
 
         [Fact]
