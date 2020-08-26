@@ -18,16 +18,6 @@
     <PackageReference Include="RoslynDependencies.ProjectSystem.OptimizationData" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LogModel\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystemTools.Shared</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\LogProviders\Microsoft.VisualStudio.ProjectSystemTools.BackEnd.csproj">
-      <Name>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed.VS</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
@@ -42,6 +32,10 @@
       <Name>Microsoft.VisualStudio.ProjectSystem.Managed</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\ProjectSystemToolsSetup\ProjectSystemToolsSetup.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
