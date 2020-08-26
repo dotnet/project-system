@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.Packaging
                 await packageService.InitializeAsync(this);
             }
 
-            //ProfferServicePackage.Initialize(this);
+            ProfferServicePackage.Initialize(this);
         }
     }
 }

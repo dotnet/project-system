@@ -8,3 +8,5 @@ using Microsoft.VisualStudio;
 [assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed")]
 [assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed.VS")]
 [assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client")]
+[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Tools.Providers")]
+[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.LogModel")]
