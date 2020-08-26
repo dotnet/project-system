@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
+                DependencyTreeFlags.SupportsFolderBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:myOriginalItemSpec"),
                 model.Flags);
@@ -107,6 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
+                DependencyTreeFlags.SupportsFolderBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:myOriginalItemSpec") -
                 DependencyTreeFlags.SupportsRemove,
