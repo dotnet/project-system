@@ -34,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
             Assumes.Null(_projectSelector);
-            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+
+            _context.VerifyIsOnMainThread();
 
             _projectSelector = await asyncServiceProvider.GetServiceAsync<SVsRegisterProjectTypes, IVsRegisterProjectSelector>();
 
@@ -69,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.FSharp
 
         public void Dispose()
         {
-            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+            _context.VerifyIsOnMainThread();
 
             if (_cookie != VSConstants.VSCOOKIE_NIL)
             {
