@@ -448,4 +448,14 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
+
+  <BoolProperty Name="EnforceCodeStyleInBuild"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="EnforceCodeStyleInBuild"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 </Rule>

@@ -23,6 +23,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CodeAnalysisPropPage))
             Me.FxCopAnalyzersPanel = New System.Windows.Forms.Panel()
+            Me.EnforceCodeStyleInBuildCheckBox = New System.Windows.Forms.CheckBox()
             Me.NETAnalyzersLinkLabel = New System.Windows.Forms.LinkLabel()
             Me.EnableNETAnalyzersCheckBox = New System.Windows.Forms.CheckBox()
             Me.Label1 = New System.Windows.Forms.Label()
@@ -39,6 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'FxCopAnalyzersPanel
             '
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.EnforceCodeStyleInBuildCheckBox)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.NETAnalyzersLinkLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.EnableNETAnalyzersCheckBox)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.Label1)
@@ -52,6 +54,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersHelpLinkLabel)
             resources.ApplyResources(Me.FxCopAnalyzersPanel, "FxCopAnalyzersPanel")
             Me.FxCopAnalyzersPanel.Name = "FxCopAnalyzersPanel"
+            '
+            'EnforceCodeStyleInBuildCheckBox
+            '
+            resources.ApplyResources(Me.EnforceCodeStyleInBuildCheckBox, "EnforceCodeStyleInBuildCheckBox")
+            Me.EnforceCodeStyleInBuildCheckBox.Checked = True
+            Me.EnforceCodeStyleInBuildCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.EnforceCodeStyleInBuildCheckBox.Name = "EnforceCodeStyleInBuildCheckBox"
+            Me.EnforceCodeStyleInBuildCheckBox.UseVisualStyleBackColor = True
             '
             'NETAnalyzersLinkLabel
             '
@@ -144,6 +154,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents Label1 As Windows.Forms.Label
         Friend WithEvents Label2 As Windows.Forms.Label
         Friend WithEvents NETAnalyzersLinkLabel As Windows.Forms.LinkLabel
+        Friend WithEvents EnforceCodeStyleInBuildCheckBox As Windows.Forms.CheckBox
     End Class
 
 End Namespace
