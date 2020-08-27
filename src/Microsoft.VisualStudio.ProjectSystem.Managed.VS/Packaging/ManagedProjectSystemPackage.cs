@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.ProjectSystem.Tools;
 using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Xproj;
 using Microsoft.VisualStudio.Shell;
@@ -41,8 +40,6 @@ namespace Microsoft.VisualStudio.Packaging
             {
                 await packageService.InitializeAsync(this);
             }
-
-            //ProfferServicePackage.Initialize(this);
         }
     }
 }

@@ -23,32 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
             await base.InitializeAsync(cancellationToken, progress);
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             IComponentModel componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
-            Assumes.Present(componentModel);
-            IBuildLoggerService loggerService = componentModel.GetService<IBuildLoggerService>();
-
-            IBrokeredServiceContainer brokeredServiceContainer = await this.GetServiceAsync<SVsBrokeredServiceContainer, IBrokeredServiceContainer>();
-            brokeredServiceContainer.Proffer(RpcDescriptors.LoggerServiceDescriptor, (mk, options, sb, ct) => new ValueTask<object>(loggerService));
-        }
-
-        public System.Threading.Tasks.Task RunProffer(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-        {
-            return InitializeAsync(cancellationToken, progress);
-        }
-
-        //private SVsServiceProvider? ServiceProvider { get; set; }
-
-        public static void Initialize(IServiceProvider ServiceProvider)
-        {
-            //IServiceProvider? ServiceProvider = null;
-            IComponentModel componentModel = ServiceProvider!.GetService<SComponentModel, IComponentModel>();
             Assumes.Present(componentModel);
             BackEndBuildTableDataSource backEndBuildTableDataSource = new BackEndBuildTableDataSource();
             IBuildLoggerService loggerService = new BuildLoggerService(backEndBuildTableDataSource, backEndBuildTableDataSource); // MEF Components not getting provided
 
-            IBrokeredServiceContainer brokeredServiceContainer = brokeredServiceContainer = ServiceProvider!.GetService<
-                SVsBrokeredServiceContainer,
-                IBrokeredServiceContainer>();
+            IBrokeredServiceContainer brokeredServiceContainer = await this.GetServiceAsync<SVsBrokeredServiceContainer, IBrokeredServiceContainer>();
             brokeredServiceContainer.Proffer(RpcDescriptors.LoggerServiceDescriptor, (mk, options, sb, ct) => new ValueTask<object>(loggerService));
         }
     }
