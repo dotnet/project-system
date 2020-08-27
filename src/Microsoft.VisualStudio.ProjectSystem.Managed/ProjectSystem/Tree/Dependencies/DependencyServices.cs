@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         ///     to the file on disk, or in the case of framework, package and SDK references
         ///     the containing folder.
         /// </summary>
-        public static async Task<string?> GetBrowsePath(UnconfiguredProject project, IProjectTree node)
+        public static async Task<string?> GetBrowsePathAsync(UnconfiguredProject project, IProjectTree node)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(node, nameof(node));

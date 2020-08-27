@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 {
-    internal class ClipboardFormat
+    internal static class ClipboardFormat
     {
         /// <summary>
         /// A ushort used by data objects to get and set the text format. Constant defined in WinUser.h.

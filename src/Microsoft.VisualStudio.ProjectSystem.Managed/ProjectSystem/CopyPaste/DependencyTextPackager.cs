@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.CopyPaste
 
             foreach (IProjectTree node in selectedNodes)
             {
-                string? path = await DependencyServices.GetBrowsePath(_project, node);
+                string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
                 if (path == null)
                     continue;
 

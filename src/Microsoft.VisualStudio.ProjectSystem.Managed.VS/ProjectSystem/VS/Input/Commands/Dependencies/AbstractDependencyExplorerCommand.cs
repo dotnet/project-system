@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies;
@@ -42,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             {
                 foreach (IProjectTree node in nodes)
                 {
-                    string? path = await DependencyServices.GetBrowsePath(_project, node);
+                    string? path = await DependencyServices.GetBrowsePathAsync(_project, node);
                     if (path == null)
                         continue;
 
@@ -58,20 +57,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         protected abstract bool CanOpen(IProjectTree node);
 
         protected abstract void Open(string path);
-
-        protected static void ShellExecute(string operation, string filePath, string? parameters = null)
-        {
-            // Workaround of CLR bug 1134711; System.Diagnostics.Process.Start() does not support GB18030
-            _ = ShellExecute(IntPtr.Zero, operation, filePath, parameters, lpDirectory: null, 1);
-        }
-
-        [DllImport("shell32.dll", EntryPoint = "ShellExecuteW")]
-        internal static extern IntPtr ShellExecute(
-            IntPtr hwnd,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpOperation,
-            [MarshalAs(UnmanagedType.LPWStr)] string lpFile,
-            [MarshalAs(UnmanagedType.LPWStr)] string? lpParameters,
-            [MarshalAs(UnmanagedType.LPWStr)] string? lpDirectory,
-            int nShowCmd);
     }
 }

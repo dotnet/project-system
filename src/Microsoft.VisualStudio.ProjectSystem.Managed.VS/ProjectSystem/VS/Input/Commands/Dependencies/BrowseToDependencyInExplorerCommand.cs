@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Input;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
@@ -20,10 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [Order(Order.Default)]
     internal class BrowseToDependencyInExplorerCommand : AbstractDependencyExplorerCommand
     {
+        private readonly IFileExplorer _fileExplorer;
+
         [ImportingConstructor]
-        public BrowseToDependencyInExplorerCommand(UnconfiguredProject project)
+        public BrowseToDependencyInExplorerCommand(UnconfiguredProject project, IFileExplorer fileExplorer)
             : base(project)
         {
+            _fileExplorer = fileExplorer;
         }
 
         protected override bool CanOpen(IProjectTree node)
@@ -33,8 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         protected override void Open(string path)
         {
-            // Tell Explorer to open the parent folder of the item, selecting the item
-            ShellExecute(string.Empty, "explorer.exe", parameters: $"/select,\"{path}\"");            
+            _fileExplorer.OpenContainingFolder(path);
         }
     }
 }
