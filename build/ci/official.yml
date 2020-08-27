@@ -101,12 +101,12 @@ steps:
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
 
-- task: artifactDropTask@0
+- task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
   displayName: Publish Symbols to Artifact Services (symweb)
   inputs:
-    dropServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
-    buildNumber: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(Build.ArtifactStagingDirectory)/symbols'
+    symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
+    requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
+    sourcePath: $(Build.ArtifactStagingDirectory)/symbols
     usePat: false
         
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
