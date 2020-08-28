@@ -110,18 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             _threadingService.RunAndForget(async () =>
             {
-                // TODO - implement PublishAsync() to sync with LanguageService
-                // https://github.com/dotnet/project-system/issues/3425)
-                // await _languageService.PublishAsync(treeVersion);
-                IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
-                await stageStatus.WaitForCompletionAsync();
+                Solution currentSolution = await PublishLatestSolutionAsync();
 
-                // Apply actions and notify other VS features
-                Solution? currentSolution = GetCurrentProject()?.Solution;
-                if (currentSolution == null)
-                {
-                    return;
-                }
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
                 WaitIndicatorResult<Solution> result = _waitService.Run(
                                 title: VSResources.Renaming_Type,
@@ -143,6 +133,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 }
                 return;
             }, _unconfiguredProject);
+        }
+
+        private async Task<Solution> PublishLatestSolutionAsync()
+        {
+            // WORKAROUND: We don't yet have a way to wait for the rename changes to propagate 
+            // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
+            // instead we wait for the IntelliSense stage to finish for the entire solution
+            // 
+            IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+            await stageStatus.WaitForCompletionAsync();
+
+            // The result of that wait, is basically a "new" published Solution, so grab it
+            return _workspace.CurrentSolution;
         }
 
         private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
