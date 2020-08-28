@@ -296,9 +296,6 @@
   <!-- List of external files that trigger re-evaluation & design-time builds when they are added or removed, or edited -->
   <ItemGroup>
     
-    <!-- NuGet assets file -->
-    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" ContentSensitive="true" />   
-  
     <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits  -->
     <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />   
   
