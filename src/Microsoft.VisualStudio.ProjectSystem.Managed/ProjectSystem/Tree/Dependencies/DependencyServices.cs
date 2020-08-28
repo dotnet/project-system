@@ -17,20 +17,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(node, nameof(node));
 
-            string? path = await GetMaybeRelativeBrowsePath(node);
+            string? path = await GetMaybeRelativeBrowsePath(project, node);
             if (path == null)
                 return null;
 
             return project.MakeRooted(path);
         }
 
-        private static async Task<string?> GetMaybeRelativeBrowsePath(IProjectTree node)
+        private static async Task<string?> GetMaybeRelativeBrowsePath(UnconfiguredProject project, IProjectTree node)
         {
             Assumes.True(node.Flags.Contains(DependencyTreeFlags.GenericDependency));
 
             // Shared Projects are special, the file path points directly to the import
             if (node.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
-                return node.FilePath;
+            {
+                return await GetSharedAssetsProject(project, node);
+            }
 
             if (node.BrowseObjectProperties == null)
                 return null;
@@ -40,6 +42,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             string path = await node.BrowseObjectProperties.GetPropertyValueAsync(ResolvedAssemblyReference.BrowsePathProperty);
 
             return path.Length == 0 ? null : path;
+        }
+
+        private static async Task<string?> GetSharedAssetsProject(UnconfiguredProject project, IProjectTree node)
+        {
+            Assumes.NotNull(node.FilePath);
+
+            // Map from [project].projitems -> [project].shproj
+            ISharedProjectFileRegistrationService sharedProjectFileRegistrationService = project.Services.ExportProvider.GetExportedValue<ISharedProjectFileRegistrationService>();
+            IProjectThreadingService threadingService = project.Services.ExportProvider.GetExportedValue<IProjectThreadingService>();
+
+            await threadingService.SwitchToUIThread();
+
+            return sharedProjectFileRegistrationService.GetOwnerProjectForSharedProjectFile(project.MakeRooted(node.FilePath));
         }
     }
 }
