@@ -26,6 +26,17 @@
     </StringListProperty.DataSource>
   </StringListProperty>
 
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="COMReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+                  
   <BoolProperty Name="CopyLocal"
                 Description="Indicates whether the reference will be copied to the output directory."
                 DisplayName="Copy Local">
@@ -139,6 +150,15 @@
                   Description="Location of the file being referenced."
                   DisplayName="Path"
                   ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Identity"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="Path"
+                  ReadOnly="True"
+                  Visible="False">
     <StringProperty.DataSource>
       <DataSource PersistedName="Identity"
                   SourceOfDefaultValue="AfterContext" />

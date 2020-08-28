@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
+                DependencyTreeFlags.SupportsFolderBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -99,6 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
+                DependencyTreeFlags.SupportsFolderBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

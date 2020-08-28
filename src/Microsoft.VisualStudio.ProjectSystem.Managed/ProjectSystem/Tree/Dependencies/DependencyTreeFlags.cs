@@ -30,6 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         public static readonly ProjectTreeFlags SupportsRemove = ProjectTreeFlags.Create("SupportsRemove");
 
         /// <summary>
+        /// Indicates that the dependency supports "Open Containing Folder" and "Copy Full Path" commands.
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsBrowse = ProjectTreeFlags.Create(nameof(SupportsBrowse));
+
+        /// <summary>
+        /// Indicates that the dependency supports "Open Folder in File Explorer", "Open Containing Folder" and "Copy Full Path" commands.
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsFolderBrowse = ProjectTreeFlags.Create(nameof(SupportsFolderBrowse)) + SupportsBrowse;
+
+        /// <summary>
         /// Dependencies having this flag support displaying a browse object, where the corresponding <see cref="IRule" />
         /// is obtained by <see cref="IDependenciesTreeServices.GetBrowseObjectRuleAsync(IDependency, TargetFramework, IProjectCatalogSnapshot)" />.
         /// </summary>

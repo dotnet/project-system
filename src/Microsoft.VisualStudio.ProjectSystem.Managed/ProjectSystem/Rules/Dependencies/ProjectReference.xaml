@@ -23,6 +23,17 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="CopyLocal"
                 Description="Indicates whether the reference will be copied to the output directory."
@@ -103,7 +114,7 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-
+  
   <StringProperty Name="ReferencedProjectIdentifier"
                   Visible="False" />
 
@@ -120,7 +131,7 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
   </StringProperty>
-
+  
   <BoolProperty Name="UseLibraryDependencyInputs"
                 Visible="False" />
 
