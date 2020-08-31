@@ -131,6 +131,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void PropertiesDataSourcesMustMatchItemDataSources(string ruleName, string fullPath)
+        {
+            var root = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+
+            var itemType = dataSource?.Attribute("ItemType");
+            if (itemType != null)
+            {
+                foreach (var property in GetProperties(root))
+                {
+                    var element = GetDataSource(property);
+
+                    var propertyItemType = element?.Attribute("ItemType");
+                    if (propertyItemType != null)
+                    {
+                        Assert.Equal(itemType?.Value, propertyItemType.Value);
+                    }
+                }
+            }
+        }
+
         public static IEnumerable<object[]> GetMiscellaneousRules()
         {
             return Project(GetRules(""));
