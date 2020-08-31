@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd;
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid("E6C038D4-819B-41B7-95E1-BF748480B4BB")]
+    [Guid("6BEB9F10-4E64-41B7-B4E3-1BE77CD63DD4")]
     [ProvideBrokeredService("LoggerService", "1.0", Audience = ServiceAudience.AllClientsIncludingGuests)]
     public class ProfferServicePackage : AsyncPackage
     {

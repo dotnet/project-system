@@ -8,7 +8,7 @@
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
-    <ExtensionInstallationFolder>Microsoft\ProjectSystemTools</ExtensionInstallationFolder>
+    <ExtensionInstallationFolder>Microsoft\VisualStudio\ProjectSystemTools</ExtensionInstallationFolder>
 
     <!-- VS Setup -->
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</VisualStudioInsertionComponent>
