@@ -79,6 +79,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             }
         }
 
+        protected static XElement? GetDataSource(XElement property)
+        {
+            foreach (var child in property.Elements())
+            {
+                if (child.Name.LocalName.EndsWith("DataSource", StringComparison.Ordinal))
+                    return child.Elements().First();
+            }
+
+            return null;
+        }
+
         protected static IEnumerable<XElement> GetVisibleProperties(XElement rule)
         {
             foreach (var property in GetProperties(rule))

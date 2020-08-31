@@ -18,7 +18,7 @@
                   ReadOnly="True"
                   Visible="False">
     <StringProperty.DataSource>
-      <DataSource ItemType="Reference"
+      <DataSource ItemType="Analyzer"
                   PersistedName="Identity"
                   Persistence="Intrinsic"
                   SourceOfDefaultValue="AfterContext" />
