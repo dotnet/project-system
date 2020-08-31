@@ -8,10 +8,10 @@
     <!-- VSIX -->
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <ExtensionInstallationRoot>CommonExtensions</ExtensionInstallationRoot>
-    <ExtensionInstallationFolder>Microsoft\VisualStudio\ProjectSystemTools</ExtensionInstallationFolder>
+    <ExtensionInstallationFolder>Microsoft\ProjectSystemTools</ExtensionInstallationFolder>
 
     <!-- VS Setup -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools</VisualStudioInsertionComponent>
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\LogModel\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj">
