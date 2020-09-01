@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContracts;
 using ProvideBrokeredServiceAttribute = Microsoft.VisualStudio.Shell.ServiceBroker.ProvideBrokeredServiceAttribute;
 using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools
 {
@@ -26,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
             var componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
             Assumes.Present(componentModel);
-            var backEndBuildTableDataSource = (BackEndBuildTableDataSource) componentModel.GetService<ILoggingDataSource>();
             IBuildLoggerService loggerService = componentModel.GetService<IBuildLoggerService>();
 
             IBrokeredServiceContainer brokeredServiceContainer = await this.GetServiceAsync<SVsBrokeredServiceContainer, IBrokeredServiceContainer>();
