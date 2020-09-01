@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Compile.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -43,10 +43,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, isActiveContext, logger);
+            ApplyProjectEvaluation(version, projectChange.Difference, projectChange.Before.Items, projectChange.After.Items, state.IsActiveEditorContext, logger);
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             IProjectChangeDiff difference = ConvertToProjectDiff(added, removed);
 
-            ApplyProjectBuild(version, difference, isActiveContext, logger);
+            ApplyProjectBuild(version, difference, state.IsActiveEditorContext, logger);
         }
 
         public void HandleProjectUpdate(IComparable version, IProjectChangeDescription projectChange, IProjectLogger logger)
