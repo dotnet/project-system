@@ -19,8 +19,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker ApplicationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 1 };
         public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
         public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COM")]
         public static ImageMoniker Component => new ImageMoniker { Guid = s_manifestGuid, Id = 4 };
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMPrivate")]
         public static ImageMoniker ComponentPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 5 };
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMWarning")]
         public static ImageMoniker ComponentWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 6 };
         public static ImageMoniker ErrorSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 7 };
         public static ImageMoniker LibraryWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 8 };
@@ -65,7 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker GlyphUp => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.GlyphUp };
         public static ImageMoniker Library => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Library };
         internal static ImageMoniker Path => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Path };
-        internal static ImageMoniker PathIcon => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathIcon };
         internal static ImageMoniker PathListBox => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBox };
         internal static ImageMoniker PathListBoxItem => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBoxItem };
         internal static ImageMoniker QuestionMark => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.QuestionMark };
@@ -76,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker Sound => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Sound };
         internal static ImageMoniker StatusError => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.StatusError };
         internal static ImageMoniker TextFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.TextFile };
-        internal static ImageMoniker Uninstall => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Uninstall };
         internal static ImageMoniker VBProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBProjectNode };
         internal static ImageMoniker VBSharedProject => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBSharedProject };
     }
