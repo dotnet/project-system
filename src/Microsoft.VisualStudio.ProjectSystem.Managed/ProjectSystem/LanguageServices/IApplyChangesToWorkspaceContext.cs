@@ -17,13 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     {
         /// <summary>
         ///     Returns an enumerable of project evaluation rules that should passed to
-        ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectEvaluationRules();
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies project build changes to the underlying <see cref="IWorkspaceProjectContext"/>.
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken);
+        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
 
         /// <summary>
         ///     Applies project changes to the underlying <see cref="IWorkspaceProjectContext"/>.
