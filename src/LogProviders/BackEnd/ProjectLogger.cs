@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 {
     internal sealed class ProjectLogger : LoggerBase
     {
-        private static readonly string[] Dimensions = { "Configuration", "Platform", "TargetFramework" };
+        private static readonly string[] s_dimensions = { "Configuration", "Platform", "TargetFramework" };
 
         private readonly bool _isDesignTime;
         private int _projectInstanceId;
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
         {
-            foreach (var dimension in Dimensions)
+            foreach (var dimension in s_dimensions)
             {
                 if (globalProperties.TryGetValue(dimension, out var dimensionValue))
                 {

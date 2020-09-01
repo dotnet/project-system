@@ -30,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         public TimeSpan Elapsed => BuildSummary.Elapsed;
         public BuildStatus Status => BuildSummary.Status;
         public string ProjectName => BuildSummary.ProjectName;
-        private static int SharedBuildId;
+        private static int s_sharedBuildId;
         public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
         {
-            int nextId = Interlocked.Increment(ref SharedBuildId);
+            int nextId = Interlocked.Increment(ref s_sharedBuildId);
             BuildSummary = new BuildSummary(nextId, projectPath, dimensions, targets, buildType, startTime);
         }
 

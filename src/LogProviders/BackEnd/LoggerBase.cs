@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             DataSource = dataSource;
         }
 
-        protected string GetLogPath(Build build)
+        protected static string GetLogPath(Build build)
         {
             var dimensionsString =
                 build.Dimensions.Any() ? $"{build.Dimensions.Aggregate((c, n) => string.IsNullOrEmpty(n) ? c : $"{c}_{n}")}_" : string.Empty;
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             return Path.Combine(Path.GetTempPath(), filename);
         }
 
-        protected void Copy(string from, string to)
+        protected static void Copy(string from, string to)
         {
             File.Copy(from, to, overwrite: true);
         }

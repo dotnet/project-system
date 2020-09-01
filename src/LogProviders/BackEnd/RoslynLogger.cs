@@ -6,14 +6,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging;
 using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 {
     internal class RoslynLogger
     {
-        private static readonly ImmutableHashSet<string> RoslynEventSet;
+        private static readonly ImmutableHashSet<string> s_roslynEventSet;
 
         private readonly BackEndBuildTableDataSource _dataSource;
 
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         static RoslynLogger()
         {
-            RoslynEventSet = ImmutableHashSet.Create(
+            s_roslynEventSet = ImmutableHashSet.Create(
                 "WorkCoordinator_DocumentWorker_Enqueue",
                 "WorkCoordinator_ProcessProjectAsync",
                 "WorkCoordinator_ProcessDocumentAsync",
@@ -84,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
             // add our own listener
             _roslynTraceSource.Listeners.Clear();
-            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(RoslynEventSet));
+            _roslynTraceSource.Listeners.Add(new RoslynTraceListener(s_roslynEventSet));
 
             _setLoggerCall(_roslynTraceSource);
         }

@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                         evaluation.Wrapper.RaiseEvent(sender, args);
                         evaluation.Wrapper.BinaryLogger.Shutdown();
                         evaluation.Build.SetLogPath(GetLogPath(evaluation.Build));
-                        Copy(evaluation.LogPath, evaluation.Build.LogPath);
+                            Copy(evaluation.LogPath, evaluation.Build.LogPath);
                         DataSource.NotifyChange();
                     }
                 }

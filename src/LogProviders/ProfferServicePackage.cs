@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
         {
             await base.InitializeAsync(cancellationToken, progress);
 
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
 
             IComponentModel componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
             Assumes.Present(componentModel);
