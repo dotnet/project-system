@@ -194,8 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
-
-                await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(subscription, cancellationToken);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)

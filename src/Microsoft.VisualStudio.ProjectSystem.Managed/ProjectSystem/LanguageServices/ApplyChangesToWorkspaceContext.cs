@@ -86,23 +86,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return ProcessProjectEvaluationHandlersAsync(version, update, state, cancellationToken);
         }
 
-        public Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, CancellationToken cancellationToken)
-        {
-            Requires.NotNull(update, nameof(update));
-
-            VerifyInitializedAndNotDisposed();
-
-            if (update.Value.ProjectChanges.TryGetValue(ProjectBuildRuleName, out IProjectChangeDescription projectChange) &&
-                projectChange.Difference.AnyChanges)
-            {
-                IComparable version = GetConfiguredProjectVersion(update);
-
-                ProcessProjectUpdateHandlers(version, update, cancellationToken);
-            }
-
-            return Task.CompletedTask;
-        }
-
         public IEnumerable<string> GetProjectEvaluationRules()
         {
             VerifyInitializedAndNotDisposed();
@@ -220,21 +203,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             return Task.CompletedTask;
-        }
-
-        private void ProcessProjectUpdateHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, CancellationToken cancellationToken)
-        {
-            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (handler.Value is IProjectUpdatedHandler evaluationHandler &&
-                    update.Value.ProjectChanges.TryGetValue(evaluationHandler.ProjectEvaluationRule, out IProjectChangeDescription projectChange) &&
-                    projectChange.Difference.AnyChanges)
-                {
-                    evaluationHandler.HandleProjectUpdate(version, projectChange, _logger);
-                }
-            }
         }
 
         private static IComparable GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)
