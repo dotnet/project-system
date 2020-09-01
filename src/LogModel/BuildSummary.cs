@@ -21,9 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public BuildType BuildType { get; }
 
-        public ImmutableArray<string> Dimensions { get; }
+        public ImmutableArray<string?> Dimensions { get; }
 
-        public ImmutableArray<string> Targets { get; }
+        public ImmutableArray<string?> Targets { get; }
 
         public DateTime? StartTime { get; }
 
@@ -33,12 +33,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public string ProjectName { get; }
 
-        public BuildSummary(int buildId, string projectPath, IEnumerable<string> dimensions, IEnumerable<string>? targets, BuildType buildType, DateTime? startTime)
+        public BuildSummary(int buildId, string projectPath, IEnumerable<string?> dimensions, IEnumerable<string?>? targets, BuildType buildType, DateTime? startTime)
         {
             BuildId = buildId;
             ProjectName = Path.GetFileName(projectPath);
             Dimensions = dimensions.ToImmutableArray();
-            Targets = targets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            Targets = targets?.ToImmutableArray() ?? ImmutableArray<string?>.Empty;
             BuildType = buildType;
             StartTime = startTime;
             Status = BuildStatus.Running;
@@ -55,13 +55,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
         }
         [JsonConstructor]
         public BuildSummary(int buildId, BuildType buildType,
-            IEnumerable<string> dimensions, IEnumerable<string> targets,
+            IEnumerable<string?> dimensions, IEnumerable<string?> targets,
             DateTime startTime, TimeSpan elapsed, BuildStatus status, string projectName)
         {
             BuildId = buildId;
             BuildType = buildType;
             Dimensions = dimensions.ToImmutableArray();
-            Targets = targets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            Targets = targets?.ToImmutableArray() ?? ImmutableArray<string?>.Empty;
             StartTime = startTime;
             Elapsed = elapsed;
             Status = status;

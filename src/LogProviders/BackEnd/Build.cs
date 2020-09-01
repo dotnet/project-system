@@ -24,14 +24,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         public string? LogPath { get; private set; }
         public int BuildId => BuildSummary.BuildId;
         public BuildType BuildType => BuildSummary.BuildType;
-        public ImmutableArray<string> Dimensions => BuildSummary.Dimensions;
-        public ImmutableArray<string> Targets => BuildSummary.Targets;
+        public ImmutableArray<string?> Dimensions => BuildSummary.Dimensions;
+        public ImmutableArray<string?> Targets => BuildSummary.Targets;
         public DateTime? StartTime => BuildSummary?.StartTime;
         public TimeSpan? Elapsed => BuildSummary?.Elapsed;
         public BuildStatus Status => BuildSummary.Status;
         public string ProjectName => BuildSummary.ProjectName;
         private static int s_sharedBuildId;
-        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string>? targets, BuildType buildType, DateTime? startTime)
+        public Build(string projectPath, IEnumerable<string?> dimensions, IEnumerable<string?>? targets, BuildType buildType, DateTime? startTime)
         {
             int nextId = Interlocked.Increment(ref s_sharedBuildId);
             BuildSummary = new BuildSummary(nextId, projectPath, dimensions, targets, buildType, startTime);
