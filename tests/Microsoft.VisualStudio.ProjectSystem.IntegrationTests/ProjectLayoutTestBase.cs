@@ -13,6 +13,7 @@ using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -64,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
         {
-            var expectDependencies = new Node("Dependencies", ManagedImageMonikers.ReferenceGroup)
+            var expectDependencies = new Node("Dependencies", KnownMonikers.ReferenceGroup)
             {
                 Children = new List<Node>(nodes)
             };
@@ -280,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <example>
         /// <code>new Node(".NETCoreApp 2.1", ManagedImageMonikers.Library)
         /// {
-        ///     new Node("SDK", ManagedImageMonikers.Sdk)
+        ///     new Node("SDK", KnownMonikers.SDK)
         /// }</code>
         /// </example>
         /// </remarks>

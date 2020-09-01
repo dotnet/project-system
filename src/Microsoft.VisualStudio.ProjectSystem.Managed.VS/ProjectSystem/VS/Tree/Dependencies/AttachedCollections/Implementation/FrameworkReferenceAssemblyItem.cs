@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.Internal.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.Shell;
 
@@ -31,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public override object Identity => Text;
         public override int Priority => 0;
-        public override ImageMoniker IconMoniker => ManagedImageMonikers.ReferencePrivate;
+        public override ImageMoniker IconMoniker => KnownMonikers.ReferencePrivate;
 
         protected override IContextMenuController? ContextMenuController => s_defaultMenuController;
 

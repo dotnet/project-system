@@ -9,49 +9,74 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     /// Contains monikers for icons shipped with Managed Project System.
     /// </summary>
+    
     public static class ManagedImageMonikers
     {
         // These GUIDs and IDs are defined in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ManagedImages.imagemanifest
-
         private static readonly Guid s_manifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
 
-        public static ImageMoniker ApplicationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 0 };
-        public static ImageMoniker ApplicationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 1 };
-        public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
-        public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ApplicationPrivate => KnownMonikers.ApplicationPrivate;
+
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ApplicationWarning => KnownMonikers.ApplicationWarning;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COM")]
-        public static ImageMoniker Component => new ImageMoniker { Guid = s_manifestGuid, Id = 4 };
+        public static ImageMoniker Component => KnownMonikers.COM;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMPrivate")]
-        public static ImageMoniker ComponentPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 5 };
+        public static ImageMoniker ComponentPrivate => KnownMonikers.COMPrivate;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMWarning")]
-        public static ImageMoniker ComponentWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 6 };
+        public static ImageMoniker ComponentWarning => KnownMonikers.COMWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker LibraryWarning => KnownMonikers.LibraryWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceGroup => KnownMonikers.ReferenceGroup;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceGroupWarning => KnownMonikers.ReferenceGroupWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferencePrivate => KnownMonikers.ReferencePrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDK")]
+        public static ImageMoniker Sdk => KnownMonikers.SDK;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDKPrivate")]
+        public static ImageMoniker SdkPrivate => KnownMonikers.SDKPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDKWarning")]
+        public static ImageMoniker SdkWarning => KnownMonikers.SDKWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProject => KnownMonikers.SharedProject;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProjectPrivate => KnownMonikers.SharedProjectPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProjectWarning => KnownMonikers.SharedProjectWarning; 
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker TargetFile => KnownMonikers.TargetFile;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker TargetFilePrivate => KnownMonikers.TargetFilePrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker PropertiesFolderClosed => KnownMonikers.PropertiesFolderClosed;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker PropertiesFolderOpened => KnownMonikers.PropertiesFolderOpen;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Application => KnownMonikers.Application;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker CodeInformation => KnownMonikers.CodeInformation;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Library => KnownMonikers.Library;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Reference => KnownMonikers.Reference;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceWarning => KnownMonikers.ReferenceWarning;
+
+        // Everything below this, still needs to be moved to the ImageCatalog
         public static ImageMoniker ErrorSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 7 };
-        public static ImageMoniker LibraryWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 8 };
+        public static ImageMoniker WarningSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
         public static ImageMoniker NuGetGrey => new ImageMoniker { Guid = s_manifestGuid, Id = 9 };
         public static ImageMoniker NuGetGreyPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 10 };
         public static ImageMoniker NuGetGreyWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 11 };
-        public static ImageMoniker ReferenceGroup => new ImageMoniker { Guid = s_manifestGuid, Id = 12 };
-        public static ImageMoniker ReferenceGroupWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 13 };
-        public static ImageMoniker ReferencePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 14 };
-        public static ImageMoniker Sdk => new ImageMoniker { Guid = s_manifestGuid, Id = 15 };
-        public static ImageMoniker SdkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 16 };
-        public static ImageMoniker SdkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 17 };
-        public static ImageMoniker SharedProject => new ImageMoniker { Guid = s_manifestGuid, Id = 18 };
-        public static ImageMoniker SharedProjectPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 19 };
-        public static ImageMoniker SharedProjectWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 20 };
-        public static ImageMoniker WarningSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
         public static ImageMoniker Framework => new ImageMoniker { Guid = s_manifestGuid, Id = 22 };
         public static ImageMoniker FrameworkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 23 };
         public static ImageMoniker FrameworkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 24 };
         public static ImageMoniker ProjectImports => new ImageMoniker { Guid = s_manifestGuid, Id = 25 };
-        public static ImageMoniker TargetFile => new ImageMoniker { Guid = s_manifestGuid, Id = 26 };
-        public static ImageMoniker TargetFilePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 27 };
-        public static ImageMoniker PropertiesFolderClosed => new ImageMoniker { Guid = s_manifestGuid, Id = 28 };
-        public static ImageMoniker PropertiesFolderOpened => new ImageMoniker { Guid = s_manifestGuid, Id = 29 };
-        public static ImageMoniker Application => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Application };
-        public static ImageMoniker CodeInformation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CodeInformation };
-        public static ImageMoniker Library => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Library };
-        public static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
-        public static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
+        public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
+        public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
+
     }
 }

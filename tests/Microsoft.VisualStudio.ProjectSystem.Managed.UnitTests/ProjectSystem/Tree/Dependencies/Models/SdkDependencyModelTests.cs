@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -31,10 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
-            Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SDK, model.Icon);
+            Assert.Equal(KnownMonikers.SDK, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
                 DependencyTreeFlags.SupportsFolderBrowse +
@@ -63,10 +63,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.False(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.Sdk, model.Icon);
-            Assert.Equal(ManagedImageMonikers.Sdk, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SDK, model.Icon);
+            Assert.Equal(KnownMonikers.SDK, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags,
@@ -94,10 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(SdkReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.SdkPrivate, model.Icon);
-            Assert.Equal(ManagedImageMonikers.SdkPrivate, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SdkWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SDKPrivate, model.Icon);
+            Assert.Equal(KnownMonikers.SDKPrivate, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SDKWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.SdkDependency +
                 DependencyTreeFlags.SupportsFolderBrowse +

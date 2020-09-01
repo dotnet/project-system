@@ -12,12 +12,12 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -297,8 +297,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = Resources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
