@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             return Task.CompletedTask;
         }
 
-        public Task<string> GetLogForBuildAsync(int buildID, CancellationToken cancellationToken)
+        public Task<string?> GetLogForBuildAsync(int buildID, CancellationToken cancellationToken)
         
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -83,6 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         /// Implemented event for IBuildLoggerService
         /// This event will be invoked whenever ILoggingDataSource's BuildsUpdated event is invoked
         /// </summary>
-        public event EventHandler DataChanged;
+        public event EventHandler? DataChanged;
     }
 }

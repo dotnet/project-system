@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
     {
         private sealed class Evaluation
         {
-            public EventWrapper Wrapper { get; set; }
-            public Build Build { get; set; }
-            public string LogPath { get; set; }
+            public EventWrapper? Wrapper { get; set; }
+            public Build? Build { get; set; }
+            public string? LogPath { get; set; }
         }
 
         private sealed class EventWrapper : IEventSource
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             public event TaskFinishedEventHandler TaskFinished { add { } remove { } }
             public event CustomBuildEventHandler CustomEventRaised { add { } remove { } }
             public event BuildStatusEventHandler StatusEventRaised { add { } remove { } }
-            public event AnyEventHandler AnyEventRaised;
+            public event AnyEventHandler? AnyEventRaised;
 
             public EventWrapper(BinaryLogger binaryLogger)
             {
@@ -98,11 +98,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 {
                     if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                     {
-                        evaluation.Build.Finish(true, args.Timestamp);
-                        evaluation.Wrapper.RaiseEvent(sender, args);
-                        evaluation.Wrapper.BinaryLogger.Shutdown();
-                        evaluation.Build.SetLogPath(GetLogPath(evaluation.Build));
-                            Copy(evaluation.LogPath, evaluation.Build.LogPath);
+                        evaluation?.Build?.Finish(true, args.Timestamp);
+                        evaluation?.Wrapper?.RaiseEvent(sender, args);
+                        evaluation?.Wrapper?.BinaryLogger.Shutdown();
+                        evaluation?.Build?.SetLogPath(GetLogPath(evaluation.Build));
+                        Copy(evaluation?.LogPath, evaluation?.Build?.LogPath);
                         DataSource.NotifyChange();
                     }
                 }
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 {
                     if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
                     {
-                        evaluation.Wrapper.RaiseEvent(sender, args);
+                        evaluation?.Wrapper?.RaiseEvent(sender, args);
                     }
                 }
                 break;

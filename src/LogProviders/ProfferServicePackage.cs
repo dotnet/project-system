@@ -24,13 +24,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools
 
             await JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            IComponentModel componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
+            var componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
             Assumes.Present(componentModel);
-            BackEndBuildTableDataSource btd = (BackEndBuildTableDataSource) componentModel.GetService<ILoggingDataSource>();
+            var backEndBuildTableDataSource = (BackEndBuildTableDataSource) componentModel.GetService<ILoggingDataSource>();
             IBuildLoggerService loggerService = componentModel.GetService<IBuildLoggerService>();
 
             IBrokeredServiceContainer brokeredServiceContainer = await this.GetServiceAsync<SVsBrokeredServiceContainer, IBrokeredServiceContainer>();
-            brokeredServiceContainer.Proffer(RpcDescriptors.LoggerServiceDescriptor, (mk, options, sb, ct) => new ValueTask<object>(loggerService));
+            brokeredServiceContainer.Proffer(RpcDescriptors.LoggerServiceDescriptor, (mk, options, sb, ct) => new ValueTask<object?>(loggerService));
         }
     }
 }

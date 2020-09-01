@@ -20,18 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
     public sealed class Build : IDisposable
     {
         public BuildSummary BuildSummary { get; private set; }
-        public string ProjectPath { get; }
-        public string LogPath { get; private set; }
+        public string? ProjectPath { get; }
+        public string? LogPath { get; private set; }
         public int BuildId => BuildSummary.BuildId;
         public BuildType BuildType => BuildSummary.BuildType;
         public ImmutableArray<string> Dimensions => BuildSummary.Dimensions;
         public ImmutableArray<string> Targets => BuildSummary.Targets;
-        public DateTime StartTime => BuildSummary.StartTime;
-        public TimeSpan Elapsed => BuildSummary.Elapsed;
+        public DateTime? StartTime => BuildSummary?.StartTime;
+        public TimeSpan? Elapsed => BuildSummary?.Elapsed;
         public BuildStatus Status => BuildSummary.Status;
         public string ProjectName => BuildSummary.ProjectName;
         private static int s_sharedBuildId;
-        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
+        public Build(string projectPath, IEnumerable<string> dimensions, IEnumerable<string>? targets, BuildType buildType, DateTime? startTime)
         {
             int nextId = Interlocked.Increment(ref s_sharedBuildId);
             BuildSummary = new BuildSummary(nextId, projectPath, dimensions, targets, buildType, startTime);
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             }
 
             BuildStatus newStatus = succeeded ? BuildStatus.Finished : BuildStatus.Failed;
-            var elapsedTime = time - StartTime;
+            TimeSpan? elapsedTime = time - StartTime;
             BuildSummary = new BuildSummary(BuildSummary, newStatus, elapsedTime);
         }
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 return;
             }
 
-            var logPath = LogPath;
+            string? logPath = LogPath;
             LogPath = null;
             try
             {

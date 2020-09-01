@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContr
         /// <param name="buildID">an ID used to retrieve a unique log for a build</param>
         /// <param name="cancellationToken">default cancellation token</param>
         /// <returns>The log tied to the requested BuildHandle</returns>
-        Task<string> GetLogForBuildAsync(int buildID, CancellationToken cancellationToken);
+        Task<string?> GetLogForBuildAsync(int buildID, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gives the user a requested build

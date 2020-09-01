@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         public LoggerVerbosity Verbosity { get => LoggerVerbosity.Diagnostic; set { } }
 
-        public string Parameters { get; set; }
+        public string? Parameters { get; set; }
 
         protected LoggerBase(BackEndBuildTableDataSource dataSource)
         {
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             return Path.Combine(Path.GetTempPath(), filename);
         }
 
-        protected static void Copy(string from, string to)
+        protected static void Copy(string? from, string? to)
         {
             File.Copy(from, to, overwrite: true);
         }

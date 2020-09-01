@@ -25,15 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
 
         public ImmutableArray<string> Targets { get; }
 
-        public DateTime StartTime { get; }
+        public DateTime? StartTime { get; }
 
-        public TimeSpan Elapsed { get; }
+        public TimeSpan? Elapsed { get; }
 
         public BuildStatus Status { get; }
 
         public string ProjectName { get; }
 
-        public BuildSummary(int buildId, string projectPath, IEnumerable<string> dimensions, IEnumerable<string> targets, BuildType buildType, DateTime startTime)
+        public BuildSummary(int buildId, string projectPath, IEnumerable<string> dimensions, IEnumerable<string>? targets, BuildType buildType, DateTime? startTime)
         {
             BuildId = buildId;
             ProjectName = Path.GetFileName(projectPath);
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model
             StartTime = startTime;
             Status = BuildStatus.Running;
         }
-        public BuildSummary(BuildSummary other, BuildStatus status, TimeSpan elapsed) {
+        public BuildSummary(BuildSummary other, BuildStatus status, TimeSpan? elapsed) {
             BuildId = other.BuildId;
             BuildType = other.BuildType;
             Dimensions = other.Dimensions;

@@ -14,10 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         private static readonly string[] s_dimensions = { "Configuration", "Platform", "TargetFramework" };
 
         private readonly bool _isDesignTime;
-        private int _projectInstanceId;
+        private int? _projectInstanceId;
         private readonly string _logPath;
         private readonly BinaryLogger _binaryLogger;
-        private Build _build;
+        private Build? _build;
 
         public ProjectLogger(BackEndBuildTableDataSource dataSource, bool isDesignTime) :
             base(dataSource)
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 return;
             }
 
-            _build.Finish(e.Succeeded, e.Timestamp);
+            _build?.Finish(e.Succeeded, e.Timestamp);
         }
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
@@ -86,9 +86,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
             var dimensions = GatherDimensions(e.GlobalProperties);
 
-            var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e.Timestamp);
+            var build = new Build(e.ProjectFile, dimensions.ToArray(), e?.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e?.Timestamp);
             _build = build;
-            _projectInstanceId = e.BuildEventContext.ProjectInstanceId;
+            _projectInstanceId = e?.BuildEventContext.ProjectInstanceId;
             DataSource.AddEntry(_build);
         }
     }

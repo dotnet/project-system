@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         /// <param name="buildId">a unique int Id for a currently stored build</param>
         /// <returns>returns a log's filepath for a build with the given Id.
         /// returns null if no build matched the given Id</returns>
-        string GetLogForBuild(int buildId);
+        string? GetLogForBuild(int buildId);
 
         /// <summary>
         /// Returns all currently collected builds.

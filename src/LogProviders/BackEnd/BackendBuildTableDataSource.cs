@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         private ImmutableList<Build> _entries = ImmutableList<Build>.Empty;
 
-        public event EventHandler BuildsUpdated;
+        public event EventHandler? BuildsUpdated;
 
         public bool IsLogging { get; private set; }
 
@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         /// <param name="buildId">ID to return build for</param>
         /// <returns> returns filepath to log path (on server)
         /// returns null if no match is found.</returns>
-        public string GetLogForBuild(int buildId)
+        public string? GetLogForBuild(int buildId)
         {
-            return _entries.Find(x => x.BuildId == buildId).LogPath;
+            return _entries?.Find(x => x?.BuildId == buildId)?.LogPath;
         }
 
         ImmutableList<BuildSummary> ILoggingDataSource.GetAllBuilds()
