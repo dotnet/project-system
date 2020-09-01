@@ -12,6 +12,7 @@ using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.ProjectSystem.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -102,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 var actualIcon = actual?.ExpandedIconMoniker == null
                     ? "null"
-                    : ManagedImageMonikers.ImageMonikerDebugDisplay(actual.ExpandedIconMoniker.Value.ToImageMoniker());
+                    : ImageMonikerDebuggerDisplay.FromImageMoniker(actual.ExpandedIconMoniker.Value.ToImageMoniker());
 
                 if (expect != null)
                 {
@@ -111,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .Append(expect.Text ?? actual!.Name)
                         .Append(' ')
                         .AppendLine(expect.Icon != null
-                            ? ManagedImageMonikers.ImageMonikerDebugDisplay(expect.Icon.Value)
+                            ? ImageMonikerDebuggerDisplay.FromImageMoniker(expect.Icon.Value)
                             : actualIcon);
                 }
 

@@ -1,13 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem;
-
-[assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ImageMonikerDebugDisplay(this)}", Target = typeof(ImageMoniker))]
-[assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImageMonikerDebugDisplay(this)}", Target = typeof(ProjectImageMoniker))]
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -84,94 +79,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         internal static ImageMoniker Uninstall => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Uninstall };
         internal static ImageMoniker VBProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBProjectNode };
         internal static ImageMoniker VBSharedProject => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBSharedProject };
-
-        #region DebuggerDisplay support for known project system image monikers
-
-        // These methods are called by the debugger, as instructed by the DebuggerDisplayAttributes at the top of the file.
-
-        internal static string ImageMonikerDebugDisplay(ImageMoniker moniker) => DebugDisplay(moniker.Guid, moniker.Id);
-
-        internal static string ProjectImageMonikerDebugDisplay(ProjectImageMoniker moniker) => DebugDisplay(moniker.Guid, moniker.Id);
-
-        private static string DebugDisplay(Guid guid, int id)
-        {
-            if (guid == s_manifestGuid)
-            {
-                switch (id)
-                {
-                    case 0: return nameof(ApplicationPrivate);
-                    case 1: return nameof(ApplicationWarning);
-                    case 2: return nameof(CodeInformationPrivate);
-                    case 3: return nameof(CodeInformationWarning);
-                    case 4: return nameof(Component);
-                    case 5: return nameof(ComponentPrivate);
-                    case 6: return nameof(ComponentWarning);
-                    case 7: return nameof(ErrorSmall);
-                    case 8: return nameof(LibraryWarning);
-                    case 9: return nameof(NuGetGrey);
-                    case 10: return nameof(NuGetGreyPrivate);
-                    case 11: return nameof(NuGetGreyWarning);
-                    case 12: return nameof(ReferenceGroup);
-                    case 13: return nameof(ReferenceGroupWarning);
-                    case 14: return nameof(ReferencePrivate);
-                    case 15: return nameof(Sdk);
-                    case 16: return nameof(SdkPrivate);
-                    case 17: return nameof(SdkWarning);
-                    case 18: return nameof(SharedProject);
-                    case 19: return nameof(SharedProjectPrivate);
-                    case 20: return nameof(SharedProjectWarning);
-                    case 21: return nameof(WarningSmall);
-                    case 22: return nameof(Framework);
-                    case 23: return nameof(FrameworkPrivate);
-                    case 24: return nameof(FrameworkWarning);
-                    case 25: return nameof(ProjectImports);
-                    case 26: return nameof(TargetFile);
-                    case 27: return nameof(TargetFilePrivate);
-                    case 28: return nameof(PropertiesFolderClosed);
-                    case 29: return nameof(PropertiesFolderOpened);
-                }
-            }
-
-            if (guid == KnownImageIds.ImageCatalogGuid)
-            {
-                switch (id)
-                {
-                    case KnownImageIds.Abbreviation: return nameof(KnownImageIds.Abbreviation);
-                    case KnownImageIds.AboutBox: return nameof(KnownImageIds.AboutBox);
-                    case KnownImageIds.AbsolutePosition: return nameof(KnownImageIds.AbsolutePosition);
-                    case KnownImageIds.Application: return nameof(KnownImageIds.Application);
-                    case KnownImageIds.BinaryFile: return nameof(KnownImageIds.BinaryFile);
-                    case KnownImageIds.Blank: return nameof(KnownImageIds.Blank);
-                    case KnownImageIds.CodeInformation: return nameof(KnownImageIds.CodeInformation);
-                    case KnownImageIds.CSProjectNode: return nameof(KnownImageIds.CSProjectNode);
-                    case KnownImageIds.CSSharedProject: return nameof(KnownImageIds.CSSharedProject);
-                    case KnownImageIds.FSFileNode: return nameof(KnownImageIds.FSFileNode);
-                    case KnownImageIds.FSProjectNode: return nameof(KnownImageIds.FSProjectNode);
-                    case KnownImageIds.FSScript: return nameof(KnownImageIds.FSScript);
-                    case KnownImageIds.FSSignatureFile: return nameof(KnownImageIds.FSSignatureFile);
-                    case KnownImageIds.GlyphDown: return nameof(KnownImageIds.GlyphDown);
-                    case KnownImageIds.GlyphUp: return nameof(KnownImageIds.GlyphUp);
-                    case KnownImageIds.Library: return nameof(KnownImageIds.Library);
-                    case KnownImageIds.Path: return nameof(KnownImageIds.Path);
-                    case KnownImageIds.PathIcon: return nameof(KnownImageIds.PathIcon);
-                    case KnownImageIds.PathListBox: return nameof(KnownImageIds.PathListBox);
-                    case KnownImageIds.PathListBoxItem: return nameof(KnownImageIds.PathListBoxItem);
-                    case KnownImageIds.QuestionMark: return nameof(KnownImageIds.QuestionMark);
-                    case KnownImageIds.Reference: return nameof(KnownImageIds.Reference);
-                    case KnownImageIds.ReferenceWarning: return nameof(KnownImageIds.ReferenceWarning);
-                    case KnownImageIds.SharedProject: return nameof(KnownImageIds.SharedProject);
-                    case KnownImageIds.Sound: return nameof(KnownImageIds.Sound);
-                    case KnownImageIds.StatusError: return nameof(KnownImageIds.StatusError);
-                    case KnownImageIds.TextFile: return nameof(KnownImageIds.TextFile);
-                    case KnownImageIds.Uninstall: return nameof(KnownImageIds.Uninstall);
-                    case KnownImageIds.VBProjectNode: return nameof(KnownImageIds.VBProjectNode);
-                    case KnownImageIds.VBSharedProject: return nameof(KnownImageIds.VBSharedProject);
-                }
-            }
-
-            return $"{guid} ({id})";
-        }
-
-        #endregion
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -28,13 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CreateProject(new Project("netcoreapp2.1;net45"));
 
             VerifyDependenciesNode(
-                new Node(".NETCoreApp 2.1", ManagedImageMonikers.Library)
+                new Node(".NETCoreApp 2.1", KnownMonikers.Library)
                 {
                     new Node("SDK", ManagedImageMonikers.Sdk)
                 },
-                new Node(".NETFramework 4.5", ManagedImageMonikers.Library)
+                new Node(".NETFramework 4.5", KnownMonikers.Library)
                 {
-                    new Node("Assemblies", ManagedImageMonikers.Reference)
+                    new Node("Assemblies", KnownMonikers.Reference)
                 });
         }
 
@@ -44,11 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CreateProject(new Project("netstandard2.0;net461"));
 
             VerifyDependenciesNode(
-                new Node(".NETFramework 4.6.1", ManagedImageMonikers.Library)
+                new Node(".NETFramework 4.6.1", KnownMonikers.Library)
                 {
-                    new Node("Assemblies", ManagedImageMonikers.Reference)
+                    new Node("Assemblies", KnownMonikers.Reference)
                 },
-                new Node(".NETStandard 2.0", ManagedImageMonikers.Library)
+                new Node(".NETStandard 2.0", KnownMonikers.Library)
                 {
                     new Node("SDK", ManagedImageMonikers.Sdk)
                 });
@@ -65,15 +66,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CreateProject(project);
 
             VerifyDependenciesNode(
-                new Node(".NETFramework 4.6.1", ManagedImageMonikers.Library)
+                new Node(".NETFramework 4.6.1", KnownMonikers.Library)
                 {
-                    new Node("Assemblies", ManagedImageMonikers.Reference),
+                    new Node("Assemblies", KnownMonikers.Reference),
                     new Node("Packages", ManagedImageMonikers.NuGetGrey)
                     {
                         new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
                     }
                 },
-                new Node(".NETStandard 2.0", ManagedImageMonikers.Library)
+                new Node(".NETStandard 2.0", KnownMonikers.Library)
                 {
                     new Node("Packages", ManagedImageMonikers.NuGetGrey)
                     {
@@ -104,9 +105,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             VerifyDependenciesNode(
                 project1,
-                new Node("Projects", ManagedImageMonikers.Application)
+                new Node("Projects", KnownMonikers.Application)
                 {
-                    new Node(project2.ProjectName, ManagedImageMonikers.Application)
+                    new Node(project2.ProjectName, KnownMonikers.Application)
                 },
                 new Node("SDK", ManagedImageMonikers.Sdk));
 
@@ -127,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             VerifyDependenciesNode(
                 project,
-                new Node("Assemblies", ManagedImageMonikers.Reference)
+                new Node("Assemblies", KnownMonikers.Reference)
                 {
                     new Node("System", ManagedImageMonikers.ReferencePrivate),
                     new Node("System.Core", ManagedImageMonikers.ReferencePrivate),
@@ -136,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     new Node("System.IO.Compression.FileSystem", ManagedImageMonikers.ReferencePrivate),
                     new Node("System.Numerics", ManagedImageMonikers.ReferencePrivate),
                     new Node("System.Runtime.Serialization", ManagedImageMonikers.ReferencePrivate),
-                    new Node("System.Windows.Forms", ManagedImageMonikers.Reference), // non private as explicitly added
+                    new Node("System.Windows.Forms", KnownMonikers.Reference), // non private as explicitly added
                     new Node("System.Xml", ManagedImageMonikers.ReferencePrivate),
                     new Node("System.Xml.Linq", ManagedImageMonikers.ReferencePrivate)
                 });
