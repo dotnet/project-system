@@ -279,5 +279,10 @@ namespace Microsoft.VisualStudio.IO
         {
             return ReadAllText(filename).Length;
         }
+
+        public bool PathExists(string path)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

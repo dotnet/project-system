@@ -28,6 +28,11 @@ namespace Microsoft.VisualStudio.IO
             return File.Exists(path);
         }
 
+        public bool PathExists(string path)
+        {
+            return File.Exists(path) || Directory.Exists(path);
+        }
+
         public void RemoveFile(string path)
         {
             if (FileExists(path))

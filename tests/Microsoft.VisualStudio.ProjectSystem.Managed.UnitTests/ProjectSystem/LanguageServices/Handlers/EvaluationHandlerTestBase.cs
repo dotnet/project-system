@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle(null!, projectChange, true, logger);
+                handler.Handle(null!, projectChange, new ContextState(), logger);
             });
         }
 
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("projectChange", () =>
             {
-                handler.Handle(10, null!, true, logger);
+                handler.Handle(10, null!, new ContextState(), logger);
             });
         }
 
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, projectChange, true, null!);
+                handler.Handle(10, projectChange, new ContextState(), null!);
             });
         }
 
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                handler.Handle(10, projectChange, true, logger);
+                handler.Handle(10, projectChange, new ContextState(), logger);
             });
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         internal static void Handle(IProjectEvaluationHandler handler, IProjectChangeDescription projectChange)
         {
-            handler.Handle(1, projectChange, false, IProjectLoggerFactory.Create());
+            handler.Handle(1, projectChange, new ContextState(), IProjectLoggerFactory.Create());
         }
 
         internal abstract IProjectEvaluationHandler CreateInstance();

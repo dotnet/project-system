@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -74,6 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericUnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
@@ -107,6 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,

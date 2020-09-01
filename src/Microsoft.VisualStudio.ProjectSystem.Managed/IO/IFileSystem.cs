@@ -18,6 +18,8 @@ namespace Microsoft.VisualStudio.IO
     {
         Stream Create(string path);
 
+        bool PathExists(string path);
+
         bool FileExists(string path);
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);

@@ -16,6 +16,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
 
+        public static IActiveConfiguredProjectProvider Create()
+        {
+            var mock = new Mock<IActiveConfiguredProjectProvider>();
+            mock.SetupGet(p => p.ActiveConfiguredProjectBlock)
+                .Returns(DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ConfiguredProject>>());
+
+            return mock.Object;
+        }
+
         public static IActiveConfiguredProjectProvider Create(
             Func<ProjectConfiguration?>? getActiveProjectConfiguration = null,
             Func<ConfiguredProject?>? getActiveConfiguredProject = null)

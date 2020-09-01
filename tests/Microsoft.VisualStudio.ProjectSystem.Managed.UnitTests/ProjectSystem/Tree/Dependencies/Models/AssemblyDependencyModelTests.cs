@@ -38,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -69,6 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags,
                 model.Flags);
         }
@@ -131,6 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
+                DependencyTreeFlags.SupportsBrowse +
                 DependencyTreeFlags.GenericResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

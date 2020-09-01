@@ -9,6 +9,7 @@ namespace Microsoft.VisualStudio.Input
     {
         public const long GenerateNuGetPackageProjectContextMenu = 0x2000;
         public const long GenerateNuGetPackageTopLevelBuild = 0x2001;
+        public const long NavigateToProject = 0x2002;
         public const int DebugTargetMenuDebugFrameworkMenu = 0x3000;
         public const int DebugFrameworks = 0x3050;
     }
