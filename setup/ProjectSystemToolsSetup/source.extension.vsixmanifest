@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="D7919C6A-F103-4065-B59D-A29D155D7E99" Version="|%CurrentProject%;GetBuildVersion|" Language="en-US" Publisher="Microsoft" />
-    <DisplayName>ProjectSystemTools Server</DisplayName>
-    <Description>Microsoft VisualStudio ProjectSystemTools Server</Description>
+    <DisplayName>ProjectSystemTools BackEnd</DisplayName>
+    <Description>Microsoft VisualStudio ProjectSystemTools BackEnd</Description>
     <PackageId>Microsoft.VisualStudio.ProjectSystemTools</PackageId>
   </Metadata>
   <Installation SystemComponent="true" Experimental="true">
