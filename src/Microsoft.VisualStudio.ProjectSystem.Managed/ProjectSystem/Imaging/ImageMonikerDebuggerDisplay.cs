@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     /// </summary>
     internal static class ImageMonikerDebuggerDisplay
     {
-        private static readonly Dictionary<(Guid, int), string> s_displayNames = CalculateDisplayNames();
+        private static readonly Dictionary<int, string> s_displayNames = CalculateDisplayNames();
 
         internal static string FromImageMoniker(ImageMoniker moniker) => DebugDisplay(moniker.Guid, moniker.Id);
 
@@ -28,7 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
 
         private static string DebugDisplay(Guid guid, int id)
         {
-            if (s_displayNames.TryGetValue((guid, id), out string displayName))
+            if (guid == KnownImageIds.ImageCatalogGuid  && 
+                s_displayNames.TryGetValue(id, out string displayName))
             {
                 return displayName;
             }
@@ -36,14 +37,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
             return $"{guid} ({id})";
         }
 
-        private static Dictionary<(Guid, int), string> CalculateDisplayNames()
+        private static Dictionary<int, string> CalculateDisplayNames()
         {
             Type type = typeof(KnownImageIds);
 
             return type.GetFields()
                        .Where(field => field.IsLiteral && field.FieldType == typeof(int))
                        .ToDictionary(field =>
-                            (KnownImageIds.ImageCatalogGuid, (int)field.GetRawConstantValue()),
+                            (int)field.GetRawConstantValue(),
                             field => $"{type.Name}.{field.Name}");
         }
     }

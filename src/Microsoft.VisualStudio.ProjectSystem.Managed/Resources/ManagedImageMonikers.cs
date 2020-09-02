@@ -64,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker Reference => KnownMonikers.Reference;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferenceWarning => KnownMonikers.ReferenceWarning;
-
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ErrorSmall => throw new NotSupportedException();
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
