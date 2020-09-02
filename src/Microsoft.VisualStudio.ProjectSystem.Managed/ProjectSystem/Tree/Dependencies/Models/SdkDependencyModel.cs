@@ -2,11 +2,11 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
@@ -17,16 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             unresolved: DependencyTreeFlags.SdkDependency);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.Sdk,
-            expandedIcon: ManagedImageMonikers.Sdk,
-            unresolvedIcon: ManagedImageMonikers.SdkWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
+            icon: KnownMonikers.SDK,
+            expandedIcon: KnownMonikers.SDK,
+            unresolvedIcon: KnownMonikers.SDKWarning,
+            unresolvedExpandedIcon: KnownMonikers.SDKWarning);
 
         private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.SdkPrivate,
-            expandedIcon: ManagedImageMonikers.SdkPrivate,
-            unresolvedIcon: ManagedImageMonikers.SdkWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.SdkWarning);
+            icon: KnownMonikers.SDKPrivate,
+            expandedIcon: KnownMonikers.SDKPrivate,
+            unresolvedIcon: KnownMonikers.SDKWarning,
+            unresolvedExpandedIcon: KnownMonikers.SDKWarning);
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 

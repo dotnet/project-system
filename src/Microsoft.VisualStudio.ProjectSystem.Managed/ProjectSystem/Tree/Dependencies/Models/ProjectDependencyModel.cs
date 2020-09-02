@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -17,14 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Application,
             expandedIcon: KnownMonikers.Application,
-            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+            unresolvedIcon: KnownMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: KnownMonikers.ApplicationWarning);
 
         private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.ApplicationPrivate,
-            expandedIcon: ManagedImageMonikers.ApplicationPrivate,
-            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+            icon: KnownMonikers.ApplicationPrivate,
+            expandedIcon: KnownMonikers.ApplicationPrivate,
+            unresolvedIcon: KnownMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: KnownMonikers.ApplicationWarning);
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
