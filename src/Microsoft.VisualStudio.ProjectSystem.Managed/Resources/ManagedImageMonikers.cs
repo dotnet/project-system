@@ -65,9 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferenceWarning => KnownMonikers.ReferenceWarning;
 
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ErrorSmall => throw new NotSupportedException();
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker WarningSmall => throw new NotSupportedException();
+
         // Everything below this, still needs to be moved to the ImageCatalog
-        public static ImageMoniker ErrorSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 7 };
-        public static ImageMoniker WarningSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
         public static ImageMoniker NuGetGrey => new ImageMoniker { Guid = s_manifestGuid, Id = 9 };
         public static ImageMoniker NuGetGreyPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 10 };
         public static ImageMoniker NuGetGreyWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 11 };

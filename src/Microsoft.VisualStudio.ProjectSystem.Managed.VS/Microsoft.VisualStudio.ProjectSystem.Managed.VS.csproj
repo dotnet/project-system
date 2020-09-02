@@ -104,14 +104,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Resource Include="Resources\Icons\ErrorSmall_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\WarningSmall_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
     <Resource Include="Resources\Icons\FrameworkPrivate_16x.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -130,10 +122,8 @@
     </Resource>
     <Resource Include="Resources\Icons\CodeInformationPrivate_16x.png" />
     <Resource Include="Resources\Icons\CodeInformationWarning_16x.png" />
-    <Resource Include="Resources\Icons\ErrorSmall_16x.png" />
     <Resource Include="Resources\Icons\NuGetGreyWarning_16x.png" />
     <Resource Include="Resources\Icons\NuGetGrey_16x.png" />
-    <Resource Include="Resources\Icons\WarningSmall_16x.png" />
     <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.png" />
     <Resource Include="Resources\Icons\FrameworkPrivate_16x.png" />
     <Resource Include="Resources\Icons\FrameworkWarning_16x.png" />

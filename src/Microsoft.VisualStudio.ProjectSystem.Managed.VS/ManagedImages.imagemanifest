@@ -7,11 +7,9 @@
     <Guid Name="ManagedImagesGuid" Value="{259567C1-AA6B-46BF-811C-C145DD9F3B48}" />
     <ID Name="CodeInformationPrivate" Value="2" />
     <ID Name="CodeInformationWarning" Value="3" />
-    <ID Name="ErrorSmall" Value="7" />
     <ID Name="NuGetGrey" Value="9" />
     <ID Name="NuGetGreyPrivate" Value="10" />
     <ID Name="NuGetGreyWarning" Value="11" />
-    <ID Name="WarningSmall" Value="21" />
     <ID Name="Framework" Value="22" />
     <ID Name="FrameworkPrivate" Value="23" />
     <ID Name="FrameworkWarning" Value="24" />
@@ -30,12 +28,6 @@
         <Size Value="16" />
       </Source>
     </Image>
-    <Image Guid="$(ManagedImagesGuid)" ID="$(ErrorSmall)">
-      <Source Uri="$(Resources)/Icons/ErrorSmall_16x.xaml" />
-      <Source Uri="$(Resources)/Icons/ErrorSmall_16x.png">
-        <Size Value="16" />
-      </Source>
-    </Image>
     <Image Guid="$(ManagedImagesGuid)" ID="$(NuGetGrey)">
       <Source Uri="$(Resources)/Icons/NuGetGrey_16x.xaml" />
       <Source Uri="$(Resources)/Icons/NuGetGrey_16x.png">
@@ -51,12 +43,6 @@
     <Image Guid="$(ManagedImagesGuid)" ID="$(NuGetGreyWarning)">
       <Source Uri="$(Resources)/Icons/NuGetGreyWarning_16x.xaml" />
       <Source Uri="$(Resources)/Icons/NuGetGreyWarning_16x.png">
-        <Size Value="16" />
-      </Source>
-    </Image>
-    <Image Guid="$(ManagedImagesGuid)" ID="$(WarningSmall)">
-      <Source Uri="$(Resources)/Icons/WarningSmall_16x.xaml" />
-      <Source Uri="$(Resources)/Icons/WarningSmall_16x.png">
         <Size Value="16" />
       </Source>
     </Image>
