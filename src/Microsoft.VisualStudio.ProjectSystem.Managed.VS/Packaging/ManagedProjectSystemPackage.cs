@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Packaging
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             IComponentModel componentModel = await this.GetServiceAsync<SComponentModel, IComponentModel>();
-            
+
             IEnumerable<IPackageService> packageServices = componentModel.GetExtensions<IPackageService>();
 
             await JoinableTaskFactory.SwitchToMainThreadAsync();
