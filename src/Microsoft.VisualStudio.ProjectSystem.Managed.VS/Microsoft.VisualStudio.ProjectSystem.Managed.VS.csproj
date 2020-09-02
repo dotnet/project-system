@@ -16,7 +16,6 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>    
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LogProviders\Microsoft.VisualStudio.ProjectSystemTools.BackEnd.csproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
   </ItemGroup>
   <ItemGroup>

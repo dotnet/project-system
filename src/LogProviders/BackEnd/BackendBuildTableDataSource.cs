@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         public void Clear()
         {
-            foreach (var build in _entries)
+            foreach (Build? build in _entries)
             {
                 build.Dispose();
             }
