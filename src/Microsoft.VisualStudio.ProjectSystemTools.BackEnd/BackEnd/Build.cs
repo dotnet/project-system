@@ -65,6 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             LogPath = null;
             try
             {
+                System.Diagnostics.Debug.Assert(logPath != null);
                 File.Delete(logPath);
             }
             catch

@@ -174,7 +174,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
                 // if there is an issue, this will crash VS. we can swallow, but then, user won't know
                 // why logging didn't work.
-                _writer = new StreamWriter(LogPath);
+                try
+                {
+                    _writer = new StreamWriter(LogPath);
+                }
+                catch
+                {
+                    // Prevent server VS from crashing
+                    System.Diagnostics.Debug.Assert(false);
+                }
             }
 
             public readonly string LogPath;

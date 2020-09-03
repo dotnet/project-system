@@ -51,7 +51,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             else
             {
                 // Never got project information so just delete the log.
-                File.Delete(_logPath);
+                try
+                {
+                    System.Diagnostics.Debug.Assert(_logPath != null);
+                    File.Delete(_logPath);
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                    // Prevent VS server from crashing
+                }
             }
         }
 
