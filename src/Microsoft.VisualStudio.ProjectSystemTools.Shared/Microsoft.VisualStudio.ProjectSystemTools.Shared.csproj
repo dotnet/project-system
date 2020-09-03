@@ -8,12 +8,7 @@
     <IsProductComponent>false</IsProductComponent>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <None Remove="PublicAPI.Shipped.txt" />
-    <None Remove="PublicAPI.Unshipped.txt" />
-  </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
