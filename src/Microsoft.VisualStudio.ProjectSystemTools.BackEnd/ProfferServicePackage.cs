@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContracts
 using ProvideBrokeredServiceAttribute = Microsoft.VisualStudio.Shell.ServiceBroker.ProvideBrokeredServiceAttribute;
 using Microsoft.VisualStudio.ComponentModelHost;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools
+namespace Microsoft.VisualStudio.ProjectSystemTools.BackEnd
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid("6BEB9F10-4E64-41B7-B4E3-1BE77CD63DD4")]

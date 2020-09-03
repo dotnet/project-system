@@ -3,8 +3,8 @@
   <Import Project="..\..\build\import\VisualStudio.props" />
   
   <PropertyGroup>
-    <RootNamespace>Microsoft.VisualStudio.ProjectSystem.LogModel</RootNamespace>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.LogModel</AssemblyName>
+    <RootNamespace>Microsoft.VisualStudio.ProjectSystemTools.Shared</RootNamespace>
+    <AssemblyName>Microsoft.VisualStudio.ProjectSystemTools.Shared</AssemblyName>
     <IsProductComponent>false</IsProductComponent>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

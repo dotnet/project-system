@@ -7,10 +7,11 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Shell.BuildLogging;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
+namespace Microsoft.VisualStudio.ProjectSystemTools.BackEnd
 {
     [Export(typeof(IBuildLoggerProviderAsync))]
     [AppliesTo(ProjectCapabilities.AlwaysApplicable)]

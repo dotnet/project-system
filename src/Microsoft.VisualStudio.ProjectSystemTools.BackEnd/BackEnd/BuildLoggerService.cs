@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.RpcContracts;
-using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
+using Microsoft.VisualStudio.ProjectSystemTools.BackEnd;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 {

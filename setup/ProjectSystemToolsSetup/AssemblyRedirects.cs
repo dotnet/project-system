@@ -5,5 +5,5 @@ using Microsoft.VisualStudio;
 // These provide code-base binding redirects for the assemblies we provide in this VSIX. For NGEN purposes,
 // we also need to update src/appid/devenv/stub/devenv.urt.config.tt inside VS repo, which is done automatically 
 // via the Roslyn Insertion tool when it consumes artifacts\Debug\DevDivInsertionFiles\DependentAssemblyVersions.csv.
-[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Tools.Providers")]
-[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.LogModel")]
+[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystemTools.BackEnd")]
+[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystemTools.Shared")]

@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
-using Microsoft.VisualStudio.ProjectSystem.Tools.Providers;
+using Microsoft.VisualStudio.ProjectSystemTools.BackEnd;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 {

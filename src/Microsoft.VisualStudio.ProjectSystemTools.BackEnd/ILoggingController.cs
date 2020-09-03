@@ -2,7 +2,7 @@
 
 using Microsoft.Build.Framework;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tools.Providers
+namespace Microsoft.VisualStudio.ProjectSystemTools.BackEnd
 {
     public interface ILoggingController
     {

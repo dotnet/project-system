@@ -3,8 +3,8 @@
   <Import Project="..\..\build\import\VisualStudio.props" />
   
   <PropertyGroup>
-    <AssemblyName>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</AssemblyName>
-    <RootNamespace>Microsoft.VisualStudio.ProjectSystem.Tools.Providers</RootNamespace>
+    <AssemblyName>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</AssemblyName>
+    <RootNamespace>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</RootNamespace>
     
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LogModel\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystemTools.Shared\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
