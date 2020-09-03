@@ -1,4 +1,5 @@
-﻿Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.BackEndBuildTableDataSource
+﻿#nullable enable
+Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.BackEndBuildTableDataSource
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.BackEndBuildTableDataSource.AddEntry(Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.Build! build) -> void
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.BackEndBuildTableDataSource.BackEndBuildTableDataSource() -> void
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd.BackEndBuildTableDataSource.BuildsUpdated -> System.EventHandler?
