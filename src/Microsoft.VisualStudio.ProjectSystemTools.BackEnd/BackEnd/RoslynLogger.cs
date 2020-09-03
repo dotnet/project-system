@@ -172,10 +172,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
                 _set = roslynEvents;
 
-                // if there is an issue, this will crash VS. we can swallow, but then, user won't know
-                // why logging didn't work.
                 try
                 {
+                    // if there is an issue, this will crash VS. we can swallow, but then, user won't know
+                    // why logging didn't work.
                     _writer = new StreamWriter(LogPath);
                 }
                 catch
