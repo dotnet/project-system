@@ -164,7 +164,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             private const int EndEventId = 2;
 
             private readonly IImmutableSet<string> _set;
-            private readonly StreamWriter _writer;
+            private readonly StreamWriter? _writer;
+            private readonly object _writerLock = new object();
 
             public RoslynTraceListener(IImmutableSet<string> roslynEvents)
             {
@@ -216,9 +217,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             {
                 try
                 {
-                    lock (_writer)
+                    lock (_writerLock)
                     {
-                        _writer.WriteLine(message);
+                        _writer?.WriteLine(message);
                     }
                 }
                 catch (Exception ex)
@@ -244,10 +245,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
                 try
                 {
-                    lock (_writer)
+                    lock (_writerLock)
                     {
-                        _writer.Flush();
-                        _writer.Dispose();
+                        _writer?.Flush();
+                        _writer?.Dispose();
                     }
                 }
                 catch
