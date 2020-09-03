@@ -1,4 +1,3 @@
-#nullable enable
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BuildStatus
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BuildStatus.Failed = 2 -> Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BuildStatus
 Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BuildStatus.Finished = 1 -> Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BuildStatus

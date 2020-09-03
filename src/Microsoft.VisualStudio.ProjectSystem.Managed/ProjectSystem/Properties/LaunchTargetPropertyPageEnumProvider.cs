@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
-                IPropertyPagesCatalogProvider? catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
+                var catalogProvider = _configuredProject.Services.PropertyPagesCatalog;
 
                 if (catalogProvider == null)
                 {

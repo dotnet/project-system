@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         {
             pfFilter = 0;
 
-            UnconfiguredProject? project = _project;
+            var project = _project;
             if (project == null)
             {
                 return HResult.Unexpected;

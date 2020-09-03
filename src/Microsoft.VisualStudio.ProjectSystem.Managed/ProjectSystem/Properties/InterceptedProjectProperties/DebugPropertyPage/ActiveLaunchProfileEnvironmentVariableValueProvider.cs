@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 throw new InvalidOperationException($"{nameof(ActiveLaunchProfileEnvironmentVariableValueProvider)} does not handle property '{propertyName}'.");
             }
 
-            IWritableLaunchProfile? activeProfile = launchSettings.ActiveProfile;
+            var activeProfile = launchSettings.ActiveProfile;
             if (activeProfile == null)
             {
                 return false;
@@ -75,11 +75,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             dictionary.Clear();
 
-            foreach (string? entry in readEntries(value))
+            foreach (var entry in readEntries(value))
             {
-                (string entryKey, string entryValue) = splitEntry(entry);
-                string? decodedEntryKey = decode(entryKey);
-                string? decodedEntryValue = decode(entryValue);
+                (var entryKey, string entryValue) = splitEntry(entry);
+                var decodedEntryKey = decode(entryKey);
+                var decodedEntryValue = decode(entryValue);
 
                 if (!string.IsNullOrEmpty(decodedEntryKey))
                 {
