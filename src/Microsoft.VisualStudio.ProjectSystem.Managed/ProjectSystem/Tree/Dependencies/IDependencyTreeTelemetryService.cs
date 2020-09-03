@@ -14,13 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     internal interface IDependencyTreeTelemetryService
     {
         /// <summary>
-        /// Gets a value indicating whether this telemetry service is active.
-        /// If not, then it will remain inactive and no methods need be called on it.
-        /// Note that an instance may become inactive during its lifetime.
-        /// </summary>
-        bool IsActive { get; }
-
-        /// <summary>
         /// Initialize telemetry state with the set of target frameworks and rules we expect to observe.
         /// </summary>
         void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);
@@ -36,6 +29,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// Fire telemetry when dependency tree completes an update
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
-        Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+        ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
     }
 }

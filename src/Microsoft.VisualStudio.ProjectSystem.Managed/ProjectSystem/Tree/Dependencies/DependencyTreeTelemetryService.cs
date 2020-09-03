@@ -56,8 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public bool IsActive => _stateByFramework != null;
-
         public void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stateByFramework == null)
@@ -103,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
+        public async ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
             if (_stateByFramework == null)
                 return;
