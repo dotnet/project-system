@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             foreach (var entry in readEntries(value))
             {
-                (var entryKey, string entryValue) = splitEntry(entry);
+                var (entryKey, entryValue) = splitEntry(entry);
                 var decodedEntryKey = decode(entryKey);
                 var decodedEntryValue = decode(entryValue);
 
