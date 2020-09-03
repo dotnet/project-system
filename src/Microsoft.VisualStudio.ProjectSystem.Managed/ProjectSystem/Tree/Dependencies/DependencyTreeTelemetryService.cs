@@ -106,6 +106,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             if (_stateByFramework == null)
                 return;
 
+            Assumes.NotNull(_telemetryService);
+
             bool observedAllRules;
             lock (_stateUpdateLock)
             {
@@ -124,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             if (hasUnresolvedDependency)
             {
-                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
@@ -132,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
             else
             {
-                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
@@ -151,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 }
                 else
                 {
-                    return _telemetryService!.HashValue(_project.FullPath);
+                    return _telemetryService.HashValue(_project.FullPath);
                 }
             }
         }
