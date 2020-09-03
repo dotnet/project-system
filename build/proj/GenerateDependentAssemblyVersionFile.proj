@@ -29,6 +29,7 @@
 Microsoft.VisualStudio.AppDesigner,$(ProjectSystemVersion).0
 Microsoft.VisualStudio.Editors,$(ProjectSystemVersion).0
 Microsoft.VisualStudio.ProjectSystem.Managed,$(ProjectSystemVersion).0
+Microsoft.VisualStudio.ProjectSystemTools.BackEnd,$(ProjectSystemVersion).0
  ]]>
       </DependentAssemblyVersionsContents>
     </PropertyGroup>
