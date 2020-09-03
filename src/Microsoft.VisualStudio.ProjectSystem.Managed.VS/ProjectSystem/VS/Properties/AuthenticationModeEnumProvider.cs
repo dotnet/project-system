@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             public Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
-                var enumValues =_remoteDebuggerAuthenticationService
+                IEnumValue[]? enumValues =_remoteDebuggerAuthenticationService
                     .GetRemoteAuthenticationModes()
                     .Select(i => new PageEnumValue(new EnumValue
                     {

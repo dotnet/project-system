@@ -41,15 +41,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            var configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
-            var catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+            ConfiguredProject? configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+            IPropertyPagesCatalogProvider? catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
             if (catalogProvider == null)
             {
                 return null;
             }
 
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-            var rule = catalog.GetSchema(unevaluatedPropertyValue);
+            Microsoft.Build.Framework.XamlTypes.Rule? rule = catalog.GetSchema(unevaluatedPropertyValue);
             if (rule == null)
             {
                 return null;
@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 {
                     ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
-                    var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
-                    var activeProfile = writableLaunchSettings.ActiveProfile;
+                    IWritableLaunchSettings? writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
+                    IWritableLaunchProfile? activeProfile = writableLaunchSettings.ActiveProfile;
                     if (activeProfile != null)
                     {
                         activeProfile.CommandName = pageCommandName;
@@ -81,14 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private async Task<string> GetPropertyValueAsync()
         {
             ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            var commandName = launchSettings.ActiveProfile?.CommandName;
+            string? commandName = launchSettings.ActiveProfile?.CommandName;
             if (commandName == null)
             {
                 return string.Empty;
             }
 
-            var configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
-            var catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+            ConfiguredProject? configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+            IPropertyPagesCatalogProvider? catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
 
             if (catalogProvider == null)
             {
@@ -96,9 +96,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-            foreach (var schemaName in catalog.GetPropertyPagesSchemas())
+            foreach (string? schemaName in catalog.GetPropertyPagesSchemas())
             {
-                var rule = catalog.GetSchema(schemaName);
+                Microsoft.Build.Framework.XamlTypes.Rule? rule = catalog.GetSchema(schemaName);
                 if (rule != null
                     && string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                     && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj)

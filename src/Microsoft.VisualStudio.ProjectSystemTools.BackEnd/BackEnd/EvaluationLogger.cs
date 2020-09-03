@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                         return;
                     }
 
-                    var logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
+                        string? logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
                     var binaryLogger = new BinaryLogger
                     {
                         Parameters = logPath,
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
                 case ProjectEvaluationFinishedEventArgs _:
                 {
-                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
+                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out Evaluation? evaluation))
                     {
                         evaluation?.Build?.Finish(true, args.Timestamp);
                         evaluation?.Wrapper?.RaiseEvent(sender, args);
@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
                 default:
                 {
-                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out var evaluation))
+                    if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out Evaluation? evaluation))
                     {
                         evaluation?.Wrapper?.RaiseEvent(sender, args);
                     }

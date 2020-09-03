@@ -56,9 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                     System.Diagnostics.Debug.Assert(_logPath != null);
                     File.Delete(_logPath);
                 }
-#pragma warning disable CA1031 // Do not catch general exception types
                 catch
-#pragma warning restore CA1031 // Do not catch general exception types
                 {
                     // Prevent VS server from crashing
                 }
@@ -77,9 +75,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
         {
-            foreach (var dimension in s_dimensions)
+            foreach (string? dimension in s_dimensions)
             {
-                if (globalProperties.TryGetValue(dimension, out var dimensionValue))
+                if (globalProperties.TryGetValue(dimension, out string? dimensionValue))
                 {
                     yield return dimensionValue;
                 }
@@ -94,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 return;
             }
 
-            var dimensions = GatherDimensions(e.GlobalProperties);
+            IEnumerable<string>? dimensions = GatherDimensions(e.GlobalProperties);
 
             var build = new Build(e.ProjectFile, dimensions.ToArray(), e?.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e?.Timestamp);
             _build = build;

@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
-            var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
+            IWritableLaunchSettings? writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
             if (SetPropertyValue(propertyName, unevaluatedPropertyValue, writableLaunchSettings))
             {
                 await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
