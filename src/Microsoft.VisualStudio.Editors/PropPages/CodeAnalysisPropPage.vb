@@ -31,8 +31,9 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     m_ControlData = New PropertyControlData() {
                         New PropertyControlData(1, "RunAnalyzersDuringBuild", RunAnalyzersDuringBuild, ControlDataFlags.None),
                         New PropertyControlData(2, "RunAnalyzersDuringLiveAnalysis", RunAnalyzersDuringLiveAnalysis, ControlDataFlags.PersistedInProjectUserFile),
-                        New PropertyControlData(3, "EnableNETAnalyzers", EnableNETAnalyzersCheckBox, ControlDataFlags.None),
-                        New PropertyControlData(4, "AnalysisLevel", AnalysisLevelComboBox, AddressOf AnalysisLevelSet, AddressOf AnalysisLevelGet, ControlDataFlags.None)
+                        New PropertyControlData(3, "EnforceCodeStyleInBuild", EnforceCodeStyleInBuildCheckBox, ControlDataFlags.None),
+                        New PropertyControlData(4, "EnableNETAnalyzers", EnableNETAnalyzersCheckBox, ControlDataFlags.None),
+                        New PropertyControlData(5, "AnalysisLevel", AnalysisLevelComboBox, AddressOf AnalysisLevelSet, AddressOf AnalysisLevelGet, ControlDataFlags.None)
                     }
                 End If
                 Return m_ControlData
