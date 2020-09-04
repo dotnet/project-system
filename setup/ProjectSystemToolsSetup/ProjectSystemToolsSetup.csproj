@@ -14,20 +14,26 @@
     <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Common\ProvideCodeBaseBindingRedirection.cs">
-      <Link>ProvideCodeBaseBindingRedirection.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystemTools.BackEnd\Microsoft.VisualStudio.ProjectSystemTools.BackEnd.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystemTools.BackEnd</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup;PkgdefProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+      <Ngen>true</Ngen>
+      <NgenArchitecture>All</NgenArchitecture>
+      <NgenPriority>3</NgenPriority>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystemTools.Shared\Microsoft.VisualStudio.ProjectSystemTools.Shared.csproj">
       <Name>Microsoft.VisualStudio.ProjectSystemTools.Shared</Name>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
+      <Ngen>true</Ngen>
+      <NgenArchitecture>All</NgenArchitecture>
+      <NgenPriority>3</NgenPriority>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Common\ProvideCodeBaseBindingRedirection.cs">
+      <Link>ProvideCodeBaseBindingRedirection.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

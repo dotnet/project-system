@@ -9,7 +9,14 @@
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
-    
+
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>TODO replace</Description>
+    <Summary>TODO replace</Summary>
+    <PackageTags>Roslyn Managed Project System Tools VisualStudio binlog</PackageTags>
+    <NoWarn>$(NoWarn);NU5125</NoWarn>
+
     <IsProductComponent>false</IsProductComponent>
   </PropertyGroup>
 
