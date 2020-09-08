@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                    && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
                    && (Path == null || Path == dependency.FilePath)
                    && (SchemaName == null || SchemaName == dependency.SchemaName)
-                   && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependency) || SchemaItemType == dependency.SchemaItemType)
+                   && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.Dependency) || SchemaItemType == dependency.SchemaItemType)
                    && Resolved == dependency.Resolved
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible

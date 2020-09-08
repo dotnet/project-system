@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             {
                                 Caption = "DependencyExisting",
                                 CustomTag = "Untouched",
-                                Flags = DependencyTreeFlags.Unresolved
+                                Flags = ProjectTreeFlags.BrokenReference
                             }
                         }
                     }
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             {
                                 Caption = "DependencyExisting",
                                 CustomTag = "Untouched",
-                                Flags = DependencyTreeFlags.Resolved
+                                Flags = ProjectTreeFlags.ResolvedReference
                             }
                         }
                     }
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                Flags = DependencyTreeFlags.Resolved
+                                Flags = ProjectTreeFlags.ResolvedReference
                             }
                         }
                     }

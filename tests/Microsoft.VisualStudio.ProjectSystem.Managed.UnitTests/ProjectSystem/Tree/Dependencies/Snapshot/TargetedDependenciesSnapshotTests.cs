@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 OriginalItemSpec = "Dependency1",
                 Caption = "Dependency1",
                 Resolved = true,
-                Flags = DependencyTreeFlags.Resolved,
+                Flags = ProjectTreeFlags.ResolvedReference,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 OriginalItemSpec = "Dependency2",
                 Caption = "Dependency2",
                 Resolved = false,
-                Flags = DependencyTreeFlags.Unresolved,
+                Flags = ProjectTreeFlags.BrokenReference,
                 Icon = KnownMonikers.Uninstall,
                 ExpandedIcon = KnownMonikers.Uninstall
             };

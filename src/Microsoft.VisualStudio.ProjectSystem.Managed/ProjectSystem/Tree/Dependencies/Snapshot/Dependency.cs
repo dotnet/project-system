@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             OriginalItemSpec = dependencyModel.OriginalItemSpec;
             FilePath = dependencyModel.Path;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
-            _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
+            SchemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
             Implicit = dependencyModel.Implicit;
             Visible = dependencyModel.Visible;
@@ -35,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // in the tree to avoid flicks).
             if (Resolved)
             {
-                if (!Flags.Contains(DependencyTreeFlags.Resolved))
+                if (!Flags.Contains(ProjectTreeFlags.ResolvedReference))
                 {
-                    Flags += DependencyTreeFlags.Resolved;
+                    Flags += ProjectTreeFlags.ResolvedReference;
                 }
             }
             else
             {
-                if (!Flags.Contains(DependencyTreeFlags.Unresolved))
+                if (!Flags.Contains(ProjectTreeFlags.BrokenReference))
                 {
-                    Flags += DependencyTreeFlags.Unresolved;
+                    Flags += ProjectTreeFlags.BrokenReference;
                 }
             }
 
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProviderType = dependency.ProviderType;
             OriginalItemSpec = dependency.OriginalItemSpec;
             FilePath = dependency.FilePath;
-            _schemaItemType = dependency._schemaItemType;
+            SchemaItemType = dependency.SchemaItemType;
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
@@ -110,22 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string? OriginalItemSpec { get; }
 
         public string SchemaName { get; }
-
-        private readonly string _schemaItemType;
-
-        public string SchemaItemType
-        {
-            get
-            {
-                // For generic node types we do set correct, known item types, however for custom nodes
-                // provided by third party extensions we can not guarantee that item type will be known.
-                // Thus always set predefined itemType for all custom nodes.
-                // TODO: generate specific xaml rule for generic Dependency nodes
-                // tracking issue: https://github.com/dotnet/project-system/issues/1102
-                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependency);
-                return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
-            }
-        }
+        public string SchemaItemType { get; }
 
         public string Caption { get; }
         public bool Resolved { get; }
