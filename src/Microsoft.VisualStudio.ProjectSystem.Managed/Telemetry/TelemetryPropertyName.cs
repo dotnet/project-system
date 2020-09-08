@@ -28,6 +28,42 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string TreeUpdatedUnresolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedUnresolved, "Project");
 
         /// <summary>
+        ///     Identifies the project to which data in the telemetry event applies.
+        /// </summary>
+        public static readonly string ProjectUnloadProject = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "Project");
+
+        /// <summary>
+        ///     Identifies the time between project load and unload, in milliseconds.
+        /// </summary>
+        public static readonly string ProjectUnloadProjectAgeMillis = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "ProjectAgeMillis");
+
+        /// <summary>
+        ///     Identifies the total number of visible dependencies in the project.
+        ///     If a project multi-targets (i.e. <see cref="ProjectUnloadTargetFrameworkCount"/> is greater than one) then the count of dependencies
+        ///     in each target is summed together to produce this single value. If a breakdown is required, <see cref="ProjectUnloadDependencyBreakdown"/>
+        ///     may be used.
+        /// </summary>
+        public static readonly string ProjectUnloadTotalDependencyCount = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "TotalDependencyCount");
+
+        /// <summary>
+        ///     Identifies the total number of visible unresolved dependencies in the project.
+        ///     If a project multi-targets (i.e. <see cref="ProjectUnloadTargetFrameworkCount"/> is greater than one) then the count of unresolved dependencies
+        ///     in each target is summed together to produce this single value. If a breakdown is required, <see cref="ProjectUnloadDependencyBreakdown"/>
+        ///     may be used.
+        /// </summary>
+        public static readonly string ProjectUnloadUnresolvedDependencyCount = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "UnresolvedDependencyCount");
+
+        /// <summary>
+        ///     Identifies the number of frameworks this project targets.
+        /// </summary>
+        public static readonly string ProjectUnloadTargetFrameworkCount = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "TargetFrameworkCount");
+
+        /// <summary>
+        ///     Contains structured data describing the number of total/unresolved dependencies broken down by target framework and dependency type.
+        /// </summary>
+        public static readonly string ProjectUnloadDependencyBreakdown = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "DependencyBreakdown");
+
+        /// <summary>
         ///     Indicates whether seen all rules initialized when the dependency tree is updated with all resolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedResolvedObservedAllRules = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "ObservedAllRules");

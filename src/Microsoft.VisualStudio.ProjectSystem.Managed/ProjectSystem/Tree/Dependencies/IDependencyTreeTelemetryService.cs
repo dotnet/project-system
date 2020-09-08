@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
@@ -30,5 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
         ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+
+        /// <summary>
+        /// Provides an updated dependency snapshot so that telemetry may be reported about the
+        /// state of the project's dependencies.
+        /// </summary>
+        /// <param name="dependenciesSnapshot">The dependency snapshot.</param>
+        void ObserveSnapshot(DependenciesSnapshot dependenciesSnapshot);
     }
 }

@@ -52,6 +52,11 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string TempPECompileOnDemand = BuildEventName("TempPE/CompileOnDemand");
 
+        /// <summary>
+        ///     Indicates that the summary of a project's dependencies is being reported during project unload.
+        /// </summary>
+        public static readonly string ProjectUnloadDependencies = BuildEventName("ProjectUnload/Dependencies");
+
         private static string BuildEventName(string eventName)
         {
             return Prefix + "/" + eventName.ToLowerInvariant();

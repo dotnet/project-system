@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+        private readonly IDependencyTreeTelemetryService _dependencyTreeTelemetryService;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
@@ -70,13 +71,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ITargetFrameworkProvider targetFrameworkProvider)
+            ITargetFrameworkProvider targetFrameworkProvider,
+            IDependencyTreeTelemetryService dependencyTreeTelemetryService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _targetFrameworkProvider = targetFrameworkProvider;
+            _dependencyTreeTelemetryService = dependencyTreeTelemetryService;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -276,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project?.ProjectInstance.Items);
 
-            _snapshot.TryUpdate(
+            DependenciesSnapshot? updatedSnapshot = _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(
                     previousSnapshot,
                     changedTargetFramework,
@@ -288,6 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
                     projectItemSpecs),
                 token);
+
+            if (updatedSnapshot != null)
+            {
+                _dependencyTreeTelemetryService.ObserveSnapshot(updatedSnapshot);
+            }
 
             return;
 
