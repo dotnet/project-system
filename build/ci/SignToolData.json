@@ -9,10 +9,7 @@
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.xml",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.xml"
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll"
       ]
     },
     {
@@ -22,9 +19,7 @@
         "bin/Dlls/Microsoft.VisualStudio.AppDesigner.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
-        "bin/Dlls/Microsoft.VisualStudio.Editors.xml"
+        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll"
       ]
     },
     {
@@ -36,6 +31,17 @@
         "VSSetup/Insertion/ProjectSystem.vsix",
         "VSSetup/Insertion/VisualStudioEditorsSetup.vsix",
         "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix"
+      ]
+    },
+    {
+      "certificate": "MicrosoftSHA2",
+      "strongName": null,
+      "values": [
+        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
+        "bin/Dlls/Microsoft.VisualStudio.Editors.xml",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.xml",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.xml"
       ]
     },
     {
