@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         ///     Identifies the project to which data in the telemetry event applies.
         /// </summary>
-        public static readonly string ProjectUnloadProject = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "Project");
+        public static readonly string ProjectUnloadDependenciesProject = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "Project");
 
         /// <summary>
         ///     Identifies the time between project load and unload, in milliseconds.

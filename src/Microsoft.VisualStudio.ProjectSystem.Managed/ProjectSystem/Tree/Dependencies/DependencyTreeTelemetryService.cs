@@ -208,7 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 _telemetryService.PostProperties(TelemetryEventName.ProjectUnloadDependencies, new (string, object)[]
                 {
-                    (TelemetryPropertyName.ProjectUnloadProject, _projectId),
+                    (TelemetryPropertyName.ProjectUnloadDependenciesProject, _projectId),
                     (TelemetryPropertyName.ProjectUnloadProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
                     (TelemetryPropertyName.ProjectUnloadTotalDependencyCount, totalDependencyCount),
                     (TelemetryPropertyName.ProjectUnloadUnresolvedDependencyCount, unresolvedDependencyCount),
