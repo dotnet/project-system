@@ -48,20 +48,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             /// Executes <paramref name="updateFunc"/> on the current snapshot within a lock. If a new snapshot
             /// object is returned, <see cref="Current"/> is updated and the update is posted to <see cref="Source"/>.
             /// </summary>
-            public void TryUpdate(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
+            /// <returns>The updated snapshot, or <see langword="null" /> if no update occurred.</returns>
+            public DependenciesSnapshot? TryUpdate(Func<DependenciesSnapshot, DependenciesSnapshot> updateFunc, CancellationToken token = default)
             {
                 if (_isDisposed != 0)
                 {
                     throw new ObjectDisposedException(nameof(SnapshotUpdater));
                 }
 
+                DependenciesSnapshot updatedSnapshot;
+
                 lock (_lock)
                 {
-                    DependenciesSnapshot updatedSnapshot = updateFunc(_currentSnapshot);
+                    updatedSnapshot = updateFunc(_currentSnapshot);
 
                     if (ReferenceEquals(_currentSnapshot, updatedSnapshot))
                     {
-                        return;
+                        return null;
                     }
 
                     _currentSnapshot = updatedSnapshot;
@@ -83,6 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
                         return Task.CompletedTask;
                     }, token);
+
+                return updatedSnapshot;
             }
 
             public void Dispose()
