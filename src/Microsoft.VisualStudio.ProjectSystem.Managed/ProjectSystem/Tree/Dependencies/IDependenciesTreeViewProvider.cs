@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     /// <summary>
     /// Abstraction that helps to build different views for Dependencies node contents.
-    /// Having multiple views implementations we could have some context commands switching 
-    /// between different views. 
+    /// Having multiple views implementations we could have some context commands switching
+    /// between different views.
     /// View is responsible for building nodes hierarchy based on given dependencies snapshot.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]

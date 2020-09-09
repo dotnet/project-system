@@ -62,13 +62,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         public override int GetHashCode()
         {
             int hashCode = Icon.Id.GetHashCode();
-            hashCode = hashCode * -1521134295 + Icon.Guid.GetHashCode();
-            hashCode = hashCode * -1521134295 + ExpandedIcon.Id.GetHashCode();
-            hashCode = hashCode * -1521134295 + ExpandedIcon.Guid.GetHashCode();
-            hashCode = hashCode * -1521134295 + UnresolvedIcon.Id.GetHashCode();
-            hashCode = hashCode * -1521134295 + UnresolvedIcon.Guid.GetHashCode();
-            hashCode = hashCode * -1521134295 + UnresolvedExpandedIcon.Id.GetHashCode();
-            hashCode = hashCode * -1521134295 + UnresolvedExpandedIcon.Guid.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Icon.Guid.GetHashCode();
+            hashCode = (hashCode * -1521134295) + ExpandedIcon.Id.GetHashCode();
+            hashCode = (hashCode * -1521134295) + ExpandedIcon.Guid.GetHashCode();
+            hashCode = (hashCode * -1521134295) + UnresolvedIcon.Id.GetHashCode();
+            hashCode = (hashCode * -1521134295) + UnresolvedIcon.Guid.GetHashCode();
+            hashCode = (hashCode * -1521134295) + UnresolvedExpandedIcon.Id.GetHashCode();
+            hashCode = (hashCode * -1521134295) + UnresolvedExpandedIcon.Guid.GetHashCode();
             return hashCode;
         }
     }

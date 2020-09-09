@@ -944,7 +944,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Private WriteOnly Property FileTypeWithoutUndo As FileTypes
             Set
-                If Not IsLink OrElse Not TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase OrElse _resXDataNode.FileRef Is Nothing Then
+                If Not IsLink OrElse TypeOf ResourceTypeEditor IsNot ResourceTypeEditorFileBase OrElse _resXDataNode.FileRef Is Nothing Then
                     Debug.Fail("")
                     Return
                 End If
@@ -1293,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function GetValue() As Object Implements ResourceTypeEditor.IResource.GetValue
             Debug.Assert(ValueTypeName <> "")
 
-            Debug.Assert(_resourceTypeEditor Is Nothing OrElse Not TypeOf _resourceTypeEditor Is ResourceTypeEditorFileBase, "Perf warning: calling GetValue() on a text/binary file resource - that shouldn't happen")
+            Debug.Assert(_resourceTypeEditor Is Nothing OrElse TypeOf _resourceTypeEditor IsNot ResourceTypeEditorFileBase, "Perf warning: calling GetValue() on a text/binary file resource - that shouldn't happen")
 
             'Is this value supposed to be Nothing?
             If IsResXNullRef Then

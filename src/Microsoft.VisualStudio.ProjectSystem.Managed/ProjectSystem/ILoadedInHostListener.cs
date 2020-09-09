@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Represents a service that listen for project loaded events in a host.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private)]
+    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface ILoadedInHostListener
     {
         /// <summary>

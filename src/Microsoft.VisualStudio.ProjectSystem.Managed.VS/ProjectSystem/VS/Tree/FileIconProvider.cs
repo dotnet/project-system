@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree
             ImageMoniker GetImageMoniker(string _, string p)
             {
                 ImageMoniker imageMoniker = _vsImageService.Value.GetImageMonikerForFile(p);
-                
+
                 if (imageMoniker.Id == -1)
                 {
                     // No specific icon exists for this extension

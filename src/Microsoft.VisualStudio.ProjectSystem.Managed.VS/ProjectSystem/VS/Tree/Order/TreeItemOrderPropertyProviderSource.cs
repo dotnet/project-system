@@ -8,7 +8,7 @@ using System.Threading.Tasks.Dataflow;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     /// <summary>
-    /// Setup the dataflow for a provider that updates solution tree item properties with 
+    /// Setup the dataflow for a provider that updates solution tree item properties with
     /// display order metadata derived from <see cref="IOrderedSourceItemsDataSourceService"/>.
     /// </summary>
     [Export(typeof(IProjectTreePropertiesProviderDataSource))]

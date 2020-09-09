@@ -19,6 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public void SolutionLoadedInHost_SolutionServiceReturnsUncompletedTask_ReturnsUncompletedTask()
+        {
+            var solutionService = ISolutionServiceFactory.ImplementSolutionLoadedInHost(() => new Task(() => { }));
+
+            var service = CreateInstance(solutionService: solutionService);
+
+            var result = service.SolutionLoadedInHost;
+
+            Assert.False(result.IsCompleted);
+        }
+
+        [Fact]
         public void PrioritizedProjectLoadedInHost_WhenNotPrioritizedProjectLoadedInHost_ReturnsUncompletedTask()
         {
             var service = CreateInstance();
@@ -46,6 +58,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var service = CreateInstance(tasksService);
 
             var result = service.PrioritizedProjectLoadedInHost;
+
+            Assert.True(result.IsCanceled);
+        }
+
+        [Fact]
+        public void SolutionLoadedInHost_WhenProjectUnloaded_ReturnsCancelledTask()
+        {
+            var tasksService = IProjectAsynchronousTasksServiceFactory.ImplementUnloadCancellationToken(new CancellationToken(true));
+            var service = CreateInstance(tasksService);
+
+            var result = service.SolutionLoadedInHost;
 
             Assert.True(result.IsCanceled);
         }
@@ -97,6 +120,18 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
+        public void SolutionLoadedInHost_SolutionServiceSolutionReturnsCompletedTask_ReturnsCompletedTask()
+        {
+            var solutionService = ISolutionServiceFactory.ImplementSolutionLoadedInHost(() => Task.CompletedTask);
+
+            var service = CreateInstance(solutionService: solutionService);
+
+            var result = service.SolutionLoadedInHost;
+
+            Assert.True(result.Status == TaskStatus.RanToCompletion);
+        }
+
+        [Fact]
         public void UnloadCancellationToken_WhenUnderlyingUnloadCancellationTokenCancelled_IsCancelled()
         {
             var source = new CancellationTokenSource();
@@ -123,12 +158,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Assert.Equal(1, callCount);
         }
 
-        private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService? tasksService = null, ILoadedInHostListener? loadedInHostListener = null)
+        private static UnconfiguredProjectTasksService CreateInstance(IProjectAsynchronousTasksService? tasksService = null, ILoadedInHostListener? loadedInHostListener = null, ISolutionService? solutionService = null)
         {
             tasksService ??= IProjectAsynchronousTasksServiceFactory.Create();
             loadedInHostListener ??= ILoadedInHostListenerFactory.Create();
+            solutionService ??= ISolutionServiceFactory.Create();
 
-            return new UnconfiguredProjectTasksService(tasksService, IProjectThreadingServiceFactory.Create(), loadedInHostListener);
+            return new UnconfiguredProjectTasksService(tasksService, IProjectThreadingServiceFactory.Create(), loadedInHostListener, solutionService);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the 'licenses.licx' file; 
+    ///     Provides a <see cref="ISpecialFileProvider"/> that handles the 'licenses.licx' file;
     ///     a file that contains a list of licensed (typically Windows Forms) components used by
     ///     a project and is typically found under the 'AppDesigner' folder.
     /// </summary>

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     ///     Verifies that the project was loaded with the expected capabilities to catch
     ///     when the project type in the solution does not match the project itself, for
-    ///     example when the user has renamed csproj -> vbproj without updating the project 
+    ///     example when the user has renamed csproj -> vbproj without updating the project
     ///     type in the solution.
     /// </summary>
     [Export(typeof(IVetoProjectPreLoad))]
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach (string capability in projectType.Capabilities)
             {
                 if (!_projectCapabilitiesService.Contains(capability))
-                {   
+                {
                     // Throw instead of returning false so that we can control message and the HRESULT
                     throw new COMException(string.Format(CultureInfo.CurrentCulture, Resources.ProjectLoadedWithWrongProjectType, _project.FullPath),
                                            HResult.Fail);

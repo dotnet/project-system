@@ -1209,7 +1209,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End If
 
-            If (value IsNot Nothing) And (Not value Is Indeterminate) Then
+            If (value IsNot Nothing) And (value IsNot Indeterminate) Then
                 If _TypeConverter IsNot Nothing Then
                     If _TypeConverter.CanConvertFrom(Nothing, value.GetType()) Then
                         'If Not _TypeConverter.IsValid(value) AndAlso _
@@ -1856,14 +1856,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-#Disable Warning CA2109 ' Review visible event handlers
         ''' <summary>
         ''' Updates the dirty state when user changes selection in a listbox or combobox
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Protected Overridable Sub ComboBox_SelectionChangeCommitted(sender As Object, e As EventArgs)
-#Enable Warning CA2109
             SetDirty(True)
         End Sub
 

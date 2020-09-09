@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Applies <see cref="IProjectVersionedValue{T}"/> values to a <see cref="IWorkspaceProjectContext"/>.
     /// </summary>
     /// <remarks>
-    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to 
-    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/> and
-    ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, bool, CancellationToken)"/>.
+    ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
+    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/> and
+    ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
     /// </remarks>
     [Export(typeof(IApplyChangesToWorkspaceContext))]
     internal class ApplyChangesToWorkspaceContext : OnceInitializedOnceDisposed, IApplyChangesToWorkspaceContext
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             EnsureInitialized();
         }
 
-        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -70,12 +70,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 IComparable version = GetConfiguredProjectVersion(update);
 
                 ProcessOptions(projectChange.After);
-                await ProcessCommandLineAsync(version, projectChange.Difference, isActiveContext, cancellationToken);
+                await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
         }
 
-        public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -83,24 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             IComparable version = GetConfiguredProjectVersion(update);
 
-            return ProcessProjectEvaluationHandlersAsync(version, update, isActiveContext, cancellationToken);
-        }
-
-        public Task ApplyProjectEndBatchAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, CancellationToken cancellationToken)
-        {
-            Requires.NotNull(update, nameof(update));
-
-            VerifyInitializedAndNotDisposed();
-
-            if (update.Value.ProjectChanges.TryGetValue(ProjectBuildRuleName, out IProjectChangeDescription projectChange) &&
-                projectChange.Difference.AnyChanges)
-            {
-                IComparable version = GetConfiguredProjectVersion(update);
-
-                ProcessProjectUpdateHandlers(version, update, cancellationToken);
-            }
-
-            return Task.CompletedTask;
+            return ProcessProjectEvaluationHandlersAsync(version, update, state, cancellationToken);
         }
 
         public IEnumerable<string> GetProjectEvaluationRules()
@@ -174,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _context.SetOptions(snapshot.Items.Keys.ToImmutableArray());
         }
 
-        private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, bool isActiveContext, CancellationToken cancellationToken)
+        private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)
         {
             ICommandLineParserService? parser = CommandLineParsers.FirstOrDefault()?.Value;
 
@@ -185,10 +168,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             BuildOptions added = parser!.Parse(differences.AddedItems, baseDirectory);
             BuildOptions removed = parser.Parse(differences.RemovedItems, baseDirectory);
 
-            return ProcessCommandLineHandlersAsync(version, added, removed, isActiveContext, cancellationToken);
+            return ProcessCommandLineHandlersAsync(version, added, removed, state, cancellationToken);
         }
 
-        private Task ProcessCommandLineHandlersAsync(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, CancellationToken cancellationToken)
+        private Task ProcessCommandLineHandlersAsync(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, CancellationToken cancellationToken)
         {
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
@@ -196,14 +179,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 if (handler.Value is ICommandLineHandler commandLineHandler)
                 {
-                    commandLineHandler.Handle(version, added, removed, isActiveContext, _logger);
+                    commandLineHandler.Handle(version, added, removed, state, _logger);
                 }
             }
 
             return Task.CompletedTask;
         }
 
-        private Task ProcessProjectEvaluationHandlersAsync(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool isActiveContext, CancellationToken cancellationToken)
+        private Task ProcessProjectEvaluationHandlersAsync(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
         {
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
@@ -215,26 +198,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     if (!projectChange.Difference.AnyChanges)
                         continue;
 
-                    evaluationHandler.Handle(version, projectChange, isActiveContext, _logger);
+                    evaluationHandler.Handle(version, projectChange, state, _logger);
                 }
             }
 
             return Task.CompletedTask;
-        }
-
-        private void ProcessProjectUpdateHandlers(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, CancellationToken cancellationToken)
-        {
-            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (handler.Value is IProjectUpdatedHandler evaluationHandler &&
-                    update.Value.ProjectChanges.TryGetValue(evaluationHandler.ProjectEvaluationRule, out IProjectChangeDescription projectChange) &&
-                    projectChange.Difference.AnyChanges)
-                {
-                    evaluationHandler.HandleProjectUpdate(version, projectChange, _logger);
-                }
-            }
         }
 
         private static IComparable GetConfiguredProjectVersion(IProjectVersionedValue<IProjectSubscriptionUpdate> update)

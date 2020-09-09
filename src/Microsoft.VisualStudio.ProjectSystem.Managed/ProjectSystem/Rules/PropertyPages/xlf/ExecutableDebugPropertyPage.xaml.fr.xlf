@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../ExecutableDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|NativeDebugging|Description">
+        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging.</source>
+        <target state="new">Enables debugging for managed and native code together, also known as mixed-mode debugging.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
         <target state="translated">Permettre le débogage du code natif</target>

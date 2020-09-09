@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
-                handler.Handle(null!, added, removed, true, logger);
+                handler.Handle(null!, added, removed, new ContextState(), logger);
             });
         }
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("added", () =>
             {
-                handler.Handle(10, null!, removed, true, logger);
+                handler.Handle(10, null!, removed, new ContextState(), logger);
             });
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("removed", () =>
             {
-                handler.Handle(10, added, null!, true, logger);
+                handler.Handle(10, added, null!, new ContextState(), logger);
             });
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<ArgumentNullException>("logger", () =>
             {
-                handler.Handle(10, added, removed, true, null!);
+                handler.Handle(10, added, removed, new ContextState(), null!);
             });
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                handler.Handle(10, added, removed, true, logger);
+                handler.Handle(10, added, removed, new ContextState(), logger);
             });
         }
 

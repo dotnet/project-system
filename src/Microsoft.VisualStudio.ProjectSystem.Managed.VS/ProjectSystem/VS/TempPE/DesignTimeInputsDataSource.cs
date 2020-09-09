@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             item.TryGetValue(Compile.DesignTimeProperty, out string designTimeString);
             item.TryGetValue(Compile.DesignTimeSharedInputProperty, out string designTimeSharedString);
 
-            if (linkString != null && linkString.Length > 0)
+            if (!string.IsNullOrEmpty(linkString))
             {
                 // Linked files are never used as TempPE inputs
                 return (false, false);

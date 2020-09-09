@@ -6,15 +6,15 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Hosts the "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> 
+    ///     Hosts the "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/>
     ///     and provides consumers access to it.
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         The "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> is the one associated 
-    ///         with the solution's active configuration and represents the context that is used for features that are not yet aware 
-    ///         of multi-targeting projects, including Razor, compiler errors/warnings that come from build (#4034) and Edit-and-Continue. 
-    ///         All other features should live in the <see cref="ConfiguredProject"/> scope and import the current 
+    ///         The "active" <see cref="IWorkspaceProjectContext"/> for an <see cref="UnconfiguredProject"/> is the one associated
+    ///         with the solution's active configuration and represents the context that is used for features that are not yet aware
+    ///         of multi-targeting projects, including Razor, compiler errors/warnings that come from build (#4034) and Edit-and-Continue.
+    ///         All other features should live in the <see cref="ConfiguredProject"/> scope and import the current
     ///         <see cref="IWorkspaceProjectContextHost"/> .
     ///     </para>
     ///     <para>

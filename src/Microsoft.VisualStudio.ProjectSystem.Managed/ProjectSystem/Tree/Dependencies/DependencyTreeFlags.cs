@@ -19,7 +19,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </summary>
         internal static readonly ProjectTreeFlags DependenciesRootNode = ProjectTreeFlags.Create("DependenciesRootNode");
 
-        internal static readonly ProjectTreeFlags GenericDependency = ProjectTreeFlags.Create("GenericDependency");
+        /// <summary>
+        /// Applied to all top-level dependency items under the dependencies tree.
+        /// </summary>
+        internal static readonly ProjectTreeFlags Dependency = ProjectTreeFlags.Create("Dependency");
 
         /// <summary>
         /// Added to dependency tree items which can be removed from the project.
@@ -28,6 +31,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// Non-<see cref="IDependencyModel.Implicit"/> dependencies are considered removable.
         /// </remarks>
         public static readonly ProjectTreeFlags SupportsRemove = ProjectTreeFlags.Create("SupportsRemove");
+
+        /// <summary>
+        /// Indicates that the dependency supports "Open Containing Folder" and "Copy Full Path" commands.
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsBrowse = ProjectTreeFlags.Create(nameof(SupportsBrowse));
+
+        /// <summary>
+        /// Indicates that the dependency supports "Open Folder in File Explorer", "Open Containing Folder" and "Copy Full Path" commands.
+        /// </summary>
+        internal static readonly ProjectTreeFlags SupportsFolderBrowse = ProjectTreeFlags.Create(nameof(SupportsFolderBrowse)) + SupportsBrowse;
 
         /// <summary>
         /// Dependencies having this flag support displaying a browse object, where the corresponding <see cref="IRule" />
@@ -46,35 +59,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// implementations. This is to have a way to distinguish dependency nodes in general.
         /// </summary>
         public static readonly ProjectTreeFlags DependencyFlags
-                = ProjectTreeFlags.Create("Dependency")
-                + ProjectTreeFlags.VirtualFolder
-                + ProjectTreeFlags.BubbleUp
+                = Dependency
+                + ProjectTreeFlags.Reference
                 + SupportsRuleProperties
                 + SupportsRemove;
-
-        internal static readonly ProjectTreeFlags Unresolved = ProjectTreeFlags.Create("Unresolved");
-        internal static readonly ProjectTreeFlags Resolved = ProjectTreeFlags.Create("Resolved");
-
-        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = Unresolved + DependencyFlags;
-        public static readonly ProjectTreeFlags ResolvedDependencyFlags = Resolved + DependencyFlags;
 
         /// <summary>
         /// The set of flags to assign to unresolved Reference nodes.
         /// </summary>
-        internal static readonly ProjectTreeFlags GenericUnresolvedDependencyFlags
-                = ProjectTreeFlags.Reference
-                + ProjectTreeFlags.BrokenReference 
-                + UnresolvedDependencyFlags
-                + GenericDependency;
-
+        public static readonly ProjectTreeFlags UnresolvedDependencyFlags = ProjectTreeFlags.BrokenReference + DependencyFlags;
+        
         /// <summary>
         /// The set of flags to assign to resolved Reference nodes.
         /// </summary>
-        internal static readonly ProjectTreeFlags GenericResolvedDependencyFlags
-                = ProjectTreeFlags.Reference
-                + ProjectTreeFlags.ResolvedReference
-                + ResolvedDependencyFlags
-                + GenericDependency;
+        public static readonly ProjectTreeFlags ResolvedDependencyFlags = ProjectTreeFlags.ResolvedReference + DependencyFlags;
 
         /// <summary>
         /// Identifies nodes used to group dependencies specific to a given implicit configuration,
@@ -90,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// </para>
         /// </remarks>
         internal static readonly ProjectTreeFlags TargetNode = ProjectTreeFlags.Create("TargetNode");
-        
+
         /// <summary>
         /// Present on nodes that group dependencies of a given provider (e.g. "Packages", "Assemblies", ...).
         /// </summary>

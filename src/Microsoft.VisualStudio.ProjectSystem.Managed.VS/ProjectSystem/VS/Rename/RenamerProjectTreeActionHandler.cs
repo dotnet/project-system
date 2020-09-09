@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
+using Solution = Microsoft.CodeAnalysis.Solution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 {
@@ -97,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
-            if (result == false || documentRenameResult == null)
+            if (!result || documentRenameResult == null)
             {
                 return;
             }
@@ -109,39 +110,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             _threadingService.RunAndForget(async () =>
             {
-                // TODO - implement PublishAsync() to sync with LanguageService
-                // https://github.com/dotnet/project-system/issues/3425)
-                // await _languageService.PublishAsync(treeVersion);
-                IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
-                await stageStatus.WaitForCompletionAsync();
+                Solution currentSolution = await PublishLatestSolutionAsync();
 
-                // Apply actions and notify other VS features
-                CodeAnalysis.Solution? currentSolution = GetCurrentProject()?.Solution;
-                if (currentSolution == null)
-                {
-                    return;
-                }
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
-                (WaitIndicatorResult result, CodeAnalysis.Solution renamedSolution) = _waitService.WaitForAsyncFunctionWithResult(
+                WaitIndicatorResult<Solution> result = _waitService.Run(
                                 title: VSResources.Renaming_Type,
                                 message: renameOperationName,
                                 allowCancel: true,
                                 token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
 
                 // Do not warn the user if the rename was cancelled by the user	
-                if (result.WasCanceled())
+                if (result.IsCancelled)
                 {
                     return;
                 }
 
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
-                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, renamedSolution))
+                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result))
                 {
                     string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
                     _userNotificationServices.ShowWarning(failureMessage);
                 }
                 return;
             }, _unconfiguredProject);
+        }
+
+        private async Task<Solution> PublishLatestSolutionAsync()
+        {
+            // WORKAROUND: We don't yet have a way to wait for the rename changes to propagate 
+            // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
+            // instead we wait for the IntelliSense stage to finish for the entire solution
+            // 
+            IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+            await stageStatus.WaitForCompletionAsync();
+
+            // The result of that wait, is basically a "new" published Solution, so grab it
+            return _workspace.CurrentSolution;
         }
 
         private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)

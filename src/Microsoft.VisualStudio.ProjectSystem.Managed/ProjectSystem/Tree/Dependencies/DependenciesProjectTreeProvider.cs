@@ -12,12 +12,12 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -161,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// <remarks>
         /// Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
         /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
-        /// We can remove only nodes that are standard and based on project items, i.e. nodes that 
-        /// are created by default IProjectDependenciesSubTreeProvider implementations and have 
-        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain 
+        /// We can remove only nodes that are standard and based on project items, i.e. nodes that
+        /// are created by default IProjectDependenciesSubTreeProvider implementations and have
+        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain
         /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
         /// </remarks>
         public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
@@ -297,8 +297,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = Resources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)

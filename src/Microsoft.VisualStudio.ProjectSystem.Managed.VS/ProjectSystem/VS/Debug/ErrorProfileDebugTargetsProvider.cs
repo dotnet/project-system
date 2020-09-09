@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// When F5\Ctrl-F5 is invoked on a NoAction profile and error is thrown to the user. Typical case is trying to run a 
+        /// When F5\Ctrl-F5 is invoked on a NoAction profile and error is thrown to the user. Typical case is trying to run a
         /// class library project
         /// </summary>
         public Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile)

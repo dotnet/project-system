@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
@@ -26,7 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 return ImmutableInterlocked.GetOrAdd(
                     ref s_configurationFlags,
                     targetFramework.FullName,
-                    fullName => DependencyTreeFlags.TargetNode.Add($"$TFM:{fullName}"));
+                    fullName => DependencyTreeFlags.TargetNode
+                        .Add($"$TFM:{fullName}")
+                        .Add(ProjectTreeFlags.Common.VirtualFolder));
             }
         }
 
@@ -34,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public string? FilePath => null;
         public string? SchemaName => null;
         public string? SchemaItemType => null;
-        public ImageMoniker Icon => _diagnosticLevel == DiagnosticLevel.None ? KnownMonikers.Library : ManagedImageMonikers.LibraryWarning;
-        public ImageMoniker ExpandedIcon => _diagnosticLevel == DiagnosticLevel.None ? KnownMonikers.Library : ManagedImageMonikers.LibraryWarning;
+        public ImageMoniker Icon => _diagnosticLevel == DiagnosticLevel.None ? KnownMonikers.Library : KnownMonikers.LibraryWarning;
+        public ImageMoniker ExpandedIcon => _diagnosticLevel == DiagnosticLevel.None ? KnownMonikers.Library : KnownMonikers.LibraryWarning;
         public ProjectTreeFlags Flags { get; }
     }
 }

@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
-            If Not TypeOf Member Is PropertyDescriptor Then
+            If TypeOf Member IsNot PropertyDescriptor Then
                 Throw Common.CreateArgumentException(NameOf(Member))
             End If
 

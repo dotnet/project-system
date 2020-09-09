@@ -43,7 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
 
                 if (items.Any(tree => tree.IsFolder))
                 {   // Hide these commands for Folder -> Add
-
                     progressiveStatus |= CommandStatus.InvisibleOnContextMenu;
                 }
 
@@ -73,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             {
                 Lazy<IVsReferenceManagerUserAsync> user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
 
-                return user != null && user.Value.IsApplicable(); 
+                return user?.Value.IsApplicable() == true;
             }
 
             return false;

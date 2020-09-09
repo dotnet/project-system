@@ -17,6 +17,17 @@
   <StringProperty Name="AppXLocation"
                   DisplayName="App Package Location"
                   ReadOnly="True" />
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="SDKReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="CopyLocalExpandedReferenceAssemblies"
                 DisplayName="Copy Local Expanded Reference Assemblies"

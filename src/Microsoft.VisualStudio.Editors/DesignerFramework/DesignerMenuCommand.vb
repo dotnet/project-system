@@ -284,7 +284,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Marshal.GetNativeVariantForObject(_currentTextGetter(), e.OutValue)
             Else
                 ' Request to set the text
-                If Not TypeOf e.InValue Is String Then
+                If TypeOf e.InValue IsNot String Then
                     Throw New InvalidOperationException()
                 End If
                 _currentTextSetter(DirectCast(e.InValue, String))

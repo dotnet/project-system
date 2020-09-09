@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IProjectCapabilitiesService"/> that simply delegates 
+    ///     Provides an implementation of <see cref="IProjectCapabilitiesService"/> that simply delegates
     ///     onto the <see cref="CapabilitiesExtensions.Contains(IProjectCapabilitiesScope, string)"/> method.
     /// </summary>
     [Export(typeof(IProjectCapabilitiesService))]

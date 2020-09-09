@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
     /// <summary>
-    ///     Provides <see langword="abstract"/> base class for <see cref="ISpecialFileProvider"/> instances 
-    ///     that find their special file by file name under the AppDesigner folder, falling back 
+    ///     Provides <see langword="abstract"/> base class for <see cref="ISpecialFileProvider"/> instances
+    ///     that find their special file by file name under the AppDesigner folder, falling back
     ///     to the root folder if it doesn't exist.
     /// </summary>
     internal class AbstractFindByNameUnderAppDesignerSpecialFileProvider : AbstractFindByNameSpecialFileProvider

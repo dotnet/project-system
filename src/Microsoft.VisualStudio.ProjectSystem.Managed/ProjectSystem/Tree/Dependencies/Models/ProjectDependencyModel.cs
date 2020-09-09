@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -11,19 +10,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     internal class ProjectDependencyModel : DependencyModel
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
-            add: DependencyTreeFlags.ProjectDependency);
+            resolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SupportsBrowse,
+            unresolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SupportsBrowse);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Application,
             expandedIcon: KnownMonikers.Application,
-            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+            unresolvedIcon: KnownMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: KnownMonikers.ApplicationWarning);
 
         private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.ApplicationPrivate,
-            expandedIcon: ManagedImageMonikers.ApplicationPrivate,
-            unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning);
+            icon: KnownMonikers.ApplicationPrivate,
+            expandedIcon: KnownMonikers.ApplicationPrivate,
+            unresolvedIcon: KnownMonikers.ApplicationWarning,
+            unresolvedExpandedIcon: KnownMonikers.ApplicationWarning);
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
-                caption: System.IO.Path.GetFileNameWithoutExtension(path),
+                caption: System.IO.Path.GetFileNameWithoutExtension(originalItemSpec),
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{System.IO.Path.GetFileNameWithoutExtension(path)}"),

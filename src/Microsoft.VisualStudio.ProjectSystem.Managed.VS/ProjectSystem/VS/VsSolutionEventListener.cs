@@ -5,27 +5,37 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Responsible for listening to project loaded events and firing <see cref="IUnconfiguredProjectTasksService.PrioritizedProjectLoadedInHost"/> and 
-    ///     <see cref="IUnconfiguredProjectTasksService.ProjectLoadedInHost"/>.
+    ///     Responsible for listening to project and solution loaded events and firing
+    ///     <see cref="IUnconfiguredProjectTasksService.PrioritizedProjectLoadedInHost"/>,
+    ///     <see cref="IUnconfiguredProjectTasksService.ProjectLoadedInHost"/> and
+    ///     <see cref="LoadedInHost"/>.
     /// </summary>
     [Export(typeof(ILoadedInHostListener))]
-    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener
+    [Export(typeof(ISolutionService))]
+    internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsSolutionLoadEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener, ISolutionService
     {
         private readonly IVsUIService<IVsSolution> _solution;
-        private readonly IProjectThreadingService _threadingService;
+
+        private TaskCompletionSource _loadedInHost = new TaskCompletionSource();
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
         [ImportingConstructor]
-        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, IProjectThreadingService threadingService)
-            : base(threadingService.JoinableTaskContext)
+        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext)
+            : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             _solution = solution;
-            _threadingService = threadingService;
+        }
+
+        public Task LoadedInHost
+        {
+            get { return _loadedInHost.Task; }
         }
 
         public Task StartListeningAsync()
@@ -35,9 +45,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await _threadingService.SwitchToUIThread(cancellationToken);
+            await JoinableFactory.SwitchToMainThreadAsync(cancellationToken);
 
             Verify.HResult(_solution.Value.AdviseSolutionEvents(this, out _cookie));
+
+            // In the situation where the solution has already been loaded by the time we're 
+            // initialized, we need to make sure we set LoadedInHost as we will have missed the 
+            // event. This can occur when the first CPS project is loaded due to reload of 
+            // an unloaded project or the first CPS project is loaded in the Add New/Existing Project 
+            // case.
+            Verify.HResult(_solution.Value.GetProperty((int)__VSPROPID4.VSPROPID_IsSolutionFullyLoaded, out object isFullyLoaded));
+
+            if ((bool)isFullyLoaded)
+            {
+                _loadedInHost.SetResult();
+            }
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -46,10 +68,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 if (_cookie != VSConstants.VSCOOKIE_NIL)
                 {
-                    await _threadingService.SwitchToUIThread();
+                    await JoinableFactory.SwitchToMainThreadAsync();
 
                     Verify.HResult(_solution.Value.UnadviseSolutionEvents(_cookie));
 
+                    _loadedInHost.TrySetCanceled();
                     _cookie = VSConstants.VSCOOKIE_NIL;
                 }
             }
@@ -68,6 +91,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             UnconfiguredProjectTasksService? tasksService = GetUnconfiguredProjectTasksServiceIfApplicable(pHierarchy);
             tasksService?.OnPrioritizedProjectLoadedInHost();
 
+            return HResult.OK;
+        }
+
+        public int OnAfterBackgroundSolutionLoadComplete()
+        {
+            _loadedInHost.SetResult();
+            return HResult.OK;
+        }
+
+        public int OnAfterCloseSolution(object pUnkReserved)
+        {
+            _loadedInHost = new TaskCompletionSource();
             return HResult.OK;
         }
 
@@ -122,11 +157,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public int OnBeforeCloseSolution(object pUnkReserved)
-        {
-            return HResult.NotImplemented;
-        }
-
-        public int OnAfterCloseSolution(object pUnkReserved)
         {
             return HResult.NotImplemented;
         }
@@ -197,6 +227,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         }
 
         public int PrioritizedOnAfterAsynchOpenProject(IVsHierarchy pHierarchy, int fAdded)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeOpenSolution(string pszSolutionFilename)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeBackgroundSolutionLoadBegins()
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnQueryBackgroundLoadProjectBatch(out bool pfShouldDelayLoadToNextIdle)
+        {
+            pfShouldDelayLoadToNextIdle = false;
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeLoadProjectBatch(bool fIsBackgroundIdleBatch)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnAfterLoadProjectBatch(bool fIsBackgroundIdleBatch)
         {
             return HResult.NotImplemented;
         }

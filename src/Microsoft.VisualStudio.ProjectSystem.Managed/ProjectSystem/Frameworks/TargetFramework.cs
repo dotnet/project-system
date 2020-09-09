@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public string ShortName { get; }
 
         /// <summary>
-        /// Override Equals to handle equivalency correctly. They are equal if the 
+        /// Override Equals to handle equivalency correctly. They are equal if the
         /// monikers match
         /// </summary>
         public override bool Equals(object obj)

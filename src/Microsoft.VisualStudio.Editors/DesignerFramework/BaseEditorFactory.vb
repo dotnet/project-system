@@ -342,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     If DesignerLoaderObject Is Nothing Then
                         Debug.Fail("DesignerService.CreateDesignerLoader() returned Nothing")
                     End If
-                    If Not TypeOf DesignerLoaderObject Is BaseDesignerLoader Then
+                    If TypeOf DesignerLoaderObject IsNot BaseDesignerLoader Then
                         Debug.Fail("DesignerLoader was of an unexpected type.  This likely means that Microsoft.VisualStudio.Editors.dll was " _
                             & "loaded twice from two different locations (or from the same location but one with 8.3 and the other long paths).  " _
                             & vbCrLf & DesignerLoaderObject.GetType.AssemblyQualifiedName)

@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener? _loadedInHostListener;
+        private readonly ISolutionService? _solutionService;
         private readonly TaskCompletionSource _projectLoadedInHost = new TaskCompletionSource();
         private readonly TaskCompletionSource _prioritizedProjectLoadedInHost = new TaskCompletionSource();
         private readonly JoinableTaskCollection _prioritizedTasks;
@@ -25,13 +26,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public UnconfiguredProjectTasksService(
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IProjectThreadingService threadingService,
-            [Import(AllowDefault = true)] ILoadedInHostListener? loadedInHostListener)
+            [Import(AllowDefault = true)] ILoadedInHostListener? loadedInHostListener,
+            [Import(AllowDefault = true)] ISolutionService? solutionService)
         {
             _prioritizedTasks = threadingService.JoinableTaskContext.CreateCollection();
             _prioritizedTasks.DisplayName = "PrioritizedProjectLoadedInHostTasks";
             _tasksService = tasksService;
             _threadingService = threadingService;
             _loadedInHostListener = loadedInHostListener;
+            _solutionService = solutionService;
         }
 
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -57,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task PrioritizedProjectLoadedInHost
         {
             get { return _prioritizedProjectLoadedInHost.Task.WithCancellation(_tasksService.UnloadCancellationToken); }
+        }
+
+        public Task SolutionLoadedInHost
+        {
+            get { return _solutionService?.LoadedInHost.WithCancellation(_tasksService.UnloadCancellationToken) ?? throw new NotSupportedException(); }
         }
 
         public CancellationToken UnloadCancellationToken

@@ -10,8 +10,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IActiveConfiguredProjectProvider ImplementActiveProjectConfiguration(Func<ProjectConfiguration?> action)
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
-            mock.SetupGet<ProjectConfiguration?>(p => p.ActiveProjectConfiguration)
+            mock.SetupGet(p => p.ActiveProjectConfiguration)
                 .Returns(action);
+
+            return mock.Object;
+        }
+
+        public static IActiveConfiguredProjectProvider Create()
+        {
+            var mock = new Mock<IActiveConfiguredProjectProvider>();
+            mock.SetupGet(p => p.ActiveConfiguredProjectBlock)
+                .Returns(DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<ConfiguredProject>>());
 
             return mock.Object;
         }
@@ -21,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Func<ConfiguredProject?>? getActiveConfiguredProject = null)
         {
             var mock = new Mock<IActiveConfiguredProjectProvider>();
-            mock.SetupGet<ProjectConfiguration?>(p => p.ActiveProjectConfiguration)
+            mock.SetupGet(p => p.ActiveProjectConfiguration)
                 .Returns(getActiveProjectConfiguration);
 
-            mock.SetupGet<ConfiguredProject?>(p => p.ActiveConfiguredProject)
+            mock.SetupGet(p => p.ActiveConfiguredProject)
                 .Returns(getActiveConfiguredProject);
 
             return mock.Object;

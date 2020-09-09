@@ -7,13 +7,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
-
     /// <summary>
-    /// Example data shown below. Support version is the version at which VS will warn the user and the warning will have a 
-    /// don't show again checkbox. The error version (if specified) indicates the version at which the customer is given a stronger 
-    /// message about support and does not have the don't show again dialog box option. The two versions establish a range of 
+    /// Example data shown below. Support version is the version at which VS will warn the user and the warning will have a
+    /// don't show again checkbox. The error version (if specified) indicates the version at which the customer is given a stronger
+    /// message about support and does not have the don't show again dialog box option. The two versions establish a range of
     /// "supported" versions.
-    /// eg: 
+    /// eg:
     /// <code>
     /// {
     ///  "vsVersions": {

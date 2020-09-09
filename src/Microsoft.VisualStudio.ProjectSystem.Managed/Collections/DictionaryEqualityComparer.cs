@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.Collections
         /// </summary>
         private static bool AreEquivalent(IReadOnlyDictionary<TKey, TValue>? dictionary1, IReadOnlyDictionary<TKey, TValue>? dictionary2, IEqualityComparer<TValue> valueComparer)
         {
-            Requires.NotNull(valueComparer, "valueComparer");
+            Requires.NotNull(valueComparer, nameof(valueComparer));
 
             if (ReferenceEquals(dictionary1, dictionary2))
             {

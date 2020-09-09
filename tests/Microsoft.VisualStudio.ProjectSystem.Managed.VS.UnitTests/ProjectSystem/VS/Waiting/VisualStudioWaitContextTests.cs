@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
                 It.Is<string>(s => s == null),
                 It.IsAny<bool>(),
                 It.IsInRange(0, int.MaxValue, Range.Inclusive),
-                It.Is<bool>(v => v == false),
+                It.Is<bool>(v => !v),
                 It.Is<int>(i => i == 0),
                 It.Is<int>(i => i == 0),
                 It.IsNotNull<IVsThreadedWaitDialogCallback>()))

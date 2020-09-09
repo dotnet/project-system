@@ -15,7 +15,6 @@
                 Visible="false">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="false"
-                  Label="Configuration"
                   PersistedName="AppDesignerFolderContentsVisibleOnlyInShowAllFiles"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
@@ -27,7 +26,6 @@
                   Visible="false">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="false"
-                  Label="Configuration"
                   PersistedName="AppDesignerFolder"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />

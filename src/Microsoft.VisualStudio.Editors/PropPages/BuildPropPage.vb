@@ -278,8 +278,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 propRegisterForCOM = GetPropertyDescriptor("RegisterForComInterop")
                 obj = TryGetNonCommonPropertyValue(propRegisterForCOM)
 
-                If Not obj Is PropertyControlData.MissingProperty Then
-                    If Not obj Is PropertyControlData.Indeterminate Then
+                If obj IsNot PropertyControlData.MissingProperty Then
+                    If obj IsNot PropertyControlData.Indeterminate Then
                         bRegisterForCOM = CType(obj, String) IsNot "" AndAlso CType(obj, Boolean)
                     End If
 

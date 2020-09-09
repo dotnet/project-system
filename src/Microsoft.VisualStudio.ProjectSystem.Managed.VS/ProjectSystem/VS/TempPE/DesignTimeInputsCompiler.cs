@@ -283,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             if (!_fileSystem.TryGetLastFileWriteTimeUtc(outputFileName, out DateTime? outputDateTime))
                 return true; // File does not exist
-            
+
             foreach (string file in files)
             {
                 DateTime fileDateTime = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(file);
