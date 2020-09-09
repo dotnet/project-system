@@ -136,11 +136,20 @@ steps:
   displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+     artifacts\$(BuildConfiguration)\packages\*.nupkg
+    TargetFolder: $(Build.ArtifactStagingDirectory)/NuGet
+  displayName: Copy NuGet packages
+  condition: succeededOrFailed()
+
 - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
   displayName: Verify Signed Files
   inputs:
     TargetFolders: |
-      $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+      $(Build.ArtifactStagingDirectory)/NuGet
 
 - task: NuGetToolInstaller@0
   inputs:
@@ -152,6 +161,7 @@ steps:
     nuGetServiceConnections: azure-public/vs-impl
 
 # TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
+# TODO - change packagesToPush to $(Build.ArtifactStagingDirectory)/NuGet
 - task: NuGetCommand@2
   displayName: NuGet push - vs-impl
   inputs:
