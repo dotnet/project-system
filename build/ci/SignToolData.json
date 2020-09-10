@@ -34,17 +34,6 @@
       ]
     },
     {
-      "certificate": "MicrosoftXmlSHA2",
-      "strongName": "None",
-      "values": [
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.xml",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.xml",
-        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
-        "bin/Dlls/Microsoft.VisualStudio.Editors.xml"
-      ]
-    },
-    {
       "certificate": "NuGet",
       "strongName": null,
       "values": [
