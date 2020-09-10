@@ -35,13 +35,19 @@
     },
     {
       "certificate": "MicrosoftXmlSHA2",
-      "strongName": null,
+      "strongName": "MsSharedLib72",
       "values": [
-        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
-        "bin/Dlls/Microsoft.VisualStudio.Editors.xml",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.xml",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.xml"
+      ]
+    },
+    {
+      "certificate": "MicrosoftXmlSHA2",
+      "strongName": "67",
+      "values": [
+        "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
+        "bin/Dlls/Microsoft.VisualStudio.Editors.xml"
       ]
     },
     {
