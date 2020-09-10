@@ -34,7 +34,7 @@
       ]
     },
     {
-      "certificate": "MicrosoftSHA2",
+      "certificate": "MicrosoftXmlSHA2",
       "strongName": null,
       "values": [
         "bin/Dlls/Microsoft.VisualStudio.AppDesigner.xml",
