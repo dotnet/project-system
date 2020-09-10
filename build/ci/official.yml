@@ -136,13 +136,6 @@ steps:
   displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
-# TODO - re-enable this
-# - task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
-#   displayName: Verify Signed Files
-#   inputs:
-#     TargetFolders: |
-#       $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
-
 - task: NuGetToolInstaller@0
   inputs:
     versionSpec: '4.9.2'
@@ -152,7 +145,6 @@ steps:
   inputs:
     nuGetServiceConnections: azure-public/vs-impl
 
-# TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
 # Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
 # For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
 - task: NuGetCommand@2
