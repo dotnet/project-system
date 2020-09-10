@@ -35,7 +35,7 @@
     },
     {
       "certificate": "MicrosoftXmlSHA2",
-      "strongName": "MsSharedLib72",
+      "strongName": "None",
       "values": [
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.xml",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.xml",
