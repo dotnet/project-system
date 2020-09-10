@@ -152,6 +152,8 @@ steps:
     nuGetServiceConnections: azure-public/vs-impl
 
 # TODO - this'll most likely not work so use something like eng\publish-assets.ps1 which is used by Roslyn
+# Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
+# For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
 - task: NuGetCommand@2
   displayName: NuGet push - vs-impl
   inputs:
