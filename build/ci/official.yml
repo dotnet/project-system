@@ -136,6 +136,12 @@ steps:
   displayName: 'Publish Artifact: drop'
   condition: succeededOrFailed()
 
+- task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+
 - task: NuGetToolInstaller@0
   inputs:
     versionSpec: '4.9.2'
