@@ -377,10 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
-                    if (_treeTelemetryService.IsActive)
-                    {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
-                    }
+                    await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
                 }
 
                 return new TreeUpdateResult(dependenciesNode);

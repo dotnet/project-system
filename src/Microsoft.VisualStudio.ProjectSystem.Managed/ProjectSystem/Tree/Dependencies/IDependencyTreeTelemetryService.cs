@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
@@ -13,13 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IDependencyTreeTelemetryService
     {
-        /// <summary>
-        /// Gets a value indicating whether this telemetry service is active.
-        /// If not, then it will remain inactive and no methods need be called on it.
-        /// Note that an instance may become inactive during its lifetime.
-        /// </summary>
-        bool IsActive { get; }
-
         /// <summary>
         /// Initialize telemetry state with the set of target frameworks and rules we expect to observe.
         /// </summary>
@@ -36,6 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// Fire telemetry when dependency tree completes an update
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
-        Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+        ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+
+        /// <summary>
+        /// Provides an updated dependency snapshot so that telemetry may be reported about the
+        /// state of the project's dependencies.
+        /// </summary>
+        /// <param name="dependenciesSnapshot">The dependency snapshot.</param>
+        void ObserveSnapshot(DependenciesSnapshot dependenciesSnapshot);
     }
 }
