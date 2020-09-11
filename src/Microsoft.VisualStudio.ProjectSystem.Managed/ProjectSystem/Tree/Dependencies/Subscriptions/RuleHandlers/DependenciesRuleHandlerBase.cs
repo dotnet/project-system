@@ -56,8 +56,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
-            // We receive evaluated and resolved project data separately, each as its own rule.
-
             HandleChangesForRule(
                 resolved: false,
                 projectChange: evaluation,
