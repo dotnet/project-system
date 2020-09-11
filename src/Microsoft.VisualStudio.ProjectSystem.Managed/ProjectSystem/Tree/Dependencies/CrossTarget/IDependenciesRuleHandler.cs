@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
@@ -35,8 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
         /// Handles the specified set of changes to a rule, and applies them
         /// to the given <see cref="DependenciesChangesBuilder"/>.
         /// </summary>
-        void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+        public void Handle(
+            IProjectChangeDescription evaluation,
+            IProjectChangeDescription? projectBuild,
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder);
     }

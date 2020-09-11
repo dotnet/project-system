@@ -51,30 +51,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         public abstract ImageMoniker ImplicitIcon { get; }
 
         public void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+            IProjectChangeDescription evaluation,
+            IProjectChangeDescription? projectBuild,
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
             // We receive evaluated and resolved project data separately, each as its own rule.
 
-            // We always have evaluated data.
-            IProjectChangeDescription evaluatedChanges = changesByRuleName[EvaluatedRuleName];
-
             HandleChangesForRule(
                 resolved: false,
-                projectChange: evaluatedChanges,
+                projectChange: evaluation,
                 isEvaluatedItemSpec: null);
 
             // We only have resolved data if the update came via the JointRule data source.
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (projectBuild != null)
             {
                 Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem
-                    ? evaluatedChanges.After.Items.ContainsKey
+                    ? evaluation.After.Items.ContainsKey
                     : (Func<string, bool>?)null;
 
                 HandleChangesForRule(
                     resolved: true,
-                    projectChange: resolvedChanges,
+                    projectChange: projectBuild,
                     isEvaluatedItemSpec);
             }
 
@@ -106,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     }
                 }
 
-                System.Diagnostics.Debug.Assert(evaluatedChanges.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
+                System.Diagnostics.Debug.Assert(evaluation.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
             }
         }
 
