@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             // We only have resolved data if the update came via the JointRule data source.
             if (projectBuild != null)
             {
-                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluation.After.Items.ContainsKey : null;
+                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluation.After.Items.ContainsKey : (Func<string, bool>?)null;
 
                 HandleChangesForRule(
                     resolved: true,
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                System.Diagnostics.Debug.Assert(evaluation.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
+                System.Diagnostics.Debug.Assert(projectChange.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
             }
         }
 
