@@ -80,28 +80,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
             {
-                if (projectChange.Difference.RemovedItems.Count != 0)
+                foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
-                    foreach (string removedItem in projectChange.Difference.RemovedItems)
-                    {
-                        HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                if (projectChange.Difference.ChangedItems.Count != 0)
+                foreach (string changedItem in projectChange.Difference.ChangedItems)
                 {
-                    foreach (string changedItem in projectChange.Difference.ChangedItems)
-                    {
-                        HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                if (projectChange.Difference.AddedItems.Count != 0)
+                foreach (string addedItem in projectChange.Difference.AddedItems)
                 {
-                    foreach (string addedItem in projectChange.Difference.AddedItems)
-                    {
-                        HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 System.Diagnostics.Debug.Assert(evaluation.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
