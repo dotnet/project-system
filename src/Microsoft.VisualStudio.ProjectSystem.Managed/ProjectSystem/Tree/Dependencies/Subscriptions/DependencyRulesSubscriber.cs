@@ -110,15 +110,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IProjectSubscriptionUpdate projectUpdate = e.Item1;
             IProjectCatalogSnapshot catalogSnapshot = e.Item2;
 
-            // Broken design time builds sometimes cause updates with no project changes and sometimes
-            // cause updates with a project change that has no difference.
-            // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
+            // Broken design-time builds can produce updates containing no rule data.
+            // Later code assumes that the requested rules are available.
+            // If we see no rule data, return now.
             if (projectUpdate.ProjectChanges.Count == 0)
-            {
-                return;
-            }
-
-            if (!projectUpdate.ProjectChanges.Any(x => x.Value.Difference.AnyChanges))
             {
                 return;
             }
