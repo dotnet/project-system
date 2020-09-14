@@ -51,30 +51,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         public abstract ImageMoniker ImplicitIcon { get; }
 
         public void Handle(
-            IImmutableDictionary<string, IProjectChangeDescription> changesByRuleName,
+            IProjectChangeDescription evaluation,
+            IProjectChangeDescription? projectBuild,
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
-            // We receive evaluated and resolved project data separately, each as its own rule.
-
-            // We always have evaluated data.
-            IProjectChangeDescription evaluatedChanges = changesByRuleName[EvaluatedRuleName];
-
             HandleChangesForRule(
                 resolved: false,
-                projectChange: evaluatedChanges,
+                projectChange: evaluation,
                 isEvaluatedItemSpec: null);
 
             // We only have resolved data if the update came via the JointRule data source.
-            if (changesByRuleName.TryGetValue(ResolvedRuleName, out IProjectChangeDescription resolvedChanges))
+            if (projectBuild != null)
             {
-                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem
-                    ? evaluatedChanges.After.Items.ContainsKey
-                    : (Func<string, bool>?)null;
+                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluation.After.Items.ContainsKey : (Func<string, bool>?)null;
 
                 HandleChangesForRule(
                     resolved: true,
-                    projectChange: resolvedChanges,
+                    projectChange: projectBuild,
                     isEvaluatedItemSpec);
             }
 
@@ -82,31 +76,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
             void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
             {
-                if (projectChange.Difference.RemovedItems.Count != 0)
+                foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
-                    foreach (string removedItem in projectChange.Difference.RemovedItems)
-                    {
-                        HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                if (projectChange.Difference.ChangedItems.Count != 0)
+                foreach (string changedItem in projectChange.Difference.ChangedItems)
                 {
-                    foreach (string changedItem in projectChange.Difference.ChangedItems)
-                    {
-                        HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                if (projectChange.Difference.AddedItems.Count != 0)
+                foreach (string addedItem in projectChange.Difference.AddedItems)
                 {
-                    foreach (string addedItem in projectChange.Difference.AddedItems)
-                    {
-                        HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
-                    }
+                    HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
-                System.Diagnostics.Debug.Assert(evaluatedChanges.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
+                System.Diagnostics.Debug.Assert(projectChange.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
             }
         }
 

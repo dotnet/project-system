@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
@@ -128,7 +129,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
+                IProjectChangeDescription evaluation = projectUpdate.ProjectChanges[handler.Value.EvaluatedRuleName];
+                IProjectChangeDescription? build = projectUpdate.ProjectChanges.GetValueOrDefault(handler.Value.ResolvedRuleName);
+
+                handler.Value.Handle(evaluation, build, targetFrameworkToUpdate, changesBuilder);
             }
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();
