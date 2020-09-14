@@ -109,6 +109,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IProjectSubscriptionUpdate projectUpdate = e.Item1;
             IProjectCatalogSnapshot catalogSnapshot = e.Item2;
 
+            // Broken design-time builds can produce updates containing no rule data.
+            // Later code assumes that the requested rules are available.
+            // If we see no rule data, return now.
+            if (projectUpdate.ProjectChanges.Count == 0)
+            {
+                return;
+            }
+
             // Create an object to track dependency changes.
             var changesBuilder = new DependenciesChangesBuilder();
 
