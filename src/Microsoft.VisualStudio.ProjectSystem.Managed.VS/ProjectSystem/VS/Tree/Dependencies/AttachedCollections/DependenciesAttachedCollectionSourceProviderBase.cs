@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Base class for attaching <see cref="IRelatableItem"/> children to <see cref="IVsHierarchyItem"/>s in the tree.
     /// </summary>
     /// <remarks>
-    /// See also <see cref="RelationAttachedCollectionSourceProviderBase"/> which attaches children and parents
+    /// See also <see cref="RelationAttachedCollectionSourceProvider"/> which attaches children and parents
     /// to <see cref="IRelatableItem"/> objects that already exist in the tree.
     /// </remarks>
     public abstract class DependenciesAttachedCollectionSourceProviderBase : IAttachedCollectionSourceProvider
