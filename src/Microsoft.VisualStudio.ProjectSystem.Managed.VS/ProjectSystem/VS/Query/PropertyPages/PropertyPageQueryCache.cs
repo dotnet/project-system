@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Retrieves the set of property pages that apply to the project level for the given <paramref
         /// name="projectConfiguration"/>.
         /// </summary>
-        public async Task<IPropertyPagesCatalog?> GetProjectLevelPropertyPagesCatalogAsync(ProjectConfiguration projectConfiguration)
+        private async Task<IPropertyPagesCatalog?> GetProjectLevelPropertyPagesCatalogAsync(ProjectConfiguration projectConfiguration)
         {
             if (_catalogCache.TryGetValue(projectConfiguration, out var cachedCatalog))
             {
