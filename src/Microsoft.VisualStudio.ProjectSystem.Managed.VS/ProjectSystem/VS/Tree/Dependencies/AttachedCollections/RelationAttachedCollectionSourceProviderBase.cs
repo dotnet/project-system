@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// See also <see cref="DependenciesAttachedCollectionSourceProviderBase"/> which attaches children
     /// to the <see cref="IVsHierarchyItem"/> objects that represent top-level project dependencies.
     /// </remarks>
+    [AppliesTo(ProjectCapability.DependenciesTree)]
     [Export(typeof(IAttachedCollectionSourceProvider))]
     [Name(nameof(RelationAttachedCollectionSourceProviderBase))]
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
