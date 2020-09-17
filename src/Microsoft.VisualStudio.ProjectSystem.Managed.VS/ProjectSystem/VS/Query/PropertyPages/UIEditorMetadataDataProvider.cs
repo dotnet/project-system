@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [RelationshipQueryDataProvider(UIPropertyEditorType.TypeName, UIPropertyEditorType.MetadataPropertyName)]
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal partial class UIEditorMetadataDataProvider : IQueryByRelationshipDataProvider
+    internal class UIEditorMetadataDataProvider : IQueryByRelationshipDataProvider
     {
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {

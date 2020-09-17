@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryByIdDataProvider))]
     [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal partial class PropertyPageDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
+    internal class PropertyPageDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
         [ImportingConstructor]
         public PropertyPageDataProvider(IProjectServiceAccessor projectServiceAccessor)

@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [RelationshipQueryDataProvider(UIPropertyType.TypeName, UIPropertyType.ValuesPropertyName)]
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal partial class UIPropertyValueDataProvider : IQueryByRelationshipDataProvider
+    internal class UIPropertyValueDataProvider : IQueryByRelationshipDataProvider
     {
         public IQueryDataProducer<IEntityValue, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {

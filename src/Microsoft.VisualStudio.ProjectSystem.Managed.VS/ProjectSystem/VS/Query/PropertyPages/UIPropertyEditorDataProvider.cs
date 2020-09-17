@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryByIdDataProvider))]
     [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal partial class UIPropertyEditorDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
+    internal class UIPropertyEditorDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
         [ImportingConstructor]
         public UIPropertyEditorDataProvider(IProjectServiceAccessor projectServiceAccessor)
