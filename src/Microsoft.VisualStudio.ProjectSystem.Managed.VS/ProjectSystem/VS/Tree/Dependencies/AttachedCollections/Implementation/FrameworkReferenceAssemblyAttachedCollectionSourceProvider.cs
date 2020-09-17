@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
-    [AppliesTo(ProjectCapability.DependenciesTree)]
+    [AppliesToProject(ProjectCapability.DependenciesTree)]
     [Export(typeof(IAttachedCollectionSourceProvider))]
     [Name(nameof(FrameworkReferenceAssemblyAttachedCollectionSourceProvider))]
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
