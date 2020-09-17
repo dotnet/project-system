@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected IUIPropertyPropertiesAvailableStatus Properties { get; }
 
-        protected async Task<IEntityValue> CreateUIPropertyValueAsync(IEntityValue entity, PropertyPageQueryCache context, BaseProperty property, int order)
+        protected async Task<IEntityValue> CreateUIPropertyValueAsync(IEntityValue entity, IPropertyPageQueryCache context, BaseProperty property, int order)
         {
             Requires.NotNull(entity, nameof(entity));
             Requires.NotNull(property, nameof(property));
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return await CreateUIPropertyValueAsync(entity.EntityRuntime, identity, context, property, order);
         }
 
-        protected Task<IEntityValue> CreateUIPropertyValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, PropertyPageQueryCache context, BaseProperty property, int order)
+        protected Task<IEntityValue> CreateUIPropertyValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, BaseProperty property, int order)
         {
             Requires.NotNull(property, nameof(property));
             var newUIProperty = new UIPropertyValue(runtimeModel, id, new UIPropertyPropertiesAvailableStatus());

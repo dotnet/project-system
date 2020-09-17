@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             Requires.NotNull(request, nameof(request));
 
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (PropertyPageQueryCache context, Rule rule))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache context, Rule rule))
             {
                 try
                 {

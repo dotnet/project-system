@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected IPropertyPagePropertiesAvailableStatus Properties { get; }
 
-        protected Task<IEntityValue> CreatePropertyPageValueAsync(IEntityValue entity, PropertyPageQueryCache context, Rule rule)
+        protected Task<IEntityValue> CreatePropertyPageValueAsync(IEntityValue entity, IPropertyPageQueryCache context, Rule rule)
         {
             Requires.NotNull(entity, nameof(entity));
             Requires.NotNull(rule, nameof(rule));
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return CreatePropertyPageValueAsync(entity.EntityRuntime, identity, context, rule);
         }
 
-        protected Task<IEntityValue> CreatePropertyPageValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, PropertyPageQueryCache context, Rule rule)
+        protected Task<IEntityValue> CreatePropertyPageValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, Rule rule)
         {
             Requires.NotNull(rule, nameof(rule));
             var newPropertyPage = new PropertyPageValue(runtimeModel, id, new PropertyPagePropertiesAvailableStatus());
