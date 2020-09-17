@@ -23,8 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
             Requires.NotNull(request, nameof(request));
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property)
-                && property is ProjectSystem.Properties.IEnumProperty enumProperty)
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (ProjectConfiguration _, ProjectSystem.Properties.IEnumProperty enumProperty))
             {
                 foreach (var value in await enumProperty.GetAdmissibleValuesAsync())
                 {
