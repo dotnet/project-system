@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         if (_projectService.GetLoadedProject(path) is UnconfiguredProject project
                             && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                             && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                            && rule.TryGetPropertyAndIndex(propertyName, out var property, out var index)
+                            && rule.GetProperty(propertyName) is BaseProperty property
                             && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName)) is ValueEditor editor)
                         {
                             IEntityValue editorValue = await CreateEditorValueAsync(request.QueryExecutionContext.EntityRuntime, requestId, editor);
