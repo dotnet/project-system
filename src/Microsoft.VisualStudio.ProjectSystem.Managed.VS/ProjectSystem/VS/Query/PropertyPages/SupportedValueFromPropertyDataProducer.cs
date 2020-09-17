@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 foreach (var value in await enumProperty.GetAdmissibleValuesAsync())
                 {
-                    IEntityValue ProjectConfigurationDimension = CreateSupportedValue(request.RequestData.EntityRuntime, value);
-                    await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(ProjectConfigurationDimension, request, ProjectModelZones.Cps));
+                    IEntityValue projectConfigurationDimension = CreateSupportedValue(request.RequestData.EntityRuntime, value);
+                    await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(projectConfigurationDimension, request, ProjectModelZones.Cps));
                 }
             }
 
