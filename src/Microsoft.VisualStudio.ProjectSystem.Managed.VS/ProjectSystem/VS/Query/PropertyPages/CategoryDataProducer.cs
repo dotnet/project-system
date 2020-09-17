@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class CategoryDataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public CategoryDataProducer(ICategoryPropertiesAvailableStatus properties)
+        protected CategoryDataProducer(ICategoryPropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;

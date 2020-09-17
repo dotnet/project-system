@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class UIEditorMetadataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public UIEditorMetadataProducer(IUIEditorMetadataPropertiesAvailableStatus properties)
+        protected UIEditorMetadataProducer(IUIEditorMetadataPropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;

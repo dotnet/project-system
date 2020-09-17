@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class SupportedValueDataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public SupportedValueDataProducer(ISupportedValuePropertiesAvailableStatus properties)
+        protected SupportedValueDataProducer(ISupportedValuePropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;

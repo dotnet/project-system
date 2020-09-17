@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class PropertyPageDataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public PropertyPageDataProducer(IPropertyPagePropertiesAvailableStatus properties)
+        protected PropertyPageDataProducer(IPropertyPagePropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;

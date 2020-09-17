@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class UIPropertyValueDataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public UIPropertyValueDataProducer(IUIPropertyValuePropertiesAvailableStatus properties)
+        protected UIPropertyValueDataProducer(IUIPropertyValuePropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;

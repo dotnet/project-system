@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class ConfigurationDimensionDataProducer : QueryDataProducerBase<IEntityValue>
     {
-        public ConfigurationDimensionDataProducer(IConfigurationDimensionPropertiesAvailableStatus properties)
+        protected ConfigurationDimensionDataProducer(IConfigurationDimensionPropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             Properties = properties;
