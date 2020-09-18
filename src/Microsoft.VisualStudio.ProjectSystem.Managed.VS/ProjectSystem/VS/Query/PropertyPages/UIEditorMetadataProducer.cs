@@ -1,41 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles the creation of <see cref="IUIEditorMetadata"/> instances and populating the requested members.
     /// </summary>
-    internal abstract class UIEditorMetadataProducer : QueryDataProducerBase<IEntityValue>
+    internal static class UIEditorMetadataProducer
     {
-        protected UIEditorMetadataProducer(IUIEditorMetadataPropertiesAvailableStatus properties)
-        {
-            Requires.NotNull(properties, nameof(properties));
-            Properties = properties;
-        }
-
-        protected IUIEditorMetadataPropertiesAvailableStatus Properties { get; }
-
-        protected IEntityValue CreateMetadataValue(IEntityRuntimeModel entityRuntime, NameValuePair metadata)
+        public static IEntityValue CreateMetadataValue(IEntityRuntimeModel entityRuntime, NameValuePair metadata, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
         {
             var newMetadata = new UIEditorMetadataValue(entityRuntime, new UIEditorMetadataPropertiesAvailableStatus());
 
-            if (Properties.Name)
+            if (requestedProperties.Name)
             {
                 newMetadata.Name = metadata.Name;
             }
 
-            if (Properties.Value)
+            if (requestedProperties.Value)
             {
                 newMetadata.Value = metadata.Value;
             }
 
             return newMetadata;
+        }
+
+        public static IEnumerable<IEntityValue> CreateMetadataValues(IEntityRuntimeModel entityRuntime, ValueEditor editor, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
+        {
+            foreach (NameValuePair metadataPair in editor.Metadata)
+            {
+                IEntityValue metadataValue = CreateMetadataValue(entityRuntime, metadataPair, requestedProperties);
+                yield return metadataValue;
+            }
         }
     }
 }

@@ -15,26 +15,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving a set of <see cref="IUIPropertyEditor"/>s from an <see cref="IUIProperty"/>.
     /// </summary>
-    internal class UIPropertyEditorFromUIPropertyDataProducer : UIPropertyEditorDataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class UIPropertyEditorFromUIPropertyDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly IUIPropertyEditorPropertiesAvailableStatus _properties;
+
         public UIPropertyEditorFromUIPropertyDataProducer(IUIPropertyEditorPropertiesAvailableStatus properties)
-            : base(properties)
         {
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
             Requires.NotNull(request, nameof(request));
-
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache context, Rule schema, string propertyName))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache _, Rule schema, string propertyName))
             {
                 try
                 {
-                    var property = schema.GetProperty(propertyName);
-                    foreach (var editor in property.ValueEditors)
+                    foreach (IEntityValue propertyEditor in UIPropertyEditorDataProducer.CreateEditorValues(request.RequestData, schema, propertyName, _properties))
                     {
-                        IEntityValue editorValue = await CreateEditorValueAsync(request.RequestData, editor);
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(editorValue, request, ProjectModelZones.Cps));
+                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyEditor, request, ProjectModelZones.Cps));
                     }
                 }
                 catch (Exception ex)

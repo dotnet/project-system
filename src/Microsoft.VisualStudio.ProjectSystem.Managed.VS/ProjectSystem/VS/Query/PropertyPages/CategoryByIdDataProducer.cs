@@ -3,61 +3,56 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving an <see cref="ProjectSystem.Query.ProjectModel.ICategory"/> based on an ID.
+    /// Handles retrieving an <see cref="ICategory"/> based on an ID.
     /// </summary>
-    internal class CategoryByIdDataProducer : CategoryDataProducer, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
+    internal class CategoryByIdDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
         private readonly IProjectService2 _projectService;
+        private readonly ICategoryPropertiesAvailableStatus _properties;
 
         public CategoryByIdDataProducer(ICategoryPropertiesAvailableStatus properties, IProjectService2 projectService)
-            : base(properties)
         {
+            Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
+
+            _properties = properties;
             _projectService = projectService;
+
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
         {
             Requires.NotNull(request, nameof(request));
 
-            foreach (var requestId in request.RequestData)
+            foreach (EntityIdentity requestId in request.RequestData)
             {
                 if (requestId.KeysCount == 3
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
+                    && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
                     && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
                     && requestId.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string categoryName))
                 {
                     try
                     {
-                        if (_projectService.GetLoadedProject(path) is UnconfiguredProject project
-                            && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                            && projectCatalog.GetSchema(propertyPageName) is Rule rule)
+                        IEntityValue? categoryValue = await CategoryDataProducer.CreateCategoryValueAsync(
+                            request.QueryExecutionContext.EntityRuntime,
+                            requestId,
+                            _projectService,
+                            projectPath,
+                            propertyPageName,
+                            categoryName,
+                            _properties);
+
+                        if (categoryValue != null)
                         {
-                            // We need the category's index in order to populate the "Order" field of the query model.
-                            // This requires that we do a linear traversal of the categories, even though we only care
-                            // about one.
-                            //
-                            // TODO: if the "Order" property hasn't been requested, we can skip the linear traversal in
-                            // favor of just looking it up by name.
-                            foreach ((var index, var category) in rule.EvaluatedCategories.WithIndices())
-                            {
-                                if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
-                                {
-                                    IEntityValue categoryValue = CreateCategoryValue(request.QueryExecutionContext.EntityRuntime, requestId, category, index);
-                                    await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
-                                }
-                            }
+                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
                         }
                     }
                     catch (Exception ex)

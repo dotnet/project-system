@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -15,22 +13,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="IPropertyPage"/> based on an ID.
     /// </summary>
-    internal class PropertyPageByIdDataProducer : PropertyPageDataProducer, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
+    internal class PropertyPageByIdDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
         private readonly IProjectService2 _projectService;
+        private readonly IPropertyPagePropertiesAvailableStatus _properties;
 
         public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService)
-            : base(properties)
         {
+            Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
+
             _projectService = projectService;
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
         {
             Requires.NotNull(request, nameof(request));
 
-            foreach (var requestId in request.RequestData)
+            foreach (EntityIdentity requestId in request.RequestData)
             {
                 if (requestId.KeysCount == 2
                     && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
@@ -38,13 +39,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     try
                     {
-                        if (_projectService.GetLoadedProject(path) is UnconfiguredProject project
-                            && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                            && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                            && !rule.PropertyPagesHidden)
+                        IEntityValue? propertyPageValue = await PropertyPageDataProducer.CreatePropertyPageValueAsync(
+                            request.QueryExecutionContext.EntityRuntime,
+                            requestId,
+                            _projectService,
+                            path,
+                            propertyPageName,
+                            _properties);
+
+                        if (propertyPageValue is not null)
                         {
-                            var propertyPageQueryContext = new PropertyPageQueryCache(project);
-                            IEntityValue propertyPageValue = await CreatePropertyPageValueAsync(request.QueryExecutionContext.EntityRuntime, requestId, propertyPageQueryContext, rule);
                             await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyPageValue, request, ProjectModelZones.Cps));
                         }
                     }

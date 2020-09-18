@@ -9,29 +9,30 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPage"/>.
     /// </summary>
-    internal class CategoryFromPropertyPageDataProducer : CategoryDataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class CategoryFromPropertyPageDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly ICategoryPropertiesAvailableStatus _properties;
+
         public CategoryFromPropertyPageDataProducer(ICategoryPropertiesAvailableStatus properties)
-            : base(properties)
         {
+            Requires.NotNull(properties, nameof(properties));
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache context, Rule rule))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache _, Rule rule))
             {
                 try
                 {
-                    foreach ((var index, var category) in rule.EvaluatedCategories.WithIndices())
+                    foreach (IEntityValue categoryValue in CategoryDataProducer.CreateCategoryValues(request.RequestData, rule, _properties))
                     {
-                        IEntityValue categoryValue = CreateCategoryValue(request.RequestData, category, index);
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
                     }
                 }

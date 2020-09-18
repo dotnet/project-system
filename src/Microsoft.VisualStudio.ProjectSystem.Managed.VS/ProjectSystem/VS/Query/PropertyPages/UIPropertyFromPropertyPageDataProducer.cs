@@ -9,18 +9,19 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
-using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles retrieving a set of <see cref="IUIProperty"/>s from an <see cref="IPropertyPage"/>.
     /// </summary>
-    internal class UIPropertyFromPropertyPageDataProducer : UIPropertyDataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class UIPropertyFromPropertyPageDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly IUIPropertyPropertiesAvailableStatus _properties;
+
         public UIPropertyFromPropertyPageDataProducer(IUIPropertyPropertiesAvailableStatus properties)
-            : base(properties)
         {
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
@@ -31,13 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach ((var index, var property) in rule.Properties.WithIndices())
+                    foreach (IEntityValue propertyValue in UIPropertyDataProducer.CreateUIPropertyValues(request.RequestData, context, rule, _properties))
                     {
-                        if (property.Visible)
-                        {
-                            IEntityValue propertyValue = await CreateUIPropertyValueAsync(request.RequestData, context, property, index);
-                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
-                        }
+                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
                     }
                 }
                 catch (Exception ex)

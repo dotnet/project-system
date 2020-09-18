@@ -3,28 +3,21 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
+using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles the creation of <see cref="IPropertyPage"/> instances and populating the requested members.
     /// </summary>
-    internal abstract class UIPropertyDataProducer : QueryDataProducerBase<IEntityValue>
+    internal static class UIPropertyDataProducer
     {
-        protected UIPropertyDataProducer(IUIPropertyPropertiesAvailableStatus properties)
-        {
-            Requires.NotNull(properties, nameof(properties));
-            Properties = properties;
-        }
-
-        protected IUIPropertyPropertiesAvailableStatus Properties { get; }
-
-        protected async Task<IEntityValue> CreateUIPropertyValueAsync(IEntityValue entity, IPropertyPageQueryCache context, BaseProperty property, int order)
+        public static IEntityValue CreateUIPropertyValue(IEntityValue entity, IPropertyPageQueryCache context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(entity, nameof(entity));
             Requires.NotNull(property, nameof(property));
@@ -33,54 +26,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 ((IEntityWithId)entity).Id,
                 new KeyValuePair<string, string>[]
                 {
-                        new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
+                    new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
                 });
 
-            return await CreateUIPropertyValueAsync(entity.EntityRuntime, identity, context, property, order);
+            return CreateUIPropertyValue(entity.EntityRuntime, identity, context, property, order, requestedProperties);
         }
 
-        protected Task<IEntityValue> CreateUIPropertyValueAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, BaseProperty property, int order)
+        public static IEntityValue CreateUIPropertyValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property, nameof(property));
             var newUIProperty = new UIPropertyValue(runtimeModel, id, new UIPropertyPropertiesAvailableStatus());
 
-            if (Properties.Name)
+            if (requestedProperties.Name)
             {
                 newUIProperty.Name = property.Name;
             }
 
-            if (Properties.DisplayName)
+            if (requestedProperties.DisplayName)
             {
                 newUIProperty.DisplayName = property.DisplayName;
             }
 
-            if (Properties.Description)
+            if (requestedProperties.Description)
             {
                 newUIProperty.Description = property.Description;
             }
 
-            if (Properties.ConfigurationIndependent)
+            if (requestedProperties.ConfigurationIndependent)
             {
                 bool hasConfigurationCondition = property.DataSource?.HasConfigurationCondition ?? property.ContainingRule.DataSource?.HasConfigurationCondition ?? false;
                 newUIProperty.ConfigurationIndependent = !hasConfigurationCondition;
             }
 
-            if (Properties.HelpUrl)
+            if (requestedProperties.HelpUrl)
             {
                 newUIProperty.HelpUrl = property.HelpUrl;
             }
 
-            if (Properties.CategoryName)
+            if (requestedProperties.CategoryName)
             {
                 newUIProperty.CategoryName = property.Category;
             }
 
-            if (Properties.Order)
+            if (requestedProperties.Order)
             {
                 newUIProperty.Order = order;
             }
 
-            if (Properties.Type)
+            if (requestedProperties.Type)
             {
                 newUIProperty.Type = property switch
                 {
@@ -93,14 +86,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 };
             }
 
-            if (Properties.SearchTerms)
+            if (requestedProperties.SearchTerms)
             {
                 // TODO: extract search terms from property metadata.
             }
 
             ((IEntityValueFromProvider)newUIProperty).ProviderState = (context, property.ContainingRule, property.Name);
 
-            return Task.FromResult<IEntityValue>(newUIProperty);
+            return newUIProperty;
+        }
+
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue requestData, IPropertyPageQueryCache context, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        {
+            foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
+            {
+                if (property.Visible)
+                {
+                    IEntityValue propertyValue = CreateUIPropertyValue(requestData, context, property, index, properties);
+                    yield return propertyValue;
+                }
+            }
+        }
+
+        public static async Task<IEntityValue?> CreateUIPropertyValueAsync(
+            IEntityRuntimeModel entityRuntime,
+            EntityIdentity requestId,
+            IProjectService2 projectService,
+            string path,
+            string propertyPageName,
+            string propertyName,
+            IUIPropertyPropertiesAvailableStatus requestedProperties)
+        {
+            if (projectService.GetLoadedProject(path) is UnconfiguredProject project
+                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                && projectCatalog.GetSchema(propertyPageName) is Rule rule
+                && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
+                && property.Visible)
+            {
+                var context = new PropertyPageQueryCache(project);
+                IEntityValue propertyValue = CreateUIPropertyValue(entityRuntime, requestId, context, property, index, requestedProperties);
+                return propertyValue;
+            }
+
+            return null;
         }
     }
 }

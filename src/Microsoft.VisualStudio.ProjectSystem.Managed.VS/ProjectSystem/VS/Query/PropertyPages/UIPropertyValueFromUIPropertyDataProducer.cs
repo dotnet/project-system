@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -17,11 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving a set of <see cref="IUIPropertyValue"/>s from an <see cref="IUIProperty"/>.
     /// </summary>
-    internal class UIPropertyValueFromUIPropertyDataProducer : UIPropertyValueDataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class UIPropertyValueFromUIPropertyDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly IUIPropertyValuePropertiesAvailableStatus _properties;
+
         public UIPropertyValueFromUIPropertyDataProducer(IUIPropertyValuePropertiesAvailableStatus properties)
-            : base(properties)
         {
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
@@ -30,17 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    if (await context.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
+                    IEnumerable<IEntityValue> propertyValues = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                        request.RequestData,
+                        context,
+                        schema,
+                        propertyName,
+                        _properties);
+
+                    foreach (IEntityValue propertyValue in propertyValues)
                     {
-                        foreach (var knownConfiguration in knownConfigurations)
-                        {
-                            if (await context.BindToRule(knownConfiguration, schema.Name) is IRule rule
-                                && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
-                            {
-                                IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(request.RequestData, knownConfiguration, property);
-                                await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
-                            }
-                        }
+                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
                     }
                 }
                 catch (Exception ex)

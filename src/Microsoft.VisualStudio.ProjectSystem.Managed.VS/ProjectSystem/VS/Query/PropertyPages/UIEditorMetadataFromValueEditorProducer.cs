@@ -18,11 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// The <see cref="ValueEditor"/> comes from the parent <see cref="IUIPropertyEditor"/>
     /// </remarks>
-    internal class UIEditorMetadataFromValueEditorProducer : UIEditorMetadataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class UIEditorMetadataFromValueEditorProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly IUIEditorMetadataPropertiesAvailableStatus _properties;
+
         public UIEditorMetadataFromValueEditorProducer(IUIEditorMetadataPropertiesAvailableStatus properties)
-            : base(properties)
         {
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
@@ -33,9 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach (var metadataPair in editor.Metadata)
+                    foreach (IEntityValue metadataValue in UIEditorMetadataProducer.CreateMetadataValues(request.RequestData.EntityRuntime, editor, _properties))
                     {
-                        IEntityValue metadataValue = CreateMetadataValue(request.RequestData.EntityRuntime, metadataPair);
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(metadataValue, request, ProjectModelZones.Cps));
                     }
                 }

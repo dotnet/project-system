@@ -2,10 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -16,14 +13,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="IUIPropertyEditor"/> base on an ID.
     /// </summary>
-    internal class UIPropertyEditorByIdDataProducer : UIPropertyEditorDataProducer, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
+    internal class UIPropertyEditorByIdDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
+        private readonly IUIPropertyEditorPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
 
         public UIPropertyEditorByIdDataProducer(IUIPropertyEditorPropertiesAvailableStatus properties, IProjectService2 projectService)
-            : base(properties)
         {
+            Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
+            _properties = properties;
             _projectService = projectService;
         }
 
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             Requires.NotNull(request, nameof(request));
 
-            foreach (var requestId in request.RequestData)
+            foreach (EntityIdentity requestId in request.RequestData)
             {
                 if (requestId.KeysCount == 4
                     && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
@@ -41,14 +40,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     try
                     {
-                        if (_projectService.GetLoadedProject(path) is UnconfiguredProject project
-                            && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                            && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                            && rule.GetProperty(propertyName) is BaseProperty property
-                            && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName)) is ValueEditor editor)
+                        IEntityValue? propertyEditor = await UIPropertyEditorDataProducer.CreateEditorValueAsync(
+                            request.QueryExecutionContext.EntityRuntime,
+                            requestId,
+                            _projectService,
+                            path,
+                            propertyPageName,
+                            propertyName,
+                            editorName,
+                            _properties);
+
+                        if (propertyEditor is not null)
                         {
-                            IEntityValue editorValue = await CreateEditorValueAsync(request.QueryExecutionContext.EntityRuntime, requestId, editor);
-                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(editorValue, request, ProjectModelZones.Cps));
+                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyEditor, request, ProjectModelZones.Cps));
                         }
                     }
                     catch (Exception ex)

@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// </summary>
         public static bool TryGetPropertyAndIndex(this Rule rule, string propertyName, [NotNullWhen(true)] out BaseProperty? property, out int index)
         {
-            foreach ((var i, var prop) in rule.Properties.WithIndices())
+            foreach ((int i, BaseProperty prop) in rule.Properties.WithIndices())
             {
                 if (StringComparers.PropertyNames.Equals(prop.Name, propertyName))
                 {

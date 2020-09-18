@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public PropertyPageQueryCache(UnconfiguredProject project)
         {
             _unconfiguredProject = project;
-            var joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;
+            JoinableTaskFactory joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;
 
             _knownProjectConfigurations = new AsyncLazy<IImmutableSet<ProjectConfiguration>?>(CreateKnownConfigurationsAsync, joinableTaskFactory);
             _catalogCache = new Dictionary<ProjectConfiguration, IPropertyPagesCatalog?>();
@@ -47,13 +47,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// </summary>
         private async Task<IPropertyPagesCatalog?> GetProjectLevelPropertyPagesCatalogAsync(ProjectConfiguration projectConfiguration)
         {
-            if (_catalogCache.TryGetValue(projectConfiguration, out var cachedCatalog))
+            if (_catalogCache.TryGetValue(projectConfiguration, out IPropertyPagesCatalog? cachedCatalog))
             {
                 return cachedCatalog;
             }
 
-            var configuredProject = await _unconfiguredProject.LoadConfiguredProjectAsync(projectConfiguration);
-            var catalog = await configuredProject.GetProjectLevelPropertyPagesCatalogAsync();
+            ConfiguredProject configuredProject = await _unconfiguredProject.LoadConfiguredProjectAsync(projectConfiguration);
+            IPropertyPagesCatalog? catalog = await configuredProject.GetProjectLevelPropertyPagesCatalogAsync();
 
             _catalogCache.Add(projectConfiguration, catalog);
             return catalog;
@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// </summary>
         public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName)
         {
-            if (_ruleCache.TryGetValue((projectConfiguration, schemaName), out var cachedRule))
+            if (_ruleCache.TryGetValue((projectConfiguration, schemaName), out IRule? cachedRule))
             {
                 return cachedRule;
             }

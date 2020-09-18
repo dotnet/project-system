@@ -17,11 +17,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// The <see cref="ProjectSystem.Properties.IProperty"/> comes from the parent <see cref="IUIPropertyValue"/>
     /// </remarks>
-    internal class ConfigurationDimensionFromPropertyDataProducer : ConfigurationDimensionDataProducer, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class ConfigurationDimensionFromPropertyDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
+        private readonly IConfigurationDimensionPropertiesAvailableStatus _properties;
+
         public ConfigurationDimensionFromPropertyDataProducer(IConfigurationDimensionPropertiesAvailableStatus properties)
-            : base(properties)
         {
+            _properties = properties;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
@@ -31,10 +33,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach (KeyValuePair<string, string> dimension in configuration.Dimensions)
+                    foreach (IEntityValue dimension in ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(request.QueryExecutionContext.EntityRuntime, configuration, _properties))
                     {
-                        IEntityValue ProjectConfigurationDimension = CreateProjectConfigurationDimension(request.RequestData.EntityRuntime, dimension);
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(ProjectConfigurationDimension, request, ProjectModelZones.Cps));
+                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(dimension, request, ProjectModelZones.Cps));
                     }
                 }
                 catch (Exception ex)
