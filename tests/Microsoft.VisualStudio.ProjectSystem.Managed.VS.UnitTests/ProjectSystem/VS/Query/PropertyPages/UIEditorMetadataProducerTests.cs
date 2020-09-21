@@ -40,5 +40,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assert.Throws<MissingDataException>(() => result.Name);
             Assert.Throws<MissingDataException>(() => result.Value);
         }
+
+        [Fact]
+        public void WhenCreatingMetadataFromAnEditor_AllMetadataIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIEditorMetadataAvailableStatus(
+                includeName: true,
+                includeValue: true);
+
+            var entityRuntime = IEntityRuntimeModelFactory.Create();
+            var editor = new ValueEditor
+            {
+                Metadata =
+                { 
+                    new() { Name = "Alpha", Value = "A" },
+                    new() { Name = "Beta", Value = "B" }
+                }
+            };
+
+            var results = UIEditorMetadataProducer.CreateMetadataValues(
+                entityRuntime,
+                editor,
+                properties);
+
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue metadata && metadata.Name == "Alpha" && metadata.Value == "A");
+            Assert.Contains(results, entity => entity is UIEditorMetadataValue metadata && metadata.Name == "Beta" && metadata.Value == "B");
+        }
     }
 }

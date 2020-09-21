@@ -40,5 +40,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assert.Throws<MissingDataException>(() => result.Name);
             Assert.Throws<MissingDataException>(() => result.Value);
         }
+
+        [Fact]
+        public void WhenCreatingEntitiesFromAProjectConfiguration_OneEntityIsCreatedPerDimension()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(
+                includeName: true,
+                includeValue: true);
+
+            var entityRuntimeModel = IEntityRuntimeModelFactory.Create();
+            var configuration = ProjectConfigurationFactory.Create("Alpha|Beta|Gamma", "A|B|C");
+            var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(entityRuntimeModel, configuration, properties);
+
+            // We can't guarantee an order for the dimensions, so just check that all the expected values are present.
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Alpha" && dimension.Value == "A");
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Beta" && dimension.Value == "B");
+            Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Gamma" && dimension.Value == "C");
+        }
     }
 }

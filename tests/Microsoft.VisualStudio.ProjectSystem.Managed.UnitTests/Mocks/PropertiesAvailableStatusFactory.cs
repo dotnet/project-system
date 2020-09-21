@@ -44,5 +44,21 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return mock.Object;
         }
+
+        public static IPropertyPagePropertiesAvailableStatus CreatePropertyPagePropertiesAvailableStatus(
+            bool includeName = true,
+            bool includeDisplayName = true,
+            bool includeOrder = true,
+            bool includeKind = true)
+        {
+            var mock = new Mock<IPropertyPagePropertiesAvailableStatus>();
+
+            mock.SetupGet(m => m.Name).Returns(includeName);
+            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName);
+            mock.SetupGet(m => m.Order).Returns(includeOrder);
+            mock.SetupGet(m => m.Kind).Returns(includeKind);
+
+            return mock.Object;
+        }
     }
 }

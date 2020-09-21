@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
@@ -64,6 +65,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             Assert.True(result.Id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string name));
             Assert.Equal(expected: "MyCategoryName", actual: name);
+        }
+
+        [Fact]
+        public void WhenCreatingCategoriesFromARule_OneEntityIsCreatedPerCategory()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(
+                includeDisplayName: true,
+                includeName: true,
+                includeOrder: true);
+
+            var parentEntity = IEntityWithIdFactory.Create(key: "A", value: "B");
+            var rule = new Rule
+            {
+                Categories =
+                {
+                    new()
+                    {
+                        Name = "Alpha",
+                        DisplayName = "First category"
+
+                    },
+                    new()
+                    {
+                        Name = "Beta",
+                        DisplayName = "Second category"
+                    }
+                }
+            };
+
+            var result = CategoryDataProducer.CreateCategoryValues(parentEntity, rule, properties);
+
+            Assert.Collection(result, new Action<IEntityValue>[]
+            {
+                entity => { assertEqual(entity, expectedName: "Alpha", expectedDisplayName: "First category"); },
+                entity => { assertEqual(entity, expectedName: "Beta", expectedDisplayName: "Second category"); }
+            });
+
+            static void assertEqual(IEntityValue entity, string expectedName, string expectedDisplayName)
+            {
+                var categoryEntity = (CategoryValue)entity;
+                Assert.Equal(expectedName, categoryEntity.Name);
+                Assert.Equal(expectedDisplayName, categoryEntity.DisplayName);
+            }
         }
     }
 }
