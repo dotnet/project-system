@@ -4,6 +4,7 @@
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
+      D:\microsoft\dotnet\CPS\bin\Debug\packages\nuget;
       https://dotnet.myget.org/F/msbuild/api/v3/index.json;
       https://dotnet.myget.org/F/nuget-build/api/v3/index.json;
       https://dotnet.myget.org/F/roslyn/api/v3/index.json;
@@ -97,7 +98,7 @@
 
     <!-- CPS -->
     <!-- Analyzers have a different version due to https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/266100 -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.8.145-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.8.362-pre-ga006ee01a7" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.7.232-pre" />
 
     <!-- Roslyn -->

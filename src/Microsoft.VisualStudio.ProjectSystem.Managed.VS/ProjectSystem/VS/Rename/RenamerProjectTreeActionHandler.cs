@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
@@ -59,6 +61,68 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _threadingService = threadingService;
             _extensibility = extensibility;
             _operationProgressService = operationProgressService;
+        }
+
+        public override async Task CopyAsync(IProjectTreeActionHandlerContext context, string filename, string folderToMove)
+        {
+            Requires.NotNull(context, nameof(Context));
+            Requires.NotNull(filename, nameof(filename));
+            Requires.NotNull(folderToMove, nameof(folderToMove));
+            // Get actions to update namespace
+            CodeAnalysis.Project? project = GetCurrentProject();
+
+            if (project is null)
+            {
+                return;
+            }
+
+            string folderPath = Path.GetDirectoryName(folderToMove);
+            folderPath = GetLastDirectory(folderPath);
+            string filenameWithExtension = Path.GetFileName(filename);
+            (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) =
+                await GetRenameSymbolsActions(project, filename, filenameWithExtension, new List<string>(new string[]{ folderPath }));
+
+            await base.CopyAsync(context, filename, folderToMove);
+
+            if (!result || documentRenameResult == null)
+            {
+                return;
+            }
+
+            // Execute actions
+            _threadingService.RunAndForget(async () =>
+            {
+                Solution currentSolution = await PublishLatestSolutionAsync();
+
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+                WaitIndicatorResult<Solution> result = _waitService.Run(
+                    title: VSResources.Renaming_Type,
+                    message: "Update Namespace",
+                    allowCancel: true,
+                    token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
+
+                // Do not warn the user if the rename was cancelled by the user
+                if (result.IsCancelled)
+                {
+                    return;
+                }
+
+                await _projectVsServices.ThreadingService.SwitchToUIThread();
+                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result))
+                {
+                    string failureMessage = "failure update namespace";
+                    _userNotificationServices.ShowWarning(failureMessage);
+                }
+            }, _unconfiguredProject);
+
+
+            string GetLastDirectory(string directory)
+            {
+                var directories = directory.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                return directories.Last();
+            }
+
         }
 
         protected virtual async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
@@ -148,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return _workspace.CurrentSolution;
         }
 
-        private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
+        private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension, List<string> newDocumentFolder = null)
         {
             CodeAnalysis.Document? oldDocument = GetDocument(project, oldFilePath);
             if (oldDocument is null)
@@ -157,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Get the list of possible actions to execute
-            Renamer.RenameDocumentActionSet documentRenameResult = await Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension);
+            Renamer.RenameDocumentActionSet documentRenameResult = await Renamer.RenameDocumentAsync(oldDocument, newFileWithExtension, newDocumentFolder);
 
             // Check if there are any symbols that need to be renamed
             if (documentRenameResult.ApplicableActions.IsEmpty)

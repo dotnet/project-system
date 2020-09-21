@@ -40,6 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             throw new NotImplementedException();
         }
 
+        public Task CopyAsync(string filename, string folderToMove)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CanRemove(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
         {
             throw new NotImplementedException();
