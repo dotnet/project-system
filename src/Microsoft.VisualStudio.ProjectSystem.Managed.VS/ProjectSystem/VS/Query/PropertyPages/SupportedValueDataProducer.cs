@@ -18,12 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var newSupportedValue = new SupportedValueValue(runtimeModel, new SupportedValuePropertiesAvailableStatus());
 
-            if (requestedProperties.Value)
+            if (requestedProperties.DisplayName)
             {
                 newSupportedValue.DisplayName = enumValue.DisplayName;
             }
 
-            if (requestedProperties.DisplayName)
+            if (requestedProperties.Value)
             {
                 newSupportedValue.Value = enumValue.Name;
             }
