@@ -32,6 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         <SupportedTargetFramework Include="".NETCoreApp,Version=v1.1"" DisplayName="".NET Core 1.1"" />
         <SupportedTargetFramework Include="".NETCoreApp,Version=v2.0"" DisplayName="".NET Core 2.0"" />
     </ItemGroup>
+    <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+    </PropertyGroup>
 </Project>";
 
             var projectAccessor = IProjectAccessorFactory.Create(project);
