@@ -38,7 +38,14 @@ namespace Microsoft.VisualStudio.Telemetry
             var telemetryEvent = new TelemetryEvent(eventName);
             foreach ((string propertyName, object propertyValue) in properties)
             {
-                telemetryEvent.Properties.Add(propertyName, propertyValue);
+                if (propertyValue is ComplexPropertyValue complexProperty)
+                {
+                    telemetryEvent.Properties.Add(propertyName, new TelemetryComplexProperty(complexProperty.Data));
+                }
+                else
+                {
+                    telemetryEvent.Properties.Add(propertyName, propertyValue);
+                }
             }
 
             PostTelemetryEvent(telemetryEvent);

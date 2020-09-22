@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal sealed class SetDiff<T>
+    internal sealed class SetDiff<T> where T : notnull
     {
         private const byte FlagBefore = 0;
         private const byte FlagAfter = 1;

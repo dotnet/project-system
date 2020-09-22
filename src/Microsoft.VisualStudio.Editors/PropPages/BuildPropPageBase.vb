@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
 
-            If Not TypeOf controlValue Is String Then
+            If TypeOf controlValue IsNot String Then
                 Return False
             End If
 
@@ -134,7 +134,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
 
-            If Not TypeOf value Is Boolean Then
+            If TypeOf value IsNot Boolean Then
                 ' Don't do anything if the value isn't of the expected type
                 Return False
             End If

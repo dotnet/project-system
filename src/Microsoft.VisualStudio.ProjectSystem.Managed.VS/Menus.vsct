@@ -89,6 +89,14 @@
       <Group guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowGroup" priority="0x102">
         <Parent guid="guidManagedProjectSystemOrderCommandSet" id="AddBelowMenu" />
       </Group>
+    
+      <Group guid="guidManagedProjectSystemCommandSet" id="NavigateGroup" priority="0x000">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJECTREFERENCE"/>
+      </Group>
+    
+       <Group guid="guidManagedProjectSystemCommandSet" id="NavigateGroup" priority="0x000">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_SHAREDPROJECTREFERENCE"/>
+      </Group>
     </Groups>
 
     <Buttons>
@@ -169,6 +177,16 @@
           <CommandName>GenerateNuGetPackageTopLevelBuild</CommandName>
         </Strings>
       </Button>
+      
+      <Button guid="guidManagedProjectSystemCommandSet" id="cmdidNavigateToProject" priority="0x0100">
+        <Parent guid="guidManagedProjectSystemCommandSet" id="NavigateGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DefaultDisabled</CommandFlag>
+        <Strings>
+          <ButtonText>N&amp;avigate to Project</ButtonText>
+        </Strings>
+      </Button>
 
       <Button guid="guidManagedProjectSystemCommandSet" id="cmdidDebugFrameworks" priority="0x0100" type="Button">
         <Parent guid="guidManagedProjectSystemCommandSet" id="DebugTargetMenuDebugFrameworkGroup"/>
@@ -184,8 +202,14 @@
       </Button>
     </Buttons>
   </Commands>
-
+  
+  <KeyBindings>
+    <KeyBinding guid="guidManagedProjectSystemCommandSet" id="cmdidNavigateToProject" editor="guidSolutionExplorerToolWindow" key1="VK_F12"/>
+  </KeyBindings>
+  
   <Symbols>
+    <GuidSymbol name="guidSolutionExplorerToolWindow" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />
+    
     <!-- This is out managed package guid. -->
     <GuidSymbol name="PackageGuidString" value="{860A27C0-B665-47F3-BC12-637E16A1050A}" />
 
@@ -200,9 +224,12 @@
       <IDSymbol name="cmdidProjectDebugger" value="0x0100" />
       <IDSymbol name="cmdidGenerateNuGetPackageProjectContextMenu" value="0x2000" />
       <IDSymbol name="cmdidGenerateNuGetPackageTopLevelBuild" value="0x2001" />
+      <IDSymbol name="cmdidNavigateToProject" value="0x2002" />
       <IDSymbol name="DebugTargetMenuDebugFrameworkMenu" value="0x3000" />
       <IDSymbol name="DebugTargetMenuDebugFrameworkGroup" value="0x3001" />
       <IDSymbol name="cmdidDebugFrameworks" value="0x3050" />        <!--needs space to grow-->
+      
+      <IDSymbol name="NavigateGroup" value="0x4000" />
     </GuidSymbol>
 
     <GuidSymbol name="guidManagedProjectSystemOrderCommandSet" value="{6C4806E9-034E-4B64-99DE-29A6F837B993}">
@@ -217,6 +244,11 @@
       <IDSymbol name="cmdidAddExistingItemAbove" value="0x2003" />
       <IDSymbol name="cmdidAddNewItemBelow" value="0x2004" />
       <IDSymbol name="cmdidAddExistingItemBelow" value="0x2005" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidSHLMainMenu" value="{ 0xd309f791, 0x903f, 0x11d0, { 0x9e, 0xfc, 0x00, 0xa0, 0xc9, 0x11, 0x00, 0x4f } }">
+      <IDSymbol name="IDM_VS_CTXT_PROJECTREFERENCE" value="0x04A7"/>
+      <IDSymbol name="IDM_VS_CTXT_SHAREDPROJECTREFERENCE" value="0x04A8" />
     </GuidSymbol>
   
     <GuidSymbol name="SlnExplorerGuid" value="{3AE79031-E1BC-11D0-8F78-00A0C9110057}" />

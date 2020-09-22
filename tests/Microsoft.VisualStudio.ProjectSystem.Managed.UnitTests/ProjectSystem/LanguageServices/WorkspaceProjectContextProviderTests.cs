@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             string? languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
             Guid? projectGuidResult = null;
             object? hierarchyResult = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath) => 
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath) =>
             {
                 languageNameResult = languageName;
                 projectFilePathResult = projectFilePath;

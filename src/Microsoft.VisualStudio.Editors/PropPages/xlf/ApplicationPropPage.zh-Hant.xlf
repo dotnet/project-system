@@ -62,6 +62,11 @@
         <target state="translated">資訊清單:</target>
         <note />
       </trans-unit>
+      <trans-unit id="Win32ResourceFile.AccessibleName">
+        <source>Resource file</source>
+        <target state="translated">資源檔案</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
         <target state="translated">資源檔(&amp;S):</target>

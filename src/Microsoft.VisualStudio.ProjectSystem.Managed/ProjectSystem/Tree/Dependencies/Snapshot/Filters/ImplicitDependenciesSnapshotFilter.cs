@@ -22,16 +22,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         public const int Order = 130;
 
         public override void BeforeAddOrUpdate(
-            ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context)
         {
             if (projectItemSpecs != null                                              // must have data
+                && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec)
                 && !dependency.Implicit                                               // explicit
                 && dependency.Resolved                                                // resolved
-                && dependency.Flags.Contains(DependencyTreeFlags.GenericDependency)   // generic dependency
+                && dependency.Flags.Contains(DependencyTreeFlags.Dependency)          // dependency
                 && !dependency.Flags.Contains(DependencyTreeFlags.SharedProjectDependency) // except for shared projects
                 && !projectItemSpecs.Contains(dependency.OriginalItemSpec)            // is not a known item spec
                 && subTreeProviderByProviderType.TryGetValue(dependency.ProviderType, out IProjectDependenciesSubTreeProvider provider)
@@ -50,7 +50,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
                 context.Accept(
                     dependency.SetProperties(
                         iconSet: implicitIconSet,
-                        isImplicit: true));
+                        isImplicit: true,
+                        flags: dependency.Flags.Except(DependencyTreeFlags.SupportsRemove)));
                 return;
             }
 

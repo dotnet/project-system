@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
         <source>Framework Reference Properties</source>
-        <target state="needs-review-translation">Właściwości struktury</target>
+        <target state="translated">Właściwości odwołania do struktury</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
         <source>Framework Reference</source>
-        <target state="needs-review-translation">Platforma</target>
+        <target state="translated">Odwołanie do struktury</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

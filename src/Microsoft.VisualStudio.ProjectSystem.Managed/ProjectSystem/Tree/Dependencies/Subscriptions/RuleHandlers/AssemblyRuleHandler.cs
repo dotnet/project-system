@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ReferencePrivate;
+        public override ImageMoniker ImplicitIcon => KnownMonikers.ReferencePrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 

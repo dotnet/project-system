@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.Implementation
 {
+    [AppliesToProject(ProjectCapability.DependenciesTree)]
     [Export(typeof(IAttachedCollectionSourceProvider))]
     [Name(nameof(FrameworkReferenceAssemblyAttachedCollectionSourceProvider))]
     [VisualStudio.Utilities.Order(Before = HierarchyItemsProviderNames.Contains)]
@@ -38,7 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 EnvDTE.Properties? props = projectItem?.Properties;
 
                 if (props?.Item("TargetingPackPath")?.Value is string path &&
-                    props?.Item("OriginalItemSpec")?.Value is string name)
+                    props?.Item("OriginalItemSpec")?.Value is string name &&
+                    !string.IsNullOrWhiteSpace(path) &&
+                    !string.IsNullOrWhiteSpace(name))
                 {
                     string? profile = props?.Item("Profile").Value as string;
 

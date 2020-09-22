@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -19,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetFramework, hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
@@ -37,12 +36,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new DependenciesViewModelFactory(project);
 
-            var result = factory.CreateTargetViewModel(targetFramework, hasVisibleUnresolvedDependency: true);
+            var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.Warning);
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
-            Assert.Equal(ManagedImageMonikers.LibraryWarning, result.Icon);
-            Assert.Equal(ManagedImageMonikers.LibraryWarning, result.ExpandedIcon);
+            Assert.Equal(KnownMonikers.LibraryWarning, result.Icon);
+            Assert.Equal(KnownMonikers.LibraryWarning, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNode));
             Assert.True(result.Flags.Contains("$TFM:tFm1"));
         }
@@ -56,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             {
                 ProviderType = "MyProvider1",
                 Id = "ZzzDependencyRoot",
-                Name = "ZzzDependencyRoot",
+                OriginalItemSpec = "ZzzDependencyRoot",
                 Caption = "ZzzDependencyRoot",
                 Icon = KnownMonikers.AboutBox
             };
@@ -69,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1, subTreeProvider2 });
 
-            var result = factory.CreateGroupNodeViewModel("MyProvider1", hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("MyProvider1", maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.NotNull(result);
             Assert.Equal("ZzzDependencyRoot", result!.Caption);
@@ -85,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var factory = new TestableDependenciesViewModelFactory(project, new[] { subTreeProvider1 });
 
-            var result = factory.CreateGroupNodeViewModel("UnknownProviderType", hasVisibleUnresolvedDependency: false);
+            var result = factory.CreateGroupNodeViewModel("UnknownProviderType", maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.Null(result);
         }
@@ -96,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);
 
-            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(hasVisibleUnresolvedDependency: false));
-            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(hasVisibleUnresolvedDependency: true));
+            Assert.Equal(KnownMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.None));
+            Assert.Equal(KnownMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.Warning));
         }
 
         private class TestableDependenciesViewModelFactory : DependenciesViewModelFactory

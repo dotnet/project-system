@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                     // We don't need to thread switch here because if the caller is on the UI thread then everything is fine
                     // and if the caller is on a background thread, switching us to the UI thread doesn't provide any guarantees to it.
                     // It would mean the bridges state can't change, but it only reads the state once, and thats not our responsibility anyway.
-                    return _threadingService.ExecuteSynchronously(() => bridge.GetTempPEMonikersAsync());
+                    return _threadingService.ExecuteSynchronously(() => bridge.GetDesignTimeOutputMonikersAsync());
                 }
 
                 throw new NotImplementedException();
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
                 IDesignTimeInputsBuildManagerBridge bridge = DesignTimeInputsBuildManagerBridge.Value;
 
                 // See comment above about why we don't need any thread switching here.
-                return _threadingService.ExecuteSynchronously(() => bridge.GetDesignTimeInputXmlAsync(bstrOutputMoniker));
+                return _threadingService.ExecuteSynchronously(() => bridge.BuildDesignTimeOutputAsync(bstrOutputMoniker));
             }
 
             throw new NotImplementedException();

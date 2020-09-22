@@ -6,8 +6,6 @@ Option Compare Binary
 Imports System.Runtime.Serialization
 Imports System.Text
 
-
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
@@ -25,7 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Key for serialization
         Private Const KEY_NAME As String = "Name"
 
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -33,7 +30,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub New(Encoding As Encoding)
             _encoding = Encoding
         End Sub
-
 
         ''' <summary>
         ''' Serialization constructor.
@@ -47,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns/sets the encoding wrapped by this class.  Nothing is an okay value (indicates a default encoding).
         ''' </summary>
@@ -60,7 +55,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets the display name (localized) of the encoding.
         ''' </summary>
@@ -72,7 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_DefaultEncoding
             End If
         End Function
-
 
         ''' <summary>
         ''' Used during serialization.

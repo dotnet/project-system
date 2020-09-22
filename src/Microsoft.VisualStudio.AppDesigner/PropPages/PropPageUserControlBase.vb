@@ -22,7 +22,6 @@ Imports VSITEMID = Microsoft.VisualStudio.Editors.VSITEMIDAPPDES
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
-
     ''' <summary>
     ''' Base class for managed property pages internal used in VisualStudio
     ''' </summary>
@@ -122,7 +121,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             End If 'If disposing...
         End Sub
-
 
         'Required by the Windows Form Designer
         Private ReadOnly _components As IContainer
@@ -250,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         ' When true, the dialog is not scaled automatically
         ' Currently only used by the Publish page because it isn't a normal page
-        Private _manualPageScaling As Boolean = False
+        Private _manualPageScaling As Boolean
 
         'Backcolor for all property pages
         <Obsolete("Colors should be retrieved directly from the theming service")>
@@ -497,7 +495,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Returns the raw set of objects in use by this property page.  This will generally be the set of objects
         '''   passed in to the page through SetObjects.  However, it may be modified by subclasses to contain a superset
@@ -507,7 +504,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Data.RawPropertiesObjects
         End Function
 
-
         ''' <summary>
         ''' Returns the extended objects created from the raw set of objects in use by this property page.  This will generally be 
         '''   based on the set of objects passed in to the page through SetObjects.  However, it may be modified by subclasses to 
@@ -516,7 +512,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Function ExtendedPropertiesObjects(Data As PropertyControlData) As Object()
             Return Data.ExtendedPropertiesObjects
         End Function
-
 
         ''' <summary>
         ''' True iff this property page is configuration-specific (like the compile page) instead of
@@ -528,7 +523,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Causes listening to property changes to be suspended until an equal number of
         '''   ResumePropertyChangeListening calls have been made
@@ -537,7 +531,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Public Sub SuspendPropertyChangeListening(DispId As Integer)
             _suspendPropertyChangeListeningDispIds.Add(DispId)
         End Sub
-
 
         ''' <summary>
         ''' Causes listening to property changes to be resumed after an equal number of
@@ -548,14 +541,12 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             CheckPlayCachedPropertyChanges()
         End Sub
 
-
         ''' <summary>
         ''' Returns true if any property on the current page is currently being changed.
         ''' </summary>
         Private Function PropertyOnPageBeingChanged() As Boolean
             Return _suspendPropertyChangeListeningDispIds.Count > 0
         End Function
-
 
         ''' <summary>
         ''' Gets the list of all raw properties objects from all properties hosted on this page
@@ -679,7 +670,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return False
         End Function
 
-
         ''' <summary>
         ''' Restore the control's current value from the InitialValue (used when the user cancels the dialog)
         ''' </summary>
@@ -696,7 +686,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 IsDirty = IsAnyPropertyDirty()
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Updates all properties so that they refresh their UI from the property
@@ -716,7 +705,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 IsDirty = IsAnyPropertyDirty()
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Indicates if the user has selected multiple projects in the Solution Explorer
@@ -803,7 +791,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             control.Enabled = enabled
         End Sub
 
-
 #Region "Rude checkout support"
 
         ''' <summary>
@@ -816,7 +803,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
             _checkoutSectionCount += 1
         End Sub
-
 
         ''' <summary>
         '''After any code which may check out the project file, a property page must call this function.  This
@@ -861,7 +847,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' If true, the project has been reloaded between a call to EnterProjectCheckoutSection and 
         '''   LeaveProjectCheckoutSection.  See EnterProjectCheckoutSection() for more information.
@@ -871,7 +856,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _projectReloadedDuringCheckout
             End Get
         End Property
-
 
         ''' <summary>
         ''' If true, a call to EnterProjectCheckoutSection has been made, and the matching LeaveProjectCheckoutSection
@@ -883,7 +867,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Called in a delayed fashion (via PostMessage) after a LeaveProjectCheckoutSection call if the
         '''   project was forcibly reloaded during the project checkout section.
@@ -894,7 +877,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _projectReloadedDuringCheckout = False
             Dispose()
         End Sub
-
 
         ''' <summary>
         ''' Checks out the project file.  After calling this function, the caller should check
@@ -914,7 +896,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #End Region
-
 
 #Region "IPropertyPageInternal"
         ''' <summary>
@@ -1100,7 +1081,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
 #End Region
 
         ''' <summary>
@@ -1164,7 +1144,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return
             End If
 
-            If Not TypeOf objects Is Object() Then
+            If TypeOf objects IsNot Object() Then
                 Debug.Fail("Objects must be an array of Object, not an array of anything else!")
                 Throw New ArgumentException
             End If
@@ -1307,7 +1287,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Next page
         End Sub
 
-
 #Region "Control event handlers for derived form"
         Protected Sub AddChangeHandlers()
 
@@ -1318,7 +1297,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #End Region
-
 
 #Region "Search for PropertyControlData and controls on the page"
 
@@ -1335,7 +1313,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' Looks up a PropertyControlData on this page by numeric id and returns it, if found, else returns Nothing.
@@ -1356,7 +1333,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' Looks up a PropertyControlData on this page by name and returns it, if found, else returns Nothing.
@@ -1380,7 +1356,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
 #End Region
 
-
 #Region "ControlData"
 
         ''' <summary>
@@ -1402,7 +1377,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #Region "Delay validation helpers"
         Private _delayValidationGroup As Integer = -1              ' the control group ID: we need do validation when focus moves out of this group
         Private _delayValidationQueue As ListDictionary            ' it hosts a list of controlData objects, which need to be validated
-
 
         ''' <summary>
         ''' Return a control group which contains the control, return -1 when we can not find one
@@ -1715,7 +1689,6 @@ NextControl:
         Protected Overridable Function ValidateProperty(controlData As PropertyControlData, ByRef message As String, ByRef returnControl As Control) As ValidationResult
             Return ValidationResult.Succeeded
         End Function
-
 
         ''' <summary>
         ''' Attempts to check out the files which are necessary in order to apply the currently-dirty properties
@@ -2148,7 +2121,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' This is fired before a property has been updated in the project system either through direct
         '''   interaction with the UI by the user, or by the property page code.  Does not fire in response
@@ -2163,7 +2135,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' This is fired after a property has been updated in the project system either through direct
         '''   interaction with the UI by the user, or by the property page code.  Does not fire in response
@@ -2176,7 +2147,6 @@ NextControl:
                 _propPageUndoSite.OnPropertyChanged(PropertyName, PropDesc, OldValue, NewValue)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Overridable sub to allow derived page processing
@@ -2275,7 +2245,6 @@ NextControl:
         '
         '
 
-
         ''' <summary>
         ''' Returns the PropertyDescriptor of a common property using the name of the property
         ''' </summary>
@@ -2286,7 +2255,6 @@ NextControl:
         Public Function GetCommonPropertyDescriptor(PropertyName As String) As PropertyDescriptor
             Return m_CommonPropertyDescriptors.Item(PropertyName)
         End Function
-
 
         ''' <summary>
         ''' Retrieves the current value of this property in the project (not the current value in the 
@@ -2307,7 +2275,6 @@ NextControl:
             End If
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current value of a property in the project (not the current value in the 
         '''   control on the property page as it has been edited by the user).
@@ -2320,7 +2287,6 @@ NextControl:
         Protected Function GetCommonPropertyValueNative(PropertyName As String) As Object
             Return GetCommonPropertyValueNative(GetCommonPropertyDescriptor(PropertyName))
         End Function
-
 
         ''' <summary>
         ''' Retrieves the current value of a property in the project (not the current value 
@@ -2335,7 +2301,6 @@ NextControl:
             Return PropertyControlData.GetCommonPropertyValue(prop, CommonPropertiesObject)
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current value of a property in the project (not the current value 
         '''   in the control on the property page as it has been edited by the user).
@@ -2348,7 +2313,6 @@ NextControl:
         Protected Function GetCommonPropertyValue(PropertyName As String) As Object
             Return GetCommonPropertyValue(GetCommonPropertyDescriptor(PropertyName))
         End Function
-
 
         ''' <summary>
         ''' Sets the current value of a common property (into the project system, not into the 
@@ -2368,7 +2332,6 @@ NextControl:
             SetCommonPropertyValueNative(prop, Value)
         End Sub
 
-
         ''' <summary>
         ''' Sets the current value of a common property (into the project system, not into the 
         '''   control on the property page).
@@ -2380,7 +2343,6 @@ NextControl:
         Protected Sub SetCommonPropertyValue(PropertyName As String, value As Object)
             SetCommonPropertyValue(GetCommonPropertyDescriptor(PropertyName), value)
         End Sub
-
 
         ''' <summary>
         ''' Sets the current value of a common property (into the project system, not into the 
@@ -2398,7 +2360,6 @@ NextControl:
                 ResumePropertyChangeListening(DISPID_UNKNOWN)
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Sets the current value of a common property (into the project system, not into the 
@@ -2453,7 +2414,6 @@ NextControl:
         End Function
 #End Region
 
-
 #Region "Dirty flag detection helpers"
         ''' <summary>
         ''' Applies changes to the given control, if CanApplyNow is True.  Otherwise
@@ -2484,7 +2444,6 @@ NextControl:
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Marks the page as dirty.  Note that individual properties
         '''   must be set dirty (which cause this method to be called)
@@ -2511,7 +2470,6 @@ NextControl:
                 CanApplyNow = SaveApplyNow
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Marks the page as dirty.  Note that individual properties
@@ -2549,7 +2507,6 @@ NextControl:
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Marks the property associated with the given control (as well as this page)
         '''   as dirty.  
@@ -2564,7 +2521,6 @@ NextControl:
             SetDirty(sender, CanApplyNow)
         End Sub
 
-
         ''' <summary>
         ''' Marks the property with the given DISPID (as well as this page)
         '''   as dirty.  
@@ -2578,7 +2534,6 @@ NextControl:
         Protected Sub SetDirty(dispid As Integer)
             SetDirty(dispid, CanApplyNow)
         End Sub
-
 
         ''' <summary>
         ''' Marks the property with the given DISPID (as well as this page)
@@ -2614,7 +2569,6 @@ NextControl:
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Returns whether the property associated with the given control has been dirtied.
         ''' </summary>
@@ -2632,7 +2586,6 @@ NextControl:
             Throw Common.CreateArgumentException(NameOf(sender))
         End Function
 
-
         ''' <summary>
         ''' Clears the dirty bit for all properties on this page
         ''' </summary>
@@ -2642,7 +2595,6 @@ NextControl:
                 _controlData.IsDirty = False
             Next _controlData
         End Sub
-
 
         ''' <summary>
         ''' Returns true iff any property on this page is dirty
@@ -2879,7 +2831,6 @@ NextControl:
             'Canonicalize the file name
             FileName = Path.GetFullPath(FileName)
 
-
             'First see if it is already in the project
             For Each ProjectItem As EnvDTE.ProjectItem In ProjectItems
                 If ProjectItem.FileNames(1).Equals(FileName, StringComparison.OrdinalIgnoreCase) Then
@@ -2893,7 +2844,6 @@ NextControl:
                 Return ProjectItems.AddFromFile(FileName)
             End If
         End Function
-
 
         ''' <summary>
         ''' Adds the given file to the ProjectItems and sets the BuildAction property.
@@ -2911,7 +2861,6 @@ NextControl:
 
             Return NewProjectItem
         End Function
-
 
         ''' <summary>
         ''' Returns the PropPageHostDialog that is hosting the given page.
@@ -3170,7 +3119,6 @@ NextControl:
             Return GetRelativeFilePath(GetProjectPath(), FilePath)
         End Function
 
-
         ''' <summary>
         ''' Given a base path and a full path to a directory, returns the path of the full path relative to the base path.  Note: does
         '''   *not* return relative paths that begin with "..\", instead in this case it returns the original full path.
@@ -3231,7 +3179,6 @@ NextControl:
             End Get
         End Property
 
-
 #Region "Project Kind and language"
 
         ''' <summary>
@@ -3287,7 +3234,6 @@ NextControl:
 
 #Region "IVsProjectDesignerPage"
         Private _propPageUndoSite As IVsProjectDesignerPageSite
-
 
         ''' <summary>
         ''' Searches for a property control data that may be in a child page.  The property name contains
@@ -3388,7 +3334,6 @@ NextControl:
                 Throw Common.CreateArgumentException(NameOf(PropertyName))
             End If
 
-
             'Convert to an enum if it should be but is not
             ConvertToEnum(_ControlData, Value)
 
@@ -3397,7 +3342,6 @@ NextControl:
             'Forces refresh UI from persisted property value
             _ControlData.InitPropertyUI()
         End Sub
-
 
         ''' <summary>
         ''' Returns true if the given property supports returning and setting multiple values at the same time in order to support
@@ -3416,7 +3360,6 @@ NextControl:
             Return SupportsMultipleValueUndo(Data)
         End Function
 
-
         ''' <summary>
         ''' Returns true if the given property supports returning and setting multiple values at the same time in order to support
         '''   Undo and Redo operations when multiple configurations are selected by the user.  This function should always return the
@@ -3431,7 +3374,6 @@ NextControl:
 
             Return Data.SupportsMultipleValueUndo()
         End Function
-
 
         ''' <summary>
         ''' Gets the current values for the given property, one for each of the objects (configurations) that may be affected by a property
@@ -3466,7 +3408,6 @@ NextControl:
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Tells the property page to set the given values for the given properties, one for each of the objects (configurations) passed
@@ -3505,7 +3446,6 @@ NextControl:
             Data.InitPropertyUI()
         End Sub
 
-
         ''' <summary>
         ''' Provides the property page undo site to the property page
         ''' </summary>
@@ -3513,7 +3453,6 @@ NextControl:
         Private Sub IVsProjectDesignerPage_SetSite(Site As IVsProjectDesignerPageSite) Implements IVsProjectDesignerPage.SetSite
             _propPageUndoSite = Site
         End Sub
-
 
         ''' <summary>
         ''' Finish all pending validations
@@ -3524,7 +3463,6 @@ NextControl:
         Private Function FinishPendingValidations() As Boolean Implements IVsProjectDesignerPage.FinishPendingValidations
             Return ProcessDelayValidationQueue(False)
         End Function
-
 
         ''' <summary>
         ''' Called when the page is activated or deactivated
@@ -3543,7 +3481,6 @@ NextControl:
         ''' <param name="activated"></param>
         Protected Overridable Sub OnPageActivated(activated As Boolean)
         End Sub
-
 
 #End Region
 
@@ -3568,7 +3505,6 @@ NextControl:
                 Return DefaultFont
             End Get
         End Property
-
 
         ''' <summary>
         ''' Set font and scale page accordingly
@@ -3679,7 +3615,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         '''   Calculate Font Size to scale the page
         '''  NOTE: We copied from WinForm
@@ -3765,7 +3700,6 @@ NextControl:
             End Try
         End Sub
 
-
         ''' <include file='doc\Form.uex' path='docs/doc[@for="Form.ProcessDialogKey"]/*' />
         ''' <devdoc>
         '''     Processes a dialog key. Overrides Control.processDialogKey(). For forms, this
@@ -3812,7 +3746,6 @@ NextControl:
             Return MyBase.ProcessDialogKey(keyData)
         End Function
 
-
         <EditorBrowsable(EditorBrowsableState.Advanced)>
         Protected Overrides Sub WndProc(ByRef m As Message)
             If m.Msg = Common.WmUserConstants.WM_PAGE_POSTVALIDATION Then
@@ -3825,14 +3758,12 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' Gets the F1 keyword to push into the user context for this property page
         ''' </summary>
         Private Function GetHelpContextF1Keyword() As String Implements IPropertyPageInternal.GetHelpContextF1Keyword
             Return GetF1HelpKeyword()
         End Function
-
 
 #Region "Disable during debug mode and build"
 
@@ -3860,7 +3791,6 @@ NextControl:
         Protected Overridable Function DisableWhenDebugMode(mode As DBGMODE) As Boolean
             Return mode <> DBGMODE.DBGMODE_Design
         End Function
-
 
         ''' <summary>
         ''' Hook up with the debugger event mechanism to determine current debug mode
@@ -3998,7 +3928,6 @@ NextControl:
             _buildEvents = Nothing
         End Sub
 
-
 #End Region
 
 #Region "Property change listening"
@@ -4042,7 +3971,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' Attempts to hook up IPropertyNotifySink to the given object.  Ignored if it
         '''   fails or is not supported for that object.
@@ -4056,7 +3984,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' Stop listening to project property change notifications
         ''' </summary> 'we persist this without the root namespace
@@ -4066,7 +3993,6 @@ NextControl:
             Next
             _propertyListeners.Clear()
         End Sub
-
 
         ''' <summary>
         ''' Called by a PropertyListener to update a property's UI from the current value when it has been changed by code other
@@ -4109,7 +4035,6 @@ NextControl:
                 End If
             End If
 
-
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "  Source=" & Source.ToString())
             If IsInternalToPage Then
                 'We don't want to send the notification now - this might mess up the UI for properties
@@ -4124,7 +4049,6 @@ NextControl:
                 OnExternalPropertyChanged(DISPID, Source)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called whenever the property page detects that a property defined on this property page is changed in the
@@ -4153,7 +4077,6 @@ NextControl:
             Common.Switches.TracePDProperties(TraceLevel.Verbose, "  Did not find matching PropertyControlData on this page - ignoring.")
         End Sub
 
-
         ''' <summary>
         ''' Called whenever the property page detects that a property defined on this property page is changed in the
         '''   project system.  Property changes made directly by an apply or through PropertyControlData will not come 
@@ -4169,7 +4092,6 @@ NextControl:
                 Data.RefreshValue()
             End If
         End Sub
-
 
         ''' <summary>
         ''' Checks if it's time to "play" the cached external property change notifications
@@ -4197,7 +4119,6 @@ NextControl:
             End If
         End Sub
 
-
         ''' <summary>
         ''' Notifies a sink that a [requestedit] property is about to change and that the object is asking the sink how to proceed.
         ''' </summary>
@@ -4222,9 +4143,7 @@ NextControl:
             'Nothing to do
         End Sub
 
-
 #End Region
-
 
         ''' <summary>
         ''' Used for debug tracing of OnLayout events... 

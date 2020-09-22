@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
         <source>Framework Reference Properties</source>
-        <target state="needs-review-translation">框架属性</target>
+        <target state="translated">框架引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
         <source>Framework Reference</source>
-        <target state="needs-review-translation">框架</target>
+        <target state="translated">框架引用</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

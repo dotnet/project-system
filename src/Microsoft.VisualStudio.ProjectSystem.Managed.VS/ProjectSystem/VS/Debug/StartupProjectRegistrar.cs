@@ -18,9 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly UnconfiguredProject _project;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
         private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
+        private readonly IProjectThreadingService _threadingService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
-        private readonly ActiveConfiguredProject<DebuggerLaunchProviders> _launchProviders;
+        private readonly IActiveConfiguredValues<IDebugLaunchProvider> _launchProviders;
 
         private Guid _projectGuid;
         private IDisposable? _subscription;
@@ -33,12 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            ActiveConfiguredProject<DebuggerLaunchProviders> launchProviders)
+            IActiveConfiguredValues<IDebugLaunchProvider> launchProviders)
         : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _projectTasksService = projectTasksService;
             _startupProjectsListService = startupProjectsListService;
+            _threadingService = threadingService;
             _projectGuidService = projectGuidService;
             _projectSubscriptionService = projectSubscriptionService;
             _launchProviders = launchProviders;
@@ -48,7 +50,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [AppliesTo(ProjectCapability.DotNet)]
         public Task InitializeAsync()
         {
-            return InitializeAsync(CancellationToken.None);
+            _threadingService.RunAndForget(async () =>
+            {
+                await _projectTasksService.SolutionLoadedInHost;
+
+                await InitializeAsync(CancellationToken.None);
+            }, _project);
+
+            return Task.CompletedTask;
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
@@ -76,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             return _projectTasksService.LoadedProjectAsync(async () =>
             {
-                bool isDebuggable = await _launchProviders.Value.IsDebuggableAsync();
+                bool isDebuggable = await IsDebuggableAsync();
 
                 IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
 
@@ -93,30 +102,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             });
         }
 
-        [Export]
-        internal class DebuggerLaunchProviders
+        private async Task<bool> IsDebuggableAsync()
         {
-            [ImportingConstructor]
-            public DebuggerLaunchProviders(ConfiguredProject project)
+            foreach (Lazy<IDebugLaunchProvider> provider in _launchProviders.Values)
             {
-                Debuggers = new OrderPrecedenceImportCollection<IDebugLaunchProvider>(projectCapabilityCheckProvider: project);
-            }
-
-            [ImportMany]
-            public OrderPrecedenceImportCollection<IDebugLaunchProvider> Debuggers { get; }
-
-            public async Task<bool> IsDebuggableAsync()
-            {
-                foreach (Lazy<IDebugLaunchProvider> provider in Debuggers)
+                if (provider.Value is IStartupProjectProvider startupProjectProvider &&
+                    await startupProjectProvider.CanBeStartupProjectAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
                 {
-                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-
-                return false;
             }
+
+            return false;
         }
     }
 }

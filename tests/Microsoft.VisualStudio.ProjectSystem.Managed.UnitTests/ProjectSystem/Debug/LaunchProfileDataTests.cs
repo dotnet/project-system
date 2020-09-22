@@ -39,8 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(data.WorkingDirectory, profile.WorkingDirectory);
             Assert.Equal(data.LaunchBrowser, profile.LaunchBrowser);
             Assert.Equal(data.LaunchUrl, profile.LaunchUrl);
-            Assert.Equal(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables, DictionaryEqualityComparer<string, string>.Instance);
-            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables.ToImmutableDictionary(), profile.EnvironmentVariables));
+            Assert.Equal(data.EnvironmentVariables!.ToImmutableDictionary(), profile.EnvironmentVariables, DictionaryEqualityComparer<string, string>.Instance);
+            Assert.True(DictionaryEqualityComparer<string, string>.Instance.Equals(data.EnvironmentVariables!.ToImmutableDictionary(), profile.EnvironmentVariables));
             Assert.Equal(isInMemory, data.InMemoryProfile);
         }
 

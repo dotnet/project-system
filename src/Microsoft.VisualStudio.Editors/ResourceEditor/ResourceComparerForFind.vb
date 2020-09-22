@@ -19,8 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'All categories included in the search
         Private ReadOnly _categories As CategoryCollection
 
-
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -40,7 +38,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(_categoryToCategoryOrderHash.Count = OrderedCategories.Count)
         End Sub
 
-
         ''' <summary>
         ''' Sorts a <see cref="List(Of Resource)"/> for UI purposes
         ''' </summary>
@@ -48,7 +45,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub SortResources(Resources As List(Of Resource))
             Resources.Sort(Me)
         End Sub
-
 
         ''' <summary>
         ''' Compares two objects and returns a value indicating whether one is less than, equal to or greater than the other.

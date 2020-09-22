@@ -1,8 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
@@ -22,18 +22,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         [ImportMany]
         protected OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> SubTreeProviders { get; }
 
-        public IDependencyViewModel CreateTargetViewModel(ITargetFramework targetFramework, bool hasVisibleUnresolvedDependency)
+        public IDependencyViewModel CreateTargetViewModel(TargetFramework targetFramework, DiagnosticLevel maximumDiagnosticLevel)
         {
-            return new TargetDependencyViewModel(targetFramework, hasVisibleUnresolvedDependency);
+            return new TargetDependencyViewModel(targetFramework, maximumDiagnosticLevel);
         }
 
-        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, bool hasVisibleUnresolvedDependency)
+        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel)
         {
             IProjectDependenciesSubTreeProvider? provider = GetProvider();
 
             IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
-            return dependencyModel?.ToViewModel(hasVisibleUnresolvedDependency);
+            return dependencyModel?.ToViewModel(maximumDiagnosticLevel);
 
             IProjectDependenciesSubTreeProvider? GetProvider()
             {
@@ -43,11 +43,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             }
         }
 
-        public ImageMoniker GetDependenciesRootIcon(bool hasVisibleUnresolvedDependency)
+        public ImageMoniker GetDependenciesRootIcon(DiagnosticLevel maximumDiagnosticLevel)
         {
-            return hasVisibleUnresolvedDependency
-                ? ManagedImageMonikers.ReferenceGroupWarning
-                : ManagedImageMonikers.ReferenceGroup;
+            return maximumDiagnosticLevel switch
+            {
+                DiagnosticLevel.None => KnownMonikers.ReferenceGroup,
+                _ => KnownMonikers.ReferenceGroupWarning
+            };
         }
     }
 }

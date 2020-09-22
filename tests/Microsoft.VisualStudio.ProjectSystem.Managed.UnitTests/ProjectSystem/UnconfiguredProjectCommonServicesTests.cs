@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
-            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
             var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
             var services = new UnconfiguredProjectCommonServices(project, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
@@ -28,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
-            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
             var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
             var services = new UnconfiguredProjectCommonServices(project, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
@@ -43,8 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
-            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
             var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
             var services = new UnconfiguredProjectCommonServices(project, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
-            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
             var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
             var services = new UnconfiguredProjectCommonServices(project, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);
@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = new Lazy<IProjectThreadingService>(() => IProjectThreadingServiceFactory.Create());
             var projectProperties = ProjectPropertiesFactory.Create(project);
-            var activeConfiguredProject = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties.ConfiguredProject);
-            var activeConfiguredProjectProperties = ActiveConfiguredProjectFactory.ImplementValue(() => projectProperties);
+            var activeConfiguredProject = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties.ConfiguredProject);
+            var activeConfiguredProjectProperties = IActiveConfiguredValueFactory.ImplementValue(() => projectProperties);
             var projectAccessor = new Lazy<IProjectAccessor>(() => IProjectAccessorFactory.Create());
 
             var services = new UnconfiguredProjectCommonServices(project, threadingService, activeConfiguredProject, activeConfiguredProjectProperties, projectAccessor);

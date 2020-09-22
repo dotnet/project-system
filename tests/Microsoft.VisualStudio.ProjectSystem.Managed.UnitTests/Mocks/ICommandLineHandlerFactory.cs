@@ -8,11 +8,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal static class ICommandLineHandlerFactory
     {
-        public static ICommandLineHandler ImplementHandle(Action<IComparable, BuildOptions, BuildOptions, bool, IProjectLogger> action)
+        public static ICommandLineHandler ImplementHandle(Action<IComparable, BuildOptions, BuildOptions, ContextState, IProjectLogger> action)
         {
             var mock = new Mock<ICommandLineHandler>();
 
-            mock.Setup(h => h.Handle(It.IsAny<IComparable>(), It.IsAny<BuildOptions>(), It.IsAny<BuildOptions>(), It.IsAny<bool>(), It.IsAny<IProjectLogger>()))
+            mock.Setup(h => h.Handle(It.IsAny<IComparable>(), It.IsAny<BuildOptions>(), It.IsAny<BuildOptions>(), It.IsAny<ContextState>(), It.IsAny<IProjectLogger>()))
                 .Callback(action);
 
             return mock.Object;

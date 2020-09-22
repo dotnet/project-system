@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
-    ///     Indicates that a dimension provided by a <see cref="IProjectConfigurationDimensionsProvider"/> instance 
+    ///     Indicates that a dimension provided by a <see cref="IProjectConfigurationDimensionsProvider"/> instance
     ///     should participate in calculating the active project configurations for <see cref="IActiveConfiguredProjectsProvider"/>.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]

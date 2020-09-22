@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return LanguageService.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -42,6 +42,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 logger.WriteLine("{0}: {1}", name, value);
                 Context.SetProperty(name, value);
             }
+
+            // NOTE: Roslyn treats "unset" as true, so always set it.
+            Context.IsPrimary = state.IsActiveConfiguration;
         }
 
         private bool TryHandleSpecificProperties(string name, string value, IProjectLogger logger)

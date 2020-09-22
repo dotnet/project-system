@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var dynamicFiles = new HashSet<string>(StringComparers.Paths);
             void onDynamicFileAdded(string s) => Assert.True(dynamicFiles.Add(s));
-           
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
+
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForDynamicFiles(project, onDynamicFileAdded);
 
             var handler = CreateInstance(project, context);

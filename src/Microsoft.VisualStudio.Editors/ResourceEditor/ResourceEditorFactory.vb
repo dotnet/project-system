@@ -10,7 +10,6 @@ Imports System.Runtime.InteropServices
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
@@ -30,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' The editor factory GUID.  This guid must be unique for each editor (and hence editor factory)
         Friend Const ResourceEditor_EditorGuid As String = "ff4d6aca-9352-4a5f-821e-f4d6ebdcab11"
 
-
         Private _vsTrackProjectDocumentsEventsCookie As UInteger
         Private _vsTrackProjectDocuments As IVsTrackProjectDocuments2
 
@@ -42,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub New()
             MyBase.New(GetType(ResourceEditorDesignerLoader))
         End Sub
-
 
         ''' <summary>
         ''' Provides the (constant) GUID for the subclassed editor factory.
@@ -57,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Provides the (constant) GUID for the command UI.
         ''' </summary>
@@ -68,8 +64,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
         Protected Overrides Sub OnSited()
             If _vsTrackProjectDocuments Is Nothing AndAlso ServiceProvider IsNot Nothing Then
                 _vsTrackProjectDocuments = TryCast(ServiceProvider.GetService(GetType(SVsTrackProjectDocuments)), IVsTrackProjectDocuments2)
@@ -79,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
         End Sub 'OnSited
-
 
         Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
@@ -189,7 +182,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function OnQueryRenameFiles(pProject As IVsProject, cFiles As Integer, rgszMkOldNames() As String, rgszMkNewNames() As String, rgFlags() As VSQUERYRENAMEFILEFLAGS, pSummaryResult() As VSQUERYRENAMEFILERESULTS, rgResults() As VSQUERYRENAMEFILERESULTS) As Integer Implements IVsTrackProjectDocumentsEvents2.OnQueryRenameFiles
             Return NativeMethods.S_OK
         End Function
-
 
 #End Region
 

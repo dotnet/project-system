@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, IVsOnlineServices vsOnlineServices, string language)
         {
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: $@"C:\project1.{ProjectFileExtension}");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
                 threadingServiceCreator: () => IProjectThreadingServiceFactory.Create(),
                 unconfiguredProjectCreator: () => unconfiguredProject);

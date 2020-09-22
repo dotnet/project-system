@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     /// This text box functions like any other text box, except that it allows the consumer
     /// to specify a 'water mark' that appears in the text area (or some other indicator
     /// based on the presence of text in the text property.
-    /// 
+    ///
     /// Additionally, it adds:
     /// HasInputtedText
     /// </summary>
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// If there is text, that has been inputted, then this value will change to indicate that
         /// this control does indeed contain valid text.
-        /// 
+        ///
         /// Note that this is needed because the Text property changes all the time, and doesn't/cannot
         /// be reverted with styles to empty or null.
         /// </summary>
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <param name="args"></param>
         private static void TextPropertyChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
-            if (!(sender is WatermarkTextBox source))
+            if (sender is not WatermarkTextBox source)
             {
                 return;
             }

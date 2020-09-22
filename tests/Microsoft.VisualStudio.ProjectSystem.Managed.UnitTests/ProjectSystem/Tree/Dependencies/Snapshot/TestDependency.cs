@@ -3,6 +3,8 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
@@ -20,10 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             set
             {
                 ProviderType = value.ProviderType;
-                Name = value.Name;
                 Caption = value.Caption;
                 OriginalItemSpec = value.OriginalItemSpec;
-                Path = value.Path;
+                FilePath = value.FilePath;
                 SchemaName = value.SchemaName;
                 SchemaItemType = value.SchemaItemType;
                 Resolved = value.Resolved;
@@ -33,26 +34,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 BrowseObjectProperties = value.BrowseObjectProperties;
                 Flags = value.Flags;
                 Id = value.Id;
-                TargetFramework = value.TargetFramework;
             }
         }
 
 #pragma warning disable CS8618 // Non-nullable property is uninitialized
-        public string ProviderType { get; set; }
-        public string Name { get; set; }
+        public string ProviderType { get; set; } = "provider";
         public string Caption { get; set; }
-        public string OriginalItemSpec { get; set; }
-        public string Path { get; set; }
-        public string SchemaName { get; set; }
-        public string SchemaItemType { get; set; }
-        public bool Resolved { get; set; } = false;
-        public bool Implicit { get; set; } = false;
+        public string? OriginalItemSpec { get; set; }
+        public string? SchemaName { get; set; }
+        public string? SchemaItemType { get; set; }
+        public DiagnosticLevel DiagnosticLevel { get; set; } = DiagnosticLevel.None;
+        public bool Resolved { get; set; }
+        public bool Implicit { get; set; }
         public bool Visible { get; set; } = true;
         public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
-        public ITargetFramework TargetFramework { get; set; }
         public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
+        public string? FilePath { get; set; }
+        public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
 
         public IDependency SetProperties(
@@ -61,7 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null)
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
             return new TestDependency
             {
@@ -74,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Flags = flags ?? Flags,
                 SchemaName = schemaName ?? SchemaName,
                 IconSet = iconSet ?? IconSet,
-                Implicit = isImplicit ?? Implicit
+                Implicit = isImplicit ?? Implicit,
+                DiagnosticLevel = diagnosticLevel ?? DiagnosticLevel
             };
         }
     }

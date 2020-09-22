@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
@@ -16,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     /// Provides the IEnumValue's for the ActiveDebugProfile property. This is what is used to drive
     /// the debug target selection dropdown.
     /// </summary>
-
     internal class DebugProfileEnumValuesGenerator : IDynamicEnumValuesGenerator
     {
         private readonly AsyncLazy<ICollection<IEnumValue>> _listedValues;
@@ -81,7 +81,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return result;
         }
 
-        private static string? EscapeMnemonics(string text)
+        [return: NotNullIfNotNull("text")]
+        private static string? EscapeMnemonics(string? text)
         {
             return text?.Replace("&", "&&");
         }

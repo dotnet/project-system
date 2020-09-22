@@ -31,14 +31,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = providerType
             };
 
-            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -77,14 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 OriginalItemSpec = "originalItemSpec2"
             };
 
-            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -98,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
-            Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
+            Assert.True(context.TryGetDependency(otherDependency.GetDependencyId(), out IDependency otherDependencyAfter));
             DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
@@ -129,14 +127,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Caption = $"{caption} (originalItemSpec2)" // caption already includes alias
             };
 
-            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,
@@ -150,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = dependency, Caption = "caption (originalItemSpec1)" }, dependencyAfter!);
 
             // The other dependency had its caption changed to its alias
-            Assert.True(context.TryGetDependency(otherDependency.Id, out IDependency otherDependencyAfter));
+            Assert.True(context.TryGetDependency(otherDependency.GetDependencyId(), out IDependency otherDependencyAfter));
             DependencyAssert.Equal(new TestDependency { ClonePropertiesFrom = otherDependency, Caption = "caption (originalItemSpec2)" }, otherDependencyAfter);
         }
 
@@ -182,14 +179,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             // TODO test a longer suffix here -- looks like the implementation might not handle it correctly
 
-            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(d => d.Id);
+            var dependencyById = new IDependency[] { dependency, otherDependency }.ToDictionary(IDependencyExtensions.GetDependencyId);
 
             var context = new AddDependencyContext(dependencyById);
 
             var filter = new DeduplicateCaptionsSnapshotFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 null,

@@ -39,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private readonly IUnconfiguredProjectCommonServices _commonServices;
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveConfiguredProjectSubscriptionService _activeConfiguredProjectSubscriptionService;
+        private readonly IDependencyTreeTelemetryService _dependencyTreeTelemetryService;
 
         [ImportMany] private readonly OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber> _dependencySubscribers;
         [ImportMany] private readonly OrderPrecedenceImportCollection<IProjectDependenciesSubTreeProvider> _subTreeProviders;
@@ -70,13 +71,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IUnconfiguredProjectTasksService tasksService,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscriptionService,
             IActiveProjectConfigurationRefreshService activeProjectConfigurationRefreshService,
-            ITargetFrameworkProvider targetFrameworkProvider)
+            ITargetFrameworkProvider targetFrameworkProvider,
+            IDependencyTreeTelemetryService dependencyTreeTelemetryService)
             : base(commonServices.ThreadingService.JoinableTaskContext)
         {
             _commonServices = commonServices;
             _tasksService = tasksService;
             _activeConfiguredProjectSubscriptionService = activeConfiguredProjectSubscriptionService;
             _targetFrameworkProvider = targetFrameworkProvider;
+            _dependencyTreeTelemetryService = dependencyTreeTelemetryService;
 
             _dependencySubscribers = new OrderPrecedenceImportCollection<IDependencyCrossTargetSubscriber>(
                 projectCapabilityCheckProvider: commonServices.Project);
@@ -238,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     return;
                 }
 
-                ITargetFramework targetFramework =
+                TargetFramework targetFramework =
                     Strings.IsNullOrEmpty(e.TargetShortOrFullName) || TargetFramework.Any.Equals(e.TargetShortOrFullName)
                         ? TargetFramework.Any
                         : _targetFrameworkProvider.GetTargetFramework(e.TargetShortOrFullName) ?? TargetFramework.Any;
@@ -265,18 +268,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         }
 
         private void UpdateDependenciesSnapshot(
-            ITargetFramework changedTargetFramework,
+            TargetFramework changedTargetFramework,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<ITargetFramework> targetFrameworks,
-            ITargetFramework? activeTargetFramework,
+            ImmutableArray<TargetFramework> targetFrameworks,
+            TargetFramework? activeTargetFramework,
             CancellationToken token)
         {
             Assumes.NotNull(_commonServices.Project.FullPath);
 
             IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project?.ProjectInstance.Items);
 
-            _snapshot.TryUpdate(
+            DependenciesSnapshot? updatedSnapshot = _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(
                     previousSnapshot,
                     changedTargetFramework,
@@ -288,6 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
                     projectItemSpecs),
                 token);
+
+            if (updatedSnapshot != null)
+            {
+                _dependencyTreeTelemetryService.ObserveSnapshot(updatedSnapshot);
+            }
 
             return;
 
@@ -334,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             return _context.Current;
         }
 
-        public ConfiguredProject? GetConfiguredProject(ITargetFramework target)
+        public ConfiguredProject? GetConfiguredProject(TargetFramework target)
         {
             return _context.Current!.GetInnerConfiguredProject(target);
         }

@@ -12,11 +12,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// <remarks>
     ///     <para>
     ///         The "active" context for the editor is the one that Roslyn uses to drive IntelliSense, refactorings
-    ///         and code fixes. This is typically controlled by the user via the project drop down in the top-left 
+    ///         and code fixes. This is typically controlled by the user via the project drop down in the top-left
     ///         of the editor, but can be changed in reaction to other factors.
     ///     </para>
     ///     <para>
-    ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/> which is 
+    ///         NOTE: This is distinct from the "active" context for an <see cref="UnconfiguredProject"/> which is
     ///         tracked via <see cref="IActiveWorkspaceProjectContextHost"/>.
     ///     </para>
     /// </remarks>
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     <paramref name="contextId"/> is an empty string ("").
         /// </exception>
         /// <exception cref="InvalidOperationException">
-        ///     <paramref name="contextId"/> has already been been registered.
+        ///     <paramref name="contextId"/> has already been registered.
         /// </exception>
         void RegisterContext(string contextId);
 

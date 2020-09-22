@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
@@ -38,14 +38,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file2.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: empty, isActiveContext: true, logger: logger);
+            handler.Handle(10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             AssertEx.CollectionLength(sourceFilesPushedToWorkspace, 2);
             Assert.Contains(@"C:\file1.cs", sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"C:\file1.cs", @"C:\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(10, added: empty, removed: removed, isActiveContext: true, logger: logger);
+            handler.Handle(10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\file2.cs", sourceFilesPushedToWorkspace);
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             void onSourceFileAdded(string s) => Assert.True(sourceFilesPushedToWorkspace.Add(s));
             void onSourceFileRemoved(string s) => sourceFilesPushedToWorkspace.Remove(s);
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\ProjectFolder\Myproject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForSourceFiles(project, onSourceFileAdded, onSourceFileRemoved);
             var logger = Mock.Of<IProjectLogger>();
 
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"file1.cs", @"..\ProjectFolder\file1.cs" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: removed, isActiveContext: true, logger: logger);
+            handler.Handle(10, added: added, removed: removed, new ContextState(true, false), logger: logger);
 
             Assert.Single(sourceFilesPushedToWorkspace);
             Assert.Contains(@"C:\ProjectFolder\file1.cs", sourceFilesPushedToWorkspace);

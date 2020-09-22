@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         #endregion
 
         #region IDisposable
-        private bool _disposedValue = false;
+        private bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

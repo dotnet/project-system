@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -11,21 +10,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     internal class SharedProjectDependencyModel : DependencyModel
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
-            add: DependencyTreeFlags.ProjectDependency +
-                 DependencyTreeFlags.SharedProjectDependency,
+            resolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
+            unresolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
             remove: DependencyTreeFlags.SupportsRuleProperties);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.SharedProject,
             expandedIcon: KnownMonikers.SharedProject,
-            unresolvedIcon: ManagedImageMonikers.SharedProjectWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.SharedProjectWarning);
+            unresolvedIcon: KnownMonikers.SharedProjectWarning,
+            unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning);
 
         private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.SharedProjectPrivate,
-            expandedIcon: ManagedImageMonikers.SharedProjectPrivate,
-            unresolvedIcon: ManagedImageMonikers.SharedProjectWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.SharedProjectWarning);
+            icon: KnownMonikers.SharedProjectPrivate,
+            expandedIcon: KnownMonikers.SharedProjectPrivate,
+            unresolvedIcon: KnownMonikers.SharedProjectWarning,
+            unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning);
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
@@ -42,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: System.IO.Path.GetFileNameWithoutExtension(path),
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit),
@@ -49,7 +49,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
-            Caption = System.IO.Path.GetFileNameWithoutExtension(path);
         }
     }
 }

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.VS.Automation;
 using Moq;
@@ -22,7 +21,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         [Fact]
         public async Task ChangedFile_FiresTempPEDirty()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
+                ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
+                ImmutableHashSet<string>.Empty,
+                ImmutableHashSet<DesignTimeInputFileChange>.Empty,
+                "C:\\TempPE"));
+
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
@@ -30,20 +35,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             // One file should have been added
             Assert.Single(_buildManager.DirtyItems);
-            Assert.Equal("Resources1.Designer.cs", _buildManager.DirtyItems.First());
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DirtyItems[0]);
             Assert.Empty(_buildManager.DeletedItems);
         }
 
         [Fact]
         public async Task RemovedFile_FiresTempPEDeleted()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 Array.Empty<DesignTimeInputFileChange>(),
                 ""));
 
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                ImmutableHashSet<string>.Empty,
                ImmutableHashSet<string>.Empty,
                Array.Empty<DesignTimeInputFileChange>(),
@@ -52,19 +57,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // One file should have been added
             Assert.Empty(_buildManager.DirtyItems);
             Assert.Single(_buildManager.DeletedItems);
-            Assert.Equal("Resources1.Designer.cs", _buildManager.DeletedItems.First());
+            Assert.Equal("Resources1.Designer.cs", _buildManager.DeletedItems[0]);
         }
 
         [Fact]
         public async Task GetDesignTimeInputXmlAsync_HasCorrectArguments()
         {
-            await _bridge.ApplyAsync(new DesignTimeInputsDelta(
+            await _bridge.ApplyAsync(new DesignTimeInputSnapshot(
                 ImmutableHashSet.CreateRange(new string[] { "Resources1.Designer.cs" }),
                 ImmutableHashSet<string>.Empty,
                 new DesignTimeInputFileChange[] { new DesignTimeInputFileChange("Resources1.Designer.cs", false) },
                 "C:\\TempPE"));
 
-            await _bridge.GetDesignTimeInputXmlAsync("Resources1.Designer.cs");
+            await _bridge.BuildDesignTimeOutputAsync("Resources1.Designer.cs");
 
             Assert.Equal("Resources1.Designer.cs", _lastCompiledFile);
             Assert.Equal("C:\\TempPE", _lastOutputPath);
@@ -78,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var changeTracker = Mock.Of<IDesignTimeInputsChangeTracker>();
 
             var compilerMock = new Mock<IDesignTimeInputsCompiler>();
-            compilerMock.Setup(c => c.GetDesignTimeInputXmlAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableHashSet<string>>()))
+            compilerMock.Setup(c => c.BuildDesignTimeOutputAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ImmutableHashSet<string>>()))
                 .Callback<string, string, ImmutableHashSet<string>>((file, outputPath, sharedInputs) =>
                 {
                     _lastCompiledFile = file;
@@ -86,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                     _lastSharedInputs = sharedInputs;
                 });
 
-            var project = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
+            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject\MyProject.csproj");
 
             _buildManager = new TestBuildManager();
 
@@ -108,9 +113,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
             }
 
-            public Task ApplyAsync(DesignTimeInputsDelta delta)
+            public Task ApplyAsync(DesignTimeInputSnapshot value)
             {
-                var input = IProjectVersionedValueFactory.Create(delta);
+                var input = IProjectVersionedValueFactory.Create(value);
 
                 return base.ApplyAsync(input);
             }
@@ -136,7 +141,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 DirtyItems.Add(outputMoniker);
             }
-
         }
     }
 }

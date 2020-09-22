@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider4
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider5
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             {
                 // First value is the default one.
                 var defaultValues = PooledArray<KeyValuePair<string, string>>.GetInstance();
-                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values.First()));
+                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values[0]));
                 return defaultValues.ToImmutableAndFree();
             }
         }

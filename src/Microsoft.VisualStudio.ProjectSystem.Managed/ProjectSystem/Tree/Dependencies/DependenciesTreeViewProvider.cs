@@ -76,13 +76,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.HasVisibleUnresolvedDependency).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
             async Task BuildSingleTargetTreeAsync()
             {
-                foreach ((ITargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((TargetFramework _, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             async Task BuildMultiTargetTreeAsync()
             {
-                foreach ((ITargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
+                foreach ((TargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in snapshot.DependenciesByTargetFramework)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
@@ -116,9 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                     else
                     {
-                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.FriendlyName);
+                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.ShortName);
                         bool shouldAddTargetNode = node == null;
-                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.HasVisibleUnresolvedDependency);
+                        IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.MaximumVisibleDiagnosticLevel);
 
                         node = CreateOrUpdateNode(
                             node,
@@ -155,28 +155,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public IProjectTree? FindByPath(IProjectTree? root, string path)
-        {
-            if (root == null)
-            {
-                return null;
-            }
-
-            IProjectTree? dependenciesNode = root.Flags.Contains(DependencyTreeFlags.DependenciesRootNode)
-                ? root
-                : root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
-
-            return dependenciesNode?.GetSelfAndDescendentsBreadthFirst()
-                .FirstOrDefault((node, p) => string.Equals(node.FilePath, p, StringComparisons.Paths), path);
-        }
-
         /// <summary>
         /// Builds all available sub trees under root: target framework or Dependencies node
         /// when there is only one target.
         /// </summary>
         private async Task<IProjectTree> BuildSubTreesAsync(
             IProjectTree rootNode,
-            ITargetFramework activeTarget,
+            TargetFramework activeTarget,
             TargetedDependenciesSnapshot targetedSnapshot,
             Func<IProjectTree, HashSet<IProjectTree>, IProjectTree> syncFunc)
         {
@@ -215,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
-                    targetedSnapshot.CheckForUnresolvedDependencies(providerType));
+                    targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
                 if (subTreeViewModel == null)
                 {
@@ -298,7 +283,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 Assumes.NotNull(parent);
 
-                rootNode = parent!;
+                rootNode = parent;
             }
 
             return currentNodes != null // shouldCleanup
@@ -331,12 +316,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectTreeFlags? excludedFlags = null)
         {
             IRule? browseObjectProperties = dependency.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties)
-                ? await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.Catalogs)
+                ? await _treeServices.GetBrowseObjectRuleAsync(dependency, targetedSnapshot.TargetFramework, targetedSnapshot.Catalogs)
                 : null;
 
             return CreateOrUpdateNode(
                 node,
-                dependency.ToViewModel(),
+                dependency,
                 browseObjectProperties,
                 isProjectItem,
                 additionalFlags,
@@ -356,11 +341,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            string? filePath = viewModel.Dependency != null &&
-                               viewModel.Dependency.Resolved
-                ? viewModel.Dependency.GetTopLevelId()
-                : viewModel.FilePath;
-
             ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);
 
             return isProjectItem
@@ -371,7 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,
-                    filePath,
+                    filePath: viewModel.FilePath,
                     browseObjectProperties: browseObjectProperties,
                     icon: viewModel.Icon.ToProjectSystemType(),
                     expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
@@ -381,13 +361,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             IProjectTree CreateProjectItemTreeNode()
             {
-                Assumes.NotNull(filePath);
-
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,
-                    file: filePath,
+                    file: viewModel.FilePath,
                     itemType: viewModel.SchemaItemType,
-                    itemName: filePath);
+                    itemName: viewModel.FilePath);
 
                 return _treeServices.CreateTree(
                     caption: viewModel.Caption,

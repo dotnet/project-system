@@ -38,7 +38,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 await joinableTaskContext.Factory.SwitchToMainThreadAsync();
 
                 return (T)iunknown!;
-
             }, joinableTaskContext.Factory);
         }
 

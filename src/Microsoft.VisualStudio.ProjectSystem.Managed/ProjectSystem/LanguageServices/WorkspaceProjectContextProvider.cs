@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Creates <see cref="IWorkspaceProjectContext"/> instances using data 
+    ///     Creates <see cref="IWorkspaceProjectContext"/> instances using data
     ///     from any specified <see cref="ConfiguredProject"/>.
     /// </summary>
     [Export(typeof(IWorkspaceProjectContextProvider))]

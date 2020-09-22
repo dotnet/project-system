@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         public async Task InitializeAsync(IAsyncServiceProvider asyncServiceProvider)
         {
-            Assumes.True(_context.IsOnMainThread, "Must be on UI thread");
+            _context.VerifyIsOnMainThread();
 
             IMenuCommandService menuCommandService = await asyncServiceProvider.GetServiceAsync<IMenuCommandService, IMenuCommandService>();
 

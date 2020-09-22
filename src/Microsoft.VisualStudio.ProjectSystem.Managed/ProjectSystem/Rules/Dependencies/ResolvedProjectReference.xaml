@@ -8,7 +8,7 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="ProjectReference"
-                MSBuildTarget="ResolveProjectReferencesDesignTime"
+                MSBuildTarget="ResolveProjectReferencesDesignTime2"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
@@ -25,6 +25,17 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="CopyLocal"
                 Description="Indicates whether the reference will be copied to the output directory."
@@ -58,6 +69,10 @@
                   Description="The value of the Title field from the assembly metadata."
                   DisplayName="Description"
                   ReadOnly="True" />
+
+  <StringProperty Name="DiagnosticLevel"
+                  ReadOnly="True"
+                  Visible="False" />
 
   <BoolProperty Name="EmbedInteropTypes"
                 Description="Indicates whether types defined in this assembly will be embedded into the target assembly."

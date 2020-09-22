@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
-    ///     Provides members for for opening the Project Designer and querying whether it is supported.
+    ///     Provides members for opening the Project Designer and querying whether it is supported.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IProjectDesignerService

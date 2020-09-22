@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class ProjectTreeProviderExtensions
     {
         /// <summary>
-        ///     Returns a rooted directory that new files should added to the project under when the user 
+        ///     Returns a rooted directory that new files should added to the project under when the user
         ///     initiates an Add New Item operation on a particular node in the tree.
         /// </summary>
         /// <param name="provider">
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     The <see cref="IProjectTree"/> in the tree that is the receiver of the Add New Item operation.
         ///  </param>
         /// <returns>
-        ///     A <see cref="string"/> containing the path path under which to save the new items, or <see langword="null"/>
+        ///     A <see cref="string"/> containing the path under which to save the new items, or <see langword="null"/>
         ///     if <paramref name="target"/> does not support adding new items.
         /// </returns>
         /// <exception cref="ArgumentNullException">

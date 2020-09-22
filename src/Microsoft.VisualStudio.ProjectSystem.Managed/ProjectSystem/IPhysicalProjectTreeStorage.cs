@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Provides file and folder operations that operate on the physical <see cref="IProjectTree"/>.
     /// </summary>
     /// <remarks>
-    ///     This interface provides a simple facade over the <see cref="IFileSystem"/>, <see cref="IFolderManager"/>, 
+    ///     This interface provides a simple facade over the <see cref="IFileSystem"/>, <see cref="IFolderManager"/>,
     ///     <see cref="IProjectTreeService"/>, <see cref="IProjectItemProvider"/> and <see cref="IProjectItemProvider"/> interfaces.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="UnauthorizedAccessException">
         ///     The caller does not have the required permission.
         /// </exception>
-        /// <exception cref="PathTooLongException"> 
+        /// <exception cref="PathTooLongException">
         ///     The specified path, file name, or both exceed the system-defined maximum length.
         /// </exception>
         /// <exception cref="DirectoryNotFoundException">
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <exception cref="UnauthorizedAccessException">
         ///     The caller does not have the required permission.
         /// </exception>
-        /// <exception cref="PathTooLongException"> 
+        /// <exception cref="PathTooLongException">
         ///     The specified path, file name, or both exceed the system-defined maximum length.
         /// </exception>
         /// <exception cref="DirectoryNotFoundException">

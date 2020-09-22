@@ -14,17 +14,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|Profile|DisplayName">
         <source>Profile</source>
-        <target state="new">Profile</target>
+        <target state="translated">Profil</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Pfad</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackVersion|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">Version</target>
         <note />
       </trans-unit>
     </body>

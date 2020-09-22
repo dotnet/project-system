@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Xunit;
 
@@ -13,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         private protected void VerifyUnchangedOnAdd(IDependency dependency, IImmutableSet<string>? projectItemSpecs = null)
         {
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<DependencyId, IDependency>
             {
-                { dependency.Id, dependency }
+                { dependency.GetDependencyId(), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);
@@ -23,7 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var filter = CreateFilter();
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 null!,
                 projectItemSpecs,

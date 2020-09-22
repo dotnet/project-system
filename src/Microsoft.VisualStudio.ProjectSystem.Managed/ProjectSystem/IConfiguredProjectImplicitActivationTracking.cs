@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IConfiguredProjectImplicitActivationTracking
     {
         /// <summary>
-        ///     Gets a value indicating whether the current <see cref="ConfiguredProject"/> 
+        ///     Gets a value indicating whether the current <see cref="ConfiguredProject"/>
         ///     is implicitly active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
@@ -22,14 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         bool IsImplicitlyActive { get; }
 
         /// <summary>
-        ///     Gets a task that is completed when current <see cref="ConfiguredProject"/> becomes 
+        ///     Gets a task that is completed when current <see cref="ConfiguredProject"/> becomes
         ///     implicitly active.
         /// </summary>
         /// <exception cref="ObjectDisposedException">
         ///     The <see cref="IConfiguredProjectImplicitActivationTracking"/> has been disposed of.
         /// </exception>
         /// <remarks>
-        ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/> 
+        ///     The returned <see cref="Task"/> is canceled when the <see cref="ConfiguredProject"/>
         ///     is unloaded.
         /// </remarks>
         Task ImplicitlyActive { get; }

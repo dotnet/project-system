@@ -105,6 +105,7 @@
       <RealSign Condition="'$(SignType)' == 'real'">true</RealSign>
     </PropertyGroup>
 
+    <!--Available certificates are outlined here: https://devdiv.visualstudio.com/DevDiv/_wiki/wikis/DevDiv.wiki/659/Signing-Certificates -->
     <MSBuild 
       Projects="Sign.proj"
       Properties="@(CommonBuildProperty);RealSign=$(RealSign);ConfigFile=$(RepoRoot)build\ci\SignToolData.json"

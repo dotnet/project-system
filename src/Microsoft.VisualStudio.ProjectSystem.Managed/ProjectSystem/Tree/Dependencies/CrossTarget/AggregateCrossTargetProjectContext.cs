@@ -14,14 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
 
         public bool IsCrossTargeting { get; }
-        public ImmutableArray<ITargetFramework> TargetFrameworks { get; }
-        public ITargetFramework ActiveTargetFramework { get; }
+        public ImmutableArray<TargetFramework> TargetFrameworks { get; }
+        public TargetFramework ActiveTargetFramework { get; }
 
         public AggregateCrossTargetProjectContext(
             bool isCrossTargeting,
-            ImmutableArray<ITargetFramework> targetFrameworks,
+            ImmutableArray<TargetFramework> targetFrameworks,
             ImmutableDictionary<string, ConfiguredProject> configuredProjectByTargetFramework,
-            ITargetFramework activeTargetFramework,
+            TargetFramework activeTargetFramework,
             ITargetFrameworkProvider targetFrameworkProvider)
         {
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must contain at least one item.");
@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 
         public IEnumerable<ConfiguredProject> InnerConfiguredProjects => _configuredProjectByTargetFramework.Values;
 
-        public ITargetFramework? GetProjectFramework(ProjectConfiguration projectConfiguration)
+        public TargetFramework? GetProjectFramework(ProjectConfiguration projectConfiguration)
         {
             if (projectConfiguration.Dimensions.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string targetFrameworkMoniker))
             {
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             }
         }
 
-        public ConfiguredProject? GetInnerConfiguredProject(ITargetFramework target)
+        public ConfiguredProject? GetInnerConfiguredProject(TargetFramework target)
         {
             return _configuredProjectByTargetFramework.FirstOrDefault((x, t) => t.Equals(x.Key), target).Value;
         }

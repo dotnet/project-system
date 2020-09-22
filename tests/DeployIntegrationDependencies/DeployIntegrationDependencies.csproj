@@ -6,10 +6,4 @@
     <TargetFramework>net472</TargetFramework>
     <PublishOutputToSymStore>false</PublishOutputToSymStore>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.VisualStudio.Composition" Version="16.4.11" />
-  </ItemGroup>
 </Project>

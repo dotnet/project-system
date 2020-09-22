@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Project Reference Properties</source>
-        <target state="needs-review-translation">Verweiseigenschaften</target>
+        <target state="translated">Projektverweiseigenschaften</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">

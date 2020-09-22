@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides an implementation of <see cref="IUnconfiguredProjectVsServices"/> that delegates onto 
+    ///     Provides an implementation of <see cref="IUnconfiguredProjectVsServices"/> that delegates onto
     ///     its <see cref="IUnconfiguredProjectServices.HostObject"/> and underlying <see cref="IUnconfiguredProjectCommonServices"/>.
     /// </summary>
     [Export(typeof(IUnconfiguredProjectVsServices))]

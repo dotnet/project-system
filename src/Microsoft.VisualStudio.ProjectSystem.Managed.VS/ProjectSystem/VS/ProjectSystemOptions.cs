@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Threading;
 
@@ -15,24 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
         private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
-
-        private readonly IEnvironmentHelper _environment;
+        private readonly IProjectService _projectService;
         private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly JoinableTaskContext _joinableTaskContext;
-        private bool? _isProjectOutputPaneEnabled;
+        private readonly Lazy<bool> _isProjectOutputPaneEnabled;
 
         [ImportingConstructor]
-        public ProjectSystemOptions(IEnvironmentHelper environment, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
+        public ProjectSystemOptions(IProjectService projectService, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
         {
-            _environment = environment;
+            _projectService = projectService;
             _settingsManager = settingsManager;
             _joinableTaskContext = joinableTaskContext;
+            _isProjectOutputPaneEnabled = new Lazy<bool>(() => _projectService.Capabilities.Contains(ServiceCapability.DiagnosticRuntimeServiceCapability));
         }
 
-        public bool IsProjectOutputPaneEnabled
-        {
-            get { return IsEnvironmentVariableEnabled("PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED", ref _isProjectOutputPaneEnabled); }
-        }
+        public bool IsProjectOutputPaneEnabled => _isProjectOutputPaneEnabled.Value;
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
@@ -66,18 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 
             await _settingsManager.Value.SetValueAsync(name, value, isMachineLocal: false);
-        }
-
-        private bool IsEnvironmentVariableEnabled(string variable, ref bool? result)
-        {
-            if (result == null)
-            {
-                string value = _environment.GetEnvironmentVariable(variable);
-
-                result = string.Equals(value, "1", StringComparisons.EnvironmentVariables);
-            }
-
-            return result.Value;
         }
     }
 }

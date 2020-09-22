@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.ProjectSystem.Logging;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     /// <summary>
-    ///     Handles changes to the project file, and updates <see cref="IWorkspaceProjectContext.ProjectFilePath"/> 
+    ///     Handles changes to the project file, and updates <see cref="IWorkspaceProjectContext.ProjectFilePath"/>
     ///     and <see cref="IWorkspaceProjectContext.DisplayName"/>.
     /// </summary>
     [Export(typeof(IWorkspaceContextHandler))]
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return ConfigurationGeneral.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));

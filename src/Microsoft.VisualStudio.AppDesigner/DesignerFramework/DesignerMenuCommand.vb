@@ -1,7 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel.Design
-Imports System.Diagnostics.CodeAnalysis
 
 Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
 
@@ -35,7 +34,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   We also update the status of this menu item in this property based on 
         '   m_AlwaysCheckStatus and m_StatusValid flag.
         '**************************************************************************
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides ReadOnly Property OleStatus As Integer
             Get
                 If _alwaysCheckStatus OrElse Not _statusValid Then
@@ -58,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
         '   which refreshes the status of all the menus the designer knows about.
         '**************************************************************************
 
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke()
             MyBase.Invoke()
 
@@ -67,7 +64,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
                 _rootDesigner.RefreshMenuStatus()
             End If
         End Sub 'Invoke
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke(inArg As Object, outArg As IntPtr)
             MyBase.Invoke(inArg, outArg)
 
@@ -77,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
             End If
         End Sub
 
-        <SuppressMessage("Microsoft.Security", "CA2123:OverrideLinkDemandsShouldBeIdenticalToBase")>
         Public Overrides Sub Invoke(inArg As Object)
             MyBase.Invoke(inArg)
 
@@ -179,6 +174,5 @@ Namespace Microsoft.VisualStudio.Editors.AppDesDesignerFramework
     End Class 'DesignerMenuCommand
 
     Public Delegate Function CheckCommandStatusHandler(menuCommand As DesignerMenuCommand) As Boolean
-
 
 End Namespace

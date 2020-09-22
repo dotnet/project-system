@@ -8,7 +8,8 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1"
+        "CPS_DiagnosticRuntime": "1",
+        "CPS_MetricsCollection": "1"
       }
     },
     "Start (with native debugging)": {
@@ -19,7 +20,8 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1"
+        "CPS_DiagnosticRuntime": "1",
+        "CPS_MetricsCollection": "1"
       },
       "nativeDebugging": true
     },
@@ -31,7 +33,8 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1",
+        "CPS_DiagnosticRuntime": "1",
+        "CPS_MetricsCollection": "1",
         "COMPlus_ZapDisable": "1"
       },
       "nativeDebugging": true
@@ -44,19 +47,14 @@
         "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
         "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
         "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1"
+        "CPS_DiagnosticRuntime": "1",
+        "CPS_MetricsCollection": "1"
       }
     },
     "Start VS Online Client": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",
-      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client \"vsls:?workspaceId=<workspace_ID>&remoteJoin=true\"",
-      "environmentVariables": {
-        "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
-        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
-        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
-        "PROJECTSYSTEM_PROJECTOUTPUTPANEENABLED": "1"
-      }
+      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /client /joinworkspace \"vsls:?workspaceId=<workspace_ID>&remoteJoin=true\""
     }
   }
 }

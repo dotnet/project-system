@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private async Task<string?> GetPropertyValueFromSourceAttributeAsync(string propertyName)
         {
-            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider))
+            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider? provider))
             {
                 return await provider.GetPropertyValueAsync();
             }
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider provider) &&
+            if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider? provider) &&
                 !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
             {
                 await provider.SetPropertyValueAsync(unevaluatedPropertyValue);
@@ -125,12 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             propertyValue = await base.GetEvaluatedPropertyValueAsync(generatePropertyInProjectFileName);
-            if (!bool.TryParse(propertyValue, out value) || !value)
-            {
-                return false;
-            }
-
-            return true;
+            return bool.TryParse(propertyValue, out value) && value;
         }
     }
 }

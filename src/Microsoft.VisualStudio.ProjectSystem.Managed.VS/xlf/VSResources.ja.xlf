@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
-        <target state="new">The name of the framework assembly.</target>
+        <target state="translated">フレームワーク アセンブリの名前です。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDisplayName">
         <source>Assembly Name</source>
-        <target state="new">Assembly Name</target>
+        <target state="translated">アセンブリ名</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDescription">
         <source>The assembly version of the framework assembly.</source>
-        <target state="new">The assembly version of the framework assembly.</target>
+        <target state="translated">フレームワーク アセンブリのアセンブリ バージョンです。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyVersionDisplayName">
         <source>Assembly Version</source>
-        <target state="new">Assembly Version</target>
+        <target state="translated">アセンブリ バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyBrowseObjectClassName">
         <source>Framework Assembly</source>
-        <target state="new">Framework Assembly</target>
+        <target state="translated">フレームワーク アセンブリ</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDescription">
         <source>The file version of the framework assembly.</source>
-        <target state="new">The file version of the framework assembly.</target>
+        <target state="translated">フレームワーク アセンブリのファイル バージョンです。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyFileVersionDisplayName">
         <source>File Version</source>
-        <target state="new">File Version</target>
+        <target state="translated">ファイル バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDescription">
         <source>Path of the framework assembly.</source>
-        <target state="new">Path of the framework assembly.</target>
+        <target state="translated">フレームワーク アセンブリのパスです。</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssemblyPathDisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">パス</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">

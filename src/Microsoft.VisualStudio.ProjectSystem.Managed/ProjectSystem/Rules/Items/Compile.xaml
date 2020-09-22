@@ -50,17 +50,6 @@
   <BoolProperty Name="DesignTimeSharedInput"
                 Visible="false" />
 
-  <StringProperty Name="FullPath"
-                  ReadOnly="true"
-                  Visible="false">
-    <StringProperty.DataSource>
-      <DataSource ItemType="Compile"
-                  PersistedName="FullPath"
-                  Persistence="Intrinsic"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
-
   <StringProperty Name="Generator" />
 
   <StringProperty Name="LastGenOutput"
@@ -72,6 +61,14 @@
       <DataSource PersistenceStyle="Attribute"
                   SourceOfDefaultValue="AfterContext" />
     </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="NuGetPackageId"
+                  Visible="false">
     <StringProperty.Metadata>
       <NameValuePair Name="DoNotCopyAcrossProjects"
                      Value="true" />

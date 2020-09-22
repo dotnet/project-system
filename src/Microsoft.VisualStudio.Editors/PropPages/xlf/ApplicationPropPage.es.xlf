@@ -62,6 +62,11 @@
         <target state="translated">Manifiesto:</target>
         <note />
       </trans-unit>
+      <trans-unit id="Win32ResourceFile.AccessibleName">
+        <source>Resource file</source>
+        <target state="translated">Archivo de recursos</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
         <target state="translated">Archivo de recur&amp;sos:</target>

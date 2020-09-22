@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
+        <target state="translated">Indique si la référence sera copiée dans le répertoire de sortie.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="new">Copy Local</target>
+        <target state="translated">Copie locale</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
+        <target state="translated">Indique si les types définis dans cet assembly seront incorporés dans l'assembly cible.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="new">Embed Interop Types</target>
+        <target state="translated">Incorporer les types d'interopérabilité</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ComReference|DisplayName">
@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="new">A comma-delimited list of aliases to this reference.</target>
+        <target state="translated">Liste d'alias à cette référence délimités par des virgules.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="new">Aliases</target>
+        <target state="translated">Alias</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
+        <target state="translated">Identité de sécurité de l'assembly référencé (consultez System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="new">Identity</target>
+        <target state="translated">Identité</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
@@ -84,22 +84,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="new">Location of the file being referenced.</target>
+        <target state="translated">Emplacement du fichier référencé.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="new">Path</target>
+        <target state="translated">Chemin d'accès</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="new">Version of reference.</target>
+        <target state="translated">Version de référence.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="new">Version</target>
+        <target state="translated">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WrapperTool|DisplayName">

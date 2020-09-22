@@ -2,6 +2,7 @@
 
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
+Imports System.IO
 Imports System.Reflection
 
 Imports Microsoft.VisualStudio.Shell.Interop
@@ -84,7 +85,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Return sectionName
         End Function
 
-
         ''' <summary>
         ''' Get the namespace for the generated file...
         ''' </summary>
@@ -140,7 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Return False
 
         End Function
-
 
         ''' <summary>
         ''' Open a document that contains a class that expands the generated settings class, creating a new
@@ -295,7 +294,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Debug.Assert(AddTo IsNot Nothing, "Must have a project items collection to add new item to!")
 
             ' Create new document...
-            Using Writer As New IO.StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
+            Using Writer As New StreamWriter(NewFilePath, False, System.Text.Encoding.UTF8)
                 Dim ExtendingNamespace As CodeNamespace = Nothing
                 If cc2.Namespace IsNot Nothing Then
                     Debug.Assert(cc2.Namespace.FullName IsNot Nothing, "Couldn't get a FullName from the CodeClass2.Namespace!?")
@@ -340,7 +339,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
 
             Return AddTo.AddFromFileCopy(NewFilePath)
         End Function
-
 
         Friend Interface IFindFilter
             Function IsMatch(Element As EnvDTE.CodeElement) As Boolean
@@ -562,7 +560,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Find the first CodeElement int the ProjectItem's FileCodeModel that satisfies the given filter
         ''' </summary>
@@ -683,7 +680,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             ct.Members.Add(savingStub)
         End Sub
 
-
         ''' <summary>
         ''' Create a comment statement from a "normal" code statement
         ''' </summary>
@@ -700,7 +696,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             End If
 
             Dim sb As New System.Text.StringBuilder
-            Dim sw As New IO.StringWriter(sb)
+            Dim sw As New StringWriter(sb)
 
             generator.GenerateCodeFromStatement(statement, sw, New CodeGeneratorOptions())
             sw.Flush()

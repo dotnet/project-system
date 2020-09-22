@@ -1064,3 +1064,18 @@ Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.IsVSTO() -> Boo
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.ProductSubSKU() -> Microsoft.VisualStudio.Editors.PropertyPages.VSProductSKU.VSASubSKUEdition (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Shared ReadOnly Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase.PropPageBackColor -> System.Drawing.Color (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
+Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass
+Microsoft.VisualStudio.Editors.PropertyPages.CodeAnalysisPropPageComClass.New() -> Void
+My.Resources.GeneralOptionPageResources
+Shared My.Resources.GeneralOptionPageResources.Culture() -> System.Globalization.CultureInfo
+Shared My.Resources.GeneralOptionPageResources.Culture(Value As System.Globalization.CultureInfo) -> Void
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Info() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Minimal() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_None() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_LogLevel_Verbose() -> String
+Shared My.Resources.GeneralOptionPageResources.General_FastUpToDateCheck_Title() -> String
+Shared My.Resources.GeneralOptionPageResources.General_NestingIgnoreSolutionAndProjectProfiles() -> String
+Shared My.Resources.GeneralOptionPageResources.General_NestingSettings_Title() -> String
+Shared My.Resources.GeneralOptionPageResources.ResourceManager() -> System.Resources.ResourceManager

@@ -12,6 +12,16 @@
         <target state="translated">インポート</target>
         <note />
       </trans-unit>
+      <trans-unit id="NeutralLanguage_DisplayNameFormatString">
+        <source>{0} - {1}</source>
+        <target state="new">{0} - {1}</target>
+        <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguage_NoneValue">
+        <source>(None)</source>
+        <target state="new">(None)</target>
+        <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
+      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">開始</target>
@@ -76,7 +86,7 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">プロジェクト ファイル '{0}' を開くことができません。
+        <target state="translated">プロジェクト ファイル '{0}' を開くことができません。
 
 このプロジェクトは、間違ったプロジェクトの種類を使用して読み込まれました。これは、Visual Studio の外部でプロジェクト拡張機能の名前を変更した結果である可能性があります。ソリューションで正しいプロジェクトの種類が選択されるようにするため、プロジェクトを削除してから再度追加してください。</target>
         <note />

@@ -12,6 +12,8 @@ using Microsoft.Test.Apex.VisualStudio.Solution;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.ProjectSystem.Imaging;
+using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -63,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static void VerifyDependenciesNode(SolutionExplorerItemTestExtension actualDependencies, Node[] nodes)
         {
-            var expectDependencies = new Node("Dependencies", ManagedImageMonikers.ReferenceGroup)
+            var expectDependencies = new Node("Dependencies", KnownMonikers.ReferenceGroup)
             {
                 Children = new List<Node>(nodes)
             };
@@ -102,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 var actualIcon = actual?.ExpandedIconMoniker == null
                     ? "null"
-                    : ManagedImageMonikers.ImageMonikerDebugDisplay(actual.ExpandedIconMoniker.Value.ToImageMoniker());
+                    : ImageMonikerDebuggerDisplay.FromImageMoniker(actual.ExpandedIconMoniker.Value.ToImageMoniker());
 
                 if (expect != null)
                 {
@@ -110,10 +112,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .Append(' ', depth * 4)
                         .Append(expect.Text ?? actual!.Name)
                         .Append(' ')
-                        .Append(expect.Icon != null
-                            ? ManagedImageMonikers.ImageMonikerDebugDisplay(expect.Icon.Value)
-                            : actualIcon)
-                        .AppendLine();
+                        .AppendLine(expect.Icon != null
+                            ? ImageMonikerDebuggerDisplay.FromImageMoniker(expect.Icon.Value)
+                            : actualIcon);
                 }
 
                 if (actual != null)
@@ -123,13 +124,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         .Append(actual.Name)
                         .Append(' ')
                         .Append(actualIcon)
-                        .Append(thisSame ? "" : " 🐛")
-                        .AppendLine();
+                        .AppendLine(thisSame ? "" : " 🐛");
                 }
 
                 if (expect?.Children != null)
                 {
-                    if (actual != null && !actual.IsExpanded && expect.Children != null && expect.Children.Count != 0)
+                    if (actual?.IsExpanded == false && expect.Children != null && expect.Children.Count != 0)
                     {
                         actual.Expand();
                     }
@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <example>
         /// <code>new Node(".NETCoreApp 2.1", ManagedImageMonikers.Library)
         /// {
-        ///     new Node("SDK", ManagedImageMonikers.Sdk)
+        ///     new Node("SDK", KnownMonikers.SDK)
         /// }</code>
         /// </example>
         /// </remarks>

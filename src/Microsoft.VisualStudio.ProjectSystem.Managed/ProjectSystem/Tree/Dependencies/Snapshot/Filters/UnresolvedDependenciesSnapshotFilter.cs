@@ -8,8 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Prohibits the unresolved dependency rule (evaluation) from overriding the corresponding 
-    /// resolved rule (design-time build) in the snapshot. 
+    /// Prohibits the unresolved dependency rule (evaluation) from overriding the corresponding
+    /// resolved rule (design-time build) in the snapshot.
     /// </summary>
     /// <remarks>
     /// Once resolved, a dependency cannot revert to unresolved state. It will only appear as
@@ -23,14 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         public const int Order = 100;
 
         public override void BeforeAddOrUpdate(
-            ITargetFramework targetFramework,
             IDependency dependency,
             IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
             IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context)
         {
             // TODO should this verify that the existing one is actually resolved?
-            if (!dependency.Resolved && context.Contains(dependency.Id))
+            if (!dependency.Resolved && context.Contains(dependency.GetDependencyId()))
             {
                 context.Reject();
                 return;

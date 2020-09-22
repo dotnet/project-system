@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
@@ -24,13 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             new DependencyIconSet(
                 icon: KnownMonikers.Application,
                 expandedIcon: KnownMonikers.Application,
-                unresolvedIcon: ManagedImageMonikers.ApplicationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.ApplicationWarning),
+                unresolvedIcon: KnownMonikers.ApplicationWarning,
+                unresolvedExpandedIcon: KnownMonikers.ApplicationWarning),
             DependencyTreeFlags.ProjectDependencyGroup);
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.ApplicationPrivate;
+        public override ImageMoniker ImplicitIcon => KnownMonikers.ApplicationPrivate;
 
         [ImportingConstructor]
         public ProjectRuleHandler()

@@ -9,4 +9,19 @@
     <None Remove="$(Pkgxunit_runner_console)\**\xunit.abstractions.dll" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <InitializeSourceRootDependsOn>$(InitializeSourceRootDependsOn);RemoveSourceRootsWithoutSourceLinkUrl</InitializeSourceRootDependsOn>
+  </PropertyGroup>
+
+  <!-- WORKAROUND: https://github.com/NuGet/Home/issues/9431 -->
+  <Target Name="RemoveSourceRootsWithoutSourceLinkUrl">
+    <ItemGroup>
+      <SourceRoot Remove="@(SourceRoot)" Condition="'%(SourceRoot.SourceLinkUrl)' == ''" />
+    </ItemGroup>
+  </Target>
+
+
+  <!-- WORKAROUND: https://github.com/dotnet/wpf/issues/810 -->
+  <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).targets" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).targets')"/>
+
 </Project>

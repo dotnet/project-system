@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.References
     ///     Provides an implementation of <see cref="IValidProjectReferenceChecker"/> that always allows a reference.
     /// </summary>
     /// <remarks>
-    ///     Unlike the old project system, we do zero validation when we get added as a project reference, or when 
+    ///     Unlike the old project system, we do zero validation when we get added as a project reference, or when
     ///     we reference another project. Instead, we push off all validation to MSBuild targets that do the validation
-    ///     during builds and design-time builds (ResolveProjectReferences). This gives a consistent behavior between 
-    ///     adding the project reference via the UI and adding the project via the editor - in the end they result in the 
+    ///     during builds and design-time builds (ResolveProjectReferences). This gives a consistent behavior between
+    ///     adding the project reference via the UI and adding the project via the editor - in the end they result in the
     ///     same behavior, inside and outside of Visual Studio.
     /// </remarks>
     [Export(typeof(IValidProjectReferenceChecker))]

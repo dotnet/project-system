@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedFrameworkReference|Description">
         <source>Framework Reference Properties</source>
-        <target state="needs-review-translation">フレームワークのプロパティ</target>
+        <target state="translated">フレームワーク参照プロパティ</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedFrameworkReference|DisplayName">
         <source>Framework Reference</source>
-        <target state="needs-review-translation">フレームワーク</target>
+        <target state="translated">フレームワーク参照</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetingPackPath|DisplayName">

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static UnconfiguredProject ImplementFullPath(string? fullPath)
         {
-            return Create(filePath: fullPath);
+            return Create(fullPath: fullPath);
         }
 
         public static UnconfiguredProject Create(IProjectThreadingService threadingService)
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return project.Object;
         }
 
-        public static UnconfiguredProject Create(object? hostObject = null, string? filePath = null,
+        public static UnconfiguredProject Create(object? hostObject = null, string? fullPath = null,
                                                  IProjectConfigurationsService? projectConfigurationsService = null,
                                                  ConfiguredProject? configuredProject = null, Encoding? projectEncoding = null,
                                                  IProjectAsynchronousTasksService? projectAsynchronousTasksService = null,
@@ -37,10 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 unconfiguredProjectServicesMock.SetupGet<object?>(u => u.FaultHandler)
                                            .Returns(IProjectFaultHandlerServiceFactory.Create());
 
-                unconfiguredProjectServicesMock.SetupGet<object?>(u => u.HostObject)
+                unconfiguredProjectServicesMock.SetupGet(u => u.HostObject)
                                            .Returns(hostObject);
 
-                unconfiguredProjectServicesMock.SetupGet<IProjectConfigurationsService?>(u => u.ProjectConfigurationsService)
+                unconfiguredProjectServicesMock.SetupGet(u => u.ProjectConfigurationsService)
                                            .Returns(projectConfigurationsService);
 
                 var activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create(getActiveConfiguredProject: () => configuredProject);
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                                .Returns(unconfiguredProjectServices);
 
             project.SetupGet<string?>(u => u.FullPath)
-                                .Returns(filePath);
+                                .Returns(fullPath);
 
             project.Setup(u => u.Capabilities)
                                .Returns(scope!);

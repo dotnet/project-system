@@ -10,7 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     internal class PackageDependencyModel : DependencyModel
     {
         private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
-            add: DependencyTreeFlags.PackageDependency);
+            resolved: DependencyTreeFlags.PackageDependency + DependencyTreeFlags.SupportsFolderBrowse,
+            unresolved: DependencyTreeFlags.PackageDependency);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.NuGetGrey,
@@ -26,8 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 
-        public override string Name => OriginalItemSpec;
-
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 
         public override string? SchemaItemType => PackageReference.PrimaryDataSourceItemType;
@@ -35,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public override string? SchemaName => Resolved ? ResolvedPackageReference.SchemaName : PackageReference.SchemaName;
 
         public PackageDependencyModel(
-            string path,
             string originalItemSpec,
             string version,
             bool isResolved,
@@ -43,7 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isVisible,
             IImmutableDictionary<string, string> properties)
             : base(
-                path,
+                caption: string.IsNullOrEmpty(version) ? originalItemSpec : $"{originalItemSpec} ({version})",
+                path: null,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit).Add($"$ID:{originalItemSpec}"),
                 isResolved,
@@ -51,7 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 properties,
                 isVisible)
         {
-            Caption = string.IsNullOrEmpty(version) ? originalItemSpec : $"{originalItemSpec} ({version})";
         }
     }
 }

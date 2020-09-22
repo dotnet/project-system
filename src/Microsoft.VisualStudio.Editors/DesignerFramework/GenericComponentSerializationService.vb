@@ -6,10 +6,8 @@ Imports System.IO
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
-
     Friend Class GenericComponentSerializationService
         Inherits ComponentSerializationService
-
 
         Private _serviceProvider As IServiceProvider
 
@@ -33,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Return New GenericComponentSerializationStore
         End Function
 
-
         ''' <summary>
         ''' This method loads a SerializationStore and from the given
         '''   stream.  This store can then be used to deserialize objects by passing it to 
@@ -46,7 +43,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Return GenericComponentSerializationStore.Load(Stream)
         End Function
-
 
         ''' <summary>
         ''' This method serializes the given object to the store.  The store 
@@ -70,7 +66,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Overrides Sub SerializeAbsolute(store As SerializationStore, value As Object)
             Serialize(store, value)
         End Sub
-
 
         ''' <summary>
         ''' This method serializes the given member on the given object.  This method 
@@ -96,13 +91,12 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Throw Common.CreateArgumentException(NameOf(Store))
             End If
 
-            If Not TypeOf Member Is PropertyDescriptor Then
+            If TypeOf Member IsNot PropertyDescriptor Then
                 Throw Common.CreateArgumentException(NameOf(Member))
             End If
 
             RFStore.AddMember(OwningObject, DirectCast(Member, PropertyDescriptor))
         End Sub
-
 
         ''' <summary>
         ''' This method serializes the given member on the given object, 
@@ -122,7 +116,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             SerializeMember(Store, OwningObject, Member)
         End Sub
 
-
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
         '''     objects contained within it.  If a container is provided, objects 
@@ -140,7 +133,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Return RFStore.Deserialize()
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
@@ -161,7 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Return RFStore.Deserialize(Container)
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store, but rather than produce 

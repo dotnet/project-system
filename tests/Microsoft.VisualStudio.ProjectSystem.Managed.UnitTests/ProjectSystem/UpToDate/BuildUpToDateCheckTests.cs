@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var configuredProject = new Mock<ConfiguredProject>();
             configuredProject.SetupGet(c => c.ProjectVersion).Returns(() => _projectVersion);
             configuredProject.SetupGet(c => c.Services).Returns(configuredProjectServices);
-            configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(filePath: _projectFullPath));
+            configuredProject.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(fullPath: _projectFullPath));
 
             var projectAsynchronousTasksService = new Mock<IProjectAsynchronousTasksService>();
             projectAsynchronousTasksService.SetupGet(s => s.UnloadCancellationToken).Returns(CancellationToken.None);
@@ -1074,7 +1074,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             var destinationPath = @"NewProjectDirectory\NewOutputPath\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
-            
+
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
             var lastCheckTime  = DateTime.UtcNow.AddMinutes(-3);

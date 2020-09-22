@@ -5,13 +5,36 @@
     <XamlPropertyRule>
       <Namespace>Microsoft.VisualStudio.ProjectSystem</Namespace>
       <RuleInjectionClassName>$(XamlPropertyRuleInjectionClassName)</RuleInjectionClassName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
     </XamlPropertyRule>
+    <XamlPropertyRuleNoCodeBehind>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
+    </XamlPropertyRuleNoCodeBehind>
+    <XamlPropertyProjectItemsSchema>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <XlfOutputItem>EmbeddedResource</XlfOutputItem>
+      <LogicalName>XamlRuleToCode:%(Filename)%(Extension)</LogicalName>
+    </XamlPropertyProjectItemsSchema>
+    <DesignTimeTargetsFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </DesignTimeTargetsFile>
   </ItemDefinitionGroup>
 
   <!-- Copy XAML rule files and design targets files for testing and setup authoring purposes -->
   <Target Name="CopyXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory">
 
-    <Copy SourceFiles="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)"
+    <ItemGroup>
+      
+      <_ItemsToCopy Include="@(XamlPropertyRule);@(XamlPropertyRuleNoCodeBehind);@(XamlPropertyProjectItemsSchema);@(DesignTimeTargetsFile)" 
+                    Condition="'%(CopyToOutputDirectory)' != 'Never'"/>
+    
+    </ItemGroup>    
+
+    <Copy SourceFiles="@(_ItemsToCopy)"
           DestinationFolder="$(VisualStudioXamlRulesDir)"
           SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
           OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
@@ -26,8 +49,13 @@
   <!-- Copy translated XAML rule files for testing and setup authoring purposes -->
   <Target Name="CopyTranslatedXamlRulesToOutputDirectory" AfterTargets="CopyFilesToOutputDirectory" DependsOnTargets="TranslateSourceFromXlf">
 
-    <Copy SourceFiles="@(XamlPropertyRuleTranslated)"  
-          DestinationFiles="@(XamlPropertyRuleTranslated->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
+    <ItemGroup>
+        <_TranslatedItemsToCopy Include="@(EmbeddedResource)"
+                                Condition="'%(EmbeddedResource.XlfSourceFormat)' == 'XamlRule'" />
+    </ItemGroup>    
+
+    <Copy SourceFiles="@(_TranslatedItemsToCopy)"
+          DestinationFiles="@(_TranslatedItemsToCopy->'$(VisualStudioXamlRulesDir)%(XlfLanguage)\$([System.IO.Path]::GetFileName('%(XlfSource)'))')"
           SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
           OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
           Retries="$(CopyRetryCount)"
@@ -37,4 +65,5 @@
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
   </Target>
+
 </Project>

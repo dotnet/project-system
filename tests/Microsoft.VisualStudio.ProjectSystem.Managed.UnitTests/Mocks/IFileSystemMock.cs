@@ -273,12 +273,16 @@ namespace Microsoft.VisualStudio.IO
 
         public void WriteAllBytes(string path, byte[] bytes)
         {
-
         }
 
         public long FileLength(string filename)
         {
             return ReadAllText(filename).Length;
+        }
+
+        public bool PathExists(string path)
+        {
+            throw new NotImplementedException();
         }
     }
 }

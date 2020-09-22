@@ -60,11 +60,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' The array will grow when it is necessary, but will never shrink.
         Private _mruList() As MruListItem
 
-
         '=====================================================================
-
-
-
 
         ''' <summary>
         ''' Constructor.
@@ -81,13 +77,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _mruList = New MruListItem(_maximumSuggestedCacheSize + _reservedImagesCount) {}
         End Sub
 
-
-
-
         '=====================================================================
-
-
-
 
         ''' <summary>
         ''' This is the absolute minimum number of thumbnails before which the cache may recycle thumbnails.
@@ -111,7 +101,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' The maximum size to which the thumbnail cache can grow.  MinimumSizeBeforeRecycling takes precedence - if 
         '''   MinimumSizeBeforeRecycling is greater than MaximumSuggestedCacheSize, then MinimumSizeBeforeRecycling is used
@@ -131,7 +120,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets the number of thumbnails currently in the cache (not including the number of reserved images)
         ''' </summary>
@@ -141,7 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _imageList.Images.Count - _reservedImagesCount
             End Get
         End Property
-
 
         ''' <summary>
         ''' Retrieves the actual, effective maximum size to which the cache can grow.  This is equal to 
@@ -153,13 +140,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
-
-
         '=====================================================================
-
-
-
 
         ''' <summary>
         ''' Adds a new thumbnail image into the ListImage cache.
@@ -243,7 +224,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Index
         End Function
 
-
         ''' <summary>
         '''   Add cache that one object should reuse a shared image.
         '''    The reason is a resource item could switch between a normal image, and an image indicating something wrong.
@@ -319,7 +299,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return ThumbnailFound
         End Function
 
-
         ''' <summary>
         ''' Gets the index where the next new thumbnail image should be inserted or recycled to.
         ''' </summary>
@@ -364,7 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Not InsertAtEnd OrElse Index - _reservedImagesCount < EffectiveMaximumSuggestedCacheSize,
                 "Trying to add an image to the end of the list past the suggested max cache size")
         End Sub
-
 
         ''' <summary>
         ''' Removes a specific key from the cache, given its key and index (the key must exist in the cache at 
@@ -471,7 +449,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Debug.Assert(count = _mruList.Length)
         End Sub
-
 
         ''' <summary>
         '''  MruListItem:

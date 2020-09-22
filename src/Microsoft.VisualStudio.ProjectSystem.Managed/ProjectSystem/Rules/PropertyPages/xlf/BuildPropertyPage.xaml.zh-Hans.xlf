@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../BuildPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
+        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
+        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
         <target state="translated">允许使用不安全代码</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
+        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -13,18 +23,13 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
-        <source>Errors and warnings</source>
-        <target state="translated">错误和警告</target>
+        <source>Configures the error and warning options for the build process.</source>
+        <target state="needs-review-translation">错误和警告</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
         <source>Errors and warnings</source>
         <target state="translated">错误和警告</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="Category|General|Description">
-        <source>General</source>
-        <target state="translated">常规</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -33,8 +38,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|Description">
-        <source>Output</source>
-        <target state="translated">输出</target>
+        <source>Configures the output options for the build process.</source>
+        <target state="needs-review-translation">输出</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -42,9 +47,19 @@
         <target state="translated">输出</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|Nullable|Description">
+        <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
+        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
         <target state="translated">可为 Null</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -52,9 +67,19 @@
         <target state="translated">平台目标</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
+        <source>Used to specify which warnings are treated as errors.</source>
+        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
         <target state="translated">将警告视为错误</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|WarningLevel|Description">
+        <source>Specifies the level to display for compiler warnings.</source>
+        <target state="new">Specifies the level to display for compiler warnings.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -132,9 +157,14 @@
         <target state="translated">4</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
+        <source>5</source>
+        <target state="new">5</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
-        <source>General</source>
-        <target state="translated">常规</target>
+        <source>Specifies properties that control how the project builds.</source>
+        <target state="needs-review-translation">常规</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -142,9 +172,19 @@
         <target state="translated">生成</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DefineConstants|Description">
+        <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
+        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
         <target state="translated">条件编译符号</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DocumentationFile|Description">
+        <source>Specifies the name of a file into which documentation comments will be processed.</source>
+        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -152,14 +192,29 @@
         <target state="translated">XML 文档文件路径</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|NoWarn|Description">
+        <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="translated">取消显示警告</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|OutputPath|Description">
+        <source>Specifies the location of the output files for this project's configuration.</source>
+        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
         <source>Output path</source>
         <target state="translated">输出路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WarningsAsErrors|Description">
+        <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

@@ -42,7 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End If
         End Sub
 
-
         ''' <summary>
         ''' Attempts to constructor a listener for the given property change event source, ignoring
         '''   any failures.
@@ -129,7 +128,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return Nothing
         End Function
 
-
 #Region " IDisposable Support "
 
         ''' <summary>
@@ -152,7 +150,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' IDisposable support
         ''' </summary>
@@ -161,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
-
 
         ''' <summary>
         ''' IDisposable support
@@ -173,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
 #End Region
-
 
         ''' <summary>
         ''' Returns true iff the given source supports IConnectionPointContainer
@@ -188,7 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return False
         End Function
-
 
         ''' <summary>
         ''' Notifies a sink that the [bindable] property specified by dispID has changed. If dispID is 
@@ -211,7 +205,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Debug.Assert(_propPage IsNot Nothing)
             _propPage.OnExternalPropertyChanged(DISPID, DebugSourceName)
         End Sub
-
 
         ''' <summary>
         ''' Notifies a sink that a [requestedit] property is about to change and that the object is asking the sink how to proceed.
@@ -240,7 +233,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 #End If
             _propPage.OnExternalPropertyRequestEdit(DISPID, DebugSourceName)
         End Sub
-
 
         ''' <summary>
         ''' Notification that a property has changed on a configuration that is not currently active.

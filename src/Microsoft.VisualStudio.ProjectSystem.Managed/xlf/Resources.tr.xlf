@@ -12,6 +12,16 @@
         <target state="translated">Almalar</target>
         <note />
       </trans-unit>
+      <trans-unit id="NeutralLanguage_DisplayNameFormatString">
+        <source>{0} - {1}</source>
+        <target state="new">{0} - {1}</target>
+        <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguage_NoneValue">
+        <source>(None)</source>
+        <target state="new">(None)</target>
+        <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
+      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Başlat</target>
@@ -76,9 +86,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">'{0}' proje dosyası açılamıyor. 
+        <target state="translated">'{0}' proje dosyası açılamıyor. 
 
-Bu proje, proje uzantısının Visual Studio dışında yeniden adlandırılması nedeniyle yanlış proje türü kullanılarak yüklenmiş. Çözümün doğru proje türünü seçmesi için projeyi kaldırın ve yeniden ekleyin.</target>
+Bu proje, muhtemelen proje uzantısının Visual Studio dışında yeniden adlandırılması nedeniyle yanlış proje türü kullanılarak yüklenmiş. Çözümün doğru proje türünü seçmesi için projeyi kaldırın ve yeniden ekleyin.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

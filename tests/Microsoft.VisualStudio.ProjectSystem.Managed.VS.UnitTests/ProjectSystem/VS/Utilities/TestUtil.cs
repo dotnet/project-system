@@ -3,6 +3,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 {
@@ -13,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// </summary>
         public static Task RunStaTestAsync(Action action)
         {
-            var tcs = new TaskCompletionSource<object?>();
+            var tcs = new TaskCompletionSource();
 
             var thread = new Thread(ThreadMethod);
             thread.SetApartmentState(ApartmentState.STA);
@@ -27,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
                 {
                     action();
 
-                    tcs.SetResult(null);
+                    tcs.SetResult();
                 }
                 catch (Exception e)
                 {

@@ -62,6 +62,11 @@
         <target state="translated">Manifest:</target>
         <note />
       </trans-unit>
+      <trans-unit id="Win32ResourceFile.AccessibleName">
+        <source>Resource file</source>
+        <target state="translated">Soubor prostředků</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Win32ResourceRadioButton.Text">
         <source>Re&amp;source file:</source>
         <target state="translated">&amp;Soubor prostředku:</target>

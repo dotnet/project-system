@@ -46,7 +46,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <summary>
         ''' Is this setting a roaming setting?
         ''' </summary>
-        Private _roaming As Boolean = False
+        Private _roaming As Boolean
 
         ''' <summary>
         ''' The serialized representation of this setting
@@ -227,11 +227,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private MustInherit Class DesignTimeSettingInstanceCustomPropertyDescriptor
             Inherits DesignTimeSettingInstanceCustomPropertyDescriptorBase
 
-
             Public Sub New(owner As DesignTimeSettingInstance, name As String)
                 MyBase.New(owner, name)
             End Sub
-
 
             ''' <summary>
             ''' Wrap the call to the derived SetValue in a designer transaction, providing the 
@@ -249,7 +247,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     host = DirectCast(instance.Site.GetService(GetType(Design.IDesignerHost)),
                                         Design.IDesignerHost)
                 End If
-
 
                 Dim undoTran As Design.DesignerTransaction = Nothing
                 Try
@@ -296,10 +293,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ''' <param name="value"></param>
             Protected MustOverride Overloads Sub SetValue(component As DesignTimeSettingInstance, value As Object)
 
-
         End Class
 #End Region
-
 
 #Region "Exposed property descriptors"
         Private Class GenerateDefaultValueInCodePropertyDescriptor
@@ -698,7 +693,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Return MyBase.ConvertTo(context, culture, value, destinationType)
             End Function
 
-
             ''' <summary>
             ''' Shared helper method to convert a scope value to a string suitable for
             ''' display in the UI. Since the string value may depend on the instance which
@@ -1080,7 +1074,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             _serializedValue = Info.GetString(SERIALIZATION_VALUE)
             _settingScope = CType(Info.GetInt32(SERIALIZATION_SCOPE), SettingScope)
         End Sub
-
 
         <Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.Demand, SerializationFormatter:=True)>
         Private Sub GetObjectData(Info As System.Runtime.Serialization.SerializationInfo, Context As System.Runtime.Serialization.StreamingContext) Implements System.Runtime.Serialization.ISerializable.GetObjectData

@@ -5,18 +5,18 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
-using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using EventData = System.Tuple<
     Microsoft.VisualStudio.ProjectSystem.IProjectSubscriptionUpdate,
     Microsoft.VisualStudio.ProjectSystem.IProjectSharedFoldersSnapshot,
     Microsoft.VisualStudio.ProjectSystem.Properties.IProjectCatalogSnapshot,
     Microsoft.VisualStudio.ProjectSystem.IProjectCapabilitiesSnapshot>;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
+namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 {
     [Export(typeof(IDependencyCrossTargetSubscriber))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
-            ITargetFramework targetFrameworkToUpdate,
+            TargetFramework targetFrameworkToUpdate,
             EventData e)
         {
             IProjectSharedFoldersSnapshot sharedProjectsUpdate = e.Item2;
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 
         private void ProcessSharedProjectsUpdates(
             IProjectSharedFoldersSnapshot sharedFolders,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
             Requires.NotNull(sharedFolders, nameof(sharedFolders));
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             Requires.NotNull(changesBuilder, nameof(changesBuilder));
 
             DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot targetedSnapshot))
+            if (!snapshot.DependenciesByTargetFramework.TryGetValue(targetFramework, out TargetedDependenciesSnapshot? targetedSnapshot))
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             IEnumerable<string> sharedFolderProjectPaths = sharedFolders.Value.Select(sf => sf.ProjectPath);
             var currentSharedImportNodePaths = targetedSnapshot.Dependencies
                 .Where(pair => pair.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
-                .Select(pair => pair.Path)
+                .Select(pair => pair.FilePath!)
                 .ToList();
 
             var diff = new SetDiff<string>(currentSharedImportNodePaths, sharedFolderProjectPaths);

@@ -12,11 +12,12 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -100,79 +101,76 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether deleting a given set of items from the project, and optionally from disk,
-        /// would be allowed. 
-        /// Note: CanRemove can be called several times since there two types of remove operations:
-        ///   - Remove is a command that can remove project tree items form the tree/project but not from disk. 
-        ///     For that command requests deleteOptions has DeleteOptions.None flag.
-        ///   - Delete is a command that can remove project tree items and form project and from disk. 
-        ///     For this command requests deleteOptions has DeleteOptions.DeleteFromStorage flag.
-        /// We can potentially support only Remove command here, since we don't remove Dependencies form disk, 
-        /// thus we return false when DeleteOptions.DeleteFromStorage is provided.
-        /// </summary>
-        /// <param name="nodes">The nodes that should be deleted.</param>
-        /// <param name="deleteOptions">
-        /// A value indicating whether the items should be deleted from disk as well as from the project file.
-        /// </param>
-        public override bool CanRemove(IImmutableSet<IProjectTree> nodes,
-                                       DeleteOptions deleteOptions = DeleteOptions.None)
+        public override string? GetPath(IProjectTree node)
         {
-            if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
+            // If the node's FilePath is null, we are going to return null regardless of whether
+            // this node belongs to the dependencies tree or not, so avoid extra work by retuning
+            // immediately here.
+            if (node.FilePath == null)
             {
-                return false;
+                return null;
             }
 
-            DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-            if (snapshot == null)
+            // Walk up from node through all its ancestors.
+            for (IProjectTree? step = node; step != null; step = step.Parent)
             {
-                return false;
-            }
-
-            foreach (IProjectTree node in nodes)
-            {
-                if (!node.Flags.Contains(DependencyTreeFlags.SupportsRemove))
+                if (step.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
                 {
-                    return false;
-                }
+                    // This node is contained within the Dependencies tree.
+                    //
+                    // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
+                    // while other dependency types (e.g. analyzers) do.
+                    //
+                    // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
+                    // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
+                    // and allows fast lookup. So in general we want to return null here unless there is a compelling
+                    // requirement to use the path.
 
-                string filePath = UnconfiguredProject.MakeRelative(node.FilePath);
-                if (string.IsNullOrEmpty(filePath))
-                {
-                    continue;
-                }
-
-                IDependency? dependency = snapshot.FindDependency(filePath);
-                if (dependency == null || dependency.Implicit)
-                {
-                    return false;
+                    return node.FilePath;
                 }
             }
 
-            return true;
+            return null;
         }
 
-        /// <summary>
-        /// Deletes items from the project, and optionally from disk.
-        /// Note: Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
-        /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
-        /// We can remove only nodes that are standard and based on project items, i.e. nodes that 
-        /// are created by default IProjectDependenciesSubTreeProvider implementations and have 
-        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain 
-        /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
-        /// </summary>
-        /// <param name="nodes">The nodes that should be deleted.</param>
-        /// <param name="deleteOptions">A value indicating whether the items should be deleted from disk as well as 
-        /// from the project file.
-        /// </param>
-        /// <exception cref="InvalidOperationException">Thrown when <see cref="IProjectTreeProvider.CanRemove"/> 
-        /// would return <c>false</c> for this operation.</exception>
-        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes,
-                                               DeleteOptions deleteOptions = DeleteOptions.None)
+        public override IProjectTree? FindByPath(IProjectTree root, string path)
+        {
+            // We are _usually_ passed the project root here, and we know that our tree items are limited to the
+            // "Dependencies" subtree, so scope the search to that node.
+            //
+            // If we are passed a root which is not the project node, we will not find any search results.
+            // This does not appear to be an issue, but may one day be required.
+            IProjectTree? dependenciesRootNode = root.FindChildWithFlags(DependencyTreeFlags.DependenciesRootNode);
+
+            return dependenciesRootNode?.GetSelfAndDescendentsDepthFirst().FirstOrDefault((node, p) => StringComparers.Paths.Equals(node.FilePath, p), path);
+        }
+
+        public override bool CanRemove(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
         {
             if (deleteOptions.HasFlag(DeleteOptions.DeleteFromStorage))
             {
-                throw new NotSupportedException();
+                // We support "Remove" but not "Delete".
+                // We remove the dependency from the project, not delete it from disk.
+                return false;
+            }
+
+            return nodes.All(node => node.Flags.Contains(DependencyTreeFlags.SupportsRemove));
+        }
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
+        /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
+        /// We can remove only nodes that are standard and based on project items, i.e. nodes that
+        /// are created by default IProjectDependenciesSubTreeProvider implementations and have
+        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain
+        /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
+        /// </remarks>
+        public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
+        {
+            if (!CanRemove(nodes, deleteOptions))
+            {
+                throw new InvalidOperationException();
             }
 
             // Get the list of shared import nodes.
@@ -191,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     if (node.BrowseObjectProperties?.Context == null)
                     {
-                        // if node does not have an IRule with valid ProjectPropertiesContext we can not 
+                        // If node does not have an IRule with valid ProjectPropertiesContext we can not 
                         // get its itemsSpec. If nodes provided by custom IProjectDependenciesSubTreeProvider
                         // implementation, and have some custom IRule without context, it is not a problem,
                         // since they would not have DependencyNode.GenericDependencyFlags and we would not 
@@ -213,83 +211,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                 }
 
-                DependenciesSnapshot snapshot = _dependenciesSnapshotProvider.CurrentSnapshot;
-                Requires.NotNull(snapshot, nameof(snapshot));
-                if (snapshot == null)
-                {
-                    return;
-                }
-
                 // Handle the removal of shared import nodes.
                 ProjectRootElement projectXml = project.Xml;
                 foreach (IProjectTree sharedImportNode in sharedImportNodes)
                 {
-                    string sharedFilePath = UnconfiguredProject.MakeRelative(sharedImportNode.FilePath);
-                    if (string.IsNullOrEmpty(sharedFilePath))
+                    string? sharedFilePath = sharedImportNode.FilePath;
+                    if (Strings.IsNullOrEmpty(sharedFilePath))
                     {
                         continue;
                     }
 
-                    IDependency? sharedProjectDependency = snapshot.FindDependency(sharedFilePath);
-                    if (sharedProjectDependency != null)
-                    {
-                        sharedFilePath = sharedProjectDependency.Path;
-                    }
-
                     // Find the import that is included in the evaluation of the specified ConfiguredProject that
                     // imports the project file whose full path matches the specified one.
-                    IEnumerable<ResolvedImport> matchingImports = from import in project.Imports
-                                                                  where import.ImportingElement.ContainingProject == projectXml
-                                                                     && PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath)
-                                                                  select import;
-                    foreach (ResolvedImport importToRemove in matchingImports)
+                    foreach (ResolvedImport import in project.Imports)
                     {
-                        ProjectImportElement importingElementToRemove = importToRemove.ImportingElement;
-                        Report.IfNot(importingElementToRemove != null,
-                                     "Cannot find shared project reference to remove.");
-                        if (importingElementToRemove != null)
+                        if (import.ImportingElement.ContainingProject != projectXml || !PathHelper.IsSamePath(import.ImportedProject.FullPath, sharedFilePath))
                         {
-                            importingElementToRemove.Parent.RemoveChild(importingElementToRemove);
+                            continue;
                         }
+
+                        ProjectImportElement importingElementToRemove = import.ImportingElement;
+                        Report.IfNot(importingElementToRemove != null, "Cannot find shared project reference to remove.");
+                        importingElementToRemove?.Parent.RemoveChild(importingElementToRemove);
                     }
                 }
             });
-        }
-
-        /// <summary>
-        /// Efficiently finds a descendent with the given path in the given tree.
-        /// </summary>
-        /// <param name="root">The root of the tree.</param>
-        /// <param name="path">The absolute or project-relative path to the item sought.</param>
-        /// <returns>The item in the tree if found; otherwise <see langword="null"/>.</returns>
-        public override IProjectTree? FindByPath(IProjectTree root, string path)
-        {
-            // We override this since we need to find children under either:
-            //
-            // - our dependencies root node
-            // - dependency sub tree nodes
-            // - dependency sub tree top level nodes
-            //
-            // Deeper levels will be attached items with additional info, not direct dependencies
-            // specified in the project file.
-
-            IProjectTree? projectTree = _viewProviders.FirstOrDefault()?.Value.FindByPath(root, path);
-            return projectTree;
-        }
-
-        /// <summary>
-        /// Gets the path to a given node that can later be provided to <see cref="IProjectTreeProvider.FindByPath" /> to locate the node again.
-        /// </summary>
-        /// <param name="node">The node whose path is sought.</param>
-        /// <returns>
-        /// A non-empty string, or <see langword="null"/> if searching is not supported.
-        /// For nodes that represent files on disk, this is the project-relative path to that file.
-        /// The root node of a project is the absolute path to the project file.
-        /// </returns>
-        public override string? GetPath(IProjectTree node)
-        {
-            // TODO this is apparently for graph nodes search -- do we still need it?
-            return node.FilePath;
         }
 
         /// <summary>
@@ -299,17 +245,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
-#pragma warning restore RS0030 // symbol LoadedProject is banned
+#pragma warning restore RS0030
             {
+#pragma warning disable RS0030 // https://github.com/dotnet/roslyn-analyzers/issues/3295
                 base.Initialize();
+#pragma warning restore RS0030
 
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
 #pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
                 UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
-#pragma warning restore RS0030 // symbol LoadedProjectAsync is banned
-                    async delegate
+#pragma warning restore RS0030
+                async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
                         UnconfiguredProjectAsynchronousTasksService
@@ -340,7 +288,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }
-
                     },
                     registerFaultHandler: true);
             }
@@ -350,8 +297,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = Resources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
@@ -430,10 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
-                    if (_treeTelemetryService.IsActive)
-                    {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.HasVisibleUnresolvedDependency);
-                    }
+                    await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
                 }
 
                 return new TreeUpdateResult(dependenciesNode);
@@ -492,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, IProjectCatalogSnapshot? catalogs)
+        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 
@@ -508,16 +452,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return null;
             }
 
-            Rule? schema = browseObjectsCatalog.GetSchema(dependency.SchemaName);
-
-            string itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
-                ? dependency.Path
+            string? itemSpec = string.IsNullOrEmpty(dependency.OriginalItemSpec)
+                ? dependency.FilePath
                 : dependency.OriginalItemSpec;
 
             var context = ProjectPropertiesContext.GetContext(
                 UnconfiguredProject,
                 itemType: dependency.SchemaItemType,
                 itemName: itemSpec);
+
+            Rule? schema = dependency.SchemaName != null ? browseObjectsCatalog.GetSchema(dependency.SchemaName) : null;
 
             if (schema == null)
             {
@@ -532,12 +476,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     context.ItemName);
             }
 
-            if (dependency.Resolved)
+            if (dependency.Resolved && !Strings.IsNullOrEmpty(dependency.OriginalItemSpec))
             {
                 return GetConfiguredProjectExports().RuleFactory.CreateResolvedReferencePageRule(
                     schema,
                     context,
-                    dependency.Name,
+                    dependency.OriginalItemSpec,
                     dependency.BrowseObjectProperties);
             }
 
@@ -569,9 +513,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             {
                 Assumes.NotNull(ActiveConfiguredProject);
 
-                ConfiguredProject project = dependency.TargetFramework.Equals(TargetFramework.Any)
+                ConfiguredProject project = targetFramework.Equals(TargetFramework.Any)
                     ? ActiveConfiguredProject
-                    : _dependenciesSnapshotProvider.GetConfiguredProject(dependency.TargetFramework) ?? ActiveConfiguredProject;
+                    : _dependenciesSnapshotProvider.GetConfiguredProject(targetFramework) ?? ActiveConfiguredProject;
 
                 return GetActiveConfiguredProjectExports(project);
             }

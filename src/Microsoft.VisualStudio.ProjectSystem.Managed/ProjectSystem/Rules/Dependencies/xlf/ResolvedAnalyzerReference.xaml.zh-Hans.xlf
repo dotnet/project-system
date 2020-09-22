@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedAnalyzerReference|DisplayName">
         <source>Analyzer Reference</source>
-        <target state="needs-review-translation">解析的分析器引用</target>
+        <target state="translated">分析器引用</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedAnalyzerReference|Description">
         <source>Analyzer Reference Properties</source>
-        <target state="needs-review-translation">分析器属性</target>
+        <target state="translated">分析器引用属性</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">

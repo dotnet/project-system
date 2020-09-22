@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
@@ -29,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         // For tracking compilation events that occur, to verify
         private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new List<(string, string[])>();
-        private TaskCompletionSource<bool>? _compilationOccurredCompletionSource;
+        private TaskCompletionSource? _compilationOccurredCompletionSource;
         private int _expectedCompilations;
         private Func<string, ISet<string>, bool> _compilationCallback;
 
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             await VerifyCompilation(1, inputs);
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+            string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
 
             // This also validates that getting the description didn't force a compile, because the output is up to date
             Assert.Single(_compilationResults);
@@ -89,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Remove the output file, should mean that getting the XML forces a compile
             _fileSystem.RemoveFile(Path.Combine(_outputPath, "File1.cs.dll"));
 
-            string tempPEDescriptionXml = await _manager.GetDesignTimeInputXmlAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
+            string tempPEDescriptionXml = await _manager.BuildDesignTimeOutputAsync("File1.cs", _outputPath, ImmutableHashSet<string>.Empty);
 
             // Verify a second compile happened
             Assert.Equal(2, _compilationResults.Count);
@@ -257,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _fileSystem = new IFileSystemMock();
 
             var services = IProjectCommonServicesFactory.CreateWithDefaultThreadingPolicy();
-            using var designTimeInputsSource = ProjectValueDataSourceFactory.Create<DesignTimeInputsDelta>(services);
+            using var designTimeInputsSource = ProjectValueDataSourceFactory.Create<DesignTimeInputSnapshot>(services);
 
             var changeTrackerMock = new Mock<IDesignTimeInputsChangeTracker>();
             changeTrackerMock.SetupGet(s => s.SourceBlock)
@@ -267,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var threadingService = IProjectThreadingServiceFactory.Create();
             var activeWorkspaceProjectContextHost = IActiveWorkspaceProjectContextHostFactory.ImplementProjectContextAccessor(IWorkspaceProjectContextAccessorFactory.Create());
             var unconfiguredProject = UnconfiguredProjectFactory.Create(
-                filePath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
+                fullPath: Path.Combine(_projectFolder, "MyTestProj.csproj"),
                 projectAsynchronousTasksService: IProjectAsynchronousTasksServiceFactory.Create());
 
             var compilerMock = new Mock<ITempPECompiler>();
@@ -294,7 +295,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _compilationResults.Add((output, files.Select(f => Path.GetFileName(f)).ToArray()));
             if (_compilationResults.Count == _expectedCompilations)
             {
-                _compilationOccurredCompletionSource?.SetResult(true);
+                _compilationOccurredCompletionSource?.SetResult();
             }
 
             return true;
@@ -326,7 +327,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         {
             int initialCompilations = _compilationResults.Count;
             _expectedCompilations = initialCompilations + numberOfDLLsExpected;
-            _compilationOccurredCompletionSource = new TaskCompletionSource<bool>();
+            _compilationOccurredCompletionSource = new TaskCompletionSource();
 
             actionThatCausesCompilation();
 
@@ -372,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 changes = _designTimeInputs.Inputs.Select(f => new DesignTimeInputFileChange(f, false));
             }
 
-            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputsDelta>(new DesignTimeInputsDelta(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
+            _manager.ProcessDataflowChanges(new ProjectVersionedValue<DesignTimeInputSnapshot>(new DesignTimeInputSnapshot(_designTimeInputs.Inputs, _designTimeInputs.SharedInputs, changes, _outputPath), ImmutableDictionary<NamedIdentity, IComparable>.Empty));
         }
 
         public void Dispose()

@@ -9,7 +9,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal sealed class FrameworkDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.FrameworkDependency);
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            resolved: DependencyTreeFlags.FrameworkDependency + DependencyTreeFlags.SupportsFolderBrowse,
+            unresolved: DependencyTreeFlags.FrameworkDependency);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: ManagedImageMonikers.Framework,
@@ -31,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isResolved,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: originalItemSpec,
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(isResolved, isImplicit: false),

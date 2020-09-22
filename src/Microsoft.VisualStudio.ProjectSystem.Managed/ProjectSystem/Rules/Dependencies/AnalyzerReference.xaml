@@ -13,10 +13,22 @@
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
   </Rule.DataSource>
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="Analyzer"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="IsImplicitlyDefined"
                   ReadOnly="True"
                   Visible="False" />
+  
 
   <!-- NOTE this property will never be populated for unresolved items, but is included to make the UI consistent -->
   <StringProperty Name="ResolvedPath"

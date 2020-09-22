@@ -64,13 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
             });
         }
 
-
         public prjOutputTypeEx OutputTypeEx
         {
             get => GetBrowseObjectValue<prjOutputTypeEx>(browseObject => browseObject.OutputType);
             set => SetBrowseObjectValue(browseObject => browseObject.OutputType, value);
         }
-
 
         // Implementation of VsLangProj.ProjectProperties
         public prjOutputType OutputType

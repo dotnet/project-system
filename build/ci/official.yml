@@ -12,11 +12,12 @@ resources:
 queue:
   name: VSEng-MicroBuildVS2019
   demands: Cmd
+  timeoutInMinutes: 90
 variables:
   BuildConfiguration: Release
   TeamName: DotNet-Project-System
   BuildPlatform: any cpu
-  DropRoot: \\cpvsbuild\drops\Roslyn
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   
 steps:
 - task: ms-vseng.MicroBuildTasks.30666190-6959-11e5-9f96-f56098202fef.MicroBuildSigningPlugin@1
@@ -49,61 +50,116 @@ steps:
   condition: succeeded()
   continueOnError: true
 
-- task: PublishTestResults@1
+- task: PublishTestResults@2
   displayName: Publish Test Results
   inputs:
     testRunner: XUnit
     testResultsFiles: 'artifacts/$(BuildConfiguration)/TestResults/*.xml'
     testRunTitle: 'Unit Test Results'
   condition: succeededOrFailed()
-    
-- task: PublishSymbols@1
-  displayName: Create Symbol Index
+
+- task: PowerShell@2
   inputs:
-    SymbolsPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
-    SearchPattern: '**/*.pdb;**/*.dll;**/*.exe'
-    SymbolsFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\SymStore'
-    SkipIndexing: true
+    filePath: build\variables\_vsts.ps1
+    failOnStderr: true
+  displayName: Set VSTS variables based on source 
+
+# Symbols is the one thing we cannot declare in the ps1 artifact scripts due to the extra steps
+# needed and the specific order it has to be performed in. Copy -> Publish Symbols -> Publish
+# Artifact -> publish to symweb
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)'
+    Contents: |
+      **/Microsoft.VisualStudio.ProjectSystem.Managed?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.AppDesigner?(*.pdb|*.dll|*.xml)
+      **/Microsoft.VisualStudio.Editors?(*.pdb|*.dll|*.xml)
+    TargetFolder: $(Build.ArtifactStagingDirectory)/symbols
+  displayName: Copy symbols
+
+- task: PublishSymbols@2
+  displayName: Archive symbols to VSTS
+  inputs:
+    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols
+    SearchPattern: 
+      '**/*.pdb
+      **/*.dll
+      **/*.exe'
+    indexSources: false
+    publishSymbols: true
+    SymbolServerType: TeamServices
     SymbolsProduct: 'Roslyn Project System'
     SymbolsVersion: '$(Build.BuildNumber)'
     SymbolsArtifactName: Symbols
   continueOnError: true
-  
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/symbols'
+    ArtifactName: symbols
+    publishLocation: Container
+  displayName: 'Publish Artifact: symbols'
+
 - task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
-  displayName: Publish Symbols to Artifact Services
+  displayName: Publish Symbols to Artifact Services (symweb)
   inputs:
     symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
     requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)\$(Build.BuildNumber)\Symbols'
+    sourcePath: $(Build.ArtifactStagingDirectory)/symbols
     usePat: false
-    
+        
 - task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
-    
-- task: CopyPublishBuildArtifacts@1
-  displayName: Publish Drop
+
+- task: CopyFiles@2
   inputs:
-    CopyRoot: '$(Build.SourcesDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)'
     Contents: |
-     artifacts\$(BuildConfiguration)\bin
-     artifacts\$(BuildConfiguration)\DevDivInsertionFiles
-     artifacts\$(BuildConfiguration)\log
-     artifacts\$(BuildConfiguration)\packages
-     artifacts\$(BuildConfiguration)\VSSetup
-     artifacts\$(BuildConfiguration)\TestResults
-    ArtifactName: '$(Build.BuildNumber)'
-    ArtifactType: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+     artifacts\$(BuildConfiguration)\bin\**
+     artifacts\$(BuildConfiguration)\DevDivInsertionFiles\**
+     artifacts\$(BuildConfiguration)\log\**
+     artifacts\$(BuildConfiguration)\packages\**
+     artifacts\$(BuildConfiguration)\VSSetup\**
+     artifacts\$(BuildConfiguration)\TestResults\**
+    TargetFolder: $(Build.ArtifactStagingDirectory)/drop
+  displayName: Copy Drop
   condition: succeededOrFailed()
 
-- task: NuGetPublisher@0
-  displayName: NuGet Publisher - Roslyn Myget
+- task: PublishBuildArtifacts@1
   inputs:
-    searchPattern: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
-    connectedServiceName: 'Roslyn - Myget'
-    nuGetVersion: 4.0.0.2283
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop/artifacts/$(BuildConfiguration)'
+    ArtifactName: '$(Build.BuildNumber)'
+    publishLocation: Container
+  displayName: 'Publish Artifact: drop'
+  condition: succeededOrFailed()
+
+- task: ms-vseng.MicroBuildShipTasks.7c429315-71ba-4cb3-94bb-f829c95f7915.MicroBuildCodesignVerify@2
+  displayName: Verify Signed Files
+  inputs:
+    TargetFolders: $(Build.SourcesDirectory)/artifacts/$(BuildConfiguration)/packages
+    WhiteListPathForCerts: $(Build.SourcesDirectory)\build\ci\no_authenticode.txt
+
+- task: NuGetToolInstaller@0
+  inputs:
+    versionSpec: '4.9.2'
+
+# Authenticate with service connections to be able to publish packages to external nuget feeds.
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: azure-public/vs-impl
+
+# Publishes the packages to https://dev.azure.com/azure-public/vside/_packaging?_a=feed&feed=vs-impl
+# For documentation purposes the old feeds are stored in https://dev.azure.com/dnceng/public/_packaging?_a=feed&feed=myget-legacy%40Local
+- task: NuGetCommand@2
+  displayName: NuGet push - vs-impl
+  inputs:
+    command: push
+    packagesToPush: 'artifacts\$(BuildConfiguration)\packages\*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: azure-public/vs-impl
 
 - task: NuGetCommand@2
   displayName: NuGet CoreXT publish
@@ -122,6 +178,5 @@ steps:
   inputs:
     PathtoPublish: '$(Build.StagingDirectory)\MicroBuild\Output'
     ArtifactName: '$(Build.BuildNumber)'
-    publishLocation: FilePath
-    TargetPath: '$(DropRoot)\$(TeamName)\$(Build.SourceBranchName)'
+    publishLocation: Container
   condition: succeededOrFailed()

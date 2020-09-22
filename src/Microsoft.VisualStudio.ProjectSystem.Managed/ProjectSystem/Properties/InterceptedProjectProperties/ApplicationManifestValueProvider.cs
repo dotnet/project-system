@@ -6,8 +6,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
@@ -34,8 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         ///     - It's either a path to file that is the manifest
         ///     - It's the value "NoManifest" which means the application doesn't have a manifest.
         ///     - It's the value "DefaultManifest" which means that the application will have a default manifest.
-        ///     
-        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest 
+        ///
+        /// These three values map to two MSBuild properties - ApplicationManifest (specified if it's a path) or NoWin32Manifest
         /// which is true for the second case and false or non-existent for the third.
         /// </remarks>
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -58,16 +56,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Sets the application manifest property
         /// </summary>
-        public override async Task<string> OnSetPropertyValueAsync(
+        public override async Task<string?> OnSetPropertyValueAsync(
             string propertyName,
-            string unevaluatedPropertyValue,
+            string? unevaluatedPropertyValue,
             IProjectProperties defaultProperties,
-            IReadOnlyDictionary<string, string> dimensionalConditions = null)
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string returnValue = null;
+            string? returnValue = null;
 
             // We treat NULL/empty value as reset to default and remove the two properties from the project.
-            if (string.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            if (Strings.IsNullOrEmpty(unevaluatedPropertyValue) || string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
@@ -82,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
                 // If we can make the path relative to the project folder do so. Otherwise just use the given path.
                 if (Path.IsPathRooted(unevaluatedPropertyValue) &&
-                    PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string relativePath))
+                    PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out string? relativePath))
                 {
                     returnValue = relativePath;
                 }

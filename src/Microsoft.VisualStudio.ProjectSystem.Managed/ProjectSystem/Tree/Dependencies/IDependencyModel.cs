@@ -29,24 +29,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         /// <summary>
         /// Name of the dependency
         /// </summary>
+        [Obsolete("Property is unused")]
         string Name { get; }
 
         /// <summary>
-        /// ItemSpec by which dependency could be found in msbuild Project. 
-        ///     - If dependency is "Resolved" then resolved path will be in Path property, 
+        /// ItemSpec by which dependency could be found in msbuild Project.
+        ///     - If dependency is "Resolved" then resolved path will be in Path property,
         ///       and unresolved in OriginalItemSpec.
         ///     - if dependency is "Unresolved" then Path and OriginalItemSpec are the same.
         ///     - if dependency is "custom", i.e. does not have item in the msbuild project or
         ///       item is not represented by xaml rule, then OriginalItemSpec will be ignored
         ///       and should be empty.
         /// </summary>
-        string OriginalItemSpec { get; }
+        string? OriginalItemSpec { get; }
 
         /// <summary>
         /// When <see cref="Resolved"/> is <see langword="true"/>, this contains the resolved path
         /// of the dependency, otherwise it is equal to <see cref="OriginalItemSpec"/>.
         /// </summary>
-        string Path { get; }
+        string? Path { get; }
 
         /// <summary>
         /// Friendly name of the dependency, should be used for UI (captions etc)

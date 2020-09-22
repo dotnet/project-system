@@ -12,6 +12,16 @@
         <target state="translated">Importações</target>
         <note />
       </trans-unit>
+      <trans-unit id="NeutralLanguage_DisplayNameFormatString">
+        <source>{0} - {1}</source>
+        <target state="new">{0} - {1}</target>
+        <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguage_NoneValue">
+        <source>(None)</source>
+        <target state="new">(None)</target>
+        <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
+      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">Iniciar</target>
@@ -76,9 +86,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">Não é possível abrir o arquivo de projeto '{0}'. 
+        <target state="translated">Não é possível abrir o arquivo de projeto '{0}'. 
 
-Este projeto foi carregado usando o tipo de projeto errado, provavelmente como resultado da renomeação da extensão do projeto fora do Visual Studio. Remova e leia o projeto para que a solução escolha o tipo de projeto correto.</target>
+Esse projeto foi carregado usando o tipo de projeto errado, provavelmente como resultado da renomeação da extensão do projeto fora do Visual Studio. Remova e adicione novamente o projeto para que a solução escolha o tipo de projeto correto.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

@@ -1,6 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Xml
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -96,7 +95,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 End If
             End If
 
-
             Select Case unit
                 Case TimeUnit.Seconds
                     TimeUnitComboBox.Text = My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Services_Seconds
@@ -141,8 +139,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             UpdateCustomConnectionStringControlBasedOnCheckState()
         End Sub
 
-
-        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Sub UpdateCustomConnectionStringControlBasedOnCheckState()
             Select Case UseCustomConnectionStringCheckBox.CheckState
                 Case Windows.Forms.CheckState.Indeterminate

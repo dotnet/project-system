@@ -12,6 +12,16 @@
         <target state="translated">가져오기</target>
         <note />
       </trans-unit>
+      <trans-unit id="NeutralLanguage_DisplayNameFormatString">
+        <source>{0} - {1}</source>
+        <target state="new">{0} - {1}</target>
+        <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguage_NoneValue">
+        <source>(None)</source>
+        <target state="new">(None)</target>
+        <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
+      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">시작</target>
@@ -76,7 +86,7 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">프로젝트 파일 '{0}'을(를) 열 수 없습니다. 
+        <target state="translated">프로젝트 파일 '{0}'을(를) 열 수 없습니다. 
 
 이 프로젝트는 Visual Studio 외부에서 프로젝트 확장명의 이름을 바꾼 결과로 잘못된 프로젝트 형식을 사용하여 로드된 것 같습니다. 솔루션에서 올바른 프로젝트 형식을 선택하도록 프로젝트를 제거했다가 다시 추가하세요.</target>
         <note />

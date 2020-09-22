@@ -12,6 +12,16 @@
         <target state="translated">导入</target>
         <note />
       </trans-unit>
+      <trans-unit id="NeutralLanguage_DisplayNameFormatString">
+        <source>{0} - {1}</source>
+        <target state="new">{0} - {1}</target>
+        <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
+      </trans-unit>
+      <trans-unit id="NeutralLanguage_NoneValue">
+        <source>(None)</source>
+        <target state="new">(None)</target>
+        <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
+      </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
         <target state="translated">启动</target>
@@ -76,9 +86,9 @@
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="needs-review-translation">无法打开项目文件“{0}”。
+        <target state="translated">无法打开项目文件“{0}”。
 
-此项目是使用错误的项目类型加载的，可能是由于在 Visual Studio 之外重命名了项目扩展。请移除该项目，然后重新添加，使解决方案选择正确的项目类型。</target>
+此项目是使用错误的项目类型加载的，这可能是由于在 Visual Studio 之外重命名了项目扩展。请删除该项目，然后再重新添加它，使解决方案选择正确的项目类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">

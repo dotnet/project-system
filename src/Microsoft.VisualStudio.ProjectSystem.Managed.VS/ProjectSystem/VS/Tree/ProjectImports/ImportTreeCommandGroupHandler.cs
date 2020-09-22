@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.ProjectImports
             {
                 if (exceptions.Count == 1)
                 {
-                    ExceptionDispatchInfo.Capture(exceptions.First()).Throw();
+                    ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
                 }
                 else
                 {

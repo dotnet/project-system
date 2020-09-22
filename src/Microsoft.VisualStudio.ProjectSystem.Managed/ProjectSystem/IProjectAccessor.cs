@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     A project-service level component that provides methods for accessing the MSBuild evaluation and 
+    ///     A project-service level component that provides methods for accessing the MSBuild evaluation and
     ///     construction models for a <see cref="UnconfiguredProject"/> or <see cref="ConfiguredProject"/>.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]

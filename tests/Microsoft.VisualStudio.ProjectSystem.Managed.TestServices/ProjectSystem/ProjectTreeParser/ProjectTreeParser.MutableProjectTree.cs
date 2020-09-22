@@ -63,7 +63,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-
             IProjectTree IProjectTree.Root
             {
                 get
@@ -77,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     return root;
                 }
             }
-
 
             public IProjectTree AddFlag(string flag)
             {

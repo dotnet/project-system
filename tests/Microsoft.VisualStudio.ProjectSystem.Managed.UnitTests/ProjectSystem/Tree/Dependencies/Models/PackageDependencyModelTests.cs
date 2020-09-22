@@ -16,7 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "myVersion",
                 isResolved: true,
@@ -25,8 +24,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -42,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                DependencyTreeFlags.SupportsFolderBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:myOriginalItemSpec"),
                 model.Flags);
         }
@@ -53,7 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "myVersion",
                 isResolved: false,
@@ -62,8 +59,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec (myVersion)", model.Caption);
@@ -79,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
+                DependencyTreeFlags.UnresolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:myOriginalItemSpec"),
                 model.Flags);
         }
@@ -90,7 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new PackageDependencyModel(
-                path: "c:\\myPath",
                 originalItemSpec: "myOriginalItemSpec",
                 version: "",
                 isResolved: true,
@@ -99,8 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isVisible: true);
 
             Assert.Equal(PackageRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.Name);
             Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
             Assert.Equal("myOriginalItemSpec", model.Id);
             Assert.Equal("myOriginalItemSpec", model.Caption);
@@ -116,7 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ManagedImageMonikers.NuGetGreyWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.PackageDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
+                DependencyTreeFlags.SupportsFolderBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags +
                 ProjectTreeFlags.Create("$ID:myOriginalItemSpec") -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

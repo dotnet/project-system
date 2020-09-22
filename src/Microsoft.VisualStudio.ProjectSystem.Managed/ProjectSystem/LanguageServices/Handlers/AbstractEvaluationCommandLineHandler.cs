@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         }
 
         /// <summary>
-        ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying 
+        ///     Applies the specified version of the project evaluation <see cref="IProjectChangeDiff"/> and metadata to the underlying
         ///     <see cref="IWorkspaceProjectContext"/>, indicating if the context is the currently active one.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -117,11 +117,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            IImmutableDictionary<string, string> renamedItems = difference.RenamedItems;
             difference = HandlerServices.NormalizeRenames(difference);
             EnqueueProjectEvaluation(version, difference);
 
-            ApplyChangesToContext(difference, previousMetadata, currentMetadata, renamedItems, isActiveContext, logger, evaluation: true);
+            ApplyChangesToContext(difference, previousMetadata, currentMetadata, isActiveContext, logger, evaluation: true);
         }
 
         /// <summary>
@@ -148,11 +147,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             if (!difference.AnyChanges)
                 return;
 
-            IImmutableDictionary<string, string> renamedItems = difference.RenamedItems;
             difference = HandlerServices.NormalizeRenames(difference);
             difference = ResolveProjectBuildConflicts(version, difference);
 
-            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, renamedItems, isActiveContext, logger, evaluation: false);
+            ApplyChangesToContext(difference, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal, isActiveContext, logger, evaluation: false);
         }
 
         protected abstract void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger);
@@ -161,11 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         protected abstract void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger);
 
-        protected virtual void HandleItemRename(string pathBefore, string pathAfter, IProjectLogger logger)
-        {
-        }
-
-        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, IImmutableDictionary<string, string> renamedItems, bool isActiveContext, IProjectLogger logger, bool evaluation)
+        private void ApplyChangesToContext(IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>> previousMetadata, IImmutableDictionary<string, IImmutableDictionary<string, string>> currentMetadata, bool isActiveContext, IProjectLogger logger, bool evaluation)
         {
             foreach (string includePath in difference.RemovedItems)
             {
@@ -186,12 +180,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 {
                     UpdateInContextIfPresent(includePath, previousMetadata, currentMetadata, isActiveContext, logger);
                 }
-            }
-
-            // Wait for all context changed to be propagated first before handling rename
-            foreach ((string pathBefore, string pathAfter) in renamedItems)
-            {
-                ProcessRename(pathBefore, pathAfter, logger);
             }
 
             Assumes.True(difference.RenamedItems.Count == 0, "We should have normalized renames.");
@@ -240,13 +228,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void ProcessRename(string pathBefore, string pathAfter, IProjectLogger logger)
-        {
-            string fullPathBefore = _project.MakeRooted(pathBefore);
-            string fullPathAfter = _project.MakeRooted(pathAfter);
-            HandleItemRename(fullPathBefore, fullPathAfter, logger);
-        }
-
         private IProjectChangeDiff ResolveProjectBuildConflicts(IComparable projectBuildVersion, IProjectChangeDiff projectBuildDifference)
         {
             DiscardOutOfDateProjectEvaluations(projectBuildVersion);
@@ -291,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         private void EnqueueProjectEvaluation(IComparable version, IProjectChangeDiff evaluationDifference)
         {
-            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThanOrEqualTo(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
+            Assumes.False(_projectEvaluations.Count > 0 && version.IsEarlierThan(_projectEvaluations.Peek().Version), "Attempted to push a project evaluation that regressed in version.");
 
             _projectEvaluations.Enqueue(new VersionedProjectChangeDiff(version, evaluationDifference));
         }

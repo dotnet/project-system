@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="needs-review-translation">PackageIconUrl saptandı ancak kullanım dışı bırakılmış. Bunun yerine PackageIcon kullanın.</target>
+        <target state="translated">PackageIconUrl algılandı ancak kullanım dışı bırakılmış. Lütfen bunun yerine PackageIcon kullanın.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
@@ -269,7 +269,7 @@
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="needs-review-translation">PackageLicenseURL özelliği algılandı ancak kullanım dışı bırakıldı. Lütfen bir İfade veya Dosya olarak değiştirin.</target>
+        <target state="translated">PackageLicenseURL algılandı ancak kullanım dışı bırakılmış. Lütfen bunun yerine Expression veya File kullanın.</target>
         <note />
       </trans-unit>
     </body>

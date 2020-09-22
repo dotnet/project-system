@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="needs-review-translation">Aufgelöster Projektverweis</target>
+        <target state="translated">Projektverweis</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|Description">
         <source>Project Reference Properties</source>
-        <target state="needs-review-translation">Verweiseigenschaften</target>
+        <target state="translated">Projektverweiseigenschaften</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">

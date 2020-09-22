@@ -31,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors
         Public Const WS_MINIMIZEBOX As Integer = &H20000
         Public Const WS_MAXIMIZEBOX As Integer = &H10000
 
-
         Public Const WS_TILED As Integer = WS_OVERLAPPED
         Public Const WS_ICONIC As Integer = WS_MINIMIZE
         Public Const WS_SIZEBOX As Integer = WS_THICKFRAME

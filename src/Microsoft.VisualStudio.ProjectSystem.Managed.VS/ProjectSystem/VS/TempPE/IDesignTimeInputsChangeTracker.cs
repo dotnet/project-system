@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
     /// Represents the data source of source items that are design time inputs or shared design time inputs, and have changed
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IDesignTimeInputsChangeTracker : IProjectValueDataSource<DesignTimeInputsDelta>
+    internal interface IDesignTimeInputsChangeTracker : IProjectValueDataSource<DesignTimeInputSnapshot>
     {
     }
 }

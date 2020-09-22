@@ -10,7 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.AnalyzerDependency);
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse,
+            unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.CodeInformation,
@@ -39,6 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
+                caption: resolved
+                    ? System.IO.Path.GetFileNameWithoutExtension(path)
+                    : path,
                 path,
                 originalItemSpec,
                 flags: s_flagCache.Get(resolved, isImplicit),
@@ -46,9 +51,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 isImplicit,
                 properties)
         {
-            Caption = resolved
-                ? System.IO.Path.GetFileNameWithoutExtension(path)
-                : path;
         }
     }
 }

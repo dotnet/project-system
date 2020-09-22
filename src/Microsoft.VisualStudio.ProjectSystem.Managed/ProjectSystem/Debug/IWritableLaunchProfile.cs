@@ -9,13 +9,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface IWritableLaunchProfile
     {
-        string Name { get; set; }
-        string CommandName { get; set; }
-        string ExecutablePath { get; set; }
-        string CommandLineArgs { get; set; }
-        string WorkingDirectory { get; set; }
+        string? Name { get; set; }
+        string? CommandName { get; set; }
+        string? ExecutablePath { get; set; }
+        string? CommandLineArgs { get; set; }
+        string? WorkingDirectory { get; set; }
         bool LaunchBrowser { get; set; }
-        string LaunchUrl { get; set; }
+        string? LaunchUrl { get; set; }
         Dictionary<string, string> EnvironmentVariables { get; }
         Dictionary<string, object> OtherSettings { get; }
 

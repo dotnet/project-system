@@ -66,11 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             {
                 (bool designTime, bool designTimeShared) = GetDesignTimePropsForItem(metadata);
 
-                if (!metadata.TryGetValue(Compile.FullPathProperty, out string fullPath))
-                {
-                    // if there is no full path then we can calculate it
-                    fullPath = _project.MakeRooted(itemName);
-                }
+                string fullPath = _project.MakeRooted(itemName);
 
                 if (designTime)
                 {
@@ -93,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             item.TryGetValue(Compile.DesignTimeProperty, out string designTimeString);
             item.TryGetValue(Compile.DesignTimeSharedInputProperty, out string designTimeSharedString);
 
-            if (linkString != null && linkString.Length > 0)
+            if (!string.IsNullOrEmpty(linkString))
             {
                 // Linked files are never used as TempPE inputs
                 return (false, false);

@@ -12,17 +12,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
     internal interface ISpecialFilesManager
     {
         /// <summary>
-        ///     Returns the path to a special file, optionally creating it and 
+        ///     Returns the path to a special file, optionally creating it and
         ///     checking it out from source control.
         /// </summary>
         /// <param name="fileId">
         ///     One of the <see cref="SpecialFiles"/> values indicating the special file to return.
         /// </param>
         /// <param name="flags">
-        ///     One or more of the <see cref="SpecialFileFlags"/> 
+        ///     One or more of the <see cref="SpecialFileFlags"/>
         /// </param>
         /// <returns>
-        ///     The file name of the special file, or <see langword="null"/> if special file is not 
+        ///     The file name of the special file, or <see langword="null"/> if special file is not
         ///     handled by the project.
         /// </returns>
         Task<string?> GetFileAsync(SpecialFiles fileId, SpecialFileFlags flags);

@@ -2,32 +2,28 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
     internal sealed class Dependency : IDependency
     {
-        public Dependency(IDependencyModel dependencyModel, ITargetFramework targetFramework)
+        public Dependency(IDependencyModel dependencyModel)
         {
             Requires.NotNull(dependencyModel, nameof(dependencyModel));
             Requires.NotNullOrEmpty(dependencyModel.ProviderType, nameof(dependencyModel.ProviderType));
             Requires.NotNullOrEmpty(dependencyModel.Id, nameof(dependencyModel.Id));
-            Requires.NotNull(targetFramework, nameof(targetFramework));
 
-            TargetFramework = targetFramework;
-
-            _modelId = dependencyModel.Id;
+            Id = dependencyModel.Id;
 
             ProviderType = dependencyModel.ProviderType;
-            Name = dependencyModel.Name ?? string.Empty;
             Caption = dependencyModel.Caption ?? string.Empty;
-            OriginalItemSpec = dependencyModel.OriginalItemSpec ?? string.Empty;
-            Path = dependencyModel.Path ?? string.Empty;
+            OriginalItemSpec = dependencyModel.OriginalItemSpec;
+            FilePath = dependencyModel.Path;
             SchemaName = dependencyModel.SchemaName ?? Folder.SchemaName;
-            _schemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
+            SchemaItemType = dependencyModel.SchemaItemType ?? Folder.PrimaryDataSourceItemType;
             Resolved = dependencyModel.Resolved;
             Implicit = dependencyModel.Implicit;
             Visible = dependencyModel.Visible;
@@ -39,16 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             // in the tree to avoid flicks).
             if (Resolved)
             {
-                if (!Flags.Contains(DependencyTreeFlags.Resolved))
+                if (!Flags.Contains(ProjectTreeFlags.ResolvedReference))
                 {
-                    Flags += DependencyTreeFlags.Resolved;
+                    Flags += ProjectTreeFlags.ResolvedReference;
                 }
             }
             else
             {
-                if (!Flags.Contains(DependencyTreeFlags.Unresolved))
+                if (!Flags.Contains(ProjectTreeFlags.BrokenReference))
                 {
-                    Flags += DependencyTreeFlags.Unresolved;
+                    Flags += ProjectTreeFlags.BrokenReference;
                 }
             }
 
@@ -57,16 +53,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             if (dependencyModel is DependencyModel model)
             {
                 IconSet = model.IconSet;
+
+                DiagnosticLevel = model.DiagnosticLevel;
             }
             else
             {
                 IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+
+                DiagnosticLevel = dependencyModel.Resolved ? DiagnosticLevel.None : DiagnosticLevel.Warning;
             }
 
             BrowseObjectProperties = dependencyModel.Properties
                 ?? ImmutableStringDictionary<string>.EmptyOrdinal
                      .Add(Folder.IdentityProperty, Caption)
-                     .Add(Folder.FullPathProperty, Path);
+                     .Add(Folder.FullPathProperty, FilePath ?? string.Empty);
         }
 
         /// <summary>
@@ -79,61 +79,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags,
             string? schemaName,
             DependencyIconSet? iconSet,
-            bool? isImplicit)
+            bool? isImplicit,
+            DiagnosticLevel? diagnosticLevel)
         {
             // Copy values as necessary to create a clone with any properties overridden
 
-            _id = dependency._id;
-            _modelId = dependency._modelId;
-            TargetFramework = dependency.TargetFramework;
+            Id = dependency.Id;
             ProviderType = dependency.ProviderType;
-            Name = dependency.Name;
             OriginalItemSpec = dependency.OriginalItemSpec;
-            Path = dependency.Path;
-            _schemaItemType = dependency.SchemaItemType;
+            FilePath = dependency.FilePath;
+            SchemaItemType = dependency.SchemaItemType;
             Visible = dependency.Visible;
-            BrowseObjectProperties = dependency.BrowseObjectProperties;
+            BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
             Resolved = resolved ?? dependency.Resolved;
             Flags = flags ?? dependency.Flags;
             SchemaName = schemaName ?? dependency.SchemaName;
             IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
             Implicit = isImplicit ?? dependency.Implicit;
+            DiagnosticLevel = diagnosticLevel ?? dependency.DiagnosticLevel;
         }
+
+        public DiagnosticLevel DiagnosticLevel { get; }
 
         #region IDependency
 
-        /// <summary>
-        /// Id unique for a particular provider. We append target framework and provider type to it,
-        /// to get a unique id for the whole snapshot.
-        /// </summary>
-        private readonly string _modelId;
-        private string? _id;
-
-        public string Id => _id ??= GetID(TargetFramework, ProviderType, _modelId);
+        public string Id { get; }
 
         public string ProviderType { get; }
-        public string Name { get; }
-        public string OriginalItemSpec { get; }
-        public string Path { get; }
+        public string? OriginalItemSpec { get; }
 
         public string SchemaName { get; }
-
-        private readonly string _schemaItemType;
-
-        public string SchemaItemType
-        {
-            get
-            {
-                // For generic node types we do set correct, known item types, however for custom nodes
-                // provided by third party extensions we can not guarantee that item type will be known.
-                // Thus always set predefined itemType for all custom nodes.
-                // TODO: generate specific xaml rule for generic Dependency nodes
-                // tracking issue: https://github.com/dotnet/project-system/issues/1102
-                bool isGenericNodeType = Flags.Contains(DependencyTreeFlags.GenericDependency);
-                return isGenericNodeType ? _schemaItemType : Folder.PrimaryDataSourceItemType;
-            }
-        }
+        public string SchemaItemType { get; }
 
         public string Caption { get; }
         public bool Resolved { get; }
@@ -148,7 +125,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         #endregion
 
-        public ITargetFramework TargetFramework { get; }
+        #region IDependencyViewModel
+
+        public string? FilePath { get; }
+
+        public ImageMoniker Icon => DiagnosticLevel == DiagnosticLevel.None ? IconSet.Icon : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => DiagnosticLevel == DiagnosticLevel.None ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
+
+        #endregion
 
         public IDependency SetProperties(
             string? caption = null,
@@ -156,103 +140,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             ProjectTreeFlags? flags = null,
             string? schemaName = null,
             DependencyIconSet? iconSet = null,
-            bool? isImplicit = null)
+            bool? isImplicit = null,
+            DiagnosticLevel? diagnosticLevel = null)
         {
-            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit);
+            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit, diagnosticLevel);
         }
 
         public override string ToString()
         {
             // Used for debugging only
             var sb = PooledStringBuilder.GetInstance();
-            sb.Append("Id=\"");
+            sb.Append("Provider=\"");
+            sb.Append(ProviderType);
+            sb.Append("\" ModelId=\"");
             sb.Append(Id);
             sb.Append('"');
 
-            if (Resolved) sb.Append(" Resolved");
-            if (Implicit) sb.Append(" Implicit");
-            if (Visible) sb.Append(" Visible");
+            if (Resolved)
+                sb.Append(" Resolved");
+            if (Implicit)
+                sb.Append(" Implicit");
+            if (Visible)
+                sb.Append(" Visible");
 
-            return sb.ToStringAndFree();
-        }
-
-        /// <summary>
-        /// Determines whether <paramref name="id"/> is equal to the result of <see cref="GetID"/> when passed
-        /// <paramref name="targetFramework"/>, <paramref name="providerType"/> and <paramref name="modelId"/>.
-        /// </summary>
-        /// <remarks>
-        /// This method performs no heap allocations unless <paramref name="modelId"/> must be escaped.
-        /// </remarks>
-        public static bool IdEquals(string id, ITargetFramework targetFramework, string providerType, string modelId)
-        {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
-            Requires.NotNullOrEmpty(modelId, nameof(modelId));
-
-            if (id == null)
-                return false;
-
-            int modelSlashCount = 0;
-            for (int i = modelId.Length - 1; i >= 0 && (modelId[i] == '\\' || modelId[i] == '/'); i--)
-                modelSlashCount++;
-            int length = targetFramework.ShortName.Length + providerType.Length + modelId.Length - modelSlashCount + 2;
-
-            if (id.Length != length)
-                return false;
-            if (!id.StartsWith(targetFramework.ShortName, StringComparisons.DependencyTreeIds))
-                return false;
-            int index = targetFramework.ShortName.Length;
-            if (id[index++] != '\\')
-                return false;
-            if (string.Compare(id, index, providerType, 0, providerType.Length, StringComparisons.DependencyProviderTypes) != 0)
-                return false;
-            index += providerType.Length;
-            if (id[index++] != '\\')
-                return false;
-
-            // Escape model ID
-            // NOTE It doesn't seem possible to avoid the potential string allocation here without
-            // reimplementing OrdinalIgnoreCase comparison.
-            modelId = modelId.Replace('/', '\\').Replace("..", "__");
-
-            if (string.Compare(id, index, modelId, 0, modelId.Length - modelSlashCount, StringComparisons.DependencyTreeIds) != 0)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Constructs the string identifier for a dependency from its target framework, provider type and dependency model ID.
-        /// </summary>
-        /// <remarks>
-        /// This string has form <c>"tfm-name\provider-type\model-id"</c>.
-        /// <list type="bullet">
-        ///   <item>All characters are lower-case.</item>
-        ///   <item><c>".."</c> is replaced with <c>"__"</c>.</item>
-        ///   <item><c>"/"</c> is replaced with <c>"\"</c>.</item>
-        ///   <item>Any trailing <c>"\"</c> characters are trimmed.</item>
-        /// </list>
-        /// </remarks>
-        /// <param name="targetFramework"></param>
-        /// <param name="providerType"></param>
-        /// <param name="modelId"></param>
-        public static string GetID(ITargetFramework targetFramework, string providerType, string modelId)
-        {
-            Requires.NotNull(targetFramework, nameof(targetFramework));
-            Requires.NotNullOrEmpty(providerType, nameof(providerType));
-            Requires.NotNullOrEmpty(modelId, nameof(modelId));
-
-            var sb = PooledStringBuilder.GetInstance();
-            sb.Append(targetFramework.ShortName);
-            sb.Append('\\');
-            sb.Append(providerType);
-            sb.Append('\\');
-            int offset = sb.Length;
-            sb.Append(modelId);
-            // normalize modelId (without allocating)
-            sb.Replace('/', '\\', offset, modelId.Length);
-            sb.Replace("..", "__", offset, modelId.Length);
-            sb.TrimEnd(Delimiter.BackSlash);
             return sb.ToStringAndFree();
         }
     }

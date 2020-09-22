@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -16,21 +17,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener? _loadedInHostListener;
-        private readonly TaskCompletionSource<object?> _projectLoadedInHost = new TaskCompletionSource<object?>();
-        private readonly TaskCompletionSource<object?> _prioritizedProjectLoadedInHost = new TaskCompletionSource<object?>();
+        private readonly ISolutionService? _solutionService;
+        private readonly TaskCompletionSource _projectLoadedInHost = new TaskCompletionSource();
+        private readonly TaskCompletionSource _prioritizedProjectLoadedInHost = new TaskCompletionSource();
         private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]
         public UnconfiguredProjectTasksService(
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService tasksService,
             IProjectThreadingService threadingService,
-            [Import(AllowDefault = true)] ILoadedInHostListener? loadedInHostListener)
+            [Import(AllowDefault = true)] ILoadedInHostListener? loadedInHostListener,
+            [Import(AllowDefault = true)] ISolutionService? solutionService)
         {
             _prioritizedTasks = threadingService.JoinableTaskContext.CreateCollection();
             _prioritizedTasks.DisplayName = "PrioritizedProjectLoadedInHostTasks";
             _tasksService = tasksService;
             _threadingService = threadingService;
             _loadedInHostListener = loadedInHostListener;
+            _solutionService = solutionService;
         }
 
         [ProjectAutoLoad(completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
@@ -43,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
             else
             {
-                _projectLoadedInHost.TrySetResult(null);
+                _projectLoadedInHost.TrySetResult();
                 return Task.CompletedTask;
             }
         }
@@ -56,6 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public Task PrioritizedProjectLoadedInHost
         {
             get { return _prioritizedProjectLoadedInHost.Task.WithCancellation(_tasksService.UnloadCancellationToken); }
+        }
+
+        public Task SolutionLoadedInHost
+        {
+            get { return _solutionService?.LoadedInHost.WithCancellation(_tasksService.UnloadCancellationToken) ?? throw new NotSupportedException(); }
         }
 
         public CancellationToken UnloadCancellationToken
@@ -108,12 +117,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public void OnProjectLoadedInHost()
         {
-            _projectLoadedInHost.SetResult(null);
+            _projectLoadedInHost.SetResult();
         }
 
         public void OnPrioritizedProjectLoadedInHost()
         {
-            _prioritizedProjectLoadedInHost.SetResult(null);
+            _prioritizedProjectLoadedInHost.SetResult();
 
             _threadingService.ExecuteSynchronously(() => _prioritizedTasks.JoinTillEmptyAsync());
         }

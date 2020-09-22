@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Responsible for creating and initializing <see cref="IWorkspaceProjectContext"/> and sending 
+    ///     Responsible for creating and initializing <see cref="IWorkspaceProjectContext"/> and sending
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
     [Export(typeof(IImplicitlyActiveService))]
@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IProjectSubscriptionService _projectSubscriptionService;
         private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
         private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
+        private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                            IProjectSubscriptionService projectSubscriptionService,
                                            IWorkspaceProjectContextProvider workspaceProjectContextProvider,
                                            IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                           IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                            ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                            IDataProgressTrackerService dataProgressTrackerService)
             : base(threadingService.JoinableTaskContext)
@@ -43,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _projectSubscriptionService = projectSubscriptionService;
             _workspaceProjectContextProvider = workspaceProjectContextProvider;
             _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
+            _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
             _dataProgressTrackerService = dataProgressTrackerService;
         }
@@ -66,9 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-#pragma warning disable IDE0067 // Does not own liftime
             WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
-#pragma warning restore IDE0067 
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             await instance.OpenContextForWriteAsync(action);
@@ -78,9 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(action, nameof(action));
 
-#pragma warning disable IDE0067 // Does not own liftime
             WorkspaceProjectContextHostInstance instance = await WaitForLoadedAsync();
-#pragma warning restore IDE0067
 
             // Throws ActiveProjectConfigurationChangedException if 'instance' is Disposed
             return await instance.OpenContextForWriteAsync(action);
@@ -88,7 +87,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override WorkspaceProjectContextHostInstance CreateInstance()
         {
-            return new WorkspaceProjectContextHostInstance(_project, _threadingService, _tasksService, _projectSubscriptionService, _workspaceProjectContextProvider, _activeWorkspaceProjectContextTracker, _applyChangesToWorkspaceContextFactory, _dataProgressTrackerService);
+            return new WorkspaceProjectContextHostInstance(
+                _project,
+                _threadingService,
+                _tasksService,
+                _projectSubscriptionService,
+                _workspaceProjectContextProvider,
+                _activeWorkspaceProjectContextTracker,
+                _activeConfiguredProjectProvider,
+                _applyChangesToWorkspaceContextFactory,
+                _dataProgressTrackerService);
         }
     }
 }

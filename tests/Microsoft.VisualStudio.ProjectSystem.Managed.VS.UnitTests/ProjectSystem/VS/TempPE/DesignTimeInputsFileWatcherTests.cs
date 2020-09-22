@@ -2,9 +2,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             await source.SendAsync(new DesignTimeInputs(designTimeInputs.Select(f => f), sharedDesignTimeInputs.Select(f => f)));
 
             // The TaskCompletionSource is the thing we use to wait for the test to finish
-            var finished = new TaskCompletionSource<bool>();
+            var finished = new TaskCompletionSource();
 
             int notificationCount = 0;
             // Create a block to receive the output
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // if we've seen every file, we're done
                 if (notificationCount == fileChangeNotificationsExpected.Length)
                 {
-                    finished.SetResult(true);
+                    finished.SetResult();
                 }
             });
             watcher.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
@@ -152,14 +152,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             var dataSource = mock.Object;
 
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var unconfiguredProject = UnconfiguredProjectFactory.Create(filePath: @"C:\MyProject\MyProject.csproj");
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: @"C:\MyProject\MyProject.csproj");
             var unconfiguredProjectServices = IUnconfiguredProjectServicesFactory.Create(
                     projectService: IProjectServiceFactory.Create(
                         services: ProjectServicesFactory.Create(
                             threadingService: threadingService)));
 
             // Create our class under test
-            return new DesignTimeInputsFileWatcher(unconfiguredProject, unconfiguredProjectServices, threadingService, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, Shell.IVsAsyncFileChangeEx>(fileChangeService));
+            return new DesignTimeInputsFileWatcher(unconfiguredProject, unconfiguredProjectServices, threadingService, dataSource, IVsServiceFactory.Create<SVsFileChangeEx, IVsAsyncFileChangeEx>(fileChangeService));
         }
     }
 }

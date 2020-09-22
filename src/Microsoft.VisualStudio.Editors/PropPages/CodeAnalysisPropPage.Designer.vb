@@ -4,13 +4,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
     Partial Class CodeAnalysisPropPage
         Friend WithEvents FxCopAnalyzersPanel As System.Windows.Forms.Panel
-        Friend WithEvents InstalledVersionLabel As System.Windows.Forms.Label
-        Friend WithEvents InstalledVersionTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents InstallCustomVersionButton As System.Windows.Forms.Button
-        Friend WithEvents InstallLatestVersionButton As System.Windows.Forms.Button
-        Friend WithEvents UninstallAnalyzersButton As System.Windows.Forms.Button
-        Friend WithEvents FxCopAnalyzersPackageNameTextBox As System.Windows.Forms.TextBox
-        Friend WithEvents FxCopAnalyzersPackageNameLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersLineLabel As System.Windows.Forms.Label
         Friend WithEvents RoslynAnalyzersHelpLinkLabel As System.Windows.Forms.LinkLabel
@@ -30,37 +23,84 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CodeAnalysisPropPage))
             Me.FxCopAnalyzersPanel = New System.Windows.Forms.Panel()
+            Me.EnforceCodeStyleInBuildCheckBox = New System.Windows.Forms.CheckBox()
+            Me.NETAnalyzersLinkLabel = New System.Windows.Forms.LinkLabel()
+            Me.EnableNETAnalyzersCheckBox = New System.Windows.Forms.CheckBox()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.AnalysisLevelLabel = New System.Windows.Forms.Label()
+            Me.AnalysisLevelComboBox = New System.Windows.Forms.ComboBox()
             Me.RunAnalyzersDuringLiveAnalysis = New System.Windows.Forms.CheckBox()
             Me.RunAnalyzersDuringBuild = New System.Windows.Forms.CheckBox()
             Me.RoslynAnalyzersLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersLineLabel = New System.Windows.Forms.Label()
             Me.RoslynAnalyzersHelpLinkLabel = New System.Windows.Forms.LinkLabel()
-            Me.FxCopAnalyzersPackageNameTextBox = New System.Windows.Forms.TextBox()
-            Me.FxCopAnalyzersPackageNameLabel = New System.Windows.Forms.Label()
-            Me.InstalledVersionTextBox = New System.Windows.Forms.TextBox()
-            Me.InstalledVersionLabel = New System.Windows.Forms.Label()
-            Me.InstallLatestVersionButton = New System.Windows.Forms.Button()
-            Me.InstallCustomVersionButton = New System.Windows.Forms.Button()
-            Me.UninstallAnalyzersButton = New System.Windows.Forms.Button()
             Me.FxCopAnalyzersPanel.SuspendLayout()
             Me.SuspendLayout()
             '
             'FxCopAnalyzersPanel
             '
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.EnforceCodeStyleInBuildCheckBox)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.NETAnalyzersLinkLabel)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.EnableNETAnalyzersCheckBox)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.Label1)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.Label2)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.AnalysisLevelLabel)
+            Me.FxCopAnalyzersPanel.Controls.Add(Me.AnalysisLevelComboBox)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RunAnalyzersDuringLiveAnalysis)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RunAnalyzersDuringBuild)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersLineLabel)
             Me.FxCopAnalyzersPanel.Controls.Add(Me.RoslynAnalyzersHelpLinkLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameTextBox)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.FxCopAnalyzersPackageNameLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionTextBox)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstalledVersionLabel)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstallLatestVersionButton)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.InstallCustomVersionButton)
-            Me.FxCopAnalyzersPanel.Controls.Add(Me.UninstallAnalyzersButton)
             resources.ApplyResources(Me.FxCopAnalyzersPanel, "FxCopAnalyzersPanel")
             Me.FxCopAnalyzersPanel.Name = "FxCopAnalyzersPanel"
+            '
+            'EnforceCodeStyleInBuildCheckBox
+            '
+            resources.ApplyResources(Me.EnforceCodeStyleInBuildCheckBox, "EnforceCodeStyleInBuildCheckBox")
+            Me.EnforceCodeStyleInBuildCheckBox.Checked = True
+            Me.EnforceCodeStyleInBuildCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.EnforceCodeStyleInBuildCheckBox.Name = "EnforceCodeStyleInBuildCheckBox"
+            Me.EnforceCodeStyleInBuildCheckBox.UseVisualStyleBackColor = True
+            '
+            'NETAnalyzersLinkLabel
+            '
+            resources.ApplyResources(Me.NETAnalyzersLinkLabel, "NETAnalyzersLinkLabel")
+            Me.NETAnalyzersLinkLabel.Name = "NETAnalyzersLinkLabel"
+            Me.NETAnalyzersLinkLabel.TabStop = True
+            '
+            'EnableNETAnalyzersCheckBox
+            '
+            resources.ApplyResources(Me.EnableNETAnalyzersCheckBox, "EnableNETAnalyzersCheckBox")
+            Me.EnableNETAnalyzersCheckBox.Checked = True
+            Me.EnableNETAnalyzersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.EnableNETAnalyzersCheckBox.Name = "EnableNETAnalyzersCheckBox"
+            Me.EnableNETAnalyzersCheckBox.UseVisualStyleBackColor = True
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'Label2
+            '
+            Me.Label2.AccessibleRole = System.Windows.Forms.AccessibleRole.Separator
+            Me.Label2.BackColor = System.Drawing.SystemColors.ControlDark
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
+            'AnalysisLevelLabel
+            '
+            resources.ApplyResources(Me.AnalysisLevelLabel, "AnalysisLevelLabel")
+            Me.AnalysisLevelLabel.Name = "AnalysisLevelLabel"
+            '
+            'AnalysisLevelComboBox
+            '
+            Me.AnalysisLevelComboBox.AutoCompleteCustomSource.AddRange(New String() {resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource1"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource2"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource3")})
+            Me.AnalysisLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.AnalysisLevelComboBox.FormattingEnabled = True
+            resources.ApplyResources(Me.AnalysisLevelComboBox, "AnalysisLevelComboBox")
+            Me.AnalysisLevelComboBox.Name = "AnalysisLevelComboBox"
             '
             'RunAnalyzersDuringLiveAnalysis
             '
@@ -96,46 +136,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.RoslynAnalyzersHelpLinkLabel.Name = "RoslynAnalyzersHelpLinkLabel"
             Me.RoslynAnalyzersHelpLinkLabel.TabStop = True
             '
-            'FxCopAnalyzersPackageNameTextBox
-            '
-            resources.ApplyResources(Me.FxCopAnalyzersPackageNameTextBox, "FxCopAnalyzersPackageNameTextBox")
-            Me.FxCopAnalyzersPackageNameTextBox.Name = "FxCopAnalyzersPackageNameTextBox"
-            Me.FxCopAnalyzersPackageNameTextBox.ReadOnly = True
-            '
-            'FxCopAnalyzersPackageNameLabel
-            '
-            resources.ApplyResources(Me.FxCopAnalyzersPackageNameLabel, "FxCopAnalyzersPackageNameLabel")
-            Me.FxCopAnalyzersPackageNameLabel.Name = "FxCopAnalyzersPackageNameLabel"
-            '
-            'InstalledVersionTextBox
-            '
-            resources.ApplyResources(Me.InstalledVersionTextBox, "InstalledVersionTextBox")
-            Me.InstalledVersionTextBox.Name = "InstalledVersionTextBox"
-            Me.InstalledVersionTextBox.ReadOnly = True
-            '
-            'InstalledVersionLabel
-            '
-            resources.ApplyResources(Me.InstalledVersionLabel, "InstalledVersionLabel")
-            Me.InstalledVersionLabel.Name = "InstalledVersionLabel"
-            '
-            'InstallLatestVersionButton
-            '
-            resources.ApplyResources(Me.InstallLatestVersionButton, "InstallLatestVersionButton")
-            Me.InstallLatestVersionButton.Name = "InstallLatestVersionButton"
-            Me.InstallLatestVersionButton.UseVisualStyleBackColor = True
-            '
-            'InstallCustomVersionButton
-            '
-            resources.ApplyResources(Me.InstallCustomVersionButton, "InstallCustomVersionButton")
-            Me.InstallCustomVersionButton.Name = "InstallCustomVersionButton"
-            Me.InstallCustomVersionButton.UseVisualStyleBackColor = True
-            '
-            'UninstallAnalyzersButton
-            '
-            resources.ApplyResources(Me.UninstallAnalyzersButton, "UninstallAnalyzersButton")
-            Me.UninstallAnalyzersButton.Name = "UninstallAnalyzersButton"
-            Me.UninstallAnalyzersButton.UseVisualStyleBackColor = True
-            '
             'CodeAnalysisPropPage
             '
             resources.ApplyResources(Me, "$this")
@@ -147,6 +147,14 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.ResumeLayout(False)
 
         End Sub
+
+        Friend WithEvents AnalysisLevelComboBox As Windows.Forms.ComboBox
+        Friend WithEvents AnalysisLevelLabel As Windows.Forms.Label
+        Friend WithEvents EnableNETAnalyzersCheckBox As Windows.Forms.CheckBox
+        Friend WithEvents Label1 As Windows.Forms.Label
+        Friend WithEvents Label2 As Windows.Forms.Label
+        Friend WithEvents NETAnalyzersLinkLabel As Windows.Forms.LinkLabel
+        Friend WithEvents EnforceCodeStyleInBuildCheckBox As Windows.Forms.CheckBox
     End Class
 
 End Namespace

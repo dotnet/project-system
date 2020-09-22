@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Id = "dependency1",
             Implicit = false,
             Resolved = true,
-            Flags = DependencyTreeFlags.GenericDependency,
+            Flags = DependencyTreeFlags.Dependency,
             OriginalItemSpec = ProjectItemSpec
         };
 
@@ -105,14 +106,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ProviderType = providerType,
                 Implicit = false,
                 Resolved = true,
-                Flags = DependencyTreeFlags.GenericDependency,
+                Flags = DependencyTreeFlags.ResolvedDependencyFlags,
                 OriginalItemSpec = projectItemSpec,
                 IconSet = new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference)
             };
 
-            var dependencyById = new Dictionary<string, IDependency>
+            var dependencyById = new Dictionary<DependencyId, IDependency>
             {
-                { dependency.Id, dependency }
+                { dependency.GetDependencyId(), dependency }
             };
 
             var context = new AddDependencyContext(dependencyById);
@@ -124,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 implicitIcon: implicitIcon);
 
             filter.BeforeAddOrUpdate(
-                null!,
                 dependency,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider> { { providerType, subTreeProvider } },
                 ImmutableHashSet<string>.Empty,
@@ -144,7 +144,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                         implicitIcon,
                         implicitIcon,
                         KnownMonikers.Reference,
-                        KnownMonikers.Reference)
+                        KnownMonikers.Reference),
+                    Flags = DependencyTreeFlags.ResolvedDependencyFlags.Except(DependencyTreeFlags.SupportsRemove)
                 }, acceptedDependency!);
 
             // No other changes made

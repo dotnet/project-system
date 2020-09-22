@@ -19,21 +19,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         {
             private readonly ProjectTreeFlags[] _lookup;
 
-            public DependencyFlagCache(ProjectTreeFlags add = default, ProjectTreeFlags remove = default)
+            public DependencyFlagCache(ProjectTreeFlags resolved, ProjectTreeFlags unresolved, ProjectTreeFlags remove = default)
             {
                 // The 'isResolved' dimension determines whether we start with generic resolved or unresolved dependency flags.
                 // We then add (union) and remove (except) any other flags as instructed.
 
-                ProjectTreeFlags resolved = DependencyTreeFlags.GenericResolvedDependencyFlags.Union(add).Except(remove);
-                ProjectTreeFlags unresolved = DependencyTreeFlags.GenericUnresolvedDependencyFlags.Union(add).Except(remove);
+                ProjectTreeFlags combinedResolved = DependencyTreeFlags.ResolvedDependencyFlags.Union(resolved).Except(remove);
+                ProjectTreeFlags combinedUnresolved = DependencyTreeFlags.UnresolvedDependencyFlags.Union(unresolved).Except(remove);
 
                 // The 'isImplicit' dimension only enforces, when true, that the dependency cannot be removed.
 
                 _lookup = new ProjectTreeFlags[4];
-                _lookup[Index(isResolved: true, isImplicit: false)] = resolved;
-                _lookup[Index(isResolved: true, isImplicit: true)] = resolved.Except(DependencyTreeFlags.SupportsRemove);
-                _lookup[Index(isResolved: false, isImplicit: false)] = unresolved;
-                _lookup[Index(isResolved: false, isImplicit: true)] = unresolved.Except(DependencyTreeFlags.SupportsRemove);
+                _lookup[Index(isResolved: true, isImplicit: false)] = combinedResolved;
+                _lookup[Index(isResolved: true, isImplicit: true)] = combinedResolved.Except(DependencyTreeFlags.SupportsRemove);
+                _lookup[Index(isResolved: false, isImplicit: false)] = combinedUnresolved;
+                _lookup[Index(isResolved: false, isImplicit: true)] = combinedUnresolved.Except(DependencyTreeFlags.SupportsRemove);
             }
 
             /// <summary>Retrieves the cached <see cref="ProjectTreeFlags"/> given the arguments.</summary>
