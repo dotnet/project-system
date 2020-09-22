@@ -26,13 +26,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache context, Rule schema, string propertyName))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache cache, Rule schema, string propertyName))
             {
                 try
                 {
                     IEnumerable<IEntityValue> propertyValues = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
                         request.RequestData,
-                        context,
+                        cache,
                         schema,
                         propertyName,
                         _properties);

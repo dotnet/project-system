@@ -28,11 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             Requires.NotNull(request, nameof(request));
 
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache context, Rule rule))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache cache, Rule rule))
             {
                 try
                 {
-                    foreach (IEntityValue propertyValue in UIPropertyDataProducer.CreateUIPropertyValues(request.RequestData, context, rule, _properties))
+                    foreach (IEntityValue propertyValue in UIPropertyDataProducer.CreateUIPropertyValues(request.RequestData, cache, rule, _properties))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
                     }

@@ -13,9 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIEditorMetadataProducer
     {
-        public static IEntityValue CreateMetadataValue(IEntityRuntimeModel entityRuntime, NameValuePair metadata, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateMetadataValue(IEntityRuntimeModel runtimeModel, NameValuePair metadata, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
         {
-            var newMetadata = new UIEditorMetadataValue(entityRuntime, new UIEditorMetadataPropertiesAvailableStatus());
+            var newMetadata = new UIEditorMetadataValue(runtimeModel, new UIEditorMetadataPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newMetadata;
         }
 
-        public static IEnumerable<IEntityValue> CreateMetadataValues(IEntityRuntimeModel entityRuntime, ValueEditor editor, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateMetadataValues(IEntityRuntimeModel runtimeModel, ValueEditor editor, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
         {
             foreach (NameValuePair metadataPair in editor.Metadata)
             {
-                IEntityValue metadataValue = CreateMetadataValue(entityRuntime, metadataPair, requestedProperties);
+                IEntityValue metadataValue = CreateMetadataValue(runtimeModel, metadataPair, requestedProperties);
                 yield return metadataValue;
             }
         }

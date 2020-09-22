@@ -17,22 +17,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyDataProducer
     {
-        public static IEntityValue CreateUIPropertyValue(IEntityValue entity, IPropertyPageQueryCache context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IEntityValue parent, IPropertyPageQueryCache cache, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
 
             var identity = new EntityIdentity(
-                ((IEntityWithId)entity).Id,
+                ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
                     new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
                 });
 
-            return CreateUIPropertyValue(entity.EntityRuntime, identity, context, property, order, requestedProperties);
+            return CreateUIPropertyValue(parent.EntityRuntime, identity, cache, property, order, requestedProperties);
         }
 
-        public static IEntityValue CreateUIPropertyValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache cache, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property, nameof(property));
             var newUIProperty = new UIPropertyValue(runtimeModel, id, new UIPropertyPropertiesAvailableStatus());
@@ -91,25 +91,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 // TODO: extract search terms from property metadata.
             }
 
-            ((IEntityValueFromProvider)newUIProperty).ProviderState = (context, property.ContainingRule, property.Name);
+            ((IEntityValueFromProvider)newUIProperty).ProviderState = (cache, property.ContainingRule, property.Name);
 
             return newUIProperty;
         }
 
-        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue requestData, IPropertyPageQueryCache context, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
                 if (property.Visible)
                 {
-                    IEntityValue propertyValue = CreateUIPropertyValue(requestData, context, property, index, properties);
+                    IEntityValue propertyValue = CreateUIPropertyValue(parent, cache, property, index, properties);
                     yield return propertyValue;
                 }
             }
         }
 
         public static async Task<IEntityValue?> CreateUIPropertyValueAsync(
-            IEntityRuntimeModel entityRuntime,
+            IEntityRuntimeModel runtimeModel,
             EntityIdentity requestId,
             IProjectService2 projectService,
             string path,
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && property.Visible)
             {
                 var context = new PropertyPageQueryCache(project);
-                IEntityValue propertyValue = CreateUIPropertyValue(entityRuntime, requestId, context, property, index, requestedProperties);
+                IEntityValue propertyValue = CreateUIPropertyValue(runtimeModel, requestId, context, property, index, requestedProperties);
                 return propertyValue;
             }
 

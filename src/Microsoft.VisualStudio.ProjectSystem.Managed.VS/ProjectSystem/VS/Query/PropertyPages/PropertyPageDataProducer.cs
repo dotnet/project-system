@@ -17,22 +17,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class PropertyPageDataProducer
     {
-        public static IEntityValue CreatePropertyPageValue(IEntityValue entity, IPropertyPageQueryCache context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(rule, nameof(rule));
 
             var identity = new EntityIdentity(
-                ((IEntityWithId)entity).Id,
+                ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
                     new(ProjectModelIdentityKeys.PropertyPageName, rule.Name)
                 });
 
-            return CreatePropertyPageValue(entity.EntityRuntime, identity, context, rule, requestedProperties);
+            return CreatePropertyPageValue(parent.EntityRuntime, identity, cache, rule, requestedProperties);
         }
 
-        public static IEntityValue CreatePropertyPageValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache cache, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(rule, nameof(rule));
             var newPropertyPage = new PropertyPageValue(runtimeModel, id, new PropertyPagePropertiesAvailableStatus());
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newPropertyPage.Kind = rule.PageTemplate;
             }
 
-            ((IEntityValueFromProvider)newPropertyPage).ProviderState = (context, rule);
+            ((IEntityValueFromProvider)newPropertyPage).ProviderState = (cache, rule);
 
             return newPropertyPage;
         }
