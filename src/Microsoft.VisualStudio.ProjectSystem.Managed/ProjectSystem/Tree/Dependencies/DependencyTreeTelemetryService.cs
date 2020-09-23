@@ -171,16 +171,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
             if (_telemetryService != null && _dependenciesSnapshot != null && _projectId != null)
             {
-                var data = new Dictionary<string, Dictionary<string, DependencyCount>>();
+                var data = new List<TargetData>();
                 int totalDependencyCount = 0;
                 int unresolvedDependencyCount = 0;
 
                 // Scan the snapshot and tally dependencies
                 foreach ((TargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in _dependenciesSnapshot.DependenciesByTargetFramework)
                 {
-                    var countsByType = new Dictionary<string, DependencyCount>();
+                    var targetData = new TargetData(targetFramework.ShortName);
 
-                    data[targetFramework.ShortName] = countsByType;
+                    data.Add(targetData);
 
                     foreach (IDependency dependency in targetedSnapshot.Dependencies)
                     {
@@ -190,12 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             continue;
                         }
 
-                        if (!countsByType.TryGetValue(dependency.ProviderType, out DependencyCount counts))
-                        {
-                            counts = new DependencyCount();
-                        }
-
-                        countsByType[dependency.ProviderType] = counts.Add(dependency.Resolved);
+                        targetData.Add(dependency);
 
                         totalDependencyCount++;
 
@@ -208,30 +203,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
                 _telemetryService.PostProperties(TelemetryEventName.ProjectUnloadDependencies, new (string, object)[]
                 {
+                    (TelemetryPropertyName.ProjectUnloadDependenciesVersion, 2),
                     (TelemetryPropertyName.ProjectUnloadDependenciesProject, _projectId),
                     (TelemetryPropertyName.ProjectUnloadProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
                     (TelemetryPropertyName.ProjectUnloadTotalDependencyCount, totalDependencyCount),
                     (TelemetryPropertyName.ProjectUnloadUnresolvedDependencyCount, unresolvedDependencyCount),
                     (TelemetryPropertyName.ProjectUnloadTargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
-                    (TelemetryPropertyName.ProjectUnloadDependencyBreakdown, new ComplexPropertyValue(data))
+                    (TelemetryPropertyName.ProjectUnloadDependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
                 });
             }
         }
 
-        private readonly struct DependencyCount
+        private sealed class TargetData
         {
-            public int TotalCount { get; } 
-            public int UnresolvedCount { get; }
+            private readonly Dictionary<string, (int Total, int Unresolved)> _countsByType = new Dictionary<string, (int Total, int Unresolved)>();
 
-            public DependencyCount(int totalCount, int unresolvedCount)
+            public string TargetFramework { get; }
+            public int Total { get; private set; }
+            public int Unresolved { get; private set; }
+
+            public object[] Breakdown => _countsByType.Select(kvp => new { Type = kvp.Key, kvp.Value.Total, kvp.Value.Unresolved }).ToArray();
+
+            public TargetData(string targetFramework) => TargetFramework = targetFramework;
+
+            public void Add(IDependency dependency)
             {
-                TotalCount = totalCount;
-                UnresolvedCount = unresolvedCount;
-            }
+                if (!_countsByType.TryGetValue(dependency.ProviderType, out (int Total, int Unresolved) counts))
+                {
+                    counts = (0, 0);
+                }
 
-            public DependencyCount Add(bool isResolved) => new DependencyCount(
-                TotalCount + 1,
-                isResolved ? UnresolvedCount : UnresolvedCount + 1);
+                if (!dependency.Resolved)
+                {
+                    Unresolved++;
+                    counts.Unresolved++;
+                }
+                
+                Total++;
+                counts.Total++;
+
+                _countsByType[dependency.ProviderType] = counts;
+            }
         }
 
         /// <summary>
