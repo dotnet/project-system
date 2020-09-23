@@ -33,6 +33,11 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string ProjectUnloadDependenciesProject = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "Project");
 
         /// <summary>
+        ///     Identifies the version of project unload dependencies telemetry being sent.
+        /// </summary>
+        public static readonly string ProjectUnloadDependenciesVersion = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "Version");
+
+        /// <summary>
         ///     Identifies the time between project load and unload, in milliseconds.
         /// </summary>
         public static readonly string ProjectUnloadProjectAgeMillis = BuildPropertyName(TelemetryEventName.ProjectUnloadDependencies, "ProjectAgeMillis");
