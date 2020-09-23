@@ -105,6 +105,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
+        [Theory]
+        [InlineData("class Foo{}", "Bar.cs", "Foo.cs")]
+        [InlineData("class Foo1{}", "Foo.cs", "Bar.cs")]
+        public async Task CopyAsync_Should_CreateNamespaceAction(string sourceCode, string oldFilePath, string newFilePath)
+        {
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
+        }
+
         private IVsService<SVsSettingsPersistenceManager, ISettingsManager> CreateSettingsManagerService(bool enableSymbolicRename)
         {
             var settingsManagerMock = new Mock<ISettingsManager>();
