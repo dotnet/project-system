@@ -20,7 +20,7 @@
         "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystemTools.Shared",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystemTools.Shared.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystemTools.BackEnd.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystemTools.BackEnd.resources.dll"
       ]
