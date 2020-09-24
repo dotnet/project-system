@@ -135,15 +135,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor?.Converter)
 
-                    For Each supportedFramework As TargetFrameworkMoniker In supportedFrameworks
-                        targetFrameworkComboBox.Items.Add(supportedFramework)
-                    Next
+                    'If the list doesn't contain any tfm, it means the project can't retarget.
+                    If Not supportedFrameworks.Any() Then
+                        targetFrameworkSupported = False
+                        targetFrameworkComboBox.Items.Clear()
+                    Else
+                        For Each supportedFramework As TargetFrameworkMoniker In supportedFrameworks
+                            targetFrameworkComboBox.Items.Add(supportedFramework)
+                        Next
 
-                    ' Set the service provider to be used when choosing the 'Install other frameworks...' item
-                    targetFrameworkComboBox.Items.Add(New InstallOtherFrameworksComboBoxValue())
-                    TargetFrameworkPropertyControlData.Site = siteServiceProvider
+                        ' Set the service provider to be used when choosing the 'Install other frameworks...' item
+                        targetFrameworkComboBox.Items.Add(New InstallOtherFrameworksComboBoxValue())
+                        TargetFrameworkPropertyControlData.Site = siteServiceProvider
 
-                    targetFrameworkSupported = True
+                        targetFrameworkSupported = True
+                    End If
+
                 End If
 
             Catch ex As Exception When ReportWithoutCrash(ex, "Couldn't retrieve target framework assemblies, disabling combobox", NameOf(ApplicationPropPageInternalBase))
