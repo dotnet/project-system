@@ -12,9 +12,9 @@
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
-    <Description>TODO replace</Description>
-    <Summary>TODO replace</Summary>
-    <PackageTags>Roslyn Managed Project System Tools VisualStudio binlog</PackageTags>
+    <Description>Microsoft VisualStudio ProjectSystem Tools logger which interacts with extension on a VS Online scenario</Description>
+    <Summary>Microsoft VisualStudio ProjectSystem Tools logger</Summary>
+    <PackageTags>Roslyn Managed Project System Tools VisualStudio binlog VSOnline Nexus</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
 
     <IsProductComponent>false</IsProductComponent>
