@@ -1447,6 +1447,24 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
+        ''' Determines whether the project associated with the given hierarchy is targeting .NET Framework or above
+        ''' </summary>
+        ''' <param name="hierarchy">Hierarchy object.</param>
+        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET Framework or above.</returns>
+        Friend Function IsTargetingDotNetFramework(hierarchy As IVsHierarchy) As Boolean
+
+            Dim frameworkName As FrameworkName = Nothing
+            If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
+                ' Verify that we are targeting .NET
+                Return String.Equals(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase)
+
+            End If
+
+            Return False
+
+        End Function
+
+        ''' <summary>
         ''' Determines whether the project associated with the given hierarchy is targeting .NET Core
         ''' </summary>
         ''' <param name="hierarchy">Hierarchy object.</param>
