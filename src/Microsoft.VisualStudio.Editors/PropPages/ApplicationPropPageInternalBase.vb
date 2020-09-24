@@ -131,7 +131,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 If TargetFrameworksDefined() = False And vsFrameworkMultiTargeting IsNot Nothing Then
 
                     Dim supportedTargetFrameworksDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
-                    Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor)
+                    Dim supportedFrameworks As IEnumerable(Of TargetFrameworkMoniker) = TargetFrameworkMoniker.GetSupportedTargetFrameworkMonikers(vsFrameworkMultiTargeting, DTEProject, supportedTargetFrameworksDescriptor?.Converter)
 
                     For Each supportedFramework As TargetFrameworkMoniker In supportedFrameworks
                         targetFrameworkComboBox.Items.Add(supportedFramework)
