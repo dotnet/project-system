@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
@@ -36,12 +37,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
             get { return _outputGroups.GetValueAsync(); }
         }
 
+        #region MEF Imports
+
+        /// <summary>
+        /// Gets the project snapshot service.
+        /// </summary>
+        [Import(AllowDefault = true)]
+        protected Lazy<IProjectSnapshotService>? ProjectSnapshotService { get; private set; } = null!;
+
+        #endregion
+
         /// <summary>
         /// Gets a collection of names of targets in this project.
         /// </summary>
         /// <returns>Collection of the names of targets in this project.</returns>
         private Task<ImmutableHashSet<string>> GetProjectTargetsAsync()
         {
+            if (_configuredProject.ProjectVersion.CompareTo(DataflowUtilities.CacheModeVersion) == 0)
+            {
+                if (_configuredProject.Services.ProjectSnapshotService != null)
+                {
+                    if (_configuredProject.Services.ProjectSnapshotService.SourceBlock.TryReceive(filter: null, item: out IProjectVersionedValue<IProjectSnapshot> snapshot))
+                    {
+                        return Task.Run(() =>
+                        {
+                            return snapshot.Value.ProjectInstance.Targets.Keys.ToImmutableHashSet(StringComparer.OrdinalIgnoreCase);
+                        });
+                    }
+                }
+            }
+
             return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
                 project.Targets.Keys.ToImmutableHashSet(StringComparers.TargetNames));
         }
