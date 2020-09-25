@@ -9,6 +9,10 @@
                 SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
 
+  <StringProperty Name="ProjectAssetsFile"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="RootNamespace"
                   ReadOnly="True"
                   Visible="False" />
