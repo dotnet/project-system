@@ -16,16 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         private readonly ConfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
-        private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
+        private readonly ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> _targetBlock;
+        private IReadOnlyCollection<IImplicitlyActiveService> _activeServices = Array.Empty<IImplicitlyActiveService>();
         private IDisposable? _subscription;
-        private bool _isActive;
 
         [ImportingConstructor]
         public ConfiguredProjectImplicitActivationTracking(ConfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
-            _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>>(OnActiveConfigurationsChanged, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+            _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnActiveConfigurationsChanged, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
 
             ImplicitlyActiveServices = new OrderPrecedenceImportCollection<IImplicitlyActiveService>(projectCapabilityCheckProvider: project);
         }
@@ -40,13 +40,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
             EnsureInitialized();
         }
 
-        public ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> TargetBlock => _targetBlock;
+        public ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> TargetBlock => _targetBlock;
 
         protected override void Initialize()
         {
-            _subscription = _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.LinkTo(
-                target: _targetBlock,
-                linkOptions: DataflowOption.PropagateCompletion);
+            _subscription = ProjectDataSources.SyncLinkTo(
+                        _project.Capabilities.SourceBlock.SyncLinkOptions(),
+                        _activeConfigurationGroupService.ActiveConfigurationGroupSource.SourceBlock.SyncLinkOptions(),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        target: _targetBlock);
         }
 
         protected override void Dispose(bool disposing)
@@ -55,45 +57,25 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _targetBlock.Complete();
         }
 
-        private Task OnActiveConfigurationsChanged(IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>> e)
+        private async Task OnActiveConfigurationsChanged(IProjectVersionedValue<ValueTuple<IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>>> e)
         {
-            if (IsDisposing || IsDisposed)
-                return Task.CompletedTask;
+            using var capabilitiesContext = ProjectCapabilitiesContext.CreateIsolatedContext(_project, e.Value.Item1);
 
-            bool nowActive = e.Value.Contains(_project.ProjectConfiguration);
+            bool isActive = e.Value.Item2.Contains(_project.ProjectConfiguration);
 
-            // Are there any changes for my configuration?
-            if (nowActive == _isActive)
-                return Task.CompletedTask;
+            // If we're not active, there are no future services to activate
+            IReadOnlyCollection<IImplicitlyActiveService> futureServices = isActive ? ImplicitlyActiveServices.Select(s => s.Value).ToList()
+                                                                                    : Array.Empty<IImplicitlyActiveService>();
 
-            if (nowActive)
-            {
-                return OnImplicitlyActivated();
-            }
-            else if (_isActive)
-            {
-                return OnImplicitlyDeactivated();
-            }
+            // Deactive currently "active" services that no longer applicable
+            IEnumerable<IImplicitlyActiveService> servicesToDeactivate = _activeServices.Except(futureServices);
+            await Task.WhenAll(servicesToDeactivate.Select(c => c.DeactivateAsync()));
 
-            return Task.CompletedTask;
-        }
+            // Activate "non-active" services that are now applicable
+            IEnumerable<IImplicitlyActiveService> servicesToActivate = futureServices.Except(_activeServices);
+            await Task.WhenAll(servicesToActivate.Select(c => c.ActivateAsync()));
 
-        private Task OnImplicitlyActivated()
-        {
-            _isActive = true;
-
-            IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.ActivateAsync());
-
-            return Task.WhenAll(tasks);
-        }
-
-        private Task OnImplicitlyDeactivated()
-        {
-            _isActive = false;
-
-            IEnumerable<Task> tasks = ImplicitlyActiveServices.Select(c => c.Value.DeactivateAsync());
-
-            return Task.WhenAll(tasks);
+            _activeServices = futureServices;
         }
     }
 }
