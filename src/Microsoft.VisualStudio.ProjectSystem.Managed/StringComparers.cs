@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio
         public static StringComparer PropertyLiteralValues => StringComparer.OrdinalIgnoreCase;
         public static StringComparer PropertyValues => StringComparer.Ordinal;
         public static StringComparer RuleNames => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer CategoryNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ConfigurationDimensionNames => StringComparer.Ordinal;
         public static StringComparer DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
         public static StringComparer DependencyTreeIds => StringComparer.OrdinalIgnoreCase;

@@ -96,9 +96,9 @@
     <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
 
     <!-- CPS -->
-    <!-- Analyzers have a different version due to https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/266100 -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.8.145-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.7.232-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.8.338-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.8.338-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="16.8.338-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.8.0-2.20402.1" />
