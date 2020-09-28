@@ -27,5 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     The value to return if the value does not exist.
         /// </param>
         T GetOption<T>(string category, string page, string option, T defaultValue);
+
+        void SetOption<T>(string category, string page, string option, T newValue);
     }
 }

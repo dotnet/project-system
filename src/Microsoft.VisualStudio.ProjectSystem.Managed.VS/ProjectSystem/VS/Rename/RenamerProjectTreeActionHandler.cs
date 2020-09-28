@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
 using Solution = Microsoft.CodeAnalysis.Solution;
@@ -230,15 +231,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private async Task<bool> CheckUserConfirmation(string oldFileName)
         {
             await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            bool disablePromptMessage = false;
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
             if (userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
+                string dontShowAgainMessage = string.Format(CultureInfo.CurrentCulture, VSResources.DontShowAgain);
 
-                return _userNotificationServices.Confirm(renamePromptMessage);
+                var result = MessageDialog.Show("Microsoft Visual Studio", renamePromptMessage, MessageDialogCommandSet.YesNo, dontShowAgainMessage,
+                    out disablePromptMessage);
+
+                _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
+
+                return result == MessageDialogCommand.Yes;
             }
 
-            return true;
+            return false;
         }
     }
 }
