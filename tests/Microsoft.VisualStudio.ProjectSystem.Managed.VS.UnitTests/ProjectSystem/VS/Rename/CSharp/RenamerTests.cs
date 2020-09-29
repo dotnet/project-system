@@ -31,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp);
 
-            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
+            bool checkBoxSelection;
+            Mock.Get(userNotificationServices).Verify(h => h.Show(It.IsAny<string>(), out checkBoxSelection), Times.Once);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 

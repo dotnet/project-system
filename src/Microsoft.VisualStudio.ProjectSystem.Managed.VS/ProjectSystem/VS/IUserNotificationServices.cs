@@ -35,5 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     This method was not accessed from the UI thread.
         /// </exception>
         void ShowError(string error);
+
+        /// <summary>
+        ///     Shows a Yes/No confirmation with Don't Show Again checkbox
+        /// </summary>
+        /// <param name="message">The message related to the Yes/No question</param>
+        /// <param name="disablePromptMessage">checkbox selection</param>
+        /// <returns>
+        ///     <see langword="true"/> if the user clicked the Yes button, otherwise;
+        ///     <see langword="false"/> if the user clicked the No button.
+        /// </returns>
+        bool Show(string message, out bool disablePromptMessage);
     }
 }

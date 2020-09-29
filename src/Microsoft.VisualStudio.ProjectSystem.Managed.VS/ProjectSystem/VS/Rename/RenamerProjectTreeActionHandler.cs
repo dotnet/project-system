@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
-using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Shell.Interop;
 using Solution = Microsoft.CodeAnalysis.Solution;
@@ -34,6 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly Workspace _workspace;
         private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
+        private bool _lastUserDialogSelection;
 
         [ImportingConstructor]
         public RenamerProjectTreeActionHandler(
@@ -234,20 +234,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             bool disablePromptMessage = false;
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
+
             if (userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
-                string dontShowAgainMessage = string.Format(CultureInfo.CurrentCulture, VSResources.DontShowAgain);
 
-                var result = MessageDialog.Show("Microsoft Visual Studio", renamePromptMessage, MessageDialogCommandSet.YesNo, dontShowAgainMessage,
-                    out disablePromptMessage);
+                bool userSelection = _userNotificationServices.Show(renamePromptMessage, out disablePromptMessage);
 
                 _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
 
-                return result == MessageDialogCommand.Yes;
+                _lastUserDialogSelection =  userSelection;
+                return userSelection;
             }
 
-            return false;
+            return _lastUserDialogSelection;
         }
     }
 }
