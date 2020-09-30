@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             mockNode.SetupGet(x => x.IsFolder).Returns(false);
             var node = mockNode.Object;
 
-            var settingsManagerServiceMock = (new Mock<IVsService<SVsSettingsPersistenceManager, ISettingsManager>>()).Object;
+            var settingsManagerService = IVsServiceFactory.Create<SVsSettingsPersistenceManager, ISettingsManager>(Mock.Of<ISettingsManager>());
 
             var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
                                                               projectServices,
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                                               projectThreadingService,
                                                               extensibility,
                                                               operationProgressMock,
-                                                              settingsManagerServiceMock);
+                                                              settingsManagerService);
 
             await renamer.RenameAsync(context, node, newFilePath)
                          .TimeoutAfter(TimeSpan.FromSeconds(1));
