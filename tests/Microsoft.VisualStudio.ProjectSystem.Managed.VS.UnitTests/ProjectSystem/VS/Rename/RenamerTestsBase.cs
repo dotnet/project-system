@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Refactor;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
+using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 
@@ -61,9 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 IVsOnlineServices vsOnlineServices,
                 IProjectThreadingService threadingService,
                 IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
-                IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService) :
+                IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
+                IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService) :
                 base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
-                    vsOnlineServices, threadingService, extensibility, operationProgressService)
+                    vsOnlineServices, threadingService, extensibility, operationProgressService, settingsManagerService)
             {
             }
 
@@ -101,6 +103,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             mockNode.SetupGet(x => x.IsFolder).Returns(false);
             var node = mockNode.Object;
 
+            var settingsManagerServiceMock = (new Mock<IVsService<SVsSettingsPersistenceManager, ISettingsManager>>()).Object;
+
             var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
                                                               projectServices,
                                                               ws,
@@ -111,7 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                                               vsOnlineServices,
                                                               projectThreadingService,
                                                               extensibility,
-                                                              operationProgressMock);
+                                                              operationProgressMock,
+                                                              settingsManagerServiceMock);
 
             await renamer.RenameAsync(context, node, newFilePath)
                          .TimeoutAfter(TimeSpan.FromSeconds(1));

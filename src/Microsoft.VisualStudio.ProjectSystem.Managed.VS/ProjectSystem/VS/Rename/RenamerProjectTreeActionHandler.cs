@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
+using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
 using Solution = Microsoft.CodeAnalysis.Solution;
 
@@ -33,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly Workspace _workspace;
         private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
-        private bool _lastUserDialogSelection;
+        private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
         [ImportingConstructor]
         public RenamerProjectTreeActionHandler(
@@ -47,7 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IVsOnlineServices vsOnlineServices,
             IProjectThreadingService threadingService,
             IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
-            IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService)
+            IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
+            IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectVsServices = projectVsServices;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _threadingService = threadingService;
             _extensibility = extensibility;
             _operationProgressService = operationProgressService;
+            _settingsManagerService = settingsManagerService;
         }
 
         protected virtual async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
@@ -230,6 +233,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private async Task<bool> CheckUserConfirmation(string oldFileName)
         {
+            ISettingsManager settings = await _settingsManagerService.GetValueAsync();
+
+            bool alwaysRenameSymbols = settings.GetValueOrDefault<bool>("SolutionNavigator.AlwaysRenameSymbols");
+
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             bool disablePromptMessage = false;
@@ -243,11 +250,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
 
-                _lastUserDialogSelection =  userSelection;
+                await settings.SetValueAsync("SolutionNavigator.AlwaysRenameSymbols", userSelection, true);
+
                 return userSelection;
             }
 
-            return _lastUserDialogSelection;
+            return alwaysRenameSymbols;
         }
     }
 }
