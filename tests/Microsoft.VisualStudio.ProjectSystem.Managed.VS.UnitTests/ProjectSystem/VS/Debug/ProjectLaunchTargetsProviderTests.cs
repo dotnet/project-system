@@ -540,7 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
 
-            Assert.Throws<Exception>(() =>
+            Assert.ThrowsAny<Exception>(() =>
             {
                 debugger.ValidateSettings(executable!, workingDir!, profileName);
             });
@@ -554,7 +554,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
 
-            Assert.Throws<Exception>(() =>
+            Assert.ThrowsAny<Exception>(() =>
             {
                 debugger.ValidateSettings(executable, workingDir!, profileName);
             });
@@ -581,7 +581,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
 
-            Assert.Throws<Exception>(() =>
+            Assert.ThrowsAny<Exception>(() =>
             {
                 debugger.ValidateSettings(executable, workingDir, profileName);
             });
