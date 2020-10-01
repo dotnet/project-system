@@ -1327,12 +1327,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var writer = new AssertWriter(_output);
 
-            if (logMessages != null)
+            foreach (var logMessage in logMessages)
             {
-                foreach (var logMessage in logMessages)
-                {
-                    writer.Add(logMessage);
-                }
+                writer.Add(logMessage);
             }
 
             writer.Add("Project is up to date.");
