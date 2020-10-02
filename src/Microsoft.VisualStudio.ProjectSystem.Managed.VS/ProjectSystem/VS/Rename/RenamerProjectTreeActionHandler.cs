@@ -235,14 +235,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-            bool alwaysRenameSymbols = settings.GetValueOrDefault<bool>("SolutionNavigator.AlwaysRenameSymbols");
+            bool EnableSymbolicRename = settings.GetValueOrDefault<bool>("SolutionNavigator.EnableSymbolicRename");
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
             bool disablePromptMessage = false;
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
 
-            if (userNeedPrompt)
+            if (EnableSymbolicRename && userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
 
@@ -250,12 +250,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
                 _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
 
-                await settings.SetValueAsync("SolutionNavigator.AlwaysRenameSymbols", userSelection, true);
-
                 return userSelection;
             }
 
-            return alwaysRenameSymbols;
+            return EnableSymbolicRename;
         }
     }
 }
