@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
-                    if (inputTime > _state.LastCheckedAtUtc)
+                    if (inputTime > state.LastCheckedAtUtc)
                     {
                         return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, state.LastCheckedAtUtc);
                     }
