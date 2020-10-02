@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="Category|General|Description">
         <source>General settings for the application.</source>
-        <target state="needs-review-translation">Genel</target>
+        <target state="translated">Uygulamanın genel ayarları.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resource settings for the application.</source>
-        <target state="needs-review-translation">Kaynaklar</target>
+        <target state="translated">Uygulamanın kaynak ayarları.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
-        <target state="new">Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</target>
+        <target state="translated">Uygulama yüklediğinde çağrılacak giriş noktasını tanımlar. Bu, genellikle uygulamanızda ana form olarak veya uygulama başladığında çalışması gereken 'Ana' yordam olarak ayarlanır. Sınıf kitaplıkları bir giriş noktası tanımlamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <target state="translated">Uygulamanın hedeflediği .NET sürümünü belirtir. Bu seçenek, bilgisayarınızda yüklü olan .NET sürümlerine bağlı olarak farklı değerlere sahip olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="new">Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</target>
+        <target state="translated">Uygulama, Windows Vista'da veya üzeri bir sürümde Kullanıcı Hesabı Denetimi (UAC) altında çalıştırıldığında bir bildirim oluşturma seçeneği belirler. Seçenekler arasında varsayılan bir bildirim olabilir, bildirim olmayabilir veya projeniz tarafından sağlanan özel bir bildirim olabilir. Simgeyi ve bildirimi veya kaynak dosyayı belirtmeniz gerektiğini unutmayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
         <source>Specifies the type of application to build.</source>
-        <target state="new">Specifies the type of application to build.</target>
+        <target state="translated">Derlenecek uygulamanın türünü belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
         <source>Specifies the project's application settings and properties.</source>
-        <target state="needs-review-translation">Genel</target>
+        <target state="translated">Projenin uygulama ayarlarını ve özelliklerini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
         <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="new">Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</target>
+        <target state="translated">Program simgeniz olarak kullanmak istediğiniz .ico dosyasını ayarlar. Simgeyi ve bildirimi veya kaynak dosyasını belirtmeniz gerektiğine dikkat edin.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
         <source>Specifies the name of the output file that will hold the assembly manifest.</source>
-        <target state="new">Specifies the name of the output file that will hold the assembly manifest.</target>
+        <target state="translated">Bütünleştirilmiş kod bildirimini tutacak çıkış dosyasının adını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
         <source>Specifies the base namespace for files added to the project.</source>
-        <target state="new">Specifies the base namespace for files added to the project.</target>
+        <target state="translated">Projeye eklenen dosyalar için temel ad alanını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
         <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="new">Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</target>
+        <target state="translated">Proje için bir kaynak dosyası belirtir. Simgeyi ve bildirimi veya kaynak dosyasını belirtmeniz gerektiğine dikkat edin.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">'unsafe' 키워드를 사용하는 코드를 컴파일할 수 있도록 허용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
+        <target state="translated">출력 파일을 더 작고, 더 빠르며, 더 효율적으로 만들기 위해 컴파일러에서 수행한 최적화를 활성화하거나 비활성화합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="needs-review-translation">오류 및 경고</target>
+        <target state="translated">빌드 프로세스의 오류 및 경고 옵션을 구성합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="needs-review-translation">출력</target>
+        <target state="translated">빌드 프로세스의 출력 옵션을 구성합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <target state="translated">프로젝트 차원의 C# null 허용 컨텍스트를 지정합니다. C# 8.0 이상을 사용하는 프로젝트에서만 사용할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <target state="translated">출력 파일의 대상으로 지정될 프로세서를 지정합니다. 32비트 Intel 호환 프로세서는 'x86'을 선택하고, 64비트 Intel 호환 프로세서는 'x64'를 선택하고, 모든 프로세서가 허용하도록 지정하려면 '모든 CPU'를 선택합니다. 애플리케이션이 가장 다양한 하드웨어에서 실행될 수 있는 '모든 CPU'가 프로젝트의 기본값입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
         <source>Used to specify which warnings are treated as errors.</source>
-        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <target state="translated">어느 경고를 오류로 처리할지 지정하는 데 사용됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="new">Specifies the level to display for compiler warnings.</target>
+        <target state="translated">표시할 컴파일러 경고 수준을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="needs-review-translation">일반</target>
+        <target state="translated">프로젝트가 빌드되는 방식을 제어하는 속성을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <target state="translated">조건부 컴파일을 수행할 기호를 지정합니다. 기호는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
+        <target state="translated">문서 주석을 처리할 파일의 이름을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">하나 이상의 경고를 생성하는 컴파일러의 기능을 차단합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|Description">
         <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <target state="translated">프로젝트 구성에 사용할 출력 파일의 위치를 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">지정된 경고를 오류로 처리합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

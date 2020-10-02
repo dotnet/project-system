@@ -4,172 +4,172 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate NuGet package on build</source>
-        <target state="new">Generate NuGet package on build</target>
+        <target state="translated">在构建时生成 NuGet 包</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Require license acceptance</source>
-        <target state="new">Require license acceptance</target>
+        <target state="translated">要求接受许可证</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
-        <target state="new">Assembly neutral language</target>
+        <target state="translated">程序集非特定语言</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackagePropertyPage|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="new">Properties related to producing NuGet packages.</target>
+        <target state="translated">与生成 NuGet 包相关的属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackagePropertyPage|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
+        <target state="translated">包</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly version</source>
-        <target state="new">Assembly version</target>
+        <target state="translated">程序集版本</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|Description">
         <source>A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</source>
-        <target state="new">A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</target>
+        <target state="translated">以逗号分隔的包作者列表，与 nuget.org 上的配置文件名称匹配。这些项在 nuget.org 上的 NuGet 库中显示，用于按相同的作者交叉引用包。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
+        <target state="translated">作者</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Company|DisplayName">
         <source>Company</source>
-        <target state="new">Company</target>
+        <target state="translated">公司</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|Description">
         <source>Copyright details for the package.</source>
-        <target state="new">Copyright details for the package.</target>
+        <target state="translated">包的版权详细信息</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|DisplayName">
         <source>Copyright</source>
-        <target state="new">Copyright</target>
+        <target state="translated">版权</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>A description of the package for UI display.</source>
-        <target state="new">A description of the package for UI display.</target>
+        <target state="translated">用于 UI 显示的包的说明。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">说明</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>File version</source>
-        <target state="new">File version</target>
+        <target state="translated">文件版本</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">从包根路径到图标文件的相对路径。除了设置此属性之外，还需要确保文件包含在包中。图像文件大小限制为 1 MB。支持的文件格式包括 JPEG 和 PNG。建议使用 128x128 的图像分辨率。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon file</source>
-        <target state="new">Icon file</target>
+        <target state="translated">图标文件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
         <source>The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</source>
-        <target state="new">The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</target>
+        <target state="translated">不区分大小写的包标识符，该标识符在 nuget.org 或包所在的任何库中必须是唯一的。ID 不能包含对于 URL 无效的空格或字符，且通常遵循 .NET 命名空间规则。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package ID</source>
-        <target state="new">Package ID</target>
+        <target state="translated">包 ID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|Description">
         <source>An SPDX license expression, often shown in UIs like nuget.org.</source>
-        <target state="new">An SPDX license expression, often shown in UIs like nuget.org.</target>
+        <target state="translated">SPDX 许可证表达式，通常在 nuget.org 等 UI 中显示。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|DisplayName">
         <source>License expression</source>
-        <target state="new">License expression</target>
+        <target state="translated">许可证表达式</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseFile|DisplayName">
         <source>License file</source>
-        <target state="new">License file</target>
+        <target state="translated">许可证文件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
-        <target state="new">A URL for the package's home page, often shown in UI displays as well as nuget.org.</target>
+        <target state="translated">包主页的 URL，通常显示在 UI 和 nuget.org 中。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Project URL</source>
-        <target state="new">Project URL</target>
+        <target state="translated">项目 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
         <source>A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</source>
-        <target state="new">A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</target>
+        <target state="translated">此版本包中所作更改的说明，通常代替包说明用在 UI 中，如 Visual Studio 包管理器的“更新”选项卡。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release notes</source>
-        <target state="new">Release notes</target>
+        <target state="translated">发行说明</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|Description">
         <source>A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</source>
-        <target state="new">A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</target>
+        <target state="translated">以分号分隔的标记和关键字列表，描述包并通过搜索和筛选辅助包的可发现性。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Tags</source>
-        <target state="new">Tags</target>
+        <target state="translated">标记</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
-        <target state="new">Product</target>
+        <target state="translated">产品</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
-        <target state="new">Specifies the type of the repository. Default is 'git'.</target>
+        <target state="translated">指定存储库的类型。默认值为 "git"。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository type</source>
-        <target state="new">Repository type</target>
+        <target state="translated">存储库类型</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|Description">
         <source>Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</source>
-        <target state="new">Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</target>
+        <target state="translated">指定包的源代码所在的存储库和/或从其中构建源代码的存储库的 URL。如需链接到项目页面，请改用“项目 URL”字段。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
-        <target state="new">Repository URL</target>
+        <target state="translated">存储库 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</source>
-        <target state="new">The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</target>
+        <target state="translated">包的版本，遵循 major.minor.patch 模式。版本号可能包括预发布后缀。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
+        <target state="translated">包版本</target>
         <note />
       </trans-unit>
     </body>

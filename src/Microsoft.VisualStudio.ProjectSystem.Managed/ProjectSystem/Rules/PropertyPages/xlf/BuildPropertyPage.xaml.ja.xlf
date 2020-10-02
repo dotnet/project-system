@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">'unsafe' キーワードを使用するコードをコンパイルできるようにします。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
+        <target state="translated">コンパイラによって最適化を行うか行わないかを切り替えます。最適化が行われると、出力ファイルのサイズは小さくなり、より高速かつ効果的に処理を行えるようになります。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="needs-review-translation">エラーおよび警告</target>
+        <target state="translated">ビルド プロセスのエラーと警告のオプションを構成します。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="needs-review-translation">出力</target>
+        <target state="translated">ビルド プロセスの出力オプションを構成します。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <target state="translated">プロジェクト全体での C# の null 許容コンテキストを指定します。C# 8.0 以降を使用するプロジェクトでのみ使用できます。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <target state="translated">出力ファイルで対象とするプロセッサを指定します。32 ビットの Intel 互換プロセッサに対しては [x86] を選択し、64 ビットの Intel 互換プロセッサに対しては [x64] を選択し、任意のプロセッサが使用可能な場合は [任意の CPU] を選択します。広範囲にわたるハードウェアでアプリケーションを実行できるので、[任意の CPU] はプロジェクトの既定値です。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
         <source>Used to specify which warnings are treated as errors.</source>
-        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <target state="translated">どの警告をエラーとして扱うかを指定するために使用します。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="new">Specifies the level to display for compiler warnings.</target>
+        <target state="translated">コンパイラの警告を表示するレベルを指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="needs-review-translation">全般</target>
+        <target state="translated">プロジェクトのビルド方法を制御するプロパティを指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <target state="translated">条件付きコンパイルを実行するシンボルを指定します。記号をセミコロン (';') で区切ります。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
+        <target state="translated">ドキュメントのコメントを処理するファイルの名前を指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">1 つ以上の警告を生成するコンパイラの機能をブロックします。複数の警告番号はコンマ (',') またはセミコロン (';') を使用して区切ります。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|Description">
         <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <target state="translated">このプロジェクト構成の出力ファイルの場所を指定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">指定された警告をエラーとして扱います。複数の警告番号はコンマ (',') またはセミコロン (';') を使用して区切ります。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

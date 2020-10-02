@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">Use la firma retrasada cuando el acceso a la clave privada esté restringido. La clave pública se usará durante la compilación y la adición de la información de clave privada se aplazará hasta la entrega del ensamblado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">Solo retrasar firma</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Select this check box to sign the assembly.</source>
-        <target state="new">Select this check box to sign the assembly.</target>
+        <target state="translated">Seleccione esta casilla para firmar el ensamblado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">Firmar el ensamblado</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">Propiedades relacionadas con la generación de ensamblados de firma.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">Firma</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">Archivo de clave de nombre seguro</target>
         <note />
       </trans-unit>
     </body>

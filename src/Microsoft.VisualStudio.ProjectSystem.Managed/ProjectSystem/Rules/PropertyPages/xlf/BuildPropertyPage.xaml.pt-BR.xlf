@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">Permite que o código que usa a palavra-chave 'unsafe' seja compilado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
+        <target state="translated">Habilita ou desabilita otimizações executadas pelo compilador para tornar o arquivo de saída menor, mais rápido e mais eficiente.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="needs-review-translation">Erros e avisos</target>
+        <target state="translated">Configura as opções de erro e de aviso do processo de build.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="needs-review-translation">Saída</target>
+        <target state="translated">Configura as opções de saída do processo de build.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <target state="translated">Especifica o contexto anulável do C# em todo o projeto. Disponível somente para projetos que usam o C# 8.0 ou posterior.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <target state="translated">Especifica o processador ao qual o arquivo de saída será direcionado. Escolha 'x86' para processadores compatíveis com Intel de 32 bits, escolha 'x64' para processadores compatíveis com Intel de 64 bits ou escolha 'Qualquer CPU' para especificar que qualquer processador é aceito. 'Qualquer CPU' é o valor padrão para os projetos, pois permite que o aplicativo seja executado em uma variedade de hardwares mais ampla.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
         <source>Used to specify which warnings are treated as errors.</source>
-        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <target state="translated">Usado para especificar quais avisos são tratados como erros.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="new">Specifies the level to display for compiler warnings.</target>
+        <target state="translated">Especifica o nível a ser exibido para avisos do compilador.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="needs-review-translation">Geral</target>
+        <target state="translated">Especifica as propriedades que controlam como o projeto é compilado.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <target state="translated">Especifica os símbolos nos quais a compilação condicional deve ser executada. Separe os símbolos com um ponto e vírgula (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
+        <target state="translated">Especifica o nome de um arquivo no qual os comentários da documentação serão processados.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Bloqueia a capacidade do compilador de gerar um ou mais avisos. Separe vários números de aviso com uma vírgula (',') ou um ponto e vírgula (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|Description">
         <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <target state="translated">Especifica o local dos arquivos de saída para a configuração deste projeto.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Trata os avisos especificados como erros. Separe vários números de aviso com uma vírgula (',') ou um ponto e vírgula (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="needs-review-translation">인증 모드:</target>
+        <target state="translated">인증 모드(_T):</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="needs-review-translation">찾기:</target>
+        <target state="translated">찾기(_F)...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="needs-review-translation">실행 파일</target>
+        <target state="translated">실행 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="needs-review-translation">원격 머신 사용(_A):</target>
+        <target state="translated">원격 머신 사용(_U):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -139,37 +139,37 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="needs-review-translation">추가</target>
+        <target state="translated">추가(_A)</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="needs-review-translation">애플리케이션 인수:</target>
+        <target state="translated">애플리케이션 인수(_G):</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="needs-review-translation">찾아보기...</target>
+        <target state="translated">찾아보기(_B)...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="needs-review-translation">삭제</target>
+        <target state="translated">삭제(_D)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="needs-review-translation">환경 변수:</target>
+        <target state="translated">환경 변수(_M):</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="needs-review-translation">실행 파일:</target>
+        <target state="translated">실행 파일(_E):</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="needs-review-translation">시작:</target>
+        <target state="translated">시작(_L):</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -184,17 +184,17 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="needs-review-translation">새로 만들기...</target>
+        <target state="translated">새로 만들기(_N)...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="needs-review-translation">프로필:</target>
+        <target state="translated">프로필(_P):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="needs-review-translation">제거</target>
+        <target state="translated">제거(_R)</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="needs-review-translation">작업 디렉터리:</target>
+        <target state="translated">작업 디렉터리(_W):</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="needs-review-translation">네이티브 코드 디버깅 사용</target>
+        <target state="translated">네이티브 코드 디버깅 사용(_V)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="needs-review-translation">SQL Server 디버깅 사용</target>
+        <target state="translated">SQL Server 디버깅 사용(_S)</target>
         <note />
       </trans-unit>
     </body>

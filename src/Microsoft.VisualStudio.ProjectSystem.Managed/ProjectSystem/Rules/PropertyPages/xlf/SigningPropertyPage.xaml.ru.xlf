@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">Используйте отложенное подписывание, если доступ к закрытому ключу ограничен. Во время сборки будет использоваться открытый ключ, а добавление сведений о закрытом ключе будет отложено до передачи сборки.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">Только отложенная подпись</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Select this check box to sign the assembly.</source>
-        <target state="new">Select this check box to sign the assembly.</target>
+        <target state="translated">Установите этот флажок, чтобы подписать сборку.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">Подписать сборку</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">Свойства, связанные с созданием подписываемых сборок.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">Подписывание</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">Файл ключей строгого имени</target>
         <note />
       </trans-unit>
     </body>

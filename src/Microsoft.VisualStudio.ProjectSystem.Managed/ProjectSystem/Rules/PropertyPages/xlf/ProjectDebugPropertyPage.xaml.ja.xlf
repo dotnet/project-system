@@ -4,87 +4,87 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
-        <target state="new">Enables debugging for managed and native code together, also known as mixed-mode debugging. </target>
+        <target state="translated">マネージドおよびネイティブ コードのデバッグを同時に有効にします。これは、混合モード デバッグとも呼ばれます。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">ネイティブ コードのデバッグを有効にする</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
+        <target state="translated">リモート マシン上のプロセスにデバッガーをアタッチする必要があることを示します。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="new">Use remote machine</target>
+        <target state="translated">リモート マシンを使用する</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">SQL Server デバッグを有効にする</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">リモート マシンへの接続時に使用する認証方式。[リモート マシンを使用する] が有効になっている場合にのみ適用されます。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
+        <target state="translated">認証モード</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
-        <target state="new">Properties associated with launching and debugging the project output.</target>
+        <target state="translated">プロジェクト出力の起動とデバッグに関連付けられたプロパティ。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|DisplayName">
         <source>Project</source>
-        <target state="new">Project</target>
+        <target state="translated">プロジェクト</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="new">Command line arguments to pass to the executable.</target>
+        <target state="translated">実行可能ファイルに渡すコマンド ライン引数。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
+        <target state="translated">コマンド ライン引数</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
+        <target state="translated">プロセスを実行する前に設定する環境変数。変数はコンマ (,) で区切られ、変数名と値は等号 (=) で区切られます。例: var1=value1,var2=value2,var3=value3。変数内に表示されるコンマと等号は、スラッシュ (/) を使用してエスケープできます。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="new">Environment variables</target>
+        <target state="translated">環境変数</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">'name:port' 形式のリモート マシンの名前とポート番号。[リモート マシンを使用する] が有効になっている場合にのみ適用されます。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="new">Remote machine name</target>
+        <target state="translated">リモート マシン名</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="new">Path to the working directory where the process will be started.</target>
+        <target state="translated">プロセスが開始される作業ディレクトリへのパス。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="new">Working directory</target>
+        <target state="translated">作業ディレクトリ</target>
         <note />
       </trans-unit>
     </body>

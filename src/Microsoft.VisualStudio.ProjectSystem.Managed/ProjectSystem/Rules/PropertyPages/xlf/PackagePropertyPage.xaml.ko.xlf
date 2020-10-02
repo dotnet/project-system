@@ -4,172 +4,172 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate NuGet package on build</source>
-        <target state="new">Generate NuGet package on build</target>
+        <target state="translated">빌드 시 NuGet 패키지 생성</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Require license acceptance</source>
-        <target state="new">Require license acceptance</target>
+        <target state="translated">라이선스 승인 필요</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
-        <target state="new">Assembly neutral language</target>
+        <target state="translated">어셈블리 중립 언어</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackagePropertyPage|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="new">Properties related to producing NuGet packages.</target>
+        <target state="translated">NuGet 패키지 생성과 관련된 속성입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|PackagePropertyPage|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
+        <target state="translated">패키지</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly version</source>
-        <target state="new">Assembly version</target>
+        <target state="translated">어셈블리 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|Description">
         <source>A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</source>
-        <target state="new">A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</target>
+        <target state="translated">nuget.org의 프로필 이름과 일치하는 패키지 작성자의 쉼표로 구분된 목록입니다. 이 목록은 nuget.org의 NuGet 갤러리에 표시되며, 동일한 작성자가 패키지를 상호 참조하는 데 사용됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="new">Authors</target>
+        <target state="translated">작성자</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Company|DisplayName">
         <source>Company</source>
-        <target state="new">Company</target>
+        <target state="translated">회사</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|Description">
         <source>Copyright details for the package.</source>
-        <target state="new">Copyright details for the package.</target>
+        <target state="translated">패키지에 대한 저작권 정보입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|DisplayName">
         <source>Copyright</source>
-        <target state="new">Copyright</target>
+        <target state="translated">저작권</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>A description of the package for UI display.</source>
-        <target state="new">A description of the package for UI display.</target>
+        <target state="translated">UI 표시의 패키지에 대한 설명입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="new">Description</target>
+        <target state="translated">설명</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>File version</source>
-        <target state="new">File version</target>
+        <target state="translated">파일 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">패키지 루트에서 아이콘 파일까지의 상대 경로입니다. 이 속성을 설정하는 것 외에도 파일이 패키지에 포함되어 있는지 확인해야 합니다. 이미지 파일 크기는 1MB로 제한됩니다. 지원되는 파일 형식은 JPEG와 PNG입니다. 128x128 이미지 해상도가 권장됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon file</source>
-        <target state="new">Icon file</target>
+        <target state="translated">아이콘 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
         <source>The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</source>
-        <target state="new">The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</target>
+        <target state="translated">패키지가 있는 nuget.org 또는 모든 갤러리에서 고유해야 하는 대/소문자를 구분하지 않는 패키지 식별자입니다. ID는 URL에 유효하지 않은 공백이나 문자를 포함할 수 없으며 일반적으로 .NET 네임스페이스 규칙을 따릅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package ID</source>
-        <target state="new">Package ID</target>
+        <target state="translated">패키지 ID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|Description">
         <source>An SPDX license expression, often shown in UIs like nuget.org.</source>
-        <target state="new">An SPDX license expression, often shown in UIs like nuget.org.</target>
+        <target state="translated">nuget.org처럼 UI에 표시되는 SPDX 라이선스 식입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|DisplayName">
         <source>License expression</source>
-        <target state="new">License expression</target>
+        <target state="translated">라이선스 식</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseFile|DisplayName">
         <source>License file</source>
-        <target state="new">License file</target>
+        <target state="translated">라이선스 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
-        <target state="new">A URL for the package's home page, often shown in UI displays as well as nuget.org.</target>
+        <target state="translated">nuget.org뿐만 아니라 종종 UI 표시에 표시되는 패키지 홈페이지의 URL입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Project URL</source>
-        <target state="new">Project URL</target>
+        <target state="translated">프로젝트 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
         <source>A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</source>
-        <target state="new">A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</target>
+        <target state="translated">패키지 설명 대신에 Visual Studio 패키지 관리자의 [업데이트] 탭처럼 종종 UI에 사용되는, 이 패키지 릴리스의 변경 사항에 대한 설명입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release notes</source>
-        <target state="new">Release notes</target>
+        <target state="translated">릴리스 정보</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|Description">
         <source>A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</source>
-        <target state="new">A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</target>
+        <target state="translated">패키지를 설명하고 검색 및 필터링을 통해 패키지의 검색 기능을 지원하는 세미콜론으로 구분된 태그 및 키워드 목록입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Tags</source>
-        <target state="new">Tags</target>
+        <target state="translated">태그</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
-        <target state="new">Product</target>
+        <target state="translated">제품</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
-        <target state="new">Specifies the type of the repository. Default is 'git'.</target>
+        <target state="translated">리포지토리 형식을 지정합니다. 기본값은 'git'입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository type</source>
-        <target state="new">Repository type</target>
+        <target state="translated">리포지토리 형식</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|Description">
         <source>Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</source>
-        <target state="new">Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</target>
+        <target state="translated">패키지의 소스 코드가 있고/있거나 빌드 중인 리포지토리의 URL을 지정합니다. 프로젝트 페이지에 연결하려면 대신 '프로젝트 URL' 필드를 사용하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
-        <target state="new">Repository URL</target>
+        <target state="translated">리포지토리 URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</source>
-        <target state="new">The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</target>
+        <target state="translated">major.minor.patch 패턴을 따르는 패키지의 버전입니다. 버전 번호에는 시험판 접미사가 포함될 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
-        <target state="new">Package Version</target>
+        <target state="translated">패키지 버전</target>
         <note />
       </trans-unit>
     </body>
