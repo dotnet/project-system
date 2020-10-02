@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Add(new ItemType("Compile", true))
             .Add(new ItemType("Resource", true));
 
-        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new List<ITelemetryServiceFactory.TelemetryParameters>();
+        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;

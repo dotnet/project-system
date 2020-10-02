@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         [ImportMany]
         private readonly OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> _viewProviders;
 
-        private readonly CancellationSeries _treeUpdateCancellationSeries = new CancellationSeries();
+        private readonly CancellationSeries _treeUpdateCancellationSeries = new();
         private readonly DependenciesSnapshotProvider _dependenciesSnapshotProvider;
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly UnconfiguredProject _project;
@@ -545,7 +545,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         private sealed class ProjectTreeCustomizablePropertyContext : IProjectTreeCustomizablePropertyContext
         {
-            public static readonly ProjectTreeCustomizablePropertyContext Instance = new ProjectTreeCustomizablePropertyContext();
+            public static readonly ProjectTreeCustomizablePropertyContext Instance = new();
 
             public string ItemName => string.Empty;
             public string? ItemType => null;

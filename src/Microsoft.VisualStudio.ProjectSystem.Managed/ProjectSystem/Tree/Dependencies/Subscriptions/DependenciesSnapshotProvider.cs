@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal sealed partial class DependenciesSnapshotProvider : OnceInitializedOnceDisposedAsync
     {
-        private readonly SemaphoreSlim _contextUpdateGate = new SemaphoreSlim(initialCount: 1);
-        private readonly object _lock = new object();
+        private readonly SemaphoreSlim _contextUpdateGate = new(initialCount: 1);
+        private readonly object _lock = new();
 
         private readonly SnapshotUpdater _snapshot;
         private readonly ContextTracker _context;
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         /// Disposable items related to the current subscriptions. This collection may be replaced
         /// from time to time (e.g. when target frameworks change).
         /// </summary>
-        private DisposableBag _subscriptions = new DisposableBag();
+        private DisposableBag _subscriptions = new();
 
         /// <summary>
         /// Lazily populated set of subscribers. May be <see cref="ImmutableArray{T}.IsDefault" /> if <see cref="Subscribers"/>

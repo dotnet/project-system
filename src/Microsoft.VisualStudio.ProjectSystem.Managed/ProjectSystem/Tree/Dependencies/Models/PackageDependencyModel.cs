@@ -9,17 +9,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class PackageDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.PackageDependency + DependencyTreeFlags.SupportsFolderBrowse,
             unresolved: DependencyTreeFlags.PackageDependency);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: ManagedImageMonikers.NuGetGrey,
             expandedIcon: ManagedImageMonikers.NuGetGrey,
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
             unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_implicitIconSet = new(
             icon: ManagedImageMonikers.NuGetGreyPrivate,
             expandedIcon: ManagedImageMonikers.NuGetGreyPrivate,
             unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,

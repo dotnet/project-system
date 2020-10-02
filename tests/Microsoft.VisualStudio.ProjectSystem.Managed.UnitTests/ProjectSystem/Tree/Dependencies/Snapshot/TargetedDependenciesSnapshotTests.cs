@@ -627,8 +627,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             private enum FilterAction { Reject, Accept }
 
-            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeAdd    = new Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)>();
-            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeRemove = new Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)>();
+            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeAdd    = new();
+            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeRemove = new();
 
             public TestDependenciesSnapshotFilter BeforeAddAccept(string providerType, string id, IDependency? dependency = null)
             {

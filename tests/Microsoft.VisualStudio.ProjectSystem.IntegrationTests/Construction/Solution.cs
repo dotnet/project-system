@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// </summary>
     public sealed class Solution : IEnumerable
     {
-        private readonly List<Project> _projects = new List<Project>();
+        private readonly List<Project> _projects = new();
 
         public IEnumerable<Project> Projects => _projects;
 

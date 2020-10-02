@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         private readonly ITelemetryService _telemetryService;
 
-        private readonly Dictionary<int, TargetRecord> _targets = new Dictionary<int, TargetRecord>();
+        private readonly Dictionary<int, TargetRecord> _targets = new();
         private bool _succeeded;
 
         public DesignTimeTelemetryLogger(ITelemetryService telemetryService)

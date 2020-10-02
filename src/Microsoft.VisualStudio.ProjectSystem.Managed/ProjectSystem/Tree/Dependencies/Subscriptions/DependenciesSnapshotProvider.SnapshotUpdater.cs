@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         /// </summary>
         private sealed class SnapshotUpdater : IDisposable
         {
-            private readonly object _lock = new object();
+            private readonly object _lock = new();
 
             private readonly IBroadcastBlock<SnapshotChangedEventArgs> _source;
             private readonly ITaskDelayScheduler _debounce;

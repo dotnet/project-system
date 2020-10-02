@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         }
 
         protected override SDKVersionTelemetryServiceInstance CreateInstance()
-            => new SDKVersionTelemetryServiceInstance(
+            => new(
                 _projectVsServices,
                 _projectGuidService,
                 _telemetryService,

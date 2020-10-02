@@ -18,8 +18,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectThreadingService _threadingService;
         private readonly ILoadedInHostListener? _loadedInHostListener;
         private readonly ISolutionService? _solutionService;
-        private readonly TaskCompletionSource _projectLoadedInHost = new TaskCompletionSource();
-        private readonly TaskCompletionSource _prioritizedProjectLoadedInHost = new TaskCompletionSource();
+        private readonly TaskCompletionSource _projectLoadedInHost = new();
+        private readonly TaskCompletionSource _prioritizedProjectLoadedInHost = new();
         private readonly JoinableTaskCollection _prioritizedTasks;
 
         [ImportingConstructor]

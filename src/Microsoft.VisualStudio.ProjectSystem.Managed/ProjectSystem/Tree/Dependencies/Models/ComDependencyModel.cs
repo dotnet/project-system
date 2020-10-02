@@ -9,17 +9,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class ComDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.ComDependency + DependencyTreeFlags.SupportsBrowse,
             unresolved: DependencyTreeFlags.ComDependency);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.COM,
             expandedIcon: KnownMonikers.COM,
             unresolvedIcon: KnownMonikers.COMWarning,
             unresolvedExpandedIcon: KnownMonikers.COMWarning);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_implicitIconSet = new(
             icon: KnownMonikers.COMPrivate,
             expandedIcon: KnownMonikers.COMPrivate,
             unresolvedIcon: KnownMonikers.COMWarning,

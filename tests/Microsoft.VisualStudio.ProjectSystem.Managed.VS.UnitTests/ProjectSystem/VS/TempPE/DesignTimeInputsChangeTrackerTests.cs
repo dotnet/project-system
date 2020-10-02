@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string _intermediateOutputPath = "MyOutput";
         private readonly DesignTimeInputsChangeTracker _changeTracker;
 
-        private readonly List<DesignTimeInputSnapshot> _outputProduced = new List<DesignTimeInputSnapshot>();
-        private readonly TaskCompletionSource _outputProducedSource = new TaskCompletionSource();
+        private readonly List<DesignTimeInputSnapshot> _outputProduced = new();
+        private readonly TaskCompletionSource _outputProducedSource = new();
         private int _expectedOutput;
 
         [Fact]

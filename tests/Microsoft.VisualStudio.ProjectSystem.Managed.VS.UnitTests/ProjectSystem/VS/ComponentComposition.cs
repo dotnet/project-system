@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             typeof(VsContainedLanguageComponentsFactory).Assembly,          // Microsoft.VisualStudio.ProjectSystem.Managed.VS
         };
 
-        public static readonly ComponentComposition Instance = new ComponentComposition();
+        public static readonly ComponentComposition Instance = new();
 
         public ComponentComposition()
         {

@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        private readonly object _stateLock = new object();
+        private readonly object _stateLock = new();
 
         private State _state = State.Empty;
 
@@ -673,7 +673,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         /// <summary>For unit testing only.</summary>
 #pragma warning disable RS0043 // Do not call 'GetTestAccessor()'
-        internal TestAccessor TestAccess => new TestAccessor(this);
+        internal TestAccessor TestAccess => new(this);
 #pragma warning restore RS0043
     }
 }

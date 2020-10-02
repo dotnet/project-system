@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly string _ProjectFile = @"c:\test\project\project.csproj";
         private readonly string _Path = @"c:\program files\dotnet;c:\program files\SomeDirectory";
-        private readonly IFileSystemMock _mockFS = new IFileSystemMock();
+        private readonly IFileSystemMock _mockFS = new();
 
         [Fact]
         public void GetExeAndArguments()

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
         private readonly ITargetBlock<IProjectVersionedValue<IConfigurationGroup<ProjectConfiguration>>> _targetBlock;
-        private TaskCompletionSource _isImplicitlyActiveSource = new TaskCompletionSource();
+        private TaskCompletionSource _isImplicitlyActiveSource = new();
         private IDisposable? _subscription;
 
         [ImportingConstructor]

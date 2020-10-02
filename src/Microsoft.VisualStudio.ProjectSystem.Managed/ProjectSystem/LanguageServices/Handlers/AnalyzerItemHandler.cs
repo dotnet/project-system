@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         // See: https://github.com/dotnet/project-system/issues/2230
         private readonly UnconfiguredProject _project;
-        private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
+        private readonly HashSet<string> _paths = new(StringComparers.Paths);
 
         [ImportingConstructor]
         public AnalyzerItemHandler(UnconfiguredProject project)
