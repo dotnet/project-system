@@ -158,6 +158,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
+            if (state.LastCheckedAtUtc == DateTime.MinValue)
+            {
+                return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
+            }
+
             string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.CopyAlways).path;
 
             if (copyAlwaysItemPath != null)
