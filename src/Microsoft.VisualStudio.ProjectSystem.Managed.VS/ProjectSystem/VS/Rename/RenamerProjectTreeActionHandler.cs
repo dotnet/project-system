@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-            bool EnableSymbolicRename = settings.GetValueOrDefault<bool>("SolutionNavigator.EnableSymbolicRename");
+            bool EnableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 

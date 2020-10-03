@@ -80,7 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
         }
 
-        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, IUserNotificationServices userNotificationServices, IRoslynServices roslynServices, IVsOnlineServices vsOnlineServices, string language)
+        internal async Task RenameAsync(string sourceCode, string oldFilePath, string newFilePath, 
+            IUserNotificationServices userNotificationServices, 
+            IRoslynServices roslynServices, 
+            IVsOnlineServices vsOnlineServices, 
+            string language, 
+            IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
             var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: $@"C:\project1.{ProjectFileExtension}");
             var projectServices = IUnconfiguredProjectVsServicesFactory.Implement(
@@ -102,8 +107,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             mockNode.SetupGet(x => x.FilePath).Returns(oldFilePath);
             mockNode.SetupGet(x => x.IsFolder).Returns(false);
             var node = mockNode.Object;
-
-            var settingsManagerService = IVsServiceFactory.Create<SVsSettingsPersistenceManager, ISettingsManager>(Mock.Of<ISettingsManager>());
 
             var renamer = new TestRenamerProjectTreeActionHandler(unconfiguredProject,
                                                               projectServices,
