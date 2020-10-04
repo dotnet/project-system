@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
         where T : class?
     {
 #pragma warning disable RS0038 // Prefer null literal
-        public static readonly WaitIndicatorResult<T> Cancelled = new WaitIndicatorResult<T>(isCancelled: true, result: default!);
+        public static readonly WaitIndicatorResult<T> Cancelled = new(isCancelled: true, result: default!);
 #pragma warning restore RS0038 
 
         private readonly bool _isCancelled;
@@ -45,6 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Waiting
             }
         }
 
-        public static WaitIndicatorResult<T> FromResult(T result) => new WaitIndicatorResult<T>(isCancelled: false, result: result);
+        public static WaitIndicatorResult<T> FromResult(T result) => new(isCancelled: false, result: result);
     }
 }

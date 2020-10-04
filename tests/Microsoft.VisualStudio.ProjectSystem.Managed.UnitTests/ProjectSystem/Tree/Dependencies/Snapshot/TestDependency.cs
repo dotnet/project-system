@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     [DebuggerDisplay("{" + nameof(Id) + ",nq}")]
     internal sealed class TestDependency : IDependency
     {
-        private static readonly DependencyIconSet s_defaultIconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_defaultIconSet = new(
             KnownMonikers.Accordian,
             KnownMonikers.Bug,
             KnownMonikers.CrashDumpFile,

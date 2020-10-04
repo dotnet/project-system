@@ -12,8 +12,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
     [AppliesTo(ProjectCapability.VisualBasic)]
     internal class WarningLevelEnumProvider : IDynamicEnumValuesProvider
     {
-        private readonly Dictionary<string, IEnumValue> _persistWarningLevelEnumValues = new Dictionary<string, IEnumValue>
-            {
+        private readonly Dictionary<string, IEnumValue> _persistWarningLevelEnumValues = new()
+        {
                 { nameof(prjWarningLevel.prjWarningLevel0), new PageEnumValue(new EnumValue {Name = "0" }) },
                 { nameof(prjWarningLevel.prjWarningLevel1), new PageEnumValue(new EnumValue {Name = "1" }) },
                 { nameof(prjWarningLevel.prjWarningLevel2), new PageEnumValue(new EnumValue {Name = "2" }) },

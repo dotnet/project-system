@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.Setup
 {
     public sealed class SwrTests
     {
-        private static readonly Regex _swrFolderPattern = new Regex(@"^\s*folder\s+""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
-        private static readonly Regex _swrFilePattern = new Regex(@"^\s*file\s+source=""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
-        private static readonly Regex _xlfFilePattern = new Regex(@"^(?<filename>.+\.xaml)\.(?<culture>[^.]+)\.xlf$", RegexOptions.Compiled);
+        private static readonly Regex _swrFolderPattern = new(@"^\s*folder\s+""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
+        private static readonly Regex _swrFilePattern = new(@"^\s*file\s+source=""(?<path>[^""]+)""\s*$", RegexOptions.Compiled);
+        private static readonly Regex _xlfFilePattern = new(@"^(?<filename>.+\.xaml)\.(?<culture>[^.]+)\.xlf$", RegexOptions.Compiled);
 
         private readonly ITestOutputHelper _output;
 

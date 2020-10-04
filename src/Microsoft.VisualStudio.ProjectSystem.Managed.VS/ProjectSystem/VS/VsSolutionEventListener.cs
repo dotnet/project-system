@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         private readonly IVsUIService<IVsSolution> _solution;
 
-        private TaskCompletionSource _loadedInHost = new TaskCompletionSource();
+        private TaskCompletionSource _loadedInHost = new();
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
         [ImportingConstructor]

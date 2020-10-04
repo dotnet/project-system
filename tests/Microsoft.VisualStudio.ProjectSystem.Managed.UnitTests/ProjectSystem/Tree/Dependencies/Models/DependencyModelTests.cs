@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         {
             public override string ProviderType => "someProvider";
 
-            public override DependencyIconSet IconSet => new DependencyIconSet(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
+            public override DependencyIconSet IconSet => new(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
 
             public TestableDependencyModel(
                 string caption,

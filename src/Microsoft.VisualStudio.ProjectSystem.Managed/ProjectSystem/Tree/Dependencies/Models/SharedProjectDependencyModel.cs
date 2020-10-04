@@ -9,18 +9,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class SharedProjectDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
             unresolved: DependencyTreeFlags.ProjectDependency + DependencyTreeFlags.SharedProjectDependency + DependencyTreeFlags.SupportsBrowse,
             remove: DependencyTreeFlags.SupportsRuleProperties);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.SharedProject,
             expandedIcon: KnownMonikers.SharedProject,
             unresolvedIcon: KnownMonikers.SharedProjectWarning,
             unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_implicitIconSet = new(
             icon: KnownMonikers.SharedProjectPrivate,
             expandedIcon: KnownMonikers.SharedProjectPrivate,
             unresolvedIcon: KnownMonikers.SharedProjectWarning,

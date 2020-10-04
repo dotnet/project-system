@@ -11,17 +11,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 {
     public class LaunchProfilesDebugLaunchProviderTests
     {
-        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
-        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
-        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider = new Mock<IDebugProfileLaunchTargetsProvider>();
+        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockWebProvider = new();
+        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockDockerProvider = new();
+        private readonly Mock<IDebugProfileLaunchTargetsProvider> _mockExeProvider = new();
         private readonly OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider> _launchProviders =
-            new OrderPrecedenceImportCollection<IDebugProfileLaunchTargetsProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
+            new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
 
-        private readonly Mock<ConfiguredProject> _configuredProjectMoq = new Mock<ConfiguredProject>();
-        private readonly Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new Mock<ILaunchSettingsProvider>();
-        private readonly List<IDebugLaunchSettings> _webProviderSettings = new List<IDebugLaunchSettings>();
-        private readonly List<IDebugLaunchSettings> _dockerProviderSettings = new List<IDebugLaunchSettings>();
-        private readonly List<IDebugLaunchSettings> _exeProviderSettings = new List<IDebugLaunchSettings>();
+        private readonly Mock<ConfiguredProject> _configuredProjectMoq = new();
+        private readonly Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new();
+        private readonly List<IDebugLaunchSettings> _webProviderSettings = new();
+        private readonly List<IDebugLaunchSettings> _dockerProviderSettings = new();
+        private readonly List<IDebugLaunchSettings> _exeProviderSettings = new();
 
         // Set this to have ILaunchSettingsProvider return this profile (null by default)
         private ILaunchProfile? _activeProfile;

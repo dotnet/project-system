@@ -49,8 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly IUnconfiguredProjectCommonServices _commonProjectServices;
         private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
-        private readonly TaskCompletionSource _firstSnapshotCompletionSource = new TaskCompletionSource();
-        private readonly SequentialTaskExecutor _sequentialTaskQueue = new SequentialTaskExecutor();
+        private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
+        private readonly SequentialTaskExecutor _sequentialTaskQueue = new();
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
         private ILaunchSettings? _currentSnapshot;

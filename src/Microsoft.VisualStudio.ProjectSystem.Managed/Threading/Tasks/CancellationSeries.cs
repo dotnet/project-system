@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
     /// </remarks>
     internal sealed class CancellationSeries : IDisposable
     {
-        private CancellationTokenSource? _cts = new CancellationTokenSource();
+        private CancellationTokenSource? _cts = new();
 
         private readonly CancellationToken _superToken;
 
