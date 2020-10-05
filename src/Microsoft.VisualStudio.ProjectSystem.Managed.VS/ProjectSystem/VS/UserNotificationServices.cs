@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return (MessageBoxResult)VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, icon, button, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }
 
-        public bool Show(string message, out bool disablePromptMessage)
+        public bool Confirm(string message, out bool disablePromptMessage)
         {
             string dontShowAgainMessage = string.Format(CultureInfo.CurrentCulture, VSResources.DontShowAgain);
 

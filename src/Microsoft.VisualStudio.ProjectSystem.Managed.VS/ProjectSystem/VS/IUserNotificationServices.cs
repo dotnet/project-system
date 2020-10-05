@@ -45,6 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     <see langword="true"/> if the user clicked the Yes button, otherwise;
         ///     <see langword="false"/> if the user clicked the No button.
         /// </returns>
-        bool Show(string message, out bool disablePromptMessage);
+        bool Confirm(string message, out bool disablePromptMessage);
     }
 }

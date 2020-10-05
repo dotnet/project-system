@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
 
-                bool userSelection = _userNotificationServices.Show(renamePromptMessage, out disablePromptMessage);
+                bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out disablePromptMessage);
 
                 _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
 

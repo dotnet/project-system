@@ -32,13 +32,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         ///     Sets a value associated with the specified category, page and option, if it exists,
         /// </summary>
         /// <param name="category">
-        ///     A <see cref="string"/> containing the category of the option to return.
+        ///     A <see cref="string"/> containing the category of the option to set.
         /// </param>
         /// <param name="page">
-        ///     A <see cref="string"/> containing the page of the option to return.
+        ///     A <see cref="string"/> containing the page of the option to set.
         /// </param>
         /// <param name="option">
-        ///     A <see cref="string"/> containing the name of the option to return.
+        ///     A <see cref="string"/> containing the name of the option to set.
         /// </param>
         /// <param name="newValue">
         ///     The value to set the property.

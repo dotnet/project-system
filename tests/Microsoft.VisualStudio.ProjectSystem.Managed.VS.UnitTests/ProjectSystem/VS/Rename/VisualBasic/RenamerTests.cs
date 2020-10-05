@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.VisualBasic, settingsManagerService);
 
             bool checkBoxSelection;
-            Mock.Get(userNotificationServices).Verify(h => h.Show(It.IsAny<string>(), out checkBoxSelection), Times.Once);
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out checkBoxSelection), Times.Once);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
