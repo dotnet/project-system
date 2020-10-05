@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enables debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="new">Enables debugging for managed and native code together, also known as mixed-mode debugging.</target>
+        <target state="translated">Hiermit wird das gemeinsame Debugging für verwalteten und nativen Code aktiviert. Dies wird auch als Debuggen im gemischten Modus bezeichnet.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -59,12 +59,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
+        <target state="translated">Die Umgebungsvariablen, die vor dem Ausführen des Prozesses festgelegt werden sollen. Variablen werden durch ein Komma (,) getrennt, und Variablennamen und Werte werden durch ein Gleichheitszeichen (=) getrennt. Beispiel: var1=wert1,var2=wert2,var3=wert3. Kommas und Gleichheitszeichen innerhalb einer Variablen können mit einem Schrägstrich (/) als Escapezeichen versehen werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="new">Environment variables</target>
+        <target state="translated">Umgebungsvariablen</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">

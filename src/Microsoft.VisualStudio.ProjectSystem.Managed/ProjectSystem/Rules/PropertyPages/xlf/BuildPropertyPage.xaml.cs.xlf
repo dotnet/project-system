@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">Povoluje kód, který ke kompilaci používá klíčové slovo unsafe.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
+        <target state="translated">Povolí nebo zakáže optimalizace provedené kompilátorem za účelem zmenšení, zrychlení a zefektivnění souboru výstupu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="needs-review-translation">Chyby a upozornění</target>
+        <target state="translated">Konfiguruje možnosti pro chyby a upozornění při procesu sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="needs-review-translation">Výstup</target>
+        <target state="translated">Nakonfiguruje možnosti výstupu u procesu sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <target state="translated">Určuje kontext C# s možnou hodnotou null v rámci celého projektu. Dostupné jen pro projekty, které používají C# 8.0 či novější.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <target state="translated">Určuje procesor, na který má výstupní soubor cílit. Zvolte možnost x86 pro libovolný 32bitový procesor kompatibilní s procesorem Intel, možnost x64 pro libovolný 64bitový procesor kompatibilní s procesorem Intel nebo možnost Jakýkoli procesor, která znamená, že je přijatelný jakýkoli procesor. Možnost Jakýkoli procesor je u projektů výchozí hodnota, protože umožňuje spouštění aplikace na nejširší škále hardwaru.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
         <source>Used to specify which warnings are treated as errors.</source>
-        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <target state="translated">Slouží k určení, která upozornění se zpracovávají jako chyby.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="new">Specifies the level to display for compiler warnings.</target>
+        <target state="translated">Určuje úroveň upozornění kompilátoru, která se mají zobrazovat.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="needs-review-translation">Obecné</target>
+        <target state="translated">Určuje vlastnosti, které řídí způsob sestavení daného projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <target state="translated">Určuje symboly, u kterých se má provést podmíněná kompilace. Symboly oddělujte středníkem (;).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
+        <target state="translated">Určuje název souboru, do nějž budou zpracovány dokumentační poznámky.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Blokuje schopnost kompilátoru generovat jedno nebo více upozornění. Více čísel upozornění oddělte čárkou (,) nebo středníkem (;).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|Description">
         <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <target state="translated">Určuje umístění výstupních souborů pro tuto konfiguraci projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Zpracovává určená upozornění jako chyby. Více čísel upozornění oddělte čárkou (,) nebo středníkem (;).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

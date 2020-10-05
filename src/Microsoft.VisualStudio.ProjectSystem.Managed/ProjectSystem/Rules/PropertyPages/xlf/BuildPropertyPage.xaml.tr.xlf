@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">'unsafe' anahtar sözcüğünü kullanan kodun derlenmesine izin verir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
+        <target state="translated">Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="needs-review-translation">Hatalar ve uyarılar</target>
+        <target state="translated">Derleme işlemi için hata ve uyarı seçeneklerini yapılandırır.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="needs-review-translation">Çıkış</target>
+        <target state="translated">Derleme işlemi için çıkış seçeneklerini yapılandırır.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
+        <target state="translated">Proje genelinde C# null atanabilir bağlamını belirtir. Yalnızca C# 8.0 veya üzerini kullanan projeler için kullanılabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <target state="translated">Çıkış dosyası tarafından hedeflenecek işlemciyi belirtir. 32 bit Intel uyumlu işlemci için 'x86' seçeneğini, 64 bit Intel uyumlu işlemci için 'x64' seçeneğini, tüm işlemcilerin kabul edildiğini belirtmek için 'Tüm CPU'lar' seçeneğini belirleyin. 'Tüm CPU'lar' seçeneği uygulamanın en geniş donanım aralığında çalışmasını sağladığından projeler için varsayılan değerdir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
@@ -69,7 +69,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
         <source>Used to specify which warnings are treated as errors.</source>
-        <target state="new">Used to specify which warnings are treated as errors.</target>
+        <target state="translated">Hangi uyarıların hata olarak değerlendirileceğini belirtmek için kullanılır.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="new">Specifies the level to display for compiler warnings.</target>
+        <target state="translated">Derleyici uyarılarını görüntüleme düzeyini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
@@ -159,12 +159,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="needs-review-translation">Genel</target>
+        <target state="translated">Projenin nasıl derleneceğini denetleyen özellikleri belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|BuildPropertyPage|DisplayName">
@@ -174,7 +174,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
+        <target state="translated">Üzerinde koşullu derlemenin gerçekleştirileceği sembolleri belirtir. Sembolleri noktalı virgülle (';') ayırın.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
@@ -184,7 +184,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="new">Specifies the name of a file into which documentation comments will be processed.</target>
+        <target state="translated">Belge yorumlarının işleneceği dosyanın adını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Derleyicinin bir veya daha fazla uyarı oluşturulabilmesini engeller. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|Description">
         <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="new">Specifies the location of the output files for this project's configuration.</target>
+        <target state="translated">Bu projenin yapılandırması için çıkış dosyalarının konumunu belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OutputPath|DisplayName">
@@ -214,7 +214,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Belirtilen uyarıları hata olarak değerlendirir. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

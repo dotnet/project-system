@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="cboWarningLevel.Items5">
         <source>5</source>
-        <target state="new">5</target>
+        <target state="translated">5</target>
         <note />
       </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
