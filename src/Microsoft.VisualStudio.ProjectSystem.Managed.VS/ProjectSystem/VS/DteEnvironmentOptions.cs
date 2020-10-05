@@ -32,5 +32,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             return defaultValue;
         }
+
+        public void SetOption<T>(string category, string page, string option, T newValue)
+        {
+            EnvDTE.Properties? properties = _dte.Value.Properties[category, page];
+
+            if (properties != null)
+            {
+                properties.Item(option).Value = newValue;
+            }
+        }
     }
 }
