@@ -218,6 +218,9 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 
 # Dotnet code analysis settings:
 [*.{cs,vb}]
+# Bugs
+dotnet_diagnostic.IDE0100.severity = none # https://github.com/dotnet/roslyn/issues/48236
+
 # Microsoft.Analyzers.ManagedCodeAnalysis
 dotnet_diagnostic.CA1801.severity = none
 dotnet_diagnostic.CA1804.severity = none
