@@ -1,9 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModelMethods.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
@@ -58,6 +61,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             property = null;
             index = default;
             return false;
+        }
+
+        /// <summary>
+        /// Checks if a given <see cref="ProjectConfiguration"/> matches a set of configuration dimensions and values.
+        /// A <see cref="ProjectConfiguration"/> is considered a match if it contains each of the supplied dimensions,
+        /// and the values match. All <see cref="ProjectConfiguration"/>s match the empty set of dimensions and values.
+        /// </summary>
+        public static bool MatchesDimensions(this ProjectConfiguration configuration, ReadOnlyCollection<ConfigurationDimensionValue> targetDimensionsAndValues)
+        {
+            foreach (ConfigurationDimensionValue dimensionAndValue in targetDimensionsAndValues)
+            {
+                if (!configuration.Dimensions.TryGetValue(dimensionAndValue.Dimension, out string projectDimensionValue)
+                    || !StringComparer.Ordinal.Equals(dimensionAndValue.Value, projectDimensionValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
