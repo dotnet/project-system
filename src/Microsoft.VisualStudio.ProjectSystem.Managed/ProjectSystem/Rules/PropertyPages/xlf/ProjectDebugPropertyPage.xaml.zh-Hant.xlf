@@ -4,87 +4,87 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
-        <target state="new">Enables debugging for managed and native code together, also known as mixed-mode debugging. </target>
+        <target state="translated">同時為受控碼及機器碼啟用偵錯，也稱為混合模式偵錯。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">啟用機器碼偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
+        <target state="translated">指出偵錯工具應附加到遠端電腦上的流程。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="new">Use remote machine</target>
+        <target state="translated">使用遠端電腦</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">啟用 SQL Server 偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">連線至遠端電腦時所要使用的驗證配置。只有在啟用 [使用遠端電腦] 時才適用。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
+        <target state="translated">驗證模式</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
-        <target state="new">Properties associated with launching and debugging the project output.</target>
+        <target state="translated">與啟動及偵錯專案輸出相關的屬性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|DisplayName">
         <source>Project</source>
-        <target state="new">Project</target>
+        <target state="translated">專案</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="new">Command line arguments to pass to the executable.</target>
+        <target state="translated">要傳遞至可執行檔的命令列引數。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
+        <target state="translated">命令列引數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
+        <target state="translated">執行處理序前要設定的環境變數。變數以逗號 (,) 分隔，變數名稱與值則以等號 (=) 分隔。範例: var1=value1,var2=value2,var3=value3。您可以使用斜線 (/) 逸出變數內顯示的逗號與等號。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="new">Environment variables</target>
+        <target state="translated">環境變數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">遠端電腦的名稱及連接埠號碼，採用 'name:port' 格式。只有在啟用 [使用遠端電腦] 時才適用。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="new">Remote machine name</target>
+        <target state="translated">遠端電腦名稱</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="new">Path to the working directory where the process will be started.</target>
+        <target state="translated">要啟動處理序之工作目錄的路徑。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="new">Working directory</target>
+        <target state="translated">工作目錄</target>
         <note />
       </trans-unit>
     </body>

@@ -4,52 +4,52 @@
     <body>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
         <source>preview</source>
-        <target state="new">preview</target>
+        <target state="translated">náhled</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
         <source>latest</source>
-        <target state="new">latest</target>
+        <target state="translated">nejnovější</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
         <source>5.0</source>
-        <target state="new">5.0</target>
+        <target state="translated">5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
         <source>none</source>
-        <target state="new">none</target>
+        <target state="translated">žádné</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelLabel.Text">
         <source>Analysis Level</source>
-        <target state="new">Analysis Level</target>
+        <target state="translated">Úroveň analýzy</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableNETAnalyzersCheckBox.Text">
         <source>Enable .NET analyzers</source>
-        <target state="new">Enable .NET analyzers</target>
+        <target state="translated">Povolit analyzátory .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build (experimental)</source>
-        <target state="new">Enforce CodeStyle on build (experimental)</target>
+        <target state="translated">Vynutit CodeStyle při sestavení (experimentální)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>.NET analyzers</source>
-        <target state="new">.NET analyzers</target>
+        <target state="translated">Analyzátory .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="NETAnalyzersLinkLabel.Text">
         <source>What are .NET analyzers?</source>
-        <target state="new">What are .NET analyzers?</target>
+        <target state="translated">Co jsou analyzátory .NET?</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
         <source>All analyzers</source>
-        <target state="needs-review-translation">Analyzátory</target>
+        <target state="translated">Všechny analyzátory</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">

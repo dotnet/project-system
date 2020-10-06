@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">访问私钥受限制时使用延迟签名。生成期间将使用公钥，在程序集切换之前，私钥信息的添加会延迟。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">仅延迟签名</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Select this check box to sign the assembly.</source>
-        <target state="new">Select this check box to sign the assembly.</target>
+        <target state="translated">选中此复选框以对程序集签名。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">对程序集签名</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">与生成签名程序集相关的属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SigningPropertyPage|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">签名</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">强名称密钥文件</target>
         <note />
       </trans-unit>
     </body>
