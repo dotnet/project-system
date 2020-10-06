@@ -73,15 +73,15 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
 
-                    Dim constantTargetFramework As String
-                    If isLegacyProject() = False Then
-                        constantTargetFramework = Const_TargetFrameworkMoniker
+                    Dim targetFrameworkPropertyName As String
+                    If Not isLegacyProject() Then
+                        targetFrameworkPropertyName = Const_TargetFrameworkMoniker
                     Else
-                        constantTargetFramework = Const_TargetFramework
+                        targetFrameworkPropertyName = Const_TargetFramework
                     End If
 
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
-                            VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, constantTargetFramework,
+                            VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, targetFrameworkPropertyName,
                             TargetFramework,
                             AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
                             ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
