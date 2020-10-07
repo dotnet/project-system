@@ -270,9 +270,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _propertyName
             End Get
             Protected Set(value As String)
-#If DEBUG Then
                 Debug.Assert(Not _isInitialized)
-#End If
                 _propertyName = value
             End Set
         End Property

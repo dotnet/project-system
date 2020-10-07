@@ -1447,10 +1447,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
-        ''' Determines whether the project associated with the given hierarchy is targeting .NET Framework or above
+        ''' Determines whether the project associated with the given hierarchy is targeting .NET Framework
         ''' </summary>
         ''' <param name="hierarchy">Hierarchy object.</param>
-        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET Framework or above.</returns>
+        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET Framework.</returns>
         Friend Function IsTargetingDotNetFramework(hierarchy As IVsHierarchy) As Boolean
 
             Dim frameworkName As FrameworkName = Nothing
