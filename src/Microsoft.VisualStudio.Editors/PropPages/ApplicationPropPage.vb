@@ -73,19 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Get
                 If m_ControlData Is Nothing Then
 
-                    Dim targetFrameworkPropertyName As String
-                    If Not isLegacyProject() Then
-                        targetFrameworkPropertyName = Const_TargetFrameworkMoniker
-                    Else
-                        targetFrameworkPropertyName = Const_TargetFramework
-                    End If
-
-                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
-                            VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, targetFrameworkPropertyName,
-                            TargetFramework,
-                            AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker,
-                            ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout,
-                            New Control() {TargetFrameworkLabel})
+                    TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(VslangProj100.VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker, TargetFramework, AddressOf SetTargetFrameworkMoniker, AddressOf GetTargetFrameworkMoniker, ControlDataFlags.ProjectMayBeReloadedDuringPropertySet Or ControlDataFlags.NoOptimisticFileCheckout, New Control() {TargetFrameworkLabel})
 
                     'StartupObject must be kept at the end of the list because it depends on the initialization of "OutputType" values
                     Dim datalist As List(Of PropertyControlData) = New List(Of PropertyControlData)
@@ -120,11 +108,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return m_ControlData
             End Get
         End Property
-
-        Private Function isLegacyProject() As Boolean
-            Dim supportedTargetFrameworkDescriptor As PropertyDescriptor = GetPropertyDescriptor("SupportedTargetFrameworks")
-            Return supportedTargetFrameworkDescriptor Is Nothing
-        End Function
 
         Protected Overrides ReadOnly Property ValidationControlGroups As Control()()
             Get

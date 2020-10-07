@@ -3,6 +3,7 @@
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.OLE.Interop
+Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.PropertyPages
@@ -15,11 +16,22 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private ReadOnly _comboBox As ComboBox
 
-        Public Sub New(id As Integer, name As String, comboBox As ComboBox, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
-            MyBase.New(id, name, comboBox, setter, getter, flags, AssocControls)
+        Public Sub New(id As Integer, comboBox As ComboBox, setter As SetDelegate, getter As GetDelegate, flags As ControlDataFlags, AssocControls As Control())
+            'Setting name as empty string, as we will later bind it.
+            MyBase.New(id, String.Empty, comboBox, setter, getter, flags, AssocControls)
             _comboBox = comboBox
 
             AddHandler _comboBox.DropDownClosed, AddressOf ComboBox_DropDownClosed
+        End Sub
+
+        Public Overrides Sub Initialize(PropertyPage As PropPageUserControlBase)
+            'We dynamically bind the property name depending if the project is legacy or not.
+            If PropertyPage.ProjectHierarchy.IsCapabilityMatch("CPS") Then
+                PropertyName = ApplicationPropPage.Const_TargetFramework
+            Else
+                PropertyName = ApplicationPropPage.Const_TargetFrameworkMoniker
+            End If
+            MyBase.Initialize(PropertyPage)
         End Sub
 
         Private Function IsInstallOtherFrameworksSelected() As Boolean

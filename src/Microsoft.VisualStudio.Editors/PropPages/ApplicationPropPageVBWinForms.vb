@@ -179,7 +179,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
-                            ApplicationPropPage.Const_TargetFrameworkMoniker,
                             TargetFrameworkComboBox,
                             AddressOf SetTargetFrameworkMoniker,
                             AddressOf GetTargetFrameworkMoniker,
