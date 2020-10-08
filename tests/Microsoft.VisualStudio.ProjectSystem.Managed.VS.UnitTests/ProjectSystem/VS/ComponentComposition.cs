@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         internal static readonly IReadOnlyList<Assembly> BuiltInAssemblies = new Assembly[]
         {
-            typeof(IConfiguredProjectImplicitActivationTracking).Assembly,  // Microsoft.VisualStudio.ProjectSystem.Managed
+            typeof(ConfiguredProjectImplicitActivationTracking).Assembly,   // Microsoft.VisualStudio.ProjectSystem.Managed
             typeof(VsContainedLanguageComponentsFactory).Assembly,          // Microsoft.VisualStudio.ProjectSystem.Managed.VS
         };
 
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             typeof(IProjectService).Assembly,                               // Microsoft.VisualStudio.ProjectSystem
             typeof(IVsProjectServices).Assembly,                            // Microsoft.VisualStudio.ProjectSystem.VS
-            typeof(IConfiguredProjectImplicitActivationTracking).Assembly,  // Microsoft.VisualStudio.ProjectSystem.Managed
+            typeof(ConfiguredProjectImplicitActivationTracking).Assembly,   // Microsoft.VisualStudio.ProjectSystem.Managed
             typeof(VsContainedLanguageComponentsFactory).Assembly,          // Microsoft.VisualStudio.ProjectSystem.Managed.VS
         };
 
