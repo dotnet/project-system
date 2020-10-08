@@ -71,10 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// persisted value in the project. So this method should never be called.
             /// </summary>
             /// <param name="userSuppliedValue"></param>
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-            {
-                throw new NotImplementedException();
-            }
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
 
             private static bool CanRetargetTo(string identifier, string moniker)
             {

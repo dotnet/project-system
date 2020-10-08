@@ -68,10 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     .ToArray<IEnumValue>();
             }
 
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
-            {
-                throw new NotImplementedException();
-            }
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
         }
     }
 }
