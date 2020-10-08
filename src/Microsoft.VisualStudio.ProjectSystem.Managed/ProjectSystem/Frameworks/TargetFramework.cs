@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static readonly TargetFramework Any = new("any");
 
-        public TargetFramework(FrameworkName frameworkName, string? shortName = null)
+        public TargetFramework(FrameworkName frameworkName, string? shortName)
         {
             Requires.NotNull(frameworkName, nameof(frameworkName));
 
