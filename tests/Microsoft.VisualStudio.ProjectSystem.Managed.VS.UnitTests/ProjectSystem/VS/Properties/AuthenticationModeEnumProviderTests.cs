@@ -22,14 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async Task TryCreateEnumValueAsync_Throws()
+        public async Task TryCreateEnumValueAsync_ReturnsNull()
         {
             var remoteDebuggerAuthenticationService = IRemoteDebuggerAuthenticationServiceFactory.Create();
 
             var provider = new AuthenticationModeEnumProvider(remoteDebuggerAuthenticationService);
             var generator = await provider.GetProviderAsync(options: null);
 
-            await Assert.ThrowsAsync<NotImplementedException>(() => generator.TryCreateEnumValueAsync("MyMode"));
+            Assert.Null(await generator.TryCreateEnumValueAsync("MyMode"));
         }
 
         [Fact]
