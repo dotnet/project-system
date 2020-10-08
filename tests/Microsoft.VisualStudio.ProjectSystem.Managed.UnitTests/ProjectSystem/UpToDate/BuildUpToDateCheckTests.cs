@@ -312,7 +312,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _buildUpToDateCheck.TestAccess.SetLastItemsChangedAtUtc(itemChangedTime);
 
             await AssertNotUpToDateAsync(
-                $"The set of project items was changed more recently ({itemChangedTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                new[]
+                {
+                    $"The set of project items was changed more recently ({itemChangedTime.ToLocalTime()}) than the earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                    "    Content item added 'ItemPath1' (CopyType=CopyNever)",
+                    "    Content item added 'ItemPath2' (CopyType=CopyNever)",
+                },
                 "Outputs");
         }
 

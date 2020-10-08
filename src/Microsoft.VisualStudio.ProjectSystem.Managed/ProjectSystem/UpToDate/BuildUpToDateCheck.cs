@@ -239,7 +239,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    bool fail = log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges)
+                    {
+                        if (link == null)
+                            log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
+                        else
+                            log.Info("    {0} item {1} '{2}' (CopyType={3}, Link='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, link);
+                    }
+                    return fail;
                 }
 
 #if FALSE // https://github.com/dotnet/project-system/issues/6227
