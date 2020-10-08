@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
 
                 IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-                return (ICollection<IEnumValue>)catalog.GetPropertyPagesSchemas()
+                return catalog.GetPropertyPagesSchemas()
                     .Select(name => catalog.GetSchema(name))
                     .WhereNotNull()
                     .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
