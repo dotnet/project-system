@@ -1,4 +1,5 @@
 # Template used by unit-tests.yml
+
 jobs:
 - job: ${{ parameters.name }}
   pool: ${{ parameters.pool }}
@@ -6,6 +7,13 @@ jobs:
   steps:
     - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /clearnugetcache /no-deploy /no-integration /no-ibc /configuration ${{ parameters.configuration }}
       displayName: Build ProjectSystem.sln
+
+    - ${{ if eq(parameters.enableRichCodeNavigation, true) }}:
+      - task: RichCodeNavIndexer@0
+        displayName: RichCodeNav Upload
+        inputs:
+          languages: 'csharp'
+        continueOnError: true
 
     - task: PublishBuildArtifacts@1
       inputs:
