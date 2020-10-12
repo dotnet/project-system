@@ -1,7 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -108,6 +110,131 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 var propertyEntity = (UIPropertyValue)entity;
                 Assert.Equal(expectedName, propertyEntity.Name);
             }
+        }
+
+        [Fact]
+        public void WhenAPropertyHasNoSearchTerms_AnEmptyListIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
+                includeName: false,
+                includeDisplayName: false,
+                includeDescription: false,
+                includeConfigurationIndependent: false,
+                includeHelpUrl: false,
+                includeCategoryName: false,
+                includeOrder: false,
+                includeType: false,
+                includeSearchTerms: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new List<NameValuePair>()
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Empty(result.SearchTerms);
+        }
+
+        [Fact]
+        public void WhenAPropertyHasAnEmptyListOfSearchTerms_AnEmptyListIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
+                includeName: false,
+                includeDisplayName: false,
+                includeDescription: false,
+                includeConfigurationIndependent: false,
+                includeHelpUrl: false,
+                includeCategoryName: false,
+                includeOrder: false,
+                includeType: false,
+                includeSearchTerms: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "SearchTerms", Value = "" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Empty(result.SearchTerms);
+        }
+
+        [Fact]
+        public void WhenAPropertyHasOneSearchTerm_OneItemIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
+                includeName: false,
+                includeDisplayName: false,
+                includeDescription: false,
+                includeConfigurationIndependent: false,
+                includeHelpUrl: false,
+                includeCategoryName: false,
+                includeOrder: false,
+                includeType: false,
+                includeSearchTerms: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "SearchTerms", Value = "Alpha" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Collection(result.SearchTerms, new Action<string>[]
+            {
+                searchTerm => Assert.Equal(expected: "Alpha", actual: searchTerm)
+            });
+        }
+
+        [Fact]
+        public void WhenAPropertyHasMultipleSearchTerms_MultipleItemsAreReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
+                includeName: false,
+                includeDisplayName: false,
+                includeDescription: false,
+                includeConfigurationIndependent: false,
+                includeHelpUrl: false,
+                includeCategoryName: false,
+                includeOrder: false,
+                includeType: false,
+                includeSearchTerms: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "SearchTerms", Value = "Alpha;Beta;Gamma" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Collection(result.SearchTerms, new Action<string>[]
+            {
+                searchTerm => Assert.Equal(expected: "Alpha", actual: searchTerm),
+                searchTerm => Assert.Equal(expected: "Beta", actual: searchTerm),
+                searchTerm => Assert.Equal(expected: "Gamma", actual: searchTerm),
+            });
         }
 
         private class TestProperty : BaseProperty
