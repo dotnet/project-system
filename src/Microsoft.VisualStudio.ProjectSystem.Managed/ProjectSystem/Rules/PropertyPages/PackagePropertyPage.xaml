@@ -14,10 +14,12 @@
   </Rule.DataSource>
 
   <BoolProperty Name="GeneratePackageOnBuild"
-                DisplayName="Generate NuGet package on build" />
+                DisplayName="Generate NuGet package on build"
+                Description="Produce a package file during build operations." />
 
   <BoolProperty Name="PackageRequireLicenseAcceptance"
-                DisplayName="Require license acceptance" />
+                DisplayName="Require license acceptance"
+                Description="Prompt the user to accept the license when installing this package." />
 
   <StringProperty Name="PackageId"
                   DisplayName="Package ID"
