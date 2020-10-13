@@ -5,13 +5,29 @@
 # of dotnet/project-system
 #
 
+# Branches that trigger a build on commit
+trigger:
+  branches:
+    include:
+    - master
+    - dev*
+    - feature/*
+
+# Branches that trigger builds on PR
+pr:
+  branches:
+    include:
+    - master
+    - dev*
+    - feature/*
+
 resources:
 - repo: self
   clean: true
 queue:
   name: VSEng-MicroBuildVS2019
   demands: Cmd
-  timeoutInMinutes: 90
+  timeoutInMinutes: 15
 variables:
   BuildConfiguration: Debug
   BuildPlatform: any cpu

@@ -29,7 +29,6 @@ jobs:
   parameters:
     name: Windows_Debug
     configuration: Debug
-    enableRichCodeNavigation: true
     pool:
       name: NetCorePublic-Pool
       queue: BuildPool.Windows.10.Amd64.VS2019.Pre.Open
