@@ -14,7 +14,7 @@
   </Rule.DataSource>
 
   <BoolProperty Name="SignAssembly"
-                Description="Select this check box to sign the assembly."
+                Description="Sign the output assembly to give it a strong name."
                 HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/strong-named"
                 DisplayName="Sign the assembly" />
 
