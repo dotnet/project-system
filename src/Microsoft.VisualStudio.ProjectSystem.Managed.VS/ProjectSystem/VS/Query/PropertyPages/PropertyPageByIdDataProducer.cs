@@ -15,16 +15,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal class PropertyPageByIdDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
-        private readonly IProjectService2 _projectService;
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
+        private readonly IProjectService2 _projectService;
+        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService)
+        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
+            Requires.NotNull(queryCacheProvider, nameof(queryCacheProvider));
 
-            _projectService = projectService;
             _properties = properties;
+            _projectService = projectService;
+            _queryCacheProvider = queryCacheProvider;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
@@ -43,6 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             request.QueryExecutionContext.EntityRuntime,
                             requestId,
                             _projectService,
+                            _queryCacheProvider,
                             path,
                             propertyPageName,
                             _properties);

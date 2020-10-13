@@ -26,14 +26,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class ProjectActionProvider : IQueryActionProvider
     {
+        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+
+        [ImportingConstructor]
+        public ProjectActionProvider(IPropertyPageQueryCacheProvider queryCacheProvider)
+        {
+            _queryCacheProvider = queryCacheProvider;
+        }
+
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
         {
             Requires.NotNull(executableStep, nameof(executableStep));
 
             return executableStep.Action switch
             {
-                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction((SetEvaluatedUIPropertyValue)executableStep),
-                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction((SetUnevaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction(_queryCacheProvider, (SetEvaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction(_queryCacheProvider, (SetUnevaluatedUIPropertyValue)executableStep),
                 _ => throw new InvalidOperationException($"{nameof(ProjectActionProvider)} does not handle action '{executableStep.Action}'.")
             };
         }
@@ -41,14 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
     internal abstract class ProjectSetUIPropertyValueActionBase : QueryDataProducerBase<IEntityValue>, IProjectUpdateActionExecutor, IQueryActionExecutor
     {
+        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
         private readonly string _pageName;
         private readonly string _propertyName;
         private readonly ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> _dimensions;
 
         private readonly Dictionary<string, List<IRule>> _rules = new(StringComparers.Paths);
 
-        public ProjectSetUIPropertyValueActionBase(string pageName, string propertyName, ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> dimensions)
+        public ProjectSetUIPropertyValueActionBase(IPropertyPageQueryCacheProvider queryCacheProvider, string pageName, string propertyName, ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> dimensions)
         {
+            _queryCacheProvider = queryCacheProvider;
             _pageName = pageName;
             _propertyName = propertyName;
             _dimensions = dimensions;
@@ -64,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     {
                         projectRules = new List<IRule>();
 
-                        PropertyPageQueryCache propertyPageCache = new(project);
+                        IPropertyPageQueryCache propertyPageCache = _queryCacheProvider.CreateCache(project);
                         if (await propertyPageCache.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
                         {
                             foreach (ProjectConfiguration knownConfiguration in knownConfigurations.Where(config => config.MatchesDimensions(_dimensions)))
@@ -119,8 +129,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly SetEvaluatedUIPropertyValue _parameter;
 
-        public ProjectSetEvaluatedUIPropertyValueAction(SetEvaluatedUIPropertyValue parameter)
-            : base(parameter.Page, parameter.Name, parameter.Dimensions)
+        public ProjectSetEvaluatedUIPropertyValueAction(IPropertyPageQueryCacheProvider queryCacheProvider, SetEvaluatedUIPropertyValue parameter)
+            : base(queryCacheProvider, parameter.Page, parameter.Name, parameter.Dimensions)
         {
             Requires.NotNull(parameter, nameof(parameter));
             Requires.NotNull(parameter.Dimensions, $"{nameof(parameter)}.{nameof(parameter.Dimensions)}");
@@ -138,8 +148,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly SetUnevaluatedUIPropertyValue _parameter;
 
-        public ProjectSetUnevaluatedUIPropertyValueAction(SetUnevaluatedUIPropertyValue parameter)
-            : base(parameter.Page, parameter.Name, parameter.Dimensions)
+        public ProjectSetUnevaluatedUIPropertyValueAction(IPropertyPageQueryCacheProvider queryCacheProvider, SetUnevaluatedUIPropertyValue parameter)
+            : base(queryCacheProvider, parameter.Page, parameter.Name, parameter.Dimensions)
         {
             Requires.NotNull(parameter, nameof(parameter));
             Requires.NotNull(parameter.Dimensions, $"{nameof(parameter)}.{nameof(parameter.Dimensions)}");
