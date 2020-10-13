@@ -27,7 +27,7 @@
   <StringProperty Name="Version"
                   DisplayName="Package Version"
                   Description="The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix."
-                  HelpUrl="https://docs.microsoft.com/nuget/concepts/package-versioning#pre-release-versions" />
+                  HelpUrl="https://docs.microsoft.com/nuget/concepts/package-versioning" />
 
   <StringProperty Name="Authors"
                   DisplayName="Authors"
