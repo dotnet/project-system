@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../PackagePropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
+        <source>Produce a package file during build operations.</source>
+        <target state="new">Produce a package file during build operations.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate NuGet package on build</source>
         <target state="translated">Формировать пакет NuGet при сборке</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
+        <source>Prompt the user to accept the license when installing this package.</source>
+        <target state="new">Prompt the user to accept the license when installing this package.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">

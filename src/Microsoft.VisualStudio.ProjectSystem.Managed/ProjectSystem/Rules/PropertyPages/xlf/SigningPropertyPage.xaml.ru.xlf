@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
-        <source>Select this check box to sign the assembly.</source>
-        <target state="translated">Установите этот флажок, чтобы подписать сборку.</target>
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="needs-review-translation">Установите этот флажок, чтобы подписать сборку.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
