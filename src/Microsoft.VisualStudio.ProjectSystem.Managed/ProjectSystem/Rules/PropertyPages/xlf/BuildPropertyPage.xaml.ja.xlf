@@ -218,8 +218,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
-        <source>Specific warnings</source>
-        <target state="translated">特定の警告</target>
+        <source>Treat specific warnings as errors</source>
+        <target state="needs-review-translation">特定の警告</target>
         <note />
       </trans-unit>
     </body>
