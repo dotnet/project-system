@@ -101,6 +101,7 @@
                   Category="ErrorsAndWarnings" />
 
   <EnumProperty Name="TreatWarningsAsErrors"
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/warnaserror-compiler-option"
                 DisplayName="Treat warnings as errors"
                 Description="Used to specify which warnings are treated as errors."
                 Category="ErrorsAndWarnings" >
@@ -112,6 +113,7 @@
 
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Specific warnings"
+                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/warnaserror-compiler-option"
                   Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings" />
 

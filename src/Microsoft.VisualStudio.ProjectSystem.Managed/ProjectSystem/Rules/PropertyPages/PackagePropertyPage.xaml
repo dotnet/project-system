@@ -31,7 +31,8 @@
 
   <StringProperty Name="Authors"
                   DisplayName="Authors"
-                  Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors." />
+                  Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#authors" />
 
   <StringProperty Name="Company"
                   DisplayName="Company" />
@@ -41,11 +42,13 @@
 
   <StringProperty Name="Description"
                   DisplayName="Description"
-                  Description="A description of the package for UI display." />
+                  Description="A description of the package for UI display."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#description" />
 
   <StringProperty Name="Copyright"
                   DisplayName="Copyright"
-                  Description="Copyright details for the package." />
+                  Description="Copyright details for the package."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#copyright"/>
 
   <StringProperty Name="PackageLicenseExpression"
                   DisplayName="License expression"
@@ -58,7 +61,8 @@
 
   <StringProperty Name="PackageProjectUrl"
                   DisplayName="Project URL"
-                  Description="A URL for the package's home page, often shown in UI displays as well as nuget.org." />
+                  Description="A URL for the package's home page, often shown in UI displays as well as nuget.org."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#projecturl" />
 
   <!-- TODO (tomescht): 
        We should re-think this. This property is the relative path to the icon file _within the package_; setting it does not guarantee
@@ -82,11 +86,13 @@
 
   <StringProperty Name="PackageTags"
                   DisplayName="Tags"
-                  Description="A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering." />
+                  Description="A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#tags" />
 
   <StringProperty Name="PackageReleaseNotes"
                   DisplayName="Release notes"
-                  Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description." />
+                  Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description."
+                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#releasenotes" />
 
   <DynamicEnumProperty Name="NeutralLanguage"
                        DisplayName="Assembly neutral language"

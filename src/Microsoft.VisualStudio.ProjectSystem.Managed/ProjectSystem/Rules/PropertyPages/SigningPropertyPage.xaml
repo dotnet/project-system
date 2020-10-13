@@ -24,5 +24,6 @@
 
   <BoolProperty Name="DelaySign"
                 Description="Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/delay-sign"
                 DisplayName="Delay sign only" />
 </Rule>
