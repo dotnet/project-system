@@ -74,5 +74,29 @@ namespace Microsoft.VisualStudio
         ///     A <see cref="string"/> representing the deprecated C# (xproj) project type based on the Common Project System (CPS).
         /// </summary>
         public const string LegacyXProj = "8BB2217D-0F2D-49D1-97BC-3654ED321F3B";
+
+        /// <summary>
+        ///     A <see cref="string"/> representing the legacy web application project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public const string LegacyWebApplicationProject = "349c5851-65df-11da-9384-00065b846f21";
+
+        /// <summary>
+        ///     A <see cref="Guid"/> representing the legacy web application project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public static readonly Guid LegacyWebApplicationProjectGuid = new(LegacyWebApplicationProject);
+
+        /// <summary>
+        ///     A <see cref="string"/> representing the legacy test project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public const string LegacyTestProject = "3AC096D0-A1C2-E12C-1390-A8335801FDAB";
+
+        /// <summary>
+        ///     A <see cref="Guid"/> representing the legacy test project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public static readonly Guid LegacyTestProjectGuid = new(LegacyTestProject);
     }
 }
