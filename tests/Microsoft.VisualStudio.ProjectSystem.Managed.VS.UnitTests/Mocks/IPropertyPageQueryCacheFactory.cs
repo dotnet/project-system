@@ -32,21 +32,4 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
     }
-
-    public static class IPropertyPageQueryCacheProviderFactory
-    {
-        internal static IPropertyPageQueryCacheProvider Create()
-        {
-            var cache = IPropertyPageQueryCacheFactory.Create();
-            return Create(cache);
-        }
-
-        internal static IPropertyPageQueryCacheProvider Create(IPropertyPageQueryCache cache)
-        {
-            var mock = new Mock<IPropertyPageQueryCacheProvider>();
-            mock.Setup(f => f.CreateCache(It.IsAny<UnconfiguredProject>())).Returns(cache);
-
-            return mock.Object;
-        }
-    }
 }
