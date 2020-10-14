@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModelMethods.Actions;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
@@ -68,12 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// A <see cref="ProjectConfiguration"/> is considered a match if it contains each of the supplied dimensions,
         /// and the values match. All <see cref="ProjectConfiguration"/>s match the empty set of dimensions and values.
         /// </summary>
-        public static bool MatchesDimensions(this ProjectConfiguration configuration, ReadOnlyCollection<ConfigurationDimensionValue> targetDimensionsAndValues)
+        public static bool MatchesDimensions(this ProjectConfiguration configuration, IEnumerable<(string dimension, string value)> targetDimensionsAndValues)
         {
-            foreach (ConfigurationDimensionValue dimensionAndValue in targetDimensionsAndValues)
+            foreach ((string dimension, string value) in targetDimensionsAndValues)
             {
-                if (!configuration.Dimensions.TryGetValue(dimensionAndValue.Dimension, out string projectDimensionValue)
-                    || !StringComparer.Ordinal.Equals(dimensionAndValue.Value, projectDimensionValue))
+                if (!configuration.Dimensions.TryGetValue(dimension, out string projectDimensionValue)
+                    || !StringComparer.Ordinal.Equals(value, projectDimensionValue))
                 {
                     return false;
                 }
