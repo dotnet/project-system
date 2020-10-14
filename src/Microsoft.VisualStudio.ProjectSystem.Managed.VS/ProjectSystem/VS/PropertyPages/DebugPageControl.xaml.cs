@@ -19,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             InitializeComponent();
             DataContextChanged += DebugPageControlControl_DataContextChanged;
             LayoutUpdated += DebugPageControl_LayoutUpdated;
+            // This isn't a themed UI, but we want to enable high contrast mode.
+            SetResourceReference(BackgroundProperty, SystemColors.ControlBrushKey);
         }
 
         private void DebugPageControlControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
