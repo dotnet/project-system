@@ -19,17 +19,17 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
     {
         private readonly ILaunchSettingsProvider2 _launchSettingsProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
-        private readonly IProjectExtensionDataService _projectExtensionDataService;
+        private readonly WebLaunchSettingsProvider _webLaunchSettingsProvider;
 
         [ImportingConstructor]
         public LaunchProfileInitializer(
             ILaunchSettingsProvider2 launchSettingsProvider,
             IUnconfiguredProjectCommonServices projectServices,
-            IProjectExtensionDataService projectExtensionDataService)
+            WebLaunchSettingsProvider webLaunchSettingsProvider)
         {
             _launchSettingsProvider = launchSettingsProvider;
             _projectServices = projectServices;
-            _projectExtensionDataService = projectExtensionDataService;
+            _webLaunchSettingsProvider = webLaunchSettingsProvider;
         }
 
         /// <summary>
@@ -61,8 +61,7 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
                 // Now set the active profile to the one we just set.
                 await  _launchSettingsProvider.SetActiveProfileAsync("IIS Express");
                 
-
-                var xmlData = await _projectExtensionDataService.GetXmlAsync("VisualStudio");
+                var settings = await _webLaunchSettingsProvider.GetLaunchSettingsAsync();
             }
         }
     }
