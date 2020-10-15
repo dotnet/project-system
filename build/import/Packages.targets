@@ -30,7 +30,7 @@
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.8.0-4.20464.1" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.8.0-4.final" />
     <PackageReference Update="OpenCover"                                                              Version="4.6.519" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
