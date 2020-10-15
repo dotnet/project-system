@@ -671,6 +671,7 @@ Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.ObjectsProperty
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropDesc -> System.ComponentModel.PropertyDescriptor (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropPage() -> Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName() -> String (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
+Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName(value As String) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetCallback -> Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetControlValue(value As Object) -> Void (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.SetDelegate (forwarded, contained in Microsoft.VisualStudio.AppDesigner)
