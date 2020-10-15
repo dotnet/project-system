@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+
 using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
 using EnumCollectionProjectValue = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>>;
 
@@ -30,6 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _subscriptionService = subscriptionService;
+
+            ReadyToBuild = new OrderPrecedenceImportCollection<IConfiguredProjectReadyToBuild>(projectCapabilityCheckProvider: project);
+        }
+
+        [ImportMany]
+        public OrderPrecedenceImportCollection<IConfiguredProjectReadyToBuild> ReadyToBuild
+        {
+            get;
         }
 
         [ConfiguredProjectAutoLoad]
@@ -49,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             // Transform the changes from design-time build -> Supported target frameworks
             DisposableValue<ISourceBlock<EnumCollectionProjectValue>> transformBlock = source.SourceBlock.TransformWithNoDelta(
                 update => update.Derive(Transform),
-                suppressVersionOnlyUpdates: true,
+                suppressVersionOnlyUpdates: false,
                 ruleNames: SupportedTargetFrameworkAlias.SchemaName);
 
             // Set the link up so that we publish changes to target block
@@ -89,6 +98,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
         public async Task<EnumCollection> GetListedValuesAsync()
         {
+            if (!IsReadyToBuild())
+                throw new InvalidOperationException("This configuration is not set to build");
+
+            // NOTE: This has a race, if called off the UI thread, the configuration could become 
+            // inactive underneath us and hence not ready for build, causing below to block forever.
+
             using (JoinableCollection.Join())
             {
                 EnumCollectionProjectValue snapshot = await SourceBlock.ReceiveAsync();
@@ -97,9 +112,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             }
         }
 
+        private bool IsReadyToBuild()
+        {
+            IConfiguredProjectReadyToBuild? readyToBuild = ReadyToBuild.FirstOrDefault()?.Value;
+
+            return readyToBuild?.IsValidToBuild == true;
+        }
+
         bool IDynamicEnumValuesGenerator.AllowCustomValues => false;
 
-        Task<IEnumValue?> IDynamicEnumValuesGenerator.TryCreateEnumValueAsync(string userSuppliedValue) => throw new NotSupportedException();
+        Task<IEnumValue?> IDynamicEnumValuesGenerator.TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
 
     }
 }
