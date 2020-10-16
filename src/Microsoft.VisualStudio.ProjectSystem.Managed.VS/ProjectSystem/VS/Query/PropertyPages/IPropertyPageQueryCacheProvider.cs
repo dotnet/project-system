@@ -14,6 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IPropertyPageQueryCacheProvider
     {
-        public IPropertyPageQueryCache CreateCache(UnconfiguredProject project);
+        IPropertyPageQueryCache CreateCache(UnconfiguredProject project);
     }
 }
