@@ -17,10 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class PropertyPageFromProjectDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
+        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties)
+        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties, IPropertyPageQueryCacheProvider queryCacheProvider)
         {
             _properties = properties;
+            _queryCacheProvider = queryCacheProvider;
         }
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
@@ -31,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    IEnumerable<IEntityValue> propertyPageValues = await PropertyPageDataProducer.CreatePropertyPageValuesAsync(request.RequestData, project, _properties);
+                    IEnumerable<IEntityValue> propertyPageValues = await PropertyPageDataProducer.CreatePropertyPageValuesAsync(request.RequestData, project, _queryCacheProvider, _properties);
                     foreach (IEntityValue propertyPageValue in propertyPageValues)
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyPageValue, request, ProjectModelZones.Cps));

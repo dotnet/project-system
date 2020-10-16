@@ -1,5 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
@@ -58,6 +60,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             property = null;
             index = default;
             return false;
+        }
+
+        /// <summary>
+        /// Checks if a given <see cref="ProjectConfiguration"/> matches a set of configuration dimensions and values.
+        /// A <see cref="ProjectConfiguration"/> is considered a match if it contains each of the supplied dimensions,
+        /// and the values match. All <see cref="ProjectConfiguration"/>s match the empty set of dimensions and values.
+        /// </summary>
+        public static bool MatchesDimensions(this ProjectConfiguration configuration, IEnumerable<(string dimension, string value)> targetDimensionsAndValues)
+        {
+            foreach ((string dimension, string value) in targetDimensionsAndValues)
+            {
+                if (!configuration.Dimensions.TryGetValue(dimension, out string projectDimensionValue)
+                    || !StringComparer.Ordinal.Equals(value, projectDimensionValue))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

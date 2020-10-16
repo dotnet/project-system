@@ -114,6 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IEntityRuntimeModel runtimeModel,
             EntityIdentity requestId,
             IProjectService2 projectService,
+            IPropertyPageQueryCacheProvider queryCacheProvider,
             string path,
             string propertyPageName,
             string propertyName,
@@ -125,7 +126,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                 && property.Visible)
             {
-                var context = new PropertyPageQueryCache(project);
+                var context = queryCacheProvider.CreateCache(project);
                 IEntityValue propertyValue = CreateUIPropertyValue(runtimeModel, requestId, context, property, index, requestedProperties);
                 return propertyValue;
             }

@@ -16,7 +16,7 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
-      https://dotnet.myget.org/F/symreader-converter/api/v3/index.json;
+      https://dotnet.myget.org/F/symreader-converter/api/v3/index.json
     </RestoreSources>
   </PropertyGroup>
 
@@ -96,9 +96,9 @@
     <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.8.338-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.8.338-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="16.8.338-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.9.34-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.9.34-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="16.9.34-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.8.0-2.20402.1" />
