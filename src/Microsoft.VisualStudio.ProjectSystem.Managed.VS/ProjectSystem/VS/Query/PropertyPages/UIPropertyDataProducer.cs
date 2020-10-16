@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
@@ -89,8 +90,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.SearchTerms)
             {
-                // TODO: extract search terms from property metadata.
-                newUIProperty.SearchTerms = ImmutableList<string>.Empty;
+                string? searchTermsString = property.GetMetadataValueOrNull("SearchTerms");
+                if (searchTermsString is null)
+                {
+                    newUIProperty.SearchTerms = ImmutableList<string>.Empty;
+                }
+                else
+                {
+                    newUIProperty.SearchTerms = searchTermsString.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
+                }
             }
 
             ((IEntityValueFromProvider)newUIProperty).ProviderState = (cache, property.ContainingRule, property.Name);
