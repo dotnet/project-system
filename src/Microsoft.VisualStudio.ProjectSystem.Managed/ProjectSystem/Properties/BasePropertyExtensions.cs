@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <exception cref="ArgumentException">
         ///     <paramref name="property"/> is <see langword="null"/> or empty.
         /// </exception>
-        public static string? GetMetadataValue(this BaseProperty property, string metadataName)
+        public static string? GetMetadataValueOrNull(this BaseProperty property, string metadataName)
         {
             Requires.NotNull(property, nameof(property));
             Requires.NotNullOrEmpty(metadataName, nameof(metadataName));

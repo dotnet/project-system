@@ -19,8 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyDataProducer
     {
-        private static readonly char[] s_searchTermsSeparators = new[] { ';' };
-
         public static IEntityValue CreateUIPropertyValue(IEntityValue parent, IPropertyPageQueryCache cache, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
@@ -92,14 +90,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.SearchTerms)
             {
-                string? searchTermsString = property.GetMetadataValue("SearchTerms");
+                string? searchTermsString = property.GetMetadataValueOrNull("SearchTerms");
                 if (searchTermsString is null)
                 {
                     newUIProperty.SearchTerms = ImmutableList<string>.Empty;
                 }
                 else
                 {
-                    newUIProperty.SearchTerms = searchTermsString.Split(s_searchTermsSeparators, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
+                    newUIProperty.SearchTerms = searchTermsString.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
                 }
             }
 

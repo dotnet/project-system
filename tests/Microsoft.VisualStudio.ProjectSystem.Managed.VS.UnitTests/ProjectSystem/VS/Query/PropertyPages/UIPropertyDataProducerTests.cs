@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;

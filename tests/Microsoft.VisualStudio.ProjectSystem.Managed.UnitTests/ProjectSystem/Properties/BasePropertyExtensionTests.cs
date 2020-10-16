@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
@@ -14,64 +13,70 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             TestProperty testProperty = null!;
 
-            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValue(metadataName: "DoesntMatter"));
+            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName: "DoesntMatter"));
         }
 
         [Fact]
         public void WhenTheMetadataNameIsNull_GetMetadataValueThrows()
         {
 
-            TestProperty testProperty = new TestProperty(new List<NameValuePair>());
+            TestProperty testProperty = new TestProperty() { Metadata = new() };
             string metadataName = null!;
 
-            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValue(metadataName));
+            Assert.Throws<ArgumentNullException>(() => testProperty.GetMetadataValueOrNull(metadataName));
         }
 
         [Fact]
         public void WhenTheMetadataNameIsTheEmptyString_GetMetadataValueThrows()
         {
-            TestProperty testProperty = new TestProperty(new List<NameValuePair>());
+            TestProperty testProperty = new TestProperty() { Metadata = new() };
             string metadataName = string.Empty;
 
-            Assert.Throws<ArgumentException>(() => testProperty.GetMetadataValue(metadataName));
+            Assert.Throws<ArgumentException>(() => testProperty.GetMetadataValueOrNull(metadataName));
         }
 
         [Fact]
         public void WhenTheRequestedMetadataIsNotFound_GetMetadataValueReturnsNull()
         {
-            TestProperty testProperty = new TestProperty(new List<NameValuePair>());
+            TestProperty testProperty = new TestProperty() { Metadata = new() };
             string metadataName = "MyMetadata";
 
-            Assert.Null(testProperty.GetMetadataValue(metadataName));
+            Assert.Null(testProperty.GetMetadataValueOrNull(metadataName));
         }
 
         [Fact]
         public void WhenTheRequestedMetadataIsFound_GetMetadataValueReturnsTheValue()
         {
-            TestProperty testProperty = new TestProperty(
-                new List<NameValuePair>
+            TestProperty testProperty = new TestProperty()
+            {
+                Metadata = new()
                 {
                     new() { Name = "Alpha", Value = "Kangaroo" },
                     new() { Name = "Beta", Value = "Wallaby" }
-                });
+                }
+            };
+
             string metadataName = "Beta";
 
-            Assert.Equal(expected: "Wallaby", actual: testProperty.GetMetadataValue(metadataName));
+            Assert.Equal(expected: "Wallaby", actual: testProperty.GetMetadataValueOrNull(metadataName));
         }
 
         [Fact]
         public void WhenTheRequestedMetadataIsSpecifiedMoreThanOnce_GetMetadataValueReturnsTheFirstValue()
         {
-            TestProperty testProperty = new TestProperty(
-                new List<NameValuePair>
+            TestProperty testProperty = new TestProperty()
+            {
+                Metadata = new()
                 {
                     new() { Name = "Beta", Value = "Wallaby" },
                     new() { Name = "Alpha", Value = "Dingo" },
                     new() { Name = "Alpha", Value = "Kangaroo" }
-                });
+                }
+            };
+
             string metadataName = "Alpha";
 
-            Assert.Equal(expected: "Dingo", actual: testProperty.GetMetadataValue(metadataName));
+            Assert.Equal(expected: "Dingo", actual: testProperty.GetMetadataValueOrNull(metadataName));
         }
 
         /// <summary>
@@ -80,10 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         private class TestProperty : BaseProperty
         {
-            public TestProperty(List<NameValuePair> metadata)
-            {
-                Metadata = metadata;
-            }
         }
     }
 }
