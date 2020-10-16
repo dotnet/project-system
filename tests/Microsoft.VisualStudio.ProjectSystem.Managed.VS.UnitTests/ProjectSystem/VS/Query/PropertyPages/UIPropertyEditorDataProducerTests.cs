@@ -89,6 +89,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             }
         }
 
+        [Fact]
+        public void WhenCreatingEditorsFromAStringPropertyWithFileSubtype_FileBrowseEditorIsCreated()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
+
+            var parentEntity = IEntityWithIdFactory.Create(key: "parentKey", value: "parentId");
+            var rule = new Rule();
+            rule.BeginInit();
+            rule.Properties.Add(
+                new StringProperty
+                {
+                    Name = "MyProperty",
+                    Subtype = "file"
+                });
+            rule.EndInit();
+
+            var results = UIPropertyEditorDataProducer.CreateEditorValues(parentEntity, rule, "MyProperty", properties);
+
+            Assert.Collection(results, entity => assertEqual(entity, expectedName: "FilePath"));
+
+            static void assertEqual(IEntityValue entity, string expectedName)
+            {
+                var editorEntity = (UIPropertyEditorValue)entity;
+                Assert.Equal(expectedName, editorEntity.Name);
+            }
+        }
+
+        [Fact]
+        public void WhenCreatingEditorsFromAStringPropertyWithPathSubtype_PathBrowseEditorIsCreated()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
+
+            var parentEntity = IEntityWithIdFactory.Create(key: "parentKey", value: "parentId");
+            var rule = new Rule();
+            rule.BeginInit();
+            rule.Properties.Add(
+                new StringProperty
+                {
+                    Name = "MyProperty",
+                    Subtype = "directory"
+                });
+            rule.EndInit();
+
+            var results = UIPropertyEditorDataProducer.CreateEditorValues(parentEntity, rule, "MyProperty", properties);
+
+            Assert.Collection(results, entity => assertEqual(entity, expectedName: "DirectoryPath"));
+
+            static void assertEqual(IEntityValue entity, string expectedName)
+            {
+                var editorEntity = (UIPropertyEditorValue)entity;
+                Assert.Equal(expectedName, editorEntity.Name);
+            }
+        }
+
         private class TestProperty : BaseProperty
         {
         }

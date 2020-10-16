@@ -64,6 +64,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     IEntityValue editorValue = CreateEditorValue(parent, editor, properties);
                     yield return editorValue;
                 }
+
+                if (property is StringProperty stringProperty)
+                {
+                    if (stringProperty.Subtype == "file")
+                    {
+                        yield return CreateEditorValue(parent, new ValueEditor { EditorType = "FilePath" }, properties);
+                    }
+                    else if (stringProperty.Subtype == "directory")
+                    {
+                        yield return CreateEditorValue(parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
+                    }
+                }
             }
         }
 

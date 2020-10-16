@@ -121,12 +121,12 @@
                   DisplayName="Output path"
                   Description="Specifies the location of the output files for this project's configuration."
                   Category="Output"
-                  Subtype="file"/>
+                  Subtype="directory" />
 
   <StringProperty Name="DocumentationFile"
                   DisplayName="XML documentation file path"
                   Description="Specifies the name of a file into which documentation comments will be processed."
                   HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/doc-compiler-option"
                   Category="Output"
-                  Subtype="file"/>
+                  Subtype="file" />
 </Rule>
