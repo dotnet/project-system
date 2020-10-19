@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.References.Roslyn;
@@ -14,176 +14,158 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     internal partial class ReferenceCleanupService
     {
-        private abstract class ReferenceHandler
+        private abstract class AbstractReferenceHandler
         {
-            protected readonly ReferenceType _referenceType;
-            protected readonly string _schema;
-            private IProjectRuleSnapshot _snapshotReferences;
+            private readonly ProjectSystemReferenceType _referenceType;
+            private readonly string _schema;
+            private readonly string _referenceName;
+            private readonly string _itemSpecification;
 
-            protected ReferenceHandler(ReferenceType referenceType, string schema)
+            private IProjectRuleSnapshot? _snapshotReferences;
+
+            protected AbstractReferenceHandler(ProjectSystemReferenceType referenceType, string schema, string referenceName, string itemSpecification)
             {
                 _referenceType = referenceType;
                 _schema = schema;
+                _referenceName = referenceName;
+                _itemSpecification = itemSpecification;
             }
+
+            public abstract Task<bool> RemoveReferenceAsync(ConfiguredProject configuredProject, ProjectSystemReferenceInfo reference);
 
             public IProjectRuleSnapshot GetProjectSnapshot(ConfiguredProject selectedConfiguredProject)
             {
                 IProjectSubscriptionService? serviceSubscription = selectedConfiguredProject.Services.ProjectSubscription;
                 Assumes.Present(serviceSubscription);
 
-                serviceSubscription.ProjectRuleSource.SourceBlock.TryReceive(filter, out IProjectVersionedValue<IProjectSubscriptionUpdate> item);
+                serviceSubscription.ProjectRuleSource.SourceBlock.TryReceive(Filter, out IProjectVersionedValue<IProjectSubscriptionUpdate> item);
 
                 _snapshotReferences = item.Value.CurrentState[_schema];
 
                 return _snapshotReferences;
             }
 
-            private static bool filter(IProjectVersionedValue<IProjectSubscriptionUpdate> obj)
-            {
-                return true;
-            }
+            private static bool Filter(IProjectVersionedValue<IProjectSubscriptionUpdate> obj) => true;
 
-            public void GetAndAppendReferences(List<Reference> references)
+            public List<ProjectSystemReferenceInfo> GetReferences()
             {
+                var references = new List<ProjectSystemReferenceInfo>();
+
+                if (_snapshotReferences is null)
+                {
+                    return references;
+                }
+
                 foreach (var item in _snapshotReferences.Items)
                 {
                     string treatAsUsed = GetAttributeTreatAsUsed(item);
-
                     string itemSpecification = GetAttributeItemSpecification(item);
 
-                    references.Add(new Reference(_referenceType, itemSpecification, treatAsUsed == "True"));
+                    references.Add(new ProjectSystemReferenceInfo(_referenceType, itemSpecification, treatAsUsed == bool.TrueString));
                 }
+
+                return references;
             }
 
-            private string GetAttributeTreatAsUsed(KeyValuePair<string, IImmutableDictionary<string, string>> item)
+            private static string GetAttributeTreatAsUsed(KeyValuePair<string, IImmutableDictionary<string, string>> item)
             {
-                item.Value.TryGetValue("TreatAsUsed", out string treatAsUsed);
+                item.Value.TryGetValue(ProjectReference.TreatAsUsedProperty, out string treatAsUsed);
+                treatAsUsed = string.IsNullOrEmpty(treatAsUsed) ? bool.FalseString : treatAsUsed;
+
                 return treatAsUsed;
             }
 
-            protected abstract string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item);
-
-            public abstract void RemoveReference(ConfiguredProject configuredProject, Reference reference);
-            public abstract void AddReference(ConfiguredProject configuredProject, Reference reference);
-            public abstract Task UpdateReferenceAsync(ConfiguredProject configuredProject, Reference reference);
-        }
-
-        private class ProjectReferenceHandler : ReferenceHandler
-        {
-            internal ProjectReferenceHandler() : base(ReferenceType.Project, ProjectReference.SchemaName)
-            { }
-
-            public override void AddReference(ConfiguredProject configuredProject, Reference reference)
+            private string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item)
             {
-                Assumes.Present(configuredProject.Services.ProjectReferences);
-                configuredProject.Services.ProjectReferences.AddAsync(reference.ItemSpecification);
-            }
+                item.Value.TryGetValue(_itemSpecification, out string itemSpecification);
 
-            public override void RemoveReference(ConfiguredProject configuredProject, Reference reference)
-            {
-                Assumes.Present(configuredProject.Services.ProjectReferences);
-                configuredProject.Services.ProjectReferences.RemoveAsync(reference.ItemSpecification);
-
-            }
-
-            public override Task UpdateReferenceAsync(ConfiguredProject configuredProject, Reference reference)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item)
-            {
-                item.Value.TryGetValue("Identity", out string itemSpecification);
                 return itemSpecification;
             }
+
+            public async Task<bool> UpdateReferenceAsync(ConfiguredProject activeConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
+            {
+                bool wasUpdated = false;
+
+                var projectAccessor = activeConfiguredProject.Services.ExportProvider.GetExportedValue<IProjectAccessor>();
+
+                string newValue = referenceUpdate.Action == ProjectSystemUpdateAction.TreatAsUsed ? bool.TrueString : bool.FalseString;
+
+                await projectAccessor.OpenProjectForWriteAsync(activeConfiguredProject, project =>
+                {
+                    var items = project.GetItemsByEvaluatedInclude(referenceUpdate.ReferenceInfo.ItemSpecification);
+
+                    try
+                    {
+                        var item = items.Where(i =>
+                                string.Compare(i.ItemType, _referenceName, StringComparison.OrdinalIgnoreCase) == 0)
+                            .First();
+
+                        if (item != null)
+                        {
+                            item.SetMetadataValue(ProjectReference.TreatAsUsedProperty, newValue);
+
+                            wasUpdated = true;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }, cancellationToken : cancellationToken);
+
+                return wasUpdated;
+            }
         }
 
-        private class PackageReferenceHandler : ReferenceHandler
+        private class ProjectAbstractReferenceHandler : AbstractReferenceHandler
         {
-            internal PackageReferenceHandler() : base(ReferenceType.Package, PackageReference.SchemaName)
+            internal ProjectAbstractReferenceHandler() : base(ProjectSystemReferenceType.Project, ProjectReference.SchemaName, ProjectReference.SchemaName, ProjectReference.IdentityProperty)
             { }
 
-            public override void AddReference(ConfiguredProject configuredProject, Reference reference)
+            public override async Task<bool> RemoveReferenceAsync(ConfiguredProject configuredProject, ProjectSystemReferenceInfo reference)
             {
-                Assumes.Present(configuredProject.Services.PackageReferences);
-                string packageIdentity = reference.ItemSpecification;
-                string version = "";
-                configuredProject.Services.PackageReferences.AddAsync(packageIdentity, version);
-            }
+                Assumes.Present(configuredProject);
+                Assumes.Present(configuredProject.Services);
+                Assumes.Present(configuredProject.Services.ProjectReferences);
 
-            public override void RemoveReference(ConfiguredProject configuredProject, Reference reference)
-            {
-                Assumes.Present(configuredProject.Services.PackageReferences);
-                configuredProject.Services.PackageReferences.RemoveAsync(reference.ItemSpecification);
-            }
+                await configuredProject.Services.ProjectReferences.RemoveAsync(reference.ItemSpecification);
 
-            public override Task UpdateReferenceAsync(ConfiguredProject configuredProject, Reference reference)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item)
-            {
-                item.Value.TryGetValue("Name", out string itemSpecification);
-                return itemSpecification;
+                return true;
             }
         }
 
-        private class AssemblyReferenceHandler : ReferenceHandler
+        private class PackageAbstractReferenceHandler : AbstractReferenceHandler
         {
-            internal AssemblyReferenceHandler() : base(ReferenceType.Assembly, AssemblyReference.SchemaName)
+            internal PackageAbstractReferenceHandler() : base(ProjectSystemReferenceType.Package, PackageReference.SchemaName, PackageReference.SchemaName, PackageReference.NameProperty)
             { }
 
-            public override void AddReference(ConfiguredProject configuredProject, Reference reference)
+            public override async Task<bool> RemoveReferenceAsync(ConfiguredProject configuredProject, ProjectSystemReferenceInfo reference)
             {
+                Assumes.Present(configuredProject);
+                Assumes.Present(configuredProject.Services);
+                Assumes.Present(configuredProject.Services.PackageReferences);
+
+                await configuredProject.Services.PackageReferences.RemoveAsync(reference.ItemSpecification);
+
+                return true;
+            }
+        }
+
+        private class AssemblyAbstractReferenceHandler : AbstractReferenceHandler
+        {
+            internal AssemblyAbstractReferenceHandler() : base(ProjectSystemReferenceType.Assembly, AssemblyReference.SchemaName, "Reference", AssemblyReference.IdentityProperty)
+            { }
+
+            public override async Task<bool> RemoveReferenceAsync(ConfiguredProject configuredProject, ProjectSystemReferenceInfo reference)
+            {
+                Assumes.Present(configuredProject);
+                Assumes.Present(configuredProject.Services);
                 Assumes.Present(configuredProject.Services.AssemblyReferences);
-                AssemblyName assemblyName;
-                string assemblyPath = "";
-                //_configuredProject.Services.AssemblyReferences.AddAsync(assemblyName: assemblyName, assemblyPath);
-            }
 
-            public override void RemoveReference(ConfiguredProject configuredProject, Reference reference)
-            {
-                Assumes.Present(configuredProject.Services.PackageReferences);
-                configuredProject.Services.AssemblyReferences.RemoveAsync(null, reference.ItemSpecification);
-            }
+                var assemblyName = new AssemblyName(reference.ItemSpecification);
 
-            public override Task UpdateReferenceAsync(ConfiguredProject configuredProject, Reference reference)
-            {
-                throw new NotImplementedException();
-            }
+                await configuredProject.Services.AssemblyReferences.RemoveAsync(assemblyName, null);
 
-            protected override string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item)
-            {
-                item.Value.TryGetValue("SDKName", out string itemSpecification);
-                return itemSpecification;
-            }
-        }
-
-        private class SdkReferenceHandler : ReferenceHandler
-        {
-            internal SdkReferenceHandler() : base(ReferenceType.Unknown, SdkReference.SchemaName)
-            { }
-
-            public override void AddReference(ConfiguredProject configuredProject, Reference reference)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void RemoveReference(ConfiguredProject configuredProject, Reference reference)
-            {
-                // Do not remove Sdks
-            }
-
-            public override Task UpdateReferenceAsync(ConfiguredProject configuredProject, Reference reference)
-            {
-                throw new NotImplementedException();
-            }
-
-            protected override string GetAttributeItemSpecification(KeyValuePair<string, IImmutableDictionary<string, string>> item)
-            {
-                item.Value.TryGetValue("Name", out string itemSpecification);
-                return itemSpecification;
+                return true;
             }
         }
     }
