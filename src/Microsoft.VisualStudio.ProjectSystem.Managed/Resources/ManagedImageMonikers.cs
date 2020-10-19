@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     public static class ManagedImageMonikers
     {
         // These GUIDs and IDs are defined in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ManagedImages.imagemanifest
-        private static readonly Guid s_manifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
+        private static readonly Guid s_manifestGuid = new("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
 
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ApplicationPrivate => KnownMonikers.ApplicationPrivate;
@@ -70,15 +70,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker WarningSmall => throw new NotSupportedException();
 
         // Everything below this, still needs to be moved to the ImageCatalog
-        public static ImageMoniker NuGetGrey => new ImageMoniker { Guid = s_manifestGuid, Id = 9 };
-        public static ImageMoniker NuGetGreyPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 10 };
-        public static ImageMoniker NuGetGreyWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 11 };
-        public static ImageMoniker Framework => new ImageMoniker { Guid = s_manifestGuid, Id = 22 };
-        public static ImageMoniker FrameworkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 23 };
-        public static ImageMoniker FrameworkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 24 };
-        public static ImageMoniker ProjectImports => new ImageMoniker { Guid = s_manifestGuid, Id = 25 };
-        public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
-        public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
+        public static ImageMoniker NuGetGrey => new() { Guid = s_manifestGuid, Id = 9 };
+        public static ImageMoniker NuGetGreyPrivate => new() { Guid = s_manifestGuid, Id = 10 };
+        public static ImageMoniker NuGetGreyWarning => new() { Guid = s_manifestGuid, Id = 11 };
+        public static ImageMoniker Framework => new() { Guid = s_manifestGuid, Id = 22 };
+        public static ImageMoniker FrameworkPrivate => new() { Guid = s_manifestGuid, Id = 23 };
+        public static ImageMoniker FrameworkWarning => new() { Guid = s_manifestGuid, Id = 24 };
+        public static ImageMoniker ProjectImports => new() { Guid = s_manifestGuid, Id = 25 };
+        public static ImageMoniker CodeInformationPrivate => new() { Guid = s_manifestGuid, Id = 2 };
+        public static ImageMoniker CodeInformationWarning => new() { Guid = s_manifestGuid, Id = 3 };
 
     }
 }

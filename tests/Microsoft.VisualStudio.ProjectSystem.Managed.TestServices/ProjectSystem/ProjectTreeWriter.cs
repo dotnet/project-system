@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class ProjectTreeWriter
     {
-        private readonly StringBuilder _builder = new StringBuilder();
+        private readonly StringBuilder _builder = new();
         private readonly ProjectTreeWriterOptions _options;
         private readonly IProjectTree _parent;
 

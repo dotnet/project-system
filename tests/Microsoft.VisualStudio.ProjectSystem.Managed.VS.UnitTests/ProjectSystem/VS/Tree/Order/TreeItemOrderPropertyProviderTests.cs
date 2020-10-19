@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
 {
     public class TreeItemOrderPropertyProviderTests
     {
-        private readonly List<(string type, string include)> _simpleOrderFile = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _simpleOrderFile = new()
         {
             ("Compile", "Order.fs"),
             ("Compile", "Customer.fs"),
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
-        private readonly List<(string type, string include)> _simpleOrderFileDuplicate = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _simpleOrderFileDuplicate = new()
         {
             ("Compile", "Order.fs"),
             ("Compile", "Customer.fs"),
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             }
         }
 
-        private readonly List<(string type, string include)> _orderedWithDups = new List<(string type, string include)>
+        private readonly List<(string type, string include)> _orderedWithDups = new()
         {
             ("Compile", "Common.fs"),
             ("Compile", "Tables\\Order.fs"),
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
             Assert.Equal(expectedOrder, values.DisplayOrder);
         }
 
-        private readonly List<(string type, string include, string? linkPath)> _orderedWithLinkPaths = new List<(string type, string include, string? linkPath)>
+        private readonly List<(string type, string include, string? linkPath)> _orderedWithLinkPaths = new()
         {
             ("Compile", "Common.fs",         "Tables/Test.fs"),
             ("Compile", "Tables\\Order.fs",  null),
@@ -267,6 +267,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Order
                 metadata: metadata);
 
         private static ReferencesProjectTreeCustomizablePropertyValues GetInitialValues() =>
-            new ReferencesProjectTreeCustomizablePropertyValues();
+            new();
     }
 }

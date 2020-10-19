@@ -720,12 +720,15 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                         .TabTitle = .EditorCaption
                         .TabAutomationName = PROP_PAGE_TAB_PREFIX & PropertyPages(Index).Guid.ToString("N")
 
-                        Dim SpecialTabsTelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
-                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = New TelemetryPiiProperty(.EditorCaption)
-                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
-                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
-                        SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid.ToString("B")
-                        TelemetryService.DefaultSession.PostEvent(SpecialTabsTelemetryEvent)
+                        ' Load fails are reported earlier
+                        If (.PropertyPageInfo.LoadException Is Nothing) Then
+                            Dim SpecialTabsTelemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "TabInfo")
+                            SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.TabTitle") = New TelemetryPiiProperty(.EditorCaption)
+                            SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "TabInfo.GUID") = PropertyPages(Index).Guid.ToString("B")
+                            SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.Extension") = IO.Path.GetExtension(_projectFilePath)
+                            SpecialTabsTelemetryEvent.Properties(TelemetryPropertyPrefix + "Project.GUID") = _projectGuid.ToString("B")
+                            TelemetryService.DefaultSession.PostEvent(SpecialTabsTelemetryEvent)
+                        End If
 
                     Else
                         Dim FileName As String = DirectCast(AppDesignerItems(Index - PropertyPages.Length), String)

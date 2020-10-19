@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="needs-review-translation">Kimlik doğrulaması modu:</target>
+        <target state="translated">Ki_mlik doğrulaması modu:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="needs-review-translation">Bul...</target>
+        <target state="translated">_Bul...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="needs-review-translation">Yürütülebilir</target>
+        <target state="translated">Yürütülebilir</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="needs-review-translation">Uzak m_akine kullanın:</target>
+        <target state="translated">_Uzak makine kullan:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -139,37 +139,37 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="needs-review-translation">Ekle</target>
+        <target state="translated">_Ekle</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="needs-review-translation">Uygulama bağımsız değişkenleri:</target>
+        <target state="translated">Uygulama bağımsız d_eğişkenleri:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="needs-review-translation">Gözat...</target>
+        <target state="translated">_Gözat...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="needs-review-translation">Sil</target>
+        <target state="translated">_Sil</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="needs-review-translation">Ortam değişkenleri:</target>
+        <target state="translated">Or_tam değişkenleri:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="needs-review-translation">Yürütülebilir:</target>
+        <target state="translated">_Yürütülebilir:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="needs-review-translation">Başlatma:</target>
+        <target state="translated">_Başlat:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -184,17 +184,17 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="needs-review-translation">Yeni...</target>
+        <target state="translated">_Yeni...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="needs-review-translation">Profil:</target>
+        <target state="translated">_Profil:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="needs-review-translation">Kaldır</target>
+        <target state="translated">_Kaldır</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="needs-review-translation">Çalışma dizini:</target>
+        <target state="translated">_Çalışma dizini:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="needs-review-translation">Yerel kod üzerinde hata ayıklamayı etkinleştir</target>
+        <target state="translated">Ye_rel kod hata ayıklamasını etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="needs-review-translation">SQL Server hata ayıklamasını etkinleştir</target>
+        <target state="translated">_SQL Server hata ayıklamasını etkinleştir</target>
         <note />
       </trans-unit>
     </body>

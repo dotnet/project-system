@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,6 +31,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         <SupportedTargetFramework Include="".NETCoreApp,Version=v1.1"" DisplayName="".NET Core 1.1"" />
         <SupportedTargetFramework Include="".NETCoreApp,Version=v2.0"" DisplayName="".NET Core 2.0"" />
     </ItemGroup>
+    <PropertyGroup>
+        <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+    </PropertyGroup>
 </Project>";
 
             var projectAccessor = IProjectAccessorFactory.Create(project);
@@ -48,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         [Fact]
-        public async Task TryCreateEnumValueAsync_ThrowsNotImplemented()
+        public async Task TryCreateEnumValueAsync_ReturnsNull()
         {
             var projectAccessor = IProjectAccessorFactory.Create();
             var configuredProject = ConfiguredProjectFactory.Create();
@@ -56,10 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var provider = new SupportedTargetFrameworksEnumProvider(projectAccessor, configuredProject);
             var generator = await provider.GetProviderAsync(null);
 
-            Assert.Throws<NotImplementedException>(() =>
-            {
-                generator.TryCreateEnumValueAsync("foo");
-            });
+            Assert.Null(await generator.TryCreateEnumValueAsync("foo"));
         }
     }
 }

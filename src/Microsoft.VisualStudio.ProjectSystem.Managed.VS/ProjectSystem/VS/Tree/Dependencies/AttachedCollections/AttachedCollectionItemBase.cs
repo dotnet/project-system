@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
         //
         // NOTE we don't have to support ITreeDisplayItemWithImages -- it's covered by ITreeDisplayItem
 
-        private static readonly HashSet<Type> s_supportedPatterns = new HashSet<Type>
+        private static readonly HashSet<Type> s_supportedPatterns = new()
         {
             typeof(ITreeDisplayItem),
             typeof(IBrowsablePattern),

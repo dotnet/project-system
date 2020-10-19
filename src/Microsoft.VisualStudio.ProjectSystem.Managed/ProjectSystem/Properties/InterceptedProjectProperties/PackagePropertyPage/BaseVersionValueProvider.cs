@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     internal abstract class BaseVersionValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string PackageVersionMSBuildProperty = "Version";
-        protected static readonly Version DefaultVersion = new Version(1, 0, 0);
+        protected static readonly Version DefaultVersion = new(1, 0, 0);
 
         protected abstract string PropertyName { get; }
 

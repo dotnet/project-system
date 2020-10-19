@@ -4,52 +4,52 @@
     <body>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
         <source>preview</source>
-        <target state="new">preview</target>
+        <target state="translated">önizleme</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
         <source>latest</source>
-        <target state="new">latest</target>
+        <target state="translated">en son</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
         <source>5.0</source>
-        <target state="new">5.0</target>
+        <target state="translated">5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
         <source>none</source>
-        <target state="new">none</target>
+        <target state="translated">yok</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelLabel.Text">
         <source>Analysis Level</source>
-        <target state="new">Analysis Level</target>
+        <target state="translated">Analiz Düzeyi</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableNETAnalyzersCheckBox.Text">
         <source>Enable .NET analyzers</source>
-        <target state="new">Enable .NET analyzers</target>
+        <target state="translated">.NET çözümleyicilerini etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build (experimental)</source>
-        <target state="new">Enforce CodeStyle on build (experimental)</target>
+        <target state="translated">Derlemede CodeStyle'ı zorla (deneysel)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>.NET analyzers</source>
-        <target state="new">.NET analyzers</target>
+        <target state="translated">.NET çözümleyicileri</target>
         <note />
       </trans-unit>
       <trans-unit id="NETAnalyzersLinkLabel.Text">
         <source>What are .NET analyzers?</source>
-        <target state="new">What are .NET analyzers?</target>
+        <target state="translated">.NET çözümleyicileri nedir?</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
         <source>All analyzers</source>
-        <target state="needs-review-translation">Çözümleyiciler</target>
+        <target state="translated">Tüm çözümleyiciler</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">

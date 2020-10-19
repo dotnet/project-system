@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="needs-review-translation">Modo de autenticación:</target>
+        <target state="translated">_Modo de autenticación:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="needs-review-translation">Buscar...</target>
+        <target state="translated">_Buscar...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="needs-review-translation">Archivo ejecutable</target>
+        <target state="translated">Archivo ejecutable</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="needs-review-translation">Usar _máquina remota:</target>
+        <target state="translated">_Usar máquina remota:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -139,37 +139,37 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="needs-review-translation">Agregar</target>
+        <target state="translated">_Agregar</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="needs-review-translation">Argumentos de aplicación:</target>
+        <target state="translated">Arg_umentos de aplicación:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="needs-review-translation">Examinar...</target>
+        <target state="translated">_Examinar...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="needs-review-translation">Eliminar</target>
+        <target state="translated">_Eliminar</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="needs-review-translation">Variables de entorno:</target>
+        <target state="translated">Variables de e_ntorno:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="needs-review-translation">Ejecutable:</target>
+        <target state="translated">Arc_hivo ejecutable:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="needs-review-translation">Iniciar:</target>
+        <target state="translated">_Iniciar:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -184,17 +184,17 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="needs-review-translation">Nuevo...</target>
+        <target state="translated">_Nuevo...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="needs-review-translation">Perfil:</target>
+        <target state="translated">_Perfil:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="needs-review-translation">Quitar</target>
+        <target state="translated">_Quitar</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="needs-review-translation">Directorio de trabajo:</target>
+        <target state="translated">Dir_ectorio de trabajo:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="needs-review-translation">Habilitar depuración de código nativo</target>
+        <target state="translated">Habilitar depuración de código nati_vo</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="needs-review-translation">Habilitar depuración de SQL Server</target>
+        <target state="translated">Habilitar depuración de _SQL Server</target>
         <note />
       </trans-unit>
     </body>

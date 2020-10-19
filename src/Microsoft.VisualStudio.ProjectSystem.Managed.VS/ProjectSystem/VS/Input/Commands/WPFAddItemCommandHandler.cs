@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     [AppliesTo(ProjectCapability.DotNet)]
     internal class WPFAddItemCommandHandler : AbstractAddItemCommandHandler
     {
-        private static readonly Guid s_wpfPackage = new Guid("{b3bae735-386c-4030-8329-ef48eeda4036}");
+        private static readonly Guid s_wpfPackage = new("{b3bae735-386c-4030-8329-ef48eeda4036}");
 
         private static readonly ImmutableDictionary<long, ImmutableArray<TemplateDetails>> s_templateDetails = ImmutableDictionary<long, ImmutableArray<TemplateDetails>>.Empty
             //                     Command Id                             Capabilities                                          DirNamePackageGuid       DirNameResourceId                                         TemplateName  TemplateNameResourceId

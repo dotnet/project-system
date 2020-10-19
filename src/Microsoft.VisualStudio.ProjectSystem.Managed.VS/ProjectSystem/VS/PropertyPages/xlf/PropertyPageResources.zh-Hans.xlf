@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="needs-review-translation">身份验证模式:</target>
+        <target state="translated">身份验证模式(_T):</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="needs-review-translation">查找:</target>
+        <target state="translated">查找(_F)...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="needs-review-translation">可执行文件</target>
+        <target state="translated">可执行文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="needs-review-translation">使用远程计算机(_A):</target>
+        <target state="translated">使用远程计算机(_U):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -139,37 +139,37 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="needs-review-translation">添加</target>
+        <target state="translated">添加(_A)</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="needs-review-translation">应用程序参数:</target>
+        <target state="translated">应用程序参数(_G):</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="needs-review-translation">浏览...</target>
+        <target state="translated">浏览(_B)...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="needs-review-translation">删除</target>
+        <target state="translated">删除(_D)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="needs-review-translation">环境变量:</target>
+        <target state="translated">环境变量(_M):</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="needs-review-translation">可执行文件:</target>
+        <target state="translated">可执行文件(_E)</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="needs-review-translation">启动:</target>
+        <target state="translated">启动(_L):</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -184,17 +184,17 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="needs-review-translation">新建...</target>
+        <target state="translated">新建(_N)...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="needs-review-translation">配置文件:</target>
+        <target state="translated">配置文件(_P):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="needs-review-translation">移除</target>
+        <target state="translated">移除(_R)</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="needs-review-translation">工作目录:</target>
+        <target state="translated">工作目录(_W):</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="needs-review-translation">启用本机代码调试</target>
+        <target state="translated">启用本地代码调试(_V)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="needs-review-translation">启用 SQL Server 调试</target>
+        <target state="translated">启用 SQL Server 调试(_S)</target>
         <note />
       </trans-unit>
     </body>

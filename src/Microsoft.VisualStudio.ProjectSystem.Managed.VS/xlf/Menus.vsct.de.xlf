@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="cmdidNavigateToProject|ButtonText">
         <source>N&amp;avigate to Project</source>
-        <target state="new">N&amp;avigate to Project</target>
+        <target state="translated">Zu Projekt n&amp;avigieren</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidProjectDebugger|ButtonText">

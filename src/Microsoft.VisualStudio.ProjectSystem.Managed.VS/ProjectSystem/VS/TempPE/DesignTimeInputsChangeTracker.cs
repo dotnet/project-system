@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IDesignTimeInputsDataSource _inputsDataSource;
         private readonly IDesignTimeInputsFileWatcher _fileWatcher;
 
-        private readonly DisposableBag _disposables = new DisposableBag();
+        private readonly DisposableBag _disposables = new();
 
         private DesignTimeInputSnapshot? _currentState;
         private int _version;

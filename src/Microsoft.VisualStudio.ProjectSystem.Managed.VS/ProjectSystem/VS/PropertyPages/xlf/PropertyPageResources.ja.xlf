@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="needs-review-translation">認証モード:</target>
+        <target state="translated">認証モード(_T):</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="needs-review-translation">検索:</target>
+        <target state="translated">検索(_F)...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="needs-review-translation">実行可能ファイル</target>
+        <target state="translated">実行可能ファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="needs-review-translation">リモート マシンを使用する(_A):</target>
+        <target state="translated">リモート マシンを使用する(_U):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -139,37 +139,37 @@
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="needs-review-translation">追加</target>
+        <target state="translated">追加(_A)</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="needs-review-translation">アプリケーション引数:</target>
+        <target state="translated">アプリケーション引数(_G):</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="needs-review-translation">参照...</target>
+        <target state="translated">参照(_B)...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="needs-review-translation">削除</target>
+        <target state="translated">削除(_D)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="needs-review-translation">環境変数:</target>
+        <target state="translated">環境変数(_M):</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="needs-review-translation">実行可能ファイル:</target>
+        <target state="translated">実行可能ファイル(_E):</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="needs-review-translation">起動:</target>
+        <target state="translated">起動(_L):</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -184,17 +184,17 @@
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="needs-review-translation">新規...</target>
+        <target state="translated">新規作成(_N)...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="needs-review-translation">プロファイル:</target>
+        <target state="translated">プロファイル(_P):</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="needs-review-translation">削除</target>
+        <target state="translated">削除(_R)</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="needs-review-translation">作業ディレクトリ:</target>
+        <target state="translated">作業ディレクトリ(_W):</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="needs-review-translation">ネイティブ コードのデバッグを有効にする</target>
+        <target state="translated">ネイティブ コード デバッグを有効にする(_V)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -259,7 +259,7 @@
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="needs-review-translation">SQL Server デバッグを有効にする</target>
+        <target state="translated">SQL Server デバッグを有効にする(_S)</target>
         <note />
       </trans-unit>
     </body>

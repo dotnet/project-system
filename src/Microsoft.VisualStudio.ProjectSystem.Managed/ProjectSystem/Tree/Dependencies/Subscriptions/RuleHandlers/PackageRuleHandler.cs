@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     {
         public const string ProviderTypeString = "Package";
 
-        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
+        private static readonly DependencyGroupModel s_groupModel = new(
             ProviderTypeString,
             Resources.PackagesNodeName,
             new DependencyIconSet(
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 
-        private static readonly InternPool<string> s_targetFrameworkInternPool = new InternPool<string>(StringComparer.Ordinal);
+        private static readonly InternPool<string> s_targetFrameworkInternPool = new(StringComparer.Ordinal);
 
         private bool TryCreatePackageDependencyModel(
             string itemSpec,

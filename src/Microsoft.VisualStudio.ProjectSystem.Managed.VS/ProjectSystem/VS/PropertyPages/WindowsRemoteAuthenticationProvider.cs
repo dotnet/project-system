@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
     [Order(2)]
     internal class WindowsRemoteAuthenticationProvider : IRemoteAuthenticationProvider
     {
-        private static readonly Guid s_localPortSupplier = new Guid("708C1ECA-FF48-11D2-904F-00C04FA302A1");
+        private static readonly Guid s_localPortSupplier = new("708C1ECA-FF48-11D2-904F-00C04FA302A1");
 
         [ImportingConstructor]
         public WindowsRemoteAuthenticationProvider()

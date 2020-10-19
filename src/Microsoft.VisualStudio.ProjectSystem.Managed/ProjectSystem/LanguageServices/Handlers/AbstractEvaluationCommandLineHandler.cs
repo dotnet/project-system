@@ -66,8 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         // command-line arguments as individual item includes, such as <CscCommandLineArguments Include="/reference:Foo.dll"/>, without any 
         // metadata.
         //
-        private readonly HashSet<string> _paths = new HashSet<string>(StringComparers.Paths);
-        private readonly Queue<VersionedProjectChangeDiff> _projectEvaluations = new Queue<VersionedProjectChangeDiff>();
+        private readonly HashSet<string> _paths = new(StringComparers.Paths);
+        private readonly Queue<VersionedProjectChangeDiff> _projectEvaluations = new();
         private readonly UnconfiguredProject _project;
 
         /// <summary>

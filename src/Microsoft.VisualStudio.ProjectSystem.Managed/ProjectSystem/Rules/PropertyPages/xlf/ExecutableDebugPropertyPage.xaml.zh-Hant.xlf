@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enables debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="new">Enables debugging for managed and native code together, also known as mixed-mode debugging.</target>
+        <target state="translated">同時為受控碼和機器碼啟用偵錯，也稱為混合模式偵錯。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -59,12 +59,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
+        <target state="translated">執行處理序前要設定的環境變數。變數以逗號 (,) 分隔，變數名稱與值則以等號 (=) 分隔。範例: var1=value1,var2=value2,var3=value3。您可以使用斜線 (/) 逸出變數內顯示的逗號與等號。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="new">Environment variables</target>
+        <target state="translated">環境變數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">

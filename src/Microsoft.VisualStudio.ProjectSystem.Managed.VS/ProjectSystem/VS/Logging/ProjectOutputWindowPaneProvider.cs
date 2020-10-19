@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Logging
     [Export(typeof(IProjectOutputWindowPaneProvider))]
     internal class ProjectOutputWindowPaneProvider : IProjectOutputWindowPaneProvider
     {
-        private static readonly Guid s_projectOutputWindowPaneGuid = new Guid("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
+        private static readonly Guid s_projectOutputWindowPaneGuid = new("{A18568CC-CA90-4AEE-9D14-A7E9D753B544}");
 
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsOutputWindow?> _outputWindow;

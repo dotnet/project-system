@@ -15,18 +15,20 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
     ';ApplicationDesignerEditorFactory
     '
     'Remarks:
-    '   The editor factory for the resource editor.  The job of this class is
-    '   simply to create a new resource editor designer when requested by the
+    '   The editor factory for the application designer. The job of this class is
+    '   simply to create a new application designer when requested by the
     '   shell.
     '**************************************************************************
     <CLSCompliant(False),
-    Guid("04b8ab82-a572-4fef-95ce-5222444b6b64"),
+    Guid(ApplicationDesignerEditorFactory.EditorGuidString),
     ProvideView(LogicalView.Designer, "Design")>
     Public NotInheritable Class ApplicationDesignerEditorFactory
         Implements IVsEditorFactory
 
+        Friend Const EditorGuidString = "04b8ab82-a572-4fef-95ce-5222444b6b64"
+
         'The all important GUIDs 
-        Private Shared ReadOnly s_editorGuid As New Guid("{04b8ab82-a572-4fef-95ce-5222444b6b64}")
+        Private Shared ReadOnly s_editorGuid As New Guid(EditorGuidString)
         Private Shared ReadOnly s_commandUIGuid As New Guid("{d06cd5e3-d961-44dc-9d80-c89a1a8d9d56}")
 
         'Exposing the GUID for the rest of the assembly to see
@@ -212,7 +214,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             ' The designer nominally supports VSConstants.LOGVIEWID.Designer_guid however it is also called with other GUIDs
             ' that are for the various sub-tabs of the property pages
-            ' Rather than hard code those here, we simply allow through everything TextView, as that is
+            ' Rather than hard code those here, we simply allow through everything except TextView, as that is
             ' used when opening files for text editing, and we want the project file to be editable as XML in that scenario
 
             If rguidLogicalView = VSConstants.LOGVIEWID.TextView_guid Then
@@ -233,11 +235,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
             'Site is different - set it
             _site = Site
-            If TypeOf Site Is OLE.Interop.IServiceProvider Then
-                _siteProvider = New ServiceProvider(CType(Site, OLE.Interop.IServiceProvider))
-            Else
-                Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
-            End If
+            _siteProvider = New ServiceProvider(Site)
         End Function
 
     End Class

@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         private sealed class ItemComparer : IEqualityComparer<(string path, string? link, CopyType copyType)>
         {
-            public static readonly ItemComparer Instance = new ItemComparer();
+            public static readonly ItemComparer Instance = new();
 
             private ItemComparer()
             {

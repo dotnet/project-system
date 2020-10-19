@@ -4,6 +4,8 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using static Microsoft.VisualStudio.VSConstants;
+using Microsoft.VisualStudio.PlatformUI;
+using System.Globalization;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -45,6 +47,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 return defaultResult;
 
             return (MessageBoxResult)VsShellUtilities.ShowMessageBox(_serviceProvider, message, null, icon, button, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        }
+
+        public bool Confirm(string message, out bool disablePromptMessage)
+        {
+            string dontShowAgainMessage = string.Format(CultureInfo.CurrentCulture, VSResources.DontShowAgain);
+
+            var userSelection = MessageDialog.Show("Microsoft Visual Studio", message, MessageDialogCommandSet.YesNo, dontShowAgainMessage,
+                    out disablePromptMessage);
+
+            return userSelection == MessageDialogCommand.Yes;
         }
     }
 }

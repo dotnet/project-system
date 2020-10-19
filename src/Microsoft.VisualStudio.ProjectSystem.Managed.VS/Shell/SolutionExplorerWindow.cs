@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Shell
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal class SolutionExplorerWindow
     {
-        private static readonly Guid s_solutionExplorer = new Guid(EnvDTE.Constants.vsWindowKindSolutionExplorer);
+        private static readonly Guid s_solutionExplorer = new(EnvDTE.Constants.vsWindowKindSolutionExplorer);
 
         private readonly Lazy<IVsUIHierarchyWindow2?> _solutionExplorer;
         private readonly IProjectThreadingService _threadingService;

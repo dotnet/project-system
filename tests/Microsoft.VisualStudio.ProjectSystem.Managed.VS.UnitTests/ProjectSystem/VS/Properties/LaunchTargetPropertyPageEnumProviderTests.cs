@@ -22,14 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         }
 
         [Fact]
-        public async Task TryCreateEnumValueAsync_Throws()
+        public async Task TryCreateEnumValueAsync_ReturnsNull()
         {
             var project = ConfiguredProjectFactory.Create();
 
             var provider = new LaunchTargetPropertyPageEnumProvider(project);
             var generator = await provider.GetProviderAsync(options: null);
 
-            await Assert.ThrowsAsync<NotImplementedException>(() => generator.TryCreateEnumValueAsync("MyTarget"));
+            Assert.Null(await generator.TryCreateEnumValueAsync("MyTarget"));
         }
 
         [Fact]

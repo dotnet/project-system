@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         public bool IsMatch(string candidateText) => _inner.IsMatch(candidateText);
 
-        private readonly Dictionary<object, IRelatableItem> _itemByKey = new Dictionary<object, IRelatableItem>();
+        private readonly Dictionary<object, IRelatableItem> _itemByKey = new();
 
         public void SubmitResult(IRelatableItem? item)
         {

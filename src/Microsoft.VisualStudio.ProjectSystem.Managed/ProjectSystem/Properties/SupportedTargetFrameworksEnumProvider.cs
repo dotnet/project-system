@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 
@@ -52,7 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 return _projectAccessor.OpenProjectForReadAsync(_configuredProject, project =>
                 {
+                    string identifier = project.GetPropertyValue(ConfigurationGeneral.TargetFrameworkIdentifierProperty);
+
                     return (ICollection<IEnumValue>)project.GetItems(itemType: SupportedTargetFrameworkItemName)
+                                                           .Where(i => CanRetargetTo(identifier, i.EvaluatedInclude))
                                                            .Select(i => new PageEnumValue(new EnumValue
                                                            {
                                                                Name = i.EvaluatedInclude,
@@ -67,9 +71,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             /// persisted value in the project. So this method should never be called.
             /// </summary>
             /// <param name="userSuppliedValue"></param>
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue)
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
+
+            private static bool CanRetargetTo(string identifier, string moniker)
             {
-                throw new NotImplementedException();
+                // We currently limit retargeting between target framework families as the SDK lists all available 
+                // supported frameworks, not just the ones that are supported. https://github.com/dotnet/project-system/issues/3024 
+                // is tracking making this better.
+
+                try
+                {
+                    var name = new FrameworkName(moniker);
+
+                    return StringComparers.FrameworkIdentifiers.Equals(name.Identifier, identifier);
+                }
+                catch (ArgumentException)
+                {
+                    return false;
+                }
             }
         }
     }
