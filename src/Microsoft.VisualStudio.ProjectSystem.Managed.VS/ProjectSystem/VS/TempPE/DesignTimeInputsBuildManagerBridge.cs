@@ -124,10 +124,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         /// Preprocess gets called as each data flow block updates and its job is to take the input from those blocks and do whatever work needed
         /// so that ApplyAsync has all of the info it needs to do its job.
         /// </summary>
-        protected override Task<IProjectVersionedValue<DesignTimeInputSnapshot>> PreprocessAsync(IProjectVersionedValue<DesignTimeInputSnapshot> input, IProjectVersionedValue<DesignTimeInputSnapshot>? previousOutput)
+        protected override Task<IProjectVersionedValue<DesignTimeInputSnapshot>?> PreprocessAsync(IProjectVersionedValue<DesignTimeInputSnapshot> input, IProjectVersionedValue<DesignTimeInputSnapshot>? previousOutput)
         {
             // No need to manipulate the data
-            return Task.FromResult(input);
+            return Task.FromResult<IProjectVersionedValue<DesignTimeInputSnapshot>?>(input);
         }
     }
 }
