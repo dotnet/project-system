@@ -101,6 +101,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             }
 
+            if (requestedProperties.DependsOn)
+            {
+                string? dependsOnString = property.GetMetadataValueOrNull("DependsOn");
+                if (dependsOnString is null)
+                {
+                    newUIProperty.DependsOn = ImmutableList<string>.Empty;
+                }
+                else
+                {
+                    newUIProperty.DependsOn = dependsOnString.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
+                }
+            }
+
+            if (requestedProperties.VisibilityCondition)
+            {
+                string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
+                if (visibilityCondition is null)
+                {
+                    newUIProperty.VisibilityCondition = string.Empty;
+                }
+                else
+                {
+                    newUIProperty.VisibilityCondition = visibilityCondition;
+                }
+            }
+
             ((IEntityValueFromProvider)newUIProperty).ProviderState = (cache, property.ContainingRule, property.Name);
 
             return newUIProperty;

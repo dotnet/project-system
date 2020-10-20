@@ -200,6 +200,134 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             });
         }
 
+        [Fact]
+        public void WhenAPropertyHasNoDependencies_AnEmptyListIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new List<NameValuePair>()
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Empty(result.DependsOn);
+        }
+
+        [Fact]
+        public void WhenAPropertyHasAnEmptyListOfDependencies_AnEmptyListIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "DependsOn", Value = "" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Empty(result.DependsOn);
+        }
+
+        [Fact]
+        public void WhenAPropertyHasOneDependency_OneItemIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "DependsOn", Value = "SomeOtherProperty" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Collection(result.DependsOn, new Action<string>[]
+            {
+                searchTerm => Assert.Equal(expected: "SomeOtherProperty", actual: searchTerm)
+            });
+        }
+
+        [Fact]
+        public void WhenAPropertyHasMultipleDependencies_MultipleItemsAreReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "DependsOn", Value = "AlphaProperty;BetaProperty;GammaProperty" }
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Collection(result.DependsOn, new Action<string>[]
+            {
+                searchTerm => Assert.Equal(expected: "AlphaProperty", actual: searchTerm),
+                searchTerm => Assert.Equal(expected: "BetaProperty", actual: searchTerm),
+                searchTerm => Assert.Equal(expected: "GammaProperty", actual: searchTerm),
+            });
+        }
+
+        [Fact]
+        public void WhenAPropertyHasNoVisibilityCondition_AnEmptyStringIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeVisibilityCondition: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new List<NameValuePair>()
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Equal(expected: string.Empty, actual: result.VisibilityCondition);
+        }
+
+        [Fact]
+        public void WhenAPropertyHasAVisibilityCondition_ItIsReturned()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeVisibilityCondition: true);
+
+            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IPropertyPageQueryCacheFactory.Create();
+            var property = new TestProperty
+            {
+                Metadata = new()
+                {
+                    new() { Name = "VisibilityCondition", Value = "true or false"}
+                }
+            };
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+
+            Assert.Equal(expected: "true or false", actual: result.VisibilityCondition);
+        }
+
         private class TestProperty : BaseProperty
         {
         }
