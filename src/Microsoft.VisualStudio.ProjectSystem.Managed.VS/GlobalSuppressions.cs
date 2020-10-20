@@ -72,3 +72,5 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "<Pending>", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections.AttachedCollectionItemBase")]
 [assembly: SuppressMessage("Style", "IDE0008:Use explicit type", Justification = "<Pending>", Scope = "member", Target = "~M:Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInputDataSource.LinkExternalInput(System.Threading.Tasks.Dataflow.ITargetBlock{Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue{Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput}})~System.IDisposable")]
+
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "https://github.com/dotnet/roslyn/issues/48782", Scope = "type", Target = "~T:Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree.SpecialWebFolderPropertiesProvider.SpecialWebFolder")]
