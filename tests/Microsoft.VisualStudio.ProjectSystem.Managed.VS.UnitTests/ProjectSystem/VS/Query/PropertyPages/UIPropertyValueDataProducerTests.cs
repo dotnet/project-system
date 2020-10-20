@@ -14,9 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenPropertyIsAnIEvaluatedProperty_GetUnevaluatedValueAsyncIsCalled()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: false,
-                includeUnevaluatedValue: true);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeUnevaluatedValue: true);
 
             var mockEvaluatedProperty = new Mock<IEvaluatedProperty>();
             mockEvaluatedProperty.Setup(m => m.GetUnevaluatedValueAsync()).ReturnsAsync("unevaluated value");
@@ -40,9 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIBoolProperty_ThenTheEvaluatedValueIsABool()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockBoolProperty = new Mock<IBoolProperty>();
             mockBoolProperty.Setup(m => m.GetValueAsBoolAsync()).ReturnsAsync(true);
@@ -66,9 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task WhenThePropertyIsAnIStringProperty_ThenTheEvaluatedValuesIsAString()
         {
 
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockStringProperty = new Mock<IStringProperty>();
             mockStringProperty.Setup(m => m.GetValueAsStringAsync()).ReturnsAsync("string value");
@@ -91,9 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIIntProperty_ThenTheEvaluatedValueIsAnInt()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockIntProperty = new Mock<IIntProperty>();
             mockIntProperty.Setup(m => m.GetValueAsIntAsync()).ReturnsAsync(42);
@@ -116,9 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIEnumProperty_ThenTheEvaluatedValueIsAString()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var enumValue = IEnumValueFactory.Create(name: "enum value");
             var mockEnumProperty = new Mock<IEnumProperty>();

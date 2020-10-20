@@ -8,189 +8,131 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal static class PropertiesAvailableStatusFactory
     {
         public static IUIEditorMetadataPropertiesAvailableStatus CreateUIEditorMetadataAvailableStatus(
-            bool includeName = true,
-            bool includeValue = true)
+            bool includeAllProperties = false,
+            bool? includeName = null,
+            bool? includeValue = null)
         {
             var mock = new Mock<IUIEditorMetadataPropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.Name).Returns(includeName);
-            mock.SetupGet(m => m.Value).Returns(includeValue);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.Value).Returns(includeValue ?? includeAllProperties);
 
             return mock.Object;
         }
 
-        public static IUIEditorMetadataPropertiesAvailableStatus CreateUIEditorMetadataAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateUIEditorMetadataAvailableStatus(
-                includeName: includeProperties,
-                includeValue: includeProperties);
-        }
-
         public static IUIPropertyPropertiesAvailableStatus CreateUIPropertyPropertiesAvailableStatus(
-            bool includeName = true,
-            bool includeDisplayName = true,
-            bool includeDescription = true,
-            bool includeConfigurationIndependent = true,
-            bool includeHelpUrl = true,
-            bool includeCategoryName = true,
-            bool includeOrder = true,
-            bool includeType = true,
-            bool includeSearchTerms = true,
-            bool includeDependsOn = true,
-            bool includeVisibilityCondition = true)
+            bool includeAllProperties = false,
+            bool? includeName = null,
+            bool? includeDisplayName = null,
+            bool? includeDescription = null,
+            bool? includeConfigurationIndependent = null,
+            bool? includeHelpUrl = null,
+            bool? includeCategoryName = null,
+            bool? includeOrder = null,
+            bool? includeType = null,
+            bool? includeSearchTerms = null,
+            bool? includeDependsOn = null,
+            bool? includeVisibilityCondition = null)
         {
             var mock = new Mock<IUIPropertyPropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.Name).Returns(includeName);
-            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName);
-            mock.SetupGet(m => m.Description).Returns(includeDescription);
-            mock.SetupGet(m => m.ConfigurationIndependent).Returns(includeConfigurationIndependent);
-            mock.SetupGet(m => m.HelpUrl).Returns(includeHelpUrl);
-            mock.SetupGet(m => m.CategoryName).Returns(includeCategoryName);
-            mock.SetupGet(m => m.Order).Returns(includeOrder);
-            mock.SetupGet(m => m.Type).Returns(includeType);
-            mock.SetupGet(m => m.SearchTerms).Returns(includeSearchTerms);
-            mock.SetupGet(m => m.DependsOn).Returns(includeDependsOn);
-            mock.SetupGet(m => m.VisibilityCondition).Returns(includeVisibilityCondition);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName ?? includeAllProperties);
+            mock.SetupGet(m => m.Description).Returns(includeDescription ?? includeAllProperties);
+            mock.SetupGet(m => m.ConfigurationIndependent).Returns(includeConfigurationIndependent ?? includeAllProperties);
+            mock.SetupGet(m => m.HelpUrl).Returns(includeHelpUrl ?? includeAllProperties);
+            mock.SetupGet(m => m.CategoryName).Returns(includeCategoryName ?? includeAllProperties);
+            mock.SetupGet(m => m.Order).Returns(includeOrder ?? includeAllProperties);
+            mock.SetupGet(m => m.Type).Returns(includeType ?? includeAllProperties);
+            mock.SetupGet(m => m.SearchTerms).Returns(includeSearchTerms ?? includeAllProperties);
+            mock.SetupGet(m => m.DependsOn).Returns(includeDependsOn ?? includeAllProperties);
+            mock.SetupGet(m => m.VisibilityCondition).Returns(includeVisibilityCondition ?? includeAllProperties);
 
             return mock.Object;
         }
 
-        public static IUIPropertyPropertiesAvailableStatus CreateUIPropertyPropertiesAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateUIPropertyPropertiesAvailableStatus(
-                includeName: includeProperties,
-                includeDisplayName: includeProperties,
-                includeDescription: includeProperties,
-                includeConfigurationIndependent: includeProperties,
-                includeHelpUrl: includeProperties,
-                includeCategoryName: includeProperties,
-                includeOrder: includeProperties,
-                includeType: includeProperties,
-                includeSearchTerms: includeProperties,
-                includeDependsOn: includeProperties,
-                includeVisibilityCondition: includeProperties);
-        }
-
         public static ISupportedValuePropertiesAvailableStatus CreateSupportedValuesPropertiesAvailableStatus(
-            bool includeDisplayName = true,
-            bool includeValue = true)
+            bool includeAllProperties = false,
+            bool? includeDisplayName = null,
+            bool? includeValue = null)
         {
             var mock = new Mock<ISupportedValuePropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName);
-            mock.SetupGet(m => m.Value).Returns(includeValue);
+            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName ?? includeAllProperties);
+            mock.SetupGet(m => m.Value).Returns(includeValue ?? includeAllProperties);
 
             return mock.Object;
         }
 
-        public static ISupportedValuePropertiesAvailableStatus CreateSupportedValuesPropertiesAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateSupportedValuesPropertiesAvailableStatus(
-                includeDisplayName: includeProperties,
-                includeValue: includeProperties);
-        }
-
         public static ICategoryPropertiesAvailableStatus CreateCategoryPropertiesAvailableStatus(
-            bool includeDisplayName = true, 
-            bool includeName = true, 
-            bool includeOrder = true)
+            bool includeAllProperties = false,
+            bool? includeDisplayName = null, 
+            bool? includeName = null, 
+            bool? includeOrder = null)
         {
             var mock = new Mock<ICategoryPropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName);
-            mock.SetupGet(m => m.Name).Returns(includeName);
-            mock.SetupGet(m => m.Order).Returns(includeOrder);
+            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName ?? includeAllProperties);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.Order).Returns(includeOrder ?? includeAllProperties);
 
             return mock.Object;
         }
 
-        public static ICategoryPropertiesAvailableStatus CreateCategoryPropertiesAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateCategoryPropertiesAvailableStatus(
-                includeDisplayName: includeProperties,
-                includeName: includeProperties,
-                includeOrder: includeProperties);
-        }
-
         public static IConfigurationDimensionPropertiesAvailableStatus CreateConfigurationDimensionAvailableStatus(
-            bool includeName = true,
-            bool includeValue = true)
+            bool includeAllProperties = false,
+            bool? includeName = null,
+            bool? includeValue = null)
         {
             var mock = new Mock<IConfigurationDimensionPropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.Name).Returns(includeName);
-            mock.SetupGet(m => m.Value).Returns(includeValue);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.Value).Returns(includeValue ?? includeAllProperties);
 
             return mock.Object;
         }
 
-        public static IConfigurationDimensionPropertiesAvailableStatus CreateConfigurationDimensionAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateConfigurationDimensionAvailableStatus(
-                includeName: includeProperties,
-                includeValue: includeProperties);
-        }
-
         public static IPropertyPagePropertiesAvailableStatus CreatePropertyPagePropertiesAvailableStatus(
-            bool includeName = true,
-            bool includeDisplayName = true,
-            bool includeOrder = true,
-            bool includeKind = true)
+            bool includeAllProperties = false,
+            bool? includeName = null,
+            bool? includeDisplayName = null,
+            bool? includeOrder = null,
+            bool? includeKind = null)
         {
             var mock = new Mock<IPropertyPagePropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.Name).Returns(includeName);
-            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName);
-            mock.SetupGet(m => m.Order).Returns(includeOrder);
-            mock.SetupGet(m => m.Kind).Returns(includeKind);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.DisplayName).Returns(includeDisplayName ?? includeAllProperties);
+            mock.SetupGet(m => m.Order).Returns(includeOrder ?? includeAllProperties);
+            mock.SetupGet(m => m.Kind).Returns(includeKind ?? includeAllProperties);
 
             return mock.Object;
-        }
-
-        public static IPropertyPagePropertiesAvailableStatus CreatePropertyPagePropertiesAvailableStatus(
-            bool includeProperties)
-        {
-            return CreatePropertyPagePropertiesAvailableStatus(
-                includeName: includeProperties,
-                includeDisplayName: includeProperties,
-                includeOrder: includeProperties,
-                includeKind: includeProperties);
         }
 
         public static IUIPropertyEditorPropertiesAvailableStatus CreateUIPropertyEditorPropertiesAvailableStatus(
-            bool includeName = true)
+            bool includeAllProperties = false,
+            bool? includeName = null,
+            bool? includeMetadata = null)
         {
             var mock = new Mock<IUIPropertyEditorPropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.Name).Returns(includeName);
+            mock.SetupGet(m => m.Name).Returns(includeName ?? includeAllProperties);
+            mock.SetupGet(m => m.Metadata).Returns(includeMetadata ?? includeAllProperties);
 
             return mock.Object;
         }
 
         public static IUIPropertyValuePropertiesAvailableStatus CreateUIPropertyValuePropertiesAvailableStatus(
-            bool includeEvaluatedValue = true,
-            bool includeUnevaluatedValue = true)
+            bool includeAllProperties = false,
+            bool? includeEvaluatedValue = null,
+            bool? includeUnevaluatedValue = null)
         {
             var mock = new Mock<IUIPropertyValuePropertiesAvailableStatus>();
 
-            mock.SetupGet(m => m.EvaluatedValue).Returns(includeEvaluatedValue);
-            mock.SetupGet(m => m.UnevaluatedValue).Returns(includeUnevaluatedValue);
+            mock.SetupGet(m => m.EvaluatedValue).Returns(includeEvaluatedValue ?? includeAllProperties);
+            mock.SetupGet(m => m.UnevaluatedValue).Returns(includeUnevaluatedValue ?? includeAllProperties);
 
             return mock.Object;
-        }
-
-        public static IUIPropertyValuePropertiesAvailableStatus CreateUIPropertyValuePropertiesAvailableStatus(
-            bool includeProperties)
-        {
-            return CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: includeProperties,
-                includeUnevaluatedValue: includeProperties);
         }
     }
 }

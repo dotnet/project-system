@@ -14,10 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertiesAreRequested_PropertyValuesAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(
-                includeDisplayName: true,
-                includeName: true,
-                includeOrder: true);
+            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "A", value: "B");
@@ -34,10 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCategoryValueCreated_TheCategoryIsTheProviderState()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(
-                includeDisplayName: true,
-                includeName: true,
-                includeOrder: true);
+            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "A", value: "B");
@@ -52,10 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingACategory_TheIdIsTheCategoryName()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(
-                includeDisplayName: true,
-                includeName: true,
-                includeOrder: true);
+            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
             var parentEntity = IEntityWithIdFactory.Create(key: "A", value: "B");
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "MyCategoryName" };
@@ -70,10 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingCategoriesFromARule_OneEntityIsCreatedPerCategory()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(
-                includeDisplayName: true,
-                includeName: true,
-                includeOrder: true);
+            var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
             var parentEntity = IEntityWithIdFactory.Create(key: "A", value: "B");
             var rule = new Rule

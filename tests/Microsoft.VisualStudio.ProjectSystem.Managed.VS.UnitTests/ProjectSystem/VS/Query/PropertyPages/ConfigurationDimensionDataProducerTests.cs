@@ -12,9 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertiesAreRequested_PropertyValuesAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(
-                includeName: true,
-                includeValue: true);
+            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(includeAllProperties: true);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var dimension = new KeyValuePair<string, string>("AlphaDimension", "AlphaDimensionValue");
@@ -28,9 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertiesAreNotRequested_PropertyValuesAreNotReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(
-                includeName: false,
-                includeValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus();
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var dimension = new KeyValuePair<string, string>("AlphaDimension", "AlphaDimensionValue");
@@ -44,9 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingEntitiesFromAProjectConfiguration_OneEntityIsCreatedPerDimension()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(
-                includeName: true,
-                includeValue: true);
+            var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(includeAllProperties: true);
 
             var entityRuntimeModel = IEntityRuntimeModelFactory.Create();
             var configuration = ProjectConfigurationFactory.Create("Alpha|Beta|Gamma", "A|B|C");

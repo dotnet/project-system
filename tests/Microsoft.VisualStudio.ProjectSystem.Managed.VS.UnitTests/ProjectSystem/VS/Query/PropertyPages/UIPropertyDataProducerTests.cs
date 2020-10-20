@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingFromAParentAndProperty_ThePropertyNameIsTheEntityId()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeProperties: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus();
 
             var parentEntity = IEntityWithIdFactory.Create(key: "parent", value: "A");
             var cache = IPropertyPageQueryCacheFactory.Create();
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertiesAreRequested_PropertyValuesAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeProperties: true);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeAllProperties: true);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenTheEntityIsCreated_TheProviderStateIsTheExpectedType()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeProperties: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus();
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingPropertiesFromARule_OneEntityIsCreatedPerProperty()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeProperties: true);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeAllProperties: true);
 
             var parentEntity = IEntityWithIdFactory.Create(key: "Parent", value: "ParentRule");
             var cache = IPropertyPageQueryCacheFactory.Create();
@@ -114,18 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenAPropertyHasNoSearchTerms_AnEmptyListIsReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
-                includeName: false,
-                includeDisplayName: false,
-                includeDescription: false,
-                includeConfigurationIndependent: false,
-                includeHelpUrl: false,
-                includeCategoryName: false,
-                includeOrder: false,
-                includeType: false,
-                includeSearchTerms: true,
-                includeDependsOn: false,
-                includeVisibilityCondition: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -143,18 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenAPropertyHasAnEmptyListOfSearchTerms_AnEmptyListIsReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
-                includeName: false,
-                includeDisplayName: false,
-                includeDescription: false,
-                includeConfigurationIndependent: false,
-                includeHelpUrl: false,
-                includeCategoryName: false,
-                includeOrder: false,
-                includeType: false,
-                includeSearchTerms: true,
-                includeDependsOn: false,
-                includeVisibilityCondition: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -175,18 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenAPropertyHasOneSearchTerm_OneItemIsReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
-                includeName: false,
-                includeDisplayName: false,
-                includeDescription: false,
-                includeConfigurationIndependent: false,
-                includeHelpUrl: false,
-                includeCategoryName: false,
-                includeOrder: false,
-                includeType: false,
-                includeSearchTerms: true,
-                includeDependsOn: false,
-                includeVisibilityCondition: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -210,18 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenAPropertyHasMultipleSearchTerms_MultipleItemsAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(
-                includeName: false,
-                includeDisplayName: false,
-                includeDescription: false,
-                includeConfigurationIndependent: false,
-                includeHelpUrl: false,
-                includeCategoryName: false,
-                includeOrder: false,
-                includeType: false,
-                includeSearchTerms: true,
-                includeDependsOn: false,
-                includeVisibilityCondition: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
