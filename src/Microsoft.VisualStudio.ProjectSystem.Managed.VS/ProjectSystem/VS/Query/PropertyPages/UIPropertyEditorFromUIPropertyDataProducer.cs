@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
@@ -27,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
             Requires.NotNull(request, nameof(request));
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache _, Rule schema, string propertyName))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache, Rule schema, string propertyName))
             {
                 try
                 {
