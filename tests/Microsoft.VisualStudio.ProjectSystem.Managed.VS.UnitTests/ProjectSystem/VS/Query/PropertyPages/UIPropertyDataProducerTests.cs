@@ -123,7 +123,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 includeCategoryName: false,
                 includeOrder: false,
                 includeType: false,
-                includeSearchTerms: true);
+                includeSearchTerms: true,
+                includeDependsOn: false,
+                includeVisibilityCondition: false);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -150,7 +152,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 includeCategoryName: false,
                 includeOrder: false,
                 includeType: false,
-                includeSearchTerms: true);
+                includeSearchTerms: true,
+                includeDependsOn: false,
+                includeVisibilityCondition: false);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -180,7 +184,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 includeCategoryName: false,
                 includeOrder: false,
                 includeType: false,
-                includeSearchTerms: true);
+                includeSearchTerms: true,
+                includeDependsOn: false,
+                includeVisibilityCondition: false);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
@@ -213,7 +219,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 includeCategoryName: false,
                 includeOrder: false,
                 includeType: false,
-                includeSearchTerms: true);
+                includeSearchTerms: true,
+                includeDependsOn: false,
+                includeVisibilityCondition: false);
 
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");

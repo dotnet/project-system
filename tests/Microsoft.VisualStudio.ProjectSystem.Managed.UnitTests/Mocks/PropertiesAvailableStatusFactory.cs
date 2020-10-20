@@ -36,7 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool includeCategoryName = true,
             bool includeOrder = true,
             bool includeType = true,
-            bool includeSearchTerms = true)
+            bool includeSearchTerms = true,
+            bool includeDependsOn = true,
+            bool includeVisibilityCondition = true)
         {
             var mock = new Mock<IUIPropertyPropertiesAvailableStatus>();
 
@@ -49,6 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(m => m.Order).Returns(includeOrder);
             mock.SetupGet(m => m.Type).Returns(includeType);
             mock.SetupGet(m => m.SearchTerms).Returns(includeSearchTerms);
+            mock.SetupGet(m => m.DependsOn).Returns(includeDependsOn);
+            mock.SetupGet(m => m.VisibilityCondition).Returns(includeVisibilityCondition);
 
             return mock.Object;
         }
@@ -65,7 +69,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 includeCategoryName: includeProperties,
                 includeOrder: includeProperties,
                 includeType: includeProperties,
-                includeSearchTerms: includeProperties);
+                includeSearchTerms: includeProperties,
+                includeDependsOn: includeProperties,
+                includeVisibilityCondition: includeProperties);
         }
 
         public static ISupportedValuePropertiesAvailableStatus CreateSupportedValuesPropertiesAvailableStatus(
