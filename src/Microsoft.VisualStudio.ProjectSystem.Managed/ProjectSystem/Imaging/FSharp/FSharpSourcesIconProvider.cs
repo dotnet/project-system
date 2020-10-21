@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
     [Order(Order.Default)]
     internal class FSharpSourcesIconProvider : IProjectTreePropertiesProvider
     {
-        private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new Dictionary<string, ProjectImageMoniker>(StringComparers.Paths)
+        private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new(StringComparers.Paths)
         {
             { ".fs",   KnownMonikers.FSFileNode.ToProjectSystemType() },
             { ".fsi",  KnownMonikers.FSSignatureFile.ToProjectSystemType() },

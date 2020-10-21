@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Text
             _delimiter = delimiter;
         }
 
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new(this);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

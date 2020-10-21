@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices.CSharp;
+using Microsoft.VisualStudio.Settings;
 using Moq;
 using Xunit;
 
@@ -28,10 +29,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
+            var settingsManagerService = CreateSettingsManagerService(true);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService);
 
-            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Once);
+            bool checkBoxSelection;
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out checkBoxSelection), Times.Once);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        }
+
+        [Theory]
+        [InlineData("class Foo{}", "Foo.cs", "Bar.cs")]
+        [InlineData("interface Foo { void m1(); void m2();}", "Foo.cs", "Bar.cs")]
+        [InlineData("delegate int Foo(string s);", "Foo.cs", "Bar.cs")]
+        [InlineData("partial class Foo {} partial class Foo {}", "Foo.cs", "Bar.cs")]
+        [InlineData("struct Foo { decimal price; string title; string author;}", "Foo.cs", "Bar.cs")]
+        [InlineData("enum Foo { None, enum1, enum2, enum3, enum4 };", "Foo.cs", "Bar.cs")]
+        [InlineData("namespace n1 {class Foo{}} namespace n2 {class Foo{}}", "Foo.cs", "Bar.cs")]
+        public async Task Rename_Symbol_ShouldNot_TriggerUserConfirmationAsync(string sourceCode, string oldFilePath, string newFilePath)
+        {
+            var userNotificationServices = IUserNotificationServicesFactory.Create();
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
+            var settingsManagerService = CreateSettingsManagerService(false);
+
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService);
+
+            bool checkBoxSelection;
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out checkBoxSelection), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
@@ -52,8 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineServices = IVsOnlineServicesFactory.Create(online: false);
+            var settingsManagerService = CreateSettingsManagerService(true);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp).TimeoutAfter(TimeSpan.FromSeconds(1));
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineServices, LanguageNames.CSharp, settingsManagerService).TimeoutAfter(TimeSpan.FromSeconds(1));
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
@@ -70,12 +96,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
             var vsOnlineService = IVsOnlineServicesFactory.Create(online: true);
+            var settingsManagerService = CreateSettingsManagerService(true);
 
-            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp);
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
 
             Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+        }
+
+        private IVsService<SVsSettingsPersistenceManager, ISettingsManager> CreateSettingsManagerService(bool enableSymbolicRename)
+        {
+            var settingsManagerMock = new Mock<ISettingsManager>();
+
+            settingsManagerMock.Setup(f => f.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false))
+                .Returns(enableSymbolicRename);
+
+            return IVsServiceFactory.Create<SVsSettingsPersistenceManager, ISettingsManager>(settingsManagerMock.Object);
         }
     }
 }

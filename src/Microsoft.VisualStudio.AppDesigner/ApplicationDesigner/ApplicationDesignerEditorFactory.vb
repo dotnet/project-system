@@ -2,6 +2,7 @@
 
 Imports System.Runtime.InteropServices
 
+Imports Microsoft.Internal.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell
@@ -30,6 +31,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The all important GUIDs 
         Private Shared ReadOnly s_editorGuid As New Guid(EditorGuidString)
         Private Shared ReadOnly s_commandUIGuid As New Guid("{d06cd5e3-d961-44dc-9d80-c89a1a8d9d56}")
+
+        'GUID of the new project properties editor, to delegate to if enabled
+        Private Shared ReadOnly s_newEditorGuid As New Guid("{990036EB-F67A-4B8A-93D4-4663DB2A1033}")
 
         'Exposing the GUID for the rest of the assembly to see
         Public Shared ReadOnly Property EditorGuid As Guid
@@ -174,6 +178,30 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ByRef pgrfCDW As Integer) As Integer _
         Implements IVsEditorFactory.CreateEditorInstance
 
+            If UseNewEditor Then
+
+                Dim vsUIShellOpenDocument = TryCast(_siteProvider.GetService(GetType(IVsUIShellOpenDocument)), IVsUIShellOpenDocument)
+
+                Assumes.Present(vsUIShellOpenDocument)
+
+                Dim newEditorGuid = s_newEditorGuid
+                Dim frame as IVsWindowFrame = Nothing
+
+                Dim result = vsUIShellOpenDocument.OpenSpecificEditor(
+                    vscreateeditorflags,
+                    FileName,
+                    newEditorGuid,
+                    Nothing,
+                    VSConstants.LOGVIEWID.Primary_guid,
+                    Caption,
+                    CType(Hierarchy, IVsUIHierarchy),
+                    Itemid,
+                    DocDataPtr,
+                    Nothing,
+                    frame)
+                Return result
+            End If
+
             Dim ExistingDocData As Object = Nothing
             Dim DocView As Object = Nothing
             Dim DocData As Object = Nothing
@@ -202,6 +230,14 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             Return hr
+        End Function
+
+        Private Function UseNewEditor As Boolean
+            Dim featureFlags = TryCast(_siteProvider.GetService(GetType(SVsFeatureFlags)), IVsFeatureFlags)
+
+            Return _
+                featureFlags IsNot Nothing AndAlso _
+                featureFlags.IsFeatureEnabled("CPS.UpdatedProjectPropertiesDesigner.Local", False)
         End Function
 
         ''' <summary>

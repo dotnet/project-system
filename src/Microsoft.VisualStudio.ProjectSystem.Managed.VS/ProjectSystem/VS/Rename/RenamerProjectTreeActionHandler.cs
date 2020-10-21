@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Rename;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
+using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
 using Solution = Microsoft.CodeAnalysis.Solution;
 
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IRoslynServices _roslynServices;
         private readonly Workspace _workspace;
         private readonly IVsService<SVsOperationProgress, IVsOperationProgressStatusService> _operationProgressService;
+        private readonly IVsService<SVsSettingsPersistenceManager, ISettingsManager> _settingsManagerService;
 
         [ImportingConstructor]
         public RenamerProjectTreeActionHandler(
@@ -46,7 +48,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IVsOnlineServices vsOnlineServices,
             IProjectThreadingService threadingService,
             IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
-            IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService)
+            IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
+            IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService)
         {
             _unconfiguredProject = unconfiguredProject;
             _projectVsServices = projectVsServices;
@@ -59,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _threadingService = threadingService;
             _extensibility = extensibility;
             _operationProgressService = operationProgressService;
+            _settingsManagerService = settingsManagerService;
         }
 
         protected virtual async Task CPSRenameAsync(IProjectTreeActionHandlerContext context, IProjectTree node, string value)
@@ -229,16 +233,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
         private async Task<bool> CheckUserConfirmation(string oldFileName)
         {
+            ISettingsManager settings = await _settingsManagerService.GetValueAsync();
+
+            bool EnableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false);
+
             await _projectVsServices.ThreadingService.SwitchToUIThread();
+
+            bool disablePromptMessage = false;
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
-            if (userNeedPrompt)
+
+            if (EnableSymbolicRename && userNeedPrompt)
             {
                 string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
 
-                return _userNotificationServices.Confirm(renamePromptMessage);
+                bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out disablePromptMessage);
+
+                _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
+
+                return userSelection;
             }
 
-            return true;
+            return EnableSymbolicRename;
         }
     }
 }

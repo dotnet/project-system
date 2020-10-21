@@ -13,9 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private readonly Dictionary<T, byte> _dic;
 
-        public Part Removed => new Part(_dic, FlagBefore);
+        public Part Removed => new(_dic, FlagBefore);
 
-        public Part Added => new Part(_dic, FlagAfter);
+        public Part Added => new(_dic, FlagAfter);
 
         public SetDiff(IEnumerable<T> before, IEnumerable<T> after)
         {
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _flag = flag;
             }
 
-            public PartEnumerator GetEnumerator() => new PartEnumerator(_dic, _flag);
+            public PartEnumerator GetEnumerator() => new(_dic, _flag);
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

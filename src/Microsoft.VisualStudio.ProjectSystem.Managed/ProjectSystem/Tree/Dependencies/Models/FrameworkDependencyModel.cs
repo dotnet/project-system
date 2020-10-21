@@ -9,11 +9,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal sealed class FrameworkDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.FrameworkDependency + DependencyTreeFlags.SupportsFolderBrowse,
             unresolved: DependencyTreeFlags.FrameworkDependency);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: ManagedImageMonikers.Framework,
             expandedIcon: ManagedImageMonikers.Framework,
             unresolvedIcon: ManagedImageMonikers.FrameworkWarning,

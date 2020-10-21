@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class FaultExtensions
     {
-        private static readonly ErrorReportSettings s_defaultReportSettings = new ErrorReportSettings(
+        private static readonly ErrorReportSettings s_defaultReportSettings = new(
             eventName: "VisualStudioNonFatalErrors2",
             component: "ManagedProjectSystem",
             reportType: ErrorReportType.Critical,

@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly IProjectThreadingService _threadingService;
         private readonly IDesignTimeInputsDataSource _designTimeInputsDataSource;
         private readonly IVsService<IVsAsyncFileChangeEx> _fileChangeService;
-        private readonly Dictionary<string, uint> _fileWatcherCookies = new Dictionary<string, uint>(StringComparers.Paths);
+        private readonly Dictionary<string, uint> _fileWatcherCookies = new(StringComparers.Paths);
 
         private int _version;
         private IDisposable? _dataSourceLink;

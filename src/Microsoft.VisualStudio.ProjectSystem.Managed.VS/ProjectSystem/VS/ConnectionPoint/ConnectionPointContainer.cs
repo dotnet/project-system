@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
     [ComVisible(true)]
     public class ConnectionPointContainer : IConnectionPointContainer
     {
-        private readonly Dictionary<Guid, IConnectionPoint> _connectionPoints = new Dictionary<Guid, IConnectionPoint>();
+        private readonly Dictionary<Guid, IConnectionPoint> _connectionPoints = new();
 
         internal ConnectionPointContainer()
         {

@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     public sealed class DependenciesTreeViewProviderTests
     {
-        private readonly TargetFramework _tfm1 = new TargetFramework("tfm1");
-        private readonly TargetFramework _tfm2 = new TargetFramework("tfm2");
+        private readonly TargetFramework _tfm1 = new("tfm1");
+        private readonly TargetFramework _tfm2 = new("tfm2");
 
         private readonly ITestOutputHelper _output;
 

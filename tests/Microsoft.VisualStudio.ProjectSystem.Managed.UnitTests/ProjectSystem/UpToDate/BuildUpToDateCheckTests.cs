@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Add(new ItemType("Compile", true))
             .Add(new ItemType("Resource", true));
 
-        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new List<ITelemetryServiceFactory.TelemetryParameters>();
+        private readonly List<ITelemetryServiceFactory.TelemetryParameters> _telemetryEvents = new();
         private readonly BuildUpToDateCheck _buildUpToDateCheck;
         private readonly ITestOutputHelper _output;
         private readonly IFileSystemMock _fileSystem;
@@ -117,6 +117,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         item => item.FilePath,
                         item => item.Time,
                         StringComparers.Paths));
+
+            // Flush the first false
+            await AssertNotUpToDateAsync(
+                "The up-to-date check has not yet run for this project. Not up-to-date.",
+                "FirstRun");
         }
 
         private void BroadcastChange(
@@ -1327,12 +1332,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             var writer = new AssertWriter(_output);
 
-            if (logMessages != null)
+            foreach (var logMessage in logMessages)
             {
-                foreach (var logMessage in logMessages)
-                {
-                    writer.Add(logMessage);
-                }
+                writer.Add(logMessage);
             }
 
             writer.Add("Project is up to date.");

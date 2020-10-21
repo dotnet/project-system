@@ -14,8 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal abstract class AbstractMultiLifetimeComponent<T> : OnceInitializedOnceDisposedAsync
         where T : class, IMultiLifetimeInstance
     {
-        private readonly object _lock = new object();
-        private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly object _lock = new();
+        private TaskCompletionSource<(T instance, JoinableTask initializeAsyncTask)> _instanceTaskSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         protected AbstractMultiLifetimeComponent(JoinableTaskContextNode joinableTaskContextNode)
              : base(joinableTaskContextNode)

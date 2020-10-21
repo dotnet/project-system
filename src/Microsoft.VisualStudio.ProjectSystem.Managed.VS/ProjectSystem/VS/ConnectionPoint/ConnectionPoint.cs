@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
     internal class ConnectionPoint<TSinkType> : IConnectionPoint
             where TSinkType : class
     {
-        private readonly Dictionary<uint, TSinkType> _sinks = new Dictionary<uint, TSinkType>();
+        private readonly Dictionary<uint, TSinkType> _sinks = new();
         private readonly ConnectionPointContainer _container;
         private readonly IEventSource<TSinkType> _source;
 

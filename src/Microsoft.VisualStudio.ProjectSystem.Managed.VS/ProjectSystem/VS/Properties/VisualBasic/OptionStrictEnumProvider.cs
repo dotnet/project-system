@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
                 new PageEnumValue(new EnumValue {Name = "1",    DisplayName = "On" })
             };
 
-        private readonly Dictionary<string, IEnumValue> _persistOptionStrictEnumValues = new Dictionary<string, IEnumValue>
-            {
+        private readonly Dictionary<string, IEnumValue> _persistOptionStrictEnumValues = new()
+        {
                 { "0",  new PageEnumValue(new EnumValue {Name = "Off" }) },
                 { "1",  new PageEnumValue(new EnumValue {Name = "On" }) },
             };

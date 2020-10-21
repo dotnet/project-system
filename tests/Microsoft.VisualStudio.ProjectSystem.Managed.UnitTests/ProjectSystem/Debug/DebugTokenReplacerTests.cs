@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class DebugTokenReplacerTests
     {
-        private readonly Dictionary<string, string> _envVars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        private readonly Dictionary<string, string> _envVars = new(StringComparer.OrdinalIgnoreCase)
         {
             { "%env1%","envVariable1" },
             { "%env2%","envVariable2" },

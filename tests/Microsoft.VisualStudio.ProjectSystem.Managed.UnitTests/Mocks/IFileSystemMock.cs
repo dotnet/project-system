@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        private readonly HashSet<string> _folders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _folders = new(StringComparer.OrdinalIgnoreCase);
 
         private string? _currentDirectory;
         private string? _tempFile;

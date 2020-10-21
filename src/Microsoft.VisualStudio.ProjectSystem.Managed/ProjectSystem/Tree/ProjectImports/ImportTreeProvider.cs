@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport | ProjectTreeFlags.FileOnDisk | ProjectTreeFlags.FileSystemEntity;
         private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
 
-        private readonly ImplicitProjectCheck _importPathCheck = new ImplicitProjectCheck();
+        private readonly ImplicitProjectCheck _importPathCheck = new();
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;

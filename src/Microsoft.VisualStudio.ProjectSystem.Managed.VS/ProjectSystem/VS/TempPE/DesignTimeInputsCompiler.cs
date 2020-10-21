@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private ITargetBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>? _compileActionBlock;
         private IDisposable? _changeTrackerLink;
 
-        private readonly CompilationQueue _queue = new CompilationQueue();
+        private readonly CompilationQueue _queue = new();
         private CancellationTokenSource? _compilationCancellationSource;
 
         [ImportingConstructor]
