@@ -164,15 +164,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             if (Strings.IsNullOrEmpty(executable))
             {
-                throw new Exception(string.Format(VSResources.NoDebugExecutableSpecified, profileName));
+                throw new ProjectLaunchSettingValidationException(string.Format(VSResources.NoDebugExecutableSpecified, profileName));
             }
             else if (executable.IndexOf(Path.DirectorySeparatorChar) != -1 && !_fileSystem.FileExists(executable))
             {
-                throw new Exception(string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
+                throw new ProjectLaunchSettingValidationException(string.Format(VSResources.DebugExecutableNotFound, executable, profileName));
             }
             else if (!string.IsNullOrEmpty(workingDir) && !_fileSystem.DirectoryExists(workingDir))
             {
-                throw new Exception(string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
+                throw new ProjectLaunchSettingValidationException(string.Format(VSResources.WorkingDirecotryInvalid, workingDir, profileName));
+            }
+        }
+
+        private sealed class ProjectLaunchSettingValidationException : Exception
+        {
+            public ProjectLaunchSettingValidationException(string message)
+                : base(message)
+            {
             }
         }
 
