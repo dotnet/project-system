@@ -78,18 +78,18 @@
     <PackageReference Update="Microsoft.VisualStudio.Workspace.VSIntegration"                         Version="16.7.47-preview-0001" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="16.0.28321-alpha" />
-    <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30406.65"/>
-    <PackageReference Update="VSLangProj"                                                             Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj2"                                                            Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj80"                                                           Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj90"                                                           Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj100"                                                          Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj110"                                                          Version="16.8.30406.65" />
-    <PackageReference Update="VSLangProj158"                                                          Version="16.8.30406.65" />
+    <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
+    <PackageReference Update="VSLangProj"                                                             Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj2"                                                            Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj80"                                                           Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj90"                                                           Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj100"                                                          Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj110"                                                          Version="16.8.30523.219" />
+    <PackageReference Update="VSLangProj158"                                                          Version="16.8.30523.219" />
     <PackageReference Update="VSLangProj165"                                                          Version="16.5.0" />
-    <PackageReference Update="EnvDTE"                                                                 Version="16.8.30406.65" />
-    <PackageReference Update="EnvDTE80"                                                               Version="16.8.30406.65" />
-    <PackageReference Update="EnvDTE90"                                                               Version="16.8.30406.65" />
+    <PackageReference Update="EnvDTE"                                                                 Version="16.8.30523.219" />
+    <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
+    <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
     <PackageReference Update="StreamJsonRpc"                                                          Version="2.6.41-alpha" />
 
     <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
