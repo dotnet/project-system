@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.WebTools.ProjectSystem.Debugger
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 {
     internal enum ServerType
     {
@@ -16,22 +16,29 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
     /// </summary>
     internal class WebLaunchSettings
     {
-        public WebLaunchSettings(ServerType serverType, List<string> serverUrls, bool use64bitIIS = false, bool useGlobalAppHostCfgFile = false, 
-                                 bool overrideAppRootUrl = false, string? iisOverrideAppRootUrl = null) 
-        { 
+        public WebLaunchSettings(ServerType serverType, IReadOnlyList<string> serverUrls, bool useWindowsAuth, bool useAnonymousAuth, bool useClassicPipelineMode = false, 
+                                 bool use64bitIISExpress = false, bool useGlobalAppHostCfgFile = false,bool overrideAppRootUrl = false, 
+                                 string? iisOverrideAppRootUrl = null)
+        {
             ServerType = serverType;
             ServerUrls = serverUrls;
-            Use64bitIIS = use64bitIIS;
+            Use64bitIISExpress = use64bitIISExpress;
+            UseWindowsAuth = useWindowsAuth;
+            UseAnonymousAuth = useAnonymousAuth;
+            UseClassicPipelineMode = useClassicPipelineMode;
             UseGlobalAppHostCfgFile = useGlobalAppHostCfgFile;
-            OverrideAppRootUrl = overrideAppRootUrl;
-            IISOverrideAppRootUrl = iisOverrideAppRootUrl;
+            UseOverrideAppRootUrl = overrideAppRootUrl;
+            OverrideAppRootUrl = iisOverrideAppRootUrl;
         }
 
         public ServerType ServerType { get; private set; }
-        public List<string> ServerUrls { get; private set; }
-        public bool OverrideAppRootUrl { get; private set; }
-        public string? IISOverrideAppRootUrl { get; private set; }
-        public bool Use64bitIIS { get; private set; }
+        public IReadOnlyList<string> ServerUrls { get; private set; }
+        public bool UseWindowsAuth { get; private set; }
+        public bool UseAnonymousAuth { get; private set; }
+        public bool UseClassicPipelineMode { get; private set; }
+        public bool Use64bitIISExpress { get; private set; }
         public bool UseGlobalAppHostCfgFile { get; private set; }
+        public bool UseOverrideAppRootUrl { get; private set; }
+        public string? OverrideAppRootUrl { get; private set; }
     }
 }

@@ -2,7 +2,7 @@
 
 using System.Xml.Linq;
 
-namespace Microsoft.WebTools.ProjectSystem.Debugger
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 {
     /// <summary>
     /// Represents the settings stored in the FlavorProperties section of the project file

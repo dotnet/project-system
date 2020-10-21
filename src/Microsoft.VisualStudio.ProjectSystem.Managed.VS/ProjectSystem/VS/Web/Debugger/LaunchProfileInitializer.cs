@@ -1,15 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 using Task = System.Threading.Tasks.Task;
 
-namespace Microsoft.WebTools.ProjectSystem.Debugger
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 {
 
     /// <summary>
@@ -20,16 +20,19 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
         private readonly ILaunchSettingsProvider2 _launchSettingsProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly WebLaunchSettingsProvider _webLaunchSettingsProvider;
+        private readonly WebServer _webServer;
 
         [ImportingConstructor]
         public LaunchProfileInitializer(
             ILaunchSettingsProvider2 launchSettingsProvider,
             IUnconfiguredProjectCommonServices projectServices,
-            WebLaunchSettingsProvider webLaunchSettingsProvider)
+            WebLaunchSettingsProvider webLaunchSettingsProvider,
+            WebServer webServer)
         {
             _launchSettingsProvider = launchSettingsProvider;
             _projectServices = projectServices;
             _webLaunchSettingsProvider = webLaunchSettingsProvider;
+            _webServer = webServer;
         }
 
         /// <summary>
@@ -61,7 +64,15 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
                 // Now set the active profile to the one we just set.
                 await  _launchSettingsProvider.SetActiveProfileAsync("IIS Express");
                 
-                var settings = await _webLaunchSettingsProvider.GetLaunchSettingsAsync();
+                // Configure the webserver 
+                try
+                {
+                    await _webServer.ConfigureWebServerAsync();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Assert(false, ex.Message);
+                }
             }
         }
     }

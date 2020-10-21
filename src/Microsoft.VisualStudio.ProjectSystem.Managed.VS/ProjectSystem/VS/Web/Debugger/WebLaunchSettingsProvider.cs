@@ -9,11 +9,10 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.WebTools.ProjectSystem.Debugger
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 {
     /// <summary>
     /// Creates an in-memory launch profile representing launching the web server from data in the flavored project section
@@ -68,7 +67,7 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
 
             if (_flavorServerSettings == null)
             {
-                return new WebLaunchSettings(serverType, urls, _use64BitIISExpress, _useGlobalApplicationHostFile, false, null);
+                return new WebLaunchSettings(serverType, urls, _useWindowsAuth, _useAnonymousAuth, _useClassicPipelineMode, _use64BitIISExpress, _useGlobalApplicationHostFile, false, null);
             }
 
             if (_flavorServerSettings.UseCustomServer)
@@ -77,6 +76,7 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
                 {
                     urls.Add(_flavorServerSettings.CustomServerUrl);
                 }
+
                 serverType = ServerType.Custom;
             }
             else if (_flavorServerSettings.UseIIS)
@@ -94,6 +94,11 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
                             urls.Add(uriBuilder.Uri.AbsoluteUri);
                         }
                     }
+                    else
+                    {
+                        // We'll just create new ones
+                        AddNewIISExpressUrls(urls, _flavorServerSettings.DevelopmentServerPort, _flavorServerSettings.DevelopmentServerVPath);
+                    }
                 }
                 else
                 {
@@ -107,22 +112,26 @@ namespace Microsoft.WebTools.ProjectSystem.Debugger
             else
             {
                 // In this case we use IIS Express but synthesize the url from the development server port
-                var port = _flavorServerSettings.DevelopmentServerPort;
-                if (port == 0)
-                {
-                    port = GetNextAvailablePort();
-                }
-
-                urls.Add($"http://localhost:{port}{_flavorServerSettings.DevelopmentServerVPath}");
-
-                if (_issExpressSSLPort != 0)
-                {
-                    urls.Add($"http://localhost:{_issExpressSSLPort}{_flavorServerSettings.DevelopmentServerVPath}");
-                }
+                AddNewIISExpressUrls(urls, _flavorServerSettings.DevelopmentServerPort, _flavorServerSettings.DevelopmentServerVPath);
             }
 
-            return new WebLaunchSettings(serverType, urls, _use64BitIISExpress, _useGlobalApplicationHostFile, _flavorServerSettings.UseIISAppRootOverrideUrl,
-                                         _flavorServerSettings.IISAppRootOverrideUrl);
+            return new WebLaunchSettings(serverType, urls, _useWindowsAuth, _useAnonymousAuth, _useClassicPipelineMode, _use64BitIISExpress, _useGlobalApplicationHostFile,
+                                         _flavorServerSettings.UseIISAppRootOverrideUrl, _flavorServerSettings.IISAppRootOverrideUrl);
+        }
+
+        private void AddNewIISExpressUrls(List<string> urls, int port, string vPath)
+        {
+            if (port == 0)
+            {
+                port = GetNextAvailablePort();
+            }
+
+            urls.Add($"http://localhost:{port}{vPath}");
+
+            if (_issExpressSSLPort != 0)
+            {
+                urls.Add($"http://localhost:{_issExpressSSLPort}{vPath}");
+            }
         }
 
         protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)

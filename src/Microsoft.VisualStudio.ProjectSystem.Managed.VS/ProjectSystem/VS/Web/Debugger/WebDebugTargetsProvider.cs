@@ -4,10 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
-
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Web.Application;
+using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
@@ -25,15 +29,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         private readonly ConfiguredProject _configuredProject;
         private readonly IDebugTokenReplacer _tokenReplacer;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
+        private readonly IProjectThreadingService _threadingService;
+        private readonly IFileSystem _fileSystem;
+        private readonly WebServer _webServer;
+        private readonly IDebugTargetsObserver _debugTargetsObserver;
+        private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
+        private readonly IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> _vsShellOpenDoc;
+        private readonly IVsUIService<IBrowserDebugTargetSelectionService, IBrowserDebugTargetSelectionService> _browserDebugTargetSelectionSvc;
 
         [ImportingConstructor]
         public WebDebugTargetsProvider(ConfiguredProject configuredProject,
                                        IDebugTokenReplacer tokenReplacer,
-                                       IUnconfiguredProjectVsServices projectVsServices)
+                                       IUnconfiguredProjectVsServices projectVsServices,
+                                       IProjectThreadingService threadingService,
+                                       IFileSystem fileSystem,
+                                       WebServer webServer,
+                                       IDebugTargetsObserver debugTargetsObserver,
+                                       IVsUIService<SVsShell, IVsShell> vsShell,
+                                       IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> vsShellOpenDoc,
+                                       IVsUIService<IBrowserDebugTargetSelectionService, IBrowserDebugTargetSelectionService> browserDebugTargetSelectionSvc)
         {
             _configuredProject = configuredProject;
             _tokenReplacer = tokenReplacer;
             _projectVsServices = projectVsServices;
+            _threadingService = threadingService;
+            _fileSystem = fileSystem;
+            _webServer = webServer;
+            _debugTargetsObserver = debugTargetsObserver;
+            _vsShell = vsShell;
+            _vsShellOpenDoc = vsShellOpenDoc;
+            _browserDebugTargetSelectionSvc = browserDebugTargetSelectionSvc;
         }
 
         public int ProcessIDToResume { get; protected set; }
@@ -80,182 +105,251 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         /// </summary>
         private async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool isQuery)
         {
-            var currentConfiguration = GetConfigurationName(_configuredProject.ProjectConfiguration);
-
             activeProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
-            //// Get the appropriate bitness for the server
-            //var serverBitness = activeProfile.GetServerBitness();
+            // Get all the server urls
+            var serverUrls = _webServer.WebServerUrls;
 
-            //// Get all the server urls
-            //var serverUrls = activeWebServer.GetServerUrls(launchSettings: activeWebServerData.Item2, resolvedProfile: activeProfile);
-
-            //Uri browserUri = null;
-            //if (activeProfile.LaunchBrowser)
-            //{
-            //    browserUri = activeProfile.GetEffectiveLaunchUri(serverUrls.FirstOrDefault());
-            //}
-
-            //var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            //var activeFramework = await properties.GetEvaluatedPropertyValueAsync(ProjectFileProperty.TargetFrameworkMoniker);
+            if (serverUrls.Count == 0)
+            {
+                throw new COMException(WebResources.NoServerURLsConfigured, HResult.Fail);
+            }
 
             var launchTargets = new List<DebugLaunchSettings>();
 
-            //// For queries we don't want to start anything
-            //if (isQuery)
-            //{
-            //    // Only profiling and debugging involve adding a launch target. 
-            //    if (launchOptions.IsDebugging() || launchOptions.IsProfiling())
-            //    {
-            //        // Get the expected launch process
-            //        var launchData = await activeWebServer.GetLaunchInformationAsync(activeFramework, activeProfile);
+            // For queries we don't want to start anything
+            if (isQuery)
+            {
+                // Only profiling and debugging involve adding a launch target. 
+                if (launchOptions.IsDebugging() || launchOptions.IsProfiling())
+                {
+                    if (_webServer.ActiveWebServerType == ServerType.IISExpress)
+                    {
+                        launchTargets.Add(await GetIISExpressLaunchTargetAsync(launchOptions, isQuery));
+                    }
+                }
+            }
+            else
+            {
+                // Start the server (throws on failure) and make sure it listening
+                await _webServer.StartAsync(launchOptions.ToWebServerStartOption());
+                await _webServer.WaitForListeningAsync();
 
-            //        // Since we don't know the pid yet, we pass 0 
-            //        var serverSettings = GetDebugLaunchSettings(launchOptions, 0, launchData.Item1, launchData.Item3, activeProfile, activeFramework);
-            //        launchTargets.Add(serverSettings);
-            //    }
-            //}
-            //else
-            //{
-            //    // Start the server (throws on failure)
-            //    await WebServerStateManager.LaunchWebServerAsync(
-            //        activeWebServer,
-            //        activeFramework,
-            //        activeProfile,
-            //        currentConfiguration,
-            //        false,
-            //        launchOptions.ToServerLaunchOptions(),
-            //        true,
-            //        serverBitness);
+                // If we aren't debugging or profiling, we don't create server settings option. If we do so, the debugger will ignore the AlreadyRunning and
+                // start the proces anyway
+                if (launchOptions.IsDebugging() || launchOptions.IsProfiling())
+                {
+                    if (_webServer.ActiveWebServerType == ServerType.IISExpress)
+                    {
+                        launchTargets.Add(await GetIISExpressLaunchTargetAsync(launchOptions, isQuery));
+                    }
+                    else if (_webServer.ActiveWebServerType == ServerType.IIS)
+                    {
+                        launchTargets.Add(GetIISLaunchTarget(launchOptions, serverUrls[0]));
+                    }
+                }
+            }
 
-            //    perfEvent?.AddPerformanceProperty(TelemetryExtensions.HostServerLaunchElapsedTimeProperty);
+            // Remember the server urls so we can map urls to paths correctly
+            foreach (string url in serverUrls)
+            {
+                if (url.EndsWith("/", StringComparison.Ordinal))
+                {
+                    DebuggingRootUrls.Add(url);
+                }
+                else
+                {
+                    DebuggingRootUrls.Add(url + "/");
+                }
+            }
 
-            //    // If we aren't debugging or profiling, we don't create server settings option. If we do so, the debugger will ignore the AlreadyRunning and
-            //    // start the proces anyway
-            //    if (launchOptions.IsDebugging() || launchOptions.IsProfiling())
-            //    {
-            //        // Get the list of processes to attach to (can be more than one but we currently only support one).
-            //        var processInfo = await activeWebServer.GetDebuggingProcessInformationAsync();
-            //        System.Diagnostics.Debug.Assert(processInfo.Count == 1);
+            var browserTargets = await GetAllBrowserLaunchTargetsAsync(serverUrls[0], launchOptions, isQuery);
 
-            //        perfEvent?.AddPerformanceProperty(TelemetryExtensions.DiscoverPidElapsedTimeProperty);
+            if (!isQuery && launchOptions.IsDebugging() && browserTargets.Count > 0)
+            {
+                _debugTargetsObserver.ObserveDebugTarget(_projectVsServices.Project.FullPath, browserTargets[0].Executable);
+            }
 
-            //        // Dotnet cli the process is started in a suspended state. We need to remember that so that we can resume the process once
-            //        // debugger has attached. The suspended state is indicated by Item3. Profiling doesn't support the following
-            //        ProcessIDToResume = processInfo[0].Item3 == DebuggingOptions.RequiresResume ? processInfo[0].Item2 : 0;
-
-            //        var serverSettings = GetDebugLaunchSettings(launchOptions, processInfo[0].Item2, processInfo[0].Item1, processInfo[0].Item3, activeProfile, activeFramework);
-
-            //        launchTargets.Add(serverSettings);
-            //    }
-            //}
-
-            // We always set the debugging root url to the url of the server - not the url being launched as it could be anything. If we 
-            // have secure bindings, we add that one too.
-            // Set the debugging root urls to the urls currently supported by the server - not the url being launched as it could be anything
-            //foreach (var url in serverUrls)
-            //{
-            //    DebuggingRootUrls.Add(url.EnsureTrailingChar('/'));
-            //}
-
-            //// If in nexus (server mode) we ignore doing anything else with the browsers at this point. However, if launch browser is enabled we still
-            //// need to call the client to launch browsers so we need to remember the uri to launch
-            //if (activeProfile.LaunchBrowser)
-            //{
-            //    if (await VsWrappers.GetVsShellWrapper().IsServerModeAsync())
-            //    {
-            //        BrowserUriToLaunchAfterResume = browserUri;
-            //        CancellationTokenSource = new CancellationTokenSource();
-            //    }
-            //    else
-            //    {
-            //        var staticAssets = await WebProjectInformation.GetStaticAssetsAsync();
-            //        var browserTargets = await BrowserLaunchHelper.GetAllBrowserLaunchTargetsAsync(browserUri.AbsoluteUri, WebProjectInformation.WebRoot, GetProjectWrapper(),
-            //                                                                            launchOptions, activeProfile.GetInspectUri(), staticAssets, isQuery);
-
-            //        if (!isQuery && launchOptions.IsDebugging())
-            //        {
-            //            DebugTargetsObserver.RequestDebugTargetsObservation(browserTargets, ProjectServices.Project.FullPath);
-            //        }
-
-            //        if (VsWrappers.GetVsShellWrapper().IsVsRunningElevated())
-            //        {
-            //            // Note that if we are debugging and and this is in-process, we must delay starting chrome browsers until after the debugger
-            //            // is attached. This allows startup code to be debugged. Since, it is okay to do this in all cases, we just simplify to always
-            //            // launching them after the attach
-            //            BrowserTargetsToLaunchAfterResume = BrowserLaunchHelper.RemoveChromeBrowsersNotBeingDebugged(browserTargets);
-            //            if (isQuery)
-            //            {
-            //                // We don't actually need to do this if a query
-            //                BrowserTargetsToLaunchAfterResume = null;
-            //            }
-            //        }
-
-            //        launchTargets.AddRange(browserTargets);
-            //    }
-            //}
-
-            //// Do we have async work? If so create a cancellation token
-            //if (ProcessIDToResume != 0 || BrowserUriToLaunchAfterResume != null || BrowserTargetsToLaunchAfterResume != null)
-            //{
-            //    CancellationTokenSource = new CancellationTokenSource();
-            //}
-
-            //WebServerUsedForLaunch = activeWebServer;
+            launchTargets.AddRange(browserTargets);
 
             return launchTargets.ToArray();
         }
 
-        private static string GetConfigurationName(ProjectConfiguration cfg)
+        private DebugLaunchSettings GetIISLaunchTarget(DebugLaunchOptions launchOptions, string browserUrl)
         {
-            if (cfg.Dimensions.TryGetValue("Configuration", out var cfgValue))
+            // To get the debugger to attach we need to specify a url with an aspx type extension
+            string ext = Path.GetExtension(browserUrl);
+            if (ext.Length == 0 || (
+                !browserUrl.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase) &&
+                !browserUrl.EndsWith(".svc", StringComparison.OrdinalIgnoreCase) &&
+                !browserUrl.EndsWith(".asmx", StringComparison.OrdinalIgnoreCase) &&
+                !browserUrl.EndsWith(".xamlx", StringComparison.OrdinalIgnoreCase)))
             {
-                return cfgValue;
+                int index = browserUrl.LastIndexOf('/');
+                browserUrl = browserUrl.Remove(index);
+                browserUrl += "/debugattach.aspx";
             }
 
-            return "Debug";
-        }
-
-        /// <summary>
-        /// Helper to populate the debug launch settings.
-        /// </summary>
-        private DebugLaunchSettings GetDebugLaunchSettings(DebugLaunchOptions launchOptions, int pid, string processExe, ILaunchProfile activeProfile, string activeFramework)
-        {
             var serverSettings = new DebugLaunchSettings(launchOptions)
             {
                 Project = _projectVsServices.VsHierarchy,
-
-                // Work around bug that profiling doesn't send the profiling flag with queries
-                // serverSettings.LaunchOperation = launchOptions.IsProfiling()? DebugLaunchOperation.AlreadyRunning : DebugLaunchOperation.AttachToSuspendedLaunchProcess;
                 LaunchOperation = DebugLaunchOperation.AlreadyRunning,
-                ProcessId = pid,
-                Executable = processExe,
+                Executable = browserUrl,
+                RemoteMachine = new Uri(browserUrl).Host,
+                LaunchDebugEngineGuid = DebuggerEngines.ManagedOnlyEngine,
                 LaunchOptions = launchOptions |
                                             DebugLaunchOptions.WaitForAttachComplete |
                                             DebugLaunchOptions.StopDebuggingOnEnd
             };
 
-            //if (!otherDebuggingOptions.HasFlag(DebuggingOptions.DetachOnStop))
-            //{
-            //    serverSettings.LaunchOptions |= DebugLaunchOptions.TerminateOnStop;
-            //}
-
-            //if (activeProfile.IsIIS())
-            //{
-            //    serverSettings.LaunchOptions |= (DebugLaunchOptions)DBGLAUNCH_BypassAttachSecurity;
-            //}
-
-            //serverSettings.LaunchDebugEngineGuid = DebugExtensions.GetManagedDebugEngineForFramework(activeFramework);
-            //if (activeProfile.NativeDebuggingIsEnabled())
-            //{
-            //    serverSettings.AdditionalDebugEngines.Add(DebuggerEngines.NativeOnlyEngine);
-            //}
-
-            //if (activeProfile.SqlDebuggingIsEnabled())
-            //{
-            //    serverSettings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
-            //}
             return serverSettings;
+        }
+
+        private async Task<DebugLaunchSettings> GetIISExpressLaunchTargetAsync(DebugLaunchOptions launchOptions, bool isQuery)
+        {
+            var launchData = await _webServer.GetWebServerCommandLineAsync();
+            int processID = isQuery ? 0 : await _webServer.GetWebServerProcessIdAsync();
+            return new DebugLaunchSettings(launchOptions)
+            {
+                LaunchOperation = DebugLaunchOperation.AlreadyRunning,
+                Project = _projectVsServices.VsHierarchy,
+                Executable = launchData.exePath,
+                Arguments = launchData.commandLine,
+                ProcessId = processID,
+                LaunchDebugEngineGuid = DebuggerEngines.ManagedOnlyEngine,
+                LaunchOptions = launchOptions |
+                                DebugLaunchOptions.WaitForAttachComplete |
+                                DebugLaunchOptions.StopDebuggingOnEnd
+            };
+        }
+
+        public async Task<List<DebugLaunchSettings>> GetAllBrowserLaunchTargetsAsync(string debuggingUrl, DebugLaunchOptions launchOptions, bool isQuery)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            // Now do browser settings.
+            var launchTargets = new List<DebugLaunchSettings>();
+
+            // Figure which browser to use. 
+            // If debugging we use the debug target selection svc to figure out which one to use
+            if (launchOptions.IsDebugging())
+            {
+                (string browserPath, string? browserArgs) = GetDefaultBrowserForDebug();
+                launchTargets.Add(GetBrowserLaunchSettings(browserPath, browserArgs, debuggingUrl, launchOptions));
+            }
+            else
+            {
+                // For ctrl-F5, we launch all default browsers 
+                // So get list of selected browsers. The Tuple contains browser path, browser args
+                List<(string browserPath, string? browserArgs)> selectedBrowsers = GetDefaultBrowsers();
+                foreach ((string browserPath, string? browserArgs) in selectedBrowsers)
+                {
+                    launchTargets.Add(GetBrowserLaunchSettings(browserPath, browserArgs, debuggingUrl, launchOptions));
+                }
+            }
+
+            return launchTargets;
+        }
+
+        private DebugLaunchSettings GetBrowserLaunchSettings(string browserPath, string? browserArgs, string url, DebugLaunchOptions launchOptions)
+        {
+            var browserSettings = new DebugLaunchSettings(launchOptions)
+            {
+                Project = _projectVsServices.VsHierarchy
+            };
+
+            // Remove profiling option 
+            launchOptions &= ~DebugLaunchOptions.Profiling;
+
+            // if script debugging is disabled and we are debugging, add in the command line parameters (if supported) to launch a new window.
+            if (launchOptions.IsDebugging() && DebugTargetObserverIsEnabled())
+            {
+                _debugTargetsObserver.GetNewWindowCommandLineArgument(browserPath, out string? newWindowArgs);
+                if (newWindowArgs != null)
+                {
+                    if (browserArgs == null)
+                    {
+                        browserArgs = newWindowArgs;
+                    }
+                    else
+                    {
+                        browserArgs = newWindowArgs + browserArgs;
+                    }
+                }
+            }
+
+            browserSettings.Options = "*"; // We set the options here, because they might be overriden by the Chrome/PineZorro debugger
+
+            // We must encode URL's for non-IE browsers.
+            var encodedUrl = url;
+            if (!string.Equals(Path.GetFileName(browserPath), "iexplorer.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                encodedUrl = SafeGetEncodedUrl(url);
+            }
+
+            if (string.IsNullOrEmpty(browserArgs))
+            {
+                browserArgs = encodedUrl;
+            }
+            else
+            {
+                browserArgs = browserArgs + " " + encodedUrl;
+            }
+
+            browserSettings.LaunchOperation = DebugLaunchOperation.CreateProcess;
+            browserSettings.Executable = browserPath;
+            browserSettings.Arguments = browserArgs;
+            browserSettings.LaunchOptions = launchOptions | DebugLaunchOptions.NoDebug;
+
+            return browserSettings;
+        }
+
+        private List<(string browserPath, string? browserArgs)> GetDefaultBrowsers()
+        {
+            // Create the list of default browsers
+            var browserList = new List<(string browserPath, string? browserArgs)>();
+            var doc3 = (IVsUIShellOpenDocument3)_vsShellOpenDoc.Value;
+
+            IVsEnumDocumentPreviewers previewersEnum = doc3.DocumentPreviewersEnum;
+
+            IVsDocumentPreviewer[] rgPreviewers = new IVsDocumentPreviewer[1];
+            while (previewersEnum.Next(1, rgPreviewers, out uint celtFetched) == HResult.OK && celtFetched == 1)
+            {
+                // Need to filter out the internal browser (no path)
+                if (rgPreviewers[0].IsDefault && !string.IsNullOrEmpty(rgPreviewers[0].Path))
+                {
+                    browserList.Add((UnQuotePath(rgPreviewers[0].Path), rgPreviewers[0].Arguments));
+                }
+            }
+
+            return browserList;
+        }
+
+        public (string browserPath, string? browserArgs) GetDefaultBrowserForDebug()
+        {
+            var hr = _browserDebugTargetSelectionSvc.Value.SelectDefaultBrowser(out IVsDocumentPreviewer selectedBrowser);
+            if (ErrorHandler.Succeeded(hr))
+            {
+                var browserPath = selectedBrowser.Path;
+                if (!string.IsNullOrEmpty(browserPath))
+                {
+                    // Remove quotes.
+                    if (browserPath.StartsWith("\"", StringComparison.Ordinal) && browserPath.EndsWith("\"", StringComparison.Ordinal))
+                    {
+                        browserPath = browserPath.Substring(1, browserPath.Length - 2);
+                    }
+
+                    return (UnQuotePath(selectedBrowser.Path), selectedBrowser.Arguments);
+                }
+            }
+            else if (hr == HResult.Abort)
+            {
+                // User cancel
+                throw new OperationCanceledException(string.Empty);
+            }
+
+            // Failure case just default to IE
+            throw new COMException(WebResources.NeedToSelectANonInternalBrowser, HResult.Fail);
         }
 
         /// <summary>
@@ -274,8 +368,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 System.Diagnostics.Debug.Assert(url.EndsWith("/", StringComparison.OrdinalIgnoreCase));
                 if (deployedPath.StartsWith(url, StringComparison.OrdinalIgnoreCase))
                 {
-                    // Figure out the part of the url after the projectUrl and append it to where the web root folder is - which
-                    // may be different than the project root.
+                    // Figure out the part of the url after the projectUrl and append it to our path
                     // We need to remove any query string or bookmark so leverage the uri class to extract everything up to and including the path, 
                     // subtract the application url, and combine what is left with the web root path.
                     var uri = new Uri(deployedPath);
@@ -286,7 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                     }
 
                     localPath = Path.Combine(Path.GetDirectoryName(_projectVsServices.Project.FullPath), relPath);
-                    return File.Exists(localPath);
+                    return _fileSystem.FileExists(localPath);
                 }
             }
 
@@ -296,6 +389,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
         public void Dispose()
         {
+        }
+
+        private static string UnQuotePath(string path)
+        {
+            if (path.StartsWith("\"", StringComparison.Ordinal) && path.EndsWith("\"", StringComparison.Ordinal))
+            {
+                return path.Substring(1, path.Length - 2);
+            }
+
+            return path;
+        }
+
+        private static string SafeGetEncodedUrl(string url)
+        {
+            try
+            {
+                var encodedUri = new Uri(url);
+                return encodedUri.AbsoluteUri;
+            }
+            catch (UriFormatException)
+            {
+            }
+
+            return url;
+        }
+
+        private bool DebugTargetObserverIsEnabled()
+        {
+            _vsShell.Value.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out object objProp);
+            if (objProp is string regRoot)
+            {
+                string regKey = "HKEY_CURRENT_USER\\" + regRoot + "\\WebProjects";
+                object objValue = Registry.GetValue(regKey, "EnableDebugTargetsObserver", 1);
+                return objValue is int intVal && intVal == 1;
+            }
+
+            return true;
         }
     }
 }
