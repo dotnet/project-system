@@ -1,8 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-#nullable disable
+#nullable enable
 
-using EnvDTE;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,55 +10,41 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Exceptions;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [Export(typeof(IProjectSystemReferenceCleanupService))]
-    internal partial class ReferenceCleanupService : IProjectSystemReferenceCleanupService
+    internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService
     {
-        private readonly AbstractReferenceHandler _projectAbstractReferenceHandler = new ProjectAbstractReferenceHandler();
-        private readonly AbstractReferenceHandler _packageAbstractReferenceHandler = new PackageAbstractReferenceHandler();
-        private readonly AbstractReferenceHandler _assemblyAbstractReferenceHandler = new AssemblyAbstractReferenceHandler();
+        private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
+            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
+            {
+                { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
+                { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
+                { ProjectSystemReferenceType.Assembly, new AssemblyReferenceHandler() }
+            };
 
-        private readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> _mapReferenceTypeToHandler;
-
-        private readonly IProjectServiceAccessor _projectServiceAccessor;
-        private readonly IVsUIService<DTE> _dte;
-        private readonly IVsUIService<SVsSolution, IVsSolution> _solution;
+        private readonly Lazy<IProjectService2> _projectService;
+        protected IProjectService2 ProjectService => _projectService.Value;
 
         [ImportingConstructor]
-        public ReferenceCleanupService(IProjectServiceAccessor projectServiceAccessor, IVsUIService<SDTE, DTE> dte, IVsUIService<SVsSolution, IVsSolution> solution)
+        public ReferenceCleanupService(IProjectServiceAccessor projectServiceAccessor)
         {
-            _projectServiceAccessor = projectServiceAccessor;
-            _dte = dte;
-            _solution = solution;
-
-            _mapReferenceTypeToHandler =
-                new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
-                {
-                    { ProjectSystemReferenceType.Project, _projectAbstractReferenceHandler },
-                    { ProjectSystemReferenceType.Package, _packageAbstractReferenceHandler },
-                    { ProjectSystemReferenceType.Assembly, _assemblyAbstractReferenceHandler},
-                    { ProjectSystemReferenceType.Unknown, null }
-                };
+            _projectService = new Lazy<IProjectService2>(
+                () => (IProjectService2)projectServiceAccessor.GetProjectService(),
+                LazyThreadSafetyMode.PublicationOnly);
         }
 
-        public Task<string> GetProjectAssetsFilePathAsync(string projectPath, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<ImmutableArray<ProjectSystemReferenceInfo>> GetProjectReferencesAsync(string projectPath, string targetFrameworkMoniker, CancellationToken cancellationToken)
+        public async Task<ImmutableArray<ProjectSystemReferenceInfo>> GetProjectReferencesAsync(string projectPath, CancellationToken cancellationToken)
         {
             List<ProjectSystemReferenceInfo> references;
 
             try
             {
-                var activeConfiguredProject = await GetActiveConfiguredProjectByPathAsync(projectPath);
+                var activeConfiguredProject = await GetActiveConfiguredProjectByPathAsync(projectPath, cancellationToken);
 
-                references = GetAllReferencesInConfiguredProject(activeConfiguredProject);
+                references = await GetAllReferencesInConfiguredProjectAsync(activeConfiguredProject, cancellationToken);
             }
             catch
             {
@@ -69,11 +54,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return references.ToImmutableArray();
         }
 
-        private async Task<ConfiguredProject> GetActiveConfiguredProjectByPathAsync(string projectPath)
+        private async Task<ConfiguredProject> GetActiveConfiguredProjectByPathAsync(string projectPath, CancellationToken cancellationToken)
         {
-            var unconfiguredProjectPath = FindUnconfiguredProjectByPath(projectPath);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var unconfiguredProjectPath = ProjectService.GetLoadedProject(projectPath);
+
+            if (unconfiguredProjectPath is null)
+            {
+                throw new InvalidProjectFileException();
+            }
 
             var activeConfiguredProject = await unconfiguredProjectPath.GetSuggestedConfiguredProjectAsync();
+
             if (activeConfiguredProject is null)
             {
                 throw new InvalidProjectFileException();
@@ -82,149 +75,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return activeConfiguredProject;
         }
 
-        private UnconfiguredProject FindUnconfiguredProjectByPath(string projectPath)
+        private static async Task<List<ProjectSystemReferenceInfo>> GetAllReferencesInConfiguredProjectAsync(ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
-            var projectService = _projectServiceAccessor.GetProjectService();
+            cancellationToken.ThrowIfCancellationRequested();
 
-            var unconfigProjects = projectService.LoadedUnconfiguredProjects;
-
-            var unconfiguredProject = unconfigProjects.First(project =>
-                StringComparers.Paths.Equals((string)project.FullPath, projectPath));
-
-            return unconfiguredProject;
-        }
-
-        private List<ProjectSystemReferenceInfo> GetAllReferencesInConfiguredProject(ConfiguredProject selectedConfiguredProject)
-        {
-            GetProjectSnapshot(selectedConfiguredProject);
-
-            var references = GetReferences();
-
-            return references;
-        }
-
-        private void GetProjectSnapshot(ConfiguredProject selectedConfiguredProject)
-        {
-            _projectAbstractReferenceHandler.GetProjectSnapshot(selectedConfiguredProject);
-            _packageAbstractReferenceHandler.GetProjectSnapshot(selectedConfiguredProject);
-            _assemblyAbstractReferenceHandler.GetProjectSnapshot(selectedConfiguredProject);
-        }
-
-        private List<ProjectSystemReferenceInfo> GetReferences()
-        {
             var references = new List<ProjectSystemReferenceInfo>();
 
-            references.AddRange(_projectAbstractReferenceHandler.GetReferences());
-            references.AddRange(_packageAbstractReferenceHandler.GetReferences());
-            references.AddRange(_assemblyAbstractReferenceHandler.GetReferences());
+            foreach (var keyValuePair in s_mapReferenceTypeToHandler.Where(h => h.Value != null))
+            {
+                references.AddRange(await keyValuePair.Value.GetReferencesAsync(selectedConfiguredProject, cancellationToken));
+            }
 
             return references;
         }
 
-        public async Task<bool> TryUpdateReferenceAsync(string projectPath, string targetFrameworkMoniker, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
+        public async Task<bool> TryUpdateReferenceAsync(string projectPath, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
 
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.None)
-            {
-                return wasUpdated;
-            }
+            cancellationToken.ThrowIfCancellationRequested();
 
-            var activeConfiguredProject = await GetActiveConfiguredProjectByPathAsync(projectPath);
+            var activeConfiguredProject = await GetActiveConfiguredProjectByPathAsync(projectPath, cancellationToken);
 
-            var referenceHandler = _mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
+            var referenceHandler = s_mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
 
             if (referenceHandler != null)
             {
-                wasUpdated = await ApplyAction(referenceUpdate, cancellationToken, referenceHandler, activeConfiguredProject);
+                wasUpdated = await ApplyActionAsync(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }
 
             return wasUpdated;
         }
 
-        private static async Task<bool> ApplyAction(ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken,
-            AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject activeConfiguredProject)
+        private static async Task<bool> ApplyActionAsync(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler, 
+            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
 
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.TreatAsUsed ||
-                referenceUpdate.Action == ProjectSystemUpdateAction.TreatAsUnused)
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed ||
+                referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
             {
                 wasUpdated =
-                    await abstractReferenceHandler.UpdateReferenceAsync(activeConfiguredProject, referenceUpdate, cancellationToken);
+                    await referenceHandler.UpdateReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken);
             }
             else
             {
-                if (CanRemoveReference(referenceUpdate, abstractReferenceHandler))
+                if (await referenceHandler.CanRemoveReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken))
                 {
-                    wasUpdated =
-                        await abstractReferenceHandler.RemoveReferenceAsync(activeConfiguredProject, referenceUpdate.ReferenceInfo);
+                    await referenceHandler.RemoveReferenceAsync(selectedConfiguredProject, referenceUpdate.ReferenceInfo);
+                    wasUpdated = true;
                 }
             }
 
             return wasUpdated;
-        }
-
-        private static bool CanRemoveReference(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler abstractReferenceHandler)
-        {
-            var references = abstractReferenceHandler.GetReferences();
-
-            var reference = references.First(c => c.ItemSpecification == referenceUpdate.ReferenceInfo.ItemSpecification);
-
-            return reference.TreatAsUsed != true;
-        }
-
-        public bool IsProjectCpsBased(string projectPath)
-        {
-            var projectHierarchy = GetProjectHierarchy(projectPath);
-            var isCps = projectHierarchy.IsCapabilityMatch(ProjectCapabilities.Cps);
-
-            return isCps;
-        }
-
-        private IVsHierarchy GetProjectHierarchy(string projectPath)
-        {
-            var project = TryGetProjectFromPath(projectPath);
-            if (project == null)
-            {
-                return null;
-            }
-
-            return TryGetIVsHierarchy(project);
-        }
-
-        private Project TryGetProjectFromPath(string projectPath)
-        {
-            foreach (Project project in _dte.Value.Solution.Projects)
-            {
-                string fullName;
-                try
-                {
-                    fullName = project.FullName;
-                }
-                catch (Exception)
-                {
-                    // DTE COM calls can fail for any number of valid reasons.
-                    continue;
-                }
-
-                if (StringComparers.Paths.Equals(fullName, projectPath))
-                {
-                    return project;
-                }
-            }
-
-            return null;
-        }
-
-        private IVsHierarchy TryGetIVsHierarchy(Project project)
-        {
-            if (_solution.Value.GetProjectOfUniqueName(project.UniqueName, out IVsHierarchy projectHierarchy) == HResult.OK)
-            {
-                return projectHierarchy;
-            }
-
-            return null;
         }
     }
 }

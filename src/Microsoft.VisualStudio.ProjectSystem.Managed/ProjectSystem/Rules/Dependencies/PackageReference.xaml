@@ -71,6 +71,7 @@
                 Visible="False" />
 
   <BoolProperty Name="TreatAsUsed"
-                Description="Indicates that this reference should be treated as if it were used."/>
+                ReadOnly="True"
+                Visible="False" />
 
 </Rule>

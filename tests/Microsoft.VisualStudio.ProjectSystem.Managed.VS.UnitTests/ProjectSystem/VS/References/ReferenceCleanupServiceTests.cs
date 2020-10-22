@@ -1,19 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using EnvDTE;
-using Microsoft.Build.Exceptions;
-using Microsoft.VisualStudio.Shell.Interop;
-using Moq;
-using Xunit;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Build.Exceptions;
+using Moq;
+using Xunit;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Reflection;
 using Microsoft.VisualStudio.ProjectSystem.References;
-using Microsoft.VisualStudio.ProjectSystem.VS.References.Roslyn;
+using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
@@ -31,13 +29,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private const string _assembly2 = "assembly2";
         private const string _assembly3 = "assembly3";
 
-        private const string _sdk1 = "sdk1";
-        private const string _sdk2 = "sdk2";
-        private const string _sdk3 = "sdk3";
+        private static Mock<IUnresolvedPackageReference>? s_item;
 
-        private Mock<ConfiguredProject>? _configuredProjectMock1;
-        private Mock<ConfiguredProject>? _configuredProjectMock2;
-        private Mock<ConfiguredProject>? _configuredProjectMock3;
+        private static Mock<IPackageReferencesService>? _packageServicesMock1;
+        private static Mock<IAssemblyReferencesService>? _assemblyServicesMock2;
 
         [Fact]
         public async Task GetProjectReferencesAsync_NoValidProjectFound_ThrowsException()
@@ -45,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var referenceCleanupService = Setup();
 
             await Assert.ThrowsAsync<InvalidProjectFileException>(() =>
-                referenceCleanupService.GetProjectReferencesAsync("UnknownProject", "", CancellationToken.None)
+                referenceCleanupService.GetProjectReferencesAsync("UnknownProject", CancellationToken.None)
                 );
         }
 
@@ -54,273 +49,258 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             var referenceCleanupService = Setup();
 
-            var references = await referenceCleanupService.GetProjectReferencesAsync(_projectPath2, "", CancellationToken.None);
+            var references = await referenceCleanupService.GetProjectReferencesAsync(_projectPath3, CancellationToken.None);
 
             Assert.Empty(references);
         }
 
-        [Fact]
-        public async Task GetProjectReferencesAsync_FoundReferences_ReturnAllReferences()
+        [Theory]
+        [InlineData(_projectPath1, 5)]
+        [InlineData(_projectPath2, 4)]
+        [InlineData(_projectPath3, 0)]
+        public async Task GetProjectReferencesAsync_FoundReferences_ReturnAllReferences(string projectPath, int numberOfReferences)
         {
             var referenceCleanupService = Setup();
 
-            var references = await referenceCleanupService.GetProjectReferencesAsync(_projectPath1, "", CancellationToken.None);
+            var references = await referenceCleanupService.GetProjectReferencesAsync(projectPath, CancellationToken.None);
 
-            Assert.Equal(7, references.Length);
+            Assert.Equal(numberOfReferences, references.Length);
         }
 
         [Fact]
-        public async Task UpdateReferencesAsync_UpdatePackages_NoAction()
+        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovedPackageIsNotInReferences()
         {
             var referenceCleanupService = Setup();
-
-            var referenceUpdate1 =
-                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.None, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, "", true));
-
-            await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, "", referenceUpdate1, CancellationToken.None);
-
-            _configuredProjectMock1?.Verify(c => c.Services.PackageReferences.RemoveAsync(It.IsAny<string>()), Times.Never);
-        }
-
-        [Fact]
-        public async Task UpdateReferencesAsync_RemovePackages_RemoveExecutedTwice()
-        {
-            var referenceCleanupService = Setup();
-
             var referenceUpdate1 =
                 new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package1, true));
-            var referenceUpdate2 =
-                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package2, true));
-            
-            await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, "", referenceUpdate1, CancellationToken.None);
 
-            _configuredProjectMock1?.Verify(c=> c.Services.PackageReferences.RemoveAsync(It.IsAny<string>()), Times.Once);
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
 
-            await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, "", referenceUpdate2, CancellationToken.None);
-            _configuredProjectMock1?.Verify(c => c.Services.PackageReferences.RemoveAsync(It.IsAny<string>()), Times.Exactly(2));
+            _packageServicesMock1?.Verify(c => c.RemoveAsync(_package1), Times.Never);
+            Assert.False(wasUpdated);
+        }
+
+        [Fact]
+        public async Task UpdateReferencesAsync_RemovePackages_RemovedPackageMarkedAsUnused()
+        {
+            var referenceCleanupService = Setup();
+            var referenceUpdate1 =
+                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
+
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+
+            _packageServicesMock1?.Verify(c => c.RemoveAsync(_package3), Times.Once);
+            Assert.True(wasUpdated);
+        }
+
+        [Fact]
+        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovePackageIsNotAReference()
+        {
+            var referenceCleanupService = Setup();
+            var referenceUpdate1 =
+                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, "UnknownPackage", true));
+
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+
+            _packageServicesMock1?.Verify(c => c.RemoveAsync(It.IsAny<string>()), Times.Never);
+            Assert.False(wasUpdated);
+        }
+
+        [Fact]
+        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovePackageMarkedAsUsed()
+        {
+            var referenceCleanupService = Setup();
+            var referenceUpdate1 =
+                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Assembly, _assembly1, true));
+
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath2, referenceUpdate1, CancellationToken.None);
+
+            _assemblyServicesMock2?.Verify(c => c.RemoveAsync(It.IsAny<AssemblyName>(), null), Times.Never);
+            Assert.False(wasUpdated);
+        }
+
+        [Fact]
+        public async Task UpdateReferenceAsync_TreatAsUsed_ReferencesChangedToTreatAsUsed()
+        {
+            s_item = null;
+            var referenceCleanupService = Setup();
+            var referenceUpdate1 =
+                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.SetTreatAsUsed, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
+
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+
+            s_item!.As<IProjectItem>().Verify(c => c.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(true), null), Times.Once);
+            Assert.True(wasUpdated);
+        }
+
+        [Fact]
+        public async Task UpdateReferenceAsync_TreatAsUsed_ReferencesChangedToTreatAsUnused()
+        {
+            s_item = null;
+            var referenceCleanupService = Setup();
+            var referenceUpdate1 =
+                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.UnsetTreatAsUsed, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
+
+            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+
+            s_item!.As<IProjectItem>().Verify(c => c.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(false), null), Times.Once);
+            Assert.True(wasUpdated);
         }
 
         private ReferenceCleanupService Setup()
         {
-            CreateReferences(out var projectItems, out var packageItems, out var assemblyItems, out var sdkItems);
+            var projectServiceAccessorMock = new Mock<IProjectServiceAccessor>();
 
-            var itemMock = createSnapshots(projectItems, packageItems, assemblyItems, sdkItems);
-            CreateEmptyReferences(out var projectItems2, out var packageItems2, out var assemblyItems2, out var sdkItems2);
-            var itemEmtpyMock = createSnapshots(projectItems2, packageItems2, assemblyItems2, sdkItems2);
+            var projectServiceMock = new Mock<IProjectService2>();
+            AddLoadedProject(_projectPath1, CreateConfiguredProjectServicesForProject1, projectServiceMock);
+            AddLoadedProject(_projectPath2, CreateConfiguredProjectServicesForProject2, projectServiceMock);
+            AddLoadedProject(_projectPath3, CreateConfiguredProjectServicesForProject3, projectServiceMock);
 
-            var configuredProjectMock = new Mock<ConfiguredProject>();
-            configuredProjectMock.SetupGet(c => c.UnconfiguredProject).Returns(UnconfiguredProjectFactory.Create(fullPath: _projectPath1));
-
-            var configuredProjectServicesMock = new Mock<ConfiguredProjectServices>();
-            var projectServiceMock = new Mock<IProjectService>();
-
-            configuredProjectServicesMock.SetupGet(c => c.ProjectService).Returns(projectServiceMock.Object);
-
-            var unconfiguredProjectMock1 = CreateUnconfiguredProjectMock(_projectPath1, itemMock.Object, out _configuredProjectMock1);
-            var unconfiguredProjectMock2 = CreateUnconfiguredProjectMock(_projectPath2, itemEmtpyMock.Object, out _configuredProjectMock2);
-            var unconfiguredProjectMock3 = CreateUnconfiguredProjectMock(_projectPath3, itemEmtpyMock.Object, out _configuredProjectMock3);
-
-            UnconfiguredProject[] unconfiguredProjects = new UnconfiguredProject[3]
-            {
-                unconfiguredProjectMock1.Object, unconfiguredProjectMock2.Object, unconfiguredProjectMock3.Object
-            };
-
-            projectServiceMock.SetupGet(c => c.LoadedUnconfiguredProjects).Returns(unconfiguredProjects);
-            configuredProjectMock.SetupGet(c => c.Services).Returns(configuredProjectServicesMock.Object);
-
-            var dteMock = new Mock<IVsUIService<SDTE, DTE>>();
-            var solutionMock = new Mock<IVsUIService<SVsSolution, IVsSolution>>();
-
-            return new ReferenceCleanupService(configuredProjectMock.Object, dteMock.Object, solutionMock.Object);
+            projectServiceAccessorMock.Setup(c => c.GetProjectService(ProjectServiceThreadingModel.Multithreaded)).Returns(projectServiceMock.Object);
+            return new ReferenceCleanupService(projectServiceAccessorMock.Object);
         }
 
-        private static Mock<IProjectVersionedValue<IProjectSubscriptionUpdate>> createSnapshots(IImmutableDictionary<string, IImmutableDictionary<string, string>> projectItems, IImmutableDictionary<string, IImmutableDictionary<string, string>> packageItems,
-            IImmutableDictionary<string, IImmutableDictionary<string, string>> assemblyItems, IImmutableDictionary<string, IImmutableDictionary<string, string>> sdkItems)
+        private void AddLoadedProject(string projectPath, Func<ConfiguredProjectServices> createConfiguredProjectServicesForProject, Mock<IProjectService2> projectServiceMock)
         {
-            var itemMock = new Mock<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
-            var itemValue = new Mock<IProjectSubscriptionUpdate>();
-
-            var projectRuleSnapshot = new Mock<IProjectRuleSnapshot>();
-            projectRuleSnapshot.SetupGet(c => c.Items).Returns(projectItems);
-
-            var packageRuleSnapshot = new Mock<IProjectRuleSnapshot>();
-            packageRuleSnapshot.SetupGet(c => c.Items).Returns(packageItems);
-
-            var assemblyRuleSnapshot = new Mock<IProjectRuleSnapshot>();
-            assemblyRuleSnapshot.SetupGet(c => c.Items).Returns(assemblyItems);
-
-            var sdkRuleSnapshot = new Mock<IProjectRuleSnapshot>();
-            sdkRuleSnapshot.SetupGet(c => c.Items).Returns(sdkItems);
-
-            IImmutableDictionary<string, IProjectRuleSnapshot> currentState =
-                new Dictionary<string, IProjectRuleSnapshot>
-                    {
-                        {ProjectReference.SchemaName, projectRuleSnapshot.Object},
-                        {PackageReference.SchemaName, packageRuleSnapshot.Object},
-                        {AssemblyReference.SchemaName, assemblyRuleSnapshot.Object},
-                        {SdkReference.SchemaName, sdkRuleSnapshot.Object}
-                    }
-                    .ToImmutableDictionary();
-
-            itemValue.SetupGet(c => c.CurrentState).Returns(currentState);
-            itemMock.Setup(c => c.Value).Returns(itemValue.Object);
-            return itemMock;
+            var configuredProject = ConfiguredProjectFactory.Create(services: createConfiguredProjectServicesForProject());
+            var unconfiguredProject = UnconfiguredProjectFactory.Create(fullPath: projectPath, configuredProject: configuredProject);
+            projectServiceMock.Setup(c => c.GetLoadedProject(It.Is<string>(arg => arg == projectPath))).Returns(unconfiguredProject);
         }
 
-        private static void CreateReferences(out IImmutableDictionary<string, IImmutableDictionary<string, string>> projectItems,
-            out IImmutableDictionary<string, IImmutableDictionary<string, string>> packageItems,
-            out IImmutableDictionary<string, IImmutableDictionary<string, string>> assemblyItems, out IImmutableDictionary<string, IImmutableDictionary<string, string>> sdkItems)
+        private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject1()
         {
-            projectItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
+            // All references are marked TreaAsUsed = False
+            var projectReferencesService = new Mock<IBuildDependencyProjectReferencesService>();
+            IImmutableSet<IUnresolvedBuildDependencyProjectReference> unresolvedProjectReferences =
+                CreateProjectReferences(new List<(string, string)>
                 {
-                    _projectPath2,
-                    new Dictionary<string, string> {{"TreatAsUsed", "True"}, {"Identity", _projectPath2}}
-                        .ToImmutableDictionary()
-                },
-                {
-                    _projectPath3,
-                    new Dictionary<string, string> {{"TreatAsUsed", "True"}, {"Identity", _projectPath3}}
-                        .ToImmutableDictionary()
-                }
-            }.ToImmutableDictionary();
+                    (_projectPath2, PropertySerializer.SimpleTypes.ToString(false)),
+                    (_projectPath3, PropertySerializer.SimpleTypes.ToString(false))
+                });
+            projectReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedProjectReferences);
 
-            packageItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
+            var packageReferencesService = new Mock<IPackageReferencesService>();
+            IImmutableSet<IUnresolvedPackageReference> unresolvedPackageReferences =
+                CreatePackageReferences(new List<(string, string)>
                 {
-                    _package1,
-                    new Dictionary<string, string> {{"TreatAsUsed", "True"}, {"Name", _package1}}.ToImmutableDictionary()
-                },
-                {
-                    _package2,
-                    new Dictionary<string, string> {{"TreatAsUsed", "False"}, {"Name", _package2}}.ToImmutableDictionary()
-                },
-                {
-                    _package3,
-                    new Dictionary<string, string> {{"TreatAsUsed", "False"}, {"Name", _package3}}.ToImmutableDictionary()
-                }
-            }.ToImmutableDictionary();
+                    ( _package3 , PropertySerializer.SimpleTypes.ToString(false))
+                });
+            packageReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedPackageReferences);
 
-            assemblyItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
+            var assemblyReferencesService = new Mock<IAssemblyReferencesService>();
+            IImmutableSet<IUnresolvedAssemblyReference> unresolvedAssemblyReferences =
+                CreateAssemblyReferences(new List<(string, string)>
                 {
-                    _assembly1,
-                    new Dictionary<string, string> {{"TreatAsUsed", "True"}, {"SDKName", _assembly1}}.ToImmutableDictionary()
-                }
-            }.ToImmutableDictionary();
+                    (_assembly1, PropertySerializer.SimpleTypes.ToString(false)),
+                    (_assembly2, PropertySerializer.SimpleTypes.ToString(false))
+                });
+            assemblyReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedAssemblyReferences);
 
-            sdkItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
-                {_sdk1, new Dictionary<string, string> {{"TreatAsUsed", "True"}, {"Name", _sdk1}}.ToImmutableDictionary()}
-            }.ToImmutableDictionary();
+            _packageServicesMock1 = packageReferencesService;
+            var configuredProjectServices1 = ConfiguredProjectServicesFactory.Create(
+                projectReferences: projectReferencesService.Object, packageReferences: packageReferencesService.Object,
+                assemblyReferences: assemblyReferencesService.Object);
+            return configuredProjectServices1;
         }
 
-        private static void CreateEmptyReferences(out IImmutableDictionary<string, IImmutableDictionary<string, string>> projectItems,
-            out IImmutableDictionary<string, IImmutableDictionary<string, string>> packageItems,
-            out IImmutableDictionary<string, IImmutableDictionary<string, string>> assemblyItems, out IImmutableDictionary<string, IImmutableDictionary<string, string>> sdkItems)
+        private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject2()
         {
-            projectItems = new Dictionary<string, IImmutableDictionary<string, string>>
+            // All references are marked TreaAsUsed = True
+            var projectReferencesService = new Mock<IBuildDependencyProjectReferencesService>();
+            IImmutableSet<IUnresolvedBuildDependencyProjectReference> unresolvedProjectReferences = CreateProjectReferences(new List<(string, string)>
             {
-            }.ToImmutableDictionary();
+                (_projectPath3, PropertySerializer.SimpleTypes.ToString(true))
+            });
+            projectReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedProjectReferences);
 
-            packageItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
-            }.ToImmutableDictionary();
+            var packageReferencesService = new Mock<IPackageReferencesService>();
+            IImmutableSet<IUnresolvedPackageReference> unresolvedPackageReferences = CreatePackageReferences(new List<(string, string)> {});
+            packageReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedPackageReferences);
 
-            assemblyItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
-            }.ToImmutableDictionary();
+            var assemblyReferencesService = new Mock<IAssemblyReferencesService>();
+            IImmutableSet<IUnresolvedAssemblyReference> unresolvedAssemblyReferences = CreateAssemblyReferences(new List<(string, string)>{
+                (_assembly1, PropertySerializer.SimpleTypes.ToString(true) ),
+                (_assembly2, PropertySerializer.SimpleTypes.ToString(true) ),
+                (_assembly3, PropertySerializer.SimpleTypes.ToString(true) )});
+            assemblyReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedAssemblyReferences);
 
-            sdkItems = new Dictionary<string, IImmutableDictionary<string, string>>
-            {
-            }.ToImmutableDictionary();
+            _assemblyServicesMock2 = assemblyReferencesService;
+            var configuredProjectServices1 = ConfiguredProjectServicesFactory.Create(
+                projectReferences: projectReferencesService.Object, packageReferences: packageReferencesService.Object,
+                assemblyReferences: assemblyReferencesService.Object);
+            return configuredProjectServices1;
         }
 
-        private static Mock<UnconfiguredProject> CreateUnconfiguredProjectMock(string projectPath, IProjectVersionedValue<IProjectSubscriptionUpdate> item, out Mock<ConfiguredProject> configuredProjectMock)
+        private static ConfiguredProjectServices CreateConfiguredProjectServicesForProject3()
         {
-            Predicate<IProjectVersionedValue<IProjectSubscriptionUpdate>>? predicate = null;
+            // Has no references
+            var projectReferencesService = new Mock<IBuildDependencyProjectReferencesService>();
+            IImmutableSet<IUnresolvedBuildDependencyProjectReference> unresolvedProjectReferences = CreateProjectReferences(new List<(string, string)> { });
+            projectReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedProjectReferences);
 
-            var receivableSourceBlock2 = new ReceivableSourceBlockMock(item);
+            var packageReferencesService = new Mock<IPackageReferencesService>();
+            IImmutableSet<IUnresolvedPackageReference> unresolvedPackageReferences = CreatePackageReferences(new List<(string, string)> { });
+            packageReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedPackageReferences);
 
-            var receivableSourceBlock = new Mock<IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>>();
-            receivableSourceBlock.Setup(c => c.TryReceive(predicate, out item));
+            var assemblyReferencesService = new Mock<IAssemblyReferencesService>();
+            IImmutableSet<IUnresolvedAssemblyReference> unresolvedAssemblyReferences = CreateAssemblyReferences(new List<(string, string)> { });
+            assemblyReferencesService.Setup(c => c.GetUnresolvedReferencesAsync()).ReturnsAsync(unresolvedAssemblyReferences);
 
-            var projectRuleSourceMock = new Mock<IProjectValueDataSource<IProjectSubscriptionUpdate>>();
-            projectRuleSourceMock.SetupGet(c => c.SourceBlock).Returns(receivableSourceBlock2);
+            var configuredProjectServices1 = ConfiguredProjectServicesFactory.Create(
+                projectReferences: projectReferencesService.Object, packageReferences: packageReferencesService.Object,
+                assemblyReferences: assemblyReferencesService.Object);
 
-            var projectSubscriptionMock = new Mock<IProjectSubscriptionService>();
-            projectSubscriptionMock.SetupGet(c => c.ProjectRuleSource).Returns(projectRuleSourceMock.Object);
-
-            var configuredProjectServicesMock = new Mock<ConfiguredProjectServices>();
-            configuredProjectServicesMock.SetupGet(c => c.ProjectSubscription).Returns(projectSubscriptionMock.Object);
-
-            var packageReferenceServicesMock = new Mock<IPackageReferencesService>();
-            packageReferenceServicesMock.Setup(c => c.RemoveAsync(It.IsAny<string>()));
-            configuredProjectServicesMock.SetupGet(c => c.PackageReferences)
-                .Returns(packageReferenceServicesMock.Object);
-
-            var projectReferenceServicesMock = new Mock<IBuildDependencyProjectReferencesService>();
-            projectReferenceServicesMock.Setup(c => c.RemoveAsync(It.IsAny<string>()));
-            configuredProjectServicesMock.SetupGet(c => c.ProjectReferences)
-                .Returns(projectReferenceServicesMock.Object);
-
-            var assemblyReferenceServicesMock = new Mock<IAssemblyReferencesService>();
-            assemblyReferenceServicesMock.Setup(c => c.RemoveAsync(null, It.IsAny<string>()));
-            configuredProjectServicesMock.SetupGet(c => c.AssemblyReferences)
-                .Returns(assemblyReferenceServicesMock.Object);
-
-            var sdkReferenceServicesMock = new Mock<ISdkReferencesService>();
-            assemblyReferenceServicesMock.Setup(c => c.RemoveAsync(null, It.IsAny<string>()));
-            configuredProjectServicesMock.SetupGet(c => c.SdkReferences)
-                .Returns(sdkReferenceServicesMock.Object);
-
-            configuredProjectMock = new Mock<ConfiguredProject>();
-            configuredProjectMock.SetupGet(c => c.Services).Returns(configuredProjectServicesMock.Object);
-
-            var unconfiguredProjectMock = new Mock<UnconfiguredProject>();
-            unconfiguredProjectMock.Setup(c => c.GetSuggestedConfiguredProjectAsync())
-                .ReturnsAsync(configuredProjectMock.Object);
-            unconfiguredProjectMock.SetupGet(c => c.FullPath).Returns(projectPath);
-
-            return unconfiguredProjectMock;
+            return configuredProjectServices1;
         }
 
-        private class ReceivableSourceBlockMock : IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>
+        private static IImmutableSet<IUnresolvedBuildDependencyProjectReference> CreateProjectReferences(List<(string, string)> projects)
         {
-            private readonly IProjectVersionedValue<IProjectSubscriptionUpdate> _item;
+            ISet<IUnresolvedBuildDependencyProjectReference> references = new HashSet<IUnresolvedBuildDependencyProjectReference>();
 
-            public ReceivableSourceBlockMock(IProjectVersionedValue<IProjectSubscriptionUpdate> item)
+            foreach (var data in projects)
             {
-                _item = item;
+                var item = new Mock<IUnresolvedBuildDependencyProjectReference>();
+                item.Setup(c => c.EvaluatedInclude).Returns(data.Item1);
+                item.As<IProjectItem>().Setup(c => c.Metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty))
+                    .ReturnsAsync(data.Item2);
+                references.Add(item.Object);
             }
 
-            public void Complete() => throw new NotImplementedException();
+            return references.ToImmutableHashSet();
+        }
 
-            public void Fault(Exception exception) => throw new NotImplementedException();
+        private static IImmutableSet<IUnresolvedPackageReference> CreatePackageReferences(List<(string, string)> packages)
+        {
+            ISet<IUnresolvedPackageReference> references = new HashSet<IUnresolvedPackageReference>();
 
-            public Task Completion { get; }
-
-            public IDisposable LinkTo(ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
-                DataflowLinkOptions linkOptions) => throw new NotImplementedException();
-
-            public IProjectVersionedValue<IProjectSubscriptionUpdate> ConsumeMessage(DataflowMessageHeader messageHeader, ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target,
-                out bool messageConsumed) => throw new NotImplementedException();
-
-            public bool ReserveMessage(DataflowMessageHeader messageHeader,
-                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target) => throw new NotImplementedException();
-
-
-            public void ReleaseReservation(DataflowMessageHeader messageHeader,
-                ITargetBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> target) => throw new NotImplementedException();
-
-
-            public bool TryReceive(Predicate<IProjectVersionedValue<IProjectSubscriptionUpdate>> filter, out IProjectVersionedValue<IProjectSubscriptionUpdate> item)
+            foreach (var data in packages)
             {
-                item = _item;
-                return true;
+                var item = new Mock<IUnresolvedPackageReference>();
+                item.Setup(c => c.EvaluatedInclude).Returns(data.Item1);
+                item.As<IProjectItem>().Setup(c => c.Metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty))
+                    .ReturnsAsync(data.Item2);
+
+                s_item ??= item;
+                references.Add(item.Object);
             }
 
-            public bool TryReceiveAll(out IList<IProjectVersionedValue<IProjectSubscriptionUpdate>> items) => throw new NotImplementedException();
+            return references.ToImmutableHashSet();
+        }
+
+        private static IImmutableSet<IUnresolvedAssemblyReference> CreateAssemblyReferences(List<(string, string)> assemblies)
+        {
+            ISet<IUnresolvedAssemblyReference> references = new HashSet<IUnresolvedAssemblyReference>();
+
+            foreach (var data in assemblies)
+            {
+                var item = new Mock<IUnresolvedAssemblyReference>();
+                item.Setup(c => c.EvaluatedInclude).Returns(data.Item1);
+                item.As<IProjectItem>().Setup(c => c.Metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty))
+                    .ReturnsAsync(data.Item2);
+                references.Add(item.Object);
+            }
+
+            return references.ToImmutableHashSet();
         }
     }
 }
