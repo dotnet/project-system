@@ -113,11 +113,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             }
         }
 
-        protected override Task<IProjectVersionedValue<ImmutableList<string>>> PreprocessAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> input, IProjectVersionedValue<ImmutableList<string>>? previousOutput)
+        protected override Task<IProjectVersionedValue<ImmutableList<string>>?> PreprocessAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> input, IProjectVersionedValue<ImmutableList<string>>? previousOutput)
         {
             IProjectChangeDescription projectChange = input.Value.ProjectChanges[NamespaceImport.SchemaName];
 
-            return Task.FromResult<IProjectVersionedValue<ImmutableList<string>>>(
+            return Task.FromResult<IProjectVersionedValue<ImmutableList<string>>?>(
                 new ProjectVersionedValue<ImmutableList<string>>(
                     projectChange.After.Items.Keys.ToImmutableList(),
                     input.DataSourceVersions));
