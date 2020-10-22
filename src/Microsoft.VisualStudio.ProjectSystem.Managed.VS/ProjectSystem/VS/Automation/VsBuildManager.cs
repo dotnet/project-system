@@ -106,6 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         void IEventSource<_dispBuildManagerEvents>.OnSinkAdded(_dispBuildManagerEvents sink)
         {
+            Console.WriteLine("Hey! A sink has been added!");
             DesignTimeOutputDeleted += new _dispBuildManagerEvents_DesignTimeOutputDeletedEventHandler(sink.DesignTimeOutputDeleted);
             DesignTimeOutputDirty += new _dispBuildManagerEvents_DesignTimeOutputDirtyEventHandler(sink.DesignTimeOutputDirty);
         }

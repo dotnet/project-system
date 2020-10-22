@@ -23,6 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
         {
             Requires.NotNull(container, nameof(container));
             Requires.NotNull(source, nameof(source));
+            Console.WriteLine("Initializing 'ConnectionPoint'!");
 
             _container = container;
             _source = source;
