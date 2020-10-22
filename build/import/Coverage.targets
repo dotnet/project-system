@@ -4,10 +4,7 @@
   <Target Name="ExtractWindowsPdb" BeforeTargets="Test">
 
     <PropertyGroup>
-      <_RunOnCore>false</_RunOnCore>
-      <_RunOnCore Condition="$(TargetFramework.StartsWith('netcoreapp'))">true</_RunOnCore>
       <_UseOpenCover>$(UseOpenCover)</_UseOpenCover>
-      <_UseOpenCover Condition="'$(_RunOnCore)' == 'true'">false</_UseOpenCover>
 
       <_TargetFileNameNoExt>$([System.IO.Path]::GetFileNameWithoutExtension('$(TargetFileName)'))</_TargetFileNameNoExt>
       <_TargetExtractedPdb>$(TargetDir)$(_TargetFileNameNoExt).ppdb</_TargetExtractedPdb>
