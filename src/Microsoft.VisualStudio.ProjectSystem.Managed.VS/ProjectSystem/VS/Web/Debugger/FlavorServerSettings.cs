@@ -72,37 +72,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             if (TryReadIntValue(webPropertiesRoot, PropertyNames.ServerPort, out int intVal))
             {
                 settings.DevelopmentServerPort = intVal;
-            }                
+            }
 
             if (TryReadStringValue(webPropertiesRoot, PropertyNames.ServerVPath, out string? strVal) && strVal != null)
             {
                 settings.DevelopmentServerVPath = strVal;
-            }    
-            
+            }
+
             if (TryReadStringValue(webPropertiesRoot, PropertyNames.IISUrl, out strVal))
             {
                 settings.IISUrl = strVal;
             }
-            
+
             if (TryReadStringValue(webPropertiesRoot, PropertyNames.IISAppRootUrl, out strVal))
             {
                 settings.IISAppRootOverrideUrl = strVal;
-            }                
+            }
 
             if (TryReadBoolValue(webPropertiesRoot, PropertyNames.OverrideIISAppRootUrl, out boolVal))
             {
                 settings.UseIISAppRootOverrideUrl = boolVal;
             }
-            
+
             if (TryReadBoolValue(webPropertiesRoot, PropertyNames.UseCustomServer, out boolVal))
             {
                 settings.UseCustomServer = boolVal;
             }
-            
+
             if (TryReadStringValue(webPropertiesRoot, PropertyNames.CustomServerUrl, out strVal))
             {
                 settings.CustomServerUrl = strVal;
-            }                
+            }
 
             return settings;
         }
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         {
             boolValue = false;
             string? elementValue = root.Element(propertyName)?.Value;
-            if (!string.IsNullOrEmpty(elementValue)&& bool.TryParse(elementValue, out bool value))
+            if (bool.TryParse(elementValue, out bool value))
             {
                 boolValue = value;
                 return true;
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         {
             intValue = 0;
             string? elementValue = root.Element(propertyName)?.Value;
-            if (!string.IsNullOrEmpty(elementValue)&& int.TryParse(elementValue, out int value))
+            if (int.TryParse(elementValue, out int value))
             {
                 intValue = value;
                 return true;

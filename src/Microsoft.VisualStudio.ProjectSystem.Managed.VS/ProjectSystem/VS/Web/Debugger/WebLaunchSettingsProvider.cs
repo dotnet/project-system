@@ -67,12 +67,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
             if (_flavorServerSettings == null)
             {
-                return new WebLaunchSettings(serverType, urls, _useWindowsAuth, _useAnonymousAuth, _useClassicPipelineMode, _use64BitIISExpress, _useGlobalApplicationHostFile, false, null);
+                return new WebLaunchSettings(serverType, urls, _useWindowsAuth, _useAnonymousAuth, _useClassicPipelineMode, _use64BitIISExpress, _useGlobalApplicationHostFile);
             }
 
             if (_flavorServerSettings.UseCustomServer)
             {
-                if (_flavorServerSettings.CustomServerUrl != null)
+                if (_flavorServerSettings.CustomServerUrl != null && _flavorServerSettings.CustomServerUrl.Length != 0)
                 {
                     urls.Add(_flavorServerSettings.CustomServerUrl);
                 }
@@ -83,14 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             {
                 if (_useIISExpress)
                 {
-                    if (_flavorServerSettings.IISUrl != null)
+                    if (_flavorServerSettings.IISUrl != null && _flavorServerSettings.IISUrl.Length != 0)
                     {
                         urls.Add(_flavorServerSettings.IISUrl);
-                        if (_issExpressSSLPort != 0 && !_flavorServerSettings.IISUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                        if (_issExpressSSLPort != 0 && !_flavorServerSettings.IISUrl.StartsWith(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
                         {
                             var uriBuilder = new UriBuilder(_flavorServerSettings.IISUrl);
                             uriBuilder.Port = _issExpressSSLPort;
-                            uriBuilder.Scheme = "https://";
+                            uriBuilder.Scheme = Uri.UriSchemeHttps;
                             urls.Add(uriBuilder.Uri.AbsoluteUri);
                         }
                     }
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 else
                 {
                     serverType = ServerType.IIS;
-                    if (_flavorServerSettings.IISUrl != null)
+                    if (_flavorServerSettings.IISUrl != null && _flavorServerSettings.IISUrl.Length != 0)
                     {
                         urls.Add(_flavorServerSettings.IISUrl);
                     }

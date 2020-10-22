@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         NotEnabled = 8,         // IIS6.0 - aspnet has not been enabled on the server.
     };
 
-    internal class ErrorCodes
+    internal static class ErrorCodes
     {
         public const int
 

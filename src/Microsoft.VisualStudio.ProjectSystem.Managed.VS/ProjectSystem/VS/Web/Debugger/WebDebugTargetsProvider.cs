@@ -61,16 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             _browserDebugTargetSelectionSvc = browserDebugTargetSelectionSvc;
         }
 
-        public int ProcessIDToResume { get; protected set; }
-
-        // Prevents the securtiy warning dialog from being shown when attaching to IIS
-        public const uint DBGLAUNCH_BypassAttachSecurity = 0x10000000;
-
         /// <summary>
         /// This is set to the URL(s) we are going to debug. There could be more than one in the case of a site with a
         /// secure and non-secure port binding. This is important for mapping urls to project items and is handled by the ProjectDebugerProvider
         /// </summary>
-        public List<string> DebuggingRootUrls { get; } = new List<string>();
+        private List<string> DebuggingRootUrls { get; } = new List<string>();
 
         /// <summary>
         /// Supports the Project profile.

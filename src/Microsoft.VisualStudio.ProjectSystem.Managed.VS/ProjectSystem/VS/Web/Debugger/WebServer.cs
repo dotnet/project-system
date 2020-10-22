@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
@@ -88,9 +87,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             _projectVsServices = projectVsServices;
         }
 
-        public async Task ConfigureWebServerAsync()
+        public Task ConfigureWebServerAsync()
         {
-            await InitializeAsync();
+            return InitializeAsync();
         }
 
         private async Task ConfigureWebServerInternalAsync()
@@ -273,7 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             }
         }
 
-        public IReadOnlyList<string> WebServerUrls => _currentSettings?.ServerUrls ?? new List<string>();
+        public IReadOnlyList<string> WebServerUrls => _currentSettings?.ServerUrls ?? Array.Empty<string>();
 
         public ServerType ActiveWebServerType => _currentSettings == null ? ServerType.IISExpress : _currentSettings.ServerType;
 
@@ -680,7 +679,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         public int SeRoslynDirectoryPermissions(string url)
         {
             int hr = HResult.OK;
-            string roslynFolder = Path.Combine(ProjectDirectory, "bin//Roslyn");
+            string roslynFolder = Path.Combine(ProjectDirectory, @"bin\Roslyn");
             if (Directory.Exists(roslynFolder))
             {
                 hr = GetWebAppUpgrade().SetDirectoryPermissions(url, roslynFolder, bIncludeWrite: false, bIncludeExecute: true);
@@ -748,9 +747,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             return configFile;
         }
 
-        protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            await ConfigureWebServerInternalAsync();
+            return ConfigureWebServerInternalAsync();
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -808,7 +807,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         }
 
         /// <summary>
-        /// Utility to free up IISExprss server properly
+        /// Utility to free up IISExpress server properly
         /// </summary>
         private void ReleaseVsDeveloperWebServer()
         {
@@ -848,8 +847,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
         /// <summary>
         /// IVsDeveloperWebServerSvcEvents
-        /// This method is called when a developer web server becomes invalid. We'll
-        /// will call close on our web server which will force us to get a new one
+        /// This method is called when a developer web server becomes invalid. Call close on the 
+        /// web server which will force getting a new one
         /// </summary>
         public int OnDeveloperWebServerInvalid(IVsDeveloperWebServer pWebServer)
         {
@@ -943,14 +942,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         {
             if (Directory.Exists(folderPath))
             {
-                if (Directory.EnumerateFiles(folderPath).Any())
+                foreach (string item in Directory.EnumerateFileSystemEntries(folderPath, "*.*", SearchOption.TopDirectoryOnly))
                 {
-                    return false;
-                }
-
-                foreach (string dir in Directory.EnumerateDirectories(folderPath, "*.*", SearchOption.TopDirectoryOnly))
-                {
-                    if (dir != "." && dir != "..")
+                    if (item != "." && item != "..")
                     {
                         return false;
                     }
@@ -991,12 +985,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             // they return. Instead, we set all the environment varaibles (and track any existing values), get the updated environment
             // and then put the original values back. We store null or entries not found.
             Dictionary<string, string> envValuesToReset = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (KeyValuePair<string, string> envValueToAdd in envValuesToAdd)
+            foreach ((string key, string value) in envValuesToAdd)
             {
                 // Will be null if not found
-                string existing = Environment.GetEnvironmentVariable(envValueToAdd.Key);
-                envValuesToReset[envValueToAdd.Key] = existing;
-                Environment.SetEnvironmentVariable(envValueToAdd.Key, envValueToAdd.Value);
+                string existing = Environment.GetEnvironmentVariable(key);
+                envValuesToReset[key] = existing;
+                Environment.SetEnvironmentVariable(key, value);
             }
 
             // Get the updated env and convert to string - this will be returned by the method.
@@ -1010,10 +1004,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             }
 
             // Restore the environment - this is so that current process is not impacted.
-            foreach (KeyValuePair<string, string> envValueToReset in envValuesToReset)
+            foreach ((string key, string value) in envValuesToReset)
             {
                 // Items that weren't there will be set back to null which removes entry
-                Environment.SetEnvironmentVariable(envValueToReset.Key, envValueToReset.Value);
+                Environment.SetEnvironmentVariable(key, value);
             }
 
             return newEnvironmentValuesString.ToString();
