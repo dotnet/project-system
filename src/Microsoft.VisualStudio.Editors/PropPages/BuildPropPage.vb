@@ -509,7 +509,21 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not PropertyControlData.IsSpecialValue(value) Then
-                cboWarningLevel.SelectedIndex = CType(value, Integer)
+                Dim warningLevel = CType(value, Integer)
+                Dim indexAsString = warningLevel.ToString()
+                ' Lookup the index of the given warning level in the combobox
+                Dim indexLocation = cboWarningLevel.Items.Cast(Of String).ToList().FindIndex(Function(s)
+                                                                                                 Return s = indexAsString
+                                                                                             End Function)
+                ' If there is an existing entry use that
+                If indexLocation <> -1 Then
+                    cboWarningLevel.SelectedIndex = indexLocation
+                Else
+                    ' Otherwise add a new entry
+                    ' any non - negative number can be specified but we only want to show them in the combo box if the value is set
+                    cboWarningLevel.Items.Add(indexAsString)
+                    cboWarningLevel.SelectedIndex = cboWarningLevel.Items.Count - 1
+                End If
                 Return True
             Else
                 ' Indeterminate. Let the architecture handle
