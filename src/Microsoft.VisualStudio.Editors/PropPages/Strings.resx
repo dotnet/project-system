@@ -157,4 +157,13 @@
   <data name="WindowsAuthentication" xml:space="preserve">
     <value>Windows Authentication</value>
   </data>
+  <data name="latest" xml:space="preserve">
+    <value>latest</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="preview" xml:space="preserve">
+    <value>preview</value>
+  </data>
 </root>
