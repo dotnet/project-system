@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
             if (_flavorServerSettings.UseCustomServer)
             {
-                if (_flavorServerSettings.CustomServerUrl != null && _flavorServerSettings.CustomServerUrl.Length != 0)
+                if (!Strings.IsNullOrWhiteSpace(_flavorServerSettings.CustomServerUrl))
                 {
                     urls.Add(_flavorServerSettings.CustomServerUrl);
                 }
@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             {
                 if (_useIISExpress)
                 {
-                    if (_flavorServerSettings.IISUrl != null && _flavorServerSettings.IISUrl.Length != 0)
+                    if (!Strings.IsNullOrWhiteSpace(_flavorServerSettings.IISUrl))
                     {
                         urls.Add(_flavorServerSettings.IISUrl);
                         if (_issExpressSSLPort != 0 && !_flavorServerSettings.IISUrl.StartsWith(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 else
                 {
                     serverType = ServerType.IIS;
-                    if (_flavorServerSettings.IISUrl != null && _flavorServerSettings.IISUrl.Length != 0)
+                    if (!Strings.IsNullOrWhiteSpace(_flavorServerSettings.IISUrl))
                     {
                         urls.Add(_flavorServerSettings.IISUrl);
                     }
@@ -169,52 +169,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             }
 
             var stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressSSLPort);
-            if (!string.IsNullOrEmpty(stringVal))
-            {
-                int.TryParse(stringVal, out _issExpressSSLPort);
-            }
+            int.TryParse(stringVal, out _issExpressSSLPort);
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.UseIISExpress);
-            if (!string.IsNullOrEmpty(stringVal))
-            {
-                bool.TryParse(stringVal, out _useIISExpress);
-            }
+            bool.TryParse(stringVal, out _useIISExpress);
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.Use64BitIISExpress);
-            if (!string.IsNullOrEmpty(stringVal))
-            {
-                bool.TryParse(stringVal, out _use64BitIISExpress);
-            }
+            bool.TryParse(stringVal, out _use64BitIISExpress);
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressAnonymousAuthentication);
-            if (!string.IsNullOrEmpty(stringVal))
+            if (TryParseEnabled(stringVal, out bool isEnabled))
             {
-                if (string.Compare(stringVal, "enabled", StringComparison.OrdinalIgnoreCase) == 0)
-                    _useAnonymousAuth = true;
-                else if (string.Compare(stringVal, "disabled", StringComparison.OrdinalIgnoreCase) == 0)
-                    _useAnonymousAuth = false;
+                _useAnonymousAuth = isEnabled;
             }
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressWindowsAuthentication);
-            if (!string.IsNullOrEmpty(stringVal))
+            if (TryParseEnabled(stringVal, out isEnabled))
             {
-                if (string.Compare(stringVal, "enabled", StringComparison.OrdinalIgnoreCase) == 0)
-                    _useWindowsAuth = true;
-                else if (string.Compare(stringVal, "disabled", StringComparison.OrdinalIgnoreCase) == 0)
-                    _useWindowsAuth = false;
+                _useWindowsAuth = isEnabled;
             }
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressUseClassicPipelineMode);
-            if (!string.IsNullOrEmpty(stringVal))
-            {
-                bool.TryParse(stringVal, out _useClassicPipelineMode);
-            }
+            bool.TryParse(stringVal, out _useClassicPipelineMode);
 
             stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.UseGlobalApplicationHostFile);
-            if (!string.IsNullOrEmpty(stringVal))
+            bool.TryParse(stringVal, out _useGlobalApplicationHostFile);
+        }
+
+        private static bool TryParseEnabled(string stringVal, out bool isEnabled)
+        {
+            isEnabled = false;
+            if (string.Compare(stringVal, "enabled", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                bool.TryParse(stringVal, out _useGlobalApplicationHostFile);
+                isEnabled = true;
+                return true;
             }
+            else if (string.Compare(stringVal, "disabled", StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
