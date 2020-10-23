@@ -535,7 +535,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckPreserveNewestCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
+        private static bool CheckPreserveNewestCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
             var preserveNewestItems
                 = state.CopyToOutputDirectoryItems.Where(item => item.Value.copyType == CopyType.PreserveNewest);
