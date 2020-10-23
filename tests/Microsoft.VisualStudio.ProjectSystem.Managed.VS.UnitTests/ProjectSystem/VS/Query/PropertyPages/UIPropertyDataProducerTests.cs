@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         }
 
         [Fact]
-        public void WhenAPropertyHasNoSearchTerms_AnEmptyListIsReturned()
+        public void WhenAPropertyHasNoSearchTerms_AnEmptyStringIsReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
@@ -126,11 +126,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Empty(result.SearchTerms);
+            Assert.Equal(expected: "", actual: result.SearchTerms);
         }
 
         [Fact]
-        public void WhenAPropertyHasAnEmptyListOfSearchTerms_AnEmptyListIsReturned()
+        public void WhenAPropertyHasAnEmptyStringOfSearchTerms_AnEmptyStringIsReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
@@ -147,35 +147,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Empty(result.SearchTerms);
+            Assert.Equal(expected: "", actual: result.SearchTerms);
         }
 
         [Fact]
-        public void WhenAPropertyHasOneSearchTerm_OneItemIsReturned()
-        {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
-
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
-            var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
-            var property = new TestProperty
-            {
-                Metadata = new()
-                {
-                    new() { Name = "SearchTerms", Value = "Alpha" }
-                }
-            };
-
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
-
-            Assert.Collection(result.SearchTerms, new Action<string>[]
-            {
-                searchTerm => Assert.Equal(expected: "Alpha", actual: searchTerm)
-            });
-        }
-
-        [Fact]
-        public void WhenAPropertyHasMultipleSearchTerms_MultipleItemsAreReturned()
+        public void WhenAPropertyHasSearchTerms_ThenTheSearchTermsAreReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
@@ -192,16 +168,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Collection(result.SearchTerms, new Action<string>[]
-            {
-                searchTerm => Assert.Equal(expected: "Alpha", actual: searchTerm),
-                searchTerm => Assert.Equal(expected: "Beta", actual: searchTerm),
-                searchTerm => Assert.Equal(expected: "Gamma", actual: searchTerm),
-            });
+            Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.SearchTerms);
         }
 
         [Fact]
-        public void WhenAPropertyHasNoDependencies_AnEmptyListIsReturned()
+        public void WhenAPropertyHasNoDependencies_AnEmptyStringIsReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
@@ -215,11 +186,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Empty(result.DependsOn);
+            Assert.Equal(expected: "", actual: result.DependsOn);
         }
 
         [Fact]
-        public void WhenAPropertyHasAnEmptyListOfDependencies_AnEmptyListIsReturned()
+        public void WhenAPropertyHasAnEmptyStringOfDependencies_AnEmptyStringIsReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
@@ -236,11 +207,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Empty(result.DependsOn);
+            Assert.Equal(expected: "", actual: result.DependsOn);
         }
 
         [Fact]
-        public void WhenAPropertyHasOneDependency_OneItemIsReturned()
+        public void WhenAPropertyHasDependencies_TheDependenciesAreReturned()
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
@@ -251,42 +222,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 Metadata = new()
                 {
-                    new() { Name = "DependsOn", Value = "SomeOtherProperty" }
+                    new() { Name = "DependsOn", Value = "Alpha;Beta;Gamma" }
                 }
             };
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.Collection(result.DependsOn, new Action<string>[]
-            {
-                searchTerm => Assert.Equal(expected: "SomeOtherProperty", actual: searchTerm)
-            });
-        }
-
-        [Fact]
-        public void WhenAPropertyHasMultipleDependencies_MultipleItemsAreReturned()
-        {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
-
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
-            var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
-            var property = new TestProperty
-            {
-                Metadata = new()
-                {
-                    new() { Name = "DependsOn", Value = "AlphaProperty;BetaProperty;GammaProperty" }
-                }
-            };
-
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
-
-            Assert.Collection(result.DependsOn, new Action<string>[]
-            {
-                searchTerm => Assert.Equal(expected: "AlphaProperty", actual: searchTerm),
-                searchTerm => Assert.Equal(expected: "BetaProperty", actual: searchTerm),
-                searchTerm => Assert.Equal(expected: "GammaProperty", actual: searchTerm),
-            });
+            Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.DependsOn);
         }
 
         [Fact]
