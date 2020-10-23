@@ -34,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             .Add(CopyUpToDateMarker.SchemaName)
             .Add(UpToDateCheckInput.SchemaName)
             .Add(UpToDateCheckOutput.SchemaName)
-            .Add(UpToDateCheckBuilt.SchemaName);
+            .Add(UpToDateCheckBuilt.SchemaName)
+            .Add(CopyToOutputDirectoryItem.SchemaName);
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
