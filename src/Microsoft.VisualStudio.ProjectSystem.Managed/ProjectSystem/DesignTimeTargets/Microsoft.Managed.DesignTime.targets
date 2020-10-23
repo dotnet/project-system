@@ -367,6 +367,9 @@
 
   </Target>
 
+  <!-- This target get all project items that may need to be transferred to the output directory for the up to date check. -->
+  <Target Name="GetCopyToOutputDirectoryItems" DependsOnTargets="GetCopyToOutputDirectoryItemsDependsOn" Returns="@(CopyToOutputDirectoryItem)" />
+
   <!-- This target collects all Analyzers in the project. -->
   <Target Name="CollectAnalyzersDesignTime" DependsOnTargets="CompileDesignTime" Returns="@(Analyzer)" />
 

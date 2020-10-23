@@ -35,6 +35,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\Dependencies\ResolvedAnalyzerReference.xaml.cs">
       <DependentUpon>ResolvedAnalyzerReference.xaml</DependentUpon>
     </Compile>
@@ -475,6 +476,18 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\CopyToOutputDirectoryItem.cs">
+      <DependentUpon>CopyToOutputDirectoryItem.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\CopyToOutputDirectoryItem.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\VisualBasic.NamespaceImport.cs">
       <DependentUpon>VisualBasic.NamespaceImport.xaml</DependentUpon>
     </Compile>
@@ -513,6 +526,10 @@
 
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ProjectSystem\Rules\CopyToOutputDirectoryItemCopyToOutputDirectoryItem.xaml" />
   </ItemGroup>
 
   <ItemGroup>
