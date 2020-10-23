@@ -426,16 +426,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         if (string.Equals(value, Compile.CopyToOutputDirectoryValues.Always, StringComparisons.PropertyLiteralValues))
                         {
-                            return CopyType.CopyAlways;
+                            return CopyType.Always;
                         }
 
                         if (string.Equals(value, Compile.CopyToOutputDirectoryValues.PreserveNewest, StringComparisons.PropertyLiteralValues))
                         {
-                            return CopyType.CopyIfNewer;
+                            return CopyType.PreserveNewest;
                         }
                     }
 
-                    return CopyType.CopyNever;
+                    return CopyType.Never;
                 }
 
                 static string? GetLink(IImmutableDictionary<string, string> itemMetadata)

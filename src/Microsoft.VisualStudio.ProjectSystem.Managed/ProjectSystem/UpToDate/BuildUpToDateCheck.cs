@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.CopyAlways).path;
+            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.Always).path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -535,7 +535,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
-            IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.CopyIfNewer);
+            IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.PreserveNewest);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
