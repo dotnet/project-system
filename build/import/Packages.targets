@@ -72,7 +72,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.8.50" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.8.50" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="16.8.30406.65-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="16.8.2-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="16.8.33" />
     <PackageReference Update="Microsoft.VisualStudio.VSHelp"                                          Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.WCFReference.Interop"                            Version="9.1.26606-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Workspace.VSIntegration"                         Version="16.7.47-preview-0001" />
