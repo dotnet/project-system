@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 
@@ -12,44 +13,76 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
     /// </summary>
     internal class SpecialWebFolderPropertiesProvider : IProjectTreePropertiesProvider
     {
-        private static readonly Dictionary<string, SpecialWebFolder> s_knownSpecialFolders = CreateKnownSpecialFolders();
+        private static readonly IReadOnlyDictionary<string, SpecialWebFolder> s_wellKnownSpecialFolders = CreateWellKnownSpecialFolders();
+
+        private readonly UnconfiguredProject _project;
         private readonly IImmutableSet<string> _codeFolders;
 
-        public SpecialWebFolderPropertiesProvider(IImmutableSet<string> codeFolders)
+        public SpecialWebFolderPropertiesProvider(UnconfiguredProject project, IImmutableSet<string> codeFolders)
         {
+            _project = project;
             _codeFolders = codeFolders;
         }
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)
         {
-            if (propertyContext.ParentNodeFlags.IsProjectRoot() && 
-                propertyContext.IsFolder && 
-                propertyValues.Flags.IsIncludedInProject())
+            if (propertyContext.IsFolder && propertyValues.Flags.IsIncludedInProject())
             {
-                if (s_knownSpecialFolders.TryGetValue(propertyContext.ItemName, out SpecialWebFolder folder))
+                if (IsSpecialWebFolder(propertyContext, propertyValues, out SpecialWebFolder? folder))
                 {
                     propertyValues.Icon = folder.Icon.ToProjectSystemType();
                     propertyValues.ExpandedIcon = folder.ExpandedIcon.ToProjectSystemType();
                     propertyValues.Flags += folder.Flag;
                 }
-
-                // TODO: Handle CodeFolders
-                Assumes.NotNull(_codeFolders);
             }
         }
 
-        private static Dictionary<string, SpecialWebFolder> CreateKnownSpecialFolders()
+        private bool IsSpecialWebFolder(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues, [NotNullWhen(true)] out SpecialWebFolder? folder)
         {
-            // TODO: Correct icons
+            if (propertyContext.IsFolder && propertyValues.Flags.IsIncludedInProject())
+            {
+                // Well-known folders only exist in the root
+                if (propertyContext.ParentNodeFlags.IsProjectRoot())
+                {
+                    return s_wellKnownSpecialFolders.TryGetValue(propertyContext.ItemName, out folder);
+                }
+
+                if (IsCodeFolder(propertyContext))
+                {
+                    folder = SpecialWebFolder.Code;
+                    return true;
+                }
+            }
+
+            folder = null;
+            return false;
+        }
+
+        private bool IsCodeFolder(IProjectTreeCustomizablePropertyContext propertyContext)
+        {
+            if (_codeFolders.Count == 0)
+                return false;
+
+            if (propertyContext.Metadata == null || !propertyContext.Metadata.TryGetValue(Folder.FullPathProperty, out string fullPath))
+                return false;
+
+            // TODO: App-Relative Path
+            string relativePath = _project.MakeRelative(fullPath);
+
+            return _codeFolders.Contains(relativePath);
+        }
+
+        private static IReadOnlyDictionary<string, SpecialWebFolder> CreateWellKnownSpecialFolders()
+        {
             return new Dictionary<string, SpecialWebFolder>(StringComparers.Paths)
             {
-                { "App_Code",                  new(SpecialWebFolderFlag.CodeFolder,            KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "Bin",                       new(SpecialWebFolderFlag.BinFolder,             KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "App_GlobalResources",       new(SpecialWebFolderFlag.ResourcesFolder,       KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "App_Data",                  new(SpecialWebFolderFlag.DataFolder,            KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "App_Themes",                new(SpecialWebFolderFlag.ThemesFolder,          KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "App_Browsers",              new(SpecialWebFolderFlag.BrowsersFolder,        KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
-                { "App_LocalResources",        new(SpecialWebFolderFlag.LocalResourcesFolder,  KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened)},
+                { "App_Code",                  SpecialWebFolder.Code},
+                { "Bin",                       SpecialWebFolder.Bin},
+                { "App_GlobalResources",       SpecialWebFolder.GlobalResources},
+                { "App_Data",                  SpecialWebFolder.Data},
+                { "App_Themes",                SpecialWebFolder.Themes},
+                { "App_Browsers",              SpecialWebFolder.Browsers},
+                { "App_LocalResources",        SpecialWebFolder.LocalResources},
             };
         }
 
@@ -58,6 +91,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
             ProjectTreeFlags Flag,
             ImageMoniker Icon,
             ImageMoniker ExpandedIcon
-        );
+        )
+        {
+            // TODO: Correct icons
+            public static SpecialWebFolder Code             = new(SpecialWebFolderFlag.CodeFolder,              KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder Bin              = new(SpecialWebFolderFlag.BinFolder,               KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder GlobalResources  = new(SpecialWebFolderFlag.GlobalResourcesFolder,         KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder Data             = new(SpecialWebFolderFlag.DataFolder,              KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder Themes           = new(SpecialWebFolderFlag.ThemesFolder,            KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder Browsers         = new(SpecialWebFolderFlag.BrowsersFolder,          KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+            public static SpecialWebFolder LocalResources   = new(SpecialWebFolderFlag.LocalResourcesFolder,    KnownMonikers.SpecialFolderClosed, KnownMonikers.SpecialFolderOpened);
+        }
     }
 }

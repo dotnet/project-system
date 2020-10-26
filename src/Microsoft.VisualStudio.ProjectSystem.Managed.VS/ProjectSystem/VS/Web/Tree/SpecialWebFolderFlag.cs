@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
     {
         public static readonly ProjectTreeFlags CodeFolder = ProjectTreeFlags.Create("App_Code");
         public static readonly ProjectTreeFlags BinFolder = ProjectTreeFlags.Create("AspNet_Bin");
-        public static readonly ProjectTreeFlags ResourcesFolder = ProjectTreeFlags.Create("App_GlobalResources");
+        public static readonly ProjectTreeFlags GlobalResourcesFolder = ProjectTreeFlags.Create("App_GlobalResources");
         public static readonly ProjectTreeFlags DataFolder = ProjectTreeFlags.Create("App_Data");
         public static readonly ProjectTreeFlags ThemesFolder = ProjectTreeFlags.Create("App_Themes");
         public static readonly ProjectTreeFlags BrowsersFolder = ProjectTreeFlags.Create("App_Browsers");

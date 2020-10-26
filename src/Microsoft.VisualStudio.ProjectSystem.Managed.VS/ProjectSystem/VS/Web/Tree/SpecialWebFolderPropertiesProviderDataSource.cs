@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
 
         private IProjectTreePropertiesProvider CreateProvider(IImmutableSet<string> folders)
         {
-            return new SpecialWebFolderPropertiesProvider(folders);
+            return new SpecialWebFolderPropertiesProvider(ContainingProject!, folders);
         }
     }
 }
