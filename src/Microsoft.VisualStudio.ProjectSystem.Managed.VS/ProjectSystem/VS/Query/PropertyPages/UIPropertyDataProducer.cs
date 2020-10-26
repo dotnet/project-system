@@ -1,8 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -91,27 +89,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (requestedProperties.SearchTerms)
             {
                 string? searchTermsString = property.GetMetadataValueOrNull("SearchTerms");
-                if (searchTermsString is null)
-                {
-                    newUIProperty.SearchTerms = ImmutableList<string>.Empty;
-                }
-                else
-                {
-                    newUIProperty.SearchTerms = searchTermsString.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
-                }
+                newUIProperty.SearchTerms = searchTermsString ?? string.Empty;
             }
 
             if (requestedProperties.DependsOn)
             {
                 string? dependsOnString = property.GetMetadataValueOrNull("DependsOn");
-                if (dependsOnString is null)
-                {
-                    newUIProperty.DependsOn = ImmutableList<string>.Empty;
-                }
-                else
-                {
-                    newUIProperty.DependsOn = dependsOnString.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries).ToImmutableList();
-                }
+                newUIProperty.DependsOn = dependsOnString ?? string.Empty;
             }
 
             if (requestedProperties.VisibilityCondition)
