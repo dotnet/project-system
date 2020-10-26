@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         internal static IPropertyPageQueryCache Create(
             IImmutableSet<ProjectConfiguration>? projectConfigurations = null,
+            ProjectConfiguration? defaultConfiguration = null,
             Func<ProjectConfiguration, string, IRule>? bindToRule = null)
         {
             var mock = new Mock<IPropertyPageQueryCache>();
@@ -20,6 +21,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (projectConfigurations is not null)
             {
                 mock.Setup(cache => cache.GetKnownConfigurationsAsync()).ReturnsAsync(projectConfigurations);
+            }
+
+            if (defaultConfiguration is not null)
+            {
+                mock.Setup(cache => cache.GetDefaultConfigurationAsync()).ReturnsAsync(defaultConfiguration);
             }
 
             if (bindToRule is not null)

@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {

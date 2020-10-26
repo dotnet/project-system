@@ -41,5 +41,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName);
         Task<IImmutableSet<ProjectConfiguration>?> GetKnownConfigurationsAsync();
+        Task<ProjectConfiguration?> GetDefaultConfigurationAsync();
     }
 }
