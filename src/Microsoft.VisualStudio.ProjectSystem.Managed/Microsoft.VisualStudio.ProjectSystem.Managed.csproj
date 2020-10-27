@@ -529,10 +529,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ProjectSystem\Rules\CopyToOutputDirectoryItemCopyToOutputDirectoryItem.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
