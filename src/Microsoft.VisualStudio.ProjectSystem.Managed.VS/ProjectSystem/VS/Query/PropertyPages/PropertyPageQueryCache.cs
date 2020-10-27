@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <summary>
         /// Retrieves the set of <see cref="ProjectConfiguration"/>s for the project.
         /// Use this when you actually need all of the <see cref="ProjectConfiguration"/>s;
-        /// use <see cref="GetDefaultConfigurationAsync"/> when you just need any
+        /// use <see cref="GetSuggestedConfigurationAsync"/> when you just need any
         /// <see cref="ProjectConfiguration"/>.
         /// </summary>
         public Task<IImmutableSet<ProjectConfiguration>?> GetKnownConfigurationsAsync() => _knownProjectConfigurations.GetValueAsync();
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <summary>
         /// Retrieves a default <see cref="ProjectConfiguration"/> for the project.
         /// </summary>
-        public Task<ProjectConfiguration?> GetDefaultConfigurationAsync() => _defaultProjectConfiguration.GetValueAsync();
+        public Task<ProjectConfiguration?> GetSuggestedConfigurationAsync() => _defaultProjectConfiguration.GetValueAsync();
 
         private async Task<IImmutableSet<ProjectConfiguration>?> CreateKnownConfigurationsAsync()
         {

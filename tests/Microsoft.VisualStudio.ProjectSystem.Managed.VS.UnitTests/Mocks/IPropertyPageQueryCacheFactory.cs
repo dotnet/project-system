@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             if (defaultConfiguration is not null)
             {
-                mock.Setup(cache => cache.GetDefaultConfigurationAsync()).ReturnsAsync(defaultConfiguration);
+                mock.Setup(cache => cache.GetSuggestedConfigurationAsync()).ReturnsAsync(defaultConfiguration);
             }
 
             if (bindToRule is not null)

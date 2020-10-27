@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             else
             {
                 // Return the value from any one configuration.
-                if (await cache.GetDefaultConfigurationAsync() is ProjectConfiguration defaultConfiguration)
+                if (await cache.GetSuggestedConfigurationAsync() is ProjectConfiguration defaultConfiguration)
                 {
                     configurations = CreateSingleItemEnumerable(defaultConfiguration);
                 }
