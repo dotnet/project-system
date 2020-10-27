@@ -10,7 +10,8 @@ using FolderSetProjectValue = Microsoft.VisualStudio.ProjectSystem.IProjectVersi
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
 {
     /// <summary>
-    ///     Provides a data source that produces ASP.NET special code folders.
+    ///     Provides a data source that produces ASP.NET special code folders, including well-known "App_Code" 
+    ///     and those specified by `codeSubDirectories` in web.config. These are relative to the project directory.
     /// </summary>
     [Export]
     [AppliesTo("AspNet")] // TODO:
@@ -68,12 +69,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web.Tree
         {
             Requires.NotNullOrEmpty(relativePath, nameof(relativePath));
 
+            Assumes.True(relativePath.EndsWith("\\", StringComparison.Ordinal));
+
             PublishValue(folders => folders.Add(relativePath));
         }
 
         public void RemoveCodeFolder(string relativePath)
         {
             Requires.NotNullOrEmpty(relativePath, nameof(relativePath));
+
+            Assumes.True(relativePath.EndsWith("\\", StringComparison.Ordinal));
 
             PublishValue(folders => folders.Remove(relativePath));
         }
