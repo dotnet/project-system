@@ -48,15 +48,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 foreach (var d in createTargetViewModel)
                 {
                     mock.Setup(x => x.CreateTargetViewModel(
-                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            It.Is<TargetFramework>(t => string.Equals(t.TargetFrameworkMoniker, d.Caption, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.None))
                         .Returns(d.ToViewModel(DiagnosticLevel.None));
                     mock.Setup(x => x.CreateTargetViewModel(
-                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            It.Is<TargetFramework>(t => string.Equals(t.TargetFrameworkMoniker, d.Caption, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.Warning))
                         .Returns(d.ToViewModel(DiagnosticLevel.Warning));
                     mock.Setup(x => x.CreateTargetViewModel(
-                            It.Is<TargetFramework>(t => string.Equals(t.FullName, d.Caption, StringComparison.OrdinalIgnoreCase)),
+                            It.Is<TargetFramework>(t => string.Equals(t.TargetFrameworkMoniker, d.Caption, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.Error))
                         .Returns(d.ToViewModel(DiagnosticLevel.Error));
                 }

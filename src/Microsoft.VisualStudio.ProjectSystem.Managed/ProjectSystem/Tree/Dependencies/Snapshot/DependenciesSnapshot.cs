@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Requires.Argument(
                     dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
                     nameof(dependenciesByTargetFramework),
-                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
+                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.TargetFrameworkMoniker}).");
             }
 
             ActiveTargetFramework = activeTargetFramework;

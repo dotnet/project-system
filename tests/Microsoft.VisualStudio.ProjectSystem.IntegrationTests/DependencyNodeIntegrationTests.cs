@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [TestMethod]
         public void MultiTarget_NetCoreApp21_Net45()
         {
-            CreateProject(new Project("netcoreapp2.1;net45"));
+            CreateProject(new Project(";net45"));
 
             VerifyDependenciesNode(
-                new Node(".NETCoreApp 2.1", KnownMonikers.Library)
+                new Node("netcoreapp2.1", KnownMonikers.Library)
                 {
                     new Node("SDK", KnownMonikers.SDK)
                 },
-                new Node(".NETFramework 4.5", KnownMonikers.Library)
+                new Node("net45", KnownMonikers.Library)
                 {
                     new Node("Assemblies", KnownMonikers.Reference)
                 });
@@ -45,11 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CreateProject(new Project("netstandard2.0;net461"));
 
             VerifyDependenciesNode(
-                new Node(".NETFramework 4.6.1", KnownMonikers.Library)
+                new Node("net461", KnownMonikers.Library)
                 {
                     new Node("Assemblies", KnownMonikers.Reference)
                 },
-                new Node(".NETStandard 2.0", KnownMonikers.Library)
+                new Node("netstandard2.0", KnownMonikers.Library)
                 {
                     new Node("SDK", KnownMonikers.SDK)
                 });
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             CreateProject(project);
 
             VerifyDependenciesNode(
-                new Node(".NETFramework 4.6.1", KnownMonikers.Library)
+                new Node("net461", KnownMonikers.Library)
                 {
                     new Node("Assemblies", KnownMonikers.Reference),
                     new Node("Packages", ManagedImageMonikers.NuGetGrey)
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
                     }
                 },
-                new Node(".NETStandard 2.0", KnownMonikers.Library)
+                new Node("netstandard2.0", KnownMonikers.Library)
                 {
                     new Node("Packages", ManagedImageMonikers.NuGetGrey)
                     {
