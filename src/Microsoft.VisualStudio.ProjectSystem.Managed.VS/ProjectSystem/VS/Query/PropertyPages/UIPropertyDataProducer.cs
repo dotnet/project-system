@@ -54,8 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.ConfigurationIndependent)
             {
-                bool hasConfigurationCondition = property.DataSource?.HasConfigurationCondition ?? property.ContainingRule.DataSource?.HasConfigurationCondition ?? false;
-                newUIProperty.ConfigurationIndependent = !hasConfigurationCondition;
+                newUIProperty.ConfigurationIndependent = !property.IsConfigurationDependent();
             }
 
             if (requestedProperties.HelpUrl)
