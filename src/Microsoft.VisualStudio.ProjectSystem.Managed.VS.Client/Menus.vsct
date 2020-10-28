@@ -53,6 +53,10 @@
       <Parent guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" />
     </CommandPlacement>
 
+    <CommandPlacement guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
+      <Parent guid="guidManagedProjectSystemClientMainMenuCmdSet" id="groupidCtxtMenuEditProjectFile"/>
+    </CommandPlacement>
+
   </CommandPlacements>
 
   <Symbols>
@@ -68,6 +72,10 @@
     <!-- Guid and IDs copied from Microsoft.VisualStudio.Workspace.VSIntegration -->
     <GuidSymbol name="guidWorkspaceExplorerToolWindowPackageCmdSet" value="{cfb400f1-5c60-4f3c-856e-180d28def0b7}">
       <IDSymbol name="idmWSE_ContextMenu" value="0x0002"/>
+    </GuidSymbol>
+
+    <GuidSymbol name="guidManagedProjectSystemClientMainMenuCmdSet" value="{d309f791-903f-11d0-9efc-00a0c911004f}">
+      <IDSymbol name="groupidCtxtMenuEditProjectFile" value="0x0237"/>
     </GuidSymbol>
   </Symbols>
 
