@@ -22,11 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {
-                            IPropertyFactory.Create("MyProperty", o => affectedConfigs.Add(config.Name))
+                            IPropertyFactory.Create("MyProperty", setValue: o => affectedConfigs.Add(config.Name))
                         })));
             var emptyTargetDimensions = Enumerable.Empty<(string dimension, string value)>();
 
@@ -60,11 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {
-                            IPropertyFactory.Create("MyProperty", o => affectedConfigs.Add(config.Name))
+                            IPropertyFactory.Create("MyProperty", setValue: o => affectedConfigs.Add(config.Name))
                         })));
             var targetDimensions = new List<(string dimension, string value)>
             {
@@ -98,12 +98,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
                 IPropertyPageQueryCacheFactory.Create(
                     projectConfigurations,
-                    (config, schemaName) => IRuleFactory.Create(
+                    bindToRule: (config, schemaName) => IRuleFactory.Create(
                         name: "MyPage",
                         properties: new[]
                         {
-                            IPropertyFactory.Create("MyProperty", o => { }),
-                            IPropertyFactory.Create("NotTheCorrectProperty", o => unrelatedPropertySet = true)
+                            IPropertyFactory.Create("MyProperty", setValue: o => { }),
+                            IPropertyFactory.Create("NotTheCorrectProperty", setValue: o => unrelatedPropertySet = true)
                         })));
             var targetDimensions = new List<(string dimension, string value)>
             {

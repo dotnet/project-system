@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -127,6 +129,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 properties);
 
             Assert.Equal(expected: "enum value", actual: result.EvaluatedValue);
+        }
+
+        [Fact]
+        public async Task WhenThePropertyIsConfigurationIndependent_ThenOnlyOneValueIsReturned()
+        {
+            var parent = IEntityWithIdFactory.Create(key: "ParentName", value: "Aardvark");
+
+            var defaultConfiguration = ProjectConfigurationFactory.Create("Alpha|Beta");
+            var otherConfiguration = ProjectConfigurationFactory.Create("Delta|Gamma");
+            var cache = IPropertyPageQueryCacheFactory.Create(
+                projectConfigurations: ImmutableHashSet<ProjectConfiguration>.Empty.Add(defaultConfiguration).Add(otherConfiguration),
+                defaultConfiguration: defaultConfiguration,
+                bindToRule: (config, schemaName) => IRuleFactory.Create(
+                    name: "ParentName",
+                    properties: new[] { IPropertyFactory.Create("MyProperty") }));
+
+            var schema = new Rule
+            {
+                Properties =
+                {
+                    new TestProperty { Name = "MyProperty", DataSource = new() { HasConfigurationCondition = false }}
+                }
+            };
+            var propertyName = "MyProperty";
+            var requestedProperties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus();
+            var results = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                parent,
+                cache,
+                schema,
+                propertyName,
+                requestedProperties);
+
+            Assert.Single(results);
+        }
+
+        private class TestProperty : BaseProperty
+        {
         }
     }
 }

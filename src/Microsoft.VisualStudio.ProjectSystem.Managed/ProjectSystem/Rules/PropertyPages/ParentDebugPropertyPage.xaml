@@ -22,7 +22,8 @@
                        DisplayName="Launch"
                        EnumProvider="LaunchTargetPropertyPageEnumProvider">
     <DynamicEnumProperty.DataSource>
-      <DataSource PersistedName="LaunchTargetPropertyPage" />
+      <DataSource PersistedName="LaunchTargetPropertyPage"
+                  HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
 

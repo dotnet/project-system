@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach (IEntityValue dimension in ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(request.QueryExecutionContext.EntityRuntime, configuration, _properties))
+                    foreach (IEntityValue dimension in ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(request.QueryExecutionContext.EntityRuntime, configuration, property, _properties))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(dimension, request, ProjectModelZones.Cps));
                     }

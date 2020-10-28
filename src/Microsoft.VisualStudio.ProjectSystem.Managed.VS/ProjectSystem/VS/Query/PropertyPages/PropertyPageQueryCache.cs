@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly Dictionary<(ProjectConfiguration, string), IRule?> _ruleCache;
 
         private readonly AsyncLazy<IImmutableSet<ProjectConfiguration>?> _knownProjectConfigurations;
+        private readonly AsyncLazy<ProjectConfiguration?> _defaultProjectConfiguration;
 
         public PropertyPageQueryCache(UnconfiguredProject project)
         {
@@ -22,14 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             JoinableTaskFactory joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;
 
             _knownProjectConfigurations = new AsyncLazy<IImmutableSet<ProjectConfiguration>?>(CreateKnownConfigurationsAsync, joinableTaskFactory);
+            _defaultProjectConfiguration = new AsyncLazy<ProjectConfiguration?>(CreateDefaultConfigurationAsync, joinableTaskFactory);
             _catalogCache = new Dictionary<ProjectConfiguration, IPropertyPagesCatalog?>();
             _ruleCache = new Dictionary<(ProjectConfiguration, string), IRule?>();
         }
 
         /// <summary>
         /// Retrieves the set of <see cref="ProjectConfiguration"/>s for the project.
+        /// Use this when you actually need all of the <see cref="ProjectConfiguration"/>s;
+        /// use <see cref="GetSuggestedConfigurationAsync"/> when you just need any
+        /// <see cref="ProjectConfiguration"/>.
         /// </summary>
         public Task<IImmutableSet<ProjectConfiguration>?> GetKnownConfigurationsAsync() => _knownProjectConfigurations.GetValueAsync();
+
+        /// <summary>
+        /// Retrieves a default <see cref="ProjectConfiguration"/> for the project.
+        /// </summary>
+        public Task<ProjectConfiguration?> GetSuggestedConfigurationAsync() => _defaultProjectConfiguration.GetValueAsync();
 
         private async Task<IImmutableSet<ProjectConfiguration>?> CreateKnownConfigurationsAsync()
         {
@@ -39,6 +49,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
 
             return null;
+        }
+
+        private async Task<ProjectConfiguration?> CreateDefaultConfigurationAsync()
+        {
+            if (_unconfiguredProject.Services.ProjectConfigurationsService is IProjectConfigurationsService2 configurationsService2)
+            {
+                return await configurationsService2.GetSuggestedProjectConfigurationAsync();
+            }
+            else if (_unconfiguredProject.Services.ProjectConfigurationsService is IProjectConfigurationsService configurationsService)
+            {
+                return configurationsService.SuggestedProjectConfiguration;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>

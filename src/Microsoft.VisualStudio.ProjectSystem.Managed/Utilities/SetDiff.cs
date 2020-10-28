@@ -17,12 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Part Added => new(_dic, FlagAfter);
 
-        public SetDiff(IEnumerable<T> before, IEnumerable<T> after)
+        public SetDiff(IEnumerable<T> before, IEnumerable<T> after, IEqualityComparer<T>? equalityComparer = null)
         {
             Requires.NotNull(before, nameof(before));
             Requires.NotNull(after, nameof(after));
 
-            var dic = new Dictionary<T, byte>();
+            equalityComparer ??= EqualityComparer<T>.Default;
+
+            var dic = new Dictionary<T, byte>(equalityComparer);
 
             foreach (T item in before)
             {
