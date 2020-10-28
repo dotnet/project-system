@@ -35,7 +35,7 @@
   <DynamicEnumProperty Name="TargetFrameworkMoniker"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
-                       HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/visual-studio-multi-targeting-overview"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
@@ -89,7 +89,7 @@
   <StringProperty Name="Win32Resource"
                   DisplayName="Resource file"
                   Description="Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file."
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/framework/resources/creating-resource-files-for-desktop-apps"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
                   Category="Resources"
                   Subtype="file" />
 </Rule>

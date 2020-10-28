@@ -15,7 +15,7 @@
 
   <BoolProperty Name="SignAssembly"
                 Description="Sign the output assembly to give it a strong name."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/strong-named"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147136"
                 DisplayName="Sign the assembly" />
 
   <StringProperty Name="AssemblyOriginatorKeyFile"
@@ -24,6 +24,6 @@
 
   <BoolProperty Name="DelaySign"
                 Description="Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/delay-sign"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147243"
                 DisplayName="Delay sign only" />
 </Rule>
