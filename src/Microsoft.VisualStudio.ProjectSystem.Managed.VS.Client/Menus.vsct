@@ -74,6 +74,7 @@
       <IDSymbol name="idmWSE_ContextMenu" value="0x0002"/>
     </GuidSymbol>
 
+    <!-- Guid and IDs copied from Visual Studio Shell -->
     <GuidSymbol name="guidManagedProjectSystemClientMainMenuCmdSet" value="{d309f791-903f-11d0-9efc-00a0c911004f}">
       <IDSymbol name="groupidCtxtMenuEditProjectFile" value="0x0237"/>
     </GuidSymbol>
