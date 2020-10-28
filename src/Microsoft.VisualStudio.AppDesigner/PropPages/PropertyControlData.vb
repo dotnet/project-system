@@ -35,7 +35,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'The name of the property in the project system's extensibility.  The name must match the project's property because properties 
         '  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '  a different DISPID in order to "override" a property.
-        Private ReadOnly _propertyName As String
+        Private _propertyName As String
 
         'Localized name for UI (used for Undo/Redo units, for example)
         Public DisplayPropertyName As String
@@ -265,10 +265,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''  are looked up by name (not DISPID).  This allows project flavors to hide one property and add another with the same name but
         '''  a different DISPID in order to "override" a property.
         ''' </summary>
-        Public ReadOnly Property PropertyName As String
+        Public Property PropertyName As String
             Get
                 Return _propertyName
             End Get
+            Protected Set(value As String)
+#If DEBUG Then
+                Debug.Assert(Not _isInitialized)
+#End If
+                _propertyName = value
+            End Set
         End Property
 
         ''' <summary>
