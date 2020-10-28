@@ -29,13 +29,13 @@
   <StringProperty Name="DefineConstants"
                   DisplayName="Conditional compilation symbols"
                   Description="Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';')."
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/define-compiler-option"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
                   Category="General" />
 
   <EnumProperty Name="PlatformTarget"
                 DisplayName="Platform target"
                 Description="Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/platform-compiler-option"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147129"
                 Category="General">
     <EnumValue Name="AnyCPU"
                DisplayName="Any CPU" />
@@ -48,7 +48,7 @@
   <EnumProperty Name="Nullable"
                 DisplayName="Nullable"
                 Description="Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references#nullable-contexts"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146796"
                 Category="General" >
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
@@ -66,19 +66,19 @@
   <BoolProperty Name="AllowUnsafeBlocks"
                 DisplayName="Allow unsafe code"
                 Description="Allows code that uses the 'unsafe' keyword to compile."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/unsafe-compiler-option"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146797"
                 Category="General" />
 
   <BoolProperty Name="Optimize"
                 DisplayName="Optimize code"
                 Description="Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/optimize-compiler-option"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147080"
                 Category="General" />
 
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
                 Description="Specifies the level to display for compiler warnings."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/warn-compiler-option"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146798"
                 Category="ErrorsAndWarnings">
     <EnumValue Name="0"
                DisplayName="0" />
@@ -97,11 +97,11 @@
   <StringProperty Name="NoWarn"
                   DisplayName="Suppress warnings"
                   Description="Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/nowarn-compiler-option"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
                   Category="ErrorsAndWarnings" />
 
   <EnumProperty Name="TreatWarningsAsErrors"
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/warnaserror-compiler-option"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
                 Description="Used to specify which warnings are treated as errors."
                 Category="ErrorsAndWarnings" >
@@ -113,7 +113,7 @@
 
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Treat specific warnings as errors"
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/warnaserror-compiler-option"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                   Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings" />
 
@@ -126,7 +126,7 @@
   <StringProperty Name="DocumentationFile"
                   DisplayName="XML documentation file path"
                   Description="Specifies the name of a file into which documentation comments will be processed."
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/doc-compiler-option"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
                   Category="Output"
                   Subtype="file" />
 </Rule>
