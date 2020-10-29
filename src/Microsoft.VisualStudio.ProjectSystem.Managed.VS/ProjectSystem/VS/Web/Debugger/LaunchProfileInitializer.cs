@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
         private readonly ILaunchSettingsProvider2 _launchSettingsProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
-        private readonly WebLaunchSettingsProvider _webLaunchSettingsProvider;
         private readonly WebServer _webServer;
         private readonly IProjectTreeService _projectTree;
 
@@ -20,26 +19,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         public LaunchProfileInitializer(
                 ILaunchSettingsProvider2 launchSettingsProvider,
                 IUnconfiguredProjectCommonServices projectServices,
-                WebLaunchSettingsProvider webLaunchSettingsProvider,
                 WebServer webServer,
                 [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTree)
                 : base(projectServices.ThreadingService.JoinableTaskContext)
         {
             _launchSettingsProvider = launchSettingsProvider;
             _projectServices = projectServices;
-            _webLaunchSettingsProvider = webLaunchSettingsProvider;
             _webServer = webServer;
             _projectTree = projectTree;
         }
 
         protected override LaunchProfileInitializerInstance CreateInstance()
         {
-            return new LaunchProfileInitializerInstance(
-                            _launchSettingsProvider,
-                            _projectServices,
-                            _webLaunchSettingsProvider,
-                            _webServer,
-                            _projectTree);
+            return new LaunchProfileInitializerInstance(this);
         }
     }
 }
