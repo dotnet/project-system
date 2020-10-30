@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
         private readonly IFileSystem _fileSystem;
-        private readonly WebServer _webServer;
+        private readonly IWebServer _webServer;
         private readonly IDebugTargetsObserver _debugTargetsObserver;
         private readonly IVsUIService<SVsShell, IVsShell> _vsShell;
         private readonly IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> _vsShellOpenDoc;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                                        IUnconfiguredProjectVsServices projectVsServices,
                                        IProjectThreadingService threadingService,
                                        IFileSystem fileSystem,
-                                       WebServer webServer,
+                                       IWebServer webServer,
                                        IDebugTargetsObserver debugTargetsObserver,
                                        IVsUIService<SVsShell, IVsShell> vsShell,
                                        IVsUIService<SVsUIShellOpenDocument, IVsUIShellOpenDocument> vsShellOpenDoc,

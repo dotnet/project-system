@@ -19,13 +19,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 {
-    internal enum WebServerStartOption
-    {
-        Any,
-        Debug,
-        Profile
-    }
-
     internal enum VDirCollisionOption
     {
         Fail,
@@ -36,15 +29,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
     /// <summary>
     /// Wraps the webserver being used by the project system
     /// </summary>
-    [Export(typeof(WebServer))]
+    [Export(typeof(IWebServer))]
     [AppliesTo(ProjectCapability.AspNetLaunchProfiles)]
-    internal class WebServer : OnceInitializedOnceDisposedAsync, IVsDeveloperWebServerSvcEvents, IVsIISServiceEvents
+    internal class WebServer : OnceInitializedOnceDisposedAsync, IWebServer, IVsDeveloperWebServerSvcEvents, IVsIISServiceEvents
     {
         private const int MaxNonElevatedPort = 1024;
         private const uint WST_IISExpress = 1;
         private const uint WebServerListeningTimeout = 10000;       // 10 seconds
 
-        private readonly WebLaunchSettingsProvider _launchSettingsProvider;
+        private readonly IWebLaunchSettingsProvider _launchSettingsProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsLocalIISService, IVsLocalIISService> _localIISService;
@@ -67,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
         private WebLaunchSettings? _currentSettings;
 
         [ImportingConstructor]
-        public WebServer(WebLaunchSettingsProvider launchSettingsProvider, IUnconfiguredProjectCommonServices projectServices,
+        public WebServer(IWebLaunchSettingsProvider launchSettingsProvider, IUnconfiguredProjectCommonServices projectServices,
                          IProjectThreadingService threadingService, IVsUIService<IVsLocalIISService, IVsLocalIISService> localIISService,
                          IVsUIService<SVsUIShell, IVsUIShell> uiShell, IVsUIService<SVsShell, IVsShell> vsShell, IVsUIService<IVsWebAppUpgrade> webAppUpgrade,
                          IVsUIService<IVsDeveloperWebServerProviderSvc, IVsDeveloperWebServerProviderSvc> webServerProviderSvc,
@@ -236,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
         private string ProjectDirectory => Path.GetDirectoryName(_projectServices.Project.FullPath);
         private string ProjectName => Path.GetFileNameWithoutExtension(_projectServices.Project.FullPath);
-        public string? TargetFrameworkMoniker
+        private string? TargetFrameworkMoniker
         {
             get
             {
@@ -245,7 +238,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
             }
         }
 
-        public Version TargetFrameworkVersion
+        private Version TargetFrameworkVersion
         {
             get
             {

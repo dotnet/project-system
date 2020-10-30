@@ -12,14 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
 
         private readonly ILaunchSettingsProvider2 _launchSettingsProvider;
         private readonly IUnconfiguredProjectCommonServices _projectServices;
-        private readonly WebServer _webServer;
+        private readonly IWebServer _webServer;
         private readonly IProjectTreeService _projectTree;
 
         [ImportingConstructor]
         public LaunchProfileInitializer(
                 ILaunchSettingsProvider2 launchSettingsProvider,
                 IUnconfiguredProjectCommonServices projectServices,
-                WebServer webServer,
+                IWebServer webServer,
                 [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)] IProjectTreeService projectTree)
                 : base(projectServices.ThreadingService.JoinableTaskContext)
         {

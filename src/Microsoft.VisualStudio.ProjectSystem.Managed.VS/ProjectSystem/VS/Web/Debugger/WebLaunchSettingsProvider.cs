@@ -17,12 +17,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
     /// <summary>
     /// Creates an in-memory launch profile representing launching the web server from data in the flavored project section
     /// </summary>
-    [Export(typeof(WebLaunchSettingsProvider))]
+    [Export(typeof(IWebLaunchSettingsProvider))]
     [AppliesTo(ProjectCapability.AspNetLaunchProfiles)]
-    internal class WebLaunchSettingsProvider : OnceInitializedOnceDisposedAsync
+    internal class WebLaunchSettingsProvider : OnceInitializedOnceDisposedAsync, IWebLaunchSettingsProvider
     {
 
-        private static class ProjectProperties
+        private static class ProjectFileProperties
         {
             public const string UseIISExpress = nameof(UseIISExpress);
             public const string Use64BitIISExpress = nameof(Use64BitIISExpress);
@@ -168,31 +168,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 return;
             }
 
-            var stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressSSLPort);
+            var stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.IISExpressSSLPort);
             int.TryParse(stringVal, out _issExpressSSLPort);
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.UseIISExpress);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.UseIISExpress);
             bool.TryParse(stringVal, out _useIISExpress);
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.Use64BitIISExpress);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.Use64BitIISExpress);
             bool.TryParse(stringVal, out _use64BitIISExpress);
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressAnonymousAuthentication);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.IISExpressAnonymousAuthentication);
             if (TryParseEnabled(stringVal, out bool isEnabled))
             {
                 _useAnonymousAuth = isEnabled;
             }
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressWindowsAuthentication);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.IISExpressWindowsAuthentication);
             if (TryParseEnabled(stringVal, out isEnabled))
             {
                 _useWindowsAuth = isEnabled;
             }
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.IISExpressUseClassicPipelineMode);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.IISExpressUseClassicPipelineMode);
             bool.TryParse(stringVal, out _useClassicPipelineMode);
 
-            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectProperties.UseGlobalApplicationHostFile);
+            stringVal = await commonProps.GetEvaluatedPropertyValueAsync(ProjectFileProperties.UseGlobalApplicationHostFile);
             bool.TryParse(stringVal, out _useGlobalApplicationHostFile);
         }
 
