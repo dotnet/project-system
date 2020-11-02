@@ -1,6 +1,6 @@
 ## About
 
-This document provides a high-level overview of the new project property pages, with an emphasis on helping the reader understand the major components and where the implementations of those components may be found. It does _not_ cover the design of individual components in depth, nor does it get into the implementation details. For the former, please see the CPS documentation in [Microsoft/VSProjectSystem](https://github.com/Microsoft/VSProjectSystem); for the latter your best course is to examine the code itself in the [CPS](https://devdiv.visualstudio.com/DevDiv/_git/CPS) and [dotnet/project-system](https://github.com/dotnet/project-system) reports.
+This document provides a high-level overview of the new project property pages, with an emphasis on helping the reader understand the major components and where the implementations of those components may be found. It does _not_ cover the design of individual components in depth, nor does it get into the implementation details. For the former, please see the CPS documentation in [Microsoft/VSProjectSystem](https://github.com/Microsoft/VSProjectSystem); for the latter your best course is to examine the code itself in the [CPS](https://devdiv.visualstudio.com/DevDiv/_git/CPS) and [dotnet/project-system](https://github.com/dotnet/project-system) repos.
 
 ## Goals
 
@@ -61,7 +61,7 @@ CPS has an entire system for providing access to "project" and "item" properties
 
 ### 9. Standard property providers
 
-CPS has an implementation of `IProjectPropertiesProvider` that handles reading and writing data to the MSBuild project file (the `ProjectPropertiesProvider`), among others. As many of the properties that we change through the project properties UI are in fact stored in the project file, we may heavy (though implicit) use of this type. Generally we only need to think about this type when we run up against its limitations, at which point we need to think about custom `IProjectPropertiesProvider`s.
+CPS has an implementation of `IProjectPropertiesProvider` that handles reading and writing data to the MSBuild project file (the `ProjectPropertiesProvider`), among others. As many of the properties that we change through the project properties UI are in fact stored in the project file, we make heavy (though implicit) use of this type. Generally we only need to think about this type when we run up against its limitations, at which point we need to think about custom `IProjectPropertiesProvider`s.
 
 ### 10. Custom property providers
 
@@ -71,6 +71,6 @@ The [dotnet/project-system](https://github.com/dotnet/project-system) repo imple
 
 At the very bottom of the implementation stack are XAML Rule files, so-called because they deserialize to instances of the `Rule` type. This is not to be confused with the `IRule` interface; a `Rule` represents a "page" of properties in the abstract, while `IRule` represents that page bound to a particular project or item.
 
-These Rule files are where the declarative, metadata-driven aspect of the new property pages comes into play. These files declare page, the page's metadata, it's properties, the storage mechanisms to use (i.e. which `IProjectPropertiesProvider` will handle a particular property), and a bunch of other property metadata: documentation links, search terms, descriptions, the property type, whether the value can vary across project configurations, etc.
+These Rule files are where the declarative, metadata-driven aspect of the new property pages comes into play. These files declare page, the page's metadata, its properties, the storage mechanisms to use (i.e. which `IProjectPropertiesProvider` will handle a particular property), and a bunch of other property metadata: documentation links, search terms, descriptions, the property type, whether the value can vary across project configurations, etc.
 
 Adding a new property is largely a matter of defining it in the appropriate XAML file. Adding a new page is a matter of creating a new XAML file and including it in the project as a `PropertyPageSchema` item.
