@@ -98,5 +98,17 @@ namespace Microsoft.VisualStudio
         ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
         /// </summary>
         public static readonly Guid LegacyTestProjectGuid = new(LegacyTestProject);
+
+        /// <summary>
+        ///     A <see cref="string"/> representing the legacy test project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public const string LegacyWPFProject = "60DC8134-EBA5-43B8-BCC9-BB4BC16C2548";
+
+        /// <summary>
+        ///     A <see cref="Guid"/> representing the legacy test project type, a flavor of
+        ///     <see cref="LegacyCSharp"/> and <see cref="LegacyVisualBasic"/> project types.
+        /// </summary>
+        public static readonly Guid LegacyWPFProjectGuid = new(LegacyWPFProject);
     }
 }

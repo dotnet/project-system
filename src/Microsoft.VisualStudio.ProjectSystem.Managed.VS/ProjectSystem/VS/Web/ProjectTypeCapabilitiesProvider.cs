@@ -55,6 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 capabilities = capabilities.Add("TestContainer");
             }
 
+            if (projectTypes.Contains(ProjectType.LegacyWPFProjectGuid))
+            {
+                capabilities = capabilities.Add(ProjectCapability.WPF);
+            }
+
+            // TODO: Always add WinForms until we can detect that we're opening "legacy" project
+            capabilities = capabilities.Add(ProjectCapability.WindowsForms);
+
             return Current == null
                 ? new ProjectCapabilitiesSnapshot(capabilities)
                 : ((ProjectCapabilitiesSnapshot)Current.Value).Update(capabilities);
