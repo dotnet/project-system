@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         private readonly Dictionary<int, Evaluation> _evaluations = new Dictionary<int, Evaluation>();
 
-        public EvaluationLogger(BackEndBuildTableDataSource dataSource) :
-            base(dataSource)
+        public EvaluationLogger(BackEndBuildTableDataSource dataSource)
+            : base(dataSource)
         {
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                         return;
                     }
 
-                        string? logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
+                    string? logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
                     var binaryLogger = new BinaryLogger
                     {
                         Parameters = logPath,
@@ -94,15 +94,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 }
                 break;
 
-                case ProjectEvaluationFinishedEventArgs _:
+                case ProjectEvaluationFinishedEventArgs:
                 {
                     if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out Evaluation? evaluation))
                     {
-                        evaluation?.Build?.Finish(true, args.Timestamp);
-                        evaluation?.Wrapper?.RaiseEvent(sender, args);
-                        evaluation?.Wrapper?.BinaryLogger.Shutdown();
-                        evaluation?.Build?.SetLogPath(GetLogPath(evaluation.Build));
-                        Copy(evaluation?.LogPath, evaluation?.Build?.LogPath);
+                        evaluation.Build?.Finish(true, args.Timestamp);
+                        evaluation.Wrapper?.RaiseEvent(sender, args);
+                        evaluation.Wrapper?.BinaryLogger.Shutdown();
+                        evaluation.Build?.SetLogPath(GetLogPath(evaluation.Build));
+                        Copy(evaluation.LogPath, evaluation?.Build?.LogPath);
                         DataSource.NotifyChange();
                     }
                 }
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 {
                     if (_evaluations.TryGetValue(args.BuildEventContext.EvaluationId, out Evaluation? evaluation))
                     {
-                        evaluation?.Wrapper?.RaiseEvent(sender, args);
+                        evaluation.Wrapper?.RaiseEvent(sender, args);
                     }
                 }
                 break;

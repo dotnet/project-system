@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         public void Clear()
         {
-            foreach (Build? build in _entries)
+            foreach (Build build in _entries)
             {
                 build.Dispose();
             }
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         /// returns null if no match is found.</returns>
         public string? GetLogForBuild(int buildId)
         {
-            return _entries?.Find(x => x?.BuildId == buildId)?.LogPath;
+            return _entries.Find(x => x?.BuildId == buildId)?.LogPath;
         }
 
         ImmutableList<BuildSummary> ILoggingDataSource.GetAllBuilds()

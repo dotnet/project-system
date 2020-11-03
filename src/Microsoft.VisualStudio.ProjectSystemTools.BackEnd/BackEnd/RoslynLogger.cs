@@ -100,15 +100,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
             _removeLoggerCall?.Invoke(_roslynTraceSource);
 
-            var listener = (RoslynTraceListener)_roslynTraceSource.Listeners[0];
+            using var listener = (RoslynTraceListener)_roslynTraceSource.Listeners[0];
             _roslynTraceSource = null;
 
             _build?.Finish(succeeded: true, time: DateTime.Now);
             _build?.SetLogPath(listener.LogPath);
 
             _dataSource.NotifyChange();
-
-            listener.Dispose();
         }
 
         private bool EnsureRoslynLogger()
@@ -150,7 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
             return _setLoggerCall != null;
         }
 
-        private static Assembly GetAssembly(string assemblyName) =>
+        private static Assembly? GetAssembly(string assemblyName) =>
             (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                 where assembly.FullName.IndexOf(assemblyName, StringComparison.OrdinalIgnoreCase) >= 0
                 let current = assembly.GetName()

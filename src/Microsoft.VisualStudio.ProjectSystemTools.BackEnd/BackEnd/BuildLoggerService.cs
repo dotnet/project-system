@@ -67,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         }
 
         public Task<string?> GetLogForBuildAsync(int buildID, CancellationToken cancellationToken)
-        
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_dataSource.GetLogForBuild(buildID));

@@ -19,8 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
         private readonly BinaryLogger _binaryLogger;
         private Build? _build;
 
-        public ProjectLogger(BackEndBuildTableDataSource dataSource, bool isDesignTime) :
-            base(dataSource)
+        public ProjectLogger(BackEndBuildTableDataSource dataSource, bool isDesignTime)
+            : base(dataSource)
         {
             _logPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.binlog");
             _binaryLogger = new BinaryLogger
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 // Never got project information so just delete the log.
                 try
                 {
-                    System.Diagnostics.Debug.Assert(_logPath != null);
+                    Assumes.NotNull(_logPath);
                     File.Delete(_logPath);
                 }
                 catch
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
 
         private static IEnumerable<string> GatherDimensions(IDictionary<string, string> globalProperties)
         {
-            foreach (string? dimension in s_dimensions)
+            foreach (string dimension in s_dimensions)
             {
                 if (globalProperties.TryGetValue(dimension, out string? dimensionValue))
                 {
@@ -92,11 +92,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tools.BuildLogging.Model.BackEnd
                 return;
             }
 
-            IEnumerable<string>? dimensions = GatherDimensions(e.GlobalProperties);
+            IEnumerable<string> dimensions = GatherDimensions(e.GlobalProperties);
 
-            var build = new Build(e.ProjectFile, dimensions.ToArray(), e?.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e?.Timestamp);
+            var build = new Build(e.ProjectFile, dimensions.ToArray(), e.TargetNames?.Split(';'), _isDesignTime ? BuildType.DesignTimeBuild : BuildType.Build, e.Timestamp);
             _build = build;
-            _projectInstanceId = e?.BuildEventContext.ProjectInstanceId;
+            _projectInstanceId = e.BuildEventContext.ProjectInstanceId;
             DataSource.AddEntry(_build);
         }
     }

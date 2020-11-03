@@ -10,11 +10,11 @@
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
 
-    <!-- Nuget -->
+    <!-- NuGet -->
     <IsPackable>true</IsPackable>
     <Description>Microsoft VisualStudio ProjectSystem Tools logger which interacts with extension on a VS Online scenario</Description>
     <Summary>Microsoft VisualStudio ProjectSystem Tools logger</Summary>
-    <PackageTags>Roslyn Managed Project System Tools VisualStudio binlog VSOnline Nexus</PackageTags>
+    <PackageTags>Roslyn;Managed Project System Tools;Project System Tools;VisualStudio;binlog;VSOnline;Codespaces</PackageTags>
     <NoWarn>$(NoWarn);NU5125</NoWarn>
 
     <IsProductComponent>false</IsProductComponent>
