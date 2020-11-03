@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
     /// <summary>
     ///     Modifies the Solution Explorer tree image for the project root.
     /// </summary>
-    [Export(typeof(IProjectTreePropertiesProvider))]
+    //[Export(typeof(IProjectTreePropertiesProvider))] //TODO:
     [AppliesTo(ProjectCapability.DotNet)]
     [Order(Order.Default)]
     internal class ProjectRootImageProjectTreePropertiesProvider : IProjectTreePropertiesProvider
