@@ -4,12 +4,10 @@
   <Target Name="ExtractWindowsPdb" BeforeTargets="Test">
 
     <PropertyGroup>
-      <_UseOpenCover>$(UseOpenCover)</_UseOpenCover>
-
       <_TargetFileNameNoExt>$([System.IO.Path]::GetFileNameWithoutExtension('$(TargetFileName)'))</_TargetFileNameNoExt>
       <_TargetExtractedPdb>$(TargetDir)$(_TargetFileNameNoExt).ppdb</_TargetExtractedPdb>
       <_SkipPdbConversion>false</_SkipPdbConversion>
-      <_SkipPdbConversion Condition="'$(_UseOpenCover)' != 'true'">true</_SkipPdbConversion>
+      <_SkipPdbConversion Condition="'$(UseOpenCover)' != 'true'">true</_SkipPdbConversion>
       <_SkipPdbConversion Condition="Exists($(_TargetExtractedPdb))">true</_SkipPdbConversion>
     </PropertyGroup>
 
