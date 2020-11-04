@@ -197,11 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
             'Site is different - set it
             _site = Site
-            If TypeOf Site Is IServiceProvider Then
-                _siteProvider = New ServiceProvider(CType(Site, IServiceProvider))
-            Else
-                Debug.Fail("Site IsNot OLE.Interop.IServiceProvider")
-            End If
+            _siteProvider = New ServiceProvider(Site)
         End Function
 
     End Class
