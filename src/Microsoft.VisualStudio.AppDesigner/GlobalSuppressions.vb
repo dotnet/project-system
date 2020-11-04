@@ -399,7 +399,7 @@ Imports System.Diagnostics.CodeAnalysis
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.IPropertyPageSiteInternal")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData")>
 <Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="type", Target:="~T:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerDocData")>
-<Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.InternalCreateEditorInstance(System.String,System.Object,System.Object@,System.Object@,System.String@,System.Guid@,System.Boolean@)")>
+<Assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Scope:="member", Target:="~M:Microsoft.VisualStudio.Editors.PropPageDesigner.PropPageDesignerEditorFactory.InternalCreateEditorInstance(System.String,System.Object,System.Object@,System.Object@,System.String@,System.Guid@)")>
 <Assembly: SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.AppDesDesignerFramework.ErrorControl._sizingLabel")>
 <Assembly: SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ErrorControlCustomViewProvider._view")>
 <Assembly: SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Scope:="member", Target:="~F:Microsoft.VisualStudio.Editors.ApplicationDesigner.ProjectDesignerTabControl._hostingPanel")>
