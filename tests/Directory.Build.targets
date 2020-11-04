@@ -4,5 +4,4 @@
   
   <Import Project="..\build\import\UnitTests.targets" Condition="$(IsUnitTestProject) == 'true'" />
   <Import Project="..\build\import\IntegrationTests.targets" Condition="$(IsIntegrationTestProject) == 'true'"/>
-  <Import Project="..\build\import\Coverage.targets" />
 </Project>
