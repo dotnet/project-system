@@ -60,8 +60,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Web
                 capabilities = capabilities.Add(ProjectCapability.WPF);
             }
 
-            // TODO: Always add WinForms until we can detect that we're opening "legacy" project
-            capabilities = capabilities.Add(ProjectCapability.WindowsForms);
+            if (capabilities.Count == 0)
+            {
+                // TODO: Always add WinForms until we can detect that we're opening "legacy" project
+                capabilities = capabilities.Add(ProjectCapability.WindowsForms);
+            }
 
             return Current == null
                 ? new ProjectCapabilitiesSnapshot(capabilities)
