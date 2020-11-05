@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             VerifyInitialized();
 
             if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty) &&
-                projectChange.After.Properties.TryGetKey(ConfigurationGeneral.MSBuildProjectFullPathProperty, out string projectFilePath))
+                projectChange.After.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out string projectFilePath))
             {
                 string displayName = GetDisplayName(projectFilePath);
 
