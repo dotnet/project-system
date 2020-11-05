@@ -69,8 +69,8 @@
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"                   Version="16.8.30406.65" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.16.6.DesignTime"                   Version="16.8.30406.65-pre" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="16.8.30403.137-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.8.50" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.8.50" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.8.55" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.8.55" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="16.8.30406.65-pre" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="16.8.33" />
     <PackageReference Update="Microsoft.VisualStudio.VSHelp"                                          Version="16.0.28321-alpha" />
