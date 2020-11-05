@@ -29,16 +29,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             new SubTypeDescriptor("Component",      VSResources.ComponentEditor_DisplayName,   useDesignerByDefault: false)
         };
 
+        private readonly UnconfiguredProject _project;
         private readonly Lazy<IPhysicalProjectTree> _projectTree;
         private readonly Lazy<IProjectSystemOptions> _options;
 
         [ImportingConstructor]
-        public WindowsFormsEditorProvider(UnconfiguredProject unconfiguredProject, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectSystemOptions> options)
+        public WindowsFormsEditorProvider(UnconfiguredProject project, Lazy<IPhysicalProjectTree> projectTree, Lazy<IProjectSystemOptions> options)
         {
+            _project = project;
             _projectTree = projectTree;
             _options = options;
 
-            ProjectSpecificEditorProviders = new OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView>(projectCapabilityCheckProvider: unconfiguredProject);
+            ProjectSpecificEditorProviders = new OrderPrecedenceImportCollection<IProjectSpecificEditorProvider, INamedExportMetadataView>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
@@ -101,12 +103,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
         private async Task<string?> GetSubTypeAsync(string documentMoniker)
         {
             IProjectItemTree? item = await FindCompileItemByMonikerAsync(documentMoniker);
+            if (item == null)
+                return null;
 
-            IRule? browseObject = item?.BrowseObjectProperties;
+            ConfiguredProject? project = await _project.GetSuggestedConfiguredProjectAsync();
+
+            IRule? browseObject = GetBrowseObjectProperties(project!, item);
             if (browseObject == null)
                 return null;
 
             return await browseObject.GetPropertyValueAsync(Compile.SubTypeProperty);
+        }
+
+        protected virtual IRule? GetBrowseObjectProperties(ConfiguredProject project, IProjectItemTree item)
+        {
+            // For unit testing purposes
+            return item.GetBrowseObjectPropertiesViaSnapshotIfAvailable(project);
         }
 
         private async Task<IProjectItemTree?> FindCompileItemByMonikerAsync(string documentMoniker)
