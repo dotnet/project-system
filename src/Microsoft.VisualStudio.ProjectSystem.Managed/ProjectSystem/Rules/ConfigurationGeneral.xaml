@@ -1,17 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
 <Rule Name="ConfigurationGeneral"
-      Description="General"
-      DisplayName="General"
       OverrideMode="Replace"
       PageTemplate="generic"
       PropertyPagesHidden="True"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
-  <Rule.Categories>
-    <Category Name="General"
-              Description="General"
-              DisplayName="General" />
-  </Rule.Categories>
 
   <Rule.DataSource>
     <DataSource Label="Configuration"
@@ -26,16 +19,16 @@
                 Visible="False" />
 
   <StringProperty Name="ApplicationIcon"
-                  DisplayName="Application Icon" />
+                  Visible="False" />
 
   <StringProperty Name="AssemblyName"
-                  DisplayName="Assembly Name" />
+                  Visible="False" />
 
   <StringProperty Name="AssemblyReferenceTabs"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="AssemblySearchPaths"
-                  Visible="false" />
+                  Visible="False" />
 
   <BoolProperty Name="AutoRefresh"
                 Visible="False">
@@ -48,25 +41,25 @@
 
   <StringListProperty Name="AvailablePlatforms"
                       Separator=","
-                      DisplayName="Available Platforms" />
+                      Visible="False" />
 
   <StringProperty Name="BaseIntermediateOutputPath"
-                  DisplayName="Base Intermediate Output Path" />
+                  Visible="False" />
 
   <StringProperty Name="Configuration"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="DebuggerSymbolsPath"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="DefaultContentType"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="DefaultPlatform"
-                  Visible="false" />
+                  Visible="False" />
 
   <BoolProperty Name="DisableFastUpToDateCheck"
-                DisplayName="Disable Fast Up To Date Check">
+                Visible="False">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="DisableFastUpToDateCheck"
@@ -76,13 +69,13 @@
   </BoolProperty>
 
   <StringProperty Name="DocumentationFile"
-                  DisplayName="XML doc comments file" />
+                  Visible="False" />
 
   <StringProperty Name="IntDir"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="IntermediateOutputPath"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="LanguageServiceId"
                   ReadOnly="True"
@@ -93,23 +86,23 @@
                   Visible="False" />
 
   <StringProperty Name="MinimumVisualStudioVersion"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="MSBuildAllProjects"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="MSBuildProjectDirectory"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="MSBuildProjectFullPath"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="MSBuildProjectExtensionsPath"
                   ReadOnly="True"
                   Visible="False" />
 
   <StringProperty Name="Name"
-                  DisplayName="Name" />
+                  Visible="False" />
 
   <StringProperty Name="NETCoreSdkVersion"
                   ReadOnly="True"
@@ -123,30 +116,24 @@
                   Visible="False" />
 
   <BoolProperty Name="Optimize"
-                Description="Whether the compiler should optimize output."
-                DisplayName="Optimize" />
+                Visible="False" />
 
   <StringProperty Name="OutputName"
-                  DisplayName="Output Name" />
+                  Visible="False" />
 
   <StringProperty Name="OutDir"
                   Visible="False" />
 
   <StringProperty Name="OutputPath"
-                  DisplayName="Output Path" />
+                  Visible="False" />
 
   <EnumProperty Name="OutputType"
-                DisplayName="Output Type" >
-    <EnumValue Name="Library"
-               DisplayName="Class Library" />
-    <EnumValue Name="Exe"
-               DisplayName="Console Application" />
-    <EnumValue Name="WinExe"
-               DisplayName="Windows Application" />
-    <EnumValue Name="AppContainerExe"
-               DisplayName="Windows Store app" />
-    <EnumValue Name="WinMDObj"
-               DisplayName="WinMD" />
+                Visible="False" >
+    <EnumValue Name="Library" />
+    <EnumValue Name="Exe" />
+    <EnumValue Name="WinExe" />
+    <EnumValue Name="AppContainerExe" />
+    <EnumValue Name="WinMDObj" />
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="OutputType"
@@ -156,17 +143,17 @@
   </EnumProperty>
 
   <StringProperty Name="PackageAction"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="Platform"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="ProjectAssetsFile"
                   ReadOnly="true"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="ProjectDir"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringListProperty Name="ProjectTypeGuids"
                       Visible="False" />
@@ -175,9 +162,9 @@
                   Visible="False" />
 
   <StringProperty Name="RootNamespace"
-                  DisplayName="Root namespace">
+                  Visible="False" >
     <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="false"
+      <DataSource HasConfigurationCondition="False"
                   Label="Configuration"
                   Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
@@ -185,19 +172,19 @@
   </StringProperty>
 
   <StringProperty Name="SDKExtensionDirectoryRoot"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="SDKIdentifier"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="SDKReferenceDirectoryRoot"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="SDKReferenceRegistryRoot"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="SDKVersion"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="SharedItemContextSubProjectGuid"
                   Visible="False">
@@ -221,10 +208,10 @@
   </BoolProperty>
 
   <BoolProperty Name="SuppressOutOfDateMessageOnBuild"
-                Visible="false" />
+                Visible="False" />
 
   <StringProperty Name="TargetFramework"
-                  DisplayName="Target Framework">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFramework"
@@ -234,7 +221,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkIdentifier"
-                  DisplayName="Target Framework Identifier">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkIdentifier"
@@ -244,7 +231,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkMoniker"
-                  DisplayName="Target Framework Moniker">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkMoniker"
@@ -254,7 +241,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkMonikers"
-                  DisplayName="Target Framework Monikers"
+                  Visible="False"
                   ReadOnly="True">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -265,7 +252,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkProfile"
-                  DisplayName="Target Framework Profile">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkProfile"
@@ -275,7 +262,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworks"
-                  DisplayName="Target Frameworks">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworks"
@@ -285,7 +272,7 @@
   </StringProperty>
 
   <StringProperty Name="TargetFrameworkVersion"
-                  DisplayName="Target Framework Version">
+                  Visible="False" >
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="TargetFrameworkVersion"
@@ -295,23 +282,22 @@
   </StringProperty>
 
   <StringProperty Name="TargetPath"
-                  DisplayName="Target Path" />
+                  Visible="False" />
 
   <StringProperty Name="TargetPlatformIdentifier"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="TargetPlatformVersion"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="TargetPlatformWinMDLocation"
-                  Visible="false" />
+                  Visible="False" />
 
   <EnumProperty Name="TargetRuntime"
-                Visible="false">
+                Visible="False">
     <EnumValue Name="Managed" />
     <EnumValue Name="Native" />
-    <EnumValue Name="AppHost"
-               DisplayName="Windows app" />
+    <EnumValue Name="AppHost" />
   </EnumProperty>
 
   <StringProperty Name="TemplateLanguage"
@@ -319,18 +305,18 @@
                   Visible="False" />
 
   <StringProperty Name="VCInstallDir"
-                  Visible="false" />
+                  Visible="False" />
 
   <StringProperty Name="VSInstallDir"
-                  Visible="false" />
+                  Visible="False" />
 
   <BoolProperty Name="WindowsAppContainer"
-                Visible="false" />
+                Visible="False" />
 
   <BoolProperty Name="WinMDAssembly"
-                Visible="false" />
+                Visible="False" />
 
   <StringProperty Name="WinRTReferenceTabs"
-                  Visible="false" />
+                  Visible="False" />
 
 </Rule>
