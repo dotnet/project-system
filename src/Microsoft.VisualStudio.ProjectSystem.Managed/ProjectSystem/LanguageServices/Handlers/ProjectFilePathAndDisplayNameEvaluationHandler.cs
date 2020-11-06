@@ -41,9 +41,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             VerifyInitialized();
 
-            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty))
+            if (projectChange.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty) &&
+                projectChange.After.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out string projectFilePath))
             {
-                string projectFilePath = projectChange.After.Properties[ConfigurationGeneral.MSBuildProjectFullPathProperty];
                 string displayName = GetDisplayName(projectFilePath);
 
                 logger.WriteLine("DisplayName: {0}", displayName);

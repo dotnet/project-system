@@ -2,27 +2,24 @@
 
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
+using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
     public class ProjectFilePathAndDisplayNameEvaluationHandlerTests : EvaluationHandlerTestBase
     {
-        [Fact]
-        public void Handle_WhenMSBuildProjectFullPathPropertyNotChanged_DoesNothing()
+        [Theory]
+        [InlineData("true", "false")]
+        [InlineData("false", "true")]
+        public void Handle_WhenMSBuildProjectFullPathPropertyNotChanged_DoesNothing(string diffContains, string afterContains)
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
             context.ProjectFilePath = @"ProjectFilePath";
             context.DisplayName = "DisplayName";
 
             var handler = CreateInstance(context: context);
-
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true
-    }
-}");
+            var projectChange = SetupProjectChanges(bool.Parse(diffContains), "C:\\Project\\Project.csproj", bool.Parse(afterContains));
 
             Handle(handler, projectChange);
 
@@ -37,19 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.ProjectFilePath = @"ProjectFilePath";
 
             var handler = CreateInstance(context: context);
+            var projectChange = SetupProjectChanges(true, "NewProjectFilePath", true);
 
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""NewProjectFilePath""
-        }
-    }
-}");
             Handle(handler, projectChange);
 
             Assert.Equal(@"NewProjectFilePath", context.ProjectFilePath);
@@ -61,19 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var context = IWorkspaceProjectContextMockFactory.Create();
 
             var handler = CreateInstance(context: context);
+            var projectChange = SetupProjectChanges(true, "C:\\Project\\Project.csproj", true);
 
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj""
-        }
-    }
-}");
             Handle(handler, projectChange);
 
             Assert.Equal(@"Project", context.DisplayName);
@@ -96,19 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var implicitlyActiveDimensionProvider = IImplicitlyActiveDimensionProviderFactory.ImplementGetImplicitlyActiveDimensions(n => implicitDimensionNames.SplitReturningEmptyIfEmpty('|'));
             var configuration = ProjectConfigurationFactory.Create(dimensionNames, dimensionValues);
             var handler = CreateInstance(configuration, implicitlyActiveDimensionProvider, context);
+            var projectChange = SetupProjectChanges(true, "C:\\Project\\Project.csproj", true);
 
-            var projectChange = IProjectChangeDescriptionFactory.FromJson(
-@"{
-    ""Difference"": { 
-        ""AnyChanges"": true,
-        ""ChangedProperties"": [ ""MSBuildProjectFullPath"" ]
-    },
-    ""After"": { 
-        ""Properties"": {
-            ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj""
-        }
-    }
-}");
             Handle(handler, projectChange);
 
             Assert.Equal(expected, context.DisplayName);
@@ -129,6 +93,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
                 handler.Initialize(context);
 
             return handler;
+        }
+
+        private static IProjectChangeDescription SetupProjectChanges(bool containsDifference, string msBuildProjectFullPath, bool afterContainsChange)
+        {
+            var projectChangeMock = new Mock<IProjectChangeDescription>();
+            projectChangeMock.Setup(c => c.Difference.ChangedProperties.Contains(ConfigurationGeneral.MSBuildProjectFullPathProperty)).Returns(containsDifference);
+
+            projectChangeMock.Setup(c => c.After.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out msBuildProjectFullPath)).Returns(afterContainsChange);
+
+            return projectChangeMock.Object;
         }
     }
 }
