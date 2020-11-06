@@ -178,10 +178,6 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ConfigurationGeneral.xaml">
-      <Context>Project;ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
