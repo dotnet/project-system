@@ -7,8 +7,10 @@
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json;
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/myget-legacy/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
