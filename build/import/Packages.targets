@@ -4,19 +4,13 @@
   <PropertyGroup>
     <RestoreSources>
       $(RestoreSources);
-      https://dotnet.myget.org/F/msbuild/api/v3/index.json;
-      https://dotnet.myget.org/F/nuget-build/api/v3/index.json;
-      https://dotnet.myget.org/F/roslyn/api/v3/index.json;
-      https://dotnet.myget.org/F/roslyn-analyzers/api/v3/index.json;
-      https://dotnet.myget.org/F/roslyn-tools/api/v3/index.json;
-      https://dotnet.myget.org/F/templating/api/v3/index.json;
-      https://dotnet.myget.org/F/project-system-interop/api/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-impl/nuget/v3/index.json;
       https://pkgs.dev.azure.com/azure-public/vside/_packaging/vssdk/nuget/v3/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet5/nuget/v3/index.json;
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://api.nuget.org/v3/index.json;
-      https://dotnet.myget.org/F/symreader-converter/api/v3/index.json
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/myget-legacy/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
@@ -115,8 +109,8 @@
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.0" />
 
     <!-- NuGet -->
-    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.8.0-preview.2.6767" />
-    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.8.0-preview.2.6767" />
+    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.8.0-preview.2.6776" />
+    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.8.0-preview.2.6776" />
 
     <!-- Framework packages -->
     <PackageReference Update="Microsoft.IO.Redist"                                                    Version="4.7.0" />
