@@ -32,6 +32,18 @@
                   Description="Specifies the base namespace for files added to the project."
                   Category="General" />
 
+  <BoolProperty Name="TargetMultipleFrameworks"
+                DisplayName="Target multiple frameworks"
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="TargetFrameworkMoniker;TargetFrameworks" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <DynamicEnumProperty Name="TargetFrameworkMoniker"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
@@ -44,8 +56,23 @@
                   Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False"/>
     </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition" Value="(not (evaluated TargetMultipleFrameworks))" />
+    </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
+  <StringProperty Name="TargetFrameworks"
+                  DisplayName="Target frameworks"
+                  Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition" Value="(evaluated TargetMultipleProjects)" />
+    </StringProperty.Metadata>
+  </StringProperty>
+  
   <EnumProperty Name="OutputType"
                 DisplayName="Output type"
                 Description="Specifies the type of application to build."

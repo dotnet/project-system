@@ -37,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             string? currentTargetFrameworks = (string?)await configuration.TargetFrameworks.GetValueAsync();
             if (!string.IsNullOrEmpty(currentTargetFrameworks))
             {
+                // TODO: If we set TargetFramework, we need to _unset_ TargetFrameworks.
                 throw new InvalidOperationException(VSResources.MultiTFEditNotSupported);
             }
             else if (!string.IsNullOrEmpty(currentTargetFramework))

@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
+        <source>Target multiple frameworks</source>
+        <target state="new">Target multiple frameworks</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the application.</source>
         <target state="translated">應用程式的一般設定。</target>
@@ -125,6 +130,11 @@
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
         <target state="translated">預設命名空間</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target frameworks</source>
+        <target state="new">Target frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
