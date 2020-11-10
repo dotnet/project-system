@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests.csproj", "{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientSetup", "setup\ClientSetup\ClientSetup.csproj", "{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{02578366-dfa9-4827-93f7-08e2ae5ce6a4}*SharedItemsImports = 13
