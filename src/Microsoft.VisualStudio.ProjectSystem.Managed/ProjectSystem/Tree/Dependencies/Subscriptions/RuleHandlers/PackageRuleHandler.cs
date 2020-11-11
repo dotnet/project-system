@@ -5,11 +5,11 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
@@ -25,10 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             ProviderTypeString,
             Resources.PackagesNodeName,
             new DependencyIconSet(
-                icon: ManagedImageMonikers.NuGetGrey,
-                expandedIcon: ManagedImageMonikers.NuGetGrey,
-                unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning),
+                icon: KnownMonikers.NuGetNoColor,
+                expandedIcon: KnownMonikers.NuGetNoColor,
+                unresolvedIcon: KnownMonikers.NuGetNoColorWarning,
+                unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning),
             DependencyTreeFlags.PackageDependencyGroup);
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.NuGetGreyPrivate;
+        public override ImageMoniker ImplicitIcon => KnownMonikers.NuGetNoColorPrivate;
 
         protected override void HandleAddedItem(
             string addedItem,

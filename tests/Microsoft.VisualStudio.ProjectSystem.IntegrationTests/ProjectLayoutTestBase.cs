@@ -279,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// This type is designed to work with object and collection initializers.
         /// For example:
         /// <example>
-        /// <code>new Node(".NETCoreApp 2.1", ManagedImageMonikers.Library)
+        /// <code>new Node(".NETCoreApp 2.1", KnownMonikers.Library)
         /// {
         ///     new Node("SDK", KnownMonikers.SDK)
         /// }</code>

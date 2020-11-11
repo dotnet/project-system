@@ -9,16 +9,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     /// <summary>
     /// Contains monikers for icons shipped with Managed Project System.
     /// </summary>
-    
+
+    [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
     public static class ManagedImageMonikers
     {
-        // These GUIDs and IDs are defined in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ManagedImages.imagemanifest
-        private static readonly Guid s_manifestGuid = new("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
-
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ApplicationPrivate => KnownMonikers.ApplicationPrivate;
 
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ApplicationWarning => KnownMonikers.ApplicationWarning;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COM")]
         public static ImageMoniker Component => KnownMonikers.COM;
@@ -26,13 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker ComponentPrivate => KnownMonikers.COMPrivate;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMWarning")]
         public static ImageMoniker ComponentWarning => KnownMonikers.COMWarning;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker LibraryWarning => KnownMonikers.LibraryWarning;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferenceGroup => KnownMonikers.ReferenceGroup;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferenceGroupWarning => KnownMonikers.ReferenceGroupWarning;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferencePrivate => KnownMonikers.ReferencePrivate;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDK")]
         public static ImageMoniker Sdk => KnownMonikers.SDK;
@@ -40,45 +33,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public static ImageMoniker SdkPrivate => KnownMonikers.SDKPrivate;
         [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDKWarning")]
         public static ImageMoniker SdkWarning => KnownMonikers.SDKWarning;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker SharedProject => KnownMonikers.SharedProject;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker SharedProjectPrivate => KnownMonikers.SharedProjectPrivate;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker SharedProjectWarning => KnownMonikers.SharedProjectWarning; 
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker TargetFile => KnownMonikers.TargetFile;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker TargetFilePrivate => KnownMonikers.TargetFilePrivate;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker PropertiesFolderClosed => KnownMonikers.PropertiesFolderClosed;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker PropertiesFolderOpened => KnownMonikers.PropertiesFolderOpen;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker Application => KnownMonikers.Application;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker CodeInformation => KnownMonikers.CodeInformation;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker Library => KnownMonikers.Library;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker Reference => KnownMonikers.Reference;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ReferenceWarning => KnownMonikers.ReferenceWarning;
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker ErrorSmall => throw new NotSupportedException();
-        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
         public static ImageMoniker WarningSmall => throw new NotSupportedException();
-
-        // Everything below this, still needs to be moved to the ImageCatalog
-        public static ImageMoniker NuGetGrey => new() { Guid = s_manifestGuid, Id = 9 };
-        public static ImageMoniker NuGetGreyPrivate => new() { Guid = s_manifestGuid, Id = 10 };
-        public static ImageMoniker NuGetGreyWarning => new() { Guid = s_manifestGuid, Id = 11 };
-        public static ImageMoniker Framework => new() { Guid = s_manifestGuid, Id = 22 };
-        public static ImageMoniker FrameworkPrivate => new() { Guid = s_manifestGuid, Id = 23 };
-        public static ImageMoniker FrameworkWarning => new() { Guid = s_manifestGuid, Id = 24 };
-        public static ImageMoniker ProjectImports => new() { Guid = s_manifestGuid, Id = 25 };
-        public static ImageMoniker CodeInformationPrivate => new() { Guid = s_manifestGuid, Id = 2 };
-        public static ImageMoniker CodeInformationWarning => new() { Guid = s_manifestGuid, Id = 3 };
-
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.NuGetNoColor")]
+        public static ImageMoniker NuGetGrey => KnownMonikers.NuGetNoColor;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.NuGetNoColorPrivate")]
+        public static ImageMoniker NuGetGreyPrivate => KnownMonikers.NuGetNoColorPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.NuGetNoColorWarning")]
+        public static ImageMoniker NuGetGreyWarning => KnownMonikers.NuGetNoColorWarning;
+        public static ImageMoniker Framework => KnownMonikers.Framework;
+        public static ImageMoniker FrameworkPrivate => KnownMonikers.FrameworkPrivate;
+        public static ImageMoniker FrameworkWarning => KnownMonikers.FrameworkWarning;
+        public static ImageMoniker ProjectImports => KnownMonikers.ProjectImports;
+        public static ImageMoniker CodeInformationPrivate => KnownMonikers.CodeInformationPrivate;
+        public static ImageMoniker CodeInformationWarning => KnownMonikers.CodeInformationWarning;
     }
 }

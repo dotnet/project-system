@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -34,8 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.CodeInformation, model.Icon);
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse +
@@ -66,8 +65,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.CodeInformation, model.Icon);
             Assert.Equal(KnownMonikers.CodeInformation, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse +
@@ -96,10 +95,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(AnalyzerReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.CodeInformationPrivate, model.Icon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationPrivate, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationPrivate, model.Icon);
+            Assert.Equal(KnownMonikers.CodeInformationPrivate, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.CodeInformationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AnalyzerDependency +
                 DependencyTreeFlags.SupportsBrowse + 

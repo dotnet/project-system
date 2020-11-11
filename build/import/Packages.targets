@@ -42,7 +42,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21023" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="1.1.4323" />
-    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="16.8.30431.43-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="16.9.30701-preview-2-30710-200" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.8.5-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.3.59" />
