@@ -64,11 +64,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="ManagedImages.imagemanifest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="ProjectSystem\VS\PropertyPages\DebugPageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,51 +79,6 @@
     <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Resource Include="Resources\Icons\NuGetGrey_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\NuGetGreyWarning_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\CodeInformationPrivate_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\CodeInformationWarning_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\FrameworkPrivate_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\FrameworkWarning_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\Framework_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\ProjectImports_16x.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="Resources\Icons\CodeInformationPrivate_16x.png" />
-    <Resource Include="Resources\Icons\CodeInformationWarning_16x.png" />
-    <Resource Include="Resources\Icons\NuGetGreyWarning_16x.png" />
-    <Resource Include="Resources\Icons\NuGetGrey_16x.png" />
-    <Resource Include="Resources\Icons\NuGetGreyPrivate_16x.png" />
-    <Resource Include="Resources\Icons\FrameworkPrivate_16x.png" />
-    <Resource Include="Resources\Icons\FrameworkWarning_16x.png" />
-    <Resource Include="Resources\Icons\Framework_16x.png" />
-    <Resource Include="Resources\Icons\ProjectImports_16x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="**\*.xlf" />
