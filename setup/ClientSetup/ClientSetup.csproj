@@ -11,7 +11,7 @@
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Client</ExtensionInstallationFolder>
 
     <!-- VS Setup -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystemTools.Client</VisualStudioInsertionComponent>
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed.Client</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.csproj">
