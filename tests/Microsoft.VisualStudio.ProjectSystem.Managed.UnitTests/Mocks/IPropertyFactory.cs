@@ -24,6 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public static IProperty Create(
             string? name = null,
+            IDataSource? dataSource = null,
             Action<object?>? setValue = null)
         {
             var mock = new Mock<IProperty>();
@@ -31,6 +32,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (name is not null)
             {
                 mock.SetupGet(m => m.Name).Returns(name);
+            }
+
+            if (dataSource is not null)
+            {
+                mock.SetupGet(m => m.DataSource).Returns(dataSource);
             }
 
             if (setValue is not null)
@@ -42,4 +48,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return mock.Object;
         }
     }
+
+    internal static class IDataSourceFactory
+    {
+        public static IDataSource Create(bool? hasConfigurationCondition = false)
+        {
+            var mock = new Mock<IDataSource>();
+
+            if (hasConfigurationCondition is not null)
+            {
+                mock.SetupGet(m => m.HasConfigurationCondition).Returns(hasConfigurationCondition.Value);
+            }
+
+            return mock.Object;
+        }
+    }
+
 }

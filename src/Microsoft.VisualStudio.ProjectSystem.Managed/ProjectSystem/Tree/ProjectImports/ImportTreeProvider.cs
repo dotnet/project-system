@@ -12,7 +12,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
     internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
-        private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeImplicitIcon = KnownMonikers.TargetFilePrivate.ToProjectSystemType();
 

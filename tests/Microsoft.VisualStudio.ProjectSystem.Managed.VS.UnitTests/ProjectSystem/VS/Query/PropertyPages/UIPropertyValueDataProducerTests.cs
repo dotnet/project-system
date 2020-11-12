@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -14,9 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenPropertyIsAnIEvaluatedProperty_GetUnevaluatedValueAsyncIsCalled()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: false,
-                includeUnevaluatedValue: true);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeUnevaluatedValue: true);
 
             var mockEvaluatedProperty = new Mock<IEvaluatedProperty>();
             mockEvaluatedProperty.Setup(m => m.GetUnevaluatedValueAsync()).ReturnsAsync("unevaluated value");
@@ -40,9 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIBoolProperty_ThenTheEvaluatedValueIsABool()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockBoolProperty = new Mock<IBoolProperty>();
             mockBoolProperty.Setup(m => m.GetValueAsBoolAsync()).ReturnsAsync(true);
@@ -66,9 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task WhenThePropertyIsAnIStringProperty_ThenTheEvaluatedValuesIsAString()
         {
 
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockStringProperty = new Mock<IStringProperty>();
             mockStringProperty.Setup(m => m.GetValueAsStringAsync()).ReturnsAsync("string value");
@@ -91,9 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIIntProperty_ThenTheEvaluatedValueIsAnInt()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var mockIntProperty = new Mock<IIntProperty>();
             mockIntProperty.Setup(m => m.GetValueAsIntAsync()).ReturnsAsync(42);
@@ -116,9 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public async Task WhenThePropertyIsAnIEnumProperty_ThenTheEvaluatedValueIsAString()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(
-                includeEvaluatedValue: true,
-                includeUnevaluatedValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus(includeEvaluatedValue: true);
 
             var enumValue = IEnumValueFactory.Create(name: "enum value");
             var mockEnumProperty = new Mock<IEnumProperty>();
@@ -137,6 +129,43 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 properties);
 
             Assert.Equal(expected: "enum value", actual: result.EvaluatedValue);
+        }
+
+        [Fact]
+        public async Task WhenThePropertyIsConfigurationIndependent_ThenOnlyOneValueIsReturned()
+        {
+            var parent = IEntityWithIdFactory.Create(key: "ParentName", value: "Aardvark");
+
+            var defaultConfiguration = ProjectConfigurationFactory.Create("Alpha|Beta");
+            var otherConfiguration = ProjectConfigurationFactory.Create("Delta|Gamma");
+            var cache = IPropertyPageQueryCacheFactory.Create(
+                projectConfigurations: ImmutableHashSet<ProjectConfiguration>.Empty.Add(defaultConfiguration).Add(otherConfiguration),
+                defaultConfiguration: defaultConfiguration,
+                bindToRule: (config, schemaName) => IRuleFactory.Create(
+                    name: "ParentName",
+                    properties: new[] { IPropertyFactory.Create("MyProperty") }));
+
+            var schema = new Rule
+            {
+                Properties =
+                {
+                    new TestProperty { Name = "MyProperty", DataSource = new() { HasConfigurationCondition = false }}
+                }
+            };
+            var propertyName = "MyProperty";
+            var requestedProperties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus();
+            var results = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                parent,
+                cache,
+                schema,
+                propertyName,
+                requestedProperties);
+
+            Assert.Single(results);
+        }
+
+        private class TestProperty : BaseProperty
+        {
         }
     }
 }

@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.copyType == CopyType.CopyAlways).path;
+            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyType.CopyAlways).Path;
 
             if (copyAlwaysItemPath != null)
             {
@@ -239,7 +239,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    bool fail = log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges)
+                    {
+                        if (Strings.IsNullOrEmpty(link))
+                            log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
+                        else
+                            log.Info("    {0} item {1} '{2}' (CopyType={3}, Link='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, link);
+                    }
+                    return fail;
                 }
 
 #if FALSE // https://github.com/dotnet/project-system/issues/6227
@@ -535,7 +543,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
         {
-            IEnumerable<(string path, string? link, CopyType copyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.copyType == CopyType.CopyIfNewer);
+            IEnumerable<(string Path, string? Link, CopyType CopyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyType.CopyIfNewer);
 
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 

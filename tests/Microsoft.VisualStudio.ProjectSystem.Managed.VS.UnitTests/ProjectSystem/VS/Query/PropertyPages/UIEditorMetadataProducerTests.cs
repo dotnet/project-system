@@ -28,9 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertiesAreNotRequested_PropertyValuesAreNotReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateUIEditorMetadataAvailableStatus(
-                includeName: false,
-                includeValue: false);
+            var properties = PropertiesAvailableStatusFactory.CreateUIEditorMetadataAvailableStatus(includeAllProperties: false);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var metadata = new NameValuePair { Name = "Alpha", Value = "AlphaValue" };

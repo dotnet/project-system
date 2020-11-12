@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenPropertyValuesAreRequested_PropertyValuesAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus();
+            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityRuntimeModelFactory.Create(),
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingAModel_ProviderStateConsistsOfCacheAndRule()
         {
-            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus();
+            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityRuntimeModelFactory.Create(),
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [Fact]
         public void WhenCreatingFromAParentAndRule_TheRuleNameIsTheEntityId()
         {
-            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus();
+            var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),

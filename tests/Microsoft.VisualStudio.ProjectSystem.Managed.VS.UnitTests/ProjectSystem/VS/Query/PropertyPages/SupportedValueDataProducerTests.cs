@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         [Fact]
         public void WhenPropertiesAreRequested_PropertyValuesAreReturned()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus();
+            var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus(includeAllProperties: true);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var enumValue = IEnumValueFactory.Create(displayName: "Hello", name: "MyValue");
@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         [Fact]
         public async Task WhenCreatingValuesFromAnIProperty_WeGetOneValuePerIEnumValue()
         {
-            var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus();
+            var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus(includeAllProperties: true);
 
             var entityRuntime = IEntityRuntimeModelFactory.Create();
             var iproperty = IPropertyFactory.CreateEnum(new[]

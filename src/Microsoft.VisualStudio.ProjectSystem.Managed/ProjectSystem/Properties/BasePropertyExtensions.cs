@@ -33,5 +33,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             return property.Metadata.FirstOrDefault(nvp => nvp.Name == metadataName)?.Value;
         }
+
+        /// <summary>
+        ///     Whether or not the the <paramref name="property"/> is configuration-dependent or not.
+        /// </summary>
+        /// <param name="property">The property to examine.</param>
+        /// <returns>
+        ///     <see langword="true"/> if the property's <see cref="DataSource"/> (or the <see cref="Rule"/>'s
+        ///     <see cref="DataSource"/>) indicates that it is configuration-dependent; <see langword="false"/>
+        ///     otherwise.
+        /// </returns>
+        public static bool IsConfigurationDependent(this BaseProperty property)
+        {
+            return property.DataSource?.HasConfigurationCondition
+                ?? property.ContainingRule.DataSource?.HasConfigurationCondition
+                ?? false;
+        }
     }
 }

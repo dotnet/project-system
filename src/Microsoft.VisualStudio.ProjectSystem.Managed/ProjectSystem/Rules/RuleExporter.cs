@@ -23,6 +23,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int SourceControlRule;
+
+            /// <summary>
+            ///     Represents the design-time build items containing the supported (possible) target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedTargetFrameworkAlias), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedTargetFrameworkAliasRule;
+
+            /// <summary>
+            ///     Represents the evaluation properties containing the general configuration for a project.
+            /// </summary>
+            [ExportRule(nameof(ConfigurationGeneral), PropertyPageContexts.Project, PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int ConfigurationGeneralRule;
         }
 
         private static class AppDesignerRules

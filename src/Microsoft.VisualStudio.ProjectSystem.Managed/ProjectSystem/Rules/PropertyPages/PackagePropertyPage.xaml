@@ -24,17 +24,17 @@
   <StringProperty Name="PackageId"
                   DisplayName="Package ID"
                   Description="The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules."
-                  HelpUrl="https://docs.microsoft.com/nuget/create-packages/creating-a-package#choose-a-unique-package-identifier-and-setting-the-version-number" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147131" />
 
   <StringProperty Name="Version"
                   DisplayName="Package Version"
                   Description="The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix."
-                  HelpUrl="https://docs.microsoft.com/nuget/concepts/package-versioning" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147132" />
 
   <StringProperty Name="Authors"
                   DisplayName="Authors"
                   Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#authors" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147237" />
 
   <StringProperty Name="Company"
                   DisplayName="Company" />
@@ -45,26 +45,26 @@
   <StringProperty Name="Description"
                   DisplayName="Description"
                   Description="A description of the package for UI display."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#description" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238" />
 
   <StringProperty Name="Copyright"
                   DisplayName="Copyright"
                   Description="Copyright details for the package."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#copyright"/>
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147133"/>
 
   <StringProperty Name="PackageLicenseExpression"
                   DisplayName="License expression"
                   Description="An SPDX license expression, often shown in UIs like nuget.org."
-                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-a-license-expression-or-a-license-file" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239" />
   
   <StringProperty Name="PackageLicenseFile"
                   DisplayName="License file"
-                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-a-license-expression-or-a-license-file" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239" />
 
   <StringProperty Name="PackageProjectUrl"
                   DisplayName="Project URL"
                   Description="A URL for the package's home page, often shown in UI displays as well as nuget.org."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#projecturl" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147240" />
 
   <!-- TODO (tomescht): 
        We should re-think this. This property is the relative path to the icon file _within the package_; setting it does not guarantee
@@ -74,27 +74,27 @@
   <StringProperty Name="PackageIcon"
                   DisplayName="Icon file"
                   Description="The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended."
-                  HelpUrl="https://docs.microsoft.com/nuget/reference/msbuild-targets#packing-an-icon-image-file" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134" />
 
   <StringProperty Name="RepositoryUrl"
                   DisplayName="Repository URL"
                   Description="Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead."
-                  HelpUrl="https://docs.microsoft.com/nuget/reference/nuspec#repository" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241" />
 
   <StringProperty Name="RepositoryType"
                   DisplayName="Repository type"
                   Description="Specifies the type of the repository. Default is 'git'."
-                  HelpUrl="https://docs.microsoft.com/nuget/reference/nuspec#repository" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241" />
 
   <StringProperty Name="PackageTags"
                   DisplayName="Tags"
                   Description="A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#tags" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147135" />
 
   <StringProperty Name="PackageReleaseNotes"
                   DisplayName="Release notes"
                   Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description."
-                  HelpUrl="https://docs.microsoft.com/en-us/nuget/reference/nuspec#releasenotes" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147242" />
 
   <DynamicEnumProperty Name="NeutralLanguage"
                        DisplayName="Assembly neutral language"
