@@ -53,6 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         /// <returns>Collection of the names of targets in this project.</returns>
         private Task<ImmutableHashSet<string>> GetProjectTargetsAsync()
         {
+            // CACHE_PRODUCTIZE
             if (_configuredProject.ProjectVersion.CompareTo(DataflowUtilities.CacheModeVersion) == 0)
             {
                 if (_configuredProject.Services.ProjectSnapshotService != null)
