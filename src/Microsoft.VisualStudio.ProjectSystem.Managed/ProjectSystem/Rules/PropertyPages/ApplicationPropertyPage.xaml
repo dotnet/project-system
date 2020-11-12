@@ -34,6 +34,8 @@
 
   <BoolProperty Name="TargetMultipleFrameworks"
                 DisplayName="Target multiple frameworks"
+                Description="Build this project for multiple target frameworks."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                 Category="General">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -63,6 +65,8 @@
 
   <StringProperty Name="TargetFrameworks"
                   DisplayName="Target frameworks"
+                  Description="Specifies the semicolon-delimited list of frameworks that this project will target."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                   Category="General">
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
