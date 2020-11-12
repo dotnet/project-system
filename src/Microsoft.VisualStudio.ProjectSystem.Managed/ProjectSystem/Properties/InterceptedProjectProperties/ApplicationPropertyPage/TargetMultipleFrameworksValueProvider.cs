@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(
-                string.IsNullOrEmpty(evaluatedPropertyValue)
+                evaluatedPropertyValue.Length == 0
                 ? "false"
                 : "true");
         }
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(
-                string.IsNullOrEmpty(unevaluatedPropertyValue)
+                unevaluatedPropertyValue.Length == 0
                 ? "false"
                 : "true");
         }
