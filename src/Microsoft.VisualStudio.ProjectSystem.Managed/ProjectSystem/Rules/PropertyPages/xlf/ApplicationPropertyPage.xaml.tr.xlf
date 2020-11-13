@@ -72,6 +72,16 @@
         <target state="translated">Çıkış türü</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="new">Specifies how application resources will be managed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
         <source>Embed manifest with default settings</source>
         <target state="translated">Bildirimi varsayılan ayarlarla ekle</target>
@@ -95,6 +105,16 @@
       <trans-unit id="EnumValue|OutputType.WinExe|DisplayName">
         <source>Windows Application</source>
         <target state="translated">Windows Uygulaması</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="new">Icon and manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="new">Resource file</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
