@@ -59,7 +59,9 @@
                   HasConfigurationCondition="False"/>
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition" Value="(not (evaluated TargetMultipleFrameworks))" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>
+      </NameValuePair>
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
@@ -73,7 +75,9 @@
                   HasConfigurationCondition="False" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition" Value="(evaluated TargetMultipleProjects)" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Application" "TargetMultipleFrameworks")</NameValuePair.Value>
+      </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
   
