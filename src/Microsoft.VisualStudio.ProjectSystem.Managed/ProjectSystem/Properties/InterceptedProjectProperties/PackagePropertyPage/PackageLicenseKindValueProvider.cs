@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (!string.IsNullOrEmpty(await getValue("PackageLicenseExpression")))
             {
-                return "License";
+                return "Expression";
             }
 
             if (!string.IsNullOrEmpty(await getValue("PackageLicenseFile")))
