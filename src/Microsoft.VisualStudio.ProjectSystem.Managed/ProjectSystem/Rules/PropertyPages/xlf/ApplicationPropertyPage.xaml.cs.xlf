@@ -53,8 +53,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Umožňuje vybrat možnost generování manifestu při spuštění aplikace v systému Windows Vista nebo novějším v nástroji Řízení uživatelských účtů (UAC). Možnosti: výchozí manifest, žádný manifest nebo vlastní manifest poskytnutý z daného projektu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="needs-review-translation">Umožňuje vybrat možnost generování manifestu při spuštění aplikace v systému Windows Vista nebo novějším v nástroji Řízení uživatelských účtů (UAC). Možnosti: výchozí manifest, žádný manifest nebo vlastní manifest poskytnutý z daného projektu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
@@ -128,8 +128,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
-        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Nastaví soubor .ico, který chcete použít jako ikonu programu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="needs-review-translation">Nastaví soubor .ico, který chcete použít jako ikonu programu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
@@ -168,8 +168,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Určuje soubor prostředků pro projekt. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+        <source>Specifies a resource file for the project.</source>
+        <target state="needs-review-translation">Určuje soubor prostředků pro projekt. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

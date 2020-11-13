@@ -53,8 +53,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">選取當應用程式在 Windows Vista 或更新版本上，於使用者帳戶控制 (UAC) 下執行時的資訊清單產生選項。選項包含預設資訊清單、無資訊清單或專案提供的自訂資訊清單。請注意，您必須指定圖示和資訊清單或資源檔。</target>
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="needs-review-translation">選取當應用程式在 Windows Vista 或更新版本上，於使用者帳戶控制 (UAC) 下執行時的資訊清單產生選項。選項包含預設資訊清單、無資訊清單或專案提供的自訂資訊清單。請注意，您必須指定圖示和資訊清單或資源檔。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
@@ -128,8 +128,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
-        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">設定要用作程式圖示的 .ico 檔案。請注意，您必須指定圖示和資訊清單或資源檔。</target>
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="needs-review-translation">設定要用作程式圖示的 .ico 檔案。請注意，您必須指定圖示和資訊清單或資源檔。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
@@ -168,8 +168,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">指定專案的資源檔。請注意，您必須指定圖示和資訊清單或資源檔。</target>
+        <source>Specifies a resource file for the project.</source>
+        <target state="needs-review-translation">指定專案的資源檔。請注意，您必須指定圖示和資訊清單或資源檔。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">
