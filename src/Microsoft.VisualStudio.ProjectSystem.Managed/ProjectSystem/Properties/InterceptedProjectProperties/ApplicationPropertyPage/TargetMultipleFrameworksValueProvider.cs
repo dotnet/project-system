@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,30 +14,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult<string?>(null);
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string targetFrameworks = await defaultProperties.GetEvaluatedPropertyValueAsync("TargetFrameworks");
-            string targetFramework = await defaultProperties.GetEvaluatedPropertyValueAsync("TargetFramework");
-
-            return ComputeValue(targetFrameworks, targetFramework);
+            return ComputeValueAsync(defaultProperties.GetEvaluatedPropertyValueAsync!);
         }
 
-        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string? targetFrameworks = await defaultProperties.GetUnevaluatedPropertyValueAsync("TargetFrameworks");
-            string? targetFramework = await defaultProperties.GetUnevaluatedPropertyValueAsync("TargetFramework");
-
-            return ComputeValue(targetFrameworks, targetFramework);
+            return ComputeValueAsync(defaultProperties.GetUnevaluatedPropertyValueAsync);
         }
 
-        private static string ComputeValue(string? targetFrameworks, string? targetFramework)
+        private static async Task<string> ComputeValueAsync(Func<string, Task<string?>> getValue)
         {
-            return (string.IsNullOrEmpty(targetFramework), string.IsNullOrEmpty(targetFrameworks)) switch
-            {
-                (true, false) => bool.TrueString,
-                (false, true) => bool.FalseString,
-                _ => bool.TrueString
-            };
+            string? targetFrameworks = await getValue(ConfigurationGeneral.TargetFrameworksProperty);
+
+            return string.IsNullOrEmpty(targetFrameworks) ? bool.FalseString : bool.TrueString;
         }
     }
 }
