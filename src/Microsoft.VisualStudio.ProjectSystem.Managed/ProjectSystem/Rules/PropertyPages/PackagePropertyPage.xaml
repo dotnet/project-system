@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Rule Name="PackagePropertyPage"
+<Rule Name="Package"
       Description="Properties related to producing NuGet packages."
       DisplayName="Package"
       PageTemplate="generic"
@@ -11,6 +11,9 @@
     <Category Name="General"
               DisplayName="General"
               Description="General settings for the package." />
+    <Category Name="License"
+              DisplayName="License"
+              Description="Specifies the license for the package." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -22,11 +25,6 @@
   <BoolProperty Name="GeneratePackageOnBuild"
                 DisplayName="Generate NuGet package on build"
                 Description="Produce a package file during build operations."
-                Category="General" />
-
-  <BoolProperty Name="PackageRequireLicenseAcceptance"
-                DisplayName="Require license acceptance"
-                Description="Prompt the user to accept the license when installing this package."
                 Category="General" />
 
   <StringProperty Name="PackageId"
@@ -65,17 +63,6 @@
                   DisplayName="Copyright"
                   Description="Copyright details for the package."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147133"
-                  Category="General" />
-
-  <StringProperty Name="PackageLicenseExpression"
-                  DisplayName="License expression"
-                  Description="An SPDX license expression, often shown in UIs like nuget.org."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
-                  Category="General" />
-  
-  <StringProperty Name="PackageLicenseFile"
-                  DisplayName="License file"
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
                   Category="General" />
 
   <StringProperty Name="PackageProjectUrl"
@@ -132,4 +119,56 @@
   <StringProperty Name="FileVersion"
                   DisplayName="File version"
                   Category="General" />
+
+  <!-- TODO add help URL? -->
+  <EnumProperty Name="PackageLicenseKind"
+                DisplayName="Package License"
+                Description="Specify a license for the project's package."
+                Category="License">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="None"
+               DisplayName="None" />
+    <EnumValue Name="Expression"
+               DisplayName="SPDX License Expression" />
+    <EnumValue Name="File"
+               DisplayName="Embedded File" />
+  </EnumProperty>
+
+  <StringProperty Name="PackageLicenseExpression"
+                  DisplayName="License expression"
+                  Description="An SPDX license expression, often shown in UIs like nuget.org."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
+                  Category="License">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="PackageLicenseFile"
+                  DisplayName="License file"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
+                  Category="License">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq "File" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <BoolProperty Name="PackageRequireLicenseAcceptance"
+                DisplayName="Require license acceptance"
+                Description="Prompt the user to accept the license when installing this package."
+                Category="License">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne "None" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
 </Rule>

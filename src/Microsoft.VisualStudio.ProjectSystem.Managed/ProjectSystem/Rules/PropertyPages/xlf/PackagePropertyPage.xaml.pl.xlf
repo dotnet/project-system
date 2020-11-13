@@ -22,19 +22,64 @@
         <target state="translated">Wymagaj zaakceptowania licencji</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General settings for the package.</source>
+        <target state="new">General settings for the package.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="new">General</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|Description">
+        <source>Specifies the license for the package.</source>
+        <target state="new">Specifies the license for the package.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|DisplayName">
+        <source>License</source>
+        <target state="new">License</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
         <target state="translated">Język neutralny zestawu</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|Description">
-        <source>Properties related to producing NuGet packages.</source>
-        <target state="translated">Właściwości związane z tworzeniem pakietów NuGet.</target>
+      <trans-unit id="EnumProperty|PackageLicenseKind|Description">
+        <source>Specify a license for the project's package.</source>
+        <target state="new">Specify a license for the project's package.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|DisplayName">
+      <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
+        <source>Package License</source>
+        <target state="new">Package License</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
+        <source>SPDX License Expression</source>
+        <target state="new">SPDX License Expression</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
+        <source>Embedded File</source>
+        <target state="new">Embedded File</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Package|Description">
+        <source>Properties related to producing NuGet packages.</source>
+        <target state="new">Properties related to producing NuGet packages.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
-        <target state="translated">Pakiet</target>
+        <target state="new">Package</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
