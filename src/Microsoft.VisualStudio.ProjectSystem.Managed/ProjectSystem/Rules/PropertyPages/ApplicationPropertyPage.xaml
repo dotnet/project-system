@@ -46,18 +46,13 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <DynamicEnumProperty Name="TargetFrameworkMoniker"
+  <DynamicEnumProperty Name="TargetFramework"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
-    <DynamicEnumProperty.DataSource>
-      <DataSource PersistedName="TargetFrameworkMoniker"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False"/>
-    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>

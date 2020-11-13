@@ -42,14 +42,14 @@
         <target state="translated">시작 개체</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">애플리케이션이 대상으로 지정할 .NET 버전을 지정합니다. 이 옵션은 컴퓨터에 설치된 .NET 버전에 따라 다른 값을 가질 수 있습니다.</target>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="translated">대상 프레임워크</target>
+        <target state="new">Target framework</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">

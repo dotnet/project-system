@@ -42,14 +42,14 @@
         <target state="translated">Objeto de inicialização</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">Especifica a versão do .NET à qual o aplicativo será direcionado. Essa opção pode ter valores diferentes dependendo de quais versões do .NET estão instaladas no computador.</target>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="translated">Estrutura de destino</target>
+        <target state="new">Target framework</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">
