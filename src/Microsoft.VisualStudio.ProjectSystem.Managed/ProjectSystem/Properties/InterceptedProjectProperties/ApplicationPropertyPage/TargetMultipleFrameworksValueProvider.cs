@@ -13,20 +13,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult<string?>(null);
         }
 
-        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return Task.FromResult(
-                evaluatedPropertyValue.Length == 0
-                ? "false"
-                : "true");
+            string targetFrameworks = await defaultProperties.GetEvaluatedPropertyValueAsync("TargetFrameworks");
+            string targetFramework = await defaultProperties.GetEvaluatedPropertyValueAsync("TargetFramework");
+
+            return ComputeValue(targetFrameworks, targetFramework);
         }
 
-        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return Task.FromResult(
-                unevaluatedPropertyValue.Length == 0
-                ? "false"
-                : "true");
+            string? targetFrameworks = await defaultProperties.GetUnevaluatedPropertyValueAsync("TargetFrameworks");
+            string? targetFramework = await defaultProperties.GetUnevaluatedPropertyValueAsync("TargetFramework");
+
+            return ComputeValue(targetFrameworks, targetFramework);
+        }
+
+        private static string ComputeValue(string? targetFrameworks, string? targetFramework)
+        {
+            return (string.IsNullOrEmpty(targetFramework), string.IsNullOrEmpty(targetFrameworks)) switch
+            {
+                (true, false) => bool.TrueString,
+                (false, true) => bool.FalseString,
+                _ => bool.TrueString
+            };
         }
     }
 }
