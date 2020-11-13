@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Rule Name="SigningPropertyPage"
+<Rule Name="Signing"
       Description="Properties related to producing signing assemblies."
       DisplayName="Signing"
       PageTemplate="generic"
@@ -20,10 +20,22 @@
 
   <StringProperty Name="AssemblyOriginatorKeyFile"
                   DisplayName="Strong name key file"
-                  Subtype="file" />
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Signing" "SignAssembly")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <BoolProperty Name="DelaySign"
                 Description="Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147243"
-                DisplayName="Delay sign only" />
+                DisplayName="Delay sign only">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Signing" "SignAssembly")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 </Rule>
