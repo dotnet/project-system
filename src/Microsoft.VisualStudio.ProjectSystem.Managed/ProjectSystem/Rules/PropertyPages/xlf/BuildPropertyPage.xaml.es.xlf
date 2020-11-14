@@ -162,14 +162,14 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|Description">
+      <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="translated">Especifica las propiedades que controlan el modo en que se compila el proyecto.</target>
+        <target state="new">Specifies properties that control how the project builds.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|DisplayName">
+      <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
-        <target state="translated">Compilación</target>
+        <target state="new">Build</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
