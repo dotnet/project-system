@@ -152,7 +152,8 @@
   <StringProperty Name="PackageLicenseFile"
                   DisplayName="License file"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
-                  Category="License">
+                  Category="License"
+                  Subtype="file">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq "File" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
