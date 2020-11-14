@@ -12,6 +12,16 @@
         <target state="translated">Povolit nebezpečný kód</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="new">Generate a file containing API documentation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="new">Documentation file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">Povolí nebo zakáže optimalizace provedené kompilátorem za účelem zmenšení, zrychlení a zefektivnění souboru výstupu.</target>
@@ -183,8 +193,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">Určuje název souboru, do nějž budou zpracovány dokumentační poznámky.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="needs-review-translation">Určuje název souboru, do nějž budou zpracovány dokumentační poznámky.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">

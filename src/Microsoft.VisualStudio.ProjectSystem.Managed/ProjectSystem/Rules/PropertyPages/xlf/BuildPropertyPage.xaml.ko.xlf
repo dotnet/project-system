@@ -12,6 +12,16 @@
         <target state="translated">안전하지 않은 코드 허용</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="new">Generate a file containing API documentation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="new">Documentation file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">출력 파일을 더 작고, 더 빠르며, 더 효율적으로 만들기 위해 컴파일러에서 수행한 최적화를 활성화하거나 비활성화합니다.</target>
@@ -183,8 +193,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">문서 주석을 처리할 파일의 이름을 지정합니다.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="needs-review-translation">문서 주석을 처리할 파일의 이름을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">

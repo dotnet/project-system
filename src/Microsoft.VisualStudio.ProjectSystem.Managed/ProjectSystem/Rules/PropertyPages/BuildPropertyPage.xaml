@@ -131,10 +131,29 @@
                   Category="Output"
                   Subtype="directory" />
 
+  <BoolProperty Name="GenerateDocumentationFile"
+                DisplayName="Documentation file"
+                Description="Generate a file containing API documentation."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
+                Category="Output">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
   <StringProperty Name="DocumentationFile"
                   DisplayName="XML documentation file path"
-                  Description="Specifies the name of a file into which documentation comments will be processed."
+                  Description="Optional path for the API documentation file. Leave blank to use the default location."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
                   Category="Output"
-                  Subtype="file" />
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Build" "GenerateDocumentationFile")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 </Rule>

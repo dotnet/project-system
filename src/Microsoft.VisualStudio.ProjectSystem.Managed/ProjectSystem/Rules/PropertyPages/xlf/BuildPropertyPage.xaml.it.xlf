@@ -12,6 +12,16 @@
         <target state="translated">Consenti codice unsafe</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="new">Generate a file containing API documentation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="new">Documentation file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">Consente di abilitare o disabilitare le ottimizzazioni eseguite dal compilatore per ridurre le dimensioni del file di output e rendere l'esecuzione del file più rapida ed efficiente.</target>
@@ -183,8 +193,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">Specifica il nome di un file in cui verranno elaborati i commenti relativi alla documentazione.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="needs-review-translation">Specifica il nome di un file in cui verranno elaborati i commenti relativi alla documentazione.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
