@@ -9,9 +9,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider("PackageLicenseKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class PackageLicenseKindValueProvider : InterceptingPropertyValueProviderBase
     {
-        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        // TODO should the rule file generate property and enum value constants that we can use here instead of these string literals?
+        
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult<string?>(null);
+            if (unevaluatedPropertyValue == "Expression")
+            {
+                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
+            }
+            else if (unevaluatedPropertyValue == "File")
+            {
+                await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
+            }
+            else if (unevaluatedPropertyValue == "None")
+            {
+                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
+                await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
+                await defaultProperties.DeletePropertyAsync("PackageRequireLicenseAcceptance");
+            }
+
+            return null;
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
