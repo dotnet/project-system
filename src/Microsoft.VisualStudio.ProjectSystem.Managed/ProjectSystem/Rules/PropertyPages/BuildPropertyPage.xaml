@@ -142,6 +142,7 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
+  <!-- TODO consider removing this property from the UI altogether -->
   <StringProperty Name="DocumentationFile"
                   DisplayName="XML documentation file path"
                   Description="Optional path for the API documentation file. Leave blank to use the default location."
