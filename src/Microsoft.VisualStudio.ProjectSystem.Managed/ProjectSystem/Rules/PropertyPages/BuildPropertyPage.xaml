@@ -131,10 +131,11 @@
                   Category="Output"
                   Subtype="directory" />
 
+  <!-- TODO create fwlink for this HelpUrl -->
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Documentation file"
                 Description="Generate a file containing API documentation."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/codedoc"
                 Category="Output">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
