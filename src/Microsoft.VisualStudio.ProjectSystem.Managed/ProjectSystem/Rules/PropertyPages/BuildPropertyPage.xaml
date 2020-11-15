@@ -119,6 +119,24 @@
     <EnumValue Name="send"
                DisplayName="Send" />
   </EnumProperty>
+  
+  <!-- TODO create fwlink for this HelpUrl -->
+  <EnumProperty Name="FileAlignment"
+                DisplayName="File alignment"
+                Description="Specifies, in bytes, where to align the sections of the output file."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/filealign-compiler-option"
+                Category="General">
+    <EnumValue Name="512"
+               DisplayName="512" />
+    <EnumValue Name="1024"
+               DisplayName="1024" />
+    <EnumValue Name="2048"
+               DisplayName="2048" />
+    <EnumValue Name="4096"
+               DisplayName="4096" />
+    <EnumValue Name="8192"
+               DisplayName="8192" />
+  </EnumProperty>
 
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
