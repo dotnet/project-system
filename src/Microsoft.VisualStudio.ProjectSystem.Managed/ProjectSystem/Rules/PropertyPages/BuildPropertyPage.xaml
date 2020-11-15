@@ -100,6 +100,25 @@
                 Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
                 HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
                 Category="General" />
+  
+  <!-- TODO create fwlink for this HelpUrl -->
+  <EnumProperty Name="ErrorReport"
+                DisplayName="Internal compiler error reporting"
+                Description="Controls when internal compiler error (ICE) reports are sent to Microsoft."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errorreport-compiler-option"
+                Category="General">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="none"
+               DisplayName="Never send" />
+    <EnumValue Name="prompt"
+               DisplayName="Prompt before sending" />
+    <EnumValue Name="queue"
+               DisplayName="Queue" />
+    <EnumValue Name="send"
+               DisplayName="Send" />
+  </EnumProperty>
 
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
@@ -190,4 +209,5 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
 </Rule>

@@ -77,6 +77,16 @@
         <target state="translated">Wyjście</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|Description">
+        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
+        <target state="new">Controls when internal compiler error (ICE) reports are sent to Microsoft.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Internal compiler error reporting</source>
+        <target state="new">Internal compiler error reporting</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
         <target state="translated">Określa dopuszczający wartość null kontekst obejmujący cały projekt w języku C#. Opcja dostępna tylko w przypadku projektów korzystających z języka C# 8.0 lub nowszego.</target>
@@ -115,6 +125,26 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">Poziom ostrzeżeń</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
+        <source>Never send</source>
+        <target state="new">Never send</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
+        <source>Prompt before sending</source>
+        <target state="new">Prompt before sending</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
+        <source>Queue</source>
+        <target state="new">Queue</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
+        <source>Send</source>
+        <target state="new">Send</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
