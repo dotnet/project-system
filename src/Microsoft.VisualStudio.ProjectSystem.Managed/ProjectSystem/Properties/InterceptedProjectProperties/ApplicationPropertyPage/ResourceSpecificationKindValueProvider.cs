@@ -10,9 +10,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         // TODO should the rule file generate property and enum value constants that we can use here instead of these string literals?
 
-        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return Task.FromResult<string?>(null);
+            if (unevaluatedPropertyValue == "Win32Resource")
+            {
+                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
+            }
+            else if (unevaluatedPropertyValue == "ResourceFile")
+            {
+                await defaultProperties.DeletePropertyAsync("ApplicationIcon");
+                await defaultProperties.DeletePropertyAsync("ApplicationManifest");
+            }
+
+            return null;
         }
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
