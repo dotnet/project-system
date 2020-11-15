@@ -84,6 +84,17 @@
   </BoolProperty>
 
   <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="CheckForOverflowUnderflow"
+                DisplayName="Check for arithmetic overflow"
+                Description="Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/checked-compiler-option"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO create fwlink for this HelpUrl -->
   <BoolProperty Name="Deterministic"
                 DisplayName="Deterministic"
                 Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
