@@ -132,11 +132,15 @@
                   Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings" />
 
-  <StringProperty Name="OutputPath"
-                  DisplayName="Output path"
-                  Description="Specifies the location of the output files for this project's configuration."
+  <StringProperty Name="BaseOutputPath"
+                  DisplayName="Base output path"
+                  Description="Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration."
                   Category="Output"
-                  Subtype="directory" />
+                  Subtype="directory">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <!-- TODO create fwlink for this HelpUrl -->
   <BoolProperty Name="GenerateDocumentationFile"

@@ -192,6 +192,16 @@
         <target state="new">Build</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|Description">
+        <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="new">Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
+        <source>Base output path</source>
+        <target state="new">Base output path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
         <target state="translated">Określa symbole, dla których ma być wykonywana kompilacja warunkowa. Rozdziel symbole średnikami („;”).</target>
@@ -220,16 +230,6 @@
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress warnings</source>
         <target state="translated">Pomiń ostrzeżenia</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|Description">
-        <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="translated">Określa położenie plików wyjściowych dla tej konfiguracji projektu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output path</source>
-        <target state="translated">Ścieżka wyjściowa</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
