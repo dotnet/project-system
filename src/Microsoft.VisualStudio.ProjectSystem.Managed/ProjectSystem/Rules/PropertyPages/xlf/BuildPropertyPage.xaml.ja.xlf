@@ -12,6 +12,16 @@
         <target state="translated">アンセーフ コードの許可</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|Description">
+        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
+        <target state="new">Indicates whether the compiler should produce identical assemblies for identical inputs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|DisplayName">
+        <source>Deterministic</source>
+        <target state="new">Deterministic</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
         <target state="new">Generate a file containing API documentation.</target>

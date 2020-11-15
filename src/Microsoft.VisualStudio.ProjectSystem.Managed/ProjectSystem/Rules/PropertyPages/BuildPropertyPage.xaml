@@ -83,6 +83,13 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="Deterministic"
+                DisplayName="Deterministic"
+                Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
+                Category="General" />
+
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
                 Description="Specifies the level to display for compiler warnings."
