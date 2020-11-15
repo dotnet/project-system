@@ -31,7 +31,11 @@
                   DisplayName="Package ID"
                   Description="The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147131"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Version"
                   DisplayName="Package Version"
@@ -43,15 +47,27 @@
                   DisplayName="Authors"
                   Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147237"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Company"
                   DisplayName="Company"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Package::Authors" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Product"
                   DisplayName="Product"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Description"
                   DisplayName="Description"
