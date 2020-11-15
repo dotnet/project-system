@@ -192,6 +192,16 @@
         <target state="new">Build</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
+        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="new">Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base intermediate output path</source>
+        <target state="new">Base intermediate output path</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="new">Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</target>

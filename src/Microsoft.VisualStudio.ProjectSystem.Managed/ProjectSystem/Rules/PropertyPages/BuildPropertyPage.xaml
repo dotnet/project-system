@@ -142,6 +142,16 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="BaseIntermediateOutputPath"
+                  DisplayName="Base intermediate output path"
+                  Description="Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration."
+                  Category="Output"
+                  Subtype="directory">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <!-- TODO create fwlink for this HelpUrl -->
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Documentation file"
