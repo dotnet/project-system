@@ -56,15 +56,6 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void GetPropertyValues_NonDefaultDelimiter()
-        {
-            var values = BuildUtilities.GetPropertyValues("1|2", '|');
-            Assert.Collection(values,
-                firstValue => Assert.Equal("1", firstValue),
-                secondValue => Assert.Equal("2", secondValue));
-        }
-
-        [Fact]
         public void GetPropertyValues_EmptyValues()
         {
             var values = BuildUtilities.GetPropertyValues("1;   ;;;2");
@@ -200,23 +191,6 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void AppendPropertyValue_NonDefaultDelimiter()
-        {
-            string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1</MyProperty>
-  </PropertyGroup>
-</Project>";
-
-            var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.AppendPropertyValue(project, "1", "MyProperty", "2", '|');
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
-            Assert.NotNull(property);
-            Assert.Equal("1|2", property!.Value);
-        }
-
-        [Fact]
         public void RemovePropertyValue_DefaultDelimiter()
         {
             string projectXml =
@@ -231,23 +205,6 @@ namespace Microsoft.VisualStudio.Build
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
-        }
-
-        [Fact]
-        public void RemovePropertyValue_NonDefaultDelimiter()
-        {
-            string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1|2|3</MyProperty>
-  </PropertyGroup>
-</Project>";
-
-            var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.RemovePropertyValue(project, "1|2|3", "MyProperty", "2", '|');
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
-            Assert.NotNull(property);
-            Assert.Equal("1|3", property!.Value);
         }
 
         [Fact]
@@ -302,23 +259,6 @@ namespace Microsoft.VisualStudio.Build
             var property = BuildUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;5", property!.Value);
-        }
-
-        [Fact]
-        public void RenamePropertyValue_NonDefaultDelimiter()
-        {
-            string projectXml =
-@"<Project>
-  <PropertyGroup>
-     <MyProperty>1|2|3</MyProperty>
-  </PropertyGroup>
-</Project>";
-
-            var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.RenamePropertyValue(project, "1|2|3", "MyProperty", "2", "5", '|');
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
-            Assert.NotNull(property);
-            Assert.Equal("1|5|3", property!.Value);
         }
 
         [Fact]
