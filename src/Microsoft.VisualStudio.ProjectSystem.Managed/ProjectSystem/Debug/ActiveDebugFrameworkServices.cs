@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.ProjectSystem.Configuration;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
