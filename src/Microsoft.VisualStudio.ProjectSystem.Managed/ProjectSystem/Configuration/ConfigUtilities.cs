@@ -47,30 +47,30 @@ namespace Microsoft.VisualStudio.Build
         }
 
         /// <summary>
-        /// Gets a project property.
+        /// Finds the dimension with the specified name.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>Requested project property. Null if the property is not present.</returns>
-        public static ProjectPropertyElement? GetProperty(ProjectRootElement project, string propertyName)
+        /// <param name="name">Name of the property.</param>
+        /// <returns>A <see cref="ProjectPropertyElement"/> representing the dimension; otherwise, <see langword="null"/> if the dimension is not found.</returns>
+        public static ProjectPropertyElement? GetDimension(ProjectRootElement project, string name)
         {
             Requires.NotNull(project, nameof(project));
 
             return project.Properties
-                .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparisons.PropertyNames));
+                .FirstOrDefault(p => string.Equals(p.Name, name, StringComparisons.PropertyNames));
         }
 
         /// <summary>
-        /// Gets the individual values of a delimited property.
+        /// Enumerates the individual dimension values.
         /// </summary>
-        /// <param name="propertyValue">Value of the property to evaluate.</param>
+        /// <param name="values">Values of the dimension to evaluate.</param>
         /// <returns>Collection of individual values in the property.</returns>
-        public static IEnumerable<string> GetPropertyValues(string propertyValue)
+        public static IEnumerable<string> EnumerateDimensionValues(string values)
         {
             HashSet<string>? seen = null;
 
             // We need to ensure that we return values in the specified order.
-            foreach (string value in new LazyStringSplit(propertyValue, Delimiter))
+            foreach (string value in new LazyStringSplit(values, Delimiter))
             {
                 string s = value.Trim();
 
@@ -93,21 +93,21 @@ namespace Microsoft.VisualStudio.Build
         }
 
         /// <summary>
-        /// Appends a value to a delimited property. If the property does not exist it will be added.
+        /// Appends a value to a dimension. If the dimension does not exist it will be added.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>
-        /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
-        /// <param name="propertyName">Property name.</param>
+        /// <param name="values">Original evaluated value of the property.</param>
+        /// <param name="name">Property name.</param>
         /// <param name="valueToAppend">Value to add to the property.</param>
-        public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToAppend)
+        public static void AppendDimensionValue(ProjectRootElement project, string values, string name, string valueToAppend)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(values, nameof(values));
+            Requires.NotNullOrEmpty(name, nameof(name));
 
-            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddDimension(project, name);
             var newValue = PooledStringBuilder.GetInstance();
-            foreach (string value in GetPropertyValues(evaluatedPropertyValue))
+            foreach (string value in EnumerateDimensionValues(values))
             {
                 newValue.Append(value);
                 newValue.Append(Delimiter);
@@ -118,28 +118,28 @@ namespace Microsoft.VisualStudio.Build
         }
 
         /// <summary>
-        /// Renames a value inside a delimited property.
+        /// Renames a value inside the dimension values.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>
-        /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
-        /// <param name="propertyName">Property name.</param>
-        /// <param name="valueToRemove">Value to remove from the property.</param>
+        /// <param name="values">Original evaluated value of the property.</param>
+        /// <param name="name">Property name.</param>
+        /// <param name="valuesToRemove">Value to remove from the property.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToRemove)
+        public static void RemoveDimensionValue(ProjectRootElement project, string values, string name, string valuesToRemove)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(values, nameof(values));
+            Requires.NotNullOrEmpty(name, nameof(name));
 
-            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddDimension(project, name);
             var newValue = new StringBuilder();
             bool valueFound = false;
-            foreach (string value in GetPropertyValues(evaluatedPropertyValue))
+            foreach (string value in EnumerateDimensionValues(values))
             {
-                if (!string.Equals(value, valueToRemove, StringComparisons.PropertyValues))
+                if (!string.Equals(value, valuesToRemove, StringComparisons.PropertyValues))
                 {
                     if (newValue.Length != 0)
                     {
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.Build
 
             if (!valueFound)
             {
-                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRemove, valueToRemove, propertyName), nameof(valueToRemove));
+                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRemove, valuesToRemove, name), nameof(valuesToRemove));
             }
         }
 
@@ -166,24 +166,24 @@ namespace Microsoft.VisualStudio.Build
         /// Renames a value inside a delimited property.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>
-        /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
-        /// <param name="propertyName">Property name.</param>
+        /// <param name="values">Original evaluated value of the property.</param>
+        /// <param name="name">Property name.</param>
         /// <param name="oldValue">Current property value.</param>
         /// <param name="newValue">New property value.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string? oldValue, string newValue)
+        public static void RenameDimensionValue(ProjectRootElement project, string values, string name, string? oldValue, string newValue)
         {
             Requires.NotNull(project, nameof(project));
-            Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
-            Requires.NotNullOrEmpty(propertyName, nameof(propertyName));
+            Requires.NotNull(values, nameof(values));
+            Requires.NotNullOrEmpty(name, nameof(name));
 
-            ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
+            ProjectPropertyElement property = GetOrAddDimension(project, name);
             var value = new StringBuilder();
             bool valueFound = false;
-            foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue))
+            foreach (string propertyValue in EnumerateDimensionValues(values))
             {
                 if (value.Length != 0)
                 {
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.Build
 
             if (!valueFound)
             {
-                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRename, oldValue, propertyName), nameof(oldValue));
+                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRename, oldValue, name), nameof(oldValue));
             }
         }
 
@@ -213,11 +213,11 @@ namespace Microsoft.VisualStudio.Build
         /// Adds a property to the first property group. If there are no property groups it will create one.
         /// </summary>
         /// <param name="project">Xml representation of the MsBuild project.</param>
-        /// <param name="propertyName">Property name.</param>
-        public static ProjectPropertyElement GetOrAddProperty(ProjectRootElement project, string propertyName)
+        /// <param name="name">Property name.</param>
+        public static ProjectPropertyElement GetOrAddDimension(ProjectRootElement project, string name)
         {
             Requires.NotNull(project, nameof(project));
-            ProjectPropertyElement? property = GetProperty(project, propertyName);
+            ProjectPropertyElement? property = GetDimension(project, name);
 
             if (property != null)
             {
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.Build
                     propertyGroup = project.PropertyGroups.First();
                 }
 
-                return propertyGroup.AddProperty(propertyName, string.Empty);
+                return propertyGroup.AddProperty(name, string.Empty);
             }
         }
     }

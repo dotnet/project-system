@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Build
     public class ConfigUtilitiesTests
     {
         [Fact]
-        public void GetProperty_MissingProperty()
+        public void GetDimension_MissingProperty()
         {
             string projectXml =
 @"<Project>
@@ -20,12 +20,12 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            var property = ConfigUtilities.GetProperty(project, "NonExistentProperty");
+            var property = ConfigUtilities.GetDimension(project, "NonExistentProperty");
             Assert.Null(property);
         }
 
         [Fact]
-        public void GetProperty_ExistentProperty()
+        public void GetDimension_ExistentProperty()
         {
             string projectXml =
 @"<Project>
@@ -35,58 +35,58 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
         }
 
         [Fact]
-        public void GetPropertyValues_SingleValue()
+        public void EnumerateDimensionValues_SingleValue()
         {
-            var values = ConfigUtilities.GetPropertyValues("MyPropertyValue");
+            var values = ConfigUtilities.EnumerateDimensionValues("MyPropertyValue");
             Assert.Collection(values, firstValue => Assert.Equal("MyPropertyValue", firstValue));
         }
 
         [Fact]
-        public void GetPropertyValues_MultipleValues()
+        public void EnumerateDimensionValues_MultipleValues()
         {
-            var values = ConfigUtilities.GetPropertyValues("1;2");
+            var values = ConfigUtilities.EnumerateDimensionValues("1;2");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
-        public void GetPropertyValues_EmptyValues()
+        public void EnumerateDimensionValues_EmptyValues()
         {
-            var values = ConfigUtilities.GetPropertyValues("1;   ;;;2");
+            var values = ConfigUtilities.EnumerateDimensionValues("1;   ;;;2");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
-        public void GetPropertyValues_WhiteSpace()
+        public void EnumerateDimensionValues_WhiteSpace()
         {
-            var values = ConfigUtilities.GetPropertyValues("   1;   ; ; ; 2 ");
+            var values = ConfigUtilities.EnumerateDimensionValues("   1;   ; ; ; 2 ");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
-        public void GetPropertyValues_Duplicates()
+        public void EnumerateDimensionValues_Duplicates()
         {
-            var values = ConfigUtilities.GetPropertyValues("1;2;1;1;2;2;2;1");
+            var values = ConfigUtilities.EnumerateDimensionValues("1;2;1;1;2;2;2;1");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
         }
 
         [Fact]
-        public void GetOrAddProperty_NoGroups()
+        public void GetOrAddDimension_NoGroups()
         {
             var project = ProjectRootElementFactory.Create();
-            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddDimension(project, "MyProperty");
             Assert.Single(project.Properties);
             Assert.Collection(project.PropertyGroups,
                 group => Assert.Collection(group.Properties,
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void GetOrAddProperty_FirstGroup()
+        public void GetOrAddDimension_FirstGroup()
         {
             string projectXml =
 @"<Project>
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddDimension(project, "MyProperty");
             Assert.Single(project.Properties);
             AssertEx.CollectionLength(project.PropertyGroups, 2);
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void GetOrAddProperty_ExistingProperty()
+        public void GetOrAddDimension_ExistingProperty()
         {
             string projectXml =
 @"<Project>
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddDimension(project, "MyProperty");
             Assert.Single(project.Properties);
             Assert.Single(project.PropertyGroups);
 
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.Build
         }
 
         [Fact]
-        public void AppendPropertyValue_DefaultDelimiter()
+        public void AppendDimensionValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -147,14 +147,14 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendDimensionValue(project, "1;2", "MyProperty", "3");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;2;3", property!.Value);
         }
 
         [Fact]
-        public void AppendPropertyValue_EmptyProperty()
+        public void AppendDimensionValue_EmptyProperty()
         {
             string projectXml =
 @"<Project>
@@ -164,34 +164,34 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendDimensionValue(project, "", "MyProperty", "1");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
 
         [Fact]
-        public void AppendPropertyValue_InheritedValue()
+        public void AppendDimensionValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            ConfigUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendDimensionValue(project, "1;2", "MyProperty", "3");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;2;3", property!.Value);
         }
 
         [Fact]
-        public void AppendPropertyValue_MissingProperty()
+        public void AppendDimensionValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            ConfigUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendDimensionValue(project, "", "MyProperty", "1");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
 
         [Fact]
-        public void RemovePropertyValue_DefaultDelimiter()
+        public void RemoveDimensionValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -201,14 +201,14 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemoveDimensionValue(project, "1;2", "MyProperty", "2");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
 
         [Fact]
-        public void RemovePropertyValue_EmptyAfterRemove()
+        public void RemoveDimensionValue_EmptyAfterRemove()
         {
             string projectXml =
 @"<Project>
@@ -218,34 +218,34 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemoveDimensionValue(project, "1", "MyProperty", "1");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }
 
         [Fact]
-        public void RemovePropertyValue_InheritedValue()
+        public void RemoveDimensionValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            ConfigUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "1");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemoveDimensionValue(project, "1;2", "MyProperty", "1");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("2", property!.Value);
         }
 
         [Fact]
-        public void RemovePropertyValue_MissingProperty()
+        public void RemoveDimensionValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            Assert.Throws<ArgumentException>("valueToRemove", () => ConfigUtilities.RemovePropertyValue(project, "", "MyProperty", "1"));
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            Assert.Throws<ArgumentException>("valueToRemove", () => ConfigUtilities.RemoveDimensionValue(project, "", "MyProperty", "1"));
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }
 
         [Fact]
-        public void RenamePropertyValue_DefaultDelimiter()
+        public void RenameDimensionValue_DefaultDelimiter()
         {
             string projectXml =
 @"<Project>
@@ -255,28 +255,28 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            ConfigUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RenameDimensionValue(project, "1;2", "MyProperty", "2", "5");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;5", property!.Value);
         }
 
         [Fact]
-        public void RenamePropertyValue_InheritedValue()
+        public void RenameDimensionValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            ConfigUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "1", "3");
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RenameDimensionValue(project, "1;2", "MyProperty", "1", "3");
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("3;2", property!.Value);
         }
 
         [Fact]
-        public void RenamePropertyValue_MissingProperty()
+        public void RenameDimensionValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            Assert.Throws<ArgumentException>("oldValue", () => ConfigUtilities.RenamePropertyValue(project, "", "MyProperty", "1", "2"));
-            var property = ConfigUtilities.GetProperty(project, "MyProperty");
+            Assert.Throws<ArgumentException>("oldValue", () => ConfigUtilities.RenameDimensionValue(project, "", "MyProperty", "1", "2"));
+            var property = ConfigUtilities.GetDimension(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }
