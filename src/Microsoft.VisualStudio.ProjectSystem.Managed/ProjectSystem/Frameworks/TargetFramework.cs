@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        /// Gets the short name.
+        /// Gets the Target Framework Moniker.
         /// </summary>
         public string TargetFrameworkMoniker { get; }
 
