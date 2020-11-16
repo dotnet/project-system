@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     [ExportInterceptingPropertyValueProvider(AssemblyVersionPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class AssemblyVersionValueProvider : BaseVersionValueProvider
     {
-        private static readonly Version s_defaultAssemblyVersion = new Version(1, 0, 0, 0);
+        private static readonly Version s_defaultAssemblyVersion = new(1, 0, 0, 0);
 
         private const string AssemblyVersionPropertyName = "AssemblyVersion";
 

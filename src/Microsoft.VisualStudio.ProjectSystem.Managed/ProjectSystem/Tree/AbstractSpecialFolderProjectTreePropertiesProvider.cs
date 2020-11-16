@@ -87,12 +87,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             propertyValues.Flags = propertyValues.Flags.Union(FolderFlags);
 
-            ProjectImageMoniker? icon = _imageProvider.GetProjectImage(FolderImageKey);
-            ProjectImageMoniker? expandedIcon = _imageProvider.GetProjectImage(ExpandedFolderImageKey);
+            // Use default icon if missing
+            if (!propertyValues.Flags.IsMissingOnDisk())
+            {
+                ProjectImageMoniker? icon = _imageProvider.GetProjectImage(FolderImageKey);
+                ProjectImageMoniker? expandedIcon = _imageProvider.GetProjectImage(ExpandedFolderImageKey);
 
-            // Avoid overwriting icon if the image provider didn't provide one
-            propertyValues.Icon = icon ?? propertyValues.Icon;
-            propertyValues.ExpandedIcon = expandedIcon ?? propertyValues.ExpandedIcon;
+                // Avoid overwriting icon if the image provider didn't provide one
+                propertyValues.Icon = icon ?? propertyValues.Icon;
+                propertyValues.ExpandedIcon = expandedIcon ?? propertyValues.ExpandedIcon;
+            }
         }
 
         private static void ApplySpecialFolderItemProperties(IProjectTreeCustomizablePropertyValues propertyValues)

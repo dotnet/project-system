@@ -2,10 +2,10 @@
 
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
@@ -17,14 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     {
         public const string ProviderTypeString = "Framework";
 
-        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
+        private static readonly DependencyGroupModel s_groupModel = new(
             ProviderTypeString,
             Resources.FrameworkNodeName,
             new DependencyIconSet(
-                icon: ManagedImageMonikers.Framework,
-                expandedIcon: ManagedImageMonikers.Framework,
-                unresolvedIcon: ManagedImageMonikers.FrameworkWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.FrameworkWarning),
+                icon: KnownMonikers.Framework,
+                expandedIcon: KnownMonikers.Framework,
+                unresolvedIcon: KnownMonikers.FrameworkWarning,
+                unresolvedExpandedIcon: KnownMonikers.FrameworkWarning),
             DependencyTreeFlags.FrameworkDependencyGroup);
 
         public FrameworkRuleHandler()
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.FrameworkPrivate;
+        public override ImageMoniker ImplicitIcon => KnownMonikers.FrameworkPrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 

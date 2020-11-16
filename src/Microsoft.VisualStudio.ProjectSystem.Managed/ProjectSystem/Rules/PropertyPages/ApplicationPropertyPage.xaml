@@ -35,13 +35,14 @@
   <DynamicEnumProperty Name="TargetFrameworkMoniker"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
-                       HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/visual-studio-multi-targeting-overview"
+                       HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
     <DynamicEnumProperty.DataSource>
       <DataSource PersistedName="TargetFrameworkMoniker"
-                  Persistence="ProjectFileWithInterception" />
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False"/>
     </DynamicEnumProperty.DataSource>
   </DynamicEnumProperty>
 
@@ -72,11 +73,11 @@
   <EnumProperty Name="ApplicationManifest"
                 DisplayName="Manifest"
                 Description="Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file."
-                Category="Resources" >
+                Category="Resources">
     <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="false"
-                  PersistedName="ApplicationManifest"
-                  Persistence="ProjectFileWithInterception" />
+      <DataSource PersistedName="ApplicationManifest"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
     
     <EnumValue Name="NoManifest"
@@ -88,7 +89,7 @@
   <StringProperty Name="Win32Resource"
                   DisplayName="Resource file"
                   Description="Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file."
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/framework/resources/creating-resource-files-for-desktop-apps"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
                   Category="Resources"
                   Subtype="file" />
 </Rule>

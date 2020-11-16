@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
     [Export(typeof(IHttpClient))]
     internal class DefaultHttpClient : IHttpClient
     {
-        private static readonly Lazy<HttpClient> s_client = new Lazy<HttpClient>(CreateClient);
+        private static readonly Lazy<HttpClient> s_client = new(CreateClient);
 
         [ImportingConstructor]
         public DefaultHttpClient()

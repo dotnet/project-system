@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     {
         public const string ProviderTypeString = "Assembly";
 
-        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
+        private static readonly DependencyGroupModel s_groupModel = new(
             ProviderTypeString,
             Resources.AssembliesNodeName,
             new DependencyIconSet(

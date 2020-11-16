@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeployIntegrationDependencies\DeployIntegrationDependencies.csproj" ReferenceOutputAssembly="false" />
-    <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\Resources\ManagedImageMonikers.cs" Link="ManagedImageMonikers.cs" />
     <Compile Include="..\..\src\Microsoft.VisualStudio.ProjectSystem.Managed\ProjectSystem\Imaging\ImageMonikerDebuggerDisplay.cs" Link="ImageMonikerDebuggerDisplay.cs" />
   </ItemGroup>
 </Project>

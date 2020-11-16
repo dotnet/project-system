@@ -18,6 +18,6 @@ namespace Microsoft.VisualStudio
         /// <summary>
         /// Guid indicating that the selected node in Solution Explorer is a project.
         /// </summary>
-        public static readonly Guid SolutionViewProjectGuid = new Guid("F9806588-A88E-4429-8BFD-228795DB3894");
+        public static readonly Guid SolutionViewProjectGuid = new("F9806588-A88E-4429-8BFD-228795DB3894");
     }
 }

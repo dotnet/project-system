@@ -12,7 +12,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
@@ -34,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
     internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
-        private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeImplicitIcon = KnownMonikers.TargetFilePrivate.ToProjectSystemType();
 
@@ -49,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport | ProjectTreeFlags.FileOnDisk | ProjectTreeFlags.FileSystemEntity;
         private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
 
-        private readonly ImplicitProjectCheck _importPathCheck = new ImplicitProjectCheck();
+        private readonly ImplicitProjectCheck _importPathCheck = new();
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;

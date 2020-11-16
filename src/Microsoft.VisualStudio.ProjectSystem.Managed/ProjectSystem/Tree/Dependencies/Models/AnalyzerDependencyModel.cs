@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -10,21 +9,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse,
             unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.CodeInformation,
             expandedIcon: KnownMonikers.CodeInformation,
-            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
+            unresolvedIcon: KnownMonikers.CodeInformationWarning,
+            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.CodeInformationPrivate,
-            expandedIcon: ManagedImageMonikers.CodeInformationPrivate,
-            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
+        private static readonly DependencyIconSet s_implicitIconSet = new(
+            icon: KnownMonikers.CodeInformationPrivate,
+            expandedIcon: KnownMonikers.CodeInformationPrivate,
+            unresolvedIcon: KnownMonikers.CodeInformationWarning,
+            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning);
 
         public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
 

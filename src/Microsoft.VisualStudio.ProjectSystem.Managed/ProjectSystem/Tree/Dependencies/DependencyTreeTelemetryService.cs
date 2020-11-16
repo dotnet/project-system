@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
         private readonly Stopwatch _projectLoadTime = Stopwatch.StartNew();
-        private readonly object _stateUpdateLock = new object();
+        private readonly object _stateUpdateLock = new();
 
         /// <summary>
         /// Holds data used for telemetry. If telemetry is disabled, or if required
@@ -216,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         private sealed class TargetData
         {
-            private readonly Dictionary<string, (int Total, int Unresolved)> _countsByType = new Dictionary<string, (int Total, int Unresolved)>();
+            private readonly Dictionary<string, (int Total, int Unresolved)> _countsByType = new();
 
             public string TargetFramework { get; }
             public int Total { get; private set; }
@@ -251,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         private sealed class TelemetryState
         {
-            private readonly Dictionary<string, bool> _observedRules = new Dictionary<string, bool>(StringComparers.RuleNames);
+            private readonly Dictionary<string, bool> _observedRules = new(StringComparers.RuleNames);
 
             public void InitializeRule(string rule)
             {

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     {
         public const string ProviderTypeString = "Sdk";
 
-        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
+        private static readonly DependencyGroupModel s_groupModel = new(
             ProviderTypeString,
             Resources.SdkNodeName,
             new DependencyIconSet(

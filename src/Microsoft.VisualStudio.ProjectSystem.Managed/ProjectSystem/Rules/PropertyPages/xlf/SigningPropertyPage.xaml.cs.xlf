@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
-        <source>Select this check box to sign the assembly.</source>
-        <target state="translated">Pokud chcete sestavení podepsat, vyberte toto zaškrtávací políčko.</target>
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="needs-review-translation">Pokud chcete sestavení podepsat, vyberte toto zaškrtávací políčko.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">

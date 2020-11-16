@@ -12,17 +12,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class SdkDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+        private static readonly DependencyFlagCache s_flagCache = new(
             resolved: DependencyTreeFlags.SdkDependency + DependencyTreeFlags.SupportsFolderBrowse,
             unresolved: DependencyTreeFlags.SdkDependency);
 
-        private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.SDK,
             expandedIcon: KnownMonikers.SDK,
             unresolvedIcon: KnownMonikers.SDKWarning,
             unresolvedExpandedIcon: KnownMonikers.SDKWarning);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
+        private static readonly DependencyIconSet s_implicitIconSet = new(
             icon: KnownMonikers.SDKPrivate,
             expandedIcon: KnownMonikers.SDKPrivate,
             unresolvedIcon: KnownMonikers.SDKWarning,

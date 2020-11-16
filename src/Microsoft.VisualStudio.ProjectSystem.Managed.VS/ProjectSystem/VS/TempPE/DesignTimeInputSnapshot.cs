@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     internal class DesignTimeInputSnapshot
     {
-        public static readonly DesignTimeInputSnapshot Empty = new DesignTimeInputSnapshot(
+        public static readonly DesignTimeInputSnapshot Empty = new(
             EmptyCollections.OrdinalStringSet,
             EmptyCollections.OrdinalStringSet,
             Enumerable.Empty<DesignTimeInputFileChange>(), string.Empty);

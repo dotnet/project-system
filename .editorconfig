@@ -218,6 +218,9 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 
 # Dotnet code analysis settings:
 [*.{cs,vb}]
+# Bugs
+dotnet_diagnostic.IDE0100.severity = none # https://github.com/dotnet/roslyn/issues/48236
+
 # Microsoft.Analyzers.ManagedCodeAnalysis
 dotnet_diagnostic.CA1801.severity = none
 dotnet_diagnostic.CA1804.severity = none
@@ -378,6 +381,7 @@ dotnet_diagnostic.IDE0030WithoutSuggestion.severity = error
 dotnet_diagnostic.IDE0079.severity = warning      # Unused suppresion
 dotnet_diagnostic.IDE0083.severity = warning      # Use pattern matching
 dotnet_diagnostic.IDE0084.severity = warning      # Use IsNot
+dotnet_diagnostic.IDE0090.severity = warning      # Use new(...)
 dotnet_diagnostic.IDE1006.severity = warning      # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 

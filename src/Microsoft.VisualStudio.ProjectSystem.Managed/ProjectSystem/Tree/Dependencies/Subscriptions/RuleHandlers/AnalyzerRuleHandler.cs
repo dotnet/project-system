@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
@@ -18,14 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
     {
         public const string ProviderTypeString = "Analyzer";
 
-        private static readonly DependencyGroupModel s_groupModel = new DependencyGroupModel(
+        private static readonly DependencyGroupModel s_groupModel = new(
             ProviderTypeString,
             Resources.AnalyzersNodeName,
             new DependencyIconSet(
                 icon: KnownMonikers.CodeInformation,
                 expandedIcon: KnownMonikers.CodeInformation,
-                unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-                unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning),
+                unresolvedIcon: KnownMonikers.CodeInformationWarning,
+                unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning),
             DependencyTreeFlags.AnalyzerDependencyGroup);
 
         public AnalyzerRuleHandler()
@@ -35,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => ManagedImageMonikers.CodeInformationPrivate;
+        public override ImageMoniker ImplicitIcon => KnownMonikers.CodeInformationPrivate;
 
         protected override bool ResolvedItemRequiresEvaluatedItem => false;
 

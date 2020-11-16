@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public string? NewestImportInput { get; }
 
             public IComparable? LastVersionSeen { get; }
+
             public bool IsDisabled { get; }
 
             /// <summary>
@@ -46,6 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </remarks>
             public DateTime LastItemsChangedAtUtc { get; }
 
+            public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, CopyType)> LastItemChanges { get; }
+
             /// <summary>
             /// Gets the time at which the last up-to-date check was made.
             /// </summary>
@@ -61,7 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public DateTime LastCheckedAtUtc { get; }
 
             public ImmutableHashSet<string> ItemTypes { get; }
-            public ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>> ItemsByItemType { get; }
+
+            public ImmutableDictionary<string, ImmutableHashSet<(string Path, string? Link, CopyType CopyType)>> ItemsByItemType { get; }
 
             public ImmutableArray<string> SetNames { get; }
 
@@ -85,6 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             public ImmutableDictionary<string, string> CopiedOutputFiles { get; }
 
             public ImmutableHashSet<string> ResolvedAnalyzerReferencePaths { get; }
+
             public ImmutableHashSet<string> ResolvedCompilationReferencePaths { get; }
 
             /// <summary>
@@ -134,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastItemsChangedAtUtc = DateTime.MinValue;
                 LastCheckedAtUtc = DateTime.MinValue;
                 ItemTypes = ImmutableHashSet.Create<string>(StringComparers.ItemTypes);
-                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
+                ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string Path, string? Link, CopyType CopyType)>>(StringComparers.ItemTypes);
                 SetNames = ImmutableArray<string>.Empty;
                 UpToDateCheckInputItemsBySetName = emptyItemBySetName;
                 UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
@@ -167,7 +172,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
                 DateTime lastAdditionalDependentFileTimesChangedAtUtc,
                 DateTime lastItemsChangedAtUtc,
-                DateTime lastCheckedAtUtc)
+                DateTime lastCheckedAtUtc,
+                ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, CopyType)> lastItemChanges)
             {
                 MSBuildProjectFullPath = msBuildProjectFullPath;
                 MSBuildProjectDirectory = msBuildProjectDirectory;
@@ -189,6 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastCheckedAtUtc = lastCheckedAtUtc;
                 AdditionalDependentFileTimes = additionalDependentFileTimes;
                 LastAdditionalDependentFileTimesChangedAtUtc = lastAdditionalDependentFileTimesChangedAtUtc;
+                LastItemChanges = lastItemChanges;
 
                 var setNames = new HashSet<string>(s_setNameComparer);
                 setNames.AddRange(upToDateCheckInputItemsBySetName.Keys);
@@ -336,23 +343,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copiedOutputFiles = CopiedOutputFiles;
                 }
 
-                // TODO these are probably the same as the previous set, so merge them to avoid allocation
                 var itemTypes = projectItemSchema.GetKnownItemTypes()
                                                  .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
                                                  .ToImmutableHashSet(StringComparers.ItemTypes);
 
-                ImmutableDictionary<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>.Builder itemsByItemTypeBuilder;
-                bool itemTypesChanged = !ItemTypes.SetEquals(itemTypes);
+                var itemTypeDiff = new SetDiff<string>(ItemTypes, itemTypes, StringComparers.ItemTypes);
 
-                if (itemTypesChanged)
+                var itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
+
+                bool itemTypesChanged = false;
+
+                List<(bool IsAdd, string ItemType, string Path, string? Link, CopyType)> changes = new();
+
+                foreach (string removedItemType in itemTypeDiff.Removed)
                 {
-                    itemsByItemTypeBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<(string path, string? link, CopyType copyType)>>(StringComparers.ItemTypes);
+                    itemTypesChanged = true;
+
+                    if (itemsByItemTypeBuilder.TryGetValue(removedItemType, out var removedItems))
+                    {
+                        foreach ((string path, string? link, CopyType copyType) in removedItems)
+                        {
+                            changes.Add((false, removedItemType, path, link, copyType));
+                        }
+
+                        itemsByItemTypeBuilder.Remove(removedItemType);
+                    }
                 }
-                else
-                {
-                    itemTypes = ItemTypes;
-                    itemsByItemTypeBuilder = ItemsByItemType.ToBuilder();
-                }
+
+                itemTypesChanged |= itemTypeDiff.Added.GetEnumerator().MoveNext();
 
                 bool itemsChanged = false;
 
@@ -361,9 +379,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // ProjectChanges is keyed by the rule name which is usually the same as the item type, but not always (eg, in auto-generated rules)
                     string? itemType = null;
                     if (projectCatalogSnapshot.NamedCatalogs.TryGetValue(PropertyPageContexts.File, out IPropertyPagesCatalog fileCatalog))
-                    {
                         itemType = fileCatalog.GetSchema(schemaName)?.DataSource.ItemType;
-                    }
+
                     if (itemType == null)
                         continue;
                     if (!itemTypes.Contains(itemType))
@@ -373,7 +390,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (projectChange.After.Items.Count == 0)
                         continue;
 
-                    itemsByItemTypeBuilder[itemType] = projectChange.After.Items.Select(item => (item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(ItemComparer.Instance);
+                    IEnumerable<(string Path, string? Link, CopyType)>? before = Array.Empty<(string Path, string? Link, CopyType)>();
+                    if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableHashSet<(string Path, string? Link, CopyType CopyType)>? beforeItems))
+                        before = beforeItems;
+
+                    var after = projectChange.After.Items.Select(item => (Path: item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(ItemComparer.Instance);
+
+                    var diff = new SetDiff<(string, string?, CopyType)>(before, after, ItemComparer.Instance);
+
+                    foreach ((string path, string? link, CopyType copyType) in diff.Added)
+                    {
+                        changes.Add((true, itemType, path, link, copyType));
+                    }
+
+                    foreach ((string path, string? link, CopyType copyType) in diff.Removed)
+                    {
+                        changes.Add((false, itemType, path, link, copyType));
+                    }
+
+                    itemsByItemTypeBuilder[itemType] = after;
                     itemsChanged = true;
                 }
 
@@ -403,7 +438,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copyReferenceInputs: copyReferenceInputs,
                     additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
-                    lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
+                    lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc,
+                    changes.ToImmutableArray());
 
                 DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
                 {
@@ -499,7 +535,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
-                    LastItemsChangedAtUtc, lastCheckedAtUtc);
+                    LastItemsChangedAtUtc,
+                    lastCheckedAtUtc,
+                    LastItemChanges);
             }
 
             /// <summary>
@@ -526,7 +564,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
                     LastAdditionalDependentFileTimesChangedAtUtc,
-                    lastItemsChangedAtUtc, LastCheckedAtUtc);
+                    lastItemsChangedAtUtc,
+                    LastCheckedAtUtc,
+                    LastItemChanges);
             }
 
             /// <summary>
@@ -553,7 +593,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     CopyReferenceInputs,
                     AdditionalDependentFileTimes,
                     lastAdditionalDependentFileTimesChangedAtUtc,
-                    LastItemsChangedAtUtc, LastCheckedAtUtc);
+                    LastItemsChangedAtUtc,
+                    LastCheckedAtUtc,
+                    LastItemChanges);
             }
         }
     }

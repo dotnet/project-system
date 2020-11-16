@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
     /// </summary>
     internal abstract partial class AbstractAddItemCommandHandler : IAsyncCommandGroupHandler
     {
-        protected static readonly Guid LegacyCSharpPackageGuid = new Guid("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
-        protected static readonly Guid LegacyVBPackageGuid = new Guid("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
+        protected static readonly Guid LegacyCSharpPackageGuid = new("{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}");
+        protected static readonly Guid LegacyVBPackageGuid = new("{164B10B9-B200-11d0-8C61-00A0C91E29D5}");
         private readonly ConfiguredProject _configuredProject;
         private readonly IAddItemDialogService _addItemDialogService;
         private readonly IVsUIService<IVsShell> _vsShell;

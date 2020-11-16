@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private class EmptyProjectRuleSnapshot : IProjectRuleSnapshot
         {
-            public static readonly EmptyProjectRuleSnapshot Instance = new EmptyProjectRuleSnapshot();
+            public static readonly EmptyProjectRuleSnapshot Instance = new();
 
             public string RuleName
             {

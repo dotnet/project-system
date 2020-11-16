@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     {
         private const string FileVersionPropertyName = "FileVersion";
 
-        private static readonly Version s_defaultFileVersion = new Version(1, 0, 0, 0);
+        private static readonly Version s_defaultFileVersion = new(1, 0, 0, 0);
 
         protected override string PropertyName => FileVersionPropertyName;
 

@@ -69,16 +69,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 new Node("net461", KnownMonikers.Library)
                 {
                     new Node("Assemblies", KnownMonikers.Reference),
-                    new Node("Packages", ManagedImageMonikers.NuGetGrey)
+                    new Node("Packages", KnownMonikers.NuGetNoColor)
                     {
-                        new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
+                        new Node("MetadataExtractor (2.1.0)", KnownMonikers.NuGetNoColor)
                     }
                 },
                 new Node("netstandard2.0", KnownMonikers.Library)
                 {
-                    new Node("Packages", ManagedImageMonikers.NuGetGrey)
+                    new Node("Packages", KnownMonikers.NuGetNoColor)
                     {
-                        new Node("MetadataExtractor (2.1.0)", ManagedImageMonikers.NuGetGrey)
+                        new Node("MetadataExtractor (2.1.0)", KnownMonikers.NuGetNoColor)
                     },
                     new Node("SDK", KnownMonikers.SDK)
                 });
