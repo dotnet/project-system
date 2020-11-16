@@ -46,6 +46,7 @@ Automatically refresh Solution Explorer to reflect file system              |   
 Show items included in imports (.targets/.props)                            |          | ●
 **Dependencies**|
 Auto-restore packages on load and external edit                             |          | ● 
+Packages.config support                                                     | ●        |
 PackageReference support                                                    | ●        | ●
 Dependency node showing package/project graph                               |          | ● 
 Transitive ProjectReference                                                 |          | ●
