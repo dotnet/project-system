@@ -197,6 +197,11 @@
         <target state="translated">产品</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
+        <source>Read about SPDX license expressions</source>
+        <target state="new">Read about SPDX license expressions</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
         <target state="translated">指定存储库的类型。默认值为 "git"。</target>

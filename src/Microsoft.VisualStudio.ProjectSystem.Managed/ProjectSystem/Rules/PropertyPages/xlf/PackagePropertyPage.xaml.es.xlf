@@ -197,6 +197,11 @@
         <target state="translated">Producto</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
+        <source>Read about SPDX license expressions</source>
+        <target state="new">Read about SPDX license expressions</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
         <target state="translated">Especifica el tipo de repositorio. El valor predeterminado es "git".</target>
