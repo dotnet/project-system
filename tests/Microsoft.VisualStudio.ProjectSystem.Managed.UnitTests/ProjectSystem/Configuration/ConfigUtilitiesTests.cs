@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Build
 {
-    public class BuildUtilitiesTests
+    public class ConfigUtilitiesTests
     {
         [Fact]
         public void GetProperty_MissingProperty()
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            var property = BuildUtilities.GetProperty(project, "NonExistentProperty");
+            var property = ConfigUtilities.GetProperty(project, "NonExistentProperty");
             Assert.Null(property);
         }
 
@@ -35,21 +35,21 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
         }
 
         [Fact]
         public void GetPropertyValues_SingleValue()
         {
-            var values = BuildUtilities.GetPropertyValues("MyPropertyValue");
+            var values = ConfigUtilities.GetPropertyValues("MyPropertyValue");
             Assert.Collection(values, firstValue => Assert.Equal("MyPropertyValue", firstValue));
         }
 
         [Fact]
         public void GetPropertyValues_MultipleValues()
         {
-            var values = BuildUtilities.GetPropertyValues("1;2");
+            var values = ConfigUtilities.GetPropertyValues("1;2");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetPropertyValues_EmptyValues()
         {
-            var values = BuildUtilities.GetPropertyValues("1;   ;;;2");
+            var values = ConfigUtilities.GetPropertyValues("1;   ;;;2");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetPropertyValues_WhiteSpace()
         {
-            var values = BuildUtilities.GetPropertyValues("   1;   ; ; ; 2 ");
+            var values = ConfigUtilities.GetPropertyValues("   1;   ; ; ; 2 ");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.Build
         [Fact]
         public void GetPropertyValues_Duplicates()
         {
-            var values = BuildUtilities.GetPropertyValues("1;2;1;1;2;2;2;1");
+            var values = ConfigUtilities.GetPropertyValues("1;2;1;1;2;2;2;1");
             Assert.Collection(values,
                 firstValue => Assert.Equal("1", firstValue),
                 secondValue => Assert.Equal("2", secondValue));
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.Build
         public void GetOrAddProperty_NoGroups()
         {
             var project = ProjectRootElementFactory.Create();
-            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
             Assert.Single(project.Properties);
             Assert.Collection(project.PropertyGroups,
                 group => Assert.Collection(group.Properties,
@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
             Assert.Single(project.Properties);
             AssertEx.CollectionLength(project.PropertyGroups, 2);
 
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.GetOrAddProperty(project, "MyProperty");
+            ConfigUtilities.GetOrAddProperty(project, "MyProperty");
             Assert.Single(project.Properties);
             Assert.Single(project.PropertyGroups);
 
@@ -147,8 +147,8 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;2;3", property!.Value);
         }
@@ -164,8 +164,8 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
@@ -174,8 +174,8 @@ namespace Microsoft.VisualStudio.Build
         public void AppendPropertyValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            BuildUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendPropertyValue(project, "1;2", "MyProperty", "3");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;2;3", property!.Value);
         }
@@ -184,8 +184,8 @@ namespace Microsoft.VisualStudio.Build
         public void AppendPropertyValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            BuildUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.AppendPropertyValue(project, "", "MyProperty", "1");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
@@ -201,8 +201,8 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "2");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1", property!.Value);
         }
@@ -218,8 +218,8 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemovePropertyValue(project, "1", "MyProperty", "1");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }
@@ -228,8 +228,8 @@ namespace Microsoft.VisualStudio.Build
         public void RemovePropertyValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            BuildUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "1");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RemovePropertyValue(project, "1;2", "MyProperty", "1");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("2", property!.Value);
         }
@@ -238,8 +238,8 @@ namespace Microsoft.VisualStudio.Build
         public void RemovePropertyValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            Assert.Throws<ArgumentException>("valueToRemove", () => BuildUtilities.RemovePropertyValue(project, "", "MyProperty", "1"));
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.Throws<ArgumentException>("valueToRemove", () => ConfigUtilities.RemovePropertyValue(project, "", "MyProperty", "1"));
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }
@@ -255,8 +255,8 @@ namespace Microsoft.VisualStudio.Build
 </Project>";
 
             var project = ProjectRootElementFactory.Create(projectXml);
-            BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "2", "5");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("1;5", property!.Value);
         }
@@ -265,8 +265,8 @@ namespace Microsoft.VisualStudio.Build
         public void RenamePropertyValue_InheritedValue()
         {
             var project = ProjectRootElementFactory.Create();
-            BuildUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "1", "3");
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            ConfigUtilities.RenamePropertyValue(project, "1;2", "MyProperty", "1", "3");
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal("3;2", property!.Value);
         }
@@ -275,8 +275,8 @@ namespace Microsoft.VisualStudio.Build
         public void RenamePropertyValue_MissingProperty()
         {
             var project = ProjectRootElementFactory.Create();
-            Assert.Throws<ArgumentException>("oldValue", () => BuildUtilities.RenamePropertyValue(project, "", "MyProperty", "1", "2"));
-            var property = BuildUtilities.GetProperty(project, "MyProperty");
+            Assert.Throws<ArgumentException>("oldValue", () => ConfigUtilities.RenamePropertyValue(project, "", "MyProperty", "1", "2"));
+            var property = ConfigUtilities.GetProperty(project, "MyProperty");
             Assert.NotNull(property);
             Assert.Equal(string.Empty, property!.Value);
         }

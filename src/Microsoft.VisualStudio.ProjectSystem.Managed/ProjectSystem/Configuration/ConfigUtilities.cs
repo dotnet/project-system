@@ -11,9 +11,9 @@ using Microsoft.VisualStudio.Text;
 namespace Microsoft.VisualStudio.Build
 {
     /// <summary>
-    /// Utility class to manipulate MsBuild projects.
+    /// Provides methods for manipulating configuration dimension properties and property values.
     /// </summary>
-    internal static class BuildUtilities
+    internal static class ConfigUtilities
     {
         private const char Delimiter = ';';
 

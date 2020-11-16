@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return null;
             }
 
-            return BuildUtilities.GetPropertyValues(targetFrameworks).ToList();
+            return ConfigUtilities.GetPropertyValues(targetFrameworks).ToList();
         }
 
         /// <summary>
