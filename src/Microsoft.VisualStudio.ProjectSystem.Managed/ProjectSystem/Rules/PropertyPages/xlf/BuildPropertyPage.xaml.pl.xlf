@@ -307,6 +307,16 @@
         <target state="translated">Ścieżka pliku dokumentacji XML</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|Description">
+        <source>Why can't I select the C# language version?</source>
+        <target state="new">Why can't I select the C# language version?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="new">Language version</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Blokuje możliwość generowania jednego lub większej liczby ostrzeżeń przez kompilator. Rozdziel wiele numerów ostrzeżeń przecinkami („,”) lub średnikami („;”).</target>
