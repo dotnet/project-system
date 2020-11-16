@@ -147,6 +147,11 @@
         <target state="translated">程序集名称</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
+        <source>Install other frameworks</source>
+        <target state="new">Install other frameworks</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
         <source>Specifies the base namespace for files added to the project.</source>
         <target state="translated">指定添加到项目中的文件的基命名空间。</target>

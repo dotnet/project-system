@@ -147,6 +147,11 @@
         <target state="translated">어셈블리 이름</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
+        <source>Install other frameworks</source>
+        <target state="new">Install other frameworks</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
         <source>Specifies the base namespace for files added to the project.</source>
         <target state="translated">프로젝트에 추가된 파일의 기본 네임스페이스를 지정합니다.</target>

@@ -74,7 +74,24 @@
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </StringProperty.Metadata>
   </StringProperty>
-  
+
+  <StringProperty Name="InstallOtherFrameworks"
+                  DisplayName="Install other frameworks">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="InstallOtherFrameworks"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="URL" />
+          <NameValuePair Name="URL" Value="http://go.microsoft.com/fwlink/?LinkID=287120" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
   <EnumProperty Name="OutputType"
                 DisplayName="Output type"
                 Description="Specifies the type of application to build."

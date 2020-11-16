@@ -147,6 +147,11 @@
         <target state="translated">Nom d'assembly</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
+        <source>Install other frameworks</source>
+        <target state="new">Install other frameworks</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
         <source>Specifies the base namespace for files added to the project.</source>
         <target state="translated">Spécifie l'espace de noms de base des fichiers ajoutés au projet.</target>
