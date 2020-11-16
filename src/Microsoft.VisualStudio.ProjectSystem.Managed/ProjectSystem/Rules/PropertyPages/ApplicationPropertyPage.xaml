@@ -41,25 +41,20 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
-    <BoolProperty.Metadata>
-      <NameValuePair Name="DependsOn" Value="TargetFrameworkMoniker;TargetFrameworks" />
-    </BoolProperty.Metadata>
   </BoolProperty>
 
-  <DynamicEnumProperty Name="TargetFrameworkMoniker"
+  <DynamicEnumProperty Name="TargetFramework"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
-    <DynamicEnumProperty.DataSource>
-      <DataSource PersistedName="TargetFrameworkMoniker"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False"/>
-    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition" Value="(not (evaluated TargetMultipleFrameworks))" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
@@ -73,10 +68,30 @@
                   HasConfigurationCondition="False" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition" Value="(evaluated TargetMultipleProjects)" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Application" "TargetMultipleFrameworks")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </StringProperty.Metadata>
   </StringProperty>
-  
+
+  <StringProperty Name="InstallOtherFrameworks"
+                  DisplayName="Install other frameworks">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="InstallOtherFrameworks"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="URL" />
+          <NameValuePair Name="URL" Value="http://go.microsoft.com/fwlink/?LinkID=287120" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
   <EnumProperty Name="OutputType"
                 DisplayName="Output type"
                 Description="Specifies the type of application to build."
@@ -93,24 +108,55 @@
                        DisplayName="Startup object"
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."
                        Category="General"
-                       EnumProvider="StartupObjectsEnumProvider" />
+                       EnumProvider="StartupObjectsEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (evaluated "Application" "OutputType") "Library")</NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <EnumProperty Name="ResourceSpecificationKind"
+                DisplayName="Resources"
+                Description="Specifies how application resources will be managed."
+                Category="Resources">
+    <EnumProperty.DataSource>
+      <DataSource PersistedName="ResourceSpecificationKind"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="IconAndManifest"
+               DisplayName="Icon and manifest" />
+    <EnumValue Name="ResourceFile"
+               DisplayName="Resource file" />
+  </EnumProperty>
 
   <StringProperty Name="ApplicationIcon"
                   DisplayName="Icon"
                   Category="Resources"
-                  Description="Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file."
-                  Subtype="file" />
+                  Description="Sets the .ico file that you want to use as your program icon."
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <EnumProperty Name="ApplicationManifest"
                 DisplayName="Manifest"
-                Description="Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file."
+                Description="Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project."
                 Category="Resources">
     <EnumProperty.DataSource>
       <DataSource PersistedName="ApplicationManifest"
                   Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
-    
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="NoManifest"
                DisplayName="Create application without a manifest" />
     <EnumValue Name="DefaultManifest"
@@ -119,8 +165,14 @@
 
   <StringProperty Name="Win32Resource"
                   DisplayName="Resource file"
-                  Description="Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file."
+                  Description="Specifies a resource file for the project."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
                   Category="Resources"
-                  Subtype="file" />
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "ResourceFile")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 </Rule>

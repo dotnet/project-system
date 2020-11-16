@@ -42,19 +42,19 @@
         <target state="translated">Startobjekt</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">Hiermit wird die .NET-Version angegeben, die von der Anwendung als Ziel verwendet wird. Diese Option kann unterschiedliche Werte aufweisen, je nachdem, welche .NET-Versionen auf Ihrem Computer installiert sind.</target>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="translated">Zielframework</target>
+        <target state="new">Target framework</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Hiermit wird eine Option zum Generieren von Manifesten ausgewählt, wenn die Anwendung unter Windows Vista oder höher mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt wird. Zu den Optionen gehören ein Standardmanifest, kein Manifest oder ein benutzerdefiniertes Manifest, das von Ihrem Projekt bereitgestellt wird. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="needs-review-translation">Hiermit wird eine Option zum Generieren von Manifesten ausgewählt, wenn die Anwendung unter Windows Vista oder höher mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt wird. Zu den Optionen gehören ein Standardmanifest, kein Manifest oder ein benutzerdefiniertes Manifest, das von Ihrem Projekt bereitgestellt wird. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
@@ -70,6 +70,16 @@
       <trans-unit id="EnumProperty|OutputType|DisplayName">
         <source>Output type</source>
         <target state="translated">Ausgabetyp</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="new">Specifies how application resources will be managed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
@@ -97,6 +107,16 @@
         <target state="translated">Windows-Anwendung</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="new">Icon and manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="new">Resource file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|Application|Description">
         <source>Specifies the project's application settings and properties.</source>
         <target state="translated">Hiermit werden die Anwendungseinstellungen und Eigenschaften des Projekts angegeben.</target>
@@ -108,8 +128,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
-        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Hiermit wird die ICO-Datei festgelegt, die als Programmsymbol verwendet werden soll. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="needs-review-translation">Hiermit wird die ICO-Datei festgelegt, die als Programmsymbol verwendet werden soll. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
@@ -125,6 +145,11 @@
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
         <source>Assembly name</source>
         <target state="translated">Assemblyname</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
+        <source>Install other frameworks</source>
+        <target state="new">Install other frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
@@ -148,8 +173,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Hiermit wird eine Ressourcendatei für das Projekt angegeben. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
+        <source>Specifies a resource file for the project.</source>
+        <target state="needs-review-translation">Hiermit wird eine Ressourcendatei für das Projekt angegeben. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

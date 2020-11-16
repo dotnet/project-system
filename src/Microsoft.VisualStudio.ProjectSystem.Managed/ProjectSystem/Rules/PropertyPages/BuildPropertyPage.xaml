@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Rule Name="BuildPropertyPage"
+<Rule Name="Build"
       Description="Specifies properties that control how the project builds."
       DisplayName="Build"
       PageTemplate="generic"
@@ -83,6 +83,79 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <StringProperty Name="LangVersion"
+                  DisplayName="Language version"
+                  Description="Why can't I select the C# language version?">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="LangVersion"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="URL" />
+          <NameValuePair Name="URL" Value="https://aka.ms/csharp-versions" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="CheckForOverflowUnderflow"
+                DisplayName="Check for arithmetic overflow"
+                Description="Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/checked-compiler-option"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="Deterministic"
+                DisplayName="Deterministic"
+                Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
+                Category="General" />
+  
+  <!-- TODO create fwlink for this HelpUrl -->
+  <EnumProperty Name="ErrorReport"
+                DisplayName="Internal compiler error reporting"
+                Description="Controls when internal compiler error (ICE) reports are sent to Microsoft."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errorreport-compiler-option"
+                Category="General">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="none"
+               DisplayName="Never send" />
+    <EnumValue Name="prompt"
+               DisplayName="Prompt before sending" />
+    <EnumValue Name="queue"
+               DisplayName="Queue" />
+    <EnumValue Name="send"
+               DisplayName="Send" />
+  </EnumProperty>
+  
+  <!-- TODO create fwlink for this HelpUrl -->
+  <EnumProperty Name="FileAlignment"
+                DisplayName="File alignment"
+                Description="Specifies, in bytes, where to align the sections of the output file."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/filealign-compiler-option"
+                Category="General">
+    <EnumValue Name="512"
+               DisplayName="512" />
+    <EnumValue Name="1024"
+               DisplayName="1024" />
+    <EnumValue Name="2048"
+               DisplayName="2048" />
+    <EnumValue Name="4096"
+               DisplayName="4096" />
+    <EnumValue Name="8192"
+               DisplayName="8192" />
+  </EnumProperty>
+
   <EnumProperty Name="WarningLevel"
                 DisplayName="Warning level"
                 Description="Specifies the level to display for compiler warnings."
@@ -125,16 +198,52 @@
                   Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings" />
 
-  <StringProperty Name="OutputPath"
-                  DisplayName="Output path"
-                  Description="Specifies the location of the output files for this project's configuration."
+  <StringProperty Name="BaseOutputPath"
+                  DisplayName="Base output path"
+                  Description="Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration."
                   Category="Output"
-                  Subtype="directory" />
+                  Subtype="directory">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
+  <StringProperty Name="BaseIntermediateOutputPath"
+                  DisplayName="Base intermediate output path"
+                  Description="Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration."
+                  Category="Output"
+                  Subtype="directory">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="GenerateDocumentationFile"
+                DisplayName="Documentation file"
+                Description="Generate a file containing API documentation."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/codedoc"
+                Category="Output">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <!-- TODO consider removing this property from the UI altogether -->
   <StringProperty Name="DocumentationFile"
                   DisplayName="XML documentation file path"
-                  Description="Specifies the name of a file into which documentation comments will be processed."
+                  Description="Optional path for the API documentation file. Leave blank to use the default location."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147081"
                   Category="Output"
-                  Subtype="file" />
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Build" "GenerateDocumentationFile")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
 </Rule>
