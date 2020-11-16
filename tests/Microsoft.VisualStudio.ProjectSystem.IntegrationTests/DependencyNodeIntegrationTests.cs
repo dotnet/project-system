@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         [TestMethod]
         public void MultiTarget_NetCoreApp21_Net45()
         {
-            CreateProject(new Project(";net45"));
+            CreateProject(new Project("netcoreapp2.1;net45"));
 
             VerifyDependenciesNode(
                 new Node("netcoreapp2.1", KnownMonikers.Library)
