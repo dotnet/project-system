@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Build.Construction;
 using Xunit;
 
-namespace Microsoft.VisualStudio.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     public class ConfigUtilitiesTests
     {

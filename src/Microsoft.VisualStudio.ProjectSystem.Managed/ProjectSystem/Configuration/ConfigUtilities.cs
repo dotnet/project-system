@@ -8,7 +8,7 @@ using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
-namespace Microsoft.VisualStudio.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
     /// <summary>
     /// Provides methods for manipulating configuration dimension properties and property values.
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.Build
                 {
                     if (seen == null)
                     {
-                        seen = new HashSet<string>(StringComparers.PropertyValues) { s };
+                        seen = new HashSet<string>(StringComparers.ConfigurationDimensionValues) { s };
                         yield return s;
                     }
                     else
@@ -123,12 +123,12 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="project">Xml representation of the MsBuild project.</param>
         /// <param name="values">Original evaluated value of the property.</param>
         /// <param name="name">Property name.</param>
-        /// <param name="valuesToRemove">Value to remove from the property.</param>
+        /// <param name="valueToRemove">Value to remove from the property.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RemoveDimensionValue(ProjectRootElement project, string values, string name, string valuesToRemove)
+        public static void RemoveDimensionValue(ProjectRootElement project, string values, string name, string valueToRemove)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(values, nameof(values));
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.Build
             bool valueFound = false;
             foreach (string value in EnumerateDimensionValues(values))
             {
-                if (!string.Equals(value, valuesToRemove, StringComparisons.PropertyValues))
+                if (!string.Equals(value, valueToRemove, StringComparisons.ConfigurationDimensionValues))
                 {
                     if (newValue.Length != 0)
                     {
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.Build
 
             if (!valueFound)
             {
-                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRemove, valuesToRemove, name), nameof(valuesToRemove));
+                throw new ArgumentException(string.Format(Resources.MsBuildMissingValueToRemove, valueToRemove, name), nameof(valueToRemove));
             }
         }
 
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.Build
                     value.Append(Delimiter);
                 }
 
-                if (string.Equals(propertyValue, oldValue, StringComparisons.PropertyValues))
+                if (string.Equals(propertyValue, oldValue, StringComparisons.ConfigurationDimensionValues))
                 {
                     value.Append(newValue);
                     valueFound = true;
