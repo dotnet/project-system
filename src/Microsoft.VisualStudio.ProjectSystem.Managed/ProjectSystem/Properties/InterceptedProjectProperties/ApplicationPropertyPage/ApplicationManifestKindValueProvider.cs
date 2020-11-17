@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -26,6 +27,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string NoManifestValue = "NoManifest";
         private const string DefaultManifestValue = "DefaultManifest";
         private const string CustomManifestValue = "CustomManifest";
+
+        private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
+
+        [ImportingConstructor]
+        public ApplicationManifestKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
+        {
+            _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
 
         /// <summary>
         /// Gets the application manifest kind property
@@ -67,24 +76,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                // TODO: store the current ApplicationManifest value
+                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
+
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
             else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                // TODO: store the current ApplicationManifest value
+                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
+
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
             else if (string.Equals(unevaluatedPropertyValue, CustomManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                // TODO: look up the previous value of the ApplicationManifest value and use that.
+                await RestoreApplicationManifestValueAsync(defaultProperties);
+
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
 
             // We don't want to store a value for this so return null.
             return null;
+        }
+
+        /// <summary>
+        /// Save the current value of the "ApplicationManifest" MSBuild property, if any.
+        /// </summary>
+        private async Task SaveCurrentApplicationManifestValueAsync(IProjectProperties defaultProperties)
+        {
+            string? currentApplicationManifestPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty);
+            if (!string.IsNullOrEmpty(currentApplicationManifestPropertyValue))
+            {
+                _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestMSBuildProperty, currentApplicationManifestPropertyValue!);
+            }
+        }
+
+        /// <summary>
+        /// If the "ApplicationManifest" MSBuild property does not currently have a value
+        /// then restore the previously saved value, if any.
+        /// </summary>
+        private async Task RestoreApplicationManifestValueAsync(IProjectProperties defaultProperties)
+        {
+            string? currentApplicationManifestPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty);
+            if (string.IsNullOrEmpty(currentApplicationManifestPropertyValue)
+                && _temporaryPropertyStorage.GetPropertyValue(ApplicationManifestMSBuildProperty) is string previousValue)
+            {
+                await defaultProperties.SetPropertyValueAsync(ApplicationManifestMSBuildProperty, previousValue);
+            }
         }
     }
 }
