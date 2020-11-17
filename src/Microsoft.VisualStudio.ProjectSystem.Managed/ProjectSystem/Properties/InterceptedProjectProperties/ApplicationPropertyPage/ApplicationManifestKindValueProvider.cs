@@ -1,0 +1,87 @@
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Threading.Tasks;
+
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
+{
+    [ExportInterceptingPropertyValueProvider("ApplicationManifestKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    internal sealed class ApplicationManifestKindValueProvider : InterceptingPropertyValueProviderBase
+    {
+        private readonly UnconfiguredProject _unconfiguredProject;
+
+        private const string NoManifestMSBuildProperty = "NoWin32Manifest";
+        private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
+        private const string NoManifestValue = "NoManifest";
+        private const string DefaultManifestValue = "DefaultManifest";
+        private const string CustomManifestValue = "CustomManifest";
+
+        [ImportingConstructor]
+        public ApplicationManifestKindValueProvider(UnconfiguredProject project)
+        {
+            _unconfiguredProject = project;
+        }
+
+        /// <summary>
+        /// Gets the application manifest kind property
+        /// </summary>
+        /// <remarks>
+        /// The Application Manifest kind's value is one of three possibilities:
+        ///     - It's the value "CustomManifest" which means the user will supply the path to a custom manifest file.
+        ///     - It's the value "NoManifest" which means the application doesn't have a manifest.
+        ///     - It's the value "DefaultManifest" which means that the application will have a default manifest.
+        ///
+        /// These three values map to two MSBuild properties - ApplicationManifest (for the first case) or NoWin32Manifest
+        /// which is true for the second case and false or non-existent for the third.
+        /// </remarks>
+        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        {
+            if (!string.IsNullOrEmpty(await defaultProperties.GetEvaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty)))
+            {
+                return CustomManifestValue;
+            }
+
+            string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty);
+            if (noManifestPropertyValue?.Equals("true", StringComparison.InvariantCultureIgnoreCase) == true)
+            {
+                return NoManifestValue;
+            }
+
+            // It doesn't matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
+            return DefaultManifestValue;
+        }
+
+        /// <summary>
+        /// Sets the application manifest kind property
+        /// </summary>
+        public override async Task<string?> OnSetPropertyValueAsync(
+            string propertyName,
+            string? unevaluatedPropertyValue,
+            IProjectProperties defaultProperties,
+            IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        {
+            if (string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // TODO: store the current ApplicationManifest value
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
+            }
+            else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // TODO: store the current ApplicationManifest value
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
+            }
+            else if (string.Equals(unevaluatedPropertyValue, CustomManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            {
+                // TODO: look up the previous value of the ApplicationManifest value and use that.
+                await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
+            }
+
+            // We don't want to store a value for this so return null.
+            return null;
+        }
+    }
+}

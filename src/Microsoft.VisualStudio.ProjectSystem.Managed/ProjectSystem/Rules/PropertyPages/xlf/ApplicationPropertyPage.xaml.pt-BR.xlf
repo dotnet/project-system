@@ -52,14 +52,14 @@
         <target state="new">Target framework</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifest|Description">
+      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="needs-review-translation">Seleciona uma opção de geração de manifesto quando o aplicativo é executado no Windows Vista ou mais recente no UAC (Controle de Conta de Usuário). As opções incluem um manifesto padrão, nenhum manifesto ou um manifesto personalizado fornecido pelo projeto. Observe que você precisa especificar o ícone e o manifesto ou um arquivo de recurso.</target>
+        <target state="new">Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
+      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
         <source>Manifest</source>
-        <target state="translated">Manifesto</target>
+        <target state="new">Manifest</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -82,14 +82,19 @@
         <target state="new">Resources</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
-        <source>Embed manifest with default settings</source>
-        <target state="translated">Inserir manifesto com configurações padrão</target>
+      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
+        <source>Use a custom manifest</source>
+        <target state="new">Use a custom manifest</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
+      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
+        <source>Embed manifest with default settings</source>
+        <target state="new">Embed manifest with default settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
         <source>Create application without a manifest</source>
-        <target state="translated">Criar aplicativo sem um manifesto</target>
+        <target state="new">Create application without a manifest</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -135,6 +140,16 @@
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
         <target state="translated">Ícone</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
+        <source>The path to the custom manifest file.</source>
+        <target state="new">The path to the custom manifest file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
+        <source>Manifest path</source>
+        <target state="new">Manifest path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">

@@ -143,12 +143,12 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <EnumProperty Name="ApplicationManifest"
+  <EnumProperty Name="ApplicationManifestKind"
                 DisplayName="Manifest"
                 Description="Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project."
                 Category="Resources">
     <EnumProperty.DataSource>
-      <DataSource PersistedName="ApplicationManifest"
+      <DataSource PersistedName="ApplicationManifestKind"
                   Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
@@ -157,11 +157,35 @@
         <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
-    <EnumValue Name="NoManifest"
-               DisplayName="Create application without a manifest" />
     <EnumValue Name="DefaultManifest"
                DisplayName="Embed manifest with default settings" />
+    <EnumValue Name="NoManifest"
+               DisplayName="Create application without a manifest" />
+    <EnumValue Name="CustomManifest"
+               DisplayName="Use a custom manifest" />
   </EnumProperty>
+
+  <StringProperty Name="ApplicationManifestPath"
+                  DisplayName="Manifest path"
+                  Description="The path to the custom manifest file."
+                  Category="Resources"
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="ApplicationManifestPath"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and 
+            (eq (evaluated "Application" "ApplicationManifestKind") "CustomManifest")
+            (eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest"))
+        </NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Application::ApplicationManifestKind" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Win32Resource"
                   DisplayName="Resource file"
