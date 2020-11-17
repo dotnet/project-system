@@ -7,6 +7,17 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// Supports setting the path to a custom manifest file. Ultimately this reads and writes the
+    /// <c>ApplicationManifest</c> MSBuild property. It also handles saving the manifest path as
+    /// a relative path, if possible.
+    /// </summary>
+    /// <remarks>
+    /// This type, along with <see cref="ApplicationManifestPathValueProvider"/>, provide the same
+    /// functionality as <see cref="ApplicationManifestValueProvider"/> but in a different context. That
+    /// provider is currently used by the legacy property pages and the VS property APIs; these are
+    /// designed to be used by the new property pages.
+    /// </remarks>
     [ExportInterceptingPropertyValueProvider("ApplicationManifestPath", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationManifestPathValueProvider : InterceptingPropertyValueProviderBase
     {

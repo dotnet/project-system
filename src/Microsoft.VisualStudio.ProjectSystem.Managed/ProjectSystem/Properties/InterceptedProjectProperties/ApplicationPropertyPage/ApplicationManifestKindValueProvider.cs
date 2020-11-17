@@ -2,27 +2,30 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <summary>
+    /// Supports choosing between no application manifest, a default manifest, and a custom manifest.
+    /// Adjusts the MSBuild properties <c>NoWin32Manifest</c> and <c>ApplicationManifest</c> as
+    /// appropriate. In the case of a custom manifest, the path to the manifest file is handled by the
+    /// <see cref="ApplicationManifestPathValueProvider"/>.
+    /// </summary>
+    /// <remarks>
+    /// This type, along with <see cref="ApplicationManifestPathValueProvider"/>, provide the same
+    /// functionality as <see cref="ApplicationManifestValueProvider"/> but in a different context. That
+    /// provider is currently used by the legacy property pages and the VS property APIs; these are
+    /// designed to be used by the new property pages.
+    /// </remarks>
     [ExportInterceptingPropertyValueProvider("ApplicationManifestKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationManifestKindValueProvider : InterceptingPropertyValueProviderBase
     {
-        private readonly UnconfiguredProject _unconfiguredProject;
-
         private const string NoManifestMSBuildProperty = "NoWin32Manifest";
         private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
         private const string NoManifestValue = "NoManifest";
         private const string DefaultManifestValue = "DefaultManifest";
         private const string CustomManifestValue = "CustomManifest";
-
-        [ImportingConstructor]
-        public ApplicationManifestKindValueProvider(UnconfiguredProject project)
-        {
-            _unconfiguredProject = project;
-        }
 
         /// <summary>
         /// Gets the application manifest kind property
