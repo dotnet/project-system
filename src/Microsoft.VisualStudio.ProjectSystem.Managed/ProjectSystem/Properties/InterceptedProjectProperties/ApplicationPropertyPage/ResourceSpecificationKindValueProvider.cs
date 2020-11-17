@@ -12,9 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (unevaluatedPropertyValue == "Win32Resource")
+            if (unevaluatedPropertyValue == "IconAndManifest")
             {
-                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
+                await defaultProperties.DeletePropertyAsync("Win32Resource");
             }
             else if (unevaluatedPropertyValue == "ResourceFile")
             {
