@@ -76,22 +76,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.RememberValueIfCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
             else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.RememberValueIfCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
             else if (string.Equals(unevaluatedPropertyValue, CustomManifestValue, StringComparison.InvariantCultureIgnoreCase))
             {
-                await RestoreApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.RestoreValueIfNotCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
 
