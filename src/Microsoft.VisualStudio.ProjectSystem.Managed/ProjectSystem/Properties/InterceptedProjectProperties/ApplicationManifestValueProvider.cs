@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
+    /// <remarks>
+    /// See also: <see cref="ApplicationManifestKindValueProvider"/>, <see cref="ApplicationManifestPathValueProvider"/>.
+    /// </remarks>
     [ExportInterceptingPropertyValueProvider("ApplicationManifest", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationManifestValueProvider : InterceptingPropertyValueProviderBase
     {

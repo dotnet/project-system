@@ -22,14 +22,14 @@
         <target state="translated">簽署組件</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|Description">
+      <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="translated">與產生簽署組件相關的屬性。</target>
+        <target state="new">Properties related to producing signing assemblies.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+      <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
-        <target state="translated">簽署</target>
+        <target state="new">Signing</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">

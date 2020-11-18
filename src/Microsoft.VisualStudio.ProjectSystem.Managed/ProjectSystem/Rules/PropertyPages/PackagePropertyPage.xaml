@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
-<Rule Name="PackagePropertyPage"
+<Rule Name="Package"
       Description="Properties related to producing NuGet packages."
       DisplayName="Package"
       PageTemplate="generic"
       Order="400"
-      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General"
+              Description="General settings for the package." />
+    <Category Name="License"
+              DisplayName="License"
+              Description="Specifies the license for the package." />
+  </Rule.Categories>
 
   <Rule.DataSource>
     <DataSource Persistence="ProjectFileWithInterception"
@@ -15,56 +24,68 @@
 
   <BoolProperty Name="GeneratePackageOnBuild"
                 DisplayName="Generate NuGet package on build"
-                Description="Produce a package file during build operations." />
-
-  <BoolProperty Name="PackageRequireLicenseAcceptance"
-                DisplayName="Require license acceptance"
-                Description="Prompt the user to accept the license when installing this package." />
+                Description="Produce a package file during build operations."
+                Category="General" />
 
   <StringProperty Name="PackageId"
                   DisplayName="Package ID"
                   Description="The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147131" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147131"
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Version"
                   DisplayName="Package Version"
                   Description="The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147132" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147132"
+                  Category="General" />
 
   <StringProperty Name="Authors"
                   DisplayName="Authors"
                   Description="A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147237" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147237"
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Company"
-                  DisplayName="Company" />
+                  DisplayName="Company"
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Package::Authors" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Product"
-                  DisplayName="Product" />
+                  DisplayName="Product"
+                  Category="General">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::AssemblyName" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="Description"
                   DisplayName="Description"
                   Description="A description of the package for UI display."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238"
+                  Category="General" />
 
   <StringProperty Name="Copyright"
                   DisplayName="Copyright"
                   Description="Copyright details for the package."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147133"/>
-
-  <StringProperty Name="PackageLicenseExpression"
-                  DisplayName="License expression"
-                  Description="An SPDX license expression, often shown in UIs like nuget.org."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239" />
-  
-  <StringProperty Name="PackageLicenseFile"
-                  DisplayName="License file"
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147133"
+                  Category="General" />
 
   <StringProperty Name="PackageProjectUrl"
                   DisplayName="Project URL"
                   Description="A URL for the package's home page, often shown in UI displays as well as nuget.org."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147240" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147240"
+                  Category="General" />
 
   <!-- TODO (tomescht): 
        We should re-think this. This property is the relative path to the icon file _within the package_; setting it does not guarantee
@@ -74,36 +95,121 @@
   <StringProperty Name="PackageIcon"
                   DisplayName="Icon file"
                   Description="The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134"
+                  Category="General" />
 
   <StringProperty Name="RepositoryUrl"
                   DisplayName="Repository URL"
                   Description="Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241"
+                  Category="General" />
 
   <StringProperty Name="RepositoryType"
                   DisplayName="Repository type"
                   Description="Specifies the type of the repository. Default is 'git'."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147241"
+                  Category="General" />
 
   <StringProperty Name="PackageTags"
                   DisplayName="Tags"
                   Description="A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147135" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147135"
+                  Category="General" />
 
   <StringProperty Name="PackageReleaseNotes"
                   DisplayName="Release notes"
                   Description="A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147242" />
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147242"
+                  Category="General" />
 
   <DynamicEnumProperty Name="NeutralLanguage"
                        DisplayName="Assembly neutral language"
                        EnumProvider="NeutralLanguageEnumProvider"
-                       MultipleValuesAllowed="False" />
+                       MultipleValuesAllowed="False"
+                       Category="General" />
 
   <StringProperty Name="AssemblyVersion"
-                  DisplayName="Assembly version" />
+                  DisplayName="Assembly version"
+                  Category="General" />
 
   <StringProperty Name="FileVersion"
-                  DisplayName="File version" />
+                  DisplayName="File version"
+                  Category="General" />
+
+  <!-- TODO add help URL? -->
+  <EnumProperty Name="PackageLicenseKind"
+                DisplayName="Package License"
+                Description="Specify a license for the project's package."
+                Category="License">
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="None"
+               DisplayName="None" />
+    <EnumValue Name="Expression"
+               DisplayName="SPDX License Expression" />
+    <EnumValue Name="File"
+               DisplayName="Embedded File" />
+  </EnumProperty>
+
+  <StringProperty Name="PackageLicenseExpression"
+                  DisplayName="License expression"
+                  Description="An SPDX license expression, often shown in UIs like nuget.org."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
+                  Category="License">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <!-- TODO add a fwlink for this action URL -->
+  <StringProperty Name="ReadAboutSpdxExpressions"
+                  DisplayName="Read about SPDX license expressions"
+                  Category="License">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="ReadAboutSpdxExpressions"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="URL" />
+          <NameValuePair Name="URL" Value="https://spdx.org/licenses/" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="PackageLicenseFile"
+                  DisplayName="License file"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
+                  Category="License"
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(eq "File" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <BoolProperty Name="PackageRequireLicenseAcceptance"
+                DisplayName="Require license acceptance"
+                Description="Prompt the user to accept the license when installing this package."
+                Category="License">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne "None" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
 </Rule>
