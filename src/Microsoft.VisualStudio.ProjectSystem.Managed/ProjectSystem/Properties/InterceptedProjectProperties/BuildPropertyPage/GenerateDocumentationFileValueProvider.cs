@@ -11,6 +11,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
+        private const string DocumentationFileMSBuildProperty = "DocumentationFile";
+
         [ImportingConstructor]
         public GenerateDocumentationFileValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
         {
@@ -23,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 if (!value)
                 {
-                    await defaultProperties.RememberValueIfCurrentlySet("DocumentationFile", _temporaryPropertyStorage);
-                    await defaultProperties.DeletePropertyAsync("DocumentationFile");
+                    await defaultProperties.RememberValueIfCurrentlySet(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
+                    await defaultProperties.DeletePropertyAsync(DocumentationFileMSBuildProperty);
                 }
                 else
                 {
-                    await defaultProperties.RestoreValueIfNotCurrentlySet("DocumentationFile", _temporaryPropertyStorage);
+                    await defaultProperties.RestoreValueIfNotCurrentlySet(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
                 }
             }
 

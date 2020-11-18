@@ -12,7 +12,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
-        // TODO should the rule file generate property and enum value constants that we can use here instead of these string literals?
+        private const string PackageLicenseFileMSBuildProperty = "PackageLicenseFile";
+        private const string PackageLicenseExpressionMSBuildProperty = "PackageLicenseExpression";
+        private const string PackageRequireLicenseAcceptanceMSBuildProperty = "PackageRequireLicenseAcceptance";
+        private const string ExpressionValue = "Expression";
+        private const string FileValue = "File";
+        private const string NoneValue = "None";
 
         [ImportingConstructor]
         public PackageLicenseKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
@@ -22,28 +27,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (unevaluatedPropertyValue == "Expression")
+            if (unevaluatedPropertyValue == ExpressionValue)
             {
-                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
-                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
-                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(PackageLicenseFileMSBuildProperty);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == "File")
+            else if (unevaluatedPropertyValue == FileValue)
             {
-                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
-                await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
-                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(PackageLicenseExpressionMSBuildProperty);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == "None")
+            else if (unevaluatedPropertyValue == NoneValue)
             {
-                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
-                await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
-                await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
-                await defaultProperties.DeletePropertyAsync("PackageRequireLicenseAcceptance");
+                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(PackageLicenseFileMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(PackageLicenseExpressionMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(PackageRequireLicenseAcceptanceMSBuildProperty);
             }
 
             return null;
@@ -61,17 +66,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private static async Task<string> ComputeValueAsync(Func<string, Task<string?>> getValue)
         {
-            if (!string.IsNullOrEmpty(await getValue("PackageLicenseExpression")))
+            if (!string.IsNullOrEmpty(await getValue(PackageLicenseExpressionMSBuildProperty)))
             {
-                return "Expression";
+                return ExpressionValue;
             }
 
-            if (!string.IsNullOrEmpty(await getValue("PackageLicenseFile")))
+            if (!string.IsNullOrEmpty(await getValue(PackageLicenseFileMSBuildProperty)))
             {
                 return "File";
             }
                 
-            return "None";
+            return NoneValue;
         }
     }
 }

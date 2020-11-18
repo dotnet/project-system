@@ -9,9 +9,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider("ResourceSpecificationKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ResourceSpecificationKindValueProvider : InterceptingPropertyValueProviderBase
     {
-        // TODO should the rule file generate property and enum value constants that we can use here instead of these string literals?
-
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
+
+        private const string Win32ResourceMSBuildProperty = "Win32Resource";
+        private const string ApplicationIconMSBuildProperty = "ApplicationIcon";
+        private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
+        private const string IconAndManifestValue = "IconAndManifest";
+        private const string ResourceFileValue = "ResourceFile";
 
         [ImportingConstructor]
         public ResourceSpecificationKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
@@ -21,20 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (unevaluatedPropertyValue == "IconAndManifest")
+            if (unevaluatedPropertyValue == IconAndManifestValue)
             {
-                await defaultProperties.RememberValueIfCurrentlySet("Win32Resource", _temporaryPropertyStorage);
-                await defaultProperties.DeletePropertyAsync("Win32Resource");
-                await defaultProperties.RestoreValueIfNotCurrentlySet("ApplicationIcon", _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet("ApplicationManifest", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(Win32ResourceMSBuildProperty);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == "ResourceFile")
+            else if (unevaluatedPropertyValue == ResourceFileValue)
             {
-                await defaultProperties.RememberValueIfCurrentlySet("ApplicationIcon", _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet("ApplicationManifest", _temporaryPropertyStorage);
-                await defaultProperties.DeletePropertyAsync("ApplicationIcon");
-                await defaultProperties.DeletePropertyAsync("ApplicationManifest");
-                await defaultProperties.RestoreValueIfNotCurrentlySet("Win32Resource", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(ApplicationIconMSBuildProperty);
+                await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
+                await defaultProperties.RestoreValueIfNotCurrentlySet(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
             }
 
             return null;
@@ -42,21 +46,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string win32Resource = await defaultProperties.GetEvaluatedPropertyValueAsync("Win32Resource");
+            string win32Resource = await defaultProperties.GetEvaluatedPropertyValueAsync(Win32ResourceMSBuildProperty);
 
             return ComputeValue(win32Resource);
         }
 
         public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string? win32Resource = await defaultProperties.GetUnevaluatedPropertyValueAsync("Win32Resource");
+            string? win32Resource = await defaultProperties.GetUnevaluatedPropertyValueAsync(Win32ResourceMSBuildProperty);
 
             return ComputeValue(win32Resource);
         }
 
         private static string ComputeValue(string? win32Resource)
         {
-            return string.IsNullOrEmpty(win32Resource) ? "IconAndManifest" : "ResourceFile";
+            return string.IsNullOrEmpty(win32Resource) ? IconAndManifestValue : ResourceFileValue;
         }
     }
 }
