@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -9,20 +10,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider("PackageLicenseKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class PackageLicenseKindValueProvider : InterceptingPropertyValueProviderBase
     {
+        private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
+
         // TODO should the rule file generate property and enum value constants that we can use here instead of these string literals?
-        
+
+        [ImportingConstructor]
+        public PackageLicenseKindValueProvider(ITemporaryPropertyStorage temporaryPropertyStorage)
+        {
+            _temporaryPropertyStorage = temporaryPropertyStorage;
+        }
+
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (unevaluatedPropertyValue == "Expression")
             {
+                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
+                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
             }
             else if (unevaluatedPropertyValue == "File")
             {
+                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
+                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
             }
             else if (unevaluatedPropertyValue == "None")
             {
+                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseFile", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet("PackageLicenseExpression", _temporaryPropertyStorage);
+                await defaultProperties.RememberValueIfCurrentlySet("PackageRequireLicenseAcceptance", _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync("PackageLicenseFile");
                 await defaultProperties.DeletePropertyAsync("PackageLicenseExpression");
                 await defaultProperties.DeletePropertyAsync("PackageRequireLicenseAcceptance");
