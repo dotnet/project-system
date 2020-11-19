@@ -23,13 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly AsyncLazy<IImmutableSet<IOutputGroup>> _outputGroups;
         private readonly IProjectAccessor _projectAccessor;
         private readonly ConfiguredProject _configuredProject;
+        private readonly IUnconfiguredProjectCommonServices _commonServices;
 
         [ImportingConstructor]
-        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject, IProjectThreadingService projectThreadingService)
+        internal PublishItemsOutputGroupProvider(IProjectAccessor projectAccessor, ConfiguredProject configuredProject, IProjectThreadingService projectThreadingService, IUnconfiguredProjectCommonServices commonServices)
         {
             _projectAccessor = projectAccessor;
             _configuredProject = configuredProject;
             _outputGroups = new AsyncLazy<IImmutableSet<IOutputGroup>>(GetOutputGroupMetadataAsync, projectThreadingService.JoinableTaskFactory);
+            _commonServices = commonServices;
         }
 
         public Task<IImmutableSet<IOutputGroup>> OutputGroups
@@ -54,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private Task<ImmutableHashSet<string>> GetProjectTargetsAsync()
         {
             // CACHE_PRODUCTIZE
-            if (_configuredProject.ProjectVersion.CompareTo(DataflowUtilities.CacheModeVersion) == 0)
+            if (_commonServices.CacheApplicable && _configuredProject.ProjectVersion.CompareTo(DataflowUtilities.CacheModeVersion) == 0)
             {
                 if (_configuredProject.Services.ProjectSnapshotService != null)
                 {

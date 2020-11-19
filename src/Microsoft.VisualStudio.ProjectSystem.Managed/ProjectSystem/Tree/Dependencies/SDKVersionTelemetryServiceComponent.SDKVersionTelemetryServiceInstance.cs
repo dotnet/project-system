@@ -38,8 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     // Wait for the project to be loaded so that we don't prematurely load the active configuration
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
-                    // CACHE_HACK
-                    if ((long)DataflowUtilities.CacheModeVersion == 0)
+                    // CACHE_PRODUCTIZE
+                    if (_projectVsServices.CacheApplicable && (long)DataflowUtilities.CacheModeVersion == 0)
                     {
                         return;
                     }

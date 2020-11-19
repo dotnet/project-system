@@ -13,40 +13,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// </summary>
     internal static class DataflowUtilities
     {
-        private static bool s_hasCacheRegistryBeenChecked;
-        private static long s_cacheVersion = 100000L;
+        private const long CacheVersion = 0L;
 
-        public static IComparable CacheModeVersion
-        {
-            get
-            {
-                if (!s_hasCacheRegistryBeenChecked)
-                {
-                    if (IsCacheModeEnabled())
-                    {
-                        s_cacheVersion = 0;
-                    }
-
-                    s_hasCacheRegistryBeenChecked = true;
-                }
-
-                return s_cacheVersion;
-            }
-        }
-        private static bool IsCacheModeEnabled()
-        {
-            string keyPath = @"Software\Microsoft\Windows\CurrentVersion\CPSCacheModePreview";
-
-            using (Win32.RegistryKey key = Win32.Registry.CurrentUser.OpenSubKey(keyPath))
-            {
-                if (key != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public static IComparable CacheModeVersion => CacheVersion;
 
         /// <summary>
         ///     Links to the specified <see cref="Action{T}" /> to receive a cross-sectional slice of project
