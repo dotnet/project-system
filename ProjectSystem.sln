@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientSetup", "setup\ClientSetup\ClientSetup.csproj", "{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSetup", "setup\SharedSetup\SharedSetup.csproj", "{AF7B8014-E638-4B69-BCB5-4438D02433EE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.projitems*{02578366-dfa9-4827-93f7-08e2ae5ce6a4}*SharedItemsImports = 13
@@ -125,6 +127,10 @@ Global
 		{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF7B8014-E638-4B69-BCB5-4438D02433EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7B8014-E638-4B69-BCB5-4438D02433EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF7B8014-E638-4B69-BCB5-4438D02433EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7B8014-E638-4B69-BCB5-4438D02433EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +153,7 @@ Global
 		{90F64FB6-87AA-4841-A272-AD363608E17B} = {1FF0293B-6808-4BB1-8370-1FE222986654}
 		{857E59F7-3FE9-4A12-A841-DFC4707C0DE5} = {7349958E-C619-481F-BB2A-8A4CA2E349D9}
 		{7E1F08D6-F034-4183-AB8D-A9AC7FFE9EAD} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
+		{AF7B8014-E638-4B69-BCB5-4438D02433EE} = {AC8DB8AE-AC9F-4503-83C6-255B66C318C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B652C28-D1FD-4885-A0CA-4704C54E78E7}
