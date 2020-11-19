@@ -15,7 +15,7 @@ Setting the `CPS_DiagnosticRuntime` environment variable to
 
 
 This environment variable is set automatically when launching the
-`ProjectSystemSetup` project within Visual Studio, via its
+`ServerSetup` project within Visual Studio, via its
 `launchSettings.json` file.
 
 To enable this logging in other situations you may, for example:
