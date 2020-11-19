@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.Proj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.UnitTests.csproj", "{469B50E9-FE67-459E-8AFA-44CBE523DBF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudioEditorsSetup", "setup\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalOnlySetup", "setup\LocalOnlySetup\LocalOnlySetup.csproj", "{49705330-A4F5-47EA-BB10-3B783CE91AEA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.TestServices.UnitTests.csproj", "{369DCA0F-A079-4D0C-8B32-53879199B681}"
 EndProject

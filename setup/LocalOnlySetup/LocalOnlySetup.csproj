@@ -11,7 +11,7 @@
     <ExtensionInstallationFolder>Microsoft\VisualStudio\Editors</ExtensionInstallationFolder>
 
     <!-- VS Setup -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.Editors</VisualStudioInsertionComponent>
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed.LocalOnly</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj">

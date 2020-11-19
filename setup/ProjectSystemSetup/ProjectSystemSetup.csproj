@@ -28,7 +28,7 @@
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup;GetCopyToOutputDirectoryItems;SatelliteDllsProjectOutputGroup</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
-    <ProjectReference Include="..\VisualStudioEditorsSetup\VisualStudioEditorsSetup.csproj">
+    <ProjectReference Include="..\LocalOnlySetup\LocalOnlySetup.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
