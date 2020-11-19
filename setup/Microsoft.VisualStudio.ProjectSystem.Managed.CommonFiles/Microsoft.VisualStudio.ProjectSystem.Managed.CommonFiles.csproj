@@ -4,7 +4,7 @@
   
   <PropertyGroup>
     <!-- VS Insertion -->
-    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed</VisualStudioInsertionComponent>
+    <VisualStudioInsertionComponent>Microsoft.VisualStudio.ProjectSystem.Managed.Server</VisualStudioInsertionComponent>
   </PropertyGroup>
   <ItemGroup>
     <!-- Depend on projects producing XAML rules included in this Willow package -->
