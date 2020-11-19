@@ -25,12 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 if (!value)
                 {
-                    await defaultProperties.RememberValueIfCurrentlySet(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
+                    await defaultProperties.SaveValueIfCurrentlySetAsync(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
                     await defaultProperties.DeletePropertyAsync(DocumentationFileMSBuildProperty);
                 }
                 else
                 {
-                    await defaultProperties.RestoreValueIfNotCurrentlySet(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
+                    await defaultProperties.RestoreValueIfNotCurrentlySetAsync(DocumentationFileMSBuildProperty, _temporaryPropertyStorage);
                 }
             }
 

@@ -25,20 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (unevaluatedPropertyValue == IconAndManifestValue)
+            if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, IconAndManifestValue))
             {
-                await defaultProperties.RememberValueIfCurrentlySet(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(Win32ResourceMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == ResourceFileValue)
+            else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, ResourceFileValue))
             {
-                await defaultProperties.RememberValueIfCurrentlySet(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationIconMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationIconMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(Win32ResourceMSBuildProperty, _temporaryPropertyStorage);
             }
 
             return null;

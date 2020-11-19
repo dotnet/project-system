@@ -27,25 +27,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (unevaluatedPropertyValue == ExpressionValue)
+            if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, ExpressionValue))
             {
-                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseFileMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == FileValue)
+            else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, FileValue))
             {
-                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseExpressionMSBuildProperty);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RestoreValueIfNotCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
             }
-            else if (unevaluatedPropertyValue == NoneValue)
+            else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, NoneValue))
             {
-                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
-                await defaultProperties.RememberValueIfCurrentlySet(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseFileMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(PackageLicenseExpressionMSBuildProperty, _temporaryPropertyStorage);
+                await defaultProperties.SaveValueIfCurrentlySetAsync(PackageRequireLicenseAcceptanceMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseFileMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(PackageLicenseExpressionMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(PackageRequireLicenseAcceptanceMSBuildProperty);
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (!string.IsNullOrEmpty(await getValue(PackageLicenseFileMSBuildProperty)))
             {
-                return "File";
+                return FileValue;
             }
                 
             return NoneValue;

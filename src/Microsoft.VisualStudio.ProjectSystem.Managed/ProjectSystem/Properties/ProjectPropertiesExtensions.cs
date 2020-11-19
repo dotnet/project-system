@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// Saves the unevaluated value of <paramref name="propertyName"/>, if any, to <paramref name="storage"/>.
         /// </summary>
-        public static async Task RememberValueIfCurrentlySet(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
+        public static async Task SaveValueIfCurrentlySetAsync(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
         {
             string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
             if (!Strings.IsNullOrEmpty(currentPropertyValue))
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <summary>
         /// If <paramref name="propertyName"/> is not currently set restores the saved value, if any, from <paramref name="storage"/>.
         /// </summary>
-        public static async Task RestoreValueIfNotCurrentlySet(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
+        public static async Task RestoreValueIfNotCurrentlySetAsync(this IProjectProperties properties, string propertyName, ITemporaryPropertyStorage storage)
         {
             string? currentPropertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
             if (string.IsNullOrEmpty(currentPropertyValue)
