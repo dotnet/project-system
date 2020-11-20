@@ -1,9 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -27,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache _, Rule rule))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is PropertyPageProviderState propertyPageState)
             {
                 try
                 {
-                    foreach (IEntityValue categoryValue in CategoryDataProducer.CreateCategoryValues(request.RequestData, rule, _properties))
+                    foreach (IEntityValue categoryValue in CategoryDataProducer.CreateCategoryValues(request.RequestData, propertyPageState.Rule, _properties))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
                     }
