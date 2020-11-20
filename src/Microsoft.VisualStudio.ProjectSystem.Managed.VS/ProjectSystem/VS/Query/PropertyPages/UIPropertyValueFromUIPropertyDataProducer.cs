@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -26,15 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache cache, Rule schema, string propertyName))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is PropertyProviderState propertyState)
             {
                 try
                 {
                     IEnumerable<IEntityValue> propertyValues = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
                         request.RequestData,
-                        cache,
-                        schema,
-                        propertyName,
+                        propertyState.Cache,
+                        propertyState.ContainingRule,
+                        propertyState.PropertyName,
                         _properties);
 
                     foreach (IEntityValue propertyValue in propertyValues)
