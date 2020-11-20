@@ -6,7 +6,6 @@
     <DisplayName>C#, Visual Basic and F# project systems</DisplayName>
     <Description xml:space="preserve">C#, Visual Basic and F# project systems.</Description>
     <PackageId>Microsoft.VisualStudio.ProjectSystem.Managed</PackageId>
-    <AllowClientRole>true</AllowClientRole>
   </Metadata>
   <Installation SystemComponent="true" Experimental="true">
     <InstallationTarget Version="[15.0,]" Id="Microsoft.VisualStudio.Pro" />
@@ -23,10 +22,8 @@
   <Assets>
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed" Path="|Microsoft.VisualStudio.ProjectSystem.Managed|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="ProjectSelectors.pkgdef" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS;PkgdefProjectOutputGroup|" />
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client" Path="|Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client;PkgdefProjectOutputGroup|" />
   </Assets>
 </PackageManifest>

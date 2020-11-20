@@ -7,4 +7,3 @@ using Microsoft.VisualStudio;
 // via the Roslyn Insertion tool when it consumes artifacts\Debug\DevDivInsertionFiles\DependentAssemblyVersions.csv.
 [assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed")]
 [assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed.VS")]
-[assembly: ProvideCodeBaseBindingRedirection("Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client")]

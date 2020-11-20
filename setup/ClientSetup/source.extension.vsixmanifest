@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="F6B5EACA-7FA1-4591-8D40-A38234763621" Version="|%CurrentProject%;GetBuildVersion|" Language="en-US" Publisher="Microsoft" />
-    <DisplayName>VisualStudio Editors</DisplayName>
-    <Description>Microsoft VisualStudio Editors</Description>
-    <PackageId>Microsoft.VisualStudio.Editors</PackageId>
+    <Identity Id="D7919C6A-F103-4065-B59D-A29D155D7E99" Version="|%CurrentProject%;GetBuildVersion|" Language="en-US" Publisher="Microsoft" />
+    <DisplayName>Client pkg for C#, VB and F# project systems</DisplayName>
+    <Description xml:space="preserve">Client pkg for C#, VB and F# project systems.</Description>
+    <PackageId>Microsoft.VisualStudio.ProjectSystemClient</PackageId>
     <AllowClientRole>true</AllowClientRole>
   </Metadata>
   <Installation SystemComponent="true" Experimental="true">
@@ -20,7 +20,7 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="Microsoft.VisualStudio.Editors" Path="|Microsoft.VisualStudio.Editors;PkgdefProjectOutputGroup|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
   </Assets>
 </PackageManifest>

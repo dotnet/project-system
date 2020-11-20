@@ -27,9 +27,9 @@
       "strongName": null,
       "values": [
         "VSSetup/ProjectSystem.vsix",
-        "VSSetup/VisualStudioEditorsSetup.vsix",
+        "VSSetup/LocalOnlySetup.vsix",
         "VSSetup/Insertion/ProjectSystem.vsix",
-        "VSSetup/Insertion/VisualStudioEditorsSetup.vsix",
+        "VSSetup/Insertion/LocalOnlySetup.vsix",
         "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix"
       ]
     },
