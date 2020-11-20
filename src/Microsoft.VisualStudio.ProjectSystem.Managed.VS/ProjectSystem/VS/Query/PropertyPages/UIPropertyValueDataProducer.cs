@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 };
             }
 
-            ((IEntityValueFromProvider)newUIPropertyValue).ProviderState = (configuration, property);
+            ((IEntityValueFromProvider)newUIPropertyValue).ProviderState = new PropertyValueProviderState(configuration, property);
 
             return newUIPropertyValue;
         }

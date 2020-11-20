@@ -27,7 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             Requires.NotNull(request, nameof(request));
 
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (ProjectConfiguration _, ProjectSystem.Properties.IEnumProperty enumProperty))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is PropertyValueProviderState providerState
+                && providerState.Property is ProjectSystem.Properties.IEnumProperty enumProperty)
             {
                 try
                 {

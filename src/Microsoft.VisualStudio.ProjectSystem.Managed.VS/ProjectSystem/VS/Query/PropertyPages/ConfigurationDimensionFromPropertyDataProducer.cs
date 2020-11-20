@@ -29,11 +29,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
             Requires.NotNull(request, nameof(request));
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is PropertyValueProviderState providerState)
             {
                 try
                 {
-                    foreach (IEntityValue dimension in ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(request.QueryExecutionContext.EntityRuntime, configuration, property, _properties))
+                    IEnumerable<IEntityValue> dimensions = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(
+                        request.QueryExecutionContext.EntityRuntime,
+                        providerState.ProjectConfiguration,
+                        providerState.Property,
+                        _properties);
+
+                    foreach (IEntityValue dimension in dimensions)
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(dimension, request, ProjectModelZones.Cps));
                     }
