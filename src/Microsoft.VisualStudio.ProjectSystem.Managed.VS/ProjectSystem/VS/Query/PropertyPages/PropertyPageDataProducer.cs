@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newPropertyPage.Kind = rule.PageTemplate;
             }
 
-            ((IEntityValueFromProvider)newPropertyPage).ProviderState = (cache, rule);
+            ((IEntityValueFromProvider)newPropertyPage).ProviderState = new PropertyPageProviderState(cache, rule);
 
             return newPropertyPage;
         }

@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         }
 
         [Fact]
-        public void WhenCreatingAModel_ProviderStateConsistsOfCacheAndRule()
+        public void WhenCreatingAModel_ProviderStateIsTheCorrectType()
         {
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 properties);
 
-            Assert.IsType<(IPropertyPageQueryCache, Rule)>(propertyPage.ProviderState);
+            Assert.IsType<PropertyPageProviderState>(propertyPage.ProviderState);
         }
 
         [Fact]

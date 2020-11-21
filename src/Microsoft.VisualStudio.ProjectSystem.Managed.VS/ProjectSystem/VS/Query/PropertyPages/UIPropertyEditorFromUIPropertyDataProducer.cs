@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -26,11 +25,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
         {
             Requires.NotNull(request, nameof(request));
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache, Rule schema, string propertyName))
+            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is PropertyProviderState propertyState)
             {
                 try
                 {
-                    foreach (IEntityValue propertyEditor in UIPropertyEditorDataProducer.CreateEditorValues(request.RequestData, schema, propertyName, _properties))
+                    foreach (IEntityValue propertyEditor in UIPropertyEditorDataProducer.CreateEditorValues(request.RequestData, propertyState.ContainingRule, propertyState.PropertyName, _properties))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyEditor, request, ProjectModelZones.Cps));
                     }
