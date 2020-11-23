@@ -14,6 +14,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class QueryDataByIdProducerBase : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
+        protected static readonly Task<IEntityValue?> NullEntityValue = Task.FromResult<IEntityValue?>(null);
+
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
         {
             foreach (EntityIdentity requestId in request.RequestData)
