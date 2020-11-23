@@ -137,6 +137,7 @@
                   Description="Sets the .ico file that you want to use as your program icon."
                   Subtype="file">
     <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
@@ -153,6 +154,7 @@
                   HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
     <EnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
@@ -176,6 +178,7 @@
                   HasConfigurationCondition="False" />
     </StringProperty.DataSource>
     <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind;Application::ApplicationManifestKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and 
@@ -183,7 +186,6 @@
             (eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest"))
         </NameValuePair.Value>
       </NameValuePair>
-      <NameValuePair Name="DependsOn" Value="Application::ApplicationManifestKind" />
     </StringProperty.Metadata>
   </StringProperty>
 
@@ -194,6 +196,7 @@
                   Category="Resources"
                   Subtype="file">
     <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "ResourceFile")</NameValuePair.Value>
       </NameValuePair>
