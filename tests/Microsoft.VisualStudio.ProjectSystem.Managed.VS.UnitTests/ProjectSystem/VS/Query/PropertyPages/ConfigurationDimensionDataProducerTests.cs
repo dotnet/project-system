@@ -42,12 +42,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(includeAllProperties: true);
 
-            var entityRuntimeModel = IEntityRuntimeModelFactory.Create();
+            var parentEntity = IEntityWithIdFactory.Create("ParentKey", "ParentKeyValue");
             var configuration = ProjectConfigurationFactory.Create("Alpha|Beta|Gamma", "A|B|C");
             var property = IPropertyFactory.Create(
                 dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true));
 
-            var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(entityRuntimeModel, configuration, property, properties);
+            var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(parentEntity, configuration, property, properties);
 
             // We can't guarantee an order for the dimensions, so just check that all the expected values are present.
             Assert.Contains(results, entity => entity is ConfigurationDimensionValue dimension && dimension.Name == "Alpha" && dimension.Value == "A");
@@ -60,12 +60,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateConfigurationDimensionAvailableStatus(includeAllProperties: true);
 
-            var entityRuntimeModel = IEntityRuntimeModelFactory.Create();
+            var parentEntity = IEntityWithIdFactory.Create("ParentKey", "ParentKeyValue");
             var configuration = ProjectConfigurationFactory.Create("Alpha|Beta|Gamma", "A|B|C");
             var property = IPropertyFactory.Create(
                 dataSource: IDataSourceFactory.Create(hasConfigurationCondition: false));
 
-            var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(entityRuntimeModel, configuration, property, properties);
+            var results = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(parentEntity, configuration, property, properties);
 
             Assert.Empty(results);
         }
