@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="IPropertyPage"/> based on an ID.
     /// </summary>
-    internal class PropertyPageByIdDataProducer : QueryDataByIdProducerBase<PropertyPageByIdDataProducer.KeyData>
+    internal class PropertyPageByIdDataProducer : QueryDataByIdProducerBase
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
@@ -27,40 +27,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, KeyData keyData)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
         {
-            return PropertyPageDataProducer.CreatePropertyPageValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                _queryCacheProvider,
-                keyData.ProjectPath,
-                keyData.PropertyPageName,
-                _properties);
-        }
-
-        protected override KeyData? TryExtactKeyDataOrNull(EntityIdentity requestId)
-        {
-            if (requestId.KeysCount == 2
-                && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
+            if (id.KeysCount == 2
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
             {
-                return new KeyData(path, propertyPageName);
+                return PropertyPageDataProducer.CreatePropertyPageValueAsync(
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    _queryCacheProvider,
+                    projectPath,
+                    propertyPageName,
+                    _properties);
             }
 
-            return null;
-        }
-
-        internal class KeyData
-        {
-            public KeyData(string projectPath, string propertyPageName)
-            {
-                ProjectPath = projectPath;
-                PropertyPageName = propertyPageName;
-            }
-
-            public string ProjectPath { get; }
-            public string PropertyPageName { get; }
+            return NullEntityValue;
+            
         }
     }
 }

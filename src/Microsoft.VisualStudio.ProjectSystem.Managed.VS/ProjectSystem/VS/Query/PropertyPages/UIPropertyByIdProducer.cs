@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="IUIProperty"/> based on an ID.
     /// </summary>
-    internal class UIPropertyByIdProducer : QueryDataByIdProducerBase<UIPropertyByIdProducer.KeyData>
+    internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
     { 
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
@@ -25,44 +25,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, KeyData keyData)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
         {
-            return UIPropertyDataProducer.CreateUIPropertyValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                _queryCacheProvider,
-                keyData.ProjectPath,
-                keyData.PropertyPageName,
-                keyData.PropertyName,
-                _properties);
-        }
-
-        protected override KeyData? TryExtactKeyDataOrNull(EntityIdentity requestId)
-        {
-            if (requestId.KeysCount == 3
-                && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
+            if (id.KeysCount == 3
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
             {
-                return new KeyData(path, propertyPageName, propertyName);
+                return UIPropertyDataProducer.CreateUIPropertyValueAsync(
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    _queryCacheProvider,
+                    projectPath,
+                    propertyPageName,
+                    propertyName,
+                    _properties);
             }
 
-            return null;
-        }
-
-        internal sealed class KeyData
-        {
-            public KeyData(string projectPath, string propertyPageName, string propertyName)
-            {
-                ProjectPath = projectPath;
-                PropertyPageName = propertyPageName;
-                PropertyName = propertyName;
-            }
-
-            public string ProjectPath { get; }
-            public string PropertyPageName { get; }
-            public string PropertyName { get; }
+            return NullEntityValue;   
         }
     }
 }

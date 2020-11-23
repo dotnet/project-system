@@ -12,33 +12,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles the boilerplate of retrieving an <see cref="IEntityValue"/> based on an ID.
     /// </summary>
-    internal abstract class QueryDataByIdProducerBase<T> : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
+    internal abstract class QueryDataByIdProducerBase : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
     {
+        protected static readonly Task<IEntityValue?> NullEntityValue = Task.FromResult<IEntityValue?>(null);
+
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
         {
             foreach (EntityIdentity requestId in request.RequestData)
             {
-                if (TryExtactKeyDataOrNull(requestId) is T keyData)
+                try
                 {
-                    try
+                    IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext.EntityRuntime, requestId);
+                    if (entityValue is not null)
                     {
-                        IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext.EntityRuntime, requestId, keyData);
-                        if (entityValue is not null)
-                        {
-                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(entityValue, request, ProjectModelZones.Cps));
-                        }
+                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(entityValue, request, ProjectModelZones.Cps));
                     }
-                    catch (Exception ex)
-                    {
-                        request.QueryExecutionContext.ReportError(ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    request.QueryExecutionContext.ReportError(ex);
                 }
             }
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
         }
 
-        protected abstract T? TryExtactKeyDataOrNull(EntityIdentity requestId);
-        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, T keyData);
+        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id);
     }
 }

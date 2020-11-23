@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="IUIPropertyEditor"/> base on an ID.
     /// </summary>
-    internal class UIPropertyEditorByIdDataProducer : QueryDataByIdProducerBase<UIPropertyEditorByIdDataProducer.KeyData>
+    internal class UIPropertyEditorByIdDataProducer : QueryDataByIdProducerBase
     {
         private readonly IUIPropertyEditorPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
@@ -23,47 +23,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _projectService = projectService;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, KeyData keyData)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
         {
-            return UIPropertyEditorDataProducer.CreateEditorValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                keyData.ProjectPath,
-                keyData.PropertyPageName,
-                keyData.PropertyName,
-                keyData.EditorName,
-                _properties);
-        }
-
-        protected override KeyData? TryExtactKeyDataOrNull(EntityIdentity requestId)
-        {
-            if (requestId.KeysCount == 4
-                && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.EditorName, out string editorName))
+            if (id.KeysCount == 4
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName)
+                && id.TryGetValue(ProjectModelIdentityKeys.EditorName, out string editorName))
             {
-                return new KeyData(path, propertyPageName, propertyName, editorName);
+                return UIPropertyEditorDataProducer.CreateEditorValueAsync(
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    projectPath,
+                    propertyPageName,
+                    propertyName,
+                    editorName,
+                    _properties);
             }
 
-            return null;
-        }
-
-        internal sealed class KeyData
-        {
-            public KeyData(string projectPath, string propertyPageName, string propertyName, string editorName)
-            {
-                ProjectPath = projectPath;
-                PropertyPageName = propertyPageName;
-                PropertyName = propertyName;
-                EditorName = editorName;
-            }
-
-            public string ProjectPath { get; }
-            public string PropertyPageName { get; }
-            public string PropertyName { get; }
-            public string EditorName { get; }
+            return NullEntityValue;
         }
     }
 }

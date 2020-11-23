@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving an <see cref="ICategory"/> based on an ID.
     /// </summary>
-    internal class CategoryByIdDataProducer : QueryDataByIdProducerBase<CategoryByIdDataProducer.KeyData>
+    internal class CategoryByIdDataProducer : QueryDataByIdProducerBase
     {
         private readonly ICategoryPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
@@ -21,42 +21,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _projectService = projectService;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, KeyData keyData)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
         {
-            return CategoryDataProducer.CreateCategoryValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                keyData.ProjectPath,
-                keyData.PropertyPageName,
-                keyData.CategoryName,
-                _properties);
-        }
-
-        protected override KeyData? TryExtactKeyDataOrNull(EntityIdentity requestId)
-        {
-            if (requestId.KeysCount == 3
-                && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && requestId.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string categoryName))
+            if (id.KeysCount == 3
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string categoryName))
             {
-                return new KeyData(projectPath, propertyPageName, categoryName);
+                return CategoryDataProducer.CreateCategoryValueAsync(
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    projectPath,
+                    propertyPageName,
+                    categoryName,
+                    _properties);
             }
 
-            return null;
-        }
-        internal class KeyData
-        {
-            public KeyData(string projectPath, string propertyPageName, string categoryName)
-            {
-                ProjectPath = projectPath;
-                PropertyPageName = propertyPageName;
-                CategoryName = categoryName;
-            }
-
-            public string ProjectPath { get; }
-            public string PropertyPageName { get; }
-            public string CategoryName { get; }
+            return NullEntityValue;
         }
     }
 }
