@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 try
                 {
                     IEnumerable<IEntityValue> dimensions = ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(
-                        request.QueryExecutionContext.EntityRuntime,
+                        request.RequestData,
                         providerState.ProjectConfiguration,
                         providerState.Property,
                         _properties);

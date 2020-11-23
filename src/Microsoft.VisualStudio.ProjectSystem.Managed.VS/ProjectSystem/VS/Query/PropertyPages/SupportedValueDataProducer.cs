@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newSupportedValue;
         }
 
-        public static async Task<IEnumerable<IEntityValue>> CreateSupportedValuesAsync(IEntityRuntimeModel runtimeModel, ProjectSystem.Properties.IEnumProperty enumProperty, ISupportedValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEnumerable<IEntityValue>> CreateSupportedValuesAsync(IEntityValue parent, ProjectSystem.Properties.IEnumProperty enumProperty, ISupportedValuePropertiesAvailableStatus requestedProperties)
         {
             ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues = await enumProperty.GetAdmissibleValuesAsync();
 
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 foreach (ProjectSystem.Properties.IEnumValue value in enumValues)
                 {
-                    IEntityValue supportedValue = CreateSupportedValue(runtimeModel, value, requestedProperties);
+                    IEntityValue supportedValue = CreateSupportedValue(parent.EntityRuntime, value, requestedProperties);
                     yield return supportedValue;
                 }
             }

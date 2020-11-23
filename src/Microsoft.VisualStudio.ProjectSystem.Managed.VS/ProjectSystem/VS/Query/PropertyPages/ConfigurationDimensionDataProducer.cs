@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newProjectConfigurationDimension;
         }
 
-        public static IEnumerable<IEntityValue> CreateProjectConfigurationDimensions(IEntityRuntimeModel runtimeModel, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateProjectConfigurationDimensions(IEntityValue parent, ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property, IConfigurationDimensionPropertiesAvailableStatus requestedProperties)
         {
             // If the property is configuration-independent then report no dimensions;
             // the parent property value applies to all configurations.
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             foreach (KeyValuePair<string, string> dimension in configuration.Dimensions)
             {
-                IEntityValue projectConfigurationDimension = CreateProjectConfigurationDimension(runtimeModel, dimension, requestedProperties);
+                IEntityValue projectConfigurationDimension = CreateProjectConfigurationDimension(parent.EntityRuntime, dimension, requestedProperties);
                 yield return projectConfigurationDimension;
             }
         }

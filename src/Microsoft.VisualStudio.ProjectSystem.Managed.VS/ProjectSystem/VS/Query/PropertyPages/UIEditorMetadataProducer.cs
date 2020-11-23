@@ -30,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newMetadata;
         }
 
-        public static IEnumerable<IEntityValue> CreateMetadataValues(IEntityRuntimeModel runtimeModel, ValueEditor editor, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateMetadataValues(IEntityValue parent, ValueEditor editor, IUIEditorMetadataPropertiesAvailableStatus requestedProperties)
         {
             foreach (NameValuePair metadataPair in editor.Metadata)
             {
-                IEntityValue metadataValue = CreateMetadataValue(runtimeModel, metadataPair, requestedProperties);
+                IEntityValue metadataValue = CreateMetadataValue(parent.EntityRuntime, metadataPair, requestedProperties);
                 yield return metadataValue;
             }
         }

@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach (IEntityValue metadataValue in UIEditorMetadataProducer.CreateMetadataValues(request.RequestData.EntityRuntime, editor, _properties))
+                    foreach (IEntityValue metadataValue in UIEditorMetadataProducer.CreateMetadataValues(request.RequestData, editor, _properties))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(metadataValue, request, ProjectModelZones.Cps));
                     }

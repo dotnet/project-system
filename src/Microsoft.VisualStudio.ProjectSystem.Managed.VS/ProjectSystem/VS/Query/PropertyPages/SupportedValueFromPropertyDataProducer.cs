@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    IEnumerable<IEntityValue> supportedValues = await SupportedValueDataProducer.CreateSupportedValuesAsync(request.RequestData.EntityRuntime, enumProperty, _properties);
+                    IEnumerable<IEntityValue> supportedValues = await SupportedValueDataProducer.CreateSupportedValuesAsync(request.RequestData, enumProperty, _properties);
                     foreach (IEntityValue supportedValue in supportedValues)
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(supportedValue, request, ProjectModelZones.Cps));
