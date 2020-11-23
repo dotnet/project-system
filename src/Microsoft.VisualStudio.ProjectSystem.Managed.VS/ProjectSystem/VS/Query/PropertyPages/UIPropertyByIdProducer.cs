@@ -1,20 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles retrieving an <see cref="IUIProperty"/> based on an ID.
     /// </summary>
-    internal class UIPropertyByIdProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
-    {
+    internal class UIPropertyByIdProducer : QueryDataByIdProducerBase<UIPropertyByIdProducer.KeyData>
+    { 
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
         private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
@@ -28,42 +25,44 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id, KeyData keyData)
         {
-            Requires.NotNull(request, nameof(request));
+            return UIPropertyDataProducer.CreateUIPropertyValueAsync(
+                runtimeModel,
+                id,
+                _projectService,
+                _queryCacheProvider,
+                keyData.ProjectPath,
+                keyData.PropertyPageName,
+                keyData.PropertyName,
+                _properties);
+        }
 
-            foreach (EntityIdentity requestId in request.RequestData)
+        protected override KeyData? TryExtactKeyDataOrNull(EntityIdentity requestId)
+        {
+            if (requestId.KeysCount == 3
+                && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
+                && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
+                && requestId.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
             {
-                if (requestId.KeysCount == 3
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
-                {
-                    try
-                    {
-                        IEntityValue? propertyValue = await UIPropertyDataProducer.CreateUIPropertyValueAsync(
-                            request.QueryExecutionContext.EntityRuntime,
-                            requestId,
-                            _projectService,
-                            _queryCacheProvider,
-                            path,
-                            propertyPageName,
-                            propertyName,
-                            _properties);
-
-                        if (propertyValue is not null)
-                        {
-                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        request.QueryExecutionContext.ReportError(ex);
-                    }
-                }
+                return new KeyData(path, propertyPageName, propertyName);
             }
 
-            await ResultReceiver.OnRequestProcessFinishedAsync(request);
+            return null;
+        }
+
+        internal sealed class KeyData
+        {
+            public KeyData(string projectPath, string propertyPageName, string propertyName)
+            {
+                ProjectPath = projectPath;
+                PropertyPageName = propertyPageName;
+                PropertyName = propertyName;
+            }
+
+            public string ProjectPath { get; }
+            public string PropertyPageName { get; }
+            public string PropertyName { get; }
         }
     }
 }
