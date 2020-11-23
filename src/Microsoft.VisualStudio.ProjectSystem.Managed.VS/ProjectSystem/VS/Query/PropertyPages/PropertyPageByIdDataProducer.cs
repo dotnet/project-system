@@ -34,13 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
             {
                 return PropertyPageDataProducer.CreatePropertyPageValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                _queryCacheProvider,
-                projectPath,
-                propertyPageName,
-                _properties);
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    _queryCacheProvider,
+                    projectPath,
+                    propertyPageName,
+                    _properties);
             }
 
             return NullEntityValue;

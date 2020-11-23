@@ -32,14 +32,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && id.TryGetValue(ProjectModelIdentityKeys.EditorName, out string editorName))
             {
                 return UIPropertyEditorDataProducer.CreateEditorValueAsync(
-                runtimeModel,
-                id,
-                _projectService,
-                projectPath,
-                propertyPageName,
-                propertyName,
-                editorName,
-                _properties);
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    projectPath,
+                    propertyPageName,
+                    propertyName,
+                    editorName,
+                    _properties);
             }
 
             return NullEntityValue;
