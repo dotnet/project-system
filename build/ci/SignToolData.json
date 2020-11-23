@@ -9,7 +9,8 @@
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll"
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.Shared.dll"
       ]
     },
     {
@@ -28,8 +29,12 @@
       "values": [
         "VSSetup/ProjectSystem.vsix",
         "VSSetup/LocalOnlySetup.vsix",
+        "VSSetup/ClientSetup.vsix",
+        "VSSetup/SharedSetup.vsix",
         "VSSetup/Insertion/ProjectSystem.vsix",
         "VSSetup/Insertion/LocalOnlySetup.vsix",
+        "VSSetup/Insertion/ClientSetup.vsix",
+        "VSSetup/Insertion/SharedSetup.vsix",
         "VSSetup/Insertion/Microsoft.VisualStudio.ProjectSystem.Managed.CommonFiles.vsix"
       ]
     },
