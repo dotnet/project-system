@@ -18,62 +18,7 @@
   <ItemGroup>
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ApplicationDesignerPanel.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ApplicationDesignerRootComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ApplicationDesignerView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ApplicationDesignerWindowPaneControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ProjectDesignerTabButton.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\ProjectDesignerTabControl.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\SpecialFileCustomView.Designer.vb">
-      <DependentUpon>SpecialFileCustomView.vb</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ApplicationDesigner\SpecialFileCustomView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\BaseDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\ErrorControl.Designer.vb">
-      <DependentUpon>ErrorControl.vb</DependentUpon>    
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\ErrorControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPageDesigner\PropPageDesignerRootComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="PropPageDesigner\PropPageDesignerView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\PropPageHostDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PropPages\PropPageUserControlBase.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\VSThemedLinkLabel.vb">
-      <SubType>Component</SubType>
     </Compile>  
-    <Compile Update="Resources\Designer.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Designer.resx</DependentUpon>
-    </Compile>    
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="ApplicationDesigner\ApplicationDesignerView.resx">
