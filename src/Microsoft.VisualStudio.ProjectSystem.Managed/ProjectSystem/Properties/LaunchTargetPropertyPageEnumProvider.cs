@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
@@ -68,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     .ToArray<IEnumValue>();
             }
 
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => TaskResult.Null<IEnumValue>();
         }
     }
 }

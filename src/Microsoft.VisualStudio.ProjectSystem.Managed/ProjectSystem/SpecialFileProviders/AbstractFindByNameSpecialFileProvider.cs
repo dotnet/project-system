@@ -2,6 +2,7 @@
 
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 {
@@ -30,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
         {
             string? projectPath = provider.GetRootedAddNewItemDirectory(root);
             if (projectPath == null)  // Root has DisableAddItem
-                return Task.FromResult<string?>(null);
+                return TaskResult.Null<string>();
 
             string path = Path.Combine(projectPath, _fileName);
 
