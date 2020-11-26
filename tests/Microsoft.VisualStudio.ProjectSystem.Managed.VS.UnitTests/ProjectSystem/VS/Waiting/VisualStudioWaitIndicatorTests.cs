@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
 
                 result = token;
 
-                return Task.FromResult("");
+                return TaskResult.EmptyString;
             });
 
             Assert.True(result!.Value.IsCancellationRequested);

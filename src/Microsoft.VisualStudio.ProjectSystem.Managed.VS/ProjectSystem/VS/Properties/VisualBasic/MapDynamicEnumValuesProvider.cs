@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
 {
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.VisualBasic
                 return Task.FromResult<IEnumValue?>(value);
             }
 
-            return Task.FromResult<IEnumValue?>(null);
+            return TaskResult.Null<IEnumValue>();
         }
     }
 }
