@@ -19,8 +19,14 @@ namespace Microsoft.VisualStudio.Threading
         /// </summary>
         public static Task<bool> True => TplExtensions.TrueTask;
         
+        /// <summary>
+        ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with result of the empty string.
+        /// </summary>
         public static Task<string> EmptyString => Task.FromResult("");
 
+        /// <summary>
+        ///     Returns a <see cref="Task{TResult}"/> of type <typeparamref name="T" /> that's completed successfully with the result of <see langword="null"/>.
+        /// </summary>
         public static Task<T?> Null<T>() where T : class => NullTaskResult<T>.Instance;
 
         private static class NullTaskResult<T> where T : class
