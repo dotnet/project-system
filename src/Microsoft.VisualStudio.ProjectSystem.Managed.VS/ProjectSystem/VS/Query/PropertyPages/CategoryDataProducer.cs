@@ -17,22 +17,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class CategoryDataProducer
     {
-        public static IEntityValue CreateCategoryValue(IEntityValue parent, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateCategoryValue(IEntityValue parent, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(category, nameof(category));
+
+            string categoryName = rule.PageTemplate == "commandNameBasedDebugger"
+                ? DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(rule.Name, category.Name)
+                : category.Name;
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
-                    new(ProjectModelIdentityKeys.CategoryName, category.Name)
+                    new(ProjectModelIdentityKeys.CategoryName, categoryName)
                 });
 
-            return CreateCategoryValue(parent.EntityRuntime, identity, category, order, requestedProperties);
+            return CreateCategoryValue(parent.EntityRuntime, identity, rule, category, order, requestedProperties);
         }
 
-        public static IEntityValue CreateCategoryValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateCategoryValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(category, nameof(category));
             var newCategory = new CategoryValue(runtimeModel, id, new CategoryPropertiesAvailableStatus());
@@ -44,7 +48,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                newCategory.Name = category.Name;
+                if (rule.PageTemplate == "commandNameBasedDebugger")
+                {
+                    newCategory.Name = DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(rule.Name, category.Name);
+                }
+                else
+                {
+                    newCategory.Name = category.Name;
+                }
             }
 
             if (requestedProperties.Order)
@@ -57,12 +68,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newCategory;
         }
 
-        public static IEnumerable<IEntityValue> CreateCategoryValues(IEntityValue parent, Rule rule, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateCategoryValues(IEntityValue parent, Rule rule, List<Rule> debugChildRules, ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            foreach ((int index, Category category) in rule.EvaluatedCategories.WithIndices())
+            int index = 0;
+            foreach (Category category in rule.EvaluatedCategories)
             {
-                IEntityValue categoryValue = CreateCategoryValue(parent, category, index, requestedProperties);
+                IEntityValue categoryValue = CreateCategoryValue(parent, rule, category, index, requestedProperties);
                 yield return categoryValue;
+                index++;
+            }
+
+            foreach (Rule childRule in debugChildRules)
+            {
+                foreach (Category category in childRule.EvaluatedCategories)
+                {
+                    IEntityValue categoryValue = CreateCategoryValue(parent, childRule, category, index, requestedProperties);
+                    yield return categoryValue;
+                    index++;
+                }
             }
         }
 
@@ -75,6 +98,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string categoryName,
             ICategoryPropertiesAvailableStatus requestedProperties)
         {
+            (propertyPageName, categoryName) = DebugUtilities.ConvertDebugPageAndCategoryToRealPageAndCategory(propertyPageName, categoryName);
+
             if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule)
@@ -89,7 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
                     {
-                        IEntityValue categoryValue = CreateCategoryValue(runtimeModel, id, category, index, requestedProperties);
+                        IEntityValue categoryValue = CreateCategoryValue(runtimeModel, id, rule, category, index, requestedProperties);
                         return categoryValue;
                     }
                 }

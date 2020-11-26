@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IEnumerable<(string dimension, string value)> dimensions,
             Func<IProperty, Task> setValueAsync)
         {
+            (pageName, propertyName) = DebugUtilities.ConvertDebugPageAndPropertyToRealPageAndProperty(pageName, propertyName);
+
             _queryCacheProvider = queryCacheProvider;
             _pageName = pageName;
             _propertyName = propertyName;

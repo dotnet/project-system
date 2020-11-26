@@ -22,11 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
 
+            string propertyName = property.ContainingRule.PageTemplate == "commandNameBasedDebugger"
+                ? DebugUtilities.ConvertRealPageAndPropertyToDebugProperty(property.ContainingRule.Name, property.Name)
+                : property.Name;
+
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
-                    new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
+                    new(ProjectModelIdentityKeys.UIPropertyName, propertyName)
                 });
 
             return CreateUIPropertyValue(parent.EntityRuntime, identity, cache, property, order, requestedProperties);
@@ -39,7 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                newUIProperty.Name = property.Name;
+                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
+                {
+                    newUIProperty.Name = DebugUtilities.ConvertRealPageAndPropertyToDebugProperty(property.ContainingRule.Name, property.Name);
+                }
+                else
+                {
+                    newUIProperty.Name = property.Name;
+                }
             }
 
             if (requestedProperties.DisplayName)
@@ -64,7 +75,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.CategoryName)
             {
-                newUIProperty.CategoryName = property.Category;
+                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
+                {
+                    newUIProperty.CategoryName = DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(property.ContainingRule.Name, property.Category);
+                }
+                else
+                {
+                    newUIProperty.CategoryName = property.Category;
+                }
             }
 
             if (requestedProperties.Order)
@@ -94,12 +112,33 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (requestedProperties.DependsOn)
             {
                 string? dependsOnString = property.GetMetadataValueOrNull("DependsOn");
+
+                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
+                {
+                    dependsOnString = dependsOnString is not null
+                        ? dependsOnString + ";"
+                        : string.Empty;
+
+                    dependsOnString = dependsOnString + "ParentDebugPropertyPage::ActiveLaunchProfile;ParentDebugPropertyPage::LaunchTarget";
+                }
+
                 newUIProperty.DependsOn = dependsOnString ?? string.Empty;
             }
 
             if (requestedProperties.VisibilityCondition)
             {
                 string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
+
+                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger"
+                    && property.ContainingRule.Metadata.TryGetValue("CommandName", out object commandNameObject)
+                    && commandNameObject is string commandName)
+                {
+                    var commandNameCondition = $"(eq (evaluated \"ParentDebugPropertyPage\" \"LaunchTarget\") \"{property.ContainingRule.Name}\")";
+                    visibilityCondition = visibilityCondition is not null
+                        ? $"(and {visibilityCondition} {commandNameCondition})"
+                        : commandNameCondition;
+                }
+
                 if (visibilityCondition is null)
                 {
                     newUIProperty.VisibilityCondition = string.Empty;
@@ -115,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newUIProperty;
         }
 
-        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, List<Rule>? childDebugRules, IUIPropertyPropertiesAvailableStatus properties)
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
@@ -123,6 +162,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     IEntityValue propertyValue = CreateUIPropertyValue(parent, cache, property, index, properties);
                     yield return propertyValue;
+                }
+            }
+
+            if (childDebugRules is not null)
+            {
+                foreach (Rule childRule in childDebugRules)
+                {
+                    foreach ((int index, BaseProperty property) in childRule.Properties.WithIndices())
+                    {
+                        if (property.Visible)
+                        {
+                            IEntityValue propertyValue = CreateUIPropertyValue(parent, cache, property, index, properties);
+                            yield return propertyValue;
+                        }
+                    }
                 }
             }
         }
@@ -137,6 +191,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string propertyName,
             IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
+            (propertyPageName, propertyName) = DebugUtilities.ConvertDebugPageAndPropertyToRealPageAndProperty(propertyPageName, propertyName);
+
             if (projectService.GetLoadedProject(path) is UnconfiguredProject project
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule
