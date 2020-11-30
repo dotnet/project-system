@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var cache = IPropertyPageQueryCacheFactory.Create();
             var property = new TestProperty { Name = "MyProperty" };
             var order = 42;
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(parentEntity, cache, property, order, properties);
 
@@ -44,6 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 Category = "general",
                 DataSource = new DataSource { HasConfigurationCondition = false }
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
@@ -94,8 +96,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 new TestProperty { Name = "Gamma" },
             });
             rule.EndInit();
+            var debugChildRules = new List<Rule>();
 
-            var result = UIPropertyDataProducer.CreateUIPropertyValues(parentEntity, cache, rule, properties);
+            var result = UIPropertyDataProducer.CreateUIPropertyValues(parentEntity, cache, rule, debugChildRules, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {
@@ -183,6 +186,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 Metadata = new List<NameValuePair>()
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
@@ -204,6 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new() { Name = "DependsOn", Value = "" }
                 }
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
@@ -225,6 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new() { Name = "DependsOn", Value = "Alpha;Beta;Gamma" }
                 }
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
@@ -239,15 +245,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var runtimeModel = IEntityRuntimeModelFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
             var cache = IPropertyPageQueryCacheFactory.Create();
+
             var property = new TestProperty
             {
                 Metadata = new List<NameValuePair>()
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
             Assert.Equal(expected: string.Empty, actual: result.VisibilityCondition);
         }
+
+        
 
         [Fact]
         public void WhenAPropertyHasAVisibilityCondition_ItIsReturned()
@@ -264,10 +274,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new() { Name = "VisibilityCondition", Value = "true or false"}
                 }
             };
+            InitializeFakeRuleForProperty(property);
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
             Assert.Equal(expected: "true or false", actual: result.VisibilityCondition);
+        }
+
+        /// <remarks>
+        /// The only way to set the <see cref="BaseProperty.ContainingRule" /> for a property
+        /// is to actually create a rule, add the property to the rule, and go through the
+        /// initialization for the rule.
+        /// </remarks>
+        private static void InitializeFakeRuleForProperty(TestProperty property)
+        {
+            var rule = new Rule();
+            rule.BeginInit();
+            rule.Properties.Add(property);
+            rule.EndInit();
         }
 
         private class TestProperty : BaseProperty

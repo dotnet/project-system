@@ -22,9 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
 
-            string propertyName = property.ContainingRule.PageTemplate == "commandNameBasedDebugger"
-                ? DebugUtilities.ConvertRealPageAndPropertyToDebugProperty(property.ContainingRule.Name, property.Name)
-                : property.Name;
+            string propertyName = DebugUtilities.GetDebugPropertyNameOrNull(property) ?? property.Name;
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -43,14 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
-                {
-                    newUIProperty.Name = DebugUtilities.ConvertRealPageAndPropertyToDebugProperty(property.ContainingRule.Name, property.Name);
-                }
-                else
-                {
-                    newUIProperty.Name = property.Name;
-                }
+                newUIProperty.Name = DebugUtilities.GetDebugPropertyNameOrNull(property) ?? property.Name;
             }
 
             if (requestedProperties.DisplayName)
@@ -75,14 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.CategoryName)
             {
-                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
-                {
-                    newUIProperty.CategoryName = DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(property.ContainingRule.Name, property.Category);
-                }
-                else
-                {
-                    newUIProperty.CategoryName = property.Category;
-                }
+                newUIProperty.CategoryName = DebugUtilities.GetDebugCategoryNameOrNull(property.ContainingRule, property.Category) ?? property.Category;
             }
 
             if (requestedProperties.Order)
@@ -113,14 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 string? dependsOnString = property.GetMetadataValueOrNull("DependsOn");
 
-                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger")
-                {
-                    dependsOnString = dependsOnString is not null
-                        ? dependsOnString + ";"
-                        : string.Empty;
-
-                    dependsOnString = dependsOnString + "ParentDebugPropertyPage::ActiveLaunchProfile;ParentDebugPropertyPage::LaunchTarget";
-                }
+                dependsOnString = DebugUtilities.UpdateDebuggerDependsOnMetadata(property.ContainingRule, dependsOnString);
 
                 newUIProperty.DependsOn = dependsOnString ?? string.Empty;
             }
@@ -129,24 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
 
-                if (property.ContainingRule.PageTemplate == "commandNameBasedDebugger"
-                    && property.ContainingRule.Metadata.TryGetValue("CommandName", out object commandNameObject)
-                    && commandNameObject is string commandName)
-                {
-                    var commandNameCondition = $"(eq (evaluated \"ParentDebugPropertyPage\" \"LaunchTarget\") \"{property.ContainingRule.Name}\")";
-                    visibilityCondition = visibilityCondition is not null
-                        ? $"(and {visibilityCondition} {commandNameCondition})"
-                        : commandNameCondition;
-                }
+                visibilityCondition = DebugUtilities.UpdateDebuggerVisibilityConditionMetadata(visibilityCondition, property.ContainingRule);
 
-                if (visibilityCondition is null)
-                {
-                    newUIProperty.VisibilityCondition = string.Empty;
-                }
-                else
-                {
-                    newUIProperty.VisibilityCondition = visibilityCondition;
-                }
+                newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
             }
 
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, property.Name);
@@ -199,7 +161,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                 && property.Visible)
             {
-                var context = queryCacheProvider.CreateCache(project);
+                IPropertyPageQueryCache context = queryCacheProvider.CreateCache(project);
                 IEntityValue propertyValue = CreateUIPropertyValue(runtimeModel, requestId, context, property, index, requestedProperties);
                 return propertyValue;
             }

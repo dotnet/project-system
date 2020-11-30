@@ -22,9 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(category, nameof(category));
 
-            string categoryName = rule.PageTemplate == "commandNameBasedDebugger"
-                ? DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(rule.Name, category.Name)
-                : category.Name;
+            string categoryName = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
@@ -48,14 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                if (rule.PageTemplate == "commandNameBasedDebugger")
-                {
-                    newCategory.Name = DebugUtilities.ConvertRealPageAndCategoryToDebugCategory(rule.Name, category.Name);
-                }
-                else
-                {
-                    newCategory.Name = category.Name;
-                }
+                newCategory.Name = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
             }
 
             if (requestedProperties.Order)
