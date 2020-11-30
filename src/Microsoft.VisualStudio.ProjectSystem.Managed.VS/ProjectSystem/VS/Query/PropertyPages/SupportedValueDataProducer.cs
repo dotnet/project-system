@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -31,17 +32,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newSupportedValue;
         }
 
-        public static async Task<IEnumerable<IEntityValue>> CreateSupportedValuesAsync(IEntityRuntimeModel runtimeModel, ProjectSystem.Properties.IEnumProperty enumProperty, ISupportedValuePropertiesAvailableStatus requestedProperties)
+        public static async Task<IEnumerable<IEntityValue>> CreateSupportedValuesAsync(IEntityValue parent, ProjectSystem.Properties.IProperty property, ISupportedValuePropertiesAvailableStatus requestedProperties)
         {
-            ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues = await enumProperty.GetAdmissibleValuesAsync();
+            if (property is ProjectSystem.Properties.IEnumProperty enumProperty)
+            {
+                ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues = await enumProperty.GetAdmissibleValuesAsync();
 
-            return createSupportedValues();
+                return createSupportedValues(enumValues);
+            }
 
-            IEnumerable<IEntityValue> createSupportedValues()
+            return Enumerable.Empty<IEntityValue>();
+
+            IEnumerable<IEntityValue> createSupportedValues(ReadOnlyCollection<ProjectSystem.Properties.IEnumValue> enumValues)
             {
                 foreach (ProjectSystem.Properties.IEnumValue value in enumValues)
                 {
-                    IEntityValue supportedValue = CreateSupportedValue(runtimeModel, value, requestedProperties);
+                    IEntityValue supportedValue = CreateSupportedValue(parent.EntityRuntime, value, requestedProperties);
                     yield return supportedValue;
                 }
             }

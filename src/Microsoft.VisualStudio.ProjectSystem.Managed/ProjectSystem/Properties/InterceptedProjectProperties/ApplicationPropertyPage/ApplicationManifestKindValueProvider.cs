@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -56,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             string noManifestPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(NoManifestMSBuildProperty);
-            if (noManifestPropertyValue?.Equals("true", StringComparison.InvariantCultureIgnoreCase) == true)
+            if (StringComparers.PropertyLiteralValues.Equals(noManifestPropertyValue, "true"))
             {
                 return NoManifestValue;
             }
@@ -74,55 +73,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectProperties defaultProperties,
             IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (string.Equals(unevaluatedPropertyValue, DefaultManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, DefaultManifestValue))
             {
-                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
-            else if (string.Equals(unevaluatedPropertyValue, NoManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, NoManifestValue))
             {
-                await SaveCurrentApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
-            else if (string.Equals(unevaluatedPropertyValue, CustomManifestValue, StringComparison.InvariantCultureIgnoreCase))
+            else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, CustomManifestValue))
             {
-                await RestoreApplicationManifestValueAsync(defaultProperties);
-
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
 
             // We don't want to store a value for this so return null.
             return null;
-        }
-
-        /// <summary>
-        /// Save the current value of the "ApplicationManifest" MSBuild property, if any.
-        /// </summary>
-        private async Task SaveCurrentApplicationManifestValueAsync(IProjectProperties defaultProperties)
-        {
-            string? currentApplicationManifestPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty);
-            if (!string.IsNullOrEmpty(currentApplicationManifestPropertyValue))
-            {
-                _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestMSBuildProperty, currentApplicationManifestPropertyValue!);
-            }
-        }
-
-        /// <summary>
-        /// If the "ApplicationManifest" MSBuild property does not currently have a value
-        /// then restore the previously saved value, if any.
-        /// </summary>
-        private async Task RestoreApplicationManifestValueAsync(IProjectProperties defaultProperties)
-        {
-            string? currentApplicationManifestPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(ApplicationManifestMSBuildProperty);
-            if (string.IsNullOrEmpty(currentApplicationManifestPropertyValue)
-                && _temporaryPropertyStorage.GetPropertyValue(ApplicationManifestMSBuildProperty) is string previousValue)
-            {
-                await defaultProperties.SetPropertyValueAsync(ApplicationManifestMSBuildProperty, previousValue);
-            }
         }
     }
 }

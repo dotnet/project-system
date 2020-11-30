@@ -2,27 +2,25 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal abstract class NoOpInterceptingPropertyValueProvider : InterceptingPropertyValueProviderBase
     {
-        private static readonly Task<string?> s_nullResult = Task.FromResult<string?>(null);
-        private static readonly Task<string> s_emptyStringResult = Task.FromResult("");
-
         public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            return s_nullResult;
+            return TaskResult.Null<string>();
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return s_emptyStringResult;
+            return TaskResult.EmptyString;
         }
 
         public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            return s_emptyStringResult;
+            return TaskResult.EmptyString;
         }
     }
 }

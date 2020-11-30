@@ -1,13 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -17,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// The <see cref="ProjectSystem.Properties.IProperty"/> comes from the parent <see cref="IUIPropertyValue"/>
     /// </remarks>
-    internal class ConfigurationDimensionFromPropertyDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class ConfigurationDimensionFromPropertyDataProducer : QueryDataFromProviderStateProducerBase<PropertyValueProviderState>
     {
         private readonly IConfigurationDimensionPropertiesAvailableStatus _properties;
 
@@ -26,25 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyValueProviderState providerState)
         {
-            Requires.NotNull(request, nameof(request));
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (ProjectConfiguration configuration, ProjectSystem.Properties.IProperty property))
-            {
-                try
-                {
-                    foreach (IEntityValue dimension in ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(request.QueryExecutionContext.EntityRuntime, configuration, property, _properties))
-                    {
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(dimension, request, ProjectModelZones.Cps));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    request.QueryExecutionContext.ReportError(ex);
-                }
-            }
-
-            await ResultReceiver.OnRequestProcessFinishedAsync(request);
+            return Task.FromResult(ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(
+                parent,
+                providerState.ProjectConfiguration,
+                providerState.Property,
+                _properties));
         }
     }
 }

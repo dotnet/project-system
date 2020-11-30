@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
 
-            Assert.IsType<(IPropertyPageQueryCache, Rule, string)>(((IEntityValueFromProvider)result).ProviderState);
+            Assert.IsType<PropertyProviderState>(((IEntityValueFromProvider)result).ProviderState);
         }
 
         [Fact]

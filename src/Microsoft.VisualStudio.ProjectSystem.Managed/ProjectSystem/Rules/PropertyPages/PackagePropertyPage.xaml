@@ -159,6 +159,7 @@
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147239"
                   Category="License">
     <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
       </NameValuePair>
@@ -195,6 +196,7 @@
                   Category="License"
                   Subtype="file">
     <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(eq "File" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
       </NameValuePair>
@@ -206,6 +208,7 @@
                 Description="Prompt the user to accept the license when installing this package."
                 Category="License">
     <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(ne "None" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
       </NameValuePair>

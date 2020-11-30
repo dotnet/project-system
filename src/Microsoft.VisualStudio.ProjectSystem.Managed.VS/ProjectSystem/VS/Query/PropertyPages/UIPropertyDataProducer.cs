@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             }
 
-            ((IEntityValueFromProvider)newUIProperty).ProviderState = (cache, property.ContainingRule, property.Name);
+            ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, property.Name);
 
             return newUIProperty;
         }
