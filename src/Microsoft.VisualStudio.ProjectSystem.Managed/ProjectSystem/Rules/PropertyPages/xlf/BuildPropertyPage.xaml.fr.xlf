@@ -12,6 +12,11 @@
         <target state="translated">Autoriser le code unsafe</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
+        <source>pointers</source>
+        <target state="new">pointers</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
         <target state="new">Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</target>
@@ -20,6 +25,11 @@
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
         <source>Check for arithmetic overflow</source>
         <target state="new">Check for arithmetic overflow</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
+        <source>checked;unchecked</source>
+        <target state="new">checked;unchecked</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
@@ -50,6 +60,11 @@
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
         <target state="translated">Optimiser le code</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
+        <source>optimise;optimisation</source>
+        <target state="new">optimise;optimisation</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
