@@ -1,0 +1,8 @@
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.BeforeOpeningFile(projectItem As EnvDTE.ProjectItem) -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.New() -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.ProjectFinishedGenerating(project As EnvDTE.Project) -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.ProjectItemFinishedGenerating(projectItem As EnvDTE.ProjectItem) -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.RunFinished() -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.RunStarted(automationObject As Object, replacementsDictionary As System.Collections.Generic.Dictionary(Of String, String), runKind As Microsoft.VisualStudio.TemplateWizard.WizardRunKind, customParams As Object()) -> Void
+Microsoft.VisualStudio.Editors.ResourceEditor.ResxItemWizard.ShouldAddProjectItem(filePath As String) -> Boolean
