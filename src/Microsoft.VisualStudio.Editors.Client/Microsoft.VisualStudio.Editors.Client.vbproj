@@ -6,8 +6,8 @@
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net472</TargetFramework>
     <IsVsixProject>true</IsVsixProject>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
     <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
 
@@ -16,12 +16,26 @@
     <Description>Implementation of some designers and project property page editors in VisualStudio Client.</Description>
     <Summary>Editors implementation for Project Properties in the Client</Summary>
     <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
-  </PropertyGroup>
+  </PropertyGroup>  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Interop.14.0.DesignTime" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
   <!--<ItemGroup>
+    <None Remove="Resources\ResourceEditor\BlankBmp.bmp" />
+    <None Remove="Resources\ResourceEditor\BlankGif.gif" />
+    <None Remove="Resources\ResourceEditor\BlankIcon.ico" />
+    <None Remove="Resources\ResourceEditor\BlankJpeg.jpg" />
+    <None Remove="Resources\ResourceEditor\BlankPng.png" />
+    <None Remove="Resources\ResourceEditor\BlankTiff.tif" />
+    <None Remove="Resources\ResourceEditor\BlankWav.wav" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="ResourceEditor\DialogQueryName.resx">
@@ -55,8 +69,8 @@
     <EmbeddedResource Include="Resources\ResourceEditor\BlankWav.wav">
       <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankWav</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>-->
-  <!--<ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="ResourceEditor\DialogQueryName.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -78,15 +92,9 @@
     <Compile Update="ResourceEditor\ResourceStringTable.vb">
       <SubType>Component</SubType>
     </Compile>
-  </ItemGroup>-->
-  <!--<ItemGroup>
-    <None Include="**\*.xlf" />
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="Menus.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
-      <SubType>Designer</SubType>
-    </VSCTCompile>
+    <None Include="**\*.xlf" />
   </ItemGroup>-->
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
