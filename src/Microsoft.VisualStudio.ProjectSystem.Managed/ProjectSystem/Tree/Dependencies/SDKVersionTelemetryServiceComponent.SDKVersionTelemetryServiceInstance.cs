@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     await _unconfiguredProjectTasksService.ProjectLoadedInHost;
 
                     // CACHE_PRODUCTIZE
-                    if (_projectVsServices.CacheApplicable && (long)DataflowUtilities.CacheModeVersion == 0)
+                    if (_projectVsServices.CacheApplicable)
                     {
                         return;
                     }
