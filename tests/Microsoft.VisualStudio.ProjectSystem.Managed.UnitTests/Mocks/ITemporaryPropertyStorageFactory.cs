@@ -10,10 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         public static ITemporaryPropertyStorage Create(Dictionary<string, string>? values = null)
         {
-            if (values is null)
-            {
-                values = new();
-            }
+            values ??= new();
 
             var mock = new Mock<ITemporaryPropertyStorage>();
 
