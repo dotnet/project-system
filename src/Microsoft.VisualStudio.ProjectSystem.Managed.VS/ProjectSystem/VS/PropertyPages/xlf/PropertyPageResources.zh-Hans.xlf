@@ -242,6 +242,11 @@
         <target state="translated">在选择“新建配置文件”的情况下，创建配置文件并返回调试属性页</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">选中可使文本框指定绝对或相对 URl</target>

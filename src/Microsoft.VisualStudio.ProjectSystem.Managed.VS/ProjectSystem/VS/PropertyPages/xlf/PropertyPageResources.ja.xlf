@@ -242,6 +242,11 @@
         <target state="translated">プロファイルを作成し、新しいプロファイルを選択した状態でデバッグ プロパティ ページに戻ります</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">オンにすると、絶対 URI または相対 URI を指定するテキスト ボックスが有効になります</target>

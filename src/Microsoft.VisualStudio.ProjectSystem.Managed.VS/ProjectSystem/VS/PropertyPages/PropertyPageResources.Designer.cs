@@ -133,6 +133,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2.
+        /// </summary>
+        public static string chkJSWebView2DebuggingText {
+            get {
+                return ResourceManager.GetString("chkJSWebView2DebuggingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking enables a textbox to specify an absolute or relative URl.
         /// </summary>
         public static string chkLaunchBrowserHelpText {

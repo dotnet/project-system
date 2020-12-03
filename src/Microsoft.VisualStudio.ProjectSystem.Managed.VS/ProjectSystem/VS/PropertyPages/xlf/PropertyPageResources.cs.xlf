@@ -242,6 +242,11 @@
         <target state="translated">Vytvoří profil a vrátí se na stránku vlastností ladění s novým vybraným profilem.</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">Zaškrtnutí povolí do textového pole zadat absolutní nebo relativní identifikátor URl.</target>

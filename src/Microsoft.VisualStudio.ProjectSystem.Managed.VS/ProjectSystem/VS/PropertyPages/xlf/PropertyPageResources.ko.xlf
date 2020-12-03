@@ -242,6 +242,11 @@
         <target state="translated">새 프로필을 만들어 선택하고 디버그 속성 페이지로 돌아갑니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">선택하면 텍스트 상자를 사용하여 절대 또는 상대 URL을 지정할 수 있습니다.</target>

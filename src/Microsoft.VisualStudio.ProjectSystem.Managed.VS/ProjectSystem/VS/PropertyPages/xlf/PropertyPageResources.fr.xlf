@@ -242,6 +242,11 @@
         <target state="translated">Créer le profil et revenir à la page de propriétés de débogage avec le nouveau profil sélectionné</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">Quand la case est cochée, permet de spécifier une URI absolue ou relative via une zone de texte</target>

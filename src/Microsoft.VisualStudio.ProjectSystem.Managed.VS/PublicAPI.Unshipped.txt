@@ -1,2 +1,3 @@
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider3
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider3.CanBeStartupProjectAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile) -> System.Threading.Tasks.Task<bool>!
+~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkJSWebView2DebuggingText.get -> string

@@ -242,6 +242,11 @@
         <target state="translated">Utwórz profil i wróć na stronę właściwości debugowania z wybranym nowym profilem</target>
         <note />
       </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <note />
+      </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
         <target state="translated">Zaznaczenie spowoduje włączenie pola tekstowego, w którym będzie można określić bezwzględny lub względny identyfikator URl</target>

@@ -273,4 +273,7 @@
   <data name="AuthenticationMode" xml:space="preserve">
     <value>Au_thentication mode:</value>
   </data>
+  <data name="chkJSWebView2DebuggingText" xml:space="preserve">
+    <value>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</value>
+  </data>
 </root>
