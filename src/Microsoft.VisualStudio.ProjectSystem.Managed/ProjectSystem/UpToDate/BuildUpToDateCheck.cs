@@ -604,18 +604,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            // Start the stopwatch now, so we include any lock acquisition in the timing
+            var sw = Stopwatch.StartNew();
+
             return ExecuteUnderLockAsync(IsUpToDateInternalAsync, cancellationToken);
 
             async Task<bool> IsUpToDateInternalAsync(CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
-                var sw = Stopwatch.StartNew();
+                // Short-lived cache of timestamp by path
+                var timestampCache = new TimestampCache(_fileSystem);
 
                 await InitializeAsync(token);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
+                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
 
                 try
                 {
@@ -625,9 +629,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         return false;
                     }
-
-                    // Short-lived cache of timestamp by path
-                    var timestampCache = new TimestampCache(_fileSystem);
 
                     if (!CheckInputsAndOutputs(logger, timestampCache, state, token) ||
                         !CheckMarkers(logger, timestampCache, state) ||

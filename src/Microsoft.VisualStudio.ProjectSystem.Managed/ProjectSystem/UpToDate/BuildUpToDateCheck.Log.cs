@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.VisualStudio.Telemetry;
 
@@ -12,13 +13,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             private readonly TextWriter? _writer;
             private readonly LogLevel _requestedLogLevel;
+            private readonly Stopwatch _stopwatch;
+            private readonly TimestampCache _timestampCache;
             private readonly string _fileName;
             private readonly ITelemetryService _telemetryService;
 
-            public Log(TextWriter? writer, LogLevel requestedLogLevel, string projectPath, ITelemetryService telemetryService)
+            public Log(TextWriter? writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService)
             {
                 _writer = writer;
                 _requestedLogLevel = requestedLogLevel;
+                _stopwatch = stopwatch;
+                _timestampCache = timestampCache;
                 _telemetryService = telemetryService;
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
@@ -52,14 +57,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public bool Fail(string reason, string message, params object[] values)
             {
+                _stopwatch.Stop();
+
                 Minimal(message, values);
-                _telemetryService.PostProperty(TelemetryEventName.UpToDateCheckFail, TelemetryPropertyName.UpToDateCheckFailReason, reason);
+
+                _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckFail, new[]
+                {
+                    (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
+                    (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count)
+                });
+
                 return false;
             }
 
             public void UpToDate()
             {
-                _telemetryService.PostEvent(TelemetryEventName.UpToDateCheckSuccess);
+                _stopwatch.Stop();
+
+                _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
+                {
+                    (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
+                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count)
+                });
+
                 Info("Project is up to date.");
             }
         }
