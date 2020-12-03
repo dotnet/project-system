@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../OpenFileWarningDialog.resx">
+    <body>
+      <trans-unit id="alwaysCheckCheckBox.Text">
+        <source>&amp;Always ask before opening this file type.</source>
+        <target state="translated">&amp;Preguntar siempre antes de abrir este tipo de archivo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="messageLabel.Text">
+        <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
+        <target state="translated">El Editor de recursos administrados no admite el tipo de archivo solicitado. ¿Quiere abrir el editor predeterminado para"{0}"?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonOK.Text">
+        <source>OK</source>
+        <target state="translated">Aceptar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="buttonCancel.Text">
+        <source>Cancel</source>
+        <target state="translated">Cancelar</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="messageLabel2.Text">
+        <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
+        <target state="translated">Algunos archivos pueden contener contenido malintencionado.  Solo debe responder Sí si confía en el origen de este archivo.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="$this.Text">
+        <source>Open File</source>
+        <target state="translated">Abrir Arquivo</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
