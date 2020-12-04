@@ -372,6 +372,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             CurrentSnapshot = newSnapshot;
 
+            // Suppress the project execution context so the data flow doesn't accidentally
+            // capture it. This prevents us from leaking any active project system locks into
+            // the data flow, which can lead to asserts, failures, and crashes later if it
+            // causes code to execute that doesn't expect to run under a lock. Also, if a
+            // consumer of the data flow needs a lock they should be acquiring it themself
+            // rather than depending on inheriting it from the data flow.
             using (_commonProjectServices.ThreadingService.SuppressProjectExecutionContext())
             {
                 _broadcastBlock?.Post(newSnapshot);
