@@ -372,7 +372,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             CurrentSnapshot = newSnapshot;
 
-            _broadcastBlock?.Post(newSnapshot);
+            using (_commonProjectServices.ThreadingService.SuppressProjectExecutionContext())
+            {
+                _broadcastBlock?.Post(newSnapshot);
+            }
         }
 
         /// <summary>
