@@ -414,7 +414,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         public bool SupportNativeDebugging       => ActiveProviderSupportsProperty(UIProfilePropertyName.NativeDebugging);
         public bool SupportSqlDebugging          => ActiveProviderSupportsProperty(UIProfilePropertyName.SqlDebugging);
-        public bool SupportJSWebView2Debugging => ActiveProviderSupportsProperty(UIProfilePropertyName.JSWebView2Debugging);
+        public bool SupportJSWebView2Debugging   => ActiveProviderSupportsProperty(UIProfilePropertyName.JSWebView2Debugging);
         public bool SupportsExecutable           => ActiveProviderSupportsProperty(UIProfilePropertyName.Executable);
         public bool SupportsArguments            => ActiveProviderSupportsProperty(UIProfilePropertyName.Arguments);
         public bool SupportsWorkingDirectory     => ActiveProviderSupportsProperty(UIProfilePropertyName.WorkingDirectory);

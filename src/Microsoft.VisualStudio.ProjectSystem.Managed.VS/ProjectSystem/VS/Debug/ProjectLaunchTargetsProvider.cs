@@ -402,21 +402,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             if (resolvedProfile.IsJSWebView2DebuggingEnabled())
-              {
-                  // If JS Debugger is selected, we would need to change the launch debugger to that one
-                  settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
+            {
+                // If JS Debugger is selected, we would need to change the launch debugger to that one
+                settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
 
-                  // Create the launch params needed for the JS debugger
-                  var debuggerLaunchOptions = new JObject(
-                          new JProperty("type", "pwa-msedge"),
-                          new JProperty("runtimeExecutable", finalExecutable),
-                          new JProperty("webRoot", workingDir), // We use the Working Directory debugging option as the WebRoot, to map the urls to files on disk
-                          new JProperty("useWebView", true),
-                          new JProperty("runtimeArgs", finalArguments)
-                      );
+                // Create the launch params needed for the JS debugger
+                var debuggerLaunchOptions = new JObject(
+                        new JProperty("type", "pwa-msedge"),
+                        new JProperty("runtimeExecutable", finalExecutable),
+                        new JProperty("webRoot", workingDir), // We use the Working Directory debugging option as the WebRoot, to map the urls to files on disk
+                        new JProperty("useWebView", true),
+                        new JProperty("runtimeArgs", finalArguments)
+                    );
 
-                  settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
-              }
+                settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
+            }
 
             return settings;
         }
