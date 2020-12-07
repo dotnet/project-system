@@ -79,9 +79,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         // all matching configurations.
                         if (await propertyPageCache.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
                         {
-                            foreach (ProjectConfiguration knownConfiguration in knownConfigurations.Where(config => config.MatchesDimensions(_dimensions)))
+                            foreach (ProjectConfiguration knownConfiguration in knownConfigurations)
                             {
-                                if (await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
+                                if (knownConfiguration.MatchesDimensions(_dimensions)
+                                    && await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
                                 {
                                     projectRules.Add(boundRule);
                                 }
