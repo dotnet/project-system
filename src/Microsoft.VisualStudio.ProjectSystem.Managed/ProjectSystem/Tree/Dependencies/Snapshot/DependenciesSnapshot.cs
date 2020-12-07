@@ -41,14 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<TargetFramework> targetFrameworks,
             TargetFramework? activeTargetFramework,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string>? projectItemSpecs)
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
-            Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
@@ -63,9 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousTargetedSnapshot,
                 changes,
                 catalogs,
-                snapshotFilters,
-                subTreeProviderByProviderType,
-                projectItemSpecs);
+                snapshotFilters);
 
             if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
             {

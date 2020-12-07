@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using Microsoft.VisualStudio.Imaging;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
@@ -12,7 +13,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         {
             public override string ProviderType => "someProvider";
 
-            public override DependencyIconSet IconSet => new(Icon, ExpandedIcon, UnresolvedIcon, UnresolvedExpandedIcon);
+            public override DependencyIconSet IconSet => new(
+                KnownMonikers.Accordian,
+                KnownMonikers.Bug,
+                KnownMonikers.CrashDumpFile,
+                KnownMonikers.DataCenter,
+                KnownMonikers.Edit,
+                KnownMonikers.F1Help);
 
             public TestableDependencyModel(
                 string caption,

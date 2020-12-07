@@ -35,8 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
         /// to the given <see cref="DependenciesChangesBuilder"/>.
         /// </summary>
         public void Handle(
-            IProjectChangeDescription evaluation,
-            IProjectChangeDescription? projectBuild,
+            string projectFullPath,
+            IProjectChangeDescription evaluationProjectChange,
+            IProjectChangeDescription? buildProjectChange,
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder);
     }

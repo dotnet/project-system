@@ -15,7 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             KnownMonikers.Accordian,
             KnownMonikers.Bug,
             KnownMonikers.CrashDumpFile,
-            KnownMonikers.DataCenter);
+            KnownMonikers.DataCenter,
+            KnownMonikers.Edit,
+            KnownMonikers.F1Help);
 
         public IDependency ClonePropertiesFrom
         {

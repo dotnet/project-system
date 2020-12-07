@@ -18,15 +18,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             icon: KnownMonikers.SharedProject,
             expandedIcon: KnownMonikers.SharedProject,
             unresolvedIcon: KnownMonikers.SharedProjectWarning,
-            unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning);
+            unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning,
+            implicitIcon: KnownMonikers.SharedProjectPrivate,
+            implicitExpandedIcon: KnownMonikers.SharedProjectPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: KnownMonikers.SharedProjectPrivate,
-            expandedIcon: KnownMonikers.SharedProjectPrivate,
-            unresolvedIcon: KnownMonikers.SharedProjectWarning,
-            unresolvedExpandedIcon: KnownMonikers.SharedProjectWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => ProjectRuleHandler.ProviderTypeString;
 

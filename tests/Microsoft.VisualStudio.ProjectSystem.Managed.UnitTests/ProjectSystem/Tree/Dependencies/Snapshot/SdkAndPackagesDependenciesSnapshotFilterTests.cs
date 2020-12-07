@@ -9,10 +9,8 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 {
-    public sealed class SdkAndPackagesDependenciesSnapshotFilterTests : DependenciesSnapshotFilterTestsBase
+    public sealed class SdkAndPackagesDependenciesSnapshotFilterTests
     {
-        private protected override IDependenciesSnapshotFilter CreateFilter() => new SdkAndPackagesDependenciesSnapshotFilter();
-
         [Fact]
         public void BeforeAddOrUpdate_WhenSdk_ShouldFindMatchingPackageAndSetProperties()
         {
@@ -42,8 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 sdkDependency,
-                null!,
-                null,
                 context);
 
             var acceptedDependency = context.GetResult(filter);
@@ -89,8 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 sdkDependency,
-                null!,
-                null,
                 context);
 
             // Accepts unchanged dependency
@@ -129,8 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 packageDependency,
-                null!,
-                null,
                 context);
 
             // Accepts unchanged dependency

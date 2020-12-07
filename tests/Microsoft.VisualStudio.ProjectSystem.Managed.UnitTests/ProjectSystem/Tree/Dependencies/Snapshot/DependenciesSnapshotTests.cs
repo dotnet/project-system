@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
@@ -98,9 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 catalogs,
                 targetFrameworks,
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.Same(previousSnapshot, snapshot);
         }
@@ -125,9 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 updatedCatalogs,
                 targetFrameworks,
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
@@ -162,9 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 catalogs,
                 targetFrameworks: ImmutableArray.Create(targetFramework),
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);

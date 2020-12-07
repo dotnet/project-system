@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         protected override ProjectConfiguration GetProjectConfiguration(EventData e) => e.Item1.ProjectConfiguration;
 
         protected override void Handle(
+            string projectFullPath,
             AggregateCrossTargetProjectContext currentAggregateContext,
             TargetFramework targetFrameworkToUpdate,
             EventData e)

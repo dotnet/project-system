@@ -7,7 +7,6 @@ using System.Linq;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
@@ -69,9 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes: null,
                 catalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.Same(previousSnapshot, snapshot);
         }
@@ -89,9 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes: null,
                 updatedCatalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(updatedCatalogs, snapshot.Catalogs);
@@ -144,9 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(catalogs, snapshot.Catalogs);
@@ -197,9 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.Same(previousSnapshot, snapshot);
             Assert.True(snapshotFilter.Completed);
@@ -248,9 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.True(snapshotFilter.Completed);
 
@@ -305,9 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.True(snapshotFilter.Completed);
 
@@ -369,9 +356,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.True(snapshotFilter.Completed);
 
@@ -499,9 +484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.True(snapshotFilter.Completed);
 
@@ -570,9 +553,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter),
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
 
             Assert.True(snapshotFilter.Completed);
 
@@ -612,9 +593,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousSnapshot,
                 changes.TryBuildChanges()!,
                 catalogs,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             var dependency = Assert.Single(snapshot.Dependencies);
@@ -656,8 +635,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             public void BeforeAddOrUpdate(
                 IDependency dependency,
-                IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-                IImmutableSet<string>? projectItemSpecs,
                 AddDependencyContext context)
             {
                 (string ProviderType, string Id) key = (dependency.ProviderType, dependency.Id);

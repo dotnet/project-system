@@ -133,13 +133,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                             return;
                         }
 
-                        Handle(currentAggregateContext, targetFrameworkToUpdate, e);
+                        Handle(configuredProject.UnconfiguredProject.FullPath, currentAggregateContext, targetFrameworkToUpdate, e);
                     }
                 });
             });
         }
 
-        protected abstract void Handle(AggregateCrossTargetProjectContext currentAggregateContext, TargetFramework targetFrameworkToUpdate, T e);
+        protected abstract void Handle(string projectFullPath, AggregateCrossTargetProjectContext currentAggregateContext, TargetFramework targetFrameworkToUpdate, T e);
 
         protected abstract IProjectCapabilitiesSnapshot GetCapabilitiesSnapshot(T e);
         protected abstract ProjectConfiguration GetProjectConfiguration(T e);

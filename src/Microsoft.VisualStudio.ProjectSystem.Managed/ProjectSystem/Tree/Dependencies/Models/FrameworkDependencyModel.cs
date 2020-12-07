@@ -17,7 +17,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             icon: KnownMonikers.Framework,
             expandedIcon: KnownMonikers.Framework,
             unresolvedIcon: KnownMonikers.FrameworkWarning,
-            unresolvedExpandedIcon: KnownMonikers.FrameworkWarning);
+            unresolvedExpandedIcon: KnownMonikers.FrameworkWarning,
+            implicitIcon: KnownMonikers.FrameworkPrivate,
+            implicitExpandedIcon: KnownMonikers.FrameworkPrivate);
 
         public override DependencyIconSet IconSet => s_iconSet;
 
@@ -31,14 +33,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             string path,
             string originalItemSpec,
             bool isResolved,
+            bool isImplicit,
             IImmutableDictionary<string, string> properties)
             : base(
                 caption: originalItemSpec,
                 path,
                 originalItemSpec,
-                flags: s_flagCache.Get(isResolved, isImplicit: false),
+                flags: s_flagCache.Get(isResolved, isImplicit),
                 isResolved,
-                isImplicit: false,
+                isImplicit,
                 properties)
         {
         }

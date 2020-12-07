@@ -15,7 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AboutBox,
+                implicitExpandedIcon: KnownMonikers.AboutBox);
 
             var flag = ProjectTreeFlags.Create("Foo");
 
