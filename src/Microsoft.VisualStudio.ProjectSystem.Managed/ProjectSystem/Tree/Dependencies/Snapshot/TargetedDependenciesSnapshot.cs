@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// Applies changes to <paramref name="previousSnapshot"/> and produces a new snapshot if required.
         /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
         /// </summary>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static TargetedDependenciesSnapshot FromChanges(
             TargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges? changes,
