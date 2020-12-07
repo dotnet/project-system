@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         Error = 2,
     }
 
+    /// <summary>
+    /// Base class for dependency models that ship with the .NET Project System.
+    /// </summary>
     internal abstract partial class DependencyModel : IDependencyModel
     {
         [Flags]

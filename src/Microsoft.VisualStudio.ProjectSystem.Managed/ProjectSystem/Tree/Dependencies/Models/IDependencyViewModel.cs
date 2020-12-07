@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
     /// <remarks>
     /// <para>
     ///     This includes both top-level dependency nodes and grouping nodes
-    ///     (e.g. "Packages" or ".NET Framework 4.8"), but not transitive dependencies.
+    ///     (e.g. "Packages" or "net5.0"), but not transitive dependencies.
     /// </para>
     /// <para>
     ///     This interface allows representing these different types of tree items

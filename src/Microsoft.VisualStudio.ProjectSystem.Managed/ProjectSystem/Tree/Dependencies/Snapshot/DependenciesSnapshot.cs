@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
         /// is given a chance to influence the addition and removal of dependency data in the returned snapshot.
         /// </remarks>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static DependenciesSnapshot FromChanges(
             DependenciesSnapshot previousSnapshot,
             TargetFramework changedTargetFramework,
