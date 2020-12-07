@@ -32,6 +32,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+  </ItemGroup>
   <!--<ItemGroup>
     <None Remove="Resources\ResourceEditor\BlankBmp.bmp" />
     <None Remove="Resources\ResourceEditor\BlankGif.gif" />
