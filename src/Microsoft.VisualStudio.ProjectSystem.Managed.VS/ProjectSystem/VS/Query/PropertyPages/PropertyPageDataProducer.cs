@@ -58,14 +58,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Kind)
             {
-                if (rule.PageTemplate == "debuggerParent")
-                {
-                    newPropertyPage.Kind = "generic";
-                }
-                else
-                {
-                    newPropertyPage.Kind = rule.PageTemplate;
-                }
+                newPropertyPage.Kind = rule.PageTemplate == "debuggerParent"
+                    ? "generic"
+                    : rule.PageTemplate;
             }
 
             ((IEntityValueFromProvider)newPropertyPage).ProviderState = debugChildRules is not null
