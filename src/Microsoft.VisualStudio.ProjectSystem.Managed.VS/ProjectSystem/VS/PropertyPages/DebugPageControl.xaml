@@ -565,7 +565,7 @@
             <!-- JavaScript WebView2 Debugging -->
             <CheckBox
                 Grid.Row="11"
-                Grid.Column="0"
+                Grid.ColumnSpan="2"
                 x:Uid="chkJSWebView2Debugging"
                 x:Name="chkJSWebView2Debugging"
                 Visibility="{Binding SupportJSWebView2Debugging, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
