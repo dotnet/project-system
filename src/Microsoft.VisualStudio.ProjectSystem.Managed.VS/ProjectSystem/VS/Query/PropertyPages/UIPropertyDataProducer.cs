@@ -22,11 +22,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
 
+            string propertyName = DebugUtilities.GetDebugPropertyNameOrNull(property) ?? property.Name;
+
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
-                    new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
+                    new(ProjectModelIdentityKeys.UIPropertyName, propertyName)
                 });
 
             return CreateUIPropertyValue(parent.EntityRuntime, identity, cache, property, order, requestedProperties);
@@ -39,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                newUIProperty.Name = property.Name;
+                newUIProperty.Name = DebugUtilities.GetDebugPropertyNameOrNull(property) ?? property.Name;
             }
 
             if (requestedProperties.DisplayName)
@@ -64,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.CategoryName)
             {
-                newUIProperty.CategoryName = property.Category;
+                newUIProperty.CategoryName = DebugUtilities.GetDebugCategoryNameOrNull(property.ContainingRule, property.Category) ?? property.Category;
             }
 
             if (requestedProperties.Order)
@@ -94,20 +96,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (requestedProperties.DependsOn)
             {
                 string? dependsOnString = property.GetMetadataValueOrNull("DependsOn");
+
+                dependsOnString = DebugUtilities.UpdateDebuggerDependsOnMetadata(property.ContainingRule, dependsOnString);
+
                 newUIProperty.DependsOn = dependsOnString ?? string.Empty;
             }
 
             if (requestedProperties.VisibilityCondition)
             {
                 string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
-                if (visibilityCondition is null)
-                {
-                    newUIProperty.VisibilityCondition = string.Empty;
-                }
-                else
-                {
-                    newUIProperty.VisibilityCondition = visibilityCondition;
-                }
+
+                visibilityCondition = DebugUtilities.UpdateDebuggerVisibilityConditionMetadata(visibilityCondition, property.ContainingRule);
+
+                newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
             }
 
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, property.Name);
@@ -115,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newUIProperty;
         }
 
-        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, List<Rule>? childDebugRules, IUIPropertyPropertiesAvailableStatus properties)
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
@@ -123,6 +124,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     IEntityValue propertyValue = CreateUIPropertyValue(parent, cache, property, index, properties);
                     yield return propertyValue;
+                }
+            }
+
+            if (childDebugRules is not null)
+            {
+                foreach (Rule childRule in childDebugRules)
+                {
+                    foreach ((int index, BaseProperty property) in childRule.Properties.WithIndices())
+                    {
+                        if (property.Visible)
+                        {
+                            IEntityValue propertyValue = CreateUIPropertyValue(parent, cache, property, index, properties);
+                            yield return propertyValue;
+                        }
+                    }
                 }
             }
         }
@@ -137,13 +153,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string propertyName,
             IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
+            (propertyPageName, propertyName) = DebugUtilities.ConvertDebugPageAndPropertyToRealPageAndProperty(propertyPageName, propertyName);
+
             if (projectService.GetLoadedProject(path) is UnconfiguredProject project
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule
                 && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                 && property.Visible)
             {
-                var context = queryCacheProvider.CreateCache(project);
+                IPropertyPageQueryCache context = queryCacheProvider.CreateCache(project);
                 IEntityValue propertyValue = CreateUIPropertyValue(runtimeModel, requestId, context, property, index, requestedProperties);
                 return propertyValue;
             }
