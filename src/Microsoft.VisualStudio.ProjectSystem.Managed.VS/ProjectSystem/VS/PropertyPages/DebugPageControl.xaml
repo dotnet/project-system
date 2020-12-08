@@ -23,6 +23,8 @@
                 x:Key="visibilityConverter" />
             <util:MultiValueBoolToBool_And 
                 x:Key="MultiValueBoolToBoolAnd"/>
+            <util:InverseBooleanConverter 
+                x:Key="InverseBooleanConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -42,6 +44,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -527,10 +531,17 @@
                 IsChecked="{Binding NativeCodeDebugging, Mode=TwoWay}"
                 Margin="9,7,3,7"
                 VerticalAlignment="Center"
-                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 VerticalContentAlignment="Center"
-                Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}"/>
-            
+                Content="{x:Static Member=local:PropertyPageResources.chkNativeCodeDebuggingText}">
+                <!-- Disable CheckBox if WebView2 debugging is selected, since we can only launch JS debugger alone -->
+                <CheckBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                        <Binding Path="JSWebView2Debugging" Mode="OneWay" Converter="{StaticResource InverseBooleanConverter}"/>
+                    </MultiBinding>
+                </CheckBox.IsEnabled>
+            </CheckBox>
+
             <!-- SQL debugging -->
             <CheckBox
                 Grid.Row="10"
@@ -541,12 +552,44 @@
                 IsChecked="{Binding SqlDebugging, Mode=TwoWay}"
                 Margin="9,7,3,7"
                 VerticalAlignment="Center"
+                VerticalContentAlignment="Center"     
+                Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}">
+                <!-- Disable CheckBox if WebView2 debugging is selected, since we can only launch JS debugger alone -->
+                <CheckBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MultiValueBoolToBoolAnd}">
+                        <Binding Path="IsProfileSelected" Mode="OneWay"/>
+                        <Binding Path="JSWebView2Debugging" Mode="OneWay" Converter="{StaticResource InverseBooleanConverter}"/>
+                    </MultiBinding>
+                </CheckBox.IsEnabled>
+            </CheckBox>
+
+            <!-- JavaScript WebView2 Debugging -->
+            <CheckBox
+                Grid.Row="11"
+                Grid.ColumnSpan="2"
+                x:Uid="chkJSWebView2Debugging"
+                x:Name="chkJSWebView2Debugging"
+                Visibility="{Binding SupportJSWebView2Debugging, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                IsChecked="{Binding JSWebView2Debugging, Mode=TwoWay}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
                 IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
                 VerticalContentAlignment="Center"
-                Content="{x:Static Member=local:PropertyPageResources.chkSqlCodeDebuggingText}"/>
-            
+                Content="{x:Static Member=local:PropertyPageResources.chkJSWebView2DebuggingText}"/>
+
+            <TextBlock
+                Grid.Row="12"
+                Grid.ColumnSpan="2"
+                x:Uid="JSWebView2DebuggingAdditionalText"
+                x:Name="JSWebView2DebuggingAdditionalText"
+                Visibility="{Binding JSWebView2Debugging, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                Margin="9,7,3,7"
+                VerticalAlignment="Center"
+                IsEnabled="{Binding Path=IsProfileSelected, Mode=OneWay}"
+                Text="{x:Static Member=local:PropertyPageResources.JSWebView2DebuggingAdditionalText}"/>
+
             <!-- Where the custom control is placed for the active provider -->
-            <ContentPresenter Grid.Row="11" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
+            <ContentPresenter Grid.Row="13" Grid.Column="0"  Grid.ColumnSpan="3" Content="{Binding ActiveProviderUserControl, Mode=OneWay}" />
         </Grid>
     </Grid>
 </local:PropertyPageControl>

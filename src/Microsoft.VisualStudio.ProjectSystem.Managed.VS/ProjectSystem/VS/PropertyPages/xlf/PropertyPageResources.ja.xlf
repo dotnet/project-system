@@ -57,6 +57,11 @@
         <target state="translated">ホスト名が無効です。</target>
         <note />
       </trans-unit>
+      <trans-unit id="JSWebView2DebuggingAdditionalText">
+        <source>(Requires the JavaScript Diagnostics component)</source>
+        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">絶対 URL または相対 URL</target>
@@ -240,6 +245,11 @@
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
         <target state="translated">プロファイルを作成し、新しいプロファイルを選択した状態でデバッグ プロパティ ページに戻ります</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
