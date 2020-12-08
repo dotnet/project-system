@@ -57,6 +57,11 @@
         <target state="translated">호스트 이름이 잘못되었습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="JSWebView2DebuggingAdditionalText">
+        <source>(Requires the JavaScript Diagnostics component)</source>
+        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">절대 또는 상대 URL</target>

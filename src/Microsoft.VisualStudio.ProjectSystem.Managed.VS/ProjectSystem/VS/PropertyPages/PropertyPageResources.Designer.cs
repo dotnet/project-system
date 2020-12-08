@@ -295,6 +295,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Requires the JavaScript Diagnostics component).
+        /// </summary>
+        public static string JSWebView2DebuggingAdditionalText {
+            get {
+                return ResourceManager.GetString("JSWebView2DebuggingAdditionalText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Launch:.
         /// </summary>
         public static string Launch {

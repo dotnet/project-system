@@ -57,6 +57,11 @@
         <target state="translated">Il nome host non è valido.</target>
         <note />
       </trans-unit>
+      <trans-unit id="JSWebView2DebuggingAdditionalText">
+        <source>(Requires the JavaScript Diagnostics component)</source>
+        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">URL assoluto o relativo</target>
