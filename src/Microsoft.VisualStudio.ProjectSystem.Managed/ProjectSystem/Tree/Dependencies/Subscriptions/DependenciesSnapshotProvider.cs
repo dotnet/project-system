@@ -1,15 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using Microsoft.Build.Execution;
-using Microsoft.VisualStudio.Build;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -277,8 +274,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         {
             Assumes.NotNull(_commonServices.Project.FullPath);
 
-            IImmutableSet<string>? projectItemSpecs = GetProjectItemSpecs(catalogs?.Project?.ProjectInstance.Items);
-
             DependenciesSnapshot? updatedSnapshot = _snapshot.TryUpdate(
                 previousSnapshot => DependenciesSnapshot.FromChanges(
                     previousSnapshot,
@@ -287,46 +282,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                     catalogs,
                     targetFrameworks,
                     activeTargetFramework,
-                    _snapshotFilters.ToImmutableValueArray(),
-                    _subTreeProviders.ToValueDictionary(p => p.ProviderType, StringComparers.DependencyProviderTypes),
-                    projectItemSpecs),
+                    _snapshotFilters.ToImmutableValueArray()),
                 token);
 
             if (updatedSnapshot != null)
             {
                 _dependencyTreeTelemetryService.ObserveSnapshot(updatedSnapshot);
-            }
-
-            return;
-
-            // Gets the set of items defined directly the project, and not included by imports.
-            static IImmutableSet<string>? GetProjectItemSpecs(IEnumerable<ProjectItemInstance>? projectItems)
-            {
-                // We don't have catalog snapshot, we're likely updating because one of our project 
-                // dependencies changed. Just return 'no data'
-                if (projectItems == null)
-                {
-                    return null;
-                }
-
-                ImmutableHashSet<string>.Builder itemSpecs = ImmutableHashSet.CreateBuilder(StringComparers.ItemNames);
-
-                foreach (ProjectItemInstance item in projectItems)
-                {
-                    if (item.IsImported())
-                    {
-                        continue;
-                    }
-
-                    // Returns unescaped evaluated include
-                    string itemSpec = item.EvaluatedInclude;
-                    if (itemSpec.Length != 0)
-                    {
-                        itemSpecs.Add(itemSpec);
-                    }
-                }
-
-                return itemSpecs.ToImmutable();
             }
         }
 

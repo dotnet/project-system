@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             }
             else
             {
-                IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon);
+                IconSet = DependencyIconSetCache.Instance.GetOrAddIconSet(dependencyModel.Icon, dependencyModel.ExpandedIcon, dependencyModel.UnresolvedIcon, dependencyModel.UnresolvedExpandedIcon, dependencyModel.Icon, dependencyModel.ExpandedIcon);
 
                 DiagnosticLevel = dependencyModel.Resolved ? DiagnosticLevel.None : DiagnosticLevel.Warning;
             }
@@ -129,8 +129,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         public string? FilePath { get; }
 
-        public ImageMoniker Icon => DiagnosticLevel == DiagnosticLevel.None ? IconSet.Icon : IconSet.UnresolvedIcon;
-        public ImageMoniker ExpandedIcon => DiagnosticLevel == DiagnosticLevel.None ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
+        public ImageMoniker Icon         => DiagnosticLevel == DiagnosticLevel.None ? Implicit ? IconSet.ImplicitIcon         : IconSet.Icon         : IconSet.UnresolvedIcon;
+        public ImageMoniker ExpandedIcon => DiagnosticLevel == DiagnosticLevel.None ? Implicit ? IconSet.ImplicitExpandedIcon : IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 
         #endregion
 

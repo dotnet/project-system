@@ -6,7 +6,6 @@ using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
@@ -28,7 +27,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 icon: KnownMonikers.NuGetNoColor,
                 expandedIcon: KnownMonikers.NuGetNoColor,
                 unresolvedIcon: KnownMonikers.NuGetNoColorWarning,
-                unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning),
+                unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning,
+                implicitIcon: KnownMonikers.NuGetNoColorPrivate,
+                implicitExpandedIcon: KnownMonikers.NuGetNoColorPrivate),
             DependencyTreeFlags.PackageDependencyGroup);
 
         private readonly ITargetFrameworkProvider _targetFrameworkProvider;
@@ -42,20 +43,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
-        public override ImageMoniker ImplicitIcon => KnownMonikers.NuGetNoColorPrivate;
-
         protected override void HandleAddedItem(
+            string projectFullPath,
             string addedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             if (TryCreatePackageDependencyModel(
+                projectFullPath,
                 addedItem,
                 resolved,
                 properties: projectChange.After.GetProjectItemProperties(addedItem)!,
+                evaluationRuleSnapshot,
                 isEvaluatedItemSpec,
                 targetFramework,
                 out PackageDependencyModel? dependencyModel))
@@ -65,17 +68,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         protected override void HandleChangedItem(
+            string projectFullPath,
             string changedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             if (TryCreatePackageDependencyModel(
+                projectFullPath,
                 changedItem,
                 resolved,
                 properties: projectChange.After.GetProjectItemProperties(changedItem)!,
+                evaluationRuleSnapshot,
                 isEvaluatedItemSpec,
                 targetFramework,
                 out PackageDependencyModel? dependencyModel))
@@ -86,17 +93,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         protected override void HandleRemovedItem(
+            string projectFullPath,
             string removedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
             if (TryCreatePackageDependencyModel(
+                projectFullPath,
                 removedItem,
                 resolved,
                 properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
+                evaluationRuleSnapshot,
                 isEvaluatedItemSpec,
                 targetFramework,
                 out PackageDependencyModel? dependencyModel))
@@ -110,9 +121,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         private static readonly InternPool<string> s_targetFrameworkInternPool = new(StringComparer.Ordinal);
 
         private bool TryCreatePackageDependencyModel(
+            string projectFullPath,
             string itemSpec,
             bool isResolved,
             IImmutableDictionary<string, string> properties,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             Func<string, bool>? isEvaluatedItemSpec,
             TargetFramework targetFramework,
             [NotNullWhen(returnValue: true)] out PackageDependencyModel? dependencyModel)
@@ -120,7 +133,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             Requires.NotNullOrEmpty(itemSpec, nameof(itemSpec));
             Requires.NotNull(properties, nameof(properties));
 
-            bool isImplicitlyDefined = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
+            // PackageReference uses Name rather than OriginalItemSpec.
+            string originalItemSpec = isResolved
+                ? properties.GetStringProperty(ProjectItemMetadata.Name) ?? itemSpec
+                : itemSpec;
+
+            IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
+
+            if (evaluationProperties == null)
+            {
+                // This package is present in build results, but not in evaluation.
+                // We disallow packages which are not present in evaluation.
+                dependencyModel = null;
+                return false;
+            }
+
+            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
 
             if (isResolved)
             {
@@ -183,7 +211,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     }
                 }
 
-                bool isTopLevel = isImplicitlyDefined || isEvaluatedItemSpec(name);
+                bool isTopLevel = isEvaluatedItemSpec(name);
 
                 if (!isTopLevel)
                 {
@@ -196,8 +224,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     originalItemSpec: name,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: true,
-                    isImplicitlyDefined,
-                    isVisible: !isImplicitlyDefined,
+                    isImplicit,
+                    isVisible: true,
                     properties);
             }
             else
@@ -210,8 +238,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     originalItemSpec: itemSpec,
                     version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
                     isResolved: false,
-                    isImplicitlyDefined,
-                    isVisible: !isImplicitlyDefined,
+                    isImplicit,
+                    isVisible: true,
                     properties);
             }
 

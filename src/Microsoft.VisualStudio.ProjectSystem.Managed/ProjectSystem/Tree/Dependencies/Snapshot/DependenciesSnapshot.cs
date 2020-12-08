@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
         /// is given a chance to influence the addition and removal of dependency data in the returned snapshot.
         /// </remarks>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static DependenciesSnapshot FromChanges(
             DependenciesSnapshot previousSnapshot,
             TargetFramework changedTargetFramework,
@@ -41,14 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<TargetFramework> targetFrameworks,
             TargetFramework? activeTargetFramework,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string>? projectItemSpecs)
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
-            Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
@@ -63,9 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousTargetedSnapshot,
                 changes,
                 catalogs,
-                snapshotFilters,
-                subTreeProviderByProviderType,
-                projectItemSpecs);
+                snapshotFilters);
 
             if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
             {
