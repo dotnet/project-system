@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
@@ -85,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Rename the file
             await CPSRenameAsync(context, node, value);
 
-            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline || 
+            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline ||
                 FileChangedExtension(oldFilePath, newFileWithExtension))
             {
                 // Do not display rename Prompt
@@ -145,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         }
 
         private static bool FileChangedExtension(string? oldFilePath, string newFileWithExtension)
-            => string.Compare(Path.GetExtension(oldFilePath), Path.GetExtension(newFileWithExtension), StringComparison.OrdinalIgnoreCase) != 0;
+            => !StringComparers.Paths.Equals(Path.GetExtension(oldFilePath), Path.GetExtension(newFileWithExtension));
 
         private async Task<Solution> PublishLatestSolutionAsync()
         {

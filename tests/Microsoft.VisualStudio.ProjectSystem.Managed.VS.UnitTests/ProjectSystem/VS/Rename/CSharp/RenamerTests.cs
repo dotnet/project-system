@@ -105,12 +105,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
-        [Fact]
-        public async Task Rename_Symbol_Should_ExitEarlyInFileExtensionChange()
+        [Theory]
+        [InlineData("Foo.cs", "Foo.txt")]
+        [InlineData("Foo.cs", "Foo.cs2")]
+        [InlineData("Foo.txt", "Foo.cs")]
+        public async Task Rename_Symbol_Should_ExitEarlyInFileExtensionChange(string oldFilePath, string newFilePath)
         {
             string sourceCode = "class Foo { }";
-            string oldFilePath = "Foo.cs";
-            string newFilePath = "Foo.txt";
 
             var userNotificationServices = IUserNotificationServicesFactory.Create();
             var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
@@ -118,8 +119,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             var settingsManagerService = CreateSettingsManagerService(true);
 
             await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
+            bool disablePromptMessage;
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out disablePromptMessage), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+        }
 
-            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
+        [Fact]
+        public async Task Rename_Symbol_Should_ExitEarlyWhenFileDoesntChangeName()
+        {
+            string sourceCode = "class Foo { }";
+            string oldFilePath = "Foo.cs";
+            string newFilePath = "FOO.cs";
+
+            var userNotificationServices = IUserNotificationServicesFactory.Create();
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineService = IVsOnlineServicesFactory.Create(online: false);
+            var settingsManagerService = CreateSettingsManagerService(true);
+
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
+            bool disablePromptMessage;
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>(), out disablePromptMessage), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
