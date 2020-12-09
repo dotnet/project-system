@@ -105,6 +105,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.CSharp
             Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
         }
 
+        [Fact]
+        public async Task Rename_Symbol_Should_ExitEarlyInFileExtensionChange()
+        {
+            string sourceCode = "class Foo { }";
+            string oldFilePath = "Foo.cs";
+            string newFilePath = "Foo.txt";
+
+            var userNotificationServices = IUserNotificationServicesFactory.Create();
+            var roslynServices = IRoslynServicesFactory.Implement(new CSharpSyntaxFactsService());
+            var vsOnlineService = IVsOnlineServicesFactory.Create(online: false);
+            var settingsManagerService = CreateSettingsManagerService(true);
+
+            await RenameAsync(sourceCode, oldFilePath, newFilePath, userNotificationServices, roslynServices, vsOnlineService, LanguageNames.CSharp, settingsManagerService);
+
+            Mock.Get(userNotificationServices).Verify(h => h.Confirm(It.IsAny<string>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.RenameSymbolAsync(It.IsAny<Solution>(), It.IsAny<ISymbol>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            Mock.Get(roslynServices).Verify(h => h.ApplyChangesToSolution(It.IsAny<Workspace>(), It.IsAny<Solution>()), Times.Never);
+        }
+
         private IVsService<SVsSettingsPersistenceManager, ISettingsManager> CreateSettingsManagerService(bool enableSymbolicRename)
         {
             var settingsManagerMock = new Mock<ISettingsManager>();
