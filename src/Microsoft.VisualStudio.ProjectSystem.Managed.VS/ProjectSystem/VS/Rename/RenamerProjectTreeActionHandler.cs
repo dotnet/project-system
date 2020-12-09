@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
@@ -84,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             // Rename the file
             await CPSRenameAsync(context, node, value);
 
-            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline)
+            if (await IsAutomationFunctionAsync() || node.IsFolder || _vsOnlineServices.ConnectedToVSOnline || 
+                FileChangedExtension(oldFilePath, newFileWithExtension))
             {
                 // Do not display rename Prompt
                 return;
@@ -108,36 +110,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             // Ask if the user wants to rename the symbol
-            bool userWantsToRenameSymbol = await CheckUserConfirmation(oldName);
+            bool userWantsToRenameSymbol = await CheckUserConfirmationAsync(oldName);
             if (!userWantsToRenameSymbol)
+            {
                 return;
+            }
 
             _threadingService.RunAndForget(async () =>
             {
                 Solution currentSolution = await PublishLatestSolutionAsync();
 
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
-                WaitIndicatorResult<Solution> result = _waitService.Run(
+                WaitIndicatorResult<Solution> indicatorResult = _waitService.Run(
                                 title: VSResources.Renaming_Type,
                                 message: renameOperationName,
                                 allowCancel: true,
                                 token => documentRenameResult.UpdateSolutionAsync(currentSolution, token));
 
                 // Do not warn the user if the rename was cancelled by the user	
-                if (result.IsCancelled)
+                if (indicatorResult.IsCancelled)
                 {
                     return;
                 }
 
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
-                if (!_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, result.Result))
+                if (_roslynServices.ApplyChangesToSolution(currentSolution.Workspace, indicatorResult.Result))
                 {
-                    string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
-                    _userNotificationServices.ShowWarning(failureMessage);
+                    return;
                 }
-                return;
+
+                string failureMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolFailed, oldName);
+                _userNotificationServices.ShowWarning(failureMessage);
             }, _unconfiguredProject);
         }
+
+        private static bool FileChangedExtension(string? oldFilePath, string newFileWithExtension)
+            => string.Compare(Path.GetExtension(oldFilePath), Path.GetExtension(newFileWithExtension), StringComparison.OrdinalIgnoreCase) != 0;
 
         private async Task<Solution> PublishLatestSolutionAsync()
         {
@@ -171,7 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             // Check errors before applying changes
             if (documentRenameResult.ApplicableActions.Any(a => !a.GetErrors().IsEmpty))
+            {
                 return (false, documentRenameResult);
+            }
 
             return (true, documentRenameResult);
         }
@@ -180,16 +190,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             // see if the current project contains a compilation
             (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);
-            if (!success)
-            {
-                return false;
-            }
 
-            if (!CanHandleRename(oldName, newName, isCaseSensitive))
-            {
-                return false;
-            }
-            return true;
+            return success && CanHandleRename(oldName, newName, isCaseSensitive);
         }
 
         private bool CanHandleRename(string oldName, string newName, bool isCaseSensitive)
@@ -208,13 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 return (false, false);
 
             Compilation? compilation = await project.GetCompilationAsync();
-            if (compilation is null)
-            {
-                // this project does not support compilations
-                return (false, false);
-            }
-
-            return (true, compilation.IsCaseSensitive);
+            return compilation is null ? (false, false) : (true, compilation.IsCaseSensitive);
         }
 
         protected virtual async Task<bool> IsAutomationFunctionAsync()
@@ -231,29 +227,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private static CodeAnalysis.Document GetDocument(CodeAnalysis.Project project, string? filePath) =>
             project.Documents.FirstOrDefault(d => StringComparers.Paths.Equals(d.FilePath, filePath));
 
-        private async Task<bool> CheckUserConfirmation(string oldFileName)
+        private async Task<bool> CheckUserConfirmationAsync(string oldFileName)
         {
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
-            bool EnableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false);
+            bool enableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            bool disablePromptMessage = false;
             bool userNeedPrompt = _environmentOptions.GetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", false);
 
-            if (EnableSymbolicRename && userNeedPrompt)
+            if (!enableSymbolicRename || !userNeedPrompt)
             {
-                string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
-
-                bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out disablePromptMessage);
-
-                _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
-
-                return userSelection;
+                return enableSymbolicRename;
             }
 
-            return EnableSymbolicRename;
+            string renamePromptMessage = string.Format(CultureInfo.CurrentCulture, VSResources.RenameSymbolPrompt, oldFileName);
+
+            bool userSelection = _userNotificationServices.Confirm(renamePromptMessage, out bool disablePromptMessage);
+
+            _environmentOptions.SetOption("Environment", "ProjectsAndSolution", "PromptForRenameSymbol", !disablePromptMessage);
+
+            return userSelection;
         }
     }
 }
