@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="new">Produce a package file during build operations.</target>
+        <target state="translated">在生成操作期间创建包文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="new">Prompt the user to accept the license when installing this package.</target>
+        <target state="translated">安装此包时，提示用户接受许可证。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
@@ -24,22 +24,22 @@
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the package.</source>
-        <target state="new">General settings for the package.</target>
+        <target state="translated">包的常规设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">常规</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|Description">
         <source>Specifies the license for the package.</source>
-        <target state="new">Specifies the license for the package.</target>
+        <target state="translated">指定包的许可证。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|DisplayName">
         <source>License</source>
-        <target state="new">License</target>
+        <target state="translated">许可证</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
@@ -49,37 +49,37 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|Description">
         <source>Specify a license for the project's package.</source>
-        <target state="new">Specify a license for the project's package.</target>
+        <target state="translated">指定项目包的许可证。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
         <source>Package License</source>
-        <target state="new">Package License</target>
+        <target state="translated">包许可证</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
-        <target state="new">SPDX License Expression</target>
+        <target state="translated">SPDX 许可证表达式</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
         <source>Embedded File</source>
-        <target state="new">Embedded File</target>
+        <target state="translated">嵌入的文件</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">无</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="new">Properties related to producing NuGet packages.</target>
+        <target state="translated">与生成 NuGet 包相关的属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
+        <target state="translated">包</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
         <source>Read about SPDX license expressions</source>
-        <target state="new">Read about SPDX license expressions</target>
+        <target state="translated">阅读 SPDX 许可证表达式</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">

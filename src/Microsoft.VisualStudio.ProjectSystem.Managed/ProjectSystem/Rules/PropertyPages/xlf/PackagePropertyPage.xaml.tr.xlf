@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="new">Produce a package file during build operations.</target>
+        <target state="translated">Derleme işlemleri sırasında paket dosyası oluşturun.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="new">Prompt the user to accept the license when installing this package.</target>
+        <target state="translated">Bu paketi yüklerken kullanıcının lisansı kabul etmesini isteyin.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
@@ -24,22 +24,22 @@
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the package.</source>
-        <target state="new">General settings for the package.</target>
+        <target state="translated">Paketin genel ayarları.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Genel</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|Description">
         <source>Specifies the license for the package.</source>
-        <target state="new">Specifies the license for the package.</target>
+        <target state="translated">Paketin lisansını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|DisplayName">
         <source>License</source>
-        <target state="new">License</target>
+        <target state="translated">Lisans</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
@@ -49,37 +49,37 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|Description">
         <source>Specify a license for the project's package.</source>
-        <target state="new">Specify a license for the project's package.</target>
+        <target state="translated">Projenin paketi için bir lisans belirtin.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
         <source>Package License</source>
-        <target state="new">Package License</target>
+        <target state="translated">Paket Lisansı</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
-        <target state="new">SPDX License Expression</target>
+        <target state="translated">SPDX Lisans İfadesi</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
         <source>Embedded File</source>
-        <target state="new">Embedded File</target>
+        <target state="translated">Ekli Dosya</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Hiçbiri</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="new">Properties related to producing NuGet packages.</target>
+        <target state="translated">NuGet paketleri oluşturma ile ilgili özellikler.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
+        <target state="translated">Paket</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
         <source>Read about SPDX license expressions</source>
-        <target state="new">Read about SPDX license expressions</target>
+        <target state="translated">SPDX lisans ifadeleri hakkında bilgi edinin</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">

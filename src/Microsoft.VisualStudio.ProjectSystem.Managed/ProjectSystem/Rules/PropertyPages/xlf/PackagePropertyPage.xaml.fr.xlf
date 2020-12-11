@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="new">Produce a package file during build operations.</target>
+        <target state="translated">Produit un fichier de package au moment des opérations de build.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="new">Prompt the user to accept the license when installing this package.</target>
+        <target state="translated">Invite l'utilisateur à accepter la licence au moment de l'installation de ce package.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
@@ -24,22 +24,22 @@
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the package.</source>
-        <target state="new">General settings for the package.</target>
+        <target state="translated">Paramètres généraux du package.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="new">General</target>
+        <target state="translated">Général</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|Description">
         <source>Specifies the license for the package.</source>
-        <target state="new">Specifies the license for the package.</target>
+        <target state="translated">Spécifie la licence du package.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|DisplayName">
         <source>License</source>
-        <target state="new">License</target>
+        <target state="translated">Licence</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
@@ -49,37 +49,37 @@
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|Description">
         <source>Specify a license for the project's package.</source>
-        <target state="new">Specify a license for the project's package.</target>
+        <target state="translated">Spécifiez une licence pour le package du projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
         <source>Package License</source>
-        <target state="new">Package License</target>
+        <target state="translated">Licence du package</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
-        <target state="new">SPDX License Expression</target>
+        <target state="translated">Expression de licence SPDX</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
         <source>Embedded File</source>
-        <target state="new">Embedded File</target>
+        <target state="translated">Fichier incorporé</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Aucun</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="new">Properties related to producing NuGet packages.</target>
+        <target state="translated">Propriétés relatives à la production de packages NuGet.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
-        <target state="new">Package</target>
+        <target state="translated">Package</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
         <source>Read about SPDX license expressions</source>
-        <target state="new">Read about SPDX license expressions</target>
+        <target state="translated">En savoir plus sur les expressions de licence SPDX</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">

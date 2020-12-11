@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
-        <target state="translated">R&amp;egistrar para interoperabilidad &amp;COM</target>
+        <target state="translated">R&amp;egistrar para interoperabilidad COM</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">アセンブリに署名するには、このチェック ボックスをオンにします。</target>
+        <target state="translated">出力アセンブリに署名して、厳密な名前を付けます。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">署名アセンブリの生成に関連するプロパティ。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">署名</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
