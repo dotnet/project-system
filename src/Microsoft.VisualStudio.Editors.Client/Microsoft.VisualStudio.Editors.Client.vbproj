@@ -6,10 +6,10 @@
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFramework>net472</TargetFramework>
     <IsVsixProject>true</IsVsixProject>
-    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
     <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
-    <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
+    <NoWarn>$(NoWarn);42353;42355;42105;NU5125;CA1812</NoWarn>
 
     <!-- Nuget -->
     <IsPackable>true</IsPackable>
@@ -137,6 +137,31 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="DesignerFramework\BaseDesignerView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\BaseDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerDataGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerListView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\DesignerToolbarPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.Designer.vb">
+      <SubType>UserControl</SubType>
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="DesignerFramework\WrapCheckBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="ResourceEditor\DialogQueryName.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +195,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="DesignerFramework\ErrorControl.resx">
+      <DependentUpon>ErrorControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Update="ResourceEditor\DialogQueryName.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DialogQueryName.vb</DependentUpon>
