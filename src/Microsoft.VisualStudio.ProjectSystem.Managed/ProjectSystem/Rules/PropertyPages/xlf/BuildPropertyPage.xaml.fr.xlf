@@ -14,42 +14,42 @@
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
         <source>pointers</source>
-        <target state="new">pointers</target>
+        <target state="translated">pointeurs</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="new">Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</target>
+        <target state="translated">Spécifie si l'arithmétique d'entiers qui produit une valeur en dehors de la plage du type de données, et qui ne se trouve pas dans l'étendue d'un mot clé checked ou unchecked, lève une exception au moment de l'exécution.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
         <source>Check for arithmetic overflow</source>
-        <target state="new">Check for arithmetic overflow</target>
+        <target state="translated">Rechercher un dépassement arithmétique</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
         <source>checked;unchecked</source>
-        <target state="new">checked;unchecked</target>
+        <target state="translated">vérifié;non vérifié</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="new">Indicates whether the compiler should produce identical assemblies for identical inputs.</target>
+        <target state="translated">Indique si le compilateur doit produire des assemblys identiques pour des entrées identiques.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
         <source>Deterministic</source>
-        <target state="new">Deterministic</target>
+        <target state="translated">Déterministe</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
-        <target state="new">Generate a file containing API documentation.</target>
+        <target state="translated">Générez un fichier contenant la documentation de l'API.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Documentation file</source>
-        <target state="new">Documentation file</target>
+        <target state="translated">Fichier de documentation</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
-        <target state="new">optimise;optimisation</target>
+        <target state="translated">optimiser;optimisation</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -94,22 +94,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="new">Controls when internal compiler error (ICE) reports are sent to Microsoft.</target>
+        <target state="translated">Détermine le moment auquel les rapports ICE (erreur interne du compilateur) sont envoyés à Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Internal compiler error reporting</source>
-        <target state="new">Internal compiler error reporting</target>
+        <target state="translated">Rapports d'erreurs internes du compilateur</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|Description">
         <source>Specifies, in bytes, where to align the sections of the output file.</source>
-        <target state="new">Specifies, in bytes, where to align the sections of the output file.</target>
+        <target state="translated">Spécifie, en octets, où aligner les sections du fichier de sortie.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|DisplayName">
         <source>File alignment</source>
-        <target state="new">File alignment</target>
+        <target state="translated">Alignement de fichier</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
@@ -154,47 +154,47 @@
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
         <source>Never send</source>
-        <target state="new">Never send</target>
+        <target state="translated">Ne jamais envoyer</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
         <source>Prompt before sending</source>
-        <target state="new">Prompt before sending</target>
+        <target state="translated">Demander confirmation avant l'envoi</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
         <source>Queue</source>
-        <target state="new">Queue</target>
+        <target state="translated">File d'attente</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
         <source>Send</source>
-        <target state="new">Send</target>
+        <target state="translated">Envoyer</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
         <source>1024</source>
-        <target state="new">1024</target>
+        <target state="translated">1024</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
         <source>2048</source>
-        <target state="new">2048</target>
+        <target state="translated">2048</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
         <source>4096</source>
-        <target state="new">4096</target>
+        <target state="translated">4096</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
         <source>512</source>
-        <target state="new">512</target>
+        <target state="translated">512</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
         <source>8192</source>
-        <target state="new">8192</target>
+        <target state="translated">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
@@ -274,32 +274,32 @@
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="new">Specifies properties that control how the project builds.</target>
+        <target state="translated">Spécifie les propriétés qui contrôlent le mode de génération du projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">Build</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="new">Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <target state="translated">Spécifie l'emplacement de base de la sortie intermédiaire du projet durant la génération. Des sous-dossiers sont ajoutés à ce chemin pour différencier la configuration du projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base intermediate output path</source>
-        <target state="new">Base intermediate output path</target>
+        <target state="translated">Chemin de sortie intermédiaire de base</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="new">Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <target state="translated">Spécifie l'emplacement de base de la sortie du projet durant la génération. Des sous-dossiers sont ajoutés à ce chemin pour différencier la configuration du projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
-        <target state="new">Base output path</target>
+        <target state="translated">Chemin de sortie de base</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
@@ -314,7 +314,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="needs-review-translation">Spécifie le nom d'un fichier dans lequel les commentaires de documentation sont traités.</target>
+        <target state="translated">Chemin facultatif du fichier de documentation de l'API. Pour utiliser l'emplacement par défaut, n'indiquez rien.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -324,12 +324,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>Why can't I select the C# language version?</source>
-        <target state="new">Why can't I select the C# language version?</target>
+        <target state="translated">Pourquoi ne puis-je pas sélectionner la version de langage C# ?</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>Language version</source>
-        <target state="new">Language version</target>
+        <target state="translated">Version du langage</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -349,7 +349,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="needs-review-translation">Avertissements spécifiques</target>
+        <target state="translated">Traiter les avertissements spécifiques comme des erreurs</target>
         <note />
       </trans-unit>
     </body>

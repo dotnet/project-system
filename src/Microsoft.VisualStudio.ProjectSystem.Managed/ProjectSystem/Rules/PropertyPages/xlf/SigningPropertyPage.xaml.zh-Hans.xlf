@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">选中此复选框以对程序集签名。</target>
+        <target state="translated">对输出程序集进行签名来向其提供强名称。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">与生成签名程序集相关的属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">签名</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">

@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">Bütünleştirilmiş kodu imzalamak için bu onay kutusunu seçin.</target>
+        <target state="translated">Daha güçlü bir ad vermek için çıkış bütünleştirilmiş kodunu imzalayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -24,12 +24,12 @@
       </trans-unit>
       <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
-        <target state="new">Properties related to producing signing assemblies.</target>
+        <target state="translated">İmzalama bütünleştirilmiş kodları oluşturma ile ilgili özellikler.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
-        <target state="new">Signing</target>
+        <target state="translated">İmzalanıyor</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
