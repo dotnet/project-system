@@ -24,15 +24,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework()
+        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_NoTargets()
         {
             var targetFramework = new TargetFramework("tfm1");
 
             var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
                 activeTargetFramework: targetFramework,
-                ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
 
-            Assert.StartsWith("Must contain activeTargetFramework (tfm1).", ex.Message);
+            Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains no items.", ex.Message);
+        }
+
+        [Fact]
+        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_WithTargets()
+        {
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
+
+            var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
+                activeTargetFramework: tfm1,
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty
+                    .Add(tfm2, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))
+                    .Add(tfm3, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))));
+
+            Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains \"tfm2\", \"tfm3\".", ex.Message);
         }
 
         [Fact]

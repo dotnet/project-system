@@ -162,12 +162,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
             // We have seen NFEs where the active target framework is unsupported. Skipping validation in such cases is better than faulting the dataflow.
-            if (!activeTargetFramework.Equals(TargetFramework.Empty) && !activeTargetFramework.Equals(TargetFramework.Unsupported))
+            if (!activeTargetFramework.Equals(TargetFramework.Empty) &&
+                !activeTargetFramework.Equals(TargetFramework.Unsupported) &&
+                !dependenciesByTargetFramework.ContainsKey(activeTargetFramework))
             {
+                string keyNames = dependenciesByTargetFramework.Count == 0
+                    ? "no items"
+                    : string.Join(", ", dependenciesByTargetFramework.Keys.Select(t => $"\"{t.FullName}\""));
+
                 Requires.Argument(
-                    dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
-                    nameof(dependenciesByTargetFramework),
-                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
+                    false,
+                    nameof(activeTargetFramework),
+                    $"Value \"{activeTargetFramework.FullName}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
             }
 
             ActiveTargetFramework = activeTargetFramework;
