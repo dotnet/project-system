@@ -179,7 +179,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements IVsEditorFactory.CreateEditorInstance
 
             ' If we're using the new project properties editor, delegate to its editor factory
-            If UseNewEditor Then
+            If UseNewEditor(Hierarchy) Then
                 Return GetNewEditorFactory().CreateEditorInstance(
                     vscreateeditorflags,
                     FileName,
@@ -225,7 +225,12 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return hr
         End Function
 
-        Private Function UseNewEditor As Boolean
+        Private Function UseNewEditor(vsHierarchy As IVsHierarchy) As Boolean
+            If Not vsHierarchy.IsCapabilityMatch("CPS") Then
+                ' The new editor is only available for CPS-based projects
+                Return False
+            End If
+
             Dim featureFlags = TryCast(_siteProvider.GetService(GetType(SVsFeatureFlags)), IVsFeatureFlags)
 
             Return _
@@ -259,12 +264,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ''' <param name="rguidLogicalView"></param>
         ''' <param name="pbstrPhysicalView"></param>
         Public Function MapLogicalView(ByRef rguidLogicalView As Guid, ByRef pbstrPhysicalView As String) As Integer Implements IVsEditorFactory.MapLogicalView
-            
-            ' If we're using the new project properties editor, delegate to its editor factory
-            If UseNewEditor Then
-                Return GetNewEditorFactory().MapLogicalView(rguidLogicalView, pbstrPhysicalView)
-            End If
-            
+
+            ' NOTE we do not have a hierarchy, so don't know if this is a CPS project. We don't know whether to delegate to
+            ' Microsoft.VisualStudio.ProjectSystem.VS.Implementation.PropertyPages.Designer.ProjectPropertiesEditorFactory.
+            ' Therefore we ensure the logic in both implementations of MapLogicalView is identical.
+
             pbstrPhysicalView = Nothing
 
             ' The designer nominally supports VSConstants.LOGVIEWID.Designer_guid however it is also called with other GUIDs
