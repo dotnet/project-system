@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal static class IProjectRuleSnapshotFactory
     {
-        public static IProjectRuleSnapshot Create(string ruleName, string propertyName, string propertyValue)
+        public static IProjectRuleSnapshot Create(string ruleName, string propertyName, string propertyValue, IImmutableDictionary<string, IImmutableDictionary<string, string>>? items = null)
         {
             var mock = new Mock<IProjectRuleSnapshot>();
             mock.SetupGet(r => r.RuleName)
@@ -17,6 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             mock.SetupGet(r => r.Properties)
                 .Returns(dictionary);
+
+            if (items != null)
+            {
+                mock.SetupGet(c => c.Items).Returns(items);
+            }
 
             return mock.Object;
         }
