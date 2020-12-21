@@ -139,6 +139,75 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         }
 
         [Theory]
+        [MemberData(nameof(GetUnresolvedDependenciesRules))]
+        public void UnresolvedRulesDataSources(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
+
+            XElement? dataSource = rule.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+
+            Assert.NotNull(dataSource);
+
+            Assert.Null(dataSource!.Attribute("MSBuildTarget")); // Must come from evaluation
+            Assert.Null(dataSource.Attribute("SourceType"));     // Must come from evaluation
+
+            var hasConfigurationCondition = dataSource.Attribute("HasConfigurationCondition");
+            Assert.NotNull(hasConfigurationCondition);
+            Assert.Equal("False", hasConfigurationCondition!.Value, StringComparer.OrdinalIgnoreCase);
+
+            var itemType = dataSource.Attribute("ItemType");
+            Assert.NotNull(itemType);
+            Assert.False(string.IsNullOrEmpty(itemType!.Value));
+
+            var persistence = dataSource.Attribute("Persistence");
+            Assert.NotNull(persistence);
+            Assert.Equal("ProjectFile", persistence!.Value, StringComparer.Ordinal);
+
+            var sourceOfDefaultValue = dataSource.Attribute("SourceOfDefaultValue");
+            Assert.NotNull(sourceOfDefaultValue);
+            Assert.Equal("AfterContext", sourceOfDefaultValue!.Value, StringComparer.Ordinal);
+
+            Assert.Equal(4, dataSource.Attributes().Count());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetResolvedDependenciesRules))]
+        public void ResolvedRulesDataSources(string ruleName, string fullPath)
+        {
+            XElement rule = LoadXamlRule(fullPath, out var namespaceManager);
+
+            XElement? dataSource = rule.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+
+            Assert.NotNull(dataSource);
+
+            var hasConfigurationCondition = dataSource!.Attribute("HasConfigurationCondition");
+            Assert.NotNull(hasConfigurationCondition);
+            Assert.Equal("False", hasConfigurationCondition!.Value, StringComparer.OrdinalIgnoreCase);
+
+            var itemType = dataSource.Attribute("ItemType");
+            Assert.NotNull(itemType);
+            Assert.False(string.IsNullOrEmpty(itemType!.Value));
+
+            var msBuildTarget = dataSource.Attribute("MSBuildTarget");
+            Assert.NotNull(msBuildTarget);
+            Assert.False(string.IsNullOrEmpty(msBuildTarget!.Value));
+
+            var persistence = dataSource.Attribute("Persistence");
+            Assert.NotNull(persistence);
+            Assert.Equal("ResolvedReference", persistence!.Value, StringComparer.Ordinal);
+
+            var sourceOfDefaultValue = dataSource.Attribute("SourceOfDefaultValue");
+            Assert.NotNull(sourceOfDefaultValue);
+            Assert.Equal("AfterContext", sourceOfDefaultValue!.Value, StringComparer.Ordinal);
+
+            var sourceType = dataSource.Attribute("SourceType");
+            Assert.NotNull(sourceType);
+            Assert.Equal("TargetResults", sourceType!.Value, StringComparer.Ordinal);
+
+            Assert.Equal(6, dataSource.Attributes().Count());
+        }
+
+        [Theory]
         [MemberData(nameof(GetResolvedAndUnresolvedDependencyRulePairs))]
         public void ResolvedAndUnresolvedDependencyRulesHaveSameDisplayName(string unresolvedName, string resolvedName, string unresolvedPath, string resolvedPath)
         {
