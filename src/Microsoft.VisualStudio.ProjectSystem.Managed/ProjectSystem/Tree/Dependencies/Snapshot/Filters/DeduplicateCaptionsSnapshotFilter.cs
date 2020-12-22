@@ -65,12 +65,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
             {
                 if (matchingDependency != null)
                 {
-                    // Change the matching dependency's alias too
-                    context.AddOrUpdate(matchingDependency.SetProperties(caption: GetAlias(matchingDependency)));
+                    // Change the matching dependency's caption too
+                    context.AddOrUpdate(matchingDependency.WithCaption(caption: GetAlias(matchingDependency)));
                 }
 
                 // Use the alias for the caption
-                context.Accept(dependency.SetProperties(caption: GetAlias(dependency)));
+                context.Accept(dependency.WithCaption(caption: GetAlias(dependency)));
             }
             else
             {

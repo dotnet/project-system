@@ -18,16 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         DependencyIconSet IconSet { get; }
 
         /// <summary>
-        /// Returns a copy of this immutable instance with the specified property changes.
+        /// Returns a copy of this immutable instance with the specified caption.
         /// </summary>
-        IDependency SetProperties(
-            string? caption = null,
-            bool? resolved = null,
-            ProjectTreeFlags? flags = null,
-            string? schemaName = null,
-            DependencyIconSet? iconSet = null,
-            bool? isImplicit = null,
-            DiagnosticLevel? diagnosticLevel = null);
+        IDependency WithCaption(string caption);
 
         /// <summary>
         /// Gets the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
