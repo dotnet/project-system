@@ -74,13 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// </summary>
         private Dependency(
             Dependency dependency,
-            string? caption,
-            bool? resolved,
-            ProjectTreeFlags? flags,
-            string? schemaName,
-            DependencyIconSet? iconSet,
-            bool? isImplicit,
-            DiagnosticLevel? diagnosticLevel)
+            string? caption)
         {
             // Copy values as necessary to create a clone with any properties overridden
 
@@ -92,12 +86,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Visible = dependency.Visible;
             BrowseObjectProperties = dependency.BrowseObjectProperties; // NOTE we explicitly do not update Identity in these properties if caption changes
             Caption = caption ?? dependency.Caption; // TODO if Properties contains "Folder.IdentityProperty" should we update it? (see public ctor)
-            Resolved = resolved ?? dependency.Resolved;
-            Flags = flags ?? dependency.Flags;
-            SchemaName = schemaName ?? dependency.SchemaName;
-            IconSet = iconSet != null ? DependencyIconSetCache.Instance.GetOrAddIconSet(iconSet) : dependency.IconSet;
-            Implicit = isImplicit ?? dependency.Implicit;
-            DiagnosticLevel = diagnosticLevel ?? dependency.DiagnosticLevel;
+            Resolved = dependency.Resolved;
+            Flags = dependency.Flags;
+            SchemaName = dependency.SchemaName;
+            IconSet =dependency.IconSet;
+            Implicit = dependency.Implicit;
+            DiagnosticLevel = dependency.DiagnosticLevel;
         }
 
         public DiagnosticLevel DiagnosticLevel { get; }
@@ -134,16 +128,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         #endregion
 
-        public IDependency SetProperties(
-            string? caption = null,
-            bool? resolved = null,
-            ProjectTreeFlags? flags = null,
-            string? schemaName = null,
-            DependencyIconSet? iconSet = null,
-            bool? isImplicit = null,
-            DiagnosticLevel? diagnosticLevel = null)
+        public IDependency WithCaption(string caption)
         {
-            return new Dependency(this, caption, resolved, flags, schemaName, iconSet, isImplicit, diagnosticLevel);
+            return new Dependency(this, caption);
         }
 
         public override string ToString()
