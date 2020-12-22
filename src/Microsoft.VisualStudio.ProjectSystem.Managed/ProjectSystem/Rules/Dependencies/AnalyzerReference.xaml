@@ -8,10 +8,8 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="Analyzer"
-                MSBuildTarget="CollectAnalyzersDesignTime"
                 Persistence="ProjectFile"
-                SourceOfDefaultValue="AfterContext"
-                SourceType="TargetResults" />
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   
   <StringProperty Name="BrowsePath"
