@@ -19,8 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree
                 propertyContext.Metadata != null &&
                 propertyContext.Metadata.TryGetValue(None.NuGetPackageIdProperty, out string packageId) && packageId.Length > 0)
             {
-                // TODO: Replace this with strongly typed value when we next update
-                propertyValues.Flags |= ProjectTreeFlags.Create("UserReadOnly");
+                propertyValues.Flags |= ProjectTreeFlags.UserReadOnly;
             }
         }
     }
