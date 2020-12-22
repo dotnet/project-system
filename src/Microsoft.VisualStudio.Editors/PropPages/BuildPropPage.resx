@@ -975,6 +975,9 @@
   <data name="cboWarningLevel.Items4" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="cboWarningLevel.Items5" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="cboWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
     <value>184, 248</value>
   </data>
@@ -1431,9 +1434,9 @@
   <data name="&gt;&gt;chkDefineDebug.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -1448,8 +1451,5 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cboWarningLevel.Items5" xml:space="preserve">
-    <value>5</value>
   </data>
 </root>

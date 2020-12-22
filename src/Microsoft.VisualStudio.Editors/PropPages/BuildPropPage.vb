@@ -509,7 +509,24 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Function WarningLevelSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             If Not PropertyControlData.IsSpecialValue(value) Then
-                cboWarningLevel.SelectedIndex = CType(value, Integer)
+                Dim warningLevel = CType(value, Integer)
+                Dim indexAsString = warningLevel.ToString()
+                ' Lookup the index of the given warning level in the combobox
+                Dim indexLocation = If(warningLevel = 9999, GetIndexLocation(My.Resources.Strings.preview), GetIndexLocation(indexAsString))
+
+                If indexLocation <> -1 Then
+                    ' If there is an existing entry use that
+                    cboWarningLevel.SelectedIndex = indexLocation
+                ElseIf warningLevel = 9999 Then
+                    ' Otherwise add a new entry
+                    ' 9999 is a special value meaning use the preview warning level
+                    cboWarningLevel.Items.Add(My.Resources.Strings.preview)
+                    cboWarningLevel.SelectedIndex = cboWarningLevel.Items.Count - 1
+                Else
+                    ' any non - negative number can be specified but we only want to show them in the combo box if the value is set
+                    cboWarningLevel.Items.Add(indexAsString)
+                    cboWarningLevel.SelectedIndex = cboWarningLevel.Items.Count - 1
+                End If
                 Return True
             Else
                 ' Indeterminate. Let the architecture handle
@@ -518,8 +535,19 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Function
 
+        Private Function GetIndexLocation(indexToSearchFor As String) As Integer
+            Return cboWarningLevel.Items.Cast(Of String).ToList().FindIndex(Function(s)
+                                                                                Return s = indexToSearchFor
+                                                                            End Function)
+        End Function
+
         Private Function WarningLevelGet(control As Control, prop As PropertyDescriptor, ByRef value As Object) As Boolean
-            value = CType(cboWarningLevel.SelectedIndex, Integer)
+            Dim selectedItem = cboWarningLevel.Items.Cast(Of String).ToList()(cboWarningLevel.SelectedIndex)
+            If selectedItem = My.Resources.Strings.preview Then
+                value = 9999
+            Else
+                value = CType(selectedItem, Integer)
+            End If
             Return True
         End Function
 
