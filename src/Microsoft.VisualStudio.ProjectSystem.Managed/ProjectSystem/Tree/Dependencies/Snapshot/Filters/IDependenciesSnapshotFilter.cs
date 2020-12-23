@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     /// objects influences the sequence of <see cref="TargetedDependenciesSnapshot"/> objects.
     /// </summary>
     /// <remarks>
-    /// For each added and removed dependency in an update, <see cref="TargetedDependenciesSnapshot.FromChanges"/>
+    /// For each dependency involved in an update, <see cref="TargetedDependenciesSnapshot.FromChanges"/>
     /// iterates through an ordered set of these filters, allowing each to influence how the dependency data is
     /// integrated into the next snapshot.
     /// </remarks>
@@ -34,14 +34,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         void BeforeAddOrUpdate(
             IDependency dependency,
             AddDependencyContext context);
-
-        /// <summary>
-        /// Called before removing a dependency from a snapshot.
-        /// </summary>
-        /// <param name="dependency">The dependency to which filter should be applied.</param>
-        /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
-        void BeforeRemove(
-            IDependency dependency,
-            RemoveDependencyContext context);
     }
 }

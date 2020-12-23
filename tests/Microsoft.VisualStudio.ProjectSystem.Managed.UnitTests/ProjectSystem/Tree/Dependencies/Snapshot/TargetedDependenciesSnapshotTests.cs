@@ -150,108 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void FromChanges_NoChangesAfterBeforeRemoveFilterDeclinedChange()
-        {
-            var targetFramework = new TargetFramework("tfm1");
-
-            var dependency1 = new TestDependency
-            {
-                ProviderType = "Xxx",
-                Id = "dependency1",
-                OriginalItemSpec = "Dependency1",
-                Caption = "Dependency1",
-                SchemaItemType = "Xxx",
-                Resolved = true
-            };
-
-            var dependency2 = new TestDependency
-            {
-                ProviderType = "Xxx",
-                Id = "dependency2",
-                OriginalItemSpec = "Dependency2",
-                Caption = "Dependency2",
-                SchemaItemType = "Xxx",
-                Resolved = true
-            };
-
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = new TargetedDependenciesSnapshot(
-                targetFramework,
-                catalogs,
-                ImmutableArray.Create<IDependency>(dependency1, dependency2));
-
-            var changes = new DependenciesChangesBuilder();
-            changes.Removed(dependency1.ProviderType, dependency1.Id);
-
-            var snapshotFilter = new TestDependenciesSnapshotFilter();
-            snapshotFilter.BeforeRemoveReject("Xxx", "dependency1");
-
-            var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                previousSnapshot,
-                changes.TryBuildChanges()!,
-                catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
-
-            Assert.Same(previousSnapshot, snapshot);
-            Assert.True(snapshotFilter.Completed);
-        }
-
-        [Fact]
-        public void FromChanges_ReportedChangesAfterBeforeRemoveFilterDeclinedChange()
-        {
-            var targetFramework = new TargetFramework("tfm1");
-
-            var dependency1 = new TestDependency
-            {
-                ProviderType = "Xxx",
-                Id = "dependency1",
-                OriginalItemSpec = "Dependency1",
-                Caption = "Dependency1",
-                SchemaItemType = "Xxx",
-                Resolved = true
-            };
-
-            var dependency2 = new TestDependency
-            {
-                ProviderType =  "Xxx",
-                Id = "dependency2",
-                OriginalItemSpec = "Dependency2",
-                Caption = "Dependency2",
-                SchemaItemType = "Xxx",
-                Resolved = true
-            };
-
-            var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var previousSnapshot = new TargetedDependenciesSnapshot(
-                targetFramework,
-                catalogs,
-                ImmutableArray.Create<IDependency>(dependency1, dependency2));
-
-            var changes = new DependenciesChangesBuilder();
-            changes.Removed("Xxx", "dependency1");
-
-            var addedOnRemove = new TestDependency { Id = "SomethingElse" };
-
-            var snapshotFilter = new TestDependenciesSnapshotFilter()
-                .BeforeRemoveReject("Xxx", "dependency1", addOrUpdate: addedOnRemove);
-
-            var snapshot = TargetedDependenciesSnapshot.FromChanges(
-                previousSnapshot,
-                changes.TryBuildChanges()!,
-                catalogs,
-                ImmutableArray.Create<IDependenciesSnapshotFilter>(snapshotFilter));
-
-            Assert.True(snapshotFilter.Completed);
-
-            Assert.NotSame(previousSnapshot, snapshot);
-
-            Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
-            Assert.Same(catalogs, snapshot.Catalogs);
-            AssertEx.CollectionLength(snapshot.Dependencies, 3);
-            Assert.Contains(addedOnRemove, snapshot.Dependencies);
-        }
-
-        [Fact]
         public void FromChanges_NoChangesAfterBeforeAddFilterDeclinedChange()
         {
             var targetFramework = new TargetFramework("tfm1");
@@ -452,16 +350,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Resolved = true
             };
 
-            var dependencyInsteadRemoved1 = new TestDependency
-            {
-                ProviderType = "Xxx",
-                Id = "InsteadRemoveddependency1",
-                OriginalItemSpec = "InsteadRemovedDependency1",
-                Caption = "InsteadRemovedDependency1",
-                SchemaItemType = "Xxx",
-                Resolved = true
-            };
-
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var previousSnapshot = new TargetedDependenciesSnapshot(
                 targetFramework,
@@ -477,8 +365,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var snapshotFilter = new TestDependenciesSnapshotFilter()
                 .BeforeAddReject("Xxx", "addeddependency1")
                 .BeforeAddAccept("Xxx", "addeddependency2", dependencyAdded2Changed)
-                .BeforeAddAccept("Xxx", "addeddependency3")
-                .BeforeRemoveAccept("Xxx", "Removeddependency1", dependencyInsteadRemoved1);
+                .BeforeAddAccept("Xxx", "addeddependency3");
 
             var snapshot = TargetedDependenciesSnapshot.FromChanges(
                 previousSnapshot,
@@ -492,11 +379,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             Assert.Same(previousSnapshot.TargetFramework, snapshot.TargetFramework);
             Assert.Same(catalogs, snapshot.Catalogs);
-            AssertEx.CollectionLength(snapshot.Dependencies, 5);
+            AssertEx.CollectionLength(snapshot.Dependencies, 4);
             Assert.Contains(snapshot.Dependencies, dep => dep.Id == "dependency1");
             Assert.Contains(snapshot.Dependencies, dep => dep.Id == "dependency2");
             Assert.Contains(snapshot.Dependencies, dep => dep.Id == "addeddependency2");
-            Assert.Contains(snapshot.Dependencies, dep => dep.Id == "InsteadRemoveddependency1");
             Assert.Contains(snapshot.Dependencies, dep => dep.Id == "addeddependency3");
         }
 
@@ -606,8 +492,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             private enum FilterAction { Reject, Accept }
 
-            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeAdd    = new();
-            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeRemove = new();
+            private readonly Dictionary<(string ProviderType, string Id), (FilterAction, IDependency?)> _beforeAdd = new();
 
             public TestDependenciesSnapshotFilter BeforeAddAccept(string providerType, string id, IDependency? dependency = null)
             {
@@ -618,18 +503,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             public TestDependenciesSnapshotFilter BeforeAddReject(string providerType, string id, IDependency? addOrUpdate = null)
             {
                 _beforeAdd.Add((providerType, id), (FilterAction.Reject, addOrUpdate));
-                return this;
-            }
-
-            public TestDependenciesSnapshotFilter BeforeRemoveAccept(string providerType, string id, IDependency? addOrUpdate = null)
-            {
-                _beforeRemove.Add((providerType, id), (FilterAction.Accept, addOrUpdate));
-                return this;
-            }
-
-            public TestDependenciesSnapshotFilter BeforeRemoveReject(string providerType, string id, IDependency? addOrUpdate = null)
-            {
-                _beforeRemove.Add((providerType, id), (FilterAction.Reject, addOrUpdate));
                 return this;
             }
 
@@ -667,46 +540,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 }
             }
 
-            public void BeforeRemove(
-                IDependency dependency,
-                RemoveDependencyContext context)
-            {
-                (string ProviderType, string Id) key = (dependency.ProviderType, dependency.Id);
-
-                if (_beforeRemove.TryGetValue(key, out (FilterAction Action, IDependency? Dependency) info))
-                {
-                    if (info.Action == FilterAction.Reject)
-                    {
-                        context.Reject();
-
-                        if (info.Dependency != null)
-                        {
-                            context.AddOrUpdate(info.Dependency);
-                        }
-                    }
-                    else if (info.Action == FilterAction.Accept)
-                    {
-                        context.Accept();
-
-                        if (info.Dependency != null)
-                        {
-                            context.AddOrUpdate(info.Dependency);
-                        }
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
-                    }
-
-                    _beforeRemove.Remove(key);
-                }
-                else
-                {
-                    throw new ArgumentException("Unexpected dependency: " + key);
-                }
-            }
-
-            public bool Completed => _beforeAdd.Count == 0 && _beforeRemove.Count == 0;
+            public bool Completed => _beforeAdd.Count == 0;
         }
     }
 }

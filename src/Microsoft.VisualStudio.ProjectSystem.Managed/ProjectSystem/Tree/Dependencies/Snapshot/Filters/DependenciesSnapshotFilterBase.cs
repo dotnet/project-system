@@ -13,12 +13,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         {
             context.Accept(dependency);
         }
-
-        public virtual void BeforeRemove(
-            IDependency dependency,
-            RemoveDependencyContext context)
-        {
-            context.Accept();
-        }
     }
 }
