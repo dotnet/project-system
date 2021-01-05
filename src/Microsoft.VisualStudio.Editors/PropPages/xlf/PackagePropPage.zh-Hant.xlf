@@ -258,13 +258,13 @@
         <note />
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
-        <source>Package License Expression Radio Button</source>
-        <target state="translated">套件授權運算式選項按鈕</target>
+        <source>Package License Expression</source>
+        <target state="needs-review-translation">套件授權運算式選項按鈕</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
-        <source>Package License File Radio Button</source>
-        <target state="translated">套件授權檔案選項按鈕</target>
+        <source>Package License File</source>
+        <target state="needs-review-translation">套件授權檔案選項按鈕</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
