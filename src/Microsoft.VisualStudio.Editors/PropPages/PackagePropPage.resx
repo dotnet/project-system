@@ -757,7 +757,7 @@
     <value>3</value>
   </data>
   <data name="LicenseExpressionRadioButton.AccessibleName" xml:space="preserve">
-    <value>Package License Expression Radio Button</value>
+    <value>Package License Expression</value>
   </data>
   <data name="LicenseExpressionRadioButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
@@ -880,7 +880,7 @@
     <value>3</value>
   </data>
   <data name="LicenseFileRadioButton.AccessibleName" xml:space="preserve">
-    <value>Package License File Radio Button</value>
+    <value>Package License File</value>
   </data>
   <data name="LicenseFileRadioButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
