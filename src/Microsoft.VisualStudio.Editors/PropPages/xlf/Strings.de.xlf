@@ -62,7 +62,7 @@
       </trans-unit>
       <trans-unit id="none">
         <source>none</source>
-        <target state="new">none</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="preview">
