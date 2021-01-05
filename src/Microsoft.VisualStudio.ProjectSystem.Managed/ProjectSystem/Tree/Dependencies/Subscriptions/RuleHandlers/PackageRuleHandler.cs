@@ -102,18 +102,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            if (TryCreatePackageDependencyModel(
-                projectFullPath,
-                removedItem,
-                resolved,
-                properties: projectChange.Before.GetProjectItemProperties(removedItem)!,
-                evaluationRuleSnapshot,
-                isEvaluatedItemSpec,
-                targetFramework,
-                out PackageDependencyModel? dependencyModel))
-            {
-                changesBuilder.Removed(ProviderTypeString, dependencyModel.OriginalItemSpec);
-            }
+            string originalItemSpec = resolved
+                ? projectChange.Before.GetProjectItemProperties(removedItem)?.GetStringProperty(ProjectItemMetadata.Name) ?? removedItem
+                : removedItem;
+
+            changesBuilder.Removed(ProviderTypeString, originalItemSpec);
         }
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
