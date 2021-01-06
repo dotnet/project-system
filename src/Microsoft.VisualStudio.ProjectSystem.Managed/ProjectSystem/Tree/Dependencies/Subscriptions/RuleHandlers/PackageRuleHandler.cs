@@ -213,13 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                     return false;
                 }
 
-                dependencyModel = new PackageDependencyModel(
-                    originalItemSpec: name,
-                    version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
-                    isResolved: true,
-                    isImplicit,
-                    isVisible: true,
-                    properties);
+                originalItemSpec = name;
             }
             else
             {
@@ -227,15 +221,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
                 System.Diagnostics.Debug.Assert(itemSpec.IndexOf('/') == -1);
 
-                dependencyModel = new PackageDependencyModel(
-                    originalItemSpec: itemSpec,
-                    version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
-                    isResolved: false,
-                    isImplicit,
-                    isVisible: true,
-                    properties);
+                originalItemSpec = itemSpec;
             }
 
+            dependencyModel = new PackageDependencyModel(
+                originalItemSpec,
+                version: properties.GetStringProperty(ProjectItemMetadata.Version) ?? string.Empty,
+                isResolved,
+                isImplicit,
+                isVisible: true,
+                properties);
             return true;
         }
     }
