@@ -31,6 +31,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
+        public async Task DisposeAsync_WhenNotInitialized_DoesNotThrow()
+        {
+            var registrar = CreateInstance();
+
+            await registrar.DisposeAsync();
+
+            Assert.True(registrar.IsDisposed);
+        }
+
+        [Fact]
+        public async Task DisposedAsync_WhenInitialized_DoesNotThrow()
+        {
+            var registrar = await CreateInitializedInstanceAsync();
+
+            await registrar.DisposeAsync();
+
+            Assert.True(registrar.IsDisposed);
+        }
+
+        [Fact]
         public async Task OnProjectChanged_WhenNotDebuggable_ProjectNotRegistered()
         {
             var vsStartupProjectsListService = new VsStartupProjectsListService();
@@ -139,12 +159,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(projectGuid, vsStartupProjectsListService.ProjectGuid);
         }
 
-        private static Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(IVsStartupProjectsListService vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
+        [Fact]
+        public async Task OnProjectChanged_VsStartupProjectsListServiceIsNull_DoesNotThrow()
+        {
+            var debugProvider = IDebugLaunchProviderFactory.ImplementIsProjectDebuggableAsync(() => false);
+            var registrar = await CreateInitializedInstanceAsync(vsStartupProjectsListService: null, debugProvider);
+
+            await registrar.OnProjectChangedAsync();
+        }
+
+        private static Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(IVsStartupProjectsListService? vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
         {
             return CreateInitializedInstanceAsync(Guid.NewGuid(), vsStartupProjectsListService, launchProviders);
         }
 
-        private static Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(Guid projectGuid, IVsStartupProjectsListService vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
+        private static Task<StartupProjectRegistrar> CreateInitializedInstanceAsync(Guid projectGuid, IVsStartupProjectsListService? vsStartupProjectsListService, params IDebugLaunchProvider[] launchProviders)
         {
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(projectGuid);
             var debuggerLaunchProviders = new OrderPrecedenceImportCollection<IDebugLaunchProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
@@ -184,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var instance = new StartupProjectRegistrar(
                 project,
                 IUnconfiguredProjectTasksServiceFactory.Create(),
-                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService>(vsStartupProjectsListService!),
+                IVsServiceFactory.Create<SVsStartupProjectsListService, IVsStartupProjectsListService?>(vsStartupProjectsListService!),
                 threadingService ?? IProjectThreadingServiceFactory.Create(),
                 projectGuidService ?? ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid()),
                 projectSubscriptionService ?? IActiveConfiguredProjectSubscriptionServiceFactory.Create(),
