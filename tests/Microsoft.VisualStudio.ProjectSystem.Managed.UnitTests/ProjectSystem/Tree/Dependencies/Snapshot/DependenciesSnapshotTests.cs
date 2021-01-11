@@ -26,18 +26,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_NoTargets()
         {
-            var targetFramework = new TargetFramework("tfm1");
-
+#if false
             var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
-                activeTargetFramework: targetFramework,
+                activeTargetFramework: new TargetFramework("tfm1"),
                 dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
 
             Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains no items.", ex.Message);
+#else
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: new TargetFramework("tfm1"),
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
+#endif
         }
 
         [Fact]
         public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_WithTargets()
         {
+#if false
             var tfm1 = new TargetFramework("tfm1");
             var tfm2 = new TargetFramework("tfm2");
             var tfm3 = new TargetFramework("tfm3");
@@ -49,6 +54,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     .Add(tfm3, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))));
 
             Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains \"tfm2\", \"tfm3\".", ex.Message);
+#else
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
+
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: tfm1,
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty
+                    .Add(tfm2, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))
+                    .Add(tfm3, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null)));
+#endif
         }
 
         [Fact]

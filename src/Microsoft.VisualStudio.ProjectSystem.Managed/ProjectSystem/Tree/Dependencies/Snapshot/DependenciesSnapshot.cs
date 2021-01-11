@@ -161,6 +161,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
+#if false
+            // The validation in this #if/#endif block is sound in theory, however is causing quite a few NFEs.
+            // For example https://github.com/dotnet/project-system/issues/6656.
+            //
+            // We have disabled it for now. The consequence of this test failing is that dependencies added to
+            // the tree are not exposed via extensibility APIs such as DTE/VSLangProj.
+            //
+            // At some point we should revisit how the dependencies tree models its target frameworks, likely
+            // as part of https://github.com/dotnet/project-system/issues/6183.
+
             // We have seen NFEs where the active target framework is unsupported. Skipping validation in such cases is better than faulting the dataflow.
             if (!activeTargetFramework.Equals(TargetFramework.Empty) &&
                 !activeTargetFramework.Equals(TargetFramework.Unsupported) &&
@@ -175,6 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     nameof(activeTargetFramework),
                     $"Value \"{activeTargetFramework.FullName}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
             }
+#endif
 
             ActiveTargetFramework = activeTargetFramework;
             DependenciesByTargetFramework = dependenciesByTargetFramework;
