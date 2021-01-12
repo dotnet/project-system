@@ -1,19 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles retrieving an <see cref="IPropertyPage"/> based on an ID.
     /// </summary>
-    internal class PropertyPageByIdDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue>
+    internal class PropertyPageByIdDataProducer : QueryDataByIdProducerBase
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
@@ -30,40 +27,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
         {
-            Requires.NotNull(request, nameof(request));
-
-            foreach (EntityIdentity requestId in request.RequestData)
+            if (id.KeysCount == 2
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
             {
-                if (requestId.KeysCount == 2
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string path)
-                    && requestId.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
-                {
-                    try
-                    {
-                        IEntityValue? propertyPageValue = await PropertyPageDataProducer.CreatePropertyPageValueAsync(
-                            request.QueryExecutionContext.EntityRuntime,
-                            requestId,
-                            _projectService,
-                            _queryCacheProvider,
-                            path,
-                            propertyPageName,
-                            _properties);
-
-                        if (propertyPageValue is not null)
-                        {
-                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyPageValue, request, ProjectModelZones.Cps));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        request.QueryExecutionContext.ReportError(ex);
-                    }
-                }
+                return PropertyPageDataProducer.CreatePropertyPageValueAsync(
+                    runtimeModel,
+                    id,
+                    _projectService,
+                    _queryCacheProvider,
+                    projectPath,
+                    propertyPageName,
+                    _properties);
             }
 
-            await ResultReceiver.OnRequestProcessFinishedAsync(request);
+            return NullEntityValue;
+            
         }
     }
 }

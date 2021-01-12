@@ -39,8 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 dependency,
-                null!,
-                null,
                 context);
 
             // Accepts unchanged dependency
@@ -84,8 +82,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 dependency,
-                null!,
-                null,
                 context);
 
             // The context changed, beyond just the filtered dependency
@@ -135,8 +131,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 dependency,
-                null!,
-                null,
                 context);
 
             // The context was unchanged, beyond the filtered dependency
@@ -187,8 +181,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 dependency,
-                null!,
-                null,
                 context);
 
             // Accepts unchanged dependency

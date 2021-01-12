@@ -12,6 +12,46 @@
         <target state="translated">Povolit nebezpečný kód</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
+        <source>pointers</source>
+        <target state="translated">ukazatele</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
+        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
+        <target state="translated">Určuje, jestli celočíselná aritmetika, jejímž výsledkem je hodnota mimo rozsah datového typu a která není v rozsahu kontrolovaného nebo nekontrolovaného klíčového slova, způsobí výjimku za běhu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>Check for arithmetic overflow</source>
+        <target state="translated">Kontrolovat aritmetické přetečení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
+        <source>checked;unchecked</source>
+        <target state="translated">zaškrtnuto;nezaškrtnuto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|Description">
+        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
+        <target state="translated">Označuje, jestli by kompilátor měl pro identické vstupy vytvořit identická sestavení.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|DisplayName">
+        <source>Deterministic</source>
+        <target state="translated">Deterministický</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="translated">Vygeneruje soubor s dokumentací k rozhraní API.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">Soubor dokumentace</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">Povolí nebo zakáže optimalizace provedené kompilátorem za účelem zmenšení, zrychlení a zefektivnění souboru výstupu.</target>
@@ -20,6 +60,11 @@
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
         <target state="translated">Optimalizovat kód</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
+        <source>optimise;optimisation</source>
+        <target state="translated">optimalizovat;optimalizace</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -45,6 +90,26 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">Výstup</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|Description">
+        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
+        <target state="translated">Určuje, kdy se budou Microsoftu posílat zprávy o vnitřních chybách kompilátoru (ICE).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Internal compiler error reporting</source>
+        <target state="translated">Zasílání zpráv o vnitřních chybách kompilátoru</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|Description">
+        <source>Specifies, in bytes, where to align the sections of the output file.</source>
+        <target state="translated">Určuje (v bajtech), kam se mají zarovnávat oddíly výstupního souboru.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File alignment</source>
+        <target state="translated">Zarovnání souboru</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
@@ -85,6 +150,51 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">Úroveň pro upozornění</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
+        <source>Never send</source>
+        <target state="translated">Nikdy neposílat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
+        <source>Prompt before sending</source>
+        <target state="translated">Před odesláním se zeptat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
+        <source>Queue</source>
+        <target state="translated">Fronta</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
+        <source>Send</source>
+        <target state="translated">Posílat</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
+        <source>1024</source>
+        <target state="translated">1024</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
+        <source>2048</source>
+        <target state="translated">2048</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
+        <source>4096</source>
+        <target state="translated">4096</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
+        <source>512</source>
+        <target state="translated">512</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
+        <source>8192</source>
+        <target state="translated">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
@@ -162,14 +272,34 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|Description">
+      <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
         <target state="translated">Určuje vlastnosti, které řídí způsob sestavení daného projektu.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|DisplayName">
+      <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">Sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
+        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Určuje základní umístění mezivýstupu projektu během sestavování. Aby se rozlišila konfigurace projektu, připojí se k této cestě podsložky.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base intermediate output path</source>
+        <target state="translated">Základní cesta k mezivýstupu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|Description">
+        <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Určuje základní umístění výstupu projektu během sestavování. Aby se rozlišila konfigurace projektu, připojí se k této cestě podsložky.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
+        <source>Base output path</source>
+        <target state="translated">Základní cesta výstupu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
@@ -183,13 +313,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">Určuje název souboru, do nějž budou zpracovány dokumentační poznámky.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">Nepovinná cesta pro soubor dokumentace k rozhraní API. Pokud chcete použít výchozí umístění, ponechte ji prázdnou.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
         <target state="translated">Generovat soubor dokumentace XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|Description">
+        <source>Why can't I select the C# language version?</source>
+        <target state="translated">Proč nemůžu vybrat verzi jazyka C#?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">Verze jazyka</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -202,16 +342,6 @@
         <target state="translated">Potlačit upozornění</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|Description">
-        <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="translated">Určuje umístění výstupních souborů pro tuto konfiguraci projektu.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output path</source>
-        <target state="translated">Výstupní cesta</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Zpracovává určená upozornění jako chyby. Více čísel upozornění oddělte čárkou (,) nebo středníkem (;).</target>
@@ -219,7 +349,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="needs-review-translation">Specifická upozornění</target>
+        <target state="translated">Považovat konkrétní upozornění za chyby</target>
         <note />
       </trans-unit>
     </body>

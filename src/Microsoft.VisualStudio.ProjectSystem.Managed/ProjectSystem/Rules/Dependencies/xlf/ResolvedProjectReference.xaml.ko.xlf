@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../ResolvedProjectReference.xaml">
     <body>
+      <trans-unit id="BoolProperty|TreatAsUsed|Description">
+        <source>Indicates that this reference should be treated as if it were used.</source>
+        <target state="new">Indicates that this reference should be treated as if it were used.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatAsUsed|DisplayName">
+        <source>Treat as used</source>
+        <target state="new">Treat as used</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">
         <source>Project Reference</source>
         <target state="translated">프로젝트 참조</target>

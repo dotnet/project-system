@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
-using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
-using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Handles retrieving a set of <see cref="IUIPropertyValue"/>s from an <see cref="IUIProperty"/>.
     /// </summary>
-    internal class UIPropertyValueFromUIPropertyDataProducer : QueryDataProducerBase<IEntityValue>, IQueryDataProducer<IEntityValue, IEntityValue>
+    internal class UIPropertyValueFromUIPropertyDataProducer : QueryDataFromProviderStateProducerBase<PropertyProviderState>
     {
         private readonly IUIPropertyValuePropertiesAvailableStatus _properties;
 
@@ -24,31 +19,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        public async Task SendRequestAsync(QueryProcessRequest<IEntityValue> request)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyProviderState providerState)
         {
-            if ((request.RequestData as IEntityValueFromProvider)?.ProviderState is (IPropertyPageQueryCache cache, Rule schema, string propertyName))
-            {
-                try
-                {
-                    IEnumerable<IEntityValue> propertyValues = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
-                        request.RequestData,
-                        cache,
-                        schema,
-                        propertyName,
-                        _properties);
-
-                    foreach (IEntityValue propertyValue in propertyValues)
-                    {
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(propertyValue, request, ProjectModelZones.Cps));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    request.QueryExecutionContext.ReportError(ex);
-                }
-            }
-
-            await ResultReceiver.OnRequestProcessFinishedAsync(request);
+            return UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                parent,
+                providerState.Cache,
+                providerState.ContainingRule,
+                providerState.PropertyName,
+                _properties);
         }
     }
 }

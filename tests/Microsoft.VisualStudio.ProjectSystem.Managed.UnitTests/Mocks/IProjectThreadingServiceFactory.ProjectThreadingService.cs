@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             public IDisposable SuppressProjectExecutionContext()
             {
-                throw new NotImplementedException();
+                return new DisposableObject();
             }
 
             public void Fork(Func<Task> asyncAction,
@@ -66,6 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
                       ForkOptions options = ForkOptions.Default)
             {
                 JoinableTaskFactory.Run(asyncAction);
+            }
+
+            private class DisposableObject : IDisposable
+            {
+                public void Dispose()
+                {
+                }
             }
         }
     }

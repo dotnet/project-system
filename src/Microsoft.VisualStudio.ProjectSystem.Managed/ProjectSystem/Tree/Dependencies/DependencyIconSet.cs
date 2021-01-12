@@ -13,12 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     /// </summary>
     internal sealed class DependencyIconSet : IEquatable<DependencyIconSet?>
     {
-        public DependencyIconSet(ImageMoniker icon, ImageMoniker expandedIcon, ImageMoniker unresolvedIcon, ImageMoniker unresolvedExpandedIcon)
+        public DependencyIconSet(ImageMoniker icon, ImageMoniker expandedIcon, ImageMoniker unresolvedIcon, ImageMoniker unresolvedExpandedIcon, ImageMoniker implicitIcon, ImageMoniker implicitExpandedIcon)
         {
             Icon = icon;
             ExpandedIcon = expandedIcon;
             UnresolvedIcon = unresolvedIcon;
             UnresolvedExpandedIcon = unresolvedExpandedIcon;
+            ImplicitIcon = implicitIcon;
+            ImplicitExpandedIcon = implicitExpandedIcon;
         }
 
         /// <summary>
@@ -41,6 +43,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// </summary>
         public ImageMoniker UnresolvedExpandedIcon { get; }
 
+        /// <summary>
+        /// Gets the icon to use when the dependency is implicit (cannot be removed).
+        /// </summary>
+        public ImageMoniker ImplicitIcon { get; }
+
+        /// <summary>
+        /// Gets the icon to use when the dependency is implicit (cannot be removed) and expanded.
+        /// </summary>
+        public ImageMoniker ImplicitExpandedIcon { get; }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as DependencyIconSet);
@@ -53,10 +65,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 && ExpandedIcon.Id == other.ExpandedIcon.Id
                 && UnresolvedIcon.Id == other.UnresolvedIcon.Id
                 && UnresolvedExpandedIcon.Id == other.UnresolvedExpandedIcon.Id
+                && ImplicitIcon.Id == other.ImplicitIcon.Id
+                && ImplicitExpandedIcon.Id == other.ImplicitExpandedIcon.Id
                 && Icon.Guid == other.Icon.Guid
                 && ExpandedIcon.Guid == other.ExpandedIcon.Guid
                 && UnresolvedIcon.Guid == other.UnresolvedIcon.Guid
-                && UnresolvedExpandedIcon.Guid == other.UnresolvedExpandedIcon.Guid;
+                && UnresolvedExpandedIcon.Guid == other.UnresolvedExpandedIcon.Guid
+                && ImplicitIcon.Guid == other.ImplicitIcon.Guid
+                && ImplicitExpandedIcon.Guid == other.ImplicitExpandedIcon.Guid;
         }
 
         public override int GetHashCode()
@@ -69,6 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             hashCode = (hashCode * -1521134295) + UnresolvedIcon.Guid.GetHashCode();
             hashCode = (hashCode * -1521134295) + UnresolvedExpandedIcon.Id.GetHashCode();
             hashCode = (hashCode * -1521134295) + UnresolvedExpandedIcon.Guid.GetHashCode();
+            hashCode = (hashCode * -1521134295) + ImplicitIcon.Id.GetHashCode();
+            hashCode = (hashCode * -1521134295) + ImplicitExpandedIcon.Guid.GetHashCode();
             return hashCode;
         }
     }

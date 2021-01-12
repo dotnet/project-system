@@ -30,4 +30,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             throw new NotImplementedException("ConvertBack should NOT be invoked");
         }
     }
+
+    internal sealed class InverseBooleanConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return !(bool)value;
+        }
+    }
 }

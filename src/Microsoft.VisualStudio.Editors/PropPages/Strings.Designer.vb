@@ -130,6 +130,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to latest.
+        '''</summary>
+        Friend Shared ReadOnly Property latest() As String
+            Get
+                Return ResourceManager.GetString("latest", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to No Authentication.
         '''</summary>
         Friend Shared ReadOnly Property NoAuthentication() As String
@@ -139,11 +148,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to none.
+        '''</summary>
+        Friend Shared ReadOnly Property none() As String
+            Get
+                Return ResourceManager.GetString("none", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (not installed).
         '''</summary>
         Friend Shared ReadOnly Property NotInstalledText() As String
             Get
                 Return ResourceManager.GetString("NotInstalledText", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to preview.
+        '''</summary>
+        Friend Shared ReadOnly Property preview() As String
+            Get
+                Return ResourceManager.GetString("preview", resourceCulture)
             End Get
         End Property
         

@@ -17,15 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             icon: KnownMonikers.CodeInformation,
             expandedIcon: KnownMonikers.CodeInformation,
             unresolvedIcon: KnownMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning);
+            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning,
+            implicitIcon: KnownMonikers.CodeInformationPrivate,
+            implicitExpandedIcon: KnownMonikers.CodeInformationPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: KnownMonikers.CodeInformationPrivate,
-            expandedIcon: KnownMonikers.CodeInformationPrivate,
-            unresolvedIcon: KnownMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 

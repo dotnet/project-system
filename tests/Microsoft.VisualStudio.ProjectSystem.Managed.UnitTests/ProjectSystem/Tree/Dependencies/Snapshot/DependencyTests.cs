@@ -95,34 +95,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void Dependency_SetProperties()
+        public void Dependency_WithCaption()
         {
             var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
 
             var dependency = new Dependency(dependencyModel);
-            var flags = ProjectTreeFlags.Create("TestFlag");
 
-            var newDependency = dependency.SetProperties(
-                caption: "newcaption",
-                resolved: true,
-                flags: flags);
+            var newDependency = dependency.WithCaption(caption: "newcaption");
 
             Assert.Equal("newcaption", newDependency.Caption);
-            Assert.True(newDependency.Resolved);
-            Assert.True(newDependency.Flags.Equals(flags));
-        }
-
-        [Fact]
-        public void WhenSettingProperties_ExistingIconSetInstanceIsReused()
-        {
-            var dependencyModel = new TestDependencyModel { ProviderType = "providerType", Id = "someId" };
-
-            var dependency = (new Dependency(dependencyModel))
-                .SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
-
-            var dependencyWithUpdatedIconSet = dependency.SetProperties(iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
-
-            Assert.Same(dependency.IconSet, dependencyWithUpdatedIconSet.IconSet);
         }
 
         [Fact]
@@ -132,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                     "Caption",
                     "Path",
                     "ItemSpec",
-                    iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
+                    iconSet: new DependencyIconSet(KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference, KnownMonikers.Reference));
 
             var dependency = new Dependency(dependencyModel);
 

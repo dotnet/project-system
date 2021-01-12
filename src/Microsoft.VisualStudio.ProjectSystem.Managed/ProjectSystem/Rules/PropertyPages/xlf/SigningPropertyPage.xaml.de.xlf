@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">Aktivieren Sie dieses Kontrollkästchen, um die Assembly zu signieren.</target>
+        <target state="translated">Hiermit wird die Ausgabeassembly signiert, um ihr einen starken Namen zuzuweisen.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -22,12 +22,12 @@
         <target state="translated">Assembly signieren</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|Description">
+      <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
         <target state="translated">Eigenschaften, die mit dem Generieren von signierten Assemblys zusammenhängen.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+      <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
         <target state="translated">Signierung</target>
         <note />

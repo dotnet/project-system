@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">Установите этот флажок, чтобы подписать сборку.</target>
+        <target state="translated">Подпишите выходную сборку, чтобы дать ей строгое имя.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -22,12 +22,12 @@
         <target state="translated">Подписать сборку</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|Description">
+      <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
         <target state="translated">Свойства, связанные с созданием подписываемых сборок.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+      <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
         <target state="translated">Подписывание</target>
         <note />

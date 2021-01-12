@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateSupportedValuesPropertiesAvailableStatus(includeAllProperties: true);
 
-            var entityRuntime = IEntityRuntimeModelFactory.Create();
+            var parentEntity = IEntityWithIdFactory.Create("ParentKey", "ParentKeyValue");
             var iproperty = IPropertyFactory.CreateEnum(new[]
             {
                 IEnumValueFactory.Create(displayName: "Alpha", name: "a"),
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 IEnumValueFactory.Create(displayName: "Gamma", name: "c")
             });
 
-            var result = await SupportedValueDataProducer.CreateSupportedValuesAsync(entityRuntime, iproperty, properties);
+            var result = await SupportedValueDataProducer.CreateSupportedValuesAsync(parentEntity, iproperty, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {

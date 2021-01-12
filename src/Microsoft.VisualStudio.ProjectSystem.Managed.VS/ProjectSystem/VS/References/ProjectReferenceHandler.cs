@@ -1,0 +1,31 @@
+﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
+
+namespace Microsoft.VisualStudio.ProjectSystem.VS.References
+{
+    internal class ProjectReferenceHandler : AbstractReferenceHandler
+    {
+        internal ProjectReferenceHandler() :
+            base(ProjectSystemReferenceType.Project)
+        { }
+
+        protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
+            ProjectSystemReferenceInfo referencesInfo)
+        {
+            Assumes.Present(services.ProjectReferences);
+
+            return services.ProjectReferences.RemoveAsync(referencesInfo.ItemSpecification);
+        }
+
+        protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
+        {
+            Assumes.Present(services.ProjectReferences);
+
+            return (await services.ProjectReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
+        }
+    }
+}

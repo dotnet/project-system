@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">어셈블리에 서명하려면 이 확인란을 선택합니다.</target>
+        <target state="translated">출력 어셈블리에 서명하여 강력한 이름을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -22,12 +22,12 @@
         <target state="translated">어셈블리 서명</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|Description">
+      <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
         <target state="translated">서명 어셈블리 생성과 관련된 속성입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+      <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
         <target state="translated">서명</target>
         <note />

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.VS.Debug;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 {
@@ -55,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             /// <summary>
             /// The user can't add arbitrary authentication modes, so this method is unsupported.
             /// </summary>
-            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => Task.FromResult<IEnumValue?>(null);
+            public Task<IEnumValue?> TryCreateEnumValueAsync(string userSuppliedValue) => TaskResult.Null<IEnumValue>();
         }
     }
 }
