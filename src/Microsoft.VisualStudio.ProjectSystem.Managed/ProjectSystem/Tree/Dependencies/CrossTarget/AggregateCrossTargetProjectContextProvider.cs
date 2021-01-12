@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
-                object? targetObject = await configurationGeneralProperties.TargetFrameworkMoniker.GetValueAsync();
+                object? targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
 
                 if (targetObject == null)
                 {
