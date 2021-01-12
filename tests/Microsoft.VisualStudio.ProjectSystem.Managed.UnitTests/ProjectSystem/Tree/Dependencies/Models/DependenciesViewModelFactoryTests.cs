@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.None);
 
             Assert.NotNull(result);
-            Assert.Equal(targetFramework.FullName, result.Caption);
+            Assert.Equal(targetFramework.TargetFrameworkMoniker, result.Caption);
             Assert.Equal(KnownMonikers.Library, result.Icon);
             Assert.Equal(KnownMonikers.Library, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNode));
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var result = factory.CreateTargetViewModel(targetFramework, maximumDiagnosticLevel: DiagnosticLevel.Warning);
 
             Assert.NotNull(result);
-            Assert.Equal(targetFramework.FullName, result.Caption);
+            Assert.Equal(targetFramework.TargetFrameworkMoniker, result.Caption);
             Assert.Equal(KnownMonikers.LibraryWarning, result.Icon);
             Assert.Equal(KnownMonikers.LibraryWarning, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNode));
