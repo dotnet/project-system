@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
-        <target state="new">Build this project for multiple target frameworks.</target>
+        <target state="translated">Générez ce projet pour plusieurs frameworks cibles.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
         <source>Target multiple frameworks</source>
-        <target state="new">Target multiple frameworks</target>
+        <target state="translated">Cibler plusieurs frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -44,22 +44,22 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <target state="translated">Spécifie la version de .NET ciblée par l'application. Cette option peut avoir des valeurs distinctes, en fonction des versions de .NET installées sur votre ordinateur.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="new">Target framework</target>
+        <target state="translated">Framework cible</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
-        <target state="new">Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</target>
+        <target state="translated">Sélectionne une option de génération de manifeste quand l'application s'exécute sur Windows Vista ou une version ultérieure sous UAC (contrôle de compte d'utilisateur). Les options incluent la génération d'un manifeste par défaut, la non-génération de manifeste ou la génération d'un manifeste personnalisé fourni par votre projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
         <source>Manifest</source>
-        <target state="new">Manifest</target>
+        <target state="translated">Manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|Description">
@@ -74,27 +74,27 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
         <source>Specifies how application resources will be managed.</source>
-        <target state="new">Specifies how application resources will be managed.</target>
+        <target state="translated">Spécifie la façon dont les ressources de l'application sont managées.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
         <source>Use a custom manifest</source>
-        <target state="new">Use a custom manifest</target>
+        <target state="translated">Utiliser un manifeste personnalisé</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
         <source>Embed manifest with default settings</source>
-        <target state="new">Embed manifest with default settings</target>
+        <target state="translated">Incorporer les paramètres par défaut dans le fichier manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
         <source>Create application without a manifest</source>
-        <target state="new">Create application without a manifest</target>
+        <target state="translated">Créer une application sans fichier manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|OutputType.Exe|DisplayName">
@@ -114,12 +114,12 @@
       </trans-unit>
       <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
         <source>Icon and manifest</source>
-        <target state="new">Icon and manifest</target>
+        <target state="translated">Icône et manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
         <source>Resource file</source>
-        <target state="new">Resource file</target>
+        <target state="translated">Fichier de ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
@@ -134,7 +134,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
         <source>Sets the .ico file that you want to use as your program icon.</source>
-        <target state="needs-review-translation">Définit le fichier .ico à utiliser en tant qu'icône de programme. Notez que vous devez spécifier l'icône et le manifeste, ou un fichier de ressources.</target>
+        <target state="translated">Définit le fichier .ico à utiliser en tant qu'icône de programme.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
@@ -144,12 +144,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifestPath|Description">
         <source>The path to the custom manifest file.</source>
-        <target state="new">The path to the custom manifest file.</target>
+        <target state="translated">Chemin du fichier manifeste personnalisé.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
         <source>Manifest path</source>
-        <target state="new">Manifest path</target>
+        <target state="translated">Chemin du manifeste</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
         <source>Install other frameworks</source>
-        <target state="new">Install other frameworks</target>
+        <target state="translated">Installer d'autres frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
@@ -179,17 +179,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|Description">
         <source>Specifies the semicolon-delimited list of frameworks that this project will target.</source>
-        <target state="new">Specifies the semicolon-delimited list of frameworks that this project will target.</target>
+        <target state="translated">Spécifie la liste de valeurs délimitées par des points-virgules, qui représente les frameworks que ce projet doit cibler.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
-        <target state="new">Target frameworks</target>
+        <target state="translated">Frameworks cibles</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
         <source>Specifies a resource file for the project.</source>
-        <target state="needs-review-translation">Spécifie un fichier de ressources pour le projet. Notez que vous devez spécifier l'icône et le manifeste, ou un fichier de ressources.</target>
+        <target state="translated">Spécifie un fichier de ressources pour le projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

@@ -70,4 +70,8 @@
                 ReadOnly="True"
                 Visible="False" />
 
+  <BoolProperty Name="TreatAsUsed"
+                ReadOnly="True"
+                Visible="False" />
+
 </Rule>

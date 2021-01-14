@@ -41,5 +41,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             return rule.Object;
         }
+
+        public static IRule Create(Rule schema)
+        {
+            var rule = new Mock<IRule>();
+
+            rule.Setup(o => o.Schema)
+                .Returns(schema);
+
+            return rule.Object;
+        }
     }
 }

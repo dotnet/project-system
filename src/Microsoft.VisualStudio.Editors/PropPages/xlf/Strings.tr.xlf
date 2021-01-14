@@ -55,6 +55,21 @@
         <target state="translated">Windows Kimlik Doğrulaması</target>
         <note />
       </trans-unit>
+      <trans-unit id="latest">
+        <source>latest</source>
+        <target state="new">latest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="none">
+        <source>none</source>
+        <target state="new">none</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="preview">
+        <source>preview</source>
+        <target state="new">preview</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

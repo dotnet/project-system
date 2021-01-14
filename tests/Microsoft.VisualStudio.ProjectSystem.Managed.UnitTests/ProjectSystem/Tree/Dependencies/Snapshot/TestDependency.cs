@@ -15,7 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             KnownMonikers.Accordian,
             KnownMonikers.Bug,
             KnownMonikers.CrashDumpFile,
-            KnownMonikers.DataCenter);
+            KnownMonikers.DataCenter,
+            KnownMonikers.Edit,
+            KnownMonikers.F1Help);
 
         public IDependency ClonePropertiesFrom
         {
@@ -41,29 +43,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public string ProviderType { get; set; } = "provider";
         public string Caption { get; set; }
         public string? OriginalItemSpec { get; set; }
-        public string? SchemaName { get; set; }
+        public string? SchemaName { get; private set; }
         public string? SchemaItemType { get; set; }
-        public DiagnosticLevel DiagnosticLevel { get; set; } = DiagnosticLevel.None;
+        public DiagnosticLevel DiagnosticLevel { get; } = DiagnosticLevel.None;
         public bool Resolved { get; set; }
-        public bool Implicit { get; set; }
+        public bool Implicit { get; private set; }
         public bool Visible { get; set; } = true;
-        public IImmutableDictionary<string, string> BrowseObjectProperties { get; set; }
+        public IImmutableDictionary<string, string> BrowseObjectProperties { get; private set; }
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public string Id { get; set; }
-        public DependencyIconSet IconSet { get; set; } = s_defaultIconSet;
+        public DependencyIconSet IconSet { get; private set; } = s_defaultIconSet;
         public string? FilePath { get; set; }
         public ImageMoniker Icon => Resolved ? IconSet.Icon : IconSet.UnresolvedIcon;
         public ImageMoniker ExpandedIcon => Resolved ? IconSet.ExpandedIcon : IconSet.UnresolvedExpandedIcon;
 #pragma warning restore CS8618 // Non-nullable property is uninitialized
 
-        public IDependency SetProperties(
-            string? caption = null,
-            bool? resolved = null,
-            ProjectTreeFlags? flags = null,
-            string? schemaName = null,
-            DependencyIconSet? iconSet = null,
-            bool? isImplicit = null,
-            DiagnosticLevel? diagnosticLevel = null)
+        public IDependency WithCaption(string caption)
         {
             return new TestDependency
             {
@@ -71,13 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 ClonePropertiesFrom = this,
 
                 // Override specific properties as needed
-                Caption = caption ?? Caption,
-                Resolved = resolved ?? Resolved,
-                Flags = flags ?? Flags,
-                SchemaName = schemaName ?? SchemaName,
-                IconSet = iconSet ?? IconSet,
-                Implicit = isImplicit ?? Implicit,
-                DiagnosticLevel = diagnosticLevel ?? DiagnosticLevel
+                Caption = caption
             };
         }
     }

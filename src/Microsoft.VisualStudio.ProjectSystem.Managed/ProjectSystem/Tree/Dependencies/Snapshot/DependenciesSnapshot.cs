@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// As part of the update, each <see cref="IDependenciesSnapshotFilter"/> in <paramref name="snapshotFilters"/>
         /// is given a chance to influence the addition and removal of dependency data in the returned snapshot.
         /// </remarks>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static DependenciesSnapshot FromChanges(
             DependenciesSnapshot previousSnapshot,
             TargetFramework changedTargetFramework,
@@ -41,14 +41,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<TargetFramework> targetFrameworks,
             TargetFramework? activeTargetFramework,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string>? projectItemSpecs)
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.NotNull(changedTargetFramework, nameof(changedTargetFramework));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
-            Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
             var builder = previousSnapshot.DependenciesByTargetFramework.ToBuilder();
 
@@ -63,9 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 previousTargetedSnapshot,
                 changes,
                 catalogs,
-                snapshotFilters,
-                subTreeProviderByProviderType,
-                projectItemSpecs);
+                snapshotFilters);
 
             if (!ReferenceEquals(previousTargetedSnapshot, newTargetedSnapshot))
             {
@@ -166,14 +161,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
             Requires.NotNull(dependenciesByTargetFramework, nameof(dependenciesByTargetFramework));
 
+#if false
+            // The validation in this #if/#endif block is sound in theory, however is causing quite a few NFEs.
+            // For example https://github.com/dotnet/project-system/issues/6656.
+            //
+            // We have disabled it for now. The consequence of this test failing is that dependencies added to
+            // the tree are not exposed via extensibility APIs such as DTE/VSLangProj.
+            //
+            // At some point we should revisit how the dependencies tree models its target frameworks, likely
+            // as part of https://github.com/dotnet/project-system/issues/6183.
+
             // We have seen NFEs where the active target framework is unsupported. Skipping validation in such cases is better than faulting the dataflow.
-            if (!activeTargetFramework.Equals(TargetFramework.Empty) && !activeTargetFramework.Equals(TargetFramework.Unsupported))
+            if (!activeTargetFramework.Equals(TargetFramework.Empty) &&
+                !activeTargetFramework.Equals(TargetFramework.Unsupported) &&
+                !dependenciesByTargetFramework.ContainsKey(activeTargetFramework))
             {
+                string keyNames = dependenciesByTargetFramework.Count == 0
+                    ? "no items"
+                    : string.Join(", ", dependenciesByTargetFramework.Keys.Select(t => $"\"{t.TargetFrameworkMoniker}\""));
+
                 Requires.Argument(
-                    dependenciesByTargetFramework.ContainsKey(activeTargetFramework),
-                    nameof(dependenciesByTargetFramework),
-                    $"Must contain {nameof(activeTargetFramework)} ({activeTargetFramework.FullName}).");
+                    false,
+                    nameof(activeTargetFramework),
+                    $"Value \"{activeTargetFramework.TargetFrameworkMoniker}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
             }
+#endif
 
             ActiveTargetFramework = activeTargetFramework;
             DependenciesByTargetFramework = dependenciesByTargetFramework;

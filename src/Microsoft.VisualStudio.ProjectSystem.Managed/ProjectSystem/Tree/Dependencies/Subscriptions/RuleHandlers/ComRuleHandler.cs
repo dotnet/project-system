@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -24,7 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 icon: KnownMonikers.COM,
                 expandedIcon: KnownMonikers.COM,
                 unresolvedIcon: KnownMonikers.COMWarning,
-                unresolvedExpandedIcon: KnownMonikers.COMWarning),
+                unresolvedExpandedIcon: KnownMonikers.COMWarning,
+                implicitIcon: KnownMonikers.COMPrivate,
+                implicitExpandedIcon: KnownMonikers.COMPrivate),
             DependencyTreeFlags.ComDependencyGroup);
 
         public ComRuleHandler()
@@ -33,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         public override string ProviderType => ProviderTypeString;
-
-        public override ImageMoniker ImplicitIcon => KnownMonikers.COMPrivate;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 

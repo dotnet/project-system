@@ -26,8 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 unresolvedDependency,
-                null!,
-                null,
                 context);
 
             // Dependency rejected
@@ -50,8 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 unresolvedDependency,
-                null!,
-                null,
                 context);
 
             // Dependency accepted unchanged
@@ -74,8 +70,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             filter.BeforeAddOrUpdate(
                 resolvedDependency,
-                null!,
-                null,
                 context);
 
             // Dependency accepted unchanged

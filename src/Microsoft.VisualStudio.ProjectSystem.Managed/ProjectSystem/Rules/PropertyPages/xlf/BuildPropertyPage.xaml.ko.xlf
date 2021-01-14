@@ -14,42 +14,42 @@
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
         <source>pointers</source>
-        <target state="new">pointers</target>
+        <target state="translated">포인터</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="new">Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</target>
+        <target state="translated">데이터 형식의 범위를 벗어나고 checked 또는 unchecked 키워드의 범위 내에 없는 값을 생성하는 정수 산술이 런타임 예외를 발생시키는지 여부를 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
         <source>Check for arithmetic overflow</source>
-        <target state="new">Check for arithmetic overflow</target>
+        <target state="translated">산술 오버플로 확인</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
         <source>checked;unchecked</source>
-        <target state="new">checked;unchecked</target>
+        <target state="translated">선택됨;선택 취소됨</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="new">Indicates whether the compiler should produce identical assemblies for identical inputs.</target>
+        <target state="translated">컴파일러가 동일한 입력에 대해 동일한 어셈블리를 생성해야 하는지 여부를 나타냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
         <source>Deterministic</source>
-        <target state="new">Deterministic</target>
+        <target state="translated">결정적</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
-        <target state="new">Generate a file containing API documentation.</target>
+        <target state="translated">API 설명서를 포함하는 파일을 생성합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Documentation file</source>
-        <target state="new">Documentation file</target>
+        <target state="translated">설명서 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
-        <target state="new">optimise;optimisation</target>
+        <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -94,22 +94,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="new">Controls when internal compiler error (ICE) reports are sent to Microsoft.</target>
+        <target state="translated">ICE(내부 컴파일러 오류) 보고서가 Microsoft로 전송되는 경우를 제어합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Internal compiler error reporting</source>
-        <target state="new">Internal compiler error reporting</target>
+        <target state="translated">내부 컴파일러 오류 보고</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|Description">
         <source>Specifies, in bytes, where to align the sections of the output file.</source>
-        <target state="new">Specifies, in bytes, where to align the sections of the output file.</target>
+        <target state="translated">출력 파일의 섹션을 맞출 위치를 바이트 단위로 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|DisplayName">
         <source>File alignment</source>
-        <target state="new">File alignment</target>
+        <target state="translated">파일 맞춤</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
@@ -154,47 +154,47 @@
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
         <source>Never send</source>
-        <target state="new">Never send</target>
+        <target state="translated">보내지 않음</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
         <source>Prompt before sending</source>
-        <target state="new">Prompt before sending</target>
+        <target state="translated">보내기 전에 확인</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
         <source>Queue</source>
-        <target state="new">Queue</target>
+        <target state="translated">큐</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
         <source>Send</source>
-        <target state="new">Send</target>
+        <target state="translated">보내기</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
         <source>1024</source>
-        <target state="new">1024</target>
+        <target state="translated">1024</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
         <source>2048</source>
-        <target state="new">2048</target>
+        <target state="translated">2048</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
         <source>4096</source>
-        <target state="new">4096</target>
+        <target state="translated">4096</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
         <source>512</source>
-        <target state="new">512</target>
+        <target state="translated">512</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
         <source>8192</source>
-        <target state="new">8192</target>
+        <target state="translated">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
@@ -274,32 +274,32 @@
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="new">Specifies properties that control how the project builds.</target>
+        <target state="translated">프로젝트가 빌드되는 방식을 제어하는 속성을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
-        <target state="new">Build</target>
+        <target state="translated">빌드</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="new">Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <target state="translated">빌드하는 동안 프로젝트의 중간 출력에 대한 기본 위치를 지정합니다. 프로젝트 구성을 구분하기 위해 이 경로에 하위 폴더가 추가됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base intermediate output path</source>
-        <target state="new">Base intermediate output path</target>
+        <target state="translated">기본 중간 출력 경로</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="new">Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
+        <target state="translated">빌드하는 동안 프로젝트의 출력에 대한 기본 위치를 지정합니다. 프로젝트 구성을 구분하기 위해 이 경로에 하위 폴더가 추가됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
-        <target state="new">Base output path</target>
+        <target state="translated">기본 출력 경로</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
@@ -314,7 +314,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="needs-review-translation">문서 주석을 처리할 파일의 이름을 지정합니다.</target>
+        <target state="translated">API 설명서 파일의 선택적 경로입니다. 기본 위치를 사용하려면 비워 두세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
@@ -324,12 +324,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>Why can't I select the C# language version?</source>
-        <target state="new">Why can't I select the C# language version?</target>
+        <target state="translated">C# 언어 버전을 선택할 수 없는 이유는 무엇인가요?</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>Language version</source>
-        <target state="new">Language version</target>
+        <target state="translated">언어 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -349,7 +349,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="needs-review-translation">특정 경고</target>
+        <target state="translated">특정 경고를 오류로 처리</target>
         <note />
       </trans-unit>
     </body>

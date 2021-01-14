@@ -18,6 +18,16 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string UpToDateCheckFailReason = BuildPropertyName(TelemetryEventName.UpToDateCheckFail, "Reason");
 
         /// <summary>
+        ///     Indicates the duration of the up-to-date check, in milliseconds.
+        /// </summary>
+        public const string UpToDateCheckDurationMillis = Prefix + ".uptodatecheck.durationmillis";
+
+        /// <summary>
+        ///     Indicates the number of file system timestamps that were queried during the up-to-date check.
+        /// </summary>
+        public const string UpToDateCheckFileCount = Prefix + ".uptodatecheck.filecount";
+
+        /// <summary>
         ///     Indicates the project when the dependency tree is updated with all resolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedResolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "Project");

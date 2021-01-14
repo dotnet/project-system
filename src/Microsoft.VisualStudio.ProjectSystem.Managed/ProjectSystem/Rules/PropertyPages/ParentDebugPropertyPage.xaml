@@ -25,6 +25,9 @@
       <DataSource PersistedName="LaunchTargetPropertyPage"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="ParentDebugPropertyPage::ActiveLaunchProfile" />
+    </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
 </Rule>

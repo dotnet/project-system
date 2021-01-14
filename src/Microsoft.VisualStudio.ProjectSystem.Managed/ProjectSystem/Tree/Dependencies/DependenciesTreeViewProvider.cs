@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                     else
                     {
-                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.ShortName);
+                        IProjectTree? node = dependenciesTree.FindChildWithCaption(targetFramework.TargetFrameworkMoniker);
                         bool shouldAddTargetNode = node == null;
                         IDependencyViewModel targetViewModel = _viewModelFactory.CreateTargetViewModel(targetedSnapshot.TargetFramework, targetedSnapshot.MaximumVisibleDiagnosticLevel);
 

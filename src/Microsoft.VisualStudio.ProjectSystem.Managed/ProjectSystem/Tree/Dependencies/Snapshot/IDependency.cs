@@ -18,16 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         DependencyIconSet IconSet { get; }
 
         /// <summary>
-        /// Returns a copy of this immutable instance with the specified property changes.
+        /// Returns a copy of this immutable instance with the specified caption.
         /// </summary>
-        IDependency SetProperties(
-            string? caption = null,
-            bool? resolved = null,
-            ProjectTreeFlags? flags = null,
-            string? schemaName = null,
-            DependencyIconSet? iconSet = null,
-            bool? isImplicit = null,
-            DiagnosticLevel? diagnosticLevel = null);
+        IDependency WithCaption(string caption);
 
         /// <summary>
         /// Gets the originating <see cref="IDependencyModel"/>'s <see cref="IDependencyModel.Id"/>.
@@ -70,17 +63,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         DiagnosticLevel DiagnosticLevel { get; }
 
         /// <summary>
-        /// Specifies if dependency is resolved or not
+        /// Gets whether the dependency is resolved or not.
         /// </summary>
         bool Resolved { get; }
 
         /// <summary>
-        /// Specifies if dependency was brought by default and can not be removed/modified by user.
+        /// Gets whether this dependency is declared in an imported project file.
         /// </summary>
+        /// <remarks>
+        /// If <see langword="true"/>, the dependency was declared outside of the main project file.
+        /// It cannot be removed from the project, and should be displayed with an overlay on its
+        /// icon.
+        /// </remarks>
         bool Implicit { get; }
 
         /// <summary>
-        /// In some cases dependency should be present in snapshot, but not displayed in the Tree.
+        /// Gets whether this dependency is visible in the tree.
         /// </summary>
         bool Visible { get; }
     }

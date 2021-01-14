@@ -17,15 +17,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             icon: KnownMonikers.NuGetNoColor,
             expandedIcon: KnownMonikers.NuGetNoColor,
             unresolvedIcon: KnownMonikers.NuGetNoColorWarning,
-            unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning);
+            unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning,
+            implicitIcon: KnownMonikers.NuGetNoColorPrivate,
+            implicitExpandedIcon: KnownMonikers.NuGetNoColorPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: KnownMonikers.NuGetNoColorPrivate,
-            expandedIcon: KnownMonikers.NuGetNoColorPrivate,
-            unresolvedIcon: KnownMonikers.NuGetNoColorWarning,
-            unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 

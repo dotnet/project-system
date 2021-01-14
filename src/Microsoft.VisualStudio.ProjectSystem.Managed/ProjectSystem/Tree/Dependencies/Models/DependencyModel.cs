@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         Error = 2,
     }
 
+    /// <summary>
+    /// Base class for dependency models that ship with the .NET Project System.
+    /// </summary>
     internal abstract partial class DependencyModel : IDependencyModel
     {
         [Flags]
@@ -104,8 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         public bool Implicit => (_flags & DependencyFlags.Implicit) != 0;
         public bool Visible => (_flags & DependencyFlags.Visible) != 0;
         int IDependencyModel.Priority => throw new NotImplementedException();
-        public ImageMoniker Icon => IconSet.Icon;
-        public ImageMoniker ExpandedIcon => IconSet.ExpandedIcon;
+        public ImageMoniker Icon => Implicit ? IconSet.ImplicitIcon : IconSet.Icon;
+        public ImageMoniker ExpandedIcon => Implicit ? IconSet.ImplicitExpandedIcon : IconSet.ExpandedIcon;
         public ImageMoniker UnresolvedIcon => IconSet.UnresolvedIcon;
         public ImageMoniker UnresolvedExpandedIcon => IconSet.UnresolvedExpandedIcon;
         public IImmutableDictionary<string, string> Properties { get; }

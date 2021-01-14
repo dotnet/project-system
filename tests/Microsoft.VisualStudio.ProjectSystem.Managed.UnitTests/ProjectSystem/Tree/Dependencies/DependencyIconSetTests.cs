@@ -14,12 +14,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
             var iconSet2 = new DependencyIconSet(
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
 
             Assert.True(iconSet1.Equals(iconSet2));
         }
@@ -31,12 +35,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
             var iconSet2 = new DependencyIconSet(
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
 
             Assert.True(iconSet1.GetHashCode() == iconSet2.GetHashCode());
         }
@@ -48,12 +56,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
             var iconSet2 = new DependencyIconSet(
                 icon: KnownMonikers.PackageReference,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
 
             Assert.False(iconSet1.Equals(iconSet2));
         }
@@ -65,12 +77,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 icon: KnownMonikers.AboutBox,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
             var iconSet2 = new DependencyIconSet(
                 icon: KnownMonikers.PackageReference,
                 expandedIcon: KnownMonikers.AboutBox,
                 unresolvedIcon: KnownMonikers.AbsolutePosition,
-                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition);
+                unresolvedExpandedIcon: KnownMonikers.AbsolutePosition,
+                implicitIcon: KnownMonikers.AbsolutePosition,
+                implicitExpandedIcon: KnownMonikers.AbsolutePosition);
 
             Assert.False(iconSet1.GetHashCode() == iconSet2.GetHashCode());
         }

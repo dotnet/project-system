@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     {
         private readonly UnconfiguredProject _project;
         private readonly IUnconfiguredProjectTasksService _projectTasksService;
-        private readonly IVsService<IVsStartupProjectsListService> _startupProjectsListService;
+        private readonly IVsService<IVsStartupProjectsListService?> _startupProjectsListService;
         private readonly IProjectThreadingService _threadingService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public StartupProjectRegistrar(
             UnconfiguredProject project,
             IUnconfiguredProjectTasksService projectTasksService,
-            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService> startupProjectsListService,
+            IVsService<SVsStartupProjectsListService, IVsStartupProjectsListService?> startupProjectsListService,
             IProjectThreadingService threadingService,
             ISafeProjectGuidService projectGuidService,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
@@ -87,7 +87,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 bool isDebuggable = await IsDebuggableAsync();
 
-                IVsStartupProjectsListService startupProjectsListService = await _startupProjectsListService.GetValueAsync();
+                IVsStartupProjectsListService? startupProjectsListService = await _startupProjectsListService.GetValueAsync();
+
+                if (startupProjectsListService == null)
+                {
+                    return;
+                }
 
                 if (isDebuggable)
                 {

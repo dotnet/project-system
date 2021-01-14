@@ -3,10 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.Query;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -44,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IEnumerable<(string dimension, string value)> dimensions,
             Func<IProperty, Task> setValueAsync)
         {
+            (pageName, propertyName) = DebugUtilities.ConvertDebugPageAndPropertyToRealPageAndProperty(pageName, propertyName);
+
             _queryCacheProvider = queryCacheProvider;
             _pageName = pageName;
             _propertyName = propertyName;
@@ -64,19 +65,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach (UnconfiguredProject project in targetProjects)
             {
-                if (!_rules.TryGetValue(project.FullPath, out List<IRule> projectRules))
+                if (!_rules.TryGetValue(project.FullPath, out List<IRule> projectRules)
+                    && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(_pageName) is Rule rule
+                    && rule.GetProperty(_propertyName) is BaseProperty property)
                 {
+                    bool configurationDependent = property.IsConfigurationDependent();
                     projectRules = new List<IRule>();
-
                     IPropertyPageQueryCache propertyPageCache = _queryCacheProvider.CreateCache(project);
-                    if (await propertyPageCache.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
+                    if (configurationDependent)
                     {
-                        foreach (ProjectConfiguration knownConfiguration in knownConfigurations.Where(config => config.MatchesDimensions(_dimensions)))
+                        // The property is configuration-dependent; we need to collect the bound rules for
+                        // all matching configurations.
+                        if (await propertyPageCache.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
                         {
-                            if (await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
+                            foreach (ProjectConfiguration knownConfiguration in knownConfigurations)
                             {
-                                projectRules.Add(boundRule);
+                                if (knownConfiguration.MatchesDimensions(_dimensions)
+                                    && await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
+                                {
+                                    projectRules.Add(boundRule);
+                                }
                             }
+                        }
+                    }
+                    else
+                    {
+                        // The property is configuration-independent; we only need the bound rule for a single
+                        // configuration.
+                        if (await propertyPageCache.GetSuggestedConfigurationAsync() is ProjectConfiguration suggestedConfiguration
+                            && await propertyPageCache.BindToRule(suggestedConfiguration, _pageName) is IRule boundRule)
+                        {
+                            projectRules.Add(boundRule);
                         }
                     }
 

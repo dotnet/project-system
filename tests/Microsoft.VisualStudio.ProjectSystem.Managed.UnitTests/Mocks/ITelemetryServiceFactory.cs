@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 
 namespace Microsoft.VisualStudio.Telemetry
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             public string? EventName { get; set; }
 
-            public IEnumerable<(string propertyName, object propertyValue)>? Properties { get; set; }
+            public List<(string propertyName, object propertyValue)>? Properties { get; set; }
         }
 
         public static ITelemetryService Create(TelemetryParameters callParameters)
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.Telemetry
                 .Callback((string e, IEnumerable<(string propertyName, object propertyValue)> p) =>
                 {
                     callParameters.EventName = e;
-                    callParameters.Properties = p;
+                    callParameters.Properties = p.ToList();
                 });
 
             return telemetryService.Object;
@@ -83,7 +84,7 @@ namespace Microsoft.VisualStudio.Telemetry
                     var callParameters = new TelemetryParameters
                     {
                         EventName = e,
-                        Properties = p
+                        Properties = p.ToList()
                     };
                     onTelemetryLogged(callParameters);
                 });

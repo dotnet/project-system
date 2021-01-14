@@ -57,9 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 
             foreach ((string tfm, ConfiguredProject configuredProject) in configuredProjectsMap)
             {
-                ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
-                ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
-                TargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configurationGeneralProperties);
+                TargetFramework targetFramework = await GetTargetFrameworkAsync(tfm, configuredProject);
 
                 targetFrameworks.Add(targetFramework);
 
@@ -82,10 +80,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
 
         private async Task<TargetFramework> GetTargetFrameworkAsync(
             string shortOrFullName,
-            ConfigurationGeneral configurationGeneralProperties)
+            ConfiguredProject configuredProject)
         {
             if (string.IsNullOrEmpty(shortOrFullName))
             {
+                ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
+                ConfigurationGeneral configurationGeneralProperties = await projectProperties.GetConfigurationGeneralPropertiesAsync();
                 object? targetObject = await configurationGeneralProperties.TargetFramework.GetValueAsync();
 
                 if (targetObject == null)

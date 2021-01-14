@@ -12,5 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public const string RemoteDebug = "RemoteDebug";
         public const string NativeDebugging = "NativeDebugging";
         public const string SqlDebugging = "SQLDebugging";
+        public const string JSWebView2Debugging = "JSWebView2Debugging";
     }
 }
