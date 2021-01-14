@@ -10,6 +10,8 @@
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Local.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Local.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.Shared.dll"
       ]
     },
