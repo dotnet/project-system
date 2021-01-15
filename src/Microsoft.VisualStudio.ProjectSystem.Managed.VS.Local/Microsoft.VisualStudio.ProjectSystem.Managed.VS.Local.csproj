@@ -16,6 +16,10 @@
     <NoWarn>$(NoWarn);NU5125</NoWarn>    
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed\Microsoft.VisualStudio.ProjectSystem.Managed.csproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.ProjectSystem.Managed.VS\Microsoft.VisualStudio.ProjectSystem.Managed.VS.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <InternalsVisibleTo Include="Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
@@ -32,5 +36,13 @@
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\DontShowAgainMessageBox.xaml.cs">
+      <DependentUpon>DontShowAgainMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UI\DontShowAgainMessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
