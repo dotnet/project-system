@@ -13,7 +13,6 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -21,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed partial class BuildUpToDateCheck : OnceInitializedOnceDisposedUnderLockAsync, IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent
+    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent, IDisposable
     {
         private const string Link = "Link";
         private const string DefaultSetName = "";
@@ -48,11 +47,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        private readonly object _stateLock = new();
+        private Subscription _subscription = new();
 
-        private State _state = State.Empty;
-
-        private IDisposable? _link;
+        private int _isDisposed;
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
@@ -61,9 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             IProjectItemSchemaService projectItemSchemaService,
             ITelemetryService telemetryService,
-            IProjectThreadingService threadingService,
             IFileSystem fileSystem)
-            : base(threadingService.JoinableTaskContext)
         {
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
@@ -75,70 +70,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public Task LoadAsync()
         {
-            return InitializeAsync();
+            return Task.CompletedTask;
         }
 
         public Task UnloadAsync()
         {
-            return ExecuteUnderLockAsync(_ =>
-            {
-                lock (_stateLock)
-                {
-                    _link?.Dispose();
-                    _link = null;
-
-                    _state = State.Empty;
-                }
-
-                return Task.CompletedTask;
-            });
-        }
-
-        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
-        {
-            Assumes.Present(_configuredProject.Services.ProjectSubscription);
-
-            _link = ProjectDataSources.SyncLinkTo(
-                _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
-                _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
-                _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
-                linkOptions: DataflowOption.PropagateCompletion,
-                cancellationToken: cancellationToken);
+            RecycleSubscription();
 
             return Task.CompletedTask;
         }
 
-        protected override Task DisposeCoreUnderLockAsync(bool initialized)
+        public void Dispose()
         {
-            _link?.Dispose();
-
-            return Task.CompletedTask;
-        }
-
-        internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>> e)
-        {
-            lock (_stateLock)
+            if (Interlocked.CompareExchange(ref _isDisposed, 1, 0) != 0)
             {
-                if (_link == null)
-                {
-                    // We've been unloaded, so don't update the state (which will be empty)
-                    return;
-                }
-
-                var snapshot = e.Value.Item3 as IProjectSnapshot2;
-                Assumes.NotNull(snapshot);
-
-                _state = _state.Update(
-                    jointRuleUpdate: e.Value.Item1,
-                    sourceItemsUpdate: e.Value.Item2,
-                    projectSnapshot: snapshot,
-                    projectItemSchema: e.Value.Item4,
-                    projectCatalogSnapshot: e.Value.Item5,
-                    configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+                return;
             }
+
+            RecycleSubscription();
+        }
+
+        private void RecycleSubscription()
+        {
+            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription());
+
+            subscription.Dispose();
         }
 
         private bool CheckGlobalConditions(Log log, State state)
@@ -595,11 +551,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        public Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
+        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
         {
+            if (Volatile.Read(ref _isDisposed) != 0)
+            {
+                throw new ObjectDisposedException(nameof(BuildUpToDateCheck));
+            }
+
             if (buildAction != BuildAction.Build)
             {
-                return TaskResult.False;
+                return false;
             }
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -607,24 +568,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
 
-            return ExecuteUnderLockAsync(IsUpToDateInternalAsync, cancellationToken);
+            Subscription subscription = Volatile.Read(ref _subscription);
 
-            async Task<bool> IsUpToDateInternalAsync(CancellationToken token)
+            return await subscription.RunAsync(IsUpToDateInternalAsync, _configuredProject, _projectItemSchemaService, cancellationToken);
+
+            async Task<bool> IsUpToDateInternalAsync(State state, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
                 // Short-lived cache of timestamp by path
                 var timestampCache = new TimestampCache(_fileSystem);
 
-                await InitializeAsync(token);
-
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
                 var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
 
                 try
                 {
-                    State state = _state;
-
                     if (!CheckGlobalConditions(logger, state))
                     {
                         return false;
@@ -643,11 +602,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
                 finally
                 {
-                    lock (_stateLock)
-                    {
-                        _state = _state.WithLastCheckedAtUtc(DateTime.UtcNow);
-                    }
-
                     logger.Verbose("Up to date check completed in {0:N1} ms", sw.Elapsed.TotalMilliseconds);
                 }
             }
@@ -667,21 +621,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _check = check;
             }
 
-            public State State => _check._state;
+            public State State => _check._subscription.State;
 
             public void SetLastCheckedAtUtc(DateTime lastCheckedAtUtc)
             {
-                _check._state = _check._state.WithLastCheckedAtUtc(lastCheckedAtUtc);
+                _check._subscription.State = _check._subscription.State.WithLastCheckedAtUtc(lastCheckedAtUtc);
             }
 
             public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
             {
-                _check._state = _check._state.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
+                _check._subscription.State = _check._subscription.State.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
             }
 
             public void SetLastAdditionalDependentFileTimesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
             {
-                _check._state = _check._state.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
+                _check._subscription.State = _check._subscription.State.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
+            }
+
+            public void OnChanged(IProjectVersionedValue<(IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot)> value)
+            {
+                _check._subscription.OnChanged(value);
             }
         }
 
