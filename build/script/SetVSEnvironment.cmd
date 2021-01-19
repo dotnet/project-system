@@ -4,7 +4,7 @@ REM Configures the build environment to be able to build the tree
 REM
 REM Downloads VSWhere, uses it to find a compatible Visual Studio and call a developer prompt to set the environment.
 
-set RequiredVSVersion=16.0
+FOR /F "USEBACKQ delims=" %%i IN (`powershell -NonInteractive -NoLogo -NoProfile -Command "([xml](Get-Content %~dp0\..\import\Versions.props)).Project.PropertyGroup.ProjectSystemVersion"`) DO SET RequiredVSVersion=%%i
 
 REM Are we already in Developer Command Prompt?
 if defined VSINSTALLDIR (
@@ -13,7 +13,7 @@ if defined VSINSTALLDIR (
 
 if not exist "%TEMP%\vswhere.exe" (
   echo Downloading VSWhere so that we can find Visual Studio...
-  powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/microsoft/vswhere/releases/download/2.6.7/vswhere.exe -OutFile $env:TEMP\vswhere.exe" || (
+  powershell -NonInteractive -NoLogo -NoProfile -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $pp = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest https://github.com/microsoft/vswhere/releases/download/2.8.4/vswhere.exe -OutFile $env:TEMP\vswhere.exe; $ProgressPreference = $pp" || (
     echo Failed to download, check your internet connection.
     exit /b 1
   )
