@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio
                     return obj;
             }
 
-            return default!;
+            return default;
         }
 
         [Pure]
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio
                 }
             }
 
-            return default!;
+            return default;
         }
 
         [Pure]
