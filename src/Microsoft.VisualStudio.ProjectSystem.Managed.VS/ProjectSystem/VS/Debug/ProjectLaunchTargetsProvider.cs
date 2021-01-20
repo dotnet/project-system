@@ -401,7 +401,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 }
             }
 
-            if (resolvedProfile.IsJSWebView2DebuggingEnabled())
+            // WebView2 debugging is only supported for Project and Executable commands
+            if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile))) 
             {
                 // If JS Debugger is selected, we would need to change the launch debugger to that one
                 settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
