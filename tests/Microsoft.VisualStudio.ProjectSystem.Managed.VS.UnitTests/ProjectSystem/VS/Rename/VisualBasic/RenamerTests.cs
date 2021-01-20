@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename.VisualBasic
         {
             var settingsManagerMock = new Mock<ISettingsManager>();
 
-            settingsManagerMock.Setup(f => f.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", false))
+            settingsManagerMock.Setup(f => f.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", true))
                 .Returns(enableSymbolicRename);
 
             return IVsServiceFactory.Create<SVsSettingsPersistenceManager, ISettingsManager>(settingsManagerMock.Object);

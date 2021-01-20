@@ -230,6 +230,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         {
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
+            // Default value needs to match the default value in the checkbox Tools|Options|Project and Solutions|Enable symbolic renaming.
             bool enableSymbolicRename = settings.GetValueOrDefault("SolutionNavigator.EnableSymbolicRename", true);
 
             await _projectVsServices.ThreadingService.SwitchToUIThread();
