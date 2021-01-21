@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         // NOTE: Ideally this component would be marked with 'AlwaysApplicable' so that we always load
         // IImplicitlyActiveConfigurationComponent instances in all project types regardless of exported capabilities,
         // but doing so would cause the .NET Project System's assemblies to be loaded in lots of 
-        // situations even when not needed. Instead, we explicitly hardcode the set of capabilities of 
+        // situations even when not needed. Instead, we explicitly hard code the set of capabilities of 
         // all our IImplicitlyActiveConfigurationComponent services.
         private const string LoadCapabilities = ProjectCapability.DotNetLanguageService + " | " +
                                                 ProjectCapability.PackageReferences;
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         protected override ConfiguredProjectImplicitActivationTrackingInstance CreateInstance()
         {
-            return new ConfiguredProjectImplicitActivationTrackingInstance(
+            return new(
                 _threadingService,
                 _project,
                 _activeConfigurationGroupService,

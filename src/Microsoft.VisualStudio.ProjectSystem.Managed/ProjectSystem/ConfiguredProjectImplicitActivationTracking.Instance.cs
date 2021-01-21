@@ -9,9 +9,9 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal partial class ConfiguredProjectImplicitActivationTracking
+    internal sealed partial class ConfiguredProjectImplicitActivationTracking
     {
-        internal class ConfiguredProjectImplicitActivationTrackingInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal sealed class ConfiguredProjectImplicitActivationTrackingInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly ConfiguredProject _project;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
@@ -30,11 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 _project = project;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
-                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnActiveConfigurationsChanged, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnChange, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
                 _components = components;
             }
-
-            public ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> TargetBlock => _targetBlock;
 
             public Task InitializeAsync()
             {
@@ -61,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return DeactivateAsync(_activeComponents);
             }
 
-            internal async Task OnActiveConfigurationsChanged(IProjectVersionedValue<ValueTuple<IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>>> e)
+            private async Task OnChange(IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)> e)
             {
                 // We'll get called back in main two situations (notwithstanding version-only updates):
                 //
