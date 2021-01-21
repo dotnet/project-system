@@ -28,6 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         private sealed class Subscription : IDisposable
         {
+            private readonly ConfiguredProject _configuredProject;
+            private readonly IProjectItemSchemaService _projectItemSchemaService;
+
             /// <summary>
             /// Completes when the first project update is received. Cancelled if the subscription is disposed.
             /// </summary>
@@ -59,11 +62,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             private readonly CancellationTokenSource _disposeTokenSource = new();
 
-            public async Task<bool> RunAsync(
-                Func<State, CancellationToken, Task<bool>> func,
-                ConfiguredProject configuredProject,
-                IProjectItemSchemaService projectItemSchemaService,
-                CancellationToken cancellationToken)
+            public Subscription(ConfiguredProject configuredProject, IProjectItemSchemaService projectItemSchemaService)
+            {
+                Requires.NotNull(configuredProject, nameof(configuredProject));
+                Requires.NotNull(projectItemSchemaService, nameof(projectItemSchemaService));
+
+                _configuredProject = configuredProject;
+                _projectItemSchemaService = projectItemSchemaService;
+            }
+
+            public async Task<bool> RunAsync(Func<State, CancellationToken, Task<bool>> func, CancellationToken cancellationToken)
             {
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
 
@@ -95,35 +103,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 return result;
+            }
 
-                void EnsureInitialized()
+            public void EnsureInitialized()
+            {
+                if (_link != null)
                 {
-                    if (_link != null)
+                    // Already initialized (or disposed)
+                    return;
+                }
+
+                lock (_dataReceived)
+                {
+                    // Double check within lock
+                    if (_link == null)
                     {
-                        // Already initialized (or disposed)
-                        return;
-                    }
+                        Assumes.Present(_configuredProject.Services.ProjectSubscription);
 
-                    lock (_dataReceived)
-                    {
-                        // Double check within lock
-                        if (_link == null)
-                        {
-                            // Throw if either the subscription or up-to-date check operation were cancelled
-                            token.ThrowIfCancellationRequested();
-
-                            Assumes.Present(configuredProject.Services.ProjectSubscription);
-
-                            _link = ProjectDataSources.SyncLinkTo(
-                                configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
-                                configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                                configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
-                                projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                                configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                                target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, configuredProject.UnconfiguredProject),
-                                linkOptions: DataflowOption.PropagateCompletion,
-                                CancellationToken.None);
-                        }
+                        _link = ProjectDataSources.SyncLinkTo(
+                            _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
+                            _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
+                            _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
+                            _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
+                            _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
+                            linkOptions: DataflowOption.PropagateCompletion,
+                            CancellationToken.None);
                     }
                 }
             }

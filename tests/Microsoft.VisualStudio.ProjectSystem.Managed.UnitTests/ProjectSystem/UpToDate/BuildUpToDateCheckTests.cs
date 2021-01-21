@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             IEnumerable<(string FilePath, DateTime Time)>? dependentTimeFiles = null)
         {
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             BroadcastChange(
                 projectRuleSnapshot: projectSnapshot,
@@ -506,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
             };
 
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
 
@@ -917,7 +917,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             BroadcastChange(outDir: outDirSnapshot, sourceRuleSnapshot: sourceSnapshot);
 
@@ -1105,7 +1105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
         {
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
 

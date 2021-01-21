@@ -18,12 +18,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
-    [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
+    [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IProjectDynamicLoadComponent, IDisposable
+    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IActiveConfigurationComponent, IDisposable
     {
         private const string Link = "Link";
         private const string DefaultSetName = "";
+
         private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
 
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
@@ -47,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        private Subscription _subscription = new();
+        private Subscription _subscription;
 
         private int _isDisposed;
 
@@ -66,14 +67,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _projectItemSchemaService = projectItemSchemaService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
+            _subscription = new(configuredProject, projectItemSchemaService);
         }
 
-        public Task LoadAsync()
+        public Task ActivateAsync()
         {
+            _subscription.EnsureInitialized();
+
             return Task.CompletedTask;
         }
 
-        public Task UnloadAsync()
+        public Task DeactivateAsync()
         {
             RecycleSubscription();
 
@@ -92,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void RecycleSubscription()
         {
-            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription());
+            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_configuredProject, _projectItemSchemaService));
 
             subscription.Dispose();
         }
@@ -570,7 +574,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             Subscription subscription = Volatile.Read(ref _subscription);
 
-            return await subscription.RunAsync(IsUpToDateInternalAsync, _configuredProject, _projectItemSchemaService, cancellationToken);
+            return await subscription.RunAsync(IsUpToDateInternalAsync, cancellationToken);
 
             async Task<bool> IsUpToDateInternalAsync(State state, CancellationToken token)
             {
