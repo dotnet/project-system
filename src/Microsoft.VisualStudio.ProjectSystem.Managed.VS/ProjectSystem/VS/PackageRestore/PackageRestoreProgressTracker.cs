@@ -8,9 +8,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// <summary>
     ///     Responsible for reporting package restore progress to operation progress.
     /// </summary>
-    [Export(typeof(IImplicitlyActiveService))]
+    [Export(typeof(IImplicitlyActiveConfigurationComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreProgressTracker : AbstractMultiLifetimeComponent<PackageRestoreProgressTracker.PackageRestoreProgressTrackerInstance>, IImplicitlyActiveService
+    internal partial class PackageRestoreProgressTracker : AbstractMultiLifetimeComponent<PackageRestoreProgressTracker.PackageRestoreProgressTrackerInstance>, IImplicitlyActiveConfigurationComponent
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;

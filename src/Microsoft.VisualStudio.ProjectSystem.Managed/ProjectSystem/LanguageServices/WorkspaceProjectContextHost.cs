@@ -12,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ///     Responsible for creating and initializing <see cref="IWorkspaceProjectContext"/> and sending
     ///     on changes to the project to the <see cref="IApplyChangesToWorkspaceContext"/> service.
     /// </summary>
-    [Export(typeof(IImplicitlyActiveService))]
+    [Export(typeof(IImplicitlyActiveConfigurationComponent))]
     [Export(typeof(IWorkspaceProjectContextHost))]
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
-    internal partial class WorkspaceProjectContextHost : AbstractMultiLifetimeComponent<WorkspaceProjectContextHost.WorkspaceProjectContextHostInstance>, IImplicitlyActiveService, IWorkspaceProjectContextHost
+    internal partial class WorkspaceProjectContextHost : AbstractMultiLifetimeComponent<WorkspaceProjectContextHost.WorkspaceProjectContextHostInstance>, IImplicitlyActiveConfigurationComponent, IWorkspaceProjectContextHost
     {
         private readonly ConfiguredProject _project;
         private readonly IProjectThreadingService _threadingService;
