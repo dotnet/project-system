@@ -87,12 +87,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
+            var threadingService = IProjectThreadingServiceFactory.Create();
+
             _buildUpToDateCheck = new BuildUpToDateCheck(
                 projectSystemOptions.Object,
                 configuredProject.Object,
                 projectAsynchronousTasksService.Object,
                 IProjectItemSchemaServiceFactory.Create(),
                 ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
+                threadingService,
                 _fileSystem);
         }
 
@@ -154,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 identity: ProjectDataSources.ConfiguredProjectVersion,
                 version: _projectVersion);
 
-            _buildUpToDateCheck.TestAccess.OnChanged(value);
+            _buildUpToDateCheck.OnChanged(value);
 
             return;
 
