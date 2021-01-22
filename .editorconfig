@@ -264,6 +264,7 @@ dotnet_diagnostic.CA1068.severity = warning
 dotnet_diagnostic.CA1031.severity = none        # Do not catch general exception types
 dotnet_diagnostic.CA1303.severity = none
 dotnet_diagnostic.CA1304.severity = none
+dotnet_diagnostic.CA1508.severity = warning     # Avoid dead conditional code
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1710.severity = none
 dotnet_diagnostic.CA1714.severity = none
