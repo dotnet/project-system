@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     ///     Exports of this interface must update <see cref="ConfiguredProjectImplicitActivationTracking"/> with its associated capabilities.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
-    internal interface IImplicitlyActiveConfigurationComponent
+    internal interface IImplicitlyActiveService
     {
         /// <summary>
         ///     Activates the service.

@@ -5,17 +5,17 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Responsible for activating and deactivating <see cref="IImplicitlyActiveConfigurationComponent"/> instances.
+    ///     Responsible for activating and deactivating <see cref="IImplicitlyActiveService"/> instances.
     /// </summary>
     [Export(ExportContractNames.Scopes.ConfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(LoadCapabilities)]
     internal partial class ConfiguredProjectImplicitActivationTracking : AbstractMultiLifetimeComponent<ConfiguredProjectImplicitActivationTracking.ConfiguredProjectImplicitActivationTrackingInstance>, IProjectDynamicLoadComponent
     {
         // NOTE: Ideally this component would be marked with 'AlwaysApplicable' so that we always load
-        // IImplicitlyActiveConfigurationComponent instances in all project types regardless of exported capabilities,
+        // IImplicitlyActiveService instances in all project types regardless of exported capabilities,
         // but doing so would cause the .NET Project System's assemblies to be loaded in lots of 
-        // situations even when not needed. Instead, we explicitly hard code the set of capabilities of 
-        // all our IImplicitlyActiveConfigurationComponent services.
+        // situations even when not needed. Instead, we explicitly hardcode the set of capabilities of 
+        // all our IImplicitlyActiveService services.
         private const string LoadCapabilities = ProjectCapability.DotNetLanguageService + " | " +
                                                 ProjectCapability.PackageReferences;
 
@@ -34,19 +34,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
 
-            Components = new OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent>(projectCapabilityCheckProvider: project);
+            ImplicitlyActiveServices = new OrderPrecedenceImportCollection<IImplicitlyActiveService>(projectCapabilityCheckProvider: project);
         }
 
         [ImportMany]
-        public OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent> Components { get; }
+        public OrderPrecedenceImportCollection<IImplicitlyActiveService> ImplicitlyActiveServices { get; }
 
         protected override ConfiguredProjectImplicitActivationTrackingInstance CreateInstance()
         {
-            return new(
+            return new ConfiguredProjectImplicitActivationTrackingInstance(
                 _threadingService,
                 _project,
                 _activeConfigurationGroupService,
-                Components);
+                ImplicitlyActiveServices);
         }
     }
 }

@@ -9,30 +9,32 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal sealed partial class ConfiguredProjectImplicitActivationTracking
+    internal partial class ConfiguredProjectImplicitActivationTracking
     {
-        internal sealed class ConfiguredProjectImplicitActivationTrackingInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
+        internal class ConfiguredProjectImplicitActivationTrackingInstance : OnceInitializedOnceDisposedAsync, IMultiLifetimeInstance
         {
             private readonly ConfiguredProject _project;
             private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
             private readonly ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> _targetBlock;
-            private readonly OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent> _components;
+            private readonly OrderPrecedenceImportCollection<IImplicitlyActiveService> _implicitlyActiveServices;
 
-            private IReadOnlyCollection<IImplicitlyActiveConfigurationComponent> _activeComponents = Array.Empty<IImplicitlyActiveConfigurationComponent>();
+            private IReadOnlyCollection<IImplicitlyActiveService> _activeServices = Array.Empty<IImplicitlyActiveService>();
             private IDisposable? _subscription;
 
             public ConfiguredProjectImplicitActivationTrackingInstance(
                 IProjectThreadingService threadingService,
                 ConfiguredProject project,
                 IActiveConfigurationGroupService activeConfigurationGroupService,
-                OrderPrecedenceImportCollection<IImplicitlyActiveConfigurationComponent> components)
+                OrderPrecedenceImportCollection<IImplicitlyActiveService> implicitlyActiveServices)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
-                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnChange, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
-                _components = components;
+                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnActiveConfigurationsChanged, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                _implicitlyActiveServices = implicitlyActiveServices;
             }
+
+            public ITargetBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>> TargetBlock => _targetBlock;
 
             public Task InitializeAsync()
             {
@@ -56,10 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 _subscription?.Dispose();
                 _targetBlock.Complete();
 
-                return DeactivateAsync(_activeComponents);
+                return DeactivateAsync(_activeServices);
             }
 
-            private async Task OnChange(IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)> e)
+            internal async Task OnActiveConfigurationsChanged(IProjectVersionedValue<ValueTuple<IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>>> e)
             {
                 // We'll get called back in main two situations (notwithstanding version-only updates):
                 //
@@ -69,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 //   - The capabilities changed in our configuration.
                 //
                 // In both situations, we may need to activate or deactivate 
-                // IImplicitlyActiveConfigurationComponent instances.
+                // IImplicitlyActiveService instances.
 
                 IProjectCapabilitiesSnapshot snapshot = e.Value.Item1;
                 bool isActive = e.Value.Item2.Contains(_project.ProjectConfiguration);
@@ -77,24 +79,23 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 using var capabilitiesContext = ProjectCapabilitiesContext.CreateIsolatedContext(_project, snapshot);
 
                 // If we're not active, there are no future services to activate
-                IReadOnlyCollection<IImplicitlyActiveConfigurationComponent> futureComponents = isActive
-                    ? _components.Select(s => s.Value).ToList()
-                    : Array.Empty<IImplicitlyActiveConfigurationComponent>();
+                IReadOnlyCollection<IImplicitlyActiveService> futureServices = isActive ? _implicitlyActiveServices.Select(s => s.Value).ToList()
+                                                                                        : Array.Empty<IImplicitlyActiveService>();
 
-                var diff = new SetDiff<IImplicitlyActiveConfigurationComponent>(_activeComponents, futureComponents);
+                var diff = new SetDiff<IImplicitlyActiveService>(_activeServices, futureServices);
 
                 await DeactivateAsync(diff.Removed);
                 await ActivateAsync(diff.Added);
 
-                _activeComponents = futureComponents;
+                _activeServices = futureServices;
             }
 
-            private static Task DeactivateAsync(IEnumerable<IImplicitlyActiveConfigurationComponent> services)
+            private static Task DeactivateAsync(IEnumerable<IImplicitlyActiveService> services)
             {
                 return Task.WhenAll(services.Select(c => c.DeactivateAsync()));
             }
 
-            private static Task ActivateAsync(IEnumerable<IImplicitlyActiveConfigurationComponent> services)
+            private static Task ActivateAsync(IEnumerable<IImplicitlyActiveService> services)
             {
                 return Task.WhenAll(services.Select(c => c.ActivateAsync()));
             }
