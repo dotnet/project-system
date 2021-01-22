@@ -358,6 +358,8 @@ dotnet_diagnostic.CA2241.severity = none
 dotnet_diagnostic.CA2242.severity = none
 dotnet_diagnostic.RS0014.severity = warning
 
+dotnet_diagnostic.CA1508.severity = warning
+
 # System.Runtime.InteropServices.Analyzers
 dotnet_diagnostic.CA1401.severity = none
 dotnet_diagnostic.CA2101.severity = none
