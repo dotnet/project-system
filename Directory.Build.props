@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
     <!--  
