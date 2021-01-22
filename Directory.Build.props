@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 
     <!--  
@@ -78,6 +77,10 @@
     <VBRuntime>Default</VBRuntime>  <!-- The default is Embed -->
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <Features>strict</Features>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup>
