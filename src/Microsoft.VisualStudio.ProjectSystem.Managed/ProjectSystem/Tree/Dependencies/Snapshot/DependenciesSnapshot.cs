@@ -178,12 +178,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             {
                 string keyNames = dependenciesByTargetFramework.Count == 0
                     ? "no items"
-                    : string.Join(", ", dependenciesByTargetFramework.Keys.Select(t => $"\"{t.TargetFrameworkMoniker}\""));
+                    : string.Join(", ", dependenciesByTargetFramework.Keys.Select(t => $"\"{t.FullName}\""));
 
                 Requires.Argument(
                     false,
                     nameof(activeTargetFramework),
-                    $"Value \"{activeTargetFramework.TargetFrameworkMoniker}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
+                    $"Value \"{activeTargetFramework.FullName}\" is unexpected. Must be a key in {nameof(dependenciesByTargetFramework)}, which contains {keyNames}.");
             }
 #endif
 

@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -18,17 +19,36 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static readonly TargetFramework Any = new("any");
 
+        public TargetFramework(FrameworkName frameworkName, string? shortName)
+        {
+            Requires.NotNull(frameworkName, nameof(frameworkName));
+
+            FullName = frameworkName.FullName;
+            ShortName = shortName ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Should be never used directly, this is for special cases or for some unknown framework,
+        /// that Nuget is not aware of - highly unlikely to happen.
+        /// </summary>
+        /// <param name="moniker"></param>
         public TargetFramework(string moniker)
         {
             Requires.NotNull(moniker, nameof(moniker));
 
-            TargetFrameworkMoniker = moniker;
+            FullName = moniker;
+            ShortName = moniker;
         }
 
         /// <summary>
-        /// Gets the Target Framework Moniker.
+        /// Gets the full moniker (TFM).
         /// </summary>
-        public string TargetFrameworkMoniker { get; }
+        public string FullName { get; }
+
+        /// <summary>
+        /// Gets the short name.
+        /// </summary>
+        public string ShortName { get; }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the
@@ -41,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Equals(TargetFramework? obj)
         {
-            return obj != null && TargetFrameworkMoniker.Equals(obj.TargetFrameworkMoniker, StringComparisons.FrameworkIdentifiers);
+            return obj != null && FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
         }
 
         public static bool operator ==(TargetFramework? left, TargetFramework? right)
@@ -56,12 +76,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override int GetHashCode()
         {
-            return StringComparers.FrameworkIdentifiers.GetHashCode(TargetFrameworkMoniker);
+            return StringComparers.FrameworkIdentifiers.GetHashCode(FullName);
         }
 
         public override string ToString()
         {
-            return TargetFrameworkMoniker;
+            return FullName;
         }
     }
 }
