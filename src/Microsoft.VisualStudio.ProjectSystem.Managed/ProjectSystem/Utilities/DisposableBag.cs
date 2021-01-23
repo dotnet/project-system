@@ -49,7 +49,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
             }
 
             bool shouldDisposeArgument = false;
+#pragma warning disable CS8634 // https://github.com/dotnet/runtime/issues/40442
             ImmutableInterlocked.Update(
+#pragma warning restore CS8634
                 ref _disposables,
                 (set, item) =>
                 {
@@ -94,7 +96,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
                 return;
             }
 
+#pragma warning disable CS8634 // https://github.com/dotnet/runtime/issues/40442
             ImmutableInterlocked.Update(
+#pragma warning restore CS8634 
                 ref _disposables,
                 (set, item) => set?.Remove(item),
                 disposable);
