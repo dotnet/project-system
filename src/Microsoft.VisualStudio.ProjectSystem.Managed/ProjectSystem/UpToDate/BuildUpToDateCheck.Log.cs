@@ -28,6 +28,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
 
+            private void Write(LogLevel level, string message, object arg0)
+            {
+                if (level <= _requestedLogLevel)
+                {
+                    // These are user visible, so we want them in local times so that 
+                    // they correspond with dates/times that Explorer, etc shows
+                    ConvertToLocalTime(ref arg0);
+
+                    _writer.WriteLine($"FastUpToDate: {string.Format(message, arg0)} ({_fileName})");
+                }
+            }
+
+            private void Write(LogLevel level, string message, object arg0, object arg1)
+            {
+                if (level <= _requestedLogLevel)
+                {
+                    // These are user visible, so we want them in local times so that 
+                    // they correspond with dates/times that Explorer, etc shows
+                    ConvertToLocalTime(ref arg0);
+                    ConvertToLocalTime(ref arg1);
+
+                    _writer.WriteLine($"FastUpToDate: {string.Format(message, arg0, arg1)} ({_fileName})");
+                }
+            }
+
             private void Write(LogLevel level, string message, params object[] values)
             {
                 if (level <= _requestedLogLevel)
@@ -44,15 +69,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             {
                 for (int i = 0; i < values.Length; i++)
                 {
-                    if (values[i] is DateTime time)
-                    {
-                        values[i] = time.ToLocalTime();
-                    }
+                    ConvertToLocalTime(ref values[i]);
+                }
+            }
+
+            private static void ConvertToLocalTime(ref object value)
+            {
+                if (value is DateTime time)
+                {
+                    value = time.ToLocalTime();
                 }
             }
 
             public void Minimal(string message, params object[] values) => Write(LogLevel.Minimal, message, values);
+            public void Info(string message, object arg0) => Write(LogLevel.Info, message, arg0);
+            public void Info(string message, object arg0, object arg1) => Write(LogLevel.Info, message, arg0, arg1);
             public void Info(string message, params object[] values) => Write(LogLevel.Info, message, values);
+            public void Verbose(string message, object arg0) => Write(LogLevel.Verbose, message, arg0);
             public void Verbose(string message, params object[] values) => Write(LogLevel.Verbose, message, values);
 
             public bool Fail(string reason, string message, params object[] values)
