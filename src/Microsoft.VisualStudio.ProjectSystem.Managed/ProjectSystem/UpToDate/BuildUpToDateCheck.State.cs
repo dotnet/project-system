@@ -438,18 +438,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     copyReferenceInputs: copyReferenceInputs,
                     additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
-                    lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc,
+                    lastItemsChangedAtUtc: lastItemsChangedAtUtc,
+                    lastCheckedAtUtc: LastCheckedAtUtc,
                     changes.ToImmutableArray());
 
                 DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
                 {
                     var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
-                                                                       .Select(pair => pair.Key)
-                                                                       .ToImmutableHashSet();
+                        .Select(pair => pair.Key)
+                        .ToImmutableHashSet();
 
                     IEnumerable<string> currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
-                                                                        .Where(pair => pair.Value != DateTime.MinValue)
-                                                                        .Select(pair => pair.Key);
+                        .Where(pair => pair.Value != DateTime.MinValue)
+                        .Select(pair => pair.Key);
 
                     bool additionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
 
