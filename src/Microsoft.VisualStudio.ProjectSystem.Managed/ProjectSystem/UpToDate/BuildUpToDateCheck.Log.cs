@@ -11,14 +11,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         private sealed class Log
         {
-            private readonly TextWriter? _writer;
+            private readonly TextWriter _writer;
             private readonly LogLevel _requestedLogLevel;
             private readonly Stopwatch _stopwatch;
             private readonly TimestampCache _timestampCache;
             private readonly string _fileName;
             private readonly ITelemetryService _telemetryService;
 
-            public Log(TextWriter? writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService)
             {
                 _writer = writer;
                 _requestedLogLevel = requestedLogLevel;
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // they correspond with dates/times that Explorer, etc shows
                     ConvertToLocalTimes(values);
 
-                    _writer?.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
+                    _writer.WriteLine($"FastUpToDate: {string.Format(message, values)} ({_fileName})");
                 }
             }
 
