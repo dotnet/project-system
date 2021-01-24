@@ -198,11 +198,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 LastItemChanges = lastItemChanges;
 
                 var setNames = new HashSet<string>(s_setNameComparer);
-                setNames.AddRange(upToDateCheckInputItemsBySetName.Keys);
-                setNames.AddRange(upToDateCheckOutputItemsBySetName.Keys);
-                setNames.AddRange(upToDateCheckBuiltItemsBySetName.Keys);
+                AddKeys(upToDateCheckInputItemsBySetName);
+                AddKeys(upToDateCheckOutputItemsBySetName);
+                AddKeys(upToDateCheckBuiltItemsBySetName);
                 setNames.Remove(DefaultSetName);
                 SetNames = setNames.OrderBy(n => n, s_setNameComparer).ToImmutableArray();
+
+                void AddKeys(ImmutableDictionary<string, ImmutableHashSet<string>> dictionary)
+                {
+                    foreach ((string key, _) in dictionary)
+                    {
+                        setNames.Add(key);
+                    }
+                }
             }
 
             public State Update(

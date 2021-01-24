@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.IO;
 
@@ -43,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return time;
             }
 
-            public bool TryGetLatestInput(IEnumerable<string> inputs, [NotNullWhen(returnValue: true)] out string? latestPath, out DateTime latestTime)
+            public bool TryGetLatestInput(ImmutableHashSet<string> inputs, [NotNullWhen(returnValue: true)] out string? latestPath, out DateTime latestTime)
             {
                 latestTime = DateTime.MinValue;
                 latestPath = null;
