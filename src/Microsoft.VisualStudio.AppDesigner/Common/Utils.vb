@@ -660,9 +660,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     userTask.Properties("vs.projectsystem.appdesigner.page-opened.tabtitle") = tabTitle
                 End If
 
-                If alreadyOpened Then
-                    userTask.Properties("vs.projectsystem.appdesigner.page-opened.alreadyopened") = alreadyOpened
-                End If
+                userTask.Properties("vs.projectsystem.appdesigner.page-opened.alreadyopened") = alreadyOpened
 
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub

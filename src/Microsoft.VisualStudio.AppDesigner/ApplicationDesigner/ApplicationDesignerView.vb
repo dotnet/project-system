@@ -970,7 +970,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return True
         End Function
 
-        Public Sub AppDesignerAlreadyLoaded()
+        Friend Sub AppDesignerAlreadyLoaded()
             Dim ActivePanel As ApplicationDesignerPanel = _designerPanels(_activePanelIndex)
             Common.TelemetryLogger.LogAppDesignerPageOpened(ActivePanel.ActualGuid, ActivePanel.TabTitle, True)
         End Sub
