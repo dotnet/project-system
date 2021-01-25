@@ -3,7 +3,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
@@ -16,8 +16,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// <remarks>
         /// <para>
         /// As the parent <see cref="BuildUpToDateCheck"/> is an <see cref="IProjectDynamicLoadComponent"/>, it may have multiple lifetimes.
-        /// This class contains all the state associated with such a lifetime: it's Dataflow subscription, tracking the first value to arrive,
-        /// and the <see cref="BuildUpToDateCheck.State"/> instance.
+        /// This class contains all the state associated with such a lifetime: its Dataflow subscription, tracking the first value to arrive,
+        /// and the <see cref="UpToDateCheckConfiguredInput"/> instance.
         /// </para>
         /// <para>
         /// Initialization of the Dataflow subscription happens lazily, upon the first up-to-date check request.
@@ -28,8 +28,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         private sealed class Subscription : IDisposable
         {
+            private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
+
             private readonly ConfiguredProject _configuredProject;
-            private readonly IProjectItemSchemaService _projectItemSchemaService;
 
             /// <summary>
             /// Completes when the first project update is received. Cancelled if the subscription is disposed.
@@ -45,12 +46,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly AsyncSemaphore _semaphore = new(1);
 
             /// <summary>
-            /// Current <see cref="BuildUpToDateCheck.State"/> of the instance.
+            /// Internal for testing purposes only.
+            /// </summary>
+            internal UpToDateCheckConfiguredInput? State { get; private set; }
+
+            /// <summary>
+            /// Gets the time at which the last up-to-date check was made.
             /// </summary>
             /// <remarks>
-            /// Internal to support unit testing only.
+            /// This value is required in order to protect against a race condition described in
+            /// https://github.com/dotnet/project-system/issues/4014. Specifically, if source files are
+            /// modified during a compilation, but before that compilation's outputs are produced, then
+            /// the changed input file's timestamp will be earlier than the compilation output, making
+            /// it seem as though the compilation is up to date when in fact the input was not included
+            /// in that compilation. We use this property as a proxy for compilation start time, whereas
+            /// the outputs represent compilation end time.
             /// </remarks>
-            internal State State { get; set; } = State.Empty;
+            internal DateTime LastCheckedAtUtc { get; set; } = DateTime.MinValue;
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
@@ -62,16 +74,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             private readonly CancellationTokenSource _disposeTokenSource = new();
 
-            public Subscription(ConfiguredProject configuredProject, IProjectItemSchemaService projectItemSchemaService)
+            public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject)
             {
+                Requires.NotNull(inputDataSource, nameof(inputDataSource));
                 Requires.NotNull(configuredProject, nameof(configuredProject));
-                Requires.NotNull(projectItemSchemaService, nameof(projectItemSchemaService));
 
+                _inputDataSource = inputDataSource;
                 _configuredProject = configuredProject;
-                _projectItemSchemaService = projectItemSchemaService;
             }
 
-            public async Task<bool> RunAsync(Func<State, CancellationToken, Task<bool>> func, CancellationToken cancellationToken)
+            public async Task<bool> RunAsync(Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func, CancellationToken cancellationToken)
             {
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _disposeTokenSource.Token);
 
@@ -90,16 +102,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 token.ThrowIfCancellationRequested();
 
                 // Wait for the first state to be computed
+                // TODO wait for data source to be in sync with the project https://github.com/dotnet/project-system/issues/6185
                 await _dataReceived.Task.WithCancellation(token);
+
+                if (State == null)
+                {
+                    return false;
+                }
 
                 // Prevent overlapping requests
                 using AsyncSemaphore.Releaser _ = await _semaphore.EnterAsync(token);
 
-                bool result = await func(State, token);
+                bool result = await func(State, LastCheckedAtUtc, token);
 
                 lock (_dataReceived)
                 {
-                    State = State.WithLastCheckedAtUtc(DateTime.UtcNow);
+                    LastCheckedAtUtc = DateTime.UtcNow;
                 }
 
                 return result;
@@ -118,26 +136,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     // Double check within lock
                     if (_link == null)
                     {
-                        Assumes.Present(_configuredProject.Services.ProjectSubscription);
+                        ITargetBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>> actionBlock
+                            = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>>(OnChanged, _configuredProject.UnconfiguredProject);
 
-                        _link = ProjectDataSources.SyncLinkTo(
-                            _configuredProject.Services.ProjectSubscription.JointRuleSource.SourceBlock.SyncLinkOptions(DataflowOption.WithRuleNames(ProjectPropertiesSchemas)),
-                            _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
-                            _configuredProject.Services.ProjectSubscription.ProjectSource.SourceBlock.SyncLinkOptions(),
-                            _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
-                            _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
-                            linkOptions: DataflowOption.PropagateCompletion,
-                            CancellationToken.None);
+                        _link = _inputDataSource.SourceBlock.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                     }
                 }
             }
 
-            internal void OnChanged(IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>> e)
+            internal void OnChanged(IProjectVersionedValue<UpToDateCheckConfiguredInput> e)
             {
-                var snapshot = e.Value.Item3 as IProjectSnapshot2;
-                Assumes.NotNull(snapshot);
-
                 lock (_dataReceived)
                 {
                     if (_disposeTokenSource.IsCancellationRequested)
@@ -146,13 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return;
                     }
 
-                    State = State.Update(
-                        jointRuleUpdate: e.Value.Item1,
-                        sourceItemsUpdate: e.Value.Item2,
-                        projectSnapshot: snapshot,
-                        projectItemSchema: e.Value.Item4,
-                        projectCatalogSnapshot: e.Value.Item5,
-                        configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+                    State = e.Value;
                 }
 
                 _dataReceived.TrySetResult(0);
@@ -174,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     _link?.Dispose();
                     _link = null;
 
-                    State = State.Empty;
+                    State = null;
 
                     _disposeTokenSource.Cancel();
                     _disposeTokenSource.Dispose();
