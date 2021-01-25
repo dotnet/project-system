@@ -27,7 +27,7 @@ FOR /F "tokens=* USEBACKQ" %%F IN (`%TEMP%\vswhere.exe -all -latest -prerelease 
 if not exist "%DeveloperCommandPrompt%" (
   echo To build this repository, Visual Studio %RequiredVSVersion% must be installed.
   echo.
-  echo See https://github.com/dotnet/project-system/blob/master/docs/repo/getting-started.md for more information.
+  echo See https://github.com/dotnet/project-system/blob/main/docs/repo/getting-started.md for more information.
   exit /b 1
 )
 

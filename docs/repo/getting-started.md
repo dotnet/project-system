@@ -59,7 +59,7 @@ Inside Visual Studio, you can build, run tests and deploy.
 
 By default when you build inside Visual Studio or the command-line, the project system and other binaries gets deployed to the _Exp_ experimental instance of Visual Studio. They will automatically _override_ any binaries that come with Visual Studio when you launch that instance.
 
-First of all, [setup your debugging environment](https://github.com/dotnet/project-system/blob/master/docs/repo/debugging/setting-up-environment.md).
+First of all, [setup your debugging environment](/docs/repo/debugging/setting-up-environment.md).
 
 ### Command-line
 
