@@ -1,1 +1,2 @@
+Microsoft.VisualStudio.Editors.ApplicationDesigner.ApplicationDesignerView.AppDesignerAlreadyLoaded() -> Void
 Microsoft.VisualStudio.Editors.PropertyPages.PropertyControlData.PropertyName(value As String) -> Void
