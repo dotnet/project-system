@@ -245,6 +245,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             Else
                 'App designer already loaded - just navigate to the correct view
+                AppDesignerView.AppDesignerAlreadyLoaded()
                 If Not rguidLogicalView.Equals(Guid.Empty) And Not rguidLogicalView.Equals(GetActiveView()) Then
                     SetActiveView(rguidLogicalView)
                 End If
