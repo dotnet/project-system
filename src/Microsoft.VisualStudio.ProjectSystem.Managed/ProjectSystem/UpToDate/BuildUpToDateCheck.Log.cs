@@ -17,14 +17,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly TimestampCache _timestampCache;
             private readonly string _fileName;
             private readonly ITelemetryService _telemetryService;
+            private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
 
-            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService)
+            public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
             {
                 _writer = writer;
                 _requestedLogLevel = requestedLogLevel;
                 _stopwatch = stopwatch;
                 _timestampCache = timestampCache;
                 _telemetryService = telemetryService;
+                _upToDateCheckConfiguredInput = upToDateCheckConfiguredInput;
                 _fileName = Path.GetFileNameWithoutExtension(projectPath);
             }
 
@@ -98,7 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     (TelemetryPropertyName.UpToDateCheckFailReason, (object)reason),
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, _stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count)
+                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
                 });
 
                 return false;
@@ -111,7 +114,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _telemetryService.PostProperties(TelemetryEventName.UpToDateCheckSuccess, new[]
                 {
                     (TelemetryPropertyName.UpToDateCheckDurationMillis, (object)_stopwatch.Elapsed.TotalMilliseconds),
-                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count)
+                    (TelemetryPropertyName.UpToDateCheckFileCount, _timestampCache.Count),
+                    (TelemetryPropertyName.UpToDateCheckConfigurationCount, _upToDateCheckConfiguredInput.ImplicitInputs.Length)
                 });
 
                 Info("Project is up to date.");

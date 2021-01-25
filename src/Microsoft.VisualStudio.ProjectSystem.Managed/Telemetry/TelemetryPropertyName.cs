@@ -28,6 +28,16 @@ namespace Microsoft.VisualStudio.Telemetry
         public const string UpToDateCheckFileCount = Prefix + ".uptodatecheck.filecount";
 
         /// <summary>
+        ///     Indicates the number of (implicitly active) configurations that were included in the the up-to-date check.
+        /// </summary>
+        /// <remarks>
+        ///     The up-to-date check runs for the active configuration only, but will consider state from all
+        ///     implicitly active configurations. Generally, for a single targeting project this will equal one,
+        ///     and for multi-targeting projects this will equal the number of target frameworks being targeted.
+        /// </remarks>
+        public const string UpToDateCheckConfigurationCount = Prefix + ".uptodatecheck.configurationcount";
+
+        /// <summary>
         ///     Indicates the project when the dependency tree is updated with all resolved dependencies.
         /// </summary>
         public static readonly string TreeUpdatedResolvedProject = BuildPropertyName(TelemetryEventName.TreeUpdatedResolved, "Project");
