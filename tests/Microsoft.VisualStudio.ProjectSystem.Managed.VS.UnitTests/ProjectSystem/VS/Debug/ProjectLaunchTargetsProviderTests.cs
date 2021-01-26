@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
-            var activeProfile = new LaunchProfile()
+            var activeProfile = new LaunchProfile
             {
                 Name = "MyApplication",
                 CommandName = "Project",
@@ -126,10 +126,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
 
             // Now control-F5, add env
-            activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
+            activeProfile.EnvironmentVariables = new Dictionary<string, string> { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
             Assert.EndsWith(@"\cmd.exe", targets[0].Executable, StringComparison.OrdinalIgnoreCase);
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
+            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
 
             // Validate that when the DLO_Profiling is set we don't run the cmd.exe
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -173,10 +173,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            var activeProfile = new LaunchProfile() { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
+            var activeProfile = new LaunchProfile { Name = "MyApplication", CommandLineArgs = "--someArgs", ExecutablePath = @"c:\test\Project\someapp.exe" };
 
             // Now control-F5, add env vars
-            activeProfile.EnvironmentVariables = new Dictionary<string, string>() { { "var1", "Value1" } }.ToImmutableDictionary();
+            activeProfile.EnvironmentVariables = new Dictionary<string, string> { { "var1", "Value1" } }.ToImmutableDictionary();
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
@@ -193,12 +193,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData(null)]
         public async Task QueryDebugTargetsAsync_ExeProfileAsyncExeRelativeNoWorkingDir(string outdir)
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                     {"RunCommand", @"dotnet"},
                     {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll"+ "\""},
                     {"RunWorkingDirectory",  @"bin\"},
-                    { "TargetFrameworkIdentifier", @".NetCoreApp" },
-                    { "OutDir", outdir }
+                    {"TargetFrameworkIdentifier", @".NetCoreApp"},
+                    {"OutDir", outdir}
                 };
 
             var debugger = GetDebugTargetsProvider("exe", properties);
@@ -206,7 +207,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Exe relative, no working dir
             _mockFS.WriteAllText(@"c:\test\project\bin\test.exe", string.Empty);
             _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = ".\\test.exe" };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\test.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             if (outdir == null || outdir == @"doesntExist\")
@@ -232,7 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"c:\Test");
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = ".\\mytest.exe", WorkingDirectory = workingDir };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\mytest.exe", WorkingDirectory = workingDir };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -247,7 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Exe relative to full working dir
             _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = "./mytest.exe", WorkingDirectory = @"c:/WorkingDir" };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = "./mytest.exe", WorkingDirectory = @"c:/WorkingDir" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\WorkingDir\mytest.exe", targets[0].Executable);
@@ -257,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_SetsProject()
         {
-            var project = new LaunchProfile() { Name = "run", ExecutablePath = "dotnet.exe" };
+            var project = new LaunchProfile { Name = "run", ExecutablePath = "dotnet.exe" };
 
             var debugger = GetDebugTargetsProvider();
             var targets = await debugger.QueryDebugTargetsAsync(0, project);
@@ -274,7 +275,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = exeName };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = exeName };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\program files\dotnet\dotnet.exe", targets[0].Executable);
@@ -290,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = exeName };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = exeName };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"c:\CurrentDirectory\myexe.exe", targets[0].Executable);
@@ -304,7 +305,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
 
             // Exe relative to path
-            var activeProfile = new LaunchProfile() { Name = "run", ExecutablePath = @"\myexe.exe" };
+            var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = @"\myexe.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
             Assert.Equal(@"e:\myexe.exe", targets[0].Executable);
@@ -313,14 +314,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenLibraryWithRunCommand_ReturnsRunCommand()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"RunCommand", @"C:\dotnet.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -331,14 +333,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_ReturnsTargetPath()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\library.dll"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -349,14 +352,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenLibraryWithoutRunCommand_DoesNotManipulateTargetPath()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"library.dll"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -367,36 +371,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibraryAndNoRunCommandSpecified_Throws()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\library.dll"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
-            await Assert.ThrowsAsync<ProjectNotRunnableDirectlyException>(() =>
-            {
-                return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
-            });
+            Assert.Empty(await debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile));
         }
 
         [Fact]
         public async Task QueryDebugTargetsForDebugLaunchAsync_WhenLibraryAndRunCommandSpecified_ReturnsRunCommand()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"RunCommand", @"C:\dotnet.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -407,14 +410,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [Fact]
         public async Task QueryDebugTargetsAsync_ConsoleAppLaunchWithNoDebugger_WrapsInCmd()
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var debugger = GetDebugTargetsProvider("exe", properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -426,16 +430,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_ConsoleAppLaunchWithNoDebuggerWithIntegratedConsoleEnabled_DoesNotWrapInCmd()
         {
             var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await provider.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -449,16 +454,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_ConsoleAppLaunch_IncludesIntegratedConsoleInLaunchOptions(DebugLaunchOptions launchOptions)
         {
             var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var scope = IProjectCapabilitiesScopeFactory.Create(capabilities: new string[] { ProjectCapabilities.IntegratedConsoleDebugging });
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger, scope);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
 
@@ -472,14 +478,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_NonIntegratedConsoleCapability_DoesNotIncludeIntegrationConsoleInLaunchOptions(DebugLaunchOptions launchOptions)
         {
             var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var provider = GetDebugTargetsProvider("exe", properties, debugger);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await provider.QueryDebugTargetsAsync(launchOptions, activeProfile);
 
@@ -495,14 +502,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_NonConsoleAppLaunch_DoesNotIncludeIntegrationConsoleInLaunchOptions(string outputType)
         {
             var debugger = IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: true);
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var provider = GetDebugTargetsProvider(outputType, properties, debugger);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await provider.QueryDebugTargetsAsync(0, activeProfile);
 
@@ -517,14 +525,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         [InlineData("WinMDObj")]
         public async Task QueryDebugTargetsAsync_NonConsoleAppLaunchWithNoDebugger_DoesNotWrapInCmd(string outputType)
         {
-            var properties = new Dictionary<string, string?>() {
+            var properties = new Dictionary<string, string?>
+            {
                 {"TargetPath", @"C:\ConsoleApp.exe"},
-                {"TargetFrameworkIdentifier", @".NETFramework" }
-                };
+                {"TargetFrameworkIdentifier", @".NETFramework"}
+            };
 
             var debugger = GetDebugTargetsProvider(outputType, properties);
 
-            var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
             var result = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug, activeProfile);
 
@@ -628,11 +637,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var project = UnconfiguredProjectFactory.Create(fullPath: _ProjectFile);
 
-            var outputTypeEnum = new PageEnumValue(new EnumValue() { Name = outputType });
+            var outputTypeEnum = new PageEnumValue(new EnumValue { Name = outputType });
             var data = new PropertyPageData(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputTypeProperty, outputTypeEnum);
             var projectProperties = ProjectPropertiesFactory.Create(project, data);
 
-            properties ??= new Dictionary<string, string?>()
+            properties ??= new Dictionary<string, string?>
             {
                 {"RunCommand", @"dotnet"},
                 {"RunArguments", "exec " + "\"" + @"c:\test\project\bin\project.dll" + "\""},
