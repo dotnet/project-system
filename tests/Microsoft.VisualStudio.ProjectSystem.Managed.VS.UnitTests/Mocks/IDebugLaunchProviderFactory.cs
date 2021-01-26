@@ -10,16 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         public static IDebugLaunchProvider ImplementIsProjectDebuggableAsync(Func<bool> action)
         {
-            var mock = new Mock<IDebugLaunchProviderMock>();
+            var mock = new Mock<IDebugLaunchProvider>();
 
-            mock.Setup(d => d.CanBeStartupProjectAsync(It.IsAny<DebugLaunchOptions>()))
-                                .ReturnsAsync(action);
+            mock.As<IStartupProjectProvider>()
+                .Setup(d => d.CanBeStartupProjectAsync(It.IsAny<DebugLaunchOptions>()))
+                .ReturnsAsync(action);
 
             return mock.Object;
         }
-    }
-
-    internal interface IDebugLaunchProviderMock : IDebugLaunchProvider, IStartupProjectProvider
-    {
     }
 }
