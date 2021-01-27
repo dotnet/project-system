@@ -202,6 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return max;
         }
 
-        public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";
+        public override string ToString() => $"{TargetFramework.TargetFrameworkMoniker} - {Dependencies.Length} dependencies";
     }
 }
