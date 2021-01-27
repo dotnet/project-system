@@ -101,16 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         protected const int WaitForFirstSnapshotDelayMillis = 5000;
 
         [Obsolete("Use GetLaunchSettingsFilePathAsync instead.")]
-        public string LaunchSettingsFile
-        {
-            get
-            {
-                return _commonProjectServices.ThreadingService.ExecuteSynchronously(() =>
-                {
-                    return GetLaunchSettingsFilePathAsync();
-                });
-            }
-        }
+        public string LaunchSettingsFile => _commonProjectServices.ThreadingService.ExecuteSynchronously(GetLaunchSettingsFilePathAsync);
 
         /// <summary>
         /// Returns the active profile. Looks up the value of the ActiveProfile property. If the value doesn't match the
