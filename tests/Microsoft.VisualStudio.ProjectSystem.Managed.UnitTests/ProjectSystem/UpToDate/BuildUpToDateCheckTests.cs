@@ -87,15 +87,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFolder(_msBuildProjectDirectory);
             _fileSystem.AddFolder(_outputPath);
 
-            var threadingService = IProjectThreadingServiceFactory.Create();
-
             _buildUpToDateCheck = new BuildUpToDateCheck(
                 projectSystemOptions.Object,
                 configuredProject.Object,
                 projectAsynchronousTasksService.Object,
                 IProjectItemSchemaServiceFactory.Create(),
                 ITelemetryServiceFactory.Create(telemetryParameters => _telemetryEvents.Add(telemetryParameters)),
-                threadingService,
                 _fileSystem);
         }
 
@@ -106,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Dictionary<string, IProjectRuleSnapshotModel>? sourceSnapshot = null,
             IEnumerable<(string FilePath, DateTime Time)>? dependentTimeFiles = null)
         {
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             BroadcastChange(
                 projectRuleSnapshot: projectSnapshot,
@@ -157,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 identity: ProjectDataSources.ConfiguredProjectVersion,
                 version: _projectVersion);
 
-            _buildUpToDateCheck.OnChanged(value);
+            _buildUpToDateCheck.TestAccess.OnChanged(value);
 
             return;
 
@@ -509,7 +506,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Compile.SchemaName] = SimpleItems("ItemPath1", "ItemPath2")
             };
 
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastItemsChangedAtUtc);
 
@@ -920,7 +917,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 [Content.SchemaName] = ItemWithMetadata("Item1", "CopyToOutputDirectory", "PreserveNewest")
             };
 
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             BroadcastChange(outDir: outDirSnapshot, sourceRuleSnapshot: sourceSnapshot);
 
@@ -1108,7 +1105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [Fact]
         public async Task IsUpToDateAsync_True_InitialItemDataDoesNotUpdateLastAdditionalDependentFileTimesChangedAtUtc()
         {
-            await _buildUpToDateCheck.LoadAsync();
+            await _buildUpToDateCheck.ActivateAsync();
 
             Assert.Equal(DateTime.MinValue, _buildUpToDateCheck.TestAccess.State.LastAdditionalDependentFileTimesChangedAtUtc);
 
@@ -1351,20 +1348,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void AssertTelemetryFailureEvent(string reason)
         {
-            Assert.Single(_telemetryEvents);
-            Assert.Equal(TelemetryEventName.UpToDateCheckFail, _telemetryEvents.Single().EventName);
-            Assert.Single(_telemetryEvents.Single().Properties);
-            Assert.Equal(TelemetryPropertyName.UpToDateCheckFailReason, _telemetryEvents.Single().Properties.Single().propertyName);
-            Assert.Equal(reason, _telemetryEvents.Single().Properties.Single().propertyValue);
+            var telemetryEvent = Assert.Single(_telemetryEvents);
+
+            Assert.Equal(TelemetryEventName.UpToDateCheckFail, telemetryEvent.EventName);
+            Assert.NotNull(telemetryEvent.Properties);
+            Assert.Equal(3, telemetryEvent.Properties!.Count);
+
+            var reasonProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFailReason));
+            Assert.Equal(reason, reasonProp.propertyValue);
+
+            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
+            var duration = Assert.IsType<double>(durationProp.propertyValue);
+            Assert.True(duration > 0.0);
+
+            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFileCount));
+            var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
+            Assert.True(fileCount >= 0);
 
             _telemetryEvents.Clear();
         }
 
         private void AssertTelemetrySuccessEvent()
         {
-            Assert.Single(_telemetryEvents);
-            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, _telemetryEvents.Single().EventName);
-            Assert.Null(_telemetryEvents.Single().Properties);
+            var telemetryEvent = Assert.Single(_telemetryEvents);
+
+            Assert.Equal(TelemetryEventName.UpToDateCheckSuccess, telemetryEvent.EventName);
+
+            Assert.NotNull(telemetryEvent.Properties);
+            Assert.Equal(2, telemetryEvent.Properties!.Count);
+
+            var durationProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckDurationMillis));
+            var duration = Assert.IsType<double>(durationProp.propertyValue);
+            Assert.True(duration > 0.0);
+
+            var fileCountProp = Assert.Single(telemetryEvent.Properties.Where(p => p.propertyName == TelemetryPropertyName.UpToDateCheckFileCount));
+            var fileCount = Assert.IsType<int>(fileCountProp.propertyValue);
+            Assert.True(fileCount >= 0);
 
             _telemetryEvents.Clear();
         }

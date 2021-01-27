@@ -1,9 +1,9 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
+using Microsoft.VisualStudio.Imaging;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
@@ -14,18 +14,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             unresolved: DependencyTreeFlags.PackageDependency);
 
         private static readonly DependencyIconSet s_iconSet = new(
-            icon: ManagedImageMonikers.NuGetGrey,
-            expandedIcon: ManagedImageMonikers.NuGetGrey,
-            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
+            icon: KnownMonikers.NuGetNoColor,
+            expandedIcon: KnownMonikers.NuGetNoColor,
+            unresolvedIcon: KnownMonikers.NuGetNoColorWarning,
+            unresolvedExpandedIcon: KnownMonikers.NuGetNoColorWarning,
+            implicitIcon: KnownMonikers.NuGetNoColorPrivate,
+            implicitExpandedIcon: KnownMonikers.NuGetNoColorPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: ManagedImageMonikers.NuGetGreyPrivate,
-            expandedIcon: ManagedImageMonikers.NuGetGreyPrivate,
-            unresolvedIcon: ManagedImageMonikers.NuGetGreyWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.NuGetGreyWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => PackageRuleHandler.ProviderTypeString;
 

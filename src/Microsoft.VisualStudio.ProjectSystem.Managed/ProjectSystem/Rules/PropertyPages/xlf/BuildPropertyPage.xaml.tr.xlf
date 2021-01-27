@@ -12,6 +12,46 @@
         <target state="translated">Güvenli olmayan koda izin ver</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
+        <source>pointers</source>
+        <target state="translated">işaretçiler</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
+        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
+        <target state="translated">Veri türünün aralığı dışında bir değerle sonuçlanan ve checked veya unchecked anahtar sözcüğünün kapsamında olmayan tamsayı aritmetiğinin bir çalışma zamanı özel durumuna neden olup olmadığını belirtir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>Check for arithmetic overflow</source>
+        <target state="translated">Aritmetik taşmayı denetle</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
+        <source>checked;unchecked</source>
+        <target state="translated">işaretli;işaretlenmemiş</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|Description">
+        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
+        <target state="translated">Derleyicinin aynı girişler için aynı bütünleştirilmiş kodları üretmesi gerekip gerekmediğini gösterir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|DisplayName">
+        <source>Deterministic</source>
+        <target state="translated">Belirlenimci</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="translated">API belgelerini içeren bir dosya oluşturun.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">Belge dosyası</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.</target>
@@ -20,6 +60,11 @@
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
         <target state="translated">Kodu iyileştir</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
+        <source>optimise;optimisation</source>
+        <target state="translated">optimize et;optimizasyon</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -45,6 +90,26 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">Çıkış</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|Description">
+        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
+        <target state="translated">Derleyici iç hatası (ICE) raporlarının Microsoft'a ne zaman gönderildiğini denetler.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Internal compiler error reporting</source>
+        <target state="translated">Derleyici iç hatası raporlama</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|Description">
+        <source>Specifies, in bytes, where to align the sections of the output file.</source>
+        <target state="translated">Çıkış dosyasının bölümlerinin hizalanacağı konumu bayt olarak belirtir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File alignment</source>
+        <target state="translated">Dosya hizalama</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
@@ -85,6 +150,51 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">Uyarı düzeyi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
+        <source>Never send</source>
+        <target state="translated">Hiçbir zaman gönderme</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
+        <source>Prompt before sending</source>
+        <target state="translated">Göndermeden önce sor</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
+        <source>Queue</source>
+        <target state="translated">Kuyruk</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
+        <source>Send</source>
+        <target state="translated">Gönder</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
+        <source>1024</source>
+        <target state="translated">1024</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
+        <source>2048</source>
+        <target state="translated">2048</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
+        <source>4096</source>
+        <target state="translated">4096</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
+        <source>512</source>
+        <target state="translated">512</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
+        <source>8192</source>
+        <target state="translated">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
@@ -162,14 +272,34 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|Description">
+      <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
         <target state="translated">Projenin nasıl derleneceğini denetleyen özellikleri belirtir.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|DisplayName">
+      <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">Derleme</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
+        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Derleme sırasında projenin ara çıkışı için temel konumu belirtir. Proje yapılandırmasını ayırt etmek için bu yola alt klasörler eklenir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base intermediate output path</source>
+        <target state="translated">Temel ara çıkış yolu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|Description">
+        <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Derleme sırasında projenin çıkışı için temel konumu belirtir. Proje yapılandırmasını ayırt etmek için bu yola alt klasörler eklenir.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
+        <source>Base output path</source>
+        <target state="translated">Temel çıkış yolu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
@@ -183,13 +313,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">Belge yorumlarının işleneceği dosyanın adını belirtir.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">API belge dosyası için isteğe bağlı yol. Varsayılan konumu kullanmak için boş bırakın.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
         <target state="translated">XML belgeleri dosya yolu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|Description">
+        <source>Why can't I select the C# language version?</source>
+        <target state="translated">Neden C# dil sürümünü seçemiyorum?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">Dil sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -202,16 +342,6 @@
         <target state="translated">Uyarıları Gizle</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|Description">
-        <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="translated">Bu projenin yapılandırması için çıkış dosyalarının konumunu belirtir.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output path</source>
-        <target state="translated">Çıkış yolu</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Belirtilen uyarıları hata olarak değerlendirir. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.</target>
@@ -219,7 +349,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="needs-review-translation">Belirli uyarılar</target>
+        <target state="translated">Belirli uyarıları hata olarak değerlendir</target>
         <note />
       </trans-unit>
     </body>

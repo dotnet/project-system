@@ -20,15 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             icon: KnownMonikers.SDK,
             expandedIcon: KnownMonikers.SDK,
             unresolvedIcon: KnownMonikers.SDKWarning,
-            unresolvedExpandedIcon: KnownMonikers.SDKWarning);
+            unresolvedExpandedIcon: KnownMonikers.SDKWarning,
+            implicitIcon: KnownMonikers.SDKPrivate,
+            implicitExpandedIcon: KnownMonikers.SDKPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: KnownMonikers.SDKPrivate,
-            expandedIcon: KnownMonikers.SDKPrivate,
-            unresolvedIcon: KnownMonikers.SDKWarning,
-            unresolvedExpandedIcon: KnownMonikers.SDKWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => SdkRuleHandler.ProviderTypeString;
 

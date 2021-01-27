@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -53,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                        }
                    }
 
-                   return Task.FromResult<IProjectItem?>(null)!; // TODO remove ! when CPS annotations updated
+                   return TaskResult.Null<IProjectItem>()!; // TODO remove ! when CPS annotations updated
                });
 
             return mock.Object;

@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
 using Xunit;
 
@@ -25,15 +24,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         }
 
         [Fact]
-        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework()
+        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_NoTargets()
         {
-            var targetFramework = new TargetFramework("tfm1");
+#if false
+            var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
+                activeTargetFramework: new TargetFramework("tfm1"),
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
+
+            Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains no items.", ex.Message);
+#else
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: new TargetFramework("tfm1"),
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
+#endif
+        }
+
+        [Fact]
+        public void Constructor_ThrowsIfActiveTargetFrameworkNotEmptyAndNotInDependenciesByTargetFramework_WithTargets()
+        {
+#if false
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
 
             var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
-                activeTargetFramework: targetFramework,
-                ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
+                activeTargetFramework: tfm1,
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty
+                    .Add(tfm2, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))
+                    .Add(tfm3, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))));
 
-            Assert.StartsWith("Must contain activeTargetFramework (tfm1).", ex.Message);
+            Assert.StartsWith("Value \"tfm1\" is unexpected. Must be a key in dependenciesByTargetFramework, which contains \"tfm2\", \"tfm3\".", ex.Message);
+#else
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
+
+            _ = new DependenciesSnapshot(
+                activeTargetFramework: tfm1,
+                dependenciesByTargetFramework: ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty
+                    .Add(tfm2, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null))
+                    .Add(tfm3, TargetedDependenciesSnapshot.CreateEmpty(tfm1, null)));
+#endif
         }
 
         [Fact]
@@ -98,9 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 catalogs,
                 targetFrameworks,
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.Same(previousSnapshot, snapshot);
         }
@@ -125,9 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 updatedCatalogs,
                 targetFrameworks,
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);
@@ -162,9 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 catalogs,
                 targetFrameworks: ImmutableArray.Create(targetFramework),
                 activeTargetFramework: targetFramework,
-                ImmutableArray<IDependenciesSnapshotFilter>.Empty,
-                new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
-                null);
+                ImmutableArray<IDependenciesSnapshotFilter>.Empty);
 
             Assert.NotSame(previousSnapshot, snapshot);
             Assert.Same(targetFramework, snapshot.ActiveTargetFramework);

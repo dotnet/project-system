@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -19,36 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         public static readonly TargetFramework Any = new("any");
 
-        public TargetFramework(FrameworkName frameworkName, string? shortName)
-        {
-            Requires.NotNull(frameworkName, nameof(frameworkName));
-
-            FullName = frameworkName.FullName;
-            ShortName = shortName ?? string.Empty;
-        }
-
-        /// <summary>
-        /// Should be never used directly, this is for special cases or for some unknown framework,
-        /// that Nuget is not aware of - highly unlikely to happen.
-        /// </summary>
-        /// <param name="moniker"></param>
         public TargetFramework(string moniker)
         {
             Requires.NotNull(moniker, nameof(moniker));
 
-            FullName = moniker;
-            ShortName = moniker;
+            TargetFrameworkAlias = moniker;
         }
 
         /// <summary>
-        /// Gets the full moniker (TFM).
+        /// Gets the Target Framework alias. This is a string that can be one of the well known
+        /// values set by the SDK (for example, "netcoreapp2.1") or a custom string set in the project file
+        /// such that evaluation generates a custom mapping of values of the well known properties like
+        /// "TargetFrameworkMoniker", "TargetFrameworkIdentifier", etc.
         /// </summary>
-        public string FullName { get; }
-
-        /// <summary>
-        /// Gets the short name.
-        /// </summary>
-        public string ShortName { get; }
+        public string TargetFrameworkAlias { get; }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the
@@ -61,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Equals(TargetFramework? obj)
         {
-            return obj != null && FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
+            return obj != null && TargetFrameworkAlias.Equals(obj.TargetFrameworkAlias, StringComparisons.FrameworkIdentifiers);
         }
 
         public static bool operator ==(TargetFramework? left, TargetFramework? right)
@@ -76,12 +59,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override int GetHashCode()
         {
-            return StringComparers.FrameworkIdentifiers.GetHashCode(FullName);
+            return StringComparers.FrameworkIdentifiers.GetHashCode(TargetFrameworkAlias);
         }
 
         public override string ToString()
         {
-            return FullName;
+            return TargetFrameworkAlias;
         }
     }
 }

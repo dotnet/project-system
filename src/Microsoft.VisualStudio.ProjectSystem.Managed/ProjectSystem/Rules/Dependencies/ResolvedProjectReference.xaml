@@ -212,4 +212,10 @@
                 ReadOnly="True"
                 Visible="false" />
 
+  <BoolProperty Name="TreatAsUsed"
+                Description="Indicates that this reference should be treated as if it were used."
+                DisplayName="Treat as used"
+                ReadOnly="True"
+                Visible="True" />
+
 </Rule>

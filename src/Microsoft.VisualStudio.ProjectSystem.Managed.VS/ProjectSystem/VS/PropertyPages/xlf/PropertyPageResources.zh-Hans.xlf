@@ -57,6 +57,11 @@
         <target state="translated">主机名无效。</target>
         <note />
       </trans-unit>
+      <trans-unit id="JSWebView2DebuggingAdditionalText">
+        <source>(Requires the JavaScript Diagnostics component)</source>
+        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
         <target state="translated">绝对或相对 URL</target>
@@ -240,6 +245,11 @@
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
         <target state="translated">在选择“新建配置文件”的情况下，创建配置文件并返回调试属性页</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="chkJSWebView2DebuggingText">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">

@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
+        <source>Build this project for multiple target frameworks.</source>
+        <target state="translated">Sestavte tento projekt pro několik cílových architektur.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
+        <source>Target multiple frameworks</source>
+        <target state="translated">Cílit na více architektur</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the application.</source>
         <target state="translated">Obecná nastavení pro aplikaci</target>
@@ -32,22 +42,22 @@
         <target state="translated">Spouštěcí objekt</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
         <target state="translated">Určuje verzi rozhraní .NET, na kterou aplikace cílí. Tato možnost může mít různé hodnoty v závislosti na tom, které verze rozhraní .NET jsou na počítači nainstalované.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
         <source>Target framework</source>
         <target state="translated">Cílová architektura</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifest|Description">
-        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Umožňuje vybrat možnost generování manifestu při spuštění aplikace v systému Windows Vista nebo novějším v nástroji Řízení uživatelských účtů (UAC). Možnosti: výchozí manifest, žádný manifest nebo vlastní manifest poskytnutý z daného projektu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+      <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
+        <target state="translated">Vybere možnost generování manifestu, když je aplikace spuštěná v systému Windows Vista nebo novějším se zapnutým Řízením uživatelských účtů (UAC). Možnosti zahrnují výchozí manifest, žádný manifest nebo vlastní manifest poskytnutý vaším projektem.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
+      <trans-unit id="EnumProperty|ApplicationManifestKind|DisplayName">
         <source>Manifest</source>
         <target state="translated">Manifest</target>
         <note />
@@ -62,12 +72,27 @@
         <target state="translated">Typ výstupu</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifest.DefaultManifest|DisplayName">
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|Description">
+        <source>Specifies how application resources will be managed.</source>
+        <target state="translated">Určuje, jak se budou spravovat prostředky aplikace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ResourceSpecificationKind|DisplayName">
+        <source>Resources</source>
+        <target state="translated">Prostředky</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.CustomManifest|DisplayName">
+        <source>Use a custom manifest</source>
+        <target state="translated">Použít vlastní manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ApplicationManifestKind.DefaultManifest|DisplayName">
         <source>Embed manifest with default settings</source>
         <target state="translated">Vložit manifest s výchozím nastavením</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|ApplicationManifest.NoManifest|DisplayName">
+      <trans-unit id="EnumValue|ApplicationManifestKind.NoManifest|DisplayName">
         <source>Create application without a manifest</source>
         <target state="translated">Vytvořit aplikaci bez manifestu</target>
         <note />
@@ -87,6 +112,16 @@
         <target state="translated">Aplikace systému Windows</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.IconAndManifest|DisplayName">
+        <source>Icon and manifest</source>
+        <target state="translated">Ikona a manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ResourceSpecificationKind.ResourceFile|DisplayName">
+        <source>Resource file</source>
+        <target state="translated">Soubor prostředků</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Rule|Application|Description">
         <source>Specifies the project's application settings and properties.</source>
         <target state="translated">Určuje aplikační nastavení a vlastnosti projektu.</target>
@@ -98,13 +133,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|Description">
-        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Nastaví soubor .ico, který chcete použít jako ikonu programu. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+        <source>Sets the .ico file that you want to use as your program icon.</source>
+        <target state="translated">Nastaví soubor .ico, který chcete použít jako ikonu programu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
         <target state="translated">Ikona</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|Description">
+        <source>The path to the custom manifest file.</source>
+        <target state="translated">Cesta k souboru vlastního manifestu</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ApplicationManifestPath|DisplayName">
+        <source>Manifest path</source>
+        <target state="translated">Cesta k manifestu</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|Description">
@@ -117,6 +162,11 @@
         <target state="translated">Název sestavení</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|InstallOtherFrameworks|DisplayName">
+        <source>Install other frameworks</source>
+        <target state="translated">Nainstalovat jiné architektury</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|Description">
         <source>Specifies the base namespace for files added to the project.</source>
         <target state="translated">Určuje základní obor názvů pro soubory přidané do daného projektu.</target>
@@ -127,9 +177,19 @@
         <target state="translated">Výchozí obor názvů</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Description">
+        <source>Specifies the semicolon-delimited list of frameworks that this project will target.</source>
+        <target state="translated">Určuje seznam středníkem oddělených architektur, na které bude tento projekt cílit.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
+        <source>Target frameworks</source>
+        <target state="translated">Cílové architektury</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
-        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
-        <target state="translated">Určuje soubor prostředků pro projekt. Všimněte si, že je nutné zadat ikonu a manifest -nebo- soubor prostředků.</target>
+        <source>Specifies a resource file for the project.</source>
+        <target state="translated">Určuje soubor prostředku pro projekt.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

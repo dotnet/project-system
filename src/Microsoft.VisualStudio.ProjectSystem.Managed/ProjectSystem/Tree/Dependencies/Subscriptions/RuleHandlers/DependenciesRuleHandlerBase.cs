@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
@@ -11,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 {
     internal abstract class DependenciesRuleHandlerBase
         : IDependenciesRuleHandler,
-          IProjectDependenciesSubTreeProviderInternal
+          IProjectDependenciesSubTreeProvider
     {
         public string EvaluatedRuleName { get; }
         public string ResolvedRuleName { get; }
@@ -33,62 +32,64 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         /// </summary>
         /// <remarks>
         /// <para>
-        /// For some (most) rules we require the item to be present in evaluation data
-        /// as well as design-time data to be considered resolved. In general, all items
-        /// should be provided to the tree by evaluation. However currently some rules
-        /// (Analyzers and AdditionalFiles) are only available when resolved during
-        /// design-time builds.
+        /// For most rules we require the item to be present in evaluation data as well
+        /// as design-time data to be considered resolved. In general, all items should
+        /// be provided to the tree by evaluation. However currently Analyzers are only
+        /// available when resolved during design-time builds.
         /// </para>
         /// <para>
         /// https://github.com/dotnet/project-system/issues/4782 tracks making these
-        /// remaining items available during evaluation.
+        /// items available during evaluation.
         /// </para>
         /// </remarks>
         protected virtual bool ResolvedItemRequiresEvaluatedItem => true;
 
         #region IDependenciesRuleHandler
 
-        public abstract ImageMoniker ImplicitIcon { get; }
-
         public void Handle(
-            IProjectChangeDescription evaluation,
-            IProjectChangeDescription? projectBuild,
+            string projectFullPath,
+            IProjectChangeDescription evaluationProjectChange,
+            IProjectChangeDescription? buildProjectChange,
             TargetFramework targetFramework,
             DependenciesChangesBuilder changesBuilder)
         {
             HandleChangesForRule(
                 resolved: false,
-                projectChange: evaluation,
+                evaluationProjectChange,
+                null,
                 isEvaluatedItemSpec: null);
 
             // We only have resolved data if the update came via the JointRule data source.
-            if (projectBuild != null)
+            if (buildProjectChange != null)
             {
-                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluation.After.Items.ContainsKey : (Func<string, bool>?)null;
+                Func<string, bool>? isEvaluatedItemSpec = ResolvedItemRequiresEvaluatedItem ? evaluationProjectChange.After.Items.ContainsKey : (Func<string, bool>?)null;
 
                 HandleChangesForRule(
                     resolved: true,
-                    projectChange: projectBuild,
+                    evaluationProjectChange,
+                    buildProjectChange,
                     isEvaluatedItemSpec);
             }
 
             return;
 
-            void HandleChangesForRule(bool resolved, IProjectChangeDescription projectChange, Func<string, bool>? isEvaluatedItemSpec)
+            void HandleChangesForRule(bool resolved, IProjectChangeDescription evaluationProjectChange, IProjectChangeDescription? buildProjectChange, Func<string, bool>? isEvaluatedItemSpec)
             {
+                IProjectChangeDescription projectChange = resolved ? buildProjectChange! : evaluationProjectChange;
+
                 foreach (string removedItem in projectChange.Difference.RemovedItems)
                 {
-                    HandleRemovedItem(removedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleRemovedItem(projectFullPath, removedItem, resolved, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 foreach (string changedItem in projectChange.Difference.ChangedItems)
                 {
-                    HandleChangedItem(changedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleChangedItem(projectFullPath, changedItem, resolved, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 foreach (string addedItem in projectChange.Difference.AddedItems)
                 {
-                    HandleAddedItem(addedItem, resolved, projectChange, changesBuilder, targetFramework, isEvaluatedItemSpec);
+                    HandleAddedItem(projectFullPath, addedItem, resolved, projectChange, evaluationProjectChange.After, changesBuilder, targetFramework, isEvaluatedItemSpec);
                 }
 
                 System.Diagnostics.Debug.Assert(projectChange.Difference.RenamedItems.Count == 0, "Project rule diff should not contain renamed items");
@@ -96,25 +97,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         protected virtual void HandleAddedItem(
+            string projectFullPath,
             string addedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            IDependencyModel model = CreateDependencyModelForRule(addedItem, projectChange.After, resolved);
+            IDependencyModel? model = CreateDependencyModelForRule(addedItem, evaluationRuleSnapshot, projectChange.After, resolved, projectFullPath);
 
-            if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
+            if (model != null && (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id)))
             {
                 changesBuilder.Added(model);
             }
         }
 
         protected virtual void HandleRemovedItem(
+            string projectFullPath,
             string removedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
@@ -130,36 +135,50 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         protected virtual void HandleChangedItem(
+            string projectFullPath,
             string changedItem,
             bool resolved,
             IProjectChangeDescription projectChange,
+            IProjectRuleSnapshot evaluationRuleSnapshot,
             DependenciesChangesBuilder changesBuilder,
             TargetFramework targetFramework,
             Func<string, bool>? isEvaluatedItemSpec)
         {
-            IDependencyModel model = CreateDependencyModelForRule(changedItem, projectChange.After, resolved);
+            IDependencyModel? model = CreateDependencyModelForRule(changedItem, evaluationRuleSnapshot, projectChange.After, resolved, projectFullPath);
 
-            if (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id))
+            if (model != null && (isEvaluatedItemSpec == null || isEvaluatedItemSpec(model.Id)))
             {
                 // For changes we try to add new dependency. If it is a resolved dependency, it would just override
-                // old one with new properties. If it is unresolved dependency, it would be added only when there no
-                // resolved version in the snapshot.
+                // old one with new properties. If it is unresolved dependency, it would be added only when there is
+                // no resolved version in the snapshot (due to UnresolvedDependenciesSnapshotFilter).
                 changesBuilder.Added(model);
             }
         }
 
-        private IDependencyModel CreateDependencyModelForRule(string itemSpec, IProjectRuleSnapshot projectRuleSnapshot, bool isResolved)
+        private IDependencyModel? CreateDependencyModelForRule(string itemSpec, IProjectRuleSnapshot evaluationRuleSnapshot, IProjectRuleSnapshot updatedRuleSnapshot, bool isResolved, string projectFullPath)
         {
-            IImmutableDictionary<string, string> properties = projectRuleSnapshot.GetProjectItemProperties(itemSpec)!;
+            IImmutableDictionary<string, string>? properties = updatedRuleSnapshot.GetProjectItemProperties(itemSpec);
+
+            Assumes.NotNull(properties);
 
             string originalItemSpec = isResolved
                 ? properties.GetStringProperty(ProjectItemMetadata.OriginalItemSpec) ?? itemSpec
                 : itemSpec;
 
-            // NOTE the SDK only sets this for a default set of implicit dependencies. At this point, this data
-            // does not reflect implicit dependencies brought in by imported project files. That behaviour is
-            // added by ImplicitDependenciesSnapshotFilter.
-            bool isImplicit = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined) ?? false;
+            IImmutableDictionary<string, string>? evaluationProperties = evaluationRuleSnapshot.GetProjectItemProperties(originalItemSpec);
+
+            if (evaluationProperties == null)
+            {
+                if (ResolvedItemRequiresEvaluatedItem)
+                {
+                    // This item is present in build results, but not in evaluation.
+                    return null;
+                }
+
+                evaluationProperties = properties;
+            }
+
+            bool isImplicit = IsImplicit(projectFullPath, evaluationProperties);
 
             return CreateDependencyModel(
                 itemSpec,
@@ -167,6 +186,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 isResolved,
                 isImplicit,
                 properties);
+        }
+
+        protected static bool IsImplicit(
+            string projectFullPath,
+            IImmutableDictionary<string, string> properties)
+        {
+            Requires.NotNull(projectFullPath, nameof(projectFullPath));
+            Requires.NotNull(properties, nameof(properties));
+            
+            // Check for "IsImplicitlyDefined" metadata, which is available on certain items.
+            bool? isImplicitMetadata = properties.GetBoolProperty(ProjectItemMetadata.IsImplicitlyDefined);
+
+            if (isImplicitMetadata != null)
+            {
+                return isImplicitMetadata.Value;
+            }
+
+            // Check for "DefiningProjectFullPath" metadata and compare with the project file path.
+            string? definingProjectFullPath = properties.GetStringProperty("DefiningProjectFullPath");
+
+            if (!string.IsNullOrEmpty(definingProjectFullPath))
+            {
+                return !StringComparers.Paths.Equals(definingProjectFullPath, projectFullPath);
+            }
+
+            return false;
         }
 
         protected virtual IDependencyModel CreateDependencyModel(

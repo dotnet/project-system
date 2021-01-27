@@ -1,9 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using Microsoft.VisualStudio.Composition;
-using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
 {
@@ -12,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
     /// objects influences the sequence of <see cref="TargetedDependenciesSnapshot"/> objects.
     /// </summary>
     /// <remarks>
-    /// For each added and removed dependency in an update, <see cref="TargetedDependenciesSnapshot.FromChanges"/>
+    /// For each dependency involved in an update, <see cref="TargetedDependenciesSnapshot.FromChanges"/>
     /// iterates through an ordered set of these filters, allowing each to influence how the dependency data is
     /// integrated into the next snapshot.
     /// </remarks>
@@ -33,22 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filter
         /// dependencies in the snapshot. All these operations are performed via the <paramref name="context"/>.
         /// </remarks>
         /// <param name="dependency">The dependency to which filter should be applied.</param>
-        /// <param name="subTreeProviderByProviderType">All dictionary of subtree providers keyed by <see cref="IProjectDependenciesSubTreeProvider.ProviderType"/>.</param>
-        /// <param name="projectItemSpecs">List of all items contained in project's xml at given moment (non-imported items), otherwise, <see langword="null"/> if we do not have any data.</param>
         /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
         void BeforeAddOrUpdate(
             IDependency dependency,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string>? projectItemSpecs,
             AddDependencyContext context);
-
-        /// <summary>
-        /// Called before removing a dependency from a snapshot.
-        /// </summary>
-        /// <param name="dependency">The dependency to which filter should be applied.</param>
-        /// <param name="context">An object via which the filter must signal acceptance or rejection, in addition to making further changes to other dependencies.</param>
-        void BeforeRemove(
-            IDependency dependency,
-            RemoveDependencyContext context);
     }
 }

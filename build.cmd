@@ -57,9 +57,6 @@ if "%OptDiagnostic%" == "true" (
 
 call "%Root%\build\script\SetVSEnvironment.cmd" || exit /b 1
 
-REM WORKAROUND: See https://github.com/dotnet/project-system/issues/5177
-SET LIB=
-
 msbuild %Root%build\proj\Build.proj /m /warnaserror /nologo /clp:Summary /nodeReuse:%OptNodeReuse% /p:Configuration=%BuildConfiguration% /p:Build=%OptBuild% /p:Rebuild=%OptRebuild% /p:Deploy=%OptDeploy% /p:Test=%OptTest% /p:IntegrationTest=%OptIntegrationTest% /p:Sign=%OptSign% /p:CIBuild=%OptCI% /p:EnableIbc=%OptIbc% /p:ClearNuGetCache=%OptClearNuGetCache% %LogCmdLine% %RootSuffixCmdLine%
 set MSBuildErrorLevel=%ERRORLEVEL%
 

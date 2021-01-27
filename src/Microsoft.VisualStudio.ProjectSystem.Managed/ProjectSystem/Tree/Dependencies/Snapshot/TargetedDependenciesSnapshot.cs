@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -26,18 +25,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         /// Applies changes to <paramref name="previousSnapshot"/> and produces a new snapshot if required.
         /// If no changes are made, <paramref name="previousSnapshot"/> is returned unmodified.
         /// </summary>
-        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occured.</returns>
+        /// <returns>An updated snapshot, or <paramref name="previousSnapshot"/> if no changes occurred.</returns>
         public static TargetedDependenciesSnapshot FromChanges(
             TargetedDependenciesSnapshot previousSnapshot,
             IDependenciesChanges? changes,
             IProjectCatalogSnapshot? catalogs,
-            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters,
-            IReadOnlyDictionary<string, IProjectDependenciesSubTreeProvider> subTreeProviderByProviderType,
-            IImmutableSet<string>? projectItemSpecs)
+            ImmutableArray<IDependenciesSnapshotFilter> snapshotFilters)
         {
             Requires.NotNull(previousSnapshot, nameof(previousSnapshot));
             Requires.Argument(!snapshotFilters.IsDefault, nameof(snapshotFilters), "Cannot be default.");
-            Requires.NotNull(subTreeProviderByProviderType, nameof(subTreeProviderByProviderType));
 
             bool anyChanges = false;
 
@@ -47,12 +43,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             if (changes != null && changes.RemovedNodes.Count != 0)
             {
-                var context = new RemoveDependencyContext(dependencyById);
-
                 foreach (IDependencyModel removed in changes.RemovedNodes)
                 {
-                    Remove(context, removed);
+                    dependencyById.Remove(removed.GetDependencyId());
                 }
+
+                anyChanges = true;
             }
 
             if (changes != null && changes.AddedNodes.Count != 0)
@@ -87,34 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             return previousSnapshot;
 
-            void Remove(RemoveDependencyContext context, IDependencyModel dependencyModel)
-            {
-                if (!context.TryGetDependency(dependencyModel.GetDependencyId(), out IDependency dependency))
-                {
-                    return;
-                }
-
-                context.Reset();
-
-                foreach (IDependenciesSnapshotFilter filter in snapshotFilters)
-                {
-                    filter.BeforeRemove(
-                        dependency,
-                        context);
-
-                    anyChanges |= context.Changed;
-
-                    if (!context.GetResult(filter))
-                    {
-                        // TODO breaking here denies later filters the opportunity to modify builders
-                        return;
-                    }
-                }
-
-                dependencyById.Remove(dependencyModel.GetDependencyId());
-                anyChanges = true;
-            }
-
             void Add(AddDependencyContext context, IDependencyModel dependencyModel)
             {
                 // Create the unfiltered dependency
@@ -126,8 +94,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 {
                     filter.BeforeAddOrUpdate(
                         dependency,
-                        subTreeProviderByProviderType,
-                        projectItemSpecs,
                         context);
 
                     dependency = context.GetResult(filter);
@@ -236,6 +202,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return max;
         }
 
-        public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";
+        public override string ToString() => $"{TargetFramework.TargetFrameworkAlias} - {Dependencies.Length} dependencies";
     }
 }

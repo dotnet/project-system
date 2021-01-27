@@ -4,16 +4,44 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 {
     public class ProjectActionProviderTests
     {
+        private class TestProperty : BaseProperty { }
+
         [Fact]
         public async Task WhenNoDimensionsAreGiven_ThenThePropertyIsSetInAllConfigurations()
         {
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\alpha\beta\MyProject.csproj");
+            var project = UnconfiguredProjectFactory.Create(
+                fullPath: @"C:\alpha\beta\MyProject.csproj",
+                configuredProject: ConfiguredProjectFactory.Create(
+                    services: ConfiguredProjectServicesFactory.Create(
+                        IPropertyPagesCatalogProviderFactory.Create(new()
+                        {
+                            {
+                                "Project",
+                                IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
+                                {
+                                    { "MyPage", IRuleFactory.Create(new Rule
+                                        {
+                                            Name = "MyPage",
+                                            Properties = new()
+                                            {
+                                                new TestProperty
+                                                {
+                                                    Name = "MyProperty",
+                                                    DataSource = new() { HasConfigurationCondition = true }
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        }))));
 
             var projectConfigurations = GetConfigurations();
 
@@ -26,7 +54,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                         name: "MyPage",
                         properties: new[]
                         {
-                            IPropertyFactory.Create("MyProperty", setValue: o => affectedConfigs.Add(config.Name))
+                            IPropertyFactory.Create(
+                                "MyProperty",
+                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
+                                setValue: o => affectedConfigs.Add(config.Name))
                         })));
             var emptyTargetDimensions = Enumerable.Empty<(string dimension, string value)>();
 
@@ -51,8 +82,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         [Fact]
         public async Task WhenDimensionsAreGiven_ThenThePropertyIsOnlySetInTheMatchingConfigurations()
         {
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\alpha\beta\MyProject.csproj");
-
+            var project = UnconfiguredProjectFactory.Create(
+                fullPath: @"C:\alpha\beta\MyProject.csproj",
+                configuredProject: ConfiguredProjectFactory.Create(
+                    services: ConfiguredProjectServicesFactory.Create(
+                        IPropertyPagesCatalogProviderFactory.Create(new()
+                        {
+                            {
+                                "Project",
+                                IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
+                                {
+                                    { "MyPage", IRuleFactory.Create(new Rule
+                                        {
+                                            Name = "MyPage",
+                                            Properties = new()
+                                            {
+                                                new TestProperty
+                                                {
+                                                    Name = "MyProperty",
+                                                    DataSource = new() { HasConfigurationCondition = true }
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        }))));
             var projectConfigurations = GetConfigurations();
 
             var affectedConfigs = new List<string>();
@@ -64,7 +119,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                         name: "MyPage",
                         properties: new[]
                         {
-                            IPropertyFactory.Create("MyProperty", setValue: o => affectedConfigs.Add(config.Name))
+                            IPropertyFactory.Create(
+                                "MyProperty",
+                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
+                                setValue: o => affectedConfigs.Add(config.Name))
                         })));
             var targetDimensions = new List<(string dimension, string value)>
             {

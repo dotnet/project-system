@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 includeName: true,
                 includeValue: true);
 
-            var entityRuntime = IEntityRuntimeModelFactory.Create();
+            var parentEntity = IEntityWithIdFactory.Create("ParentKey", "ParentKeyValue");
             var editor = new ValueEditor
             {
                 Metadata =
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
 
             var results = UIEditorMetadataProducer.CreateMetadataValues(
-                entityRuntime,
+                parentEntity,
                 editor,
                 properties);
 

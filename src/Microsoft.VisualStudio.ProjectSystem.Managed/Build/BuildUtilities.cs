@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Build.Construction;
-using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
 
@@ -16,6 +15,8 @@ namespace Microsoft.VisualStudio.Build
     /// </summary>
     internal static class BuildUtilities
     {
+        private const char Delimiter = ';';
+
         /// <summary>
         ///     Returns a value indicating whether the specified property has a condition that
         ///     always evaluates to <see langword="true"/>.
@@ -63,14 +64,13 @@ namespace Microsoft.VisualStudio.Build
         /// Gets the individual values of a delimited property.
         /// </summary>
         /// <param name="propertyValue">Value of the property to evaluate.</param>
-        /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <returns>Collection of individual values in the property.</returns>
-        public static IEnumerable<string> GetPropertyValues(string propertyValue, char delimiter = ';')
+        public static IEnumerable<string> GetPropertyValues(string propertyValue)
         {
             HashSet<string>? seen = null;
 
             // We need to ensure that we return values in the specified order.
-            foreach (string value in new LazyStringSplit(propertyValue, delimiter))
+            foreach (string value in new LazyStringSplit(propertyValue, Delimiter))
             {
                 string s = value.Trim();
 
@@ -99,8 +99,7 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
         /// <param name="propertyName">Property name.</param>
         /// <param name="valueToAppend">Value to add to the property.</param>
-        /// <param name="delimiter">Character used to delimit the property values.</param>
-        public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToAppend, char delimiter = ';')
+        public static void AppendPropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToAppend)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
@@ -108,10 +107,10 @@ namespace Microsoft.VisualStudio.Build
 
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = PooledStringBuilder.GetInstance();
-            foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
+            foreach (string value in GetPropertyValues(evaluatedPropertyValue))
             {
                 newValue.Append(value);
-                newValue.Append(delimiter);
+                newValue.Append(Delimiter);
             }
 
             newValue.Append(valueToAppend);
@@ -125,12 +124,11 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="evaluatedPropertyValue">Original evaluated value of the property.</param>
         /// <param name="propertyName">Property name.</param>
         /// <param name="valueToRemove">Value to remove from the property.</param>
-        /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToRemove, char delimiter = ';')
+        public static void RemovePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string valueToRemove)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
@@ -139,13 +137,13 @@ namespace Microsoft.VisualStudio.Build
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var newValue = new StringBuilder();
             bool valueFound = false;
-            foreach (string value in GetPropertyValues(evaluatedPropertyValue, delimiter))
+            foreach (string value in GetPropertyValues(evaluatedPropertyValue))
             {
                 if (!string.Equals(value, valueToRemove, StringComparisons.PropertyValues))
                 {
                     if (newValue.Length != 0)
                     {
-                        newValue.Append(delimiter);
+                        newValue.Append(Delimiter);
                     }
 
                     newValue.Append(value);
@@ -172,12 +170,11 @@ namespace Microsoft.VisualStudio.Build
         /// <param name="propertyName">Property name.</param>
         /// <param name="oldValue">Current property value.</param>
         /// <param name="newValue">New property value.</param>
-        /// <param name="delimiter">Character used to delimit the property values.</param>
         /// <remarks>
         /// If the property is not present it will be added. This means that the evaluated property
         /// value came from one of the project imports.
         /// </remarks>
-        public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string? oldValue, string newValue, char delimiter = ';')
+        public static void RenamePropertyValue(ProjectRootElement project, string evaluatedPropertyValue, string propertyName, string? oldValue, string newValue)
         {
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(evaluatedPropertyValue, nameof(evaluatedPropertyValue));
@@ -186,11 +183,11 @@ namespace Microsoft.VisualStudio.Build
             ProjectPropertyElement property = GetOrAddProperty(project, propertyName);
             var value = new StringBuilder();
             bool valueFound = false;
-            foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue, delimiter))
+            foreach (string propertyValue in GetPropertyValues(evaluatedPropertyValue))
             {
                 if (value.Length != 0)
                 {
-                    value.Append(delimiter);
+                    value.Append(Delimiter);
                 }
 
                 if (string.Equals(propertyValue, oldValue, StringComparisons.PropertyValues))
@@ -240,27 +237,6 @@ namespace Microsoft.VisualStudio.Build
 
                 return propertyGroup.AddProperty(propertyName, string.Empty);
             }
-        }
-
-        /// <summary>
-        ///     Returns a value indicating if the specified <see cref="ProjectItemInstance"/>
-        ///     originated in an imported file.
-        /// </summary>
-        /// <returns>
-        ///     <see langword="true"/> if <paramref name="item"/> originated in an imported file;
-        ///     otherwise, <see langword="false"/> if it was defined in the project being built.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="item"/> is <see langword="null"/>.
-        /// </exception>
-        public static bool IsImported(this ProjectItemInstance item)
-        {
-            Requires.NotNull(item, nameof(item));
-
-            string definingProjectFullPath = item.GetMetadataValue("DefiningProjectFullPath");
-            string projectFullPath = item.Project.FullPath; // NOTE: This returns project being built, not owning target
-
-            return !StringComparers.Paths.Equals(definingProjectFullPath, projectFullPath);
         }
     }
 }

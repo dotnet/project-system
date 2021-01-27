@@ -1,7 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Xunit;
@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
-                IEntityRuntimeModelFactory.Create(),
-                new EntityIdentity(key: "A", value: "B"),
+                IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
+                debugChildRules: new List<Rule>(),
                 properties);
 
             Assert.Equal(expected: "MyRule", actual: propertyPage.Name);
@@ -29,18 +29,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         }
 
         [Fact]
-        public void WhenCreatingAModel_ProviderStateConsistsOfCacheAndRule()
+        public void WhenCreatingAModel_ProviderStateIsTheCorrectType()
         {
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
-                IEntityRuntimeModelFactory.Create(),
-                new EntityIdentity(key: "A", value: "B"),
+                IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
-                properties);
+                debugChildRules: new List<Rule>(),
+                properties) ;
 
-            Assert.IsType<(IPropertyPageQueryCache, Rule)>(propertyPage.ProviderState);
+            Assert.IsType<PropertyPageProviderState>(propertyPage.ProviderState);
         }
 
         [Fact]
@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
                 IPropertyPageQueryCacheFactory.Create(),
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
+                debugChildRules: new List<Rule>(),
                 properties);
 
             Assert.Equal(expected: "MyRule", actual: propertyPage.Id[ProjectModelIdentityKeys.PropertyPageName]);

@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -17,16 +16,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         private static readonly DependencyIconSet s_iconSet = new(
             icon: KnownMonikers.CodeInformation,
             expandedIcon: KnownMonikers.CodeInformation,
-            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
+            unresolvedIcon: KnownMonikers.CodeInformationWarning,
+            unresolvedExpandedIcon: KnownMonikers.CodeInformationWarning,
+            implicitIcon: KnownMonikers.CodeInformationPrivate,
+            implicitExpandedIcon: KnownMonikers.CodeInformationPrivate);
 
-        private static readonly DependencyIconSet s_implicitIconSet = new(
-            icon: ManagedImageMonikers.CodeInformationPrivate,
-            expandedIcon: ManagedImageMonikers.CodeInformationPrivate,
-            unresolvedIcon: ManagedImageMonikers.CodeInformationWarning,
-            unresolvedExpandedIcon: ManagedImageMonikers.CodeInformationWarning);
-
-        public override DependencyIconSet IconSet => Implicit ? s_implicitIconSet : s_iconSet;
+        public override DependencyIconSet IconSet => s_iconSet;
 
         public override string ProviderType => AnalyzerRuleHandler.ProviderTypeString;
 

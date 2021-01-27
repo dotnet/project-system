@@ -16,22 +16,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ImageMoniker icon1 = KnownMonikers.AboutBox;
             ImageMoniker icon2 = KnownMonikers.ZoomToggle;
 
-            var iconSet1a = new DependencyIconSet(icon1, icon1, icon1, icon1);
-            var iconSet1b = new DependencyIconSet(icon1, icon1, icon1, icon1);
+            var iconSet1a = new DependencyIconSet(icon1, icon1, icon1, icon1, icon1, icon1);
+            var iconSet1b = new DependencyIconSet(icon1, icon1, icon1, icon1, icon1, icon1);
 
             Assert.Equal(iconSet1a, iconSet1b);
             Assert.NotSame(iconSet1a, iconSet1b);
 
             Assert.Same(iconSet1a, cache.GetOrAddIconSet(iconSet1a));
             Assert.Same(iconSet1a, cache.GetOrAddIconSet(iconSet1b));
-            Assert.Same(iconSet1a, cache.GetOrAddIconSet(icon1, icon1, icon1, icon1));
+            Assert.Same(iconSet1a, cache.GetOrAddIconSet(icon1, icon1, icon1, icon1, icon1, icon1));
 
-            var iconSet2 = new DependencyIconSet(icon2, icon2, icon2, icon2);
+            var iconSet2 = new DependencyIconSet(icon2, icon2, icon2, icon2, icon2, icon2);
 
             Assert.NotEqual(iconSet1a, iconSet2);
 
             Assert.Same(iconSet2, cache.GetOrAddIconSet(iconSet2));
-            Assert.Same(iconSet2, cache.GetOrAddIconSet(icon2, icon2, icon2, icon2));
+            Assert.Same(iconSet2, cache.GetOrAddIconSet(icon2, icon2, icon2, icon2, icon2, icon2));
         }
     }
 }

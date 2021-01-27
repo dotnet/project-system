@@ -78,10 +78,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub PopulateAnalysisLevelComboBoxItems()
             If AnalysisLevelComboBox.Items.Count = 0 Then
-                AnalysisLevelComboBox.Items.Add("preview")
-                AnalysisLevelComboBox.Items.Add("latest")
+                AnalysisLevelComboBox.Items.Add(My.Resources.Strings.preview)
+                AnalysisLevelComboBox.Items.Add(My.Resources.Strings.latest)
                 AnalysisLevelComboBox.Items.Add("5.0")
-                AnalysisLevelComboBox.Items.Add("none")
+                AnalysisLevelComboBox.Items.Add(My.Resources.Strings.none)
             End If
         End Sub
 

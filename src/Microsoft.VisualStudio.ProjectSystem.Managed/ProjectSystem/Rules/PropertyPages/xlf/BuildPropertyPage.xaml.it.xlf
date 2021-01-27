@@ -12,6 +12,46 @@
         <target state="translated">Consenti codice unsafe</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
+        <source>pointers</source>
+        <target state="translated">puntatori</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
+        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
+        <target state="translated">Consente di specificare se l'aritmetica degli interi, che restituisce un valore non compreso nell'intervallo del tipo di dati e che non è rientra nell'ambito di una parola chiave selezionata o non selezionata, causa un'eccezione in fase di esecuzione.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
+        <source>Check for arithmetic overflow</source>
+        <target state="translated">Controlla overflow aritmetico</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
+        <source>checked;unchecked</source>
+        <target state="translated">selezionato;non selezionato</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|Description">
+        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
+        <target state="translated">Indica se il compilatore deve produrre assembly identici per input identici.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Deterministic|DisplayName">
+        <source>Deterministic</source>
+        <target state="translated">Deterministico</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
+        <source>Generate a file containing API documentation.</source>
+        <target state="translated">Genera un file contenente la documentazione dell'API.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
+        <source>Documentation file</source>
+        <target state="translated">File di documentazione</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
         <target state="translated">Consente di abilitare o disabilitare le ottimizzazioni eseguite dal compilatore per ridurre le dimensioni del file di output e rendere l'esecuzione del file più rapida ed efficiente.</target>
@@ -20,6 +60,11 @@
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
         <target state="translated">Ottimizza codice</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
+        <source>optimise;optimisation</source>
+        <target state="translated">ottimizzare;ottimizzazione</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -45,6 +90,26 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">Output</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|Description">
+        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
+        <target state="translated">Consente di controllare l'invio a Microsoft delle segnalazioni di errori interni del compilatore.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|ErrorReport|DisplayName">
+        <source>Internal compiler error reporting</source>
+        <target state="translated">Segnalazione errori interni del compilatore</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|Description">
+        <source>Specifies, in bytes, where to align the sections of the output file.</source>
+        <target state="translated">Consente di specificare, in byte, dove allineare le sezioni del file di output.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|FileAlignment|DisplayName">
+        <source>File alignment</source>
+        <target state="translated">Allineamento file</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
@@ -85,6 +150,51 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">Livello di avviso</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
+        <source>Never send</source>
+        <target state="translated">Non inviare mai</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
+        <source>Prompt before sending</source>
+        <target state="translated">Richiedi prima di inviare</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
+        <source>Queue</source>
+        <target state="translated">Accoda</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
+        <source>Send</source>
+        <target state="translated">Invia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
+        <source>1024</source>
+        <target state="translated">1024</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
+        <source>2048</source>
+        <target state="translated">2048</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
+        <source>4096</source>
+        <target state="translated">4096</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
+        <source>512</source>
+        <target state="translated">512</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
+        <source>8192</source>
+        <target state="translated">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
@@ -162,14 +272,34 @@
         <target state="translated">5</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|Description">
+      <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
         <target state="translated">Specifica le proprietà che controllano la modalità di compilazione del progetto.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|BuildPropertyPage|DisplayName">
+      <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">Compilazione</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
+        <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Consente di specificare il percorso base per l'output intermedio del progetto durante la compilazione. Le sottocartelle verranno aggiunte a questo percorso per differenziare la configurazione del progetto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
+        <source>Base intermediate output path</source>
+        <target state="translated">Percorso base dell'output intermedio</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|Description">
+        <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
+        <target state="translated">Consente di specificare il percorso base per l'output del progetto durante la compilazione. Le sottocartelle verranno aggiunte a questo percorso per differenziare la configurazione del progetto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
+        <source>Base output path</source>
+        <target state="translated">Percorso base dell'output</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
@@ -183,13 +313,23 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
-        <source>Specifies the name of a file into which documentation comments will be processed.</source>
-        <target state="translated">Specifica il nome di un file in cui verranno elaborati i commenti relativi alla documentazione.</target>
+        <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
+        <target state="translated">Percorso facoltativo per il file di documentazione dell'API. Lasciare vuoto per usare il percorso predefinito.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
         <target state="translated">Percorso file di documentazione XML</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|Description">
+        <source>Why can't I select the C# language version?</source>
+        <target state="translated">Perché non è possibile selezionare la versione del linguaggio C#?</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|LangVersion|DisplayName">
+        <source>Language version</source>
+        <target state="translated">Versione del linguaggio</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
@@ -202,16 +342,6 @@
         <target state="translated">Non visualizzare avvisi</target>
         <note />
       </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|Description">
-        <source>Specifies the location of the output files for this project's configuration.</source>
-        <target state="translated">Specifica il percorso dei file di output per la configurazione del progetto.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="StringProperty|OutputPath|DisplayName">
-        <source>Output path</source>
-        <target state="translated">Percorso di output</target>
-        <note />
-      </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Considera gli avvisi specificati come errori. Separare più numeri di avviso con una virgola (',') o un punto e virgola (';').</target>
@@ -219,7 +349,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="needs-review-translation">Avvisi specifici</target>
+        <target state="translated">Considera avvisi specifici come errori</target>
         <note />
       </trans-unit>
     </body>

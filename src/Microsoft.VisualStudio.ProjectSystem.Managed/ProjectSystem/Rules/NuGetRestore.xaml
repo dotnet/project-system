@@ -13,6 +13,10 @@
                   ReadOnly="True"
                   Visible="False" />
 
+  <StringProperty Name="CLRSupport"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="DotnetCliToolTargetFramework"
                   ReadOnly="True"
                   Visible="False" />

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="new">Produce a package file during build operations.</target>
+        <target state="translated">Hiermit wird während des Buildvorgangs eine Paketdatei erstellt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="new">Prompt the user to accept the license when installing this package.</target>
+        <target state="translated">Hiermit wird der Benutzer bei der Installation dieses Pakets zum Akzeptieren der Lizenz aufgefordert.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
@@ -22,17 +22,62 @@
         <target state="translated">Akzeptieren der Lizenz als erforderlich festlegen</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General settings for the package.</source>
+        <target state="translated">Allgemeine Einstellungen für das Paket.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">Allgemein</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|Description">
+        <source>Specifies the license for the package.</source>
+        <target state="translated">Hiermit wird die Lizenz für das Paket angegeben.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|DisplayName">
+        <source>License</source>
+        <target state="translated">Lizenz</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
         <target state="translated">Neutrale Sprache der Assembly</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|Description">
+      <trans-unit id="EnumProperty|PackageLicenseKind|Description">
+        <source>Specify a license for the project's package.</source>
+        <target state="translated">Hiermit geben Sie eine Lizenz für das Projektpaket an.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
+        <source>Package License</source>
+        <target state="translated">Paketlizenz</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
+        <source>SPDX License Expression</source>
+        <target state="translated">SPDX-Lizenzausdruck</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
+        <source>Embedded File</source>
+        <target state="translated">Eingebettete Datei</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
+        <source>None</source>
+        <target state="translated">Keine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
         <target state="translated">Eigenschaften, die mit dem Generieren von NuGet-Paketen zusammenhängen.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|DisplayName">
+      <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
         <target state="translated">Paket</target>
         <note />
@@ -150,6 +195,11 @@
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
         <target state="translated">Produkt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
+        <source>Read about SPDX license expressions</source>
+        <target state="translated">Informationen zu SPDX-Lizenzausdrücken</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">

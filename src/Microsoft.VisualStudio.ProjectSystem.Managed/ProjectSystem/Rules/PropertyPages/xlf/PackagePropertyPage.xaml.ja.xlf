@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="new">Produce a package file during build operations.</target>
+        <target state="translated">ビルド操作中にパッケージ ファイルを生成します。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="new">Prompt the user to accept the license when installing this package.</target>
+        <target state="translated">このパッケージをインストールするときに、ライセンスの受け入れをユーザーに求めます。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
@@ -22,17 +22,62 @@
         <target state="translated">ライセンスの同意が必要</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|General|Description">
+        <source>General settings for the package.</source>
+        <target state="translated">パッケージの全般設定です。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|General|DisplayName">
+        <source>General</source>
+        <target state="translated">全般</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|Description">
+        <source>Specifies the license for the package.</source>
+        <target state="translated">パッケージのライセンスを指定します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|License|DisplayName">
+        <source>License</source>
+        <target state="translated">ライセンス</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
         <target state="translated">アセンブリ ニュートラル言語</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|Description">
+      <trans-unit id="EnumProperty|PackageLicenseKind|Description">
+        <source>Specify a license for the project's package.</source>
+        <target state="translated">プロジェクトのパッケージのライセンスを指定します。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
+        <source>Package License</source>
+        <target state="translated">パッケージ ライセンス</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
+        <source>SPDX License Expression</source>
+        <target state="translated">SPDX ライセンス式</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
+        <source>Embedded File</source>
+        <target state="translated">埋め込みファイル</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
+        <source>None</source>
+        <target state="translated">なし</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
         <target state="translated">NuGet パッケージの生成に関連するプロパティ。</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|PackagePropertyPage|DisplayName">
+      <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
         <target state="translated">パッケージ</target>
         <note />
@@ -150,6 +195,11 @@
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
         <target state="translated">製品</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
+        <source>Read about SPDX license expressions</source>
+        <target state="translated">SPDX ライセンス式について</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">

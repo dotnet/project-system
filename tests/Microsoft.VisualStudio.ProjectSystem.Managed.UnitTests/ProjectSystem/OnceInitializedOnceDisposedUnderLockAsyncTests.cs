@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 result = ct.IsCancellationRequested;
 
-                return Task.FromResult<string?>(null);
+                return TaskResult.Null<string>();
             }, cancellationTokenSource.Token);
 
             Assert.True(result);
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             bool called = false;
-            var result = instance.ExecuteUnderLockAsync(ct => { called = true; return Task.FromResult<string?>(null); }, cancellationToken);
+            var result = instance.ExecuteUnderLockAsync(ct => { called = true; return TaskResult.Null<string>(); }, cancellationToken);
 
             var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => result);
             Assert.False(called);
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             int callCount = 0;
-            await instance.ExecuteUnderLockAsync((ct) => { callCount++; return Task.FromResult<string?>(null); }, CancellationToken.None);
+            await instance.ExecuteUnderLockAsync((ct) => { callCount++; return TaskResult.Null<string>(); }, CancellationToken.None);
 
             Assert.Equal(1, callCount);
         }
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
-                return Task.FromResult<string?>(null);
+                return TaskResult.Null<string>();
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
-                return Task.FromResult<string?>(null);
+                return TaskResult.Null<string>();
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -258,7 +258,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     await instance.ExecuteUnderLockAsync((___) =>
                     {
                         callCount++;
-                        return Task.FromResult<string?>(null);
+                        return TaskResult.Null<string>();
                     });
 
                     return string.Empty;
@@ -358,7 +358,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var result = await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
             {
-                return instance.ExecuteUnderLockAsync((ct) => { return Task.FromResult<string?>(null); }, CancellationToken.None);
+                return instance.ExecuteUnderLockAsync((ct) => { return TaskResult.Null<string>(); }, CancellationToken.None);
             });
 
             Assert.Equal(instance.DisposalToken, result.CancellationToken);

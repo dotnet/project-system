@@ -13,6 +13,8 @@ T:Microsoft.VisualStudio.ProjectSystem.IProjectLockService; Using IProjectAccess
 T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
 T:Microsoft.VisualStudio.ProjectSystem.VS.IProjectGuidService2; Using ISafeProjectGuidService avoids reading the GUID before it is safe to do so during initialisation
 
+T:NuGet.VisualStudio.IVsFrameworkParser; FrameworkName does not support the platform information added in .NET 5
+
 P:Microsoft.VisualStudio.ProjectSystem.VS.IProjectAsyncLoadDashboard.ProjectLoadedInHost; Using IUnconfiguredProjectTasksService.ProjectLoadedInHost prevents waiting indefinitely when the project is closed before it has finished loading
 
 M:Microsoft.VisualStudio.ProjectSystem.CommonProjectSystemTools.LoadedProject(Microsoft.VisualStudio.ProjectSystem.IProjectAsynchronousTasksService); Using IUnconfiguredProjectTasksService.LoadedProjectAsync is unit testable

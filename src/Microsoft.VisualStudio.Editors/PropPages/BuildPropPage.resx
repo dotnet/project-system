@@ -910,7 +910,7 @@
     <value>274, 20</value>
   </data>
   <data name="txtSupressWarnings.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;txtSupressWarnings.Name" xml:space="preserve">
     <value>txtSupressWarnings</value>
@@ -940,7 +940,7 @@
     <value>99, 13</value>
   </data>
   <data name="lblSupressWarnings.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="lblSupressWarnings.Text" xml:space="preserve">
     <value>&amp;Suppress warnings:</value>
@@ -975,6 +975,9 @@
   <data name="cboWarningLevel.Items4" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="cboWarningLevel.Items5" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="cboWarningLevel.Location" type="System.Drawing.Point, System.Drawing">
     <value>184, 248</value>
   </data>
@@ -985,7 +988,7 @@
     <value>125, 21</value>
   </data>
   <data name="cboWarningLevel.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;cboWarningLevel.Name" xml:space="preserve">
     <value>cboWarningLevel</value>
@@ -1015,7 +1018,7 @@
     <value>75, 13</value>
   </data>
   <data name="lblWarningLevel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="lblWarningLevel.Text" xml:space="preserve">
     <value>W&amp;arning level:</value>
@@ -1072,7 +1075,7 @@
     <value>93, 17</value>
   </data>
   <data name="chkOptimizeCode.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="chkOptimizeCode.Text" xml:space="preserve">
     <value>Optimi&amp;ze code</value>
@@ -1105,7 +1108,7 @@
     <value>113, 17</value>
   </data>
   <data name="chkAllowUnsafeCode.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="chkAllowUnsafeCode.Text" xml:space="preserve">
     <value>Allow unsa&amp;fe code</value>
@@ -1138,7 +1141,7 @@
     <value>83, 17</value>
   </data>
   <data name="chkPrefer32Bit.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="chkPrefer32Bit.Text" xml:space="preserve">
     <value>&amp;Prefer 32-bit</value>
@@ -1333,7 +1336,7 @@
     <value>48, 13</value>
   </data>
   <data name="lblNullable.TabIndex" type="System.Int32, mscorlib">
-    <value>32</value>
+    <value>7</value>
   </data>
   <data name="lblNullable.Text" xml:space="preserve">
     <value>Nulla&amp;ble:</value>
@@ -1360,7 +1363,7 @@
     <value>125, 21</value>
   </data>
   <data name="cboNullable.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;cboNullable.Name" xml:space="preserve">
     <value>cboNullable</value>
@@ -1431,9 +1434,9 @@
   <data name="&gt;&gt;chkDefineDebug.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -1448,8 +1451,5 @@
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>Microsoft.VisualStudio.Editors.PropertyPages.PropPageUserControlBase, Microsoft.VisualStudio.AppDesigner, Version=42.42.42.42, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cboWarningLevel.Items5" xml:space="preserve">
-    <value>5</value>
   </data>
 </root>

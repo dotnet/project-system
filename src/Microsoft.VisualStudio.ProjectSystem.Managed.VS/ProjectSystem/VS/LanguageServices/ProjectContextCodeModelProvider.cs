@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using TaskResult = Microsoft.VisualStudio.Threading.TaskResult;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -73,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
                 {   // Isn't a file that Roslyn knows about
                 }
 
-                return Task.FromResult<FileCodeModel?>(null);
+                return TaskResult.Null<FileCodeModel>();
             });
         }
     }

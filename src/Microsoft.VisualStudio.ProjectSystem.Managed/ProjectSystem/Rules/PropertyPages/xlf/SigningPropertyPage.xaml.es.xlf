@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="needs-review-translation">Seleccione esta casilla para firmar el ensamblado.</target>
+        <target state="translated">Firme el ensamblado de salida para asignarle un nombre seguro.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
@@ -22,12 +22,12 @@
         <target state="translated">Firmar el ensamblado</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|Description">
+      <trans-unit id="Rule|Signing|Description">
         <source>Properties related to producing signing assemblies.</source>
         <target state="translated">Propiedades relacionadas con la generación de ensamblados de firma.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+      <trans-unit id="Rule|Signing|DisplayName">
         <source>Signing</source>
         <target state="translated">Firma</target>
         <note />
