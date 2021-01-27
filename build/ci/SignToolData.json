@@ -22,7 +22,9 @@
         "bin/Dlls/Microsoft.VisualStudio.AppDesigner.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.AppDesigner.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.Editors.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll"
+        "bin/Dlls/*/Microsoft.VisualStudio.Editors.resources.dll",
+        "bin/Dlls/Microsoft.VisualStudio.Editors.Client.dll",
+        "bin/Dlls/*/Microsoft.VisualStudio.Editors.Client.resources.dll"
       ]
     },
     {
