@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
@@ -41,15 +42,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            var configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
-            var catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+            ConfiguredProject? configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+            IPropertyPagesCatalogProvider? catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
             if (catalogProvider == null)
             {
                 return null;
             }
 
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-            var rule = catalog.GetSchema(unevaluatedPropertyValue);
+            Rule? rule = catalog.GetSchema(unevaluatedPropertyValue);
             if (rule == null)
             {
                 return null;
@@ -87,8 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return string.Empty;
             }
 
-            var configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
-            var catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
+            ConfiguredProject? configuredProject = await _project.GetSuggestedConfiguredProjectAsync();
+            IPropertyPagesCatalogProvider? catalogProvider = configuredProject?.Services.PropertyPagesCatalog;
 
             if (catalogProvider == null)
             {
@@ -96,9 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
 
             IPropertyPagesCatalog catalog = await catalogProvider.GetCatalogAsync(PropertyPageContexts.Project);
-            foreach (var schemaName in catalog.GetPropertyPagesSchemas())
+            foreach (string schemaName in catalog.GetPropertyPagesSchemas())
             {
-                var rule = catalog.GetSchema(schemaName);
+                Rule? rule = catalog.GetSchema(schemaName);
                 if (rule != null
                     && string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                     && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj)
