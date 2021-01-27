@@ -16,86 +16,22 @@
     <Description>Implementation of some designers and project property page editors in VisualStudio Client.</Description>
     <Summary>Editors implementation for Project Properties in the Client</Summary>
     <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
-  </PropertyGroup>  
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>  
   <ItemGroup>
     <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Interop.14.0.DesignTime" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
-  <!--<ItemGroup>
-    <None Remove="Resources\ResourceEditor\BlankBmp.bmp" />
-    <None Remove="Resources\ResourceEditor\BlankGif.gif" />
-    <None Remove="Resources\ResourceEditor\BlankIcon.ico" />
-    <None Remove="Resources\ResourceEditor\BlankJpeg.jpg" />
-    <None Remove="Resources\ResourceEditor\BlankPng.png" />
-    <None Remove="Resources\ResourceEditor\BlankTiff.tif" />
-    <None Remove="Resources\ResourceEditor\BlankWav.wav" />
-  </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
     <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="ResourceEditor\DialogQueryName.resx">
-      <DependentUpon>DialogQueryName.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.DialogQueryName.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ResourceEditor\OpenFileWarningDialog.resx">
-      <DependentUpon>OpenFileWarningDialog.vb</DependentUpon>
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.OpenFileWarningDialog.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankBmp.bmp">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankBmp</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankGif.gif">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankGif</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankIcon.ico">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankIcon</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankJpeg.jpg">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankJpeg</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankPng.png">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankPng</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankTiff.tif">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankTiff</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceEditor\BlankWav.wav">
-      <LogicalName>Microsoft.VisualStudio.Editors.ResourceEditor.BlankWav</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="ResourceEditor\DialogQueryName.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\OpenFileWarningDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorRootComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorView_EditorState.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceStringTable.vb">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="**\*.xlf" />
-  </ItemGroup>-->
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
