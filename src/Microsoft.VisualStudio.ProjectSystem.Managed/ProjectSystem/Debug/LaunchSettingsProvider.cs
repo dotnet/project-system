@@ -730,7 +730,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return CurrentSnapshot;
             }
 
-            await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout);
+            if (await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout))
+            {
+                Assumes.NotNull(CurrentSnapshot);
+            }
 
             return CurrentSnapshot;
         }
