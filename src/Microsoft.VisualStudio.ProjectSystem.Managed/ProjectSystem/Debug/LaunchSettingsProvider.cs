@@ -143,12 +143,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
             protected set
             {
+                ILaunchSettings? prior = _currentSnapshot;
+                _currentSnapshot = value;
+
                 // If this is the first snapshot, complete the taskCompletionSource
-                if (_currentSnapshot == null)
+                if (prior is null)
                 {
                     _firstSnapshotCompletionSource.TrySetResult();
                 }
-                _currentSnapshot = value;
             }
         }
 
