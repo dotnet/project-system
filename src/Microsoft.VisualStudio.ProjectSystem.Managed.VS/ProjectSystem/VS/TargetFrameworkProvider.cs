@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     {
         /// <summary>
         /// Lookup for <see cref="TargetFramework"/> objects keyed by
-        /// <see cref="TargetFramework.TargetFrameworkMoniker"/>.
+        /// <see cref="TargetFramework.TargetFrameworkAlias"/>.
         /// </summary>
         private ImmutableDictionary<string, TargetFramework> _targetFrameworkByName = ImmutableDictionary.Create<string, TargetFramework>(StringComparer.Ordinal);
 
