@@ -74,9 +74,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ProjectSystem\VS\UI\DontShowAgainMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Resource Include="Resources\Icons\NuGetGrey_16x.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
