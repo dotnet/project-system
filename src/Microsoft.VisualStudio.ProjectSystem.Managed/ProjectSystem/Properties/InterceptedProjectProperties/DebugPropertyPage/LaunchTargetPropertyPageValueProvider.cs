@@ -60,10 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 _projectThreadingService.RunAndForget(async () =>
                 {
-                    ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+                    ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
-                    var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
-                    var activeProfile = writableLaunchSettings.ActiveProfile;
+                    IWritableLaunchSettings writableLaunchSettings = launchSettings!.ToWritableLaunchSettings();
+                    IWritableLaunchProfile? activeProfile = writableLaunchSettings.ActiveProfile;
                     if (activeProfile != null)
                     {
                         activeProfile.CommandName = pageCommandName;
@@ -80,8 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync()
         {
-            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            var commandName = launchSettings.ActiveProfile?.CommandName;
+            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            string? commandName = launchSettings!.ActiveProfile?.CommandName;
             if (commandName == null)
             {
                 return string.Empty;
