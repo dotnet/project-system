@@ -383,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
 
-            Assert.Empty(await debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile));
+            await Assert.ThrowsAsync<Exception>(() => debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile));
         }
 
         [Fact]
