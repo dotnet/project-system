@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
         public TargetDependencyViewModel(TargetFramework targetFramework, DiagnosticLevel diagnosticLevel)
         {
-            Caption = targetFramework.TargetFrameworkMoniker;
+            Caption = targetFramework.ShortName;
             Flags = GetCachedFlags(targetFramework);
             _diagnosticLevel = diagnosticLevel;
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             {
                 return ImmutableInterlocked.GetOrAdd(
                     ref s_configurationFlags,
-                    targetFramework.TargetFrameworkMoniker,
+                    targetFramework.FullName,
                     fullName => DependencyTreeFlags.TargetNode
                         .Add($"$TFM:{fullName}")
                         .Add(ProjectTreeFlags.Common.VirtualFolder));

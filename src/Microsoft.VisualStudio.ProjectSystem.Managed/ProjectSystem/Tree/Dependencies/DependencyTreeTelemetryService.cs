@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 // Scan the snapshot and tally dependencies
                 foreach ((TargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in _dependenciesSnapshot.DependenciesByTargetFramework)
                 {
-                    var targetData = new TargetData(targetFramework.TargetFrameworkMoniker);
+                    var targetData = new TargetData(targetFramework.ShortName);
 
                     data.Add(targetData);
 
