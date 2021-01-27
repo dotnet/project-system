@@ -22,13 +22,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             Requires.NotNull(moniker, nameof(moniker));
 
-            TargetFrameworkMoniker = moniker;
+            TargetFrameworkAlias = moniker;
         }
 
         /// <summary>
-        /// Gets the Target Framework Moniker.
+        /// Gets the Target Framework alias. This is a string that can be one of the well known
+        /// values set by the SDK (for example, "netcoreapp2.1") or a custom string set in the project file
+        /// such that evaluation generates a custom mapping of values of the well known properties like
+        /// "TargetFrameworkMoniker", "TargetFrameworkIdentifier", etc.
         /// </summary>
-        public string TargetFrameworkMoniker { get; }
+        public string TargetFrameworkAlias { get; }
 
         /// <summary>
         /// Override Equals to handle equivalency correctly. They are equal if the
@@ -41,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public bool Equals(TargetFramework? obj)
         {
-            return obj != null && TargetFrameworkMoniker.Equals(obj.TargetFrameworkMoniker, StringComparisons.FrameworkIdentifiers);
+            return obj != null && TargetFrameworkAlias.Equals(obj.TargetFrameworkAlias, StringComparisons.FrameworkIdentifiers);
         }
 
         public static bool operator ==(TargetFramework? left, TargetFramework? right)
@@ -56,12 +59,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public override int GetHashCode()
         {
-            return StringComparers.FrameworkIdentifiers.GetHashCode(TargetFrameworkMoniker);
+            return StringComparers.FrameworkIdentifiers.GetHashCode(TargetFrameworkAlias);
         }
 
         public override string ToString()
         {
-            return TargetFrameworkMoniker;
+            return TargetFrameworkAlias;
         }
     }
 }
