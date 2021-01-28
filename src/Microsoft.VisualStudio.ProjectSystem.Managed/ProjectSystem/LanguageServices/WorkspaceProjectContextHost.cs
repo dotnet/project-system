@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -26,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
+        private readonly ILanguageServiceTelemetryService _languageServiceTelemetryService;
+        private string? _projectId;
 
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
@@ -36,7 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                            IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                            IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                            ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
-                                           IDataProgressTrackerService dataProgressTrackerService)
+                                           IDataProgressTrackerService dataProgressTrackerService,
+                                           ILanguageServiceTelemetryService languageServiceTelemetryService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -48,20 +52,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
             _dataProgressTrackerService = dataProgressTrackerService;
+            _languageServiceTelemetryService = languageServiceTelemetryService;
+        }
+
+        private string ProjectId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_projectId))
+                {
+                    string? fullPath = _project?.UnconfiguredProject?.FullPath;
+                    _projectId = string.IsNullOrEmpty(fullPath) ? string.Empty : _languageServiceTelemetryService.HashValue(fullPath!);
+                }
+
+                return _projectId!;
+            }
         }
 
         public Task ActivateAsync()
         {
+            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostActivating));
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
+            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostDeactivating));
             return UnloadAsync();
         }
 
         public Task PublishAsync(CancellationToken cancellationToken = default)
         {
+            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostPublishing));
             return WaitForLoadedAsync(cancellationToken);
         }
 
@@ -96,7 +118,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeWorkspaceProjectContextTracker,
                 _activeConfiguredProjectProvider,
                 _applyChangesToWorkspaceContextFactory,
-                _dataProgressTrackerService);
+                _dataProgressTrackerService,
+                _languageServiceTelemetryService,
+                ProjectId);
         }
     }
 }

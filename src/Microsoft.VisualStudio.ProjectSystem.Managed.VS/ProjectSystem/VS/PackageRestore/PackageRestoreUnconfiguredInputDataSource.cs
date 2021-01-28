@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
 using RestoreInfo = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreUnconfiguredInput>;
 
@@ -18,13 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfigurationGroupService _activeConfigurationGroupService;
+        private readonly IPackageRestoreTelemetryService _packageReferenceTelemetryService;
 
         [ImportingConstructor]
-        public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
+        public PackageRestoreUnconfiguredInputDataSource(
+            UnconfiguredProject project,
+            IActiveConfigurationGroupService activeConfigurationGroupService,
+            IPackageRestoreTelemetryService packageReferenceTelemetryService)
             : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;
+            _packageReferenceTelemetryService = packageReferenceTelemetryService;
         }
 
         protected override UnconfiguredProject ContainingProject
@@ -67,6 +73,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Join the source blocks, so if they need to switch to UI thread to complete 
             // and someone is blocked on us on the same thread, the call proceeds
             JoinUpstreamDataSources(restoreConfiguredInputSource, activeConfiguredProjectsSource);
+
+            _packageReferenceTelemetryService.LogPackageRestoreEvent(new PackageRestoreTelemetryEvent(PackageRestoreOperationNames.PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput, _project.FullPath));
 
             return disposables;
         }

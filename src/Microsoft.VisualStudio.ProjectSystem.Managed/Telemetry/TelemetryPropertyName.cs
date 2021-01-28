@@ -128,6 +128,46 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string TempPECompileDuration = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "Duration");
 
+        /// <summary>
+        ///     Indicates the hashed ID of the project in a workspace context
+        /// </summary>
+        public static readonly string WorkspaceContextProjectId = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextProjectId");
+
+        /// <summary>
+        ///     Indicates the workspace context is for the active configuration
+        /// </summary>
+        public static readonly string WorkspaceContextIsActiveConfiguration = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextIsActiveConfiguration");
+
+        /// <summary>
+        ///     Indicates the workspace context matches the active context
+        /// </summary>
+        public static readonly string WorkspaceContextIsActiveEditorContext = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextIsActiveEditorContext");
+
+        /// <summary>
+        ///     Indicates the hashed ID of the project in a package restore operation
+        /// </summary>
+        public static readonly string PackageRestoreProjectId = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "ProjectId");
+
+        /// <summary>
+        ///     Indicates which specific package restore operation is relevant
+        /// </summary>
+        public static readonly string PackageRestoreOperation = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "OperationName");
+
+        /// <summary>
+        ///     Indicates whether package restore is up to date
+        /// </summary>
+        public static readonly string PackageRestoreIsUpToDate = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "RestoreIsUpToDate");
+
+        /// <summary>
+        ///     Indicates which specific language service operation triggered a telemetry event
+        /// </summary>
+        public static readonly string LanguageServiceOperationName = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "OperationName");
+
+        /// <summary>
+        ///     Indicates the number of language service operations accounting for a telemetry event
+        /// </summary>
+        public static readonly string LanguageServiceOperationCount = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "OperationCount");
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

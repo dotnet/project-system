@@ -6,10 +6,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     internal readonly struct ContextState
     {
-        public ContextState(bool isActiveEditorContext, bool isActiveConfiguration)
+        public ContextState(bool isActiveEditorContext, bool isActiveConfiguration, string projectId)
         {
             IsActiveEditorContext = isActiveEditorContext;
             IsActiveConfiguration = isActiveConfiguration;
+            ProjectId = projectId;
         }
 
         /// <summary>
@@ -33,5 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     metadata between contexts of the same source file in multi-targeted projects. 
         /// </remarks>
         public bool IsActiveConfiguration { get; }
+
+        /// <summary>
+        /// A unique identifier for the project associated with the <see cref="IWorkspaceProjectContext"/>.
+        /// </summary>
+        public string ProjectId { get; }
     }
 }

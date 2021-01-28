@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -28,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
+            private readonly ILanguageServiceTelemetryService _languageServiceTelemetryService;
+            private readonly string _projectId;
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
@@ -43,7 +46,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                                        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
-                                                       IDataProgressTrackerService dataProgressTrackerService)
+                                                       IDataProgressTrackerService dataProgressTrackerService,
+                                                       ILanguageServiceTelemetryService languageServiceTelemetryService,
+                                                       string projectId)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
@@ -54,6 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
+                _languageServiceTelemetryService = languageServiceTelemetryService;
+                _projectId = projectId;
             }
 
             public Task InitializeAsync()
@@ -63,10 +70,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
+                _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted));
+
                 _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
 
                 if (_contextAccessor == null)
+                {
+                    _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted));
                     return;
+                }
 
                 _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
 
@@ -103,6 +115,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                             cancellationToken: cancellationToken),
 
                 };
+
+                _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete));
             }
 
             private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
@@ -173,7 +187,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = update.Value.project == _project;
 
-                var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
+                var state = new ContextState(isActiveEditorContext, isActiveConfiguration, _projectId);
+
+                var telemetryEvent = new LanguageServiceApplyProjectChangesTelemetryEvent(state, LanguageServiceOperationNames.ApplyingProjectChangesStarted);
+                _languageServiceTelemetryService.PostLanguageServiceEvent(telemetryEvent);
 
                 context.StartBatch();
 
@@ -193,6 +210,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     context.EndBatch();
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
+
+                    telemetryEvent = new LanguageServiceApplyProjectChangesTelemetryEvent(state, LanguageServiceOperationNames.ApplyingProjectChangesCompleted);
+                    _languageServiceTelemetryService.PostLanguageServiceEvent(telemetryEvent);
                 }
             }
 
