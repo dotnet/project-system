@@ -1,0 +1,39 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\build\import\VisualStudioDesigner.props" />
+  <PropertyGroup>
+    <Prefer32Bit>false</Prefer32Bit>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFramework>net472</TargetFramework>
+    <IsVsixProject>true</IsVsixProject>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <!-- TODO: Function/Property doesn't return a value on all code paths (https://github.com/dotnet/project-system/issues/2592) -->
+    <NoWarn>$(NoWarn);42353;42355;42105;NU5125</NoWarn>
+
+    <!-- Nuget -->
+    <IsPackable>true</IsPackable>
+    <Description>Implementation of some designers and project property page editors in VisualStudio Client.</Description>
+    <Summary>Editors implementation for Project Properties in the Client</Summary>
+    <PackageTags>Roslyn Project Property Page Editors VisualStudio</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Interop.14.0.DesignTime" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
+    <ProjectReference Include="..\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+</Project>

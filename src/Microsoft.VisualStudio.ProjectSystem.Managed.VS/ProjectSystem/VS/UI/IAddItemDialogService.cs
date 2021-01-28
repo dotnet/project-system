@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
     /// <summary>
     ///     Provides methods for opening the Add New Item or Add Existing Items dialogs.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.OneOrZero)]
     internal interface IAddItemDialogService
     {
         /// <summary>

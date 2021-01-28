@@ -21,6 +21,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.VisualStudio.Editors.Client" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
   </ItemGroup>
   <ItemGroup>
