@@ -259,12 +259,12 @@
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression</source>
-        <target state="needs-review-translation">Přepínač výrazu licence na balíček</target>
+        <target state="translated">Výraz licence na balíček</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File</source>
-        <target state="needs-review-translation">Přepínač souboru licence na balíček</target>
+        <target state="translated">Soubor licence na balíček</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">

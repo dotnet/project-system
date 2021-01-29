@@ -259,12 +259,12 @@
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression</source>
-        <target state="needs-review-translation">Optionsfeld für Paketlizenzausdruck</target>
+        <target state="translated">Paketlizenzausdruck</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File</source>
-        <target state="needs-review-translation">Optionsfeld für Paketlizenzdatei</target>
+        <target state="translated">Paketlizenzdatei</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
