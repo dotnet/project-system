@@ -9,18 +9,18 @@ namespace Microsoft.VisualStudio.Telemetry
     internal interface IPackageRestoreTelemetryService
     {
         /// <summary>
-        /// Logs a telemetry events from package restore components.
+        /// Posts a telemetry events from package restore components.
         /// </summary>
         /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
         /// <param name="fullPath">The full path to the project that needs a package restore.</param>
-        void LogPackageRestoreEvent(string packageRestoreOperationName, string fullPath);
+        void PostPackageRestoreEvent(string packageRestoreOperationName, string fullPath);
 
         /// <summary>
-        /// Logs a telemetry events from package restore components including whether package restore is up to date.
+        /// Posts a telemetry events from package restore components including whether package restore is up to date.
         /// </summary>
         /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
         /// <param name="fullPath">The full path to the project that needs a package restore.</param>
         /// <param name="isRestoreUpToDate">Flag indicating whether the restore is up to date.</param>
-        void LogPackageRestoreEvent(string packageRestoreOperationName, string fullPath, bool isRestoreUpToDate);
+        void PostPackageRestoreEvent(string packageRestoreOperationName, string fullPath, bool isRestoreUpToDate);
     }
 }

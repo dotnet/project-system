@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // and someone is blocked on us on the same thread, the call proceeds
             JoinUpstreamDataSources(restoreConfiguredInputSource, activeConfiguredProjectsSource);
 
-            _packageReferenceTelemetryService.LogPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput, _project.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput, _project.FullPath);
 
             return disposables;
         }
