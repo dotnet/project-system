@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    internal class PackageRestoreOperationNames
+    internal static class PackageRestoreOperationNames
     {
         internal const string BeginNominateRestore = nameof(BeginNominateRestore);
         internal const string EndNominateRestore = nameof(EndNominateRestore);

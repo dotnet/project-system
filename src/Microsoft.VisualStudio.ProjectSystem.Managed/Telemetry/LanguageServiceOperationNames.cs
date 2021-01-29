@@ -2,7 +2,7 @@
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    internal class LanguageServiceOperationNames
+    internal static class LanguageServiceOperationNames
     {
         internal const string ActiveWorkspaceProjectContextHostPublishing = nameof(ActiveWorkspaceProjectContextHostPublishing);
         internal const string ApplyingProjectChangesCompleted = nameof(ApplyingProjectChangesCompleted);
