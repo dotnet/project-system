@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -41,41 +42,44 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         /// Post a language service telemetry event without any corresponding metadata like project IDs.
         /// </summary>
-        /// <param name="languageServiceTelemetryEvent">The language service telemetry event with details to be posted.</param>
-        public void PostLanguageServiceEvent(LanguageServiceTelemetryEvent languageServiceTelemetryEvent)
+        /// <param name="languageServiceOperationName">The language service telemetry event with details to be posted.</param>
+        public void PostLanguageServiceEvent(string languageServiceOperationName)
         {
             _telemetryService.PostProperty(
                 TelemetryEventName.LanguageServiceOperation,
                 TelemetryPropertyName.LanguageServiceOperationName,
-                languageServiceTelemetryEvent.LanguageServiceOperationName);
+                languageServiceOperationName);
         }
 
         /// <summary>
         /// Post a telemetry event with information about changes being applied to a project.
         /// </summary>
-        /// <param name="applyProjectChangesTelemetryEvent">The telemetry information to post.</param>
-        public void PostLanguageServiceEvent(LanguageServiceApplyProjectChangesTelemetryEvent applyProjectChangesTelemetryEvent)
+        /// <param name="languageServiceOperationName">The name of the language service operation.</param>
+        /// <param name="state">The state of the language service operation.</param>
+        public void PostLanguageServiceEvent(string languageServiceOperationName, ContextState state)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.LanguageServiceOperationName, applyProjectChangesTelemetryEvent.LanguageServiceOperationName),
-                    ( TelemetryPropertyName.WorkspaceContextIsActiveConfiguration, applyProjectChangesTelemetryEvent.State.IsActiveConfiguration),
-                    ( TelemetryPropertyName.WorkspaceContextIsActiveEditorContext, applyProjectChangesTelemetryEvent.State.IsActiveEditorContext),
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  applyProjectChangesTelemetryEvent.State.ProjectId),
+                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    ( TelemetryPropertyName.WorkspaceContextIsActiveConfiguration, state.IsActiveConfiguration),
+                    ( TelemetryPropertyName.WorkspaceContextIsActiveEditorContext, state.IsActiveEditorContext),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  state.ProjectId),
                 });
         }
 
         /// <summary>
         /// Post a telemetry event when a event with an operation counter has been processed.
         /// </summary>
-        /// <param name="languageServiceTelemetryEvent">The telemetry information to post.</param>
-        public void PostLanguageServiceEvent(LanguageServiceCountableOperationsTelemetryEvent languageServiceTelemetryEvent)
+        /// <param name="languageServiceOperationName">The name of the language service operation.</param>
+        /// <param name="projectId">A unique identifier for the project.</param>
+        /// <param name="operationCount">The number of times the operation has been performed.</param>
+        public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId, int operationCount)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  languageServiceTelemetryEvent.ProjectId),
-                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceTelemetryEvent.LanguageServiceOperationName),
-                    ( TelemetryPropertyName.LanguageServiceOperationCount, languageServiceTelemetryEvent.OperationCount),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  projectId),
+                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    ( TelemetryPropertyName.LanguageServiceOperationCount, operationCount),
                 });
         }
     }

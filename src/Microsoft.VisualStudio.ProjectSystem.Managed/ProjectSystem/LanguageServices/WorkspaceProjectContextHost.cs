@@ -71,19 +71,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public Task ActivateAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostActivating));
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostActivating);
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostDeactivating));
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostDeactivating);
             return UnloadAsync();
         }
 
         public Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostPublishing));
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostPublishing);
             return WaitForLoadedAsync(cancellationToken);
         }
 

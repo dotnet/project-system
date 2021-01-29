@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceCountableOperationsTelemetryEvent(LanguageServiceOperationNames.CommandLineParsersProcessed, state.ProjectId, invokedHandlers));
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.CommandLineParsersProcessed, state.ProjectId, invokedHandlers);
 
             return Task.CompletedTask;
         }
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceCountableOperationsTelemetryEvent(LanguageServiceOperationNames.ProjectEvaluationHandlersProcessed, state.ProjectId, invokedHandlers));
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ProjectEvaluationHandlersProcessed, state.ProjectId, invokedHandlers);
 
             return Task.CompletedTask;
         }

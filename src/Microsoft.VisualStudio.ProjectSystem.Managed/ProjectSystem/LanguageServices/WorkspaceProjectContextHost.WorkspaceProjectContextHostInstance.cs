@@ -70,13 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted));
+                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted);
 
                 _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
 
                 if (_contextAccessor == null)
                 {
-                    _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted));
+                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted);
                     return;
                 }
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 };
 
-                _languageServiceTelemetryService.PostLanguageServiceEvent(new LanguageServiceTelemetryEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete));
+                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete);
             }
 
             private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
@@ -189,8 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration, _projectId);
 
-                var telemetryEvent = new LanguageServiceApplyProjectChangesTelemetryEvent(state, LanguageServiceOperationNames.ApplyingProjectChangesStarted);
-                _languageServiceTelemetryService.PostLanguageServiceEvent(telemetryEvent);
+                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ApplyingProjectChangesStarted, state);
 
                 context.StartBatch();
 
@@ -211,8 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
 
-                    telemetryEvent = new LanguageServiceApplyProjectChangesTelemetryEvent(state, LanguageServiceOperationNames.ApplyingProjectChangesCompleted);
-                    _languageServiceTelemetryService.PostLanguageServiceEvent(telemetryEvent);
+                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ApplyingProjectChangesCompleted, state);
                 }
             }
 
