@@ -20,14 +20,15 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         /// Logs a telemetry events from package restore components.
         /// </summary>
-        /// <param name="packageRestoreTelemetryEvent">The details of which package restore operation is occuring.</param>
-        public void LogPackageRestoreEvent(PackageRestoreTelemetryEvent packageRestoreTelemetryEvent)
+        /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
+        /// <param name="fullPath">The full path to the project that needs a package restore.</param>
+        public void LogPackageRestoreEvent(string packageRestoreOperationName, string fullPath)
         {
-            string projectId = GetProjectId(packageRestoreTelemetryEvent.FullPath);
+            string projectId = GetProjectId(fullPath);
 
             _telemetryService.PostProperties(TelemetryEventName.ProcessPackageRestore, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreTelemetryEvent.PackageRestoreOperationName),
+                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
                     ( TelemetryPropertyName.PackageRestoreProjectId,  projectId),
                 });
         }
@@ -35,15 +36,17 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         /// Logs a telemetry events from package restore components including whether package restore is up to date.
         /// </summary>
-        /// <param name="packageRestoreUpToDateTelemetryEvent">The details of which package restore operation is occuring.</param>
-        public void LogPackageRestoreEvent(PackageRestoreUpToDateTelemetryEvent packageRestoreUpToDateTelemetryEvent)
+        /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
+        /// <param name="fullPath">The full path to the project that needs a package restore.</param>
+        /// <param name="isRestoreUpToDate">Flag indicating whether the restore is up to date.</param>
+        public void LogPackageRestoreEvent(string packageRestoreOperationName, string fullPath, bool isRestoreUpToDate)
         {
-            string projectId = GetProjectId(packageRestoreUpToDateTelemetryEvent.FullPath);
+            string projectId = GetProjectId(fullPath);
 
             _telemetryService.PostProperties(TelemetryEventName.ProcessPackageRestore, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.PackageRestoreIsUpToDate, packageRestoreUpToDateTelemetryEvent.IsRestoreUpToDate),
-                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreUpToDateTelemetryEvent.PackageRestoreOperationName),
+                    ( TelemetryPropertyName.PackageRestoreIsUpToDate, isRestoreUpToDate),
+                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
                     ( TelemetryPropertyName.PackageRestoreProjectId,  projectId),
                 });
         }

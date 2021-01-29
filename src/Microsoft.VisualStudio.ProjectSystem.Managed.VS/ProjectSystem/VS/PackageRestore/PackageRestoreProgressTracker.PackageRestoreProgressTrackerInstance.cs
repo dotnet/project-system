@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         linkOptions: DataflowOption.PropagateCompletion,
                         cancellationToken: cancellationToken);
 
-                _packageReferenceTelemetryService.LogPackageRestoreEvent(new PackageRestoreTelemetryEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerInstanceInitialized, ConfiguredProject.UnconfiguredProject.FullPath));
+                _packageReferenceTelemetryService.LogPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerInstanceInitialized, ConfiguredProject.UnconfiguredProject.FullPath);
 
                 return Task.CompletedTask;
             }
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     _progressRegistration!.NotifyOutputDataCalculated(value.DataSourceVersions);
                 }
 
-                _packageReferenceTelemetryService.LogPackageRestoreEvent(new PackageRestoreUpToDateTelemetryEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerRestoreCompleted, ConfiguredProject.UnconfiguredProject.FullPath, isRestoreUpToDate));
+                _packageReferenceTelemetryService.LogPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerRestoreCompleted, ConfiguredProject.UnconfiguredProject.FullPath, isRestoreUpToDate);
             }
 
             private static bool IsRestoreUpToDate(IProjectSnapshot projectSnapshot, RestoreData restoreData)

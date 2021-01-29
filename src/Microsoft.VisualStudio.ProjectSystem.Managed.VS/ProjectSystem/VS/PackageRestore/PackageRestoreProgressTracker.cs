@@ -43,14 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         public Task ActivateAsync()
         {
-            _packageReferenceTelemetryService.LogPackageRestoreEvent(new PackageRestoreTelemetryEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating, _project.UnconfiguredProject.FullPath));
+            _packageReferenceTelemetryService.LogPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating, _project.UnconfiguredProject.FullPath);
 
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
-            _packageReferenceTelemetryService.LogPackageRestoreEvent(new PackageRestoreTelemetryEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating, _project.UnconfiguredProject.FullPath));
+            _packageReferenceTelemetryService.LogPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating, _project.UnconfiguredProject.FullPath);
 
             return UnloadAsync();
         }
