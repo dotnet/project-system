@@ -45,9 +45,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
+            // Infinite timeout means this will not actually be null.
             ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(launchSettings);
 
-            IWritableLaunchSettings writableLaunchSettings = launchSettings!.ToWritableLaunchSettings();
+            IWritableLaunchSettings writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
             if (SetPropertyValue(propertyName, unevaluatedPropertyValue, writableLaunchSettings))
             {
                 await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
@@ -61,9 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync(string propertyName)
         {
+            // Infinite timeout means this will not actually be null.
             ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(launchSettings);
 
-            return GetPropertyValue(propertyName, launchSettings!) ?? string.Empty;
+            return GetPropertyValue(propertyName, launchSettings) ?? string.Empty;
         }
 
         /// <summary>

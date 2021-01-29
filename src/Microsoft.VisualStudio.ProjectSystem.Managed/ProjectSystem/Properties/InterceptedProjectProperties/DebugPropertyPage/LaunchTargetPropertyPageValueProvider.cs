@@ -61,9 +61,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 _projectThreadingService.RunAndForget(async () =>
                 {
+                    // Infinite timeout means this will not actually be null.
                     ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+                    Assumes.NotNull(launchSettings);
 
-                    IWritableLaunchSettings writableLaunchSettings = launchSettings!.ToWritableLaunchSettings();
+                    IWritableLaunchSettings writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
                     IWritableLaunchProfile? activeProfile = writableLaunchSettings.ActiveProfile;
                     if (activeProfile != null)
                     {
@@ -81,8 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync()
         {
+            // Infinite timeout means this will not actually be null.
             ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            string? commandName = launchSettings!.ActiveProfile?.CommandName;
+            Assumes.NotNull(launchSettings);
+
+            string? commandName = launchSettings.ActiveProfile?.CommandName;
             if (commandName == null)
             {
                 return string.Empty;

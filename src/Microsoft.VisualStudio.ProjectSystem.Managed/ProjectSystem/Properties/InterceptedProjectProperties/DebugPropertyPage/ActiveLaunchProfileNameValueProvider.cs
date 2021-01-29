@@ -50,9 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </remarks>
         private async Task<string> GetPropertyValueAsync()
         {
+            // Infinite timeout means this will not actually be null.
             ILaunchSettings? launchSettings = await _launchSettings.WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(launchSettings);
 
-            return launchSettings!.ActiveProfile?.Name ?? string.Empty;
+            return launchSettings.ActiveProfile?.Name ?? string.Empty;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
