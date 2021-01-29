@@ -32,12 +32,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             private readonly IProjectItemSchemaService _projectItemSchemaService;
 
             /// <summary>
-            /// Completes when the first project update is received. Cancelled if the subscription is disposed.
+            /// Used to synchronise updates to <see cref="_link"/> and <see cref="State"/>.
             /// </summary>
-            /// <remarks>
-            /// This field is also used to synchronise updates to <see cref="_link"/> and <see cref="State"/>.
-            /// </remarks>
-            private readonly TaskCompletionSource<byte> _dataReceived = new();
+            private readonly object _lock = new();
 
             /// <summary>
             /// Prevent overlapping requests.
@@ -89,15 +86,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 token.ThrowIfCancellationRequested();
 
-                // Wait for the first state to be computed
-                await _dataReceived.Task.WithCancellation(token);
+                // TODO wait for our state to be up to date with that of the project (https://github.com/dotnet/project-system/issues/6185)
 
                 // Prevent overlapping requests
                 using AsyncSemaphore.Releaser _ = await _semaphore.EnterAsync(token);
 
                 bool result = await func(State, token);
 
-                lock (_dataReceived)
+                lock (_lock)
                 {
                     State = State.WithLastCheckedAtUtc(DateTime.UtcNow);
                 }
@@ -113,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return;
                 }
 
-                lock (_dataReceived)
+                lock (_lock)
                 {
                     // Double check within lock
                     if (_link == null)
@@ -138,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var snapshot = e.Value.Item3 as IProjectSnapshot2;
                 Assumes.NotNull(snapshot);
 
-                lock (_dataReceived)
+                lock (_lock)
                 {
                     if (_disposeTokenSource.IsCancellationRequested)
                     {
@@ -154,8 +150,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         projectCatalogSnapshot: e.Value.Item5,
                         configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
                 }
-
-                _dataReceived.TrySetResult(0);
             }
 
             /// <summary>
@@ -169,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return;
                 }
 
-                lock (_dataReceived)
+                lock (_lock)
                 {
                     _link?.Dispose();
                     _link = null;
@@ -179,8 +173,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     _disposeTokenSource.Cancel();
                     _disposeTokenSource.Dispose();
                 }
-
-                _dataReceived.TrySetCanceled();
             }
         }
     }
