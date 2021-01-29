@@ -59,13 +59,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             get
             {
-                if (string.IsNullOrEmpty(_projectId))
+                if (Strings.IsNullOrEmpty(_projectId))
                 {
                     string? fullPath = _project?.UnconfiguredProject?.FullPath;
-                    _projectId = string.IsNullOrEmpty(fullPath) ? string.Empty : _languageServiceTelemetryService.HashValue(fullPath!);
+                    _projectId = Strings.IsNullOrEmpty(fullPath) ? string.Empty : _languageServiceTelemetryService.HashValue(fullPath);
                 }
 
-                return _projectId!;
+                return _projectId;
             }
         }
 
