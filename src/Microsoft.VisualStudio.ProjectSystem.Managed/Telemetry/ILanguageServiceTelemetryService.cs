@@ -23,12 +23,6 @@ namespace Microsoft.VisualStudio.Telemetry
         void PostDesignTimeBuildFailureEvent(string projectId);
 
         /// <summary>
-        /// Post a language service telemetry event without any corresponding metadata like project IDs.
-        /// </summary>
-        /// <param name="languageServiceOperationName">The language service telemetry event with details to be posted.</param>
-        void PostLanguageServiceEvent(string languageServiceOperationName);
-
-        /// <summary>
         /// Post a telemetry event with information about changes being applied to a project.
         /// </summary>
         /// <param name="languageServiceOperationName">The name of the language service operation.</param>
