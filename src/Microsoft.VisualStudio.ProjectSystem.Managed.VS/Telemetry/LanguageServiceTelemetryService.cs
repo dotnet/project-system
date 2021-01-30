@@ -68,6 +68,20 @@ namespace Microsoft.VisualStudio.Telemetry
         }
 
         /// <summary>
+        /// Post a language service telemetry event without any corresponding metadata like project IDs.
+        /// </summary>
+        /// <param name="languageServiceOperationName">The language service telemetry event with details to be posted.</param>
+        /// <param name="projectId">A unique identifier for the project.</param>
+        public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId)
+        {
+            _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
+                {
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  projectId),
+                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                });
+        }
+
+        /// <summary>
         /// Post a telemetry event when a event with an operation counter has been processed.
         /// </summary>
         /// <param name="languageServiceOperationName">The name of the language service operation.</param>

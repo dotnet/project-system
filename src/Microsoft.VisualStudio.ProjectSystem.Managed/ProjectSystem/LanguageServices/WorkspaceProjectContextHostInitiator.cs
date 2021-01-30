@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized, _project.FullPath);
 
             // While we want make sure it's loaded before PrioritizedProjectLoadedInHost, 
             // we don't want to block project factory completion on its load, so fire and forget

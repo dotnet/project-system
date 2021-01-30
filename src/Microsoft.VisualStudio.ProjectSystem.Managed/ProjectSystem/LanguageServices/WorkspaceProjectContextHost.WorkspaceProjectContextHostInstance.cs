@@ -70,13 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted);
+                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted, _projectId);
 
                 _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
 
                 if (_contextAccessor == null)
                 {
-                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted);
+                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted, _projectId);
                     return;
                 }
 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 };
 
-                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete);
+                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete, _projectId);
             }
 
             private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
