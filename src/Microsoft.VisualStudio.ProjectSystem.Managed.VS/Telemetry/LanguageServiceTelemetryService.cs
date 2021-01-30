@@ -16,20 +16,11 @@ namespace Microsoft.VisualStudio.Telemetry
             _telemetryService = telemetryService;
         }
 
-        /// <summary>
-        /// Hashes personally identifiable information for telemetry consumption.
-        /// </summary>
-        /// <param name="value">Value to hashed.</param>
-        /// <returns>Hashed value.</returns>
         public string HashValue(string value)
         {
             return _telemetryService.HashValue(value);
         }
 
-        /// <summary>
-        /// Post a telemetry event when a design time build fails.
-        /// </summary>
-        /// <param name="projectId">A unique identifier for the project.</param>
         public void PostDesignTimeBuildFailureEvent(string projectId)
         {
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new (string propertyName, object propertyValue)[]
@@ -39,11 +30,6 @@ namespace Microsoft.VisualStudio.Telemetry
                 });
         }
 
-        /// <summary>
-        /// Post a telemetry event with information about changes being applied to a project.
-        /// </summary>
-        /// <param name="languageServiceOperationName">The name of the language service operation.</param>
-        /// <param name="state">The state of the language service operation.</param>
         public void PostLanguageServiceEvent(string languageServiceOperationName, ContextState state)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
@@ -55,11 +41,6 @@ namespace Microsoft.VisualStudio.Telemetry
                 });
         }
 
-        /// <summary>
-        /// Post a language service telemetry event without any corresponding metadata like project IDs.
-        /// </summary>
-        /// <param name="languageServiceOperationName">The language service telemetry event with details to be posted.</param>
-        /// <param name="projectId">A unique identifier for the project.</param>
         public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
@@ -69,12 +50,6 @@ namespace Microsoft.VisualStudio.Telemetry
                 });
         }
 
-        /// <summary>
-        /// Post a telemetry event when a event with an operation counter has been processed.
-        /// </summary>
-        /// <param name="languageServiceOperationName">The name of the language service operation.</param>
-        /// <param name="projectId">A unique identifier for the project.</param>
-        /// <param name="operationCount">The number of times the operation has been performed.</param>
         public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId, int operationCount)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
