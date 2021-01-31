@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
-        private readonly ILanguageServiceTelemetryService _languageServiceTelemetryService;
+        private readonly IUnconfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
         [ImportingConstructor]
         public WorkspaceProjectContextHostInitiator(
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IUnconfiguredProjectTasksService tasksService,
             IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
             IProjectFaultHandlerService projectFaultHandler,
-            ILanguageServiceTelemetryService languageServiceTelemetryService)
+            IUnconfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
         {
             _project = project;
             _tasksService = tasksService;
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized, _project.FullPath);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized);
 
             // While we want make sure it's loaded before PrioritizedProjectLoadedInHost, 
             // we don't want to block project factory completion on its load, so fire and forget

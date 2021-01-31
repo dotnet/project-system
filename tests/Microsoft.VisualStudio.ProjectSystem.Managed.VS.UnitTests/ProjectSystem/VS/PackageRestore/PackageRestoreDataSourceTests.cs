@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IFileSystem fileSystem = IFileSystemFactory.Create();
             var hintService = new Lazy<IProjectChangeHintSubmissionService>(() => IProjectChangeHintSubmissionServiceFactory.Create());
             var projectAccessor = IProjectAccessorFactory.Create();
-            var packageReferenceTelemetryService = IPackageRestoreTelemetryServiceFactory.Create();
+            var packageReferenceTelemetryService = IUnconfiguredProjectPackageRestoreTelemetryServiceFactory.Create();
 
             return new PackageRestoreDataSource(
                 project,

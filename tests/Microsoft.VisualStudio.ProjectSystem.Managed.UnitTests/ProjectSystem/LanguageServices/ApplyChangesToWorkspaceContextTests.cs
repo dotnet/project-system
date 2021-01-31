@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(true, false, string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(true, false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: true, projectId: string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: true), CancellationToken.None);
 
             Assert.Equal(2, result.version);
             Assert.NotNull(result.description);
@@ -338,7 +338,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(2, result.version);
             Assert.True(result.state.IsActiveEditorContext);
@@ -383,7 +383,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 }");
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
-                return applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), cancellationTokenSource.Token);
+                return applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
             });
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
@@ -420,7 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 }");
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
-                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), cancellationTokenSource.Token);
+                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
             });
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
@@ -450,7 +450,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectEvaluationAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -478,7 +478,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -527,7 +527,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(true, false, string.Empty), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(true, false), CancellationToken.None);
 
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }
@@ -562,7 +562,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
                                     .ToArray();
 
-            ILanguageServiceTelemetryService languageServiceTelemetryService = ILanguageServiceTelemetryServiceFactory.Create();
+            IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService = IConfiguredProjectLanguageServiceTelemetryServiceFactory.Create();
 
             var applyChangesToWorkspaceContext = new ApplyChangesToWorkspaceContext(project, logger, factories, languageServiceTelemetryService);
 

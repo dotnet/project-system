@@ -4,11 +4,11 @@ using Moq;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    internal static class ILanguageServiceTelemetryServiceFactory
+    internal static class IConfiguredProjectPackageRestoreTelemetryServiceFactory
     {
-        public static ILanguageServiceTelemetryService Create()
+        public static IConfiguredProjectPackageRestoreTelemetryService Create()
         {
-            var mock = new Mock<ILanguageServiceTelemetryService>();
+            var mock = new Mock<IConfiguredProjectPackageRestoreTelemetryService>();
 
             return mock.Object;
         }

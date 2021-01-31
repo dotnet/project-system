@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             IProjectThreadingService threadingService = IProjectThreadingServiceFactory.Create();
             IProjectFaultHandlerService projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-            IPackageRestoreTelemetryService packageReferenceTelemetryService = IPackageRestoreTelemetryServiceFactory.Create();
+            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService = IConfiguredProjectPackageRestoreTelemetryServiceFactory.Create();
 
             return new PackageRestoreProgressTrackerInstance(
                 project,

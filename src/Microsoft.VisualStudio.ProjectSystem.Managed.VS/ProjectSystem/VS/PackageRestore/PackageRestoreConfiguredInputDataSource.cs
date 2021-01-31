@@ -29,13 +29,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(CollectedPackageReference.SchemaName);         // Project Build
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
-        private readonly IPackageRestoreTelemetryService _packageReferenceTelemetryService;
+        private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
 
         [ImportingConstructor]
         public PackageRestoreConfiguredInputDataSource(
             ConfiguredProject project,
             IProjectSubscriptionService projectSubscriptionService,
-            IPackageRestoreTelemetryService packageReferenceTelemetryService)
+            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService)
             : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _containingProject = project.UnconfiguredProject;
@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // and someone is blocked on us on the same thread, the call proceeds
             JoinUpstreamDataSources(source);
 
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreConfiguredInputDataSourceLinkedToExternalInput, ContainingProject.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreConfiguredInputDataSourceLinkedToExternalInput);
 
             return transformBlock;
         }

@@ -17,21 +17,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     [AppliesTo(ProjectCapability.DotNetLanguageService)]
     internal class ActiveWorkspaceProjectContextHost : IActiveWorkspaceProjectContextHost
     {
-        private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredValue<IWorkspaceProjectContextHost?> _activeHost;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
-        private readonly ILanguageServiceTelemetryService _languageServiceTelemetryService;
+        private readonly IUnconfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
         [ImportingConstructor]
         public ActiveWorkspaceProjectContextHost(
-            UnconfiguredProject project,
             IActiveConfiguredValue<IWorkspaceProjectContextHost?> activeHost,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
             IUnconfiguredProjectTasksService tasksService,
-            ILanguageServiceTelemetryService languageServiceTelemetryService)
+            IUnconfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
         {
-            _project = project;
             _activeHost = activeHost;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _tasksService = tasksService;
@@ -40,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public async Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ActiveWorkspaceProjectContextHostPublishing, _project.FullPath);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ActiveWorkspaceProjectContextHostPublishing);
 
             // The active configuration can change multiple times during initialization in cases where we've incorrectly
             // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.

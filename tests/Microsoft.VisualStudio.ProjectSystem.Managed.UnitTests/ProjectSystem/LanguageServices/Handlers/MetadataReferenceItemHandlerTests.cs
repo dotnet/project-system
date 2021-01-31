@@ -28,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly2.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var empty = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), logger: logger);
+            handler.Handle(10, added: added, removed: empty, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             AssertEx.CollectionLength(referencesPushedToWorkspace, 2);
             Assert.Contains(@"C:\Assembly1.dll", referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
 
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:C:\Assembly1.dll", @"/reference:C:\Assembly1.dll" }, baseDirectory: projectDir, sdkDirectory: null));
-            handler.Handle(10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), logger: logger);
+            handler.Handle(10, added: empty, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             Assert.Single(referencesPushedToWorkspace);
             Assert.Contains(@"C:\Assembly2.dll", referencesPushedToWorkspace);
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var added = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new[] { @"/reference:Assembly1.dll", @"/reference:C:\ProjectFolder\Assembly2.dll", @"/reference:..\ProjectFolder\Assembly3.dll" }, baseDirectory: projectDir, sdkDirectory: null));
             var removed = BuildOptions.FromCommandLineArguments(CSharpCommandLineParser.Default.Parse(args: new string[] { }, baseDirectory: projectDir, sdkDirectory: null));
 
-            handler.Handle(10, added: added, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false, projectId: string.Empty), logger: logger);
+            handler.Handle(10, added: added, removed: removed, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), logger: logger);
 
             AssertEx.CollectionLength(referencesPushedToWorkspace, 3);
             Assert.Contains(@"C:\ProjectFolder\Assembly1.dll", referencesPushedToWorkspace);

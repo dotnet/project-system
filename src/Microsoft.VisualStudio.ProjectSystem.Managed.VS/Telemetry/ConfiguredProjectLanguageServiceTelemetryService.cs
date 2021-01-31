@@ -1,32 +1,45 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    [Export(typeof(ILanguageServiceTelemetryService))]
-    internal class LanguageServiceTelemetryService : ILanguageServiceTelemetryService
+    [Export(typeof(IConfiguredProjectLanguageServiceTelemetryService))]
+    internal class ConfiguredProjectLanguageServiceTelemetryService : IConfiguredProjectLanguageServiceTelemetryService
     {
+        private readonly ConfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
+        private string? _projectHash;
 
         [ImportingConstructor]
-        public LanguageServiceTelemetryService(ITelemetryService telemetryService)
+        public ConfiguredProjectLanguageServiceTelemetryService(ConfiguredProject project, ITelemetryService telemetryService)
         {
+            _project = project;
             _telemetryService = telemetryService;
         }
 
-        public string HashValue(string value)
+        private string ProjectTelemetryId
         {
-            return _telemetryService.HashValue(value);
+            get
+            {
+                if (Strings.IsNullOrEmpty(_projectHash))
+                {
+                    string? fullPath = _project?.UnconfiguredProject?.FullPath;
+                    _projectHash = Strings.IsNullOrEmpty(fullPath) ? string.Empty : _telemetryService.HashValue(fullPath);
+                }
+
+                return _projectHash;
+            }
         }
 
-        public void PostDesignTimeBuildFailureEvent(string projectId)
+        public void PostDesignTimeBuildFailureEvent()
         {
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new (string propertyName, object propertyValue)[]
                 {
                     ( TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, false),
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  projectId),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
                 });
         }
 
@@ -37,24 +50,24 @@ namespace Microsoft.VisualStudio.Telemetry
                     ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                     ( TelemetryPropertyName.WorkspaceContextIsActiveConfiguration, state.IsActiveConfiguration),
                     ( TelemetryPropertyName.WorkspaceContextIsActiveEditorContext, state.IsActiveEditorContext),
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  state.ProjectId),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
                 });
         }
 
-        public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId)
+        public void PostLanguageServiceEvent(string languageServiceOperationName)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  projectId),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
                     ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                 });
         }
 
-        public void PostLanguageServiceEvent(string languageServiceOperationName, string projectId, int operationCount)
+        public void PostLanguageServiceEvent(string languageServiceOperationName, int operationCount)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  projectId),
+                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
                     ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                     ( TelemetryPropertyName.LanguageServiceOperationCount, operationCount),
                 });

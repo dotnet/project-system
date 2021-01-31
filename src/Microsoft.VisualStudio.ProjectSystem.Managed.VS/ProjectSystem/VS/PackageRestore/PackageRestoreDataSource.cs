@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly Lazy<IProjectChangeHintSubmissionService> _projectChangeHintSubmissionService;
         private readonly IProjectAccessor _projectAccessor;
         private readonly IProjectLogger _logger;
-        private readonly IPackageRestoreTelemetryService _packageReferenceTelemetryService;
+        private readonly IUnconfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
 
         private byte[]? _latestHash;
         private bool _enabled;
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Lazy<IProjectChangeHintSubmissionService> projectChangeHintSubmissionService,
             IProjectAccessor projectAccessor,
             IProjectLogger logger,
-            IPackageRestoreTelemetryService packageReferenceTelemetryService)
+            IUnconfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService)
             : base(project, synchronousDisposal : true, registerDataSource : false)
         {
             _project = project;
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
 
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLinkedToExternalInput, _project.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLinkedToExternalInput);
 
             return transformBlock;
         }
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.BeginNominateRestore, _project.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.BeginNominateRestore);
             RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
 
             try
@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
                 RestoreLogger.EndNominateRestore(_logger, _project.FullPath);
-                _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.EndNominateRestore, _project.FullPath);
+                _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.EndNominateRestore);
             }
         }
 
@@ -214,7 +214,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             _enabled = true;
 
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLoading, _project.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLoading);
 
             EnsureInitialized();
 
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             _enabled = false;
 
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceUnloading, _project.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceUnloading);
 
             return Task.CompletedTask;
         }

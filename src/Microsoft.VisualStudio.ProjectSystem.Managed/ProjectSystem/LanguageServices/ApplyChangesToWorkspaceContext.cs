@@ -30,13 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ConfiguredProject _project;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
-        private readonly ILanguageServiceTelemetryService _languageServiceTelemetryService;
+        private readonly IConfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
         private IWorkspaceProjectContext? _context;
         private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers = Array.Empty<ExportLifetimeContext<IWorkspaceContextHandler>>();
 
         [ImportingConstructor]
-        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories, ILanguageServiceTelemetryService languageServiceTelemetryService)
+        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories, IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
         {
             _project = project;
             _logger = logger;
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             bool succeeded = snapshot.IsEvaluationSucceeded();
             if (!succeeded)
             {
-                _languageServiceTelemetryService.PostDesignTimeBuildFailureEvent(state.ProjectId);
+                _languageServiceTelemetryService.PostDesignTimeBuildFailureEvent();
             }
 
             if (_context.LastDesignTimeBuildSucceeded != succeeded)
@@ -194,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.CommandLineParsersProcessed, state.ProjectId, invokedHandlers);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.CommandLineParsersProcessed, invokedHandlers);
 
             return Task.CompletedTask;
         }
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ProjectEvaluationHandlersProcessed, state.ProjectId, invokedHandlers);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ProjectEvaluationHandlersProcessed, invokedHandlers);
 
             return Task.CompletedTask;
         }

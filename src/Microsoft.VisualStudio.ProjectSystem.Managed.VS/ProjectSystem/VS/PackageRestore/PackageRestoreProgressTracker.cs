@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
         private readonly IPackageRestoreDataSource _dataSource;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
-        private readonly IPackageRestoreTelemetryService _packageReferenceTelemetryService;
+        private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
 
         [ImportingConstructor]
         public PackageRestoreProgressTracker(
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IDataProgressTrackerService dataProgressTrackerService,
             IPackageRestoreDataSource dataSource,
             IProjectSubscriptionService projectSubscriptionService,
-            IPackageRestoreTelemetryService packageReferenceTelemetryService)
+            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -43,14 +43,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         public Task ActivateAsync()
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating, _project.UnconfiguredProject.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating);
 
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating, _project.UnconfiguredProject.FullPath);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating);
 
             return UnloadAsync();
         }

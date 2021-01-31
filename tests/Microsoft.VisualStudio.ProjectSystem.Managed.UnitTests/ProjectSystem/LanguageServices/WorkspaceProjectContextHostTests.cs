@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
-            ILanguageServiceTelemetryService languageServiceTelemetryService = ILanguageServiceTelemetryServiceFactory.Create();
+            IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService = IConfiguredProjectLanguageServiceTelemetryServiceFactory.Create();
 
             return new WorkspaceProjectContextHost(project,
                                                    threadingService,
