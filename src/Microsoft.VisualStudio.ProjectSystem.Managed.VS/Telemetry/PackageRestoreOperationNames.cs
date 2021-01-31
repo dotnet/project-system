@@ -7,13 +7,13 @@ namespace Microsoft.VisualStudio.Telemetry
         internal const string BeginNominateRestore = nameof(BeginNominateRestore);
         internal const string EndNominateRestore = nameof(EndNominateRestore);
         internal const string PackageRestoreConfiguredInputDataSourceLinkedToExternalInput = nameof(PackageRestoreConfiguredInputDataSourceLinkedToExternalInput);
-        internal const string PackageRestoreDataSourceLinkedToExternalInput= nameof(PackageRestoreDataSourceLinkedToExternalInput);
-        internal const string PackageRestoreDataSourceLoading= nameof(PackageRestoreDataSourceLoading);
-        internal const string PackageRestoreDataSourceUnloading= nameof(PackageRestoreDataSourceUnloading);
-        internal const string PackageRestoreProgressTrackerActivating= nameof(PackageRestoreProgressTrackerActivating);
-        internal const string PackageRestoreProgressTrackerDeactivating= nameof(PackageRestoreProgressTrackerDeactivating);
-        internal const string PackageRestoreProgressTrackerInstanceInitialized= nameof(PackageRestoreProgressTrackerInstanceInitialized);
-        internal const string PackageRestoreProgressTrackerRestoreCompleted= nameof(PackageRestoreProgressTrackerRestoreCompleted);
-        internal const string PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput= nameof(PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput);
+        internal const string PackageRestoreDataSourceLinkedToExternalInput = nameof(PackageRestoreDataSourceLinkedToExternalInput);
+        internal const string PackageRestoreDataSourceLoading = nameof(PackageRestoreDataSourceLoading);
+        internal const string PackageRestoreDataSourceUnloading = nameof(PackageRestoreDataSourceUnloading);
+        internal const string PackageRestoreProgressTrackerActivating = nameof(PackageRestoreProgressTrackerActivating);
+        internal const string PackageRestoreProgressTrackerDeactivating = nameof(PackageRestoreProgressTrackerDeactivating);
+        internal const string PackageRestoreProgressTrackerInstanceInitialized = nameof(PackageRestoreProgressTrackerInstanceInitialized);
+        internal const string PackageRestoreProgressTrackerRestoreCompleted = nameof(PackageRestoreProgressTrackerRestoreCompleted);
+        internal const string PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput = nameof(PackageRestoreUnconfiguredInputDataSourceLinkedToExternalInput);
     }
 }
