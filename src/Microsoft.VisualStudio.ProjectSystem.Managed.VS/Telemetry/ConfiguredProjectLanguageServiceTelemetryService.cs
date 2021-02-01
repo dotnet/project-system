@@ -38,8 +38,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, false),
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
+                    (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, false),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
                 });
         }
 
@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
-                    ( TelemetryPropertyName.WorkspaceContextIsActiveConfiguration, state.IsActiveConfiguration),
-                    ( TelemetryPropertyName.WorkspaceContextIsActiveEditorContext, state.IsActiveEditorContext),
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
+                    (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    (TelemetryPropertyName.WorkspaceContextIsActiveConfiguration, state.IsActiveConfiguration),
+                    (TelemetryPropertyName.WorkspaceContextIsActiveEditorContext, state.IsActiveEditorContext),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
                 });
         }
 
@@ -58,8 +58,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
-                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
+                    (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                 });
         }
 
@@ -67,9 +67,9 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
-                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
-                    ( TelemetryPropertyName.LanguageServiceOperationCount, operationCount),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
+                    (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    (TelemetryPropertyName.LanguageServiceOperationCount, operationCount),
                 });
         }
     }

@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.WorkspaceContextProjectId,  ProjectTelemetryId),
-                    ( TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
+                    (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                 });
         }
     }

@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.ProcessPackageRestore, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
-                    ( TelemetryPropertyName.PackageRestoreProjectId,  ProjectTelemetryId),
+                    (TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
+                    (TelemetryPropertyName.PackageRestoreProjectId, ProjectTelemetryId),
                 });
         }
 
@@ -46,9 +46,9 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.ProcessPackageRestore, new (string propertyName, object propertyValue)[]
                 {
-                    ( TelemetryPropertyName.PackageRestoreIsUpToDate, isRestoreUpToDate),
-                    ( TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
-                    ( TelemetryPropertyName.PackageRestoreProjectId,  ProjectTelemetryId),
+                    (TelemetryPropertyName.PackageRestoreIsUpToDate, isRestoreUpToDate),
+                    (TelemetryPropertyName.PackageRestoreOperation, packageRestoreOperationName),
+                    (TelemetryPropertyName.PackageRestoreProjectId, ProjectTelemetryId),
                 });
         }
     }
