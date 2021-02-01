@@ -3,6 +3,7 @@
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
+using Microsoft.VisualStudio.ProjectSystem.Managed;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -38,7 +39,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.DesignTimeBuildComplete, new (string propertyName, object propertyValue)[]
                 {
-                    (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, false),
+                    (TelemetryPropertyName.DesignTimeBuildCompleteSucceeded, BoxedValues.False),
                     (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
                 });
         }
