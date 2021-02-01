@@ -104,7 +104,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
-            IReadOnlyList<IDebugLaunchSettings>? launchSettings = await QueryDebugTargetsAsync(launchOptions, profile, validateSettings: true);
+            IReadOnlyList<IDebugLaunchSettings>? launchSettings = null;
+
+            try
+            {
+                launchSettings = await QueryDebugTargetsAsync(launchOptions, profile, validateSettings: true);
+            }
+            catch
+            {
+                // This is catching all exceptions since we are unaware currently what exceptions potentially happen as part of QueryDebugTargetsAsync
+            }
+
             return launchSettings != null;
         }
 
