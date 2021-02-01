@@ -102,6 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (State == null)
                 {
+                    // We have either haven't received data yet, or have been disposed.
                     return false;
                 }
 
@@ -145,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     if (_disposeTokenSource.IsCancellationRequested)
                     {
-                        // We've been disposed, so don't update State (which will be empty)
+                        // We've been disposed, so don't update State (which will be null)
                         return;
                     }
 
