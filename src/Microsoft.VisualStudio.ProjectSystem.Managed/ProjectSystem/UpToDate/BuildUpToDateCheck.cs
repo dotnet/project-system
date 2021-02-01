@@ -11,40 +11,32 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
-    [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
+    [AppliesTo(AppliesToExpression)]
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
     internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IActiveConfigurationComponent, IDisposable
     {
-        private const string Link = "Link";
-        private const string DefaultSetName = "";
+        internal const string AppliesToExpression = ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject;
 
-        private static readonly StringComparer s_setNameComparer = StringComparers.ItemNames;
+        internal const string Link = "Link";
+        internal const string DefaultSetName = "";
 
-        private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
-            .Add(ConfigurationGeneral.SchemaName)
-            .Add(ResolvedAnalyzerReference.SchemaName)
-            .Add(ResolvedCompilationReference.SchemaName)
-            .Add(CopyUpToDateMarker.SchemaName)
-            .Add(UpToDateCheckInput.SchemaName)
-            .Add(UpToDateCheckOutput.SchemaName)
-            .Add(UpToDateCheckBuilt.SchemaName);
+        internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
             .Add(None.SchemaName)
             .Add(Content.SchemaName);
 
+        private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
         private readonly IProjectSystemOptions _projectSystemOptions;
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectAsynchronousTasksService _tasksService;
-        private readonly IProjectItemSchemaService _projectItemSchemaService;
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
@@ -54,20 +46,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         [ImportingConstructor]
         public BuildUpToDateCheck(
+            IUpToDateCheckConfiguredInputDataSource inputDataSource,
             IProjectSystemOptions projectSystemOptions,
             ConfiguredProject configuredProject,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
-            IProjectItemSchemaService projectItemSchemaService,
             ITelemetryService telemetryService,
             IFileSystem fileSystem)
         {
+            _inputDataSource = inputDataSource;
             _projectSystemOptions = projectSystemOptions;
             _configuredProject = configuredProject;
             _tasksService = tasksService;
-            _projectItemSchemaService = projectItemSchemaService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
-            _subscription = new(configuredProject, projectItemSchemaService);
+            _subscription = new(inputDataSource, configuredProject);
         }
 
         public Task ActivateAsync()
@@ -96,12 +88,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void RecycleSubscription()
         {
-            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_configuredProject, _projectItemSchemaService));
+            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_inputDataSource, _configuredProject));
 
             subscription.Dispose();
         }
 
-        private bool CheckGlobalConditions(Log log, State state)
+        private bool CheckGlobalConditions(Log log, DateTime lastCheckedAtUtc, UpToDateCheckImplicitConfiguredInput state)
         {
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
@@ -118,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            if (state.LastCheckedAtUtc == DateTime.MinValue)
+            if (lastCheckedAtUtc == DateTime.MinValue)
             {
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
@@ -133,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
+        private bool CheckInputsAndOutputs(Log log, DateTime lastCheckedAtUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -241,9 +233,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
-                    if (inputTime > state.LastCheckedAtUtc)
+                    if (inputTime > lastCheckedAtUtc)
                     {
-                        return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, state.LastCheckedAtUtc);
+                        return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
                     }
 
                     hasInput = true;
@@ -403,7 +395,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
         }
 
-        private bool CheckMarkers(Log log, in TimestampCache timestampCache, State state)
+        private bool CheckMarkers(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state)
         {
             // Reference assembly copy markers are strange. The property is always going to be present on
             // references to SDK-based projects, regardless of whether or not those referenced projects
@@ -459,7 +451,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
+        private bool CheckCopiedOutputFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
             foreach ((string destinationRelative, string sourceRelative) in state.CopiedOutputFiles)
             {
@@ -501,7 +493,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, State state, CancellationToken token)
+        private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
             IEnumerable<(string Path, string? Link, CopyType CopyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyType.CopyIfNewer);
 
@@ -576,7 +568,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             return await subscription.RunAsync(IsUpToDateInternalAsync, cancellationToken);
 
-            async Task<bool> IsUpToDateInternalAsync(State state, CancellationToken token)
+            async Task<bool> IsUpToDateInternalAsync(UpToDateCheckConfiguredInput state, DateTime lastCheckedAtUtc, CancellationToken token)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -584,21 +576,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 var timestampCache = new TimestampCache(_fileSystem);
 
                 LogLevel requestedLogLevel = await _projectSystemOptions.GetFastUpToDateLoggingLevelAsync(token);
-                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService);
+                var logger = new Log(logWriter, requestedLogLevel, sw, timestampCache, _configuredProject.UnconfiguredProject.FullPath ?? "", _telemetryService, state);
 
                 try
                 {
-                    if (!CheckGlobalConditions(logger, state))
+                    foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
                     {
-                        return false;
-                    }
-
-                    if (!CheckInputsAndOutputs(logger, timestampCache, state, token) ||
-                        !CheckMarkers(logger, timestampCache, state) ||
-                        !CheckCopyToOutputDirectoryFiles(logger, timestampCache, state, token) ||
-                        !CheckCopiedOutputFiles(logger, timestampCache, state, token))
-                    {
-                        return false;
+                        if (!CheckGlobalConditions(logger, lastCheckedAtUtc, implicitState) ||
+                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, token) ||
+                            !CheckMarkers(logger, timestampCache, implicitState) ||
+                            !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
+                            !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
+                        {
+                            return false;
+                        }
                     }
 
                     logger.UpToDate();
@@ -620,29 +611,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             private readonly BuildUpToDateCheck _check;
 
-            public TestAccessor(BuildUpToDateCheck check)
-            {
-                _check = check;
-            }
+            public TestAccessor(BuildUpToDateCheck check) => _check = check;
 
-            public State State => _check._subscription.State;
+            public UpToDateCheckConfiguredInput? State => _check._subscription.State;
 
-            public void SetLastCheckedAtUtc(DateTime lastCheckedAtUtc)
-            {
-                _check._subscription.State = _check._subscription.State.WithLastCheckedAtUtc(lastCheckedAtUtc);
-            }
+            public void SetLastCheckedAtUtc(DateTime value) => _check._subscription.LastCheckedAtUtc = value;
 
-            public void SetLastItemsChangedAtUtc(DateTime lastItemsChangedAtUtc)
-            {
-                _check._subscription.State = _check._subscription.State.WithLastItemsChangedAtUtc(lastItemsChangedAtUtc);
-            }
+            public DateTime GetLastCheckedAtUtc() => _check._subscription.LastCheckedAtUtc;
 
-            public void SetLastAdditionalDependentFileTimesChangedAtUtc(DateTime lastAdditionalDependentFileTimesChangedAtUtc)
-            {
-                _check._subscription.State = _check._subscription.State.WithLastAdditionalDependentFilesChangedAtUtc(lastAdditionalDependentFileTimesChangedAtUtc);
-            }
-
-            public void OnChanged(IProjectVersionedValue<(IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot)> value)
+            public void OnChanged(IProjectVersionedValue<UpToDateCheckConfiguredInput> value)
             {
                 _check._subscription.OnChanged(value);
             }
