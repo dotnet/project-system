@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         private readonly ConfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
-        private string? _projectHash;
+        private string? _projectTelemetryId;
 
         [ImportingConstructor]
         public ConfiguredProjectPackageRestoreTelemetryService(ConfiguredProject project, ITelemetryService telemetryService)
@@ -19,19 +19,7 @@ namespace Microsoft.VisualStudio.Telemetry
             _telemetryService = telemetryService;
         }
 
-        private string ProjectTelemetryId
-        {
-            get
-            {
-                if (Strings.IsNullOrEmpty(_projectHash))
-                {
-                    string? fullPath = _project?.UnconfiguredProject?.FullPath;
-                    _projectHash = Strings.IsNullOrEmpty(fullPath) ? string.Empty : _telemetryService.HashValue(fullPath);
-                }
-
-                return _projectHash;
-            }
-        }
+        private string ProjectTelemetryId => _projectTelemetryId ??= _telemetryService.GetProjectId(_project.UnconfiguredProject);
 
         public void PostPackageRestoreEvent(string packageRestoreOperationName)
         {
