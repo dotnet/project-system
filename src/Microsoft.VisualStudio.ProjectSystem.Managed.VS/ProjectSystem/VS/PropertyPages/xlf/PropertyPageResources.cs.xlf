@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="JSWebView2DebuggingAdditionalText">
         <source>(Requires the JavaScript Diagnostics component)</source>
-        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <target state="translated">(Vyžaduje komponentu JavaScript Diagnostics.)</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkJSWebView2DebuggingText">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <target state="translated">Povolit javascriptový ladicí program pro ovládací prvek WebView2 založený na prohlížeči Microsoft Edge (Chromium)</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">

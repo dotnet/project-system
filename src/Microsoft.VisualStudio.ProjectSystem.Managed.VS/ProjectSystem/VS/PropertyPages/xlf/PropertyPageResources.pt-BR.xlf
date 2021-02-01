@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="JSWebView2DebuggingAdditionalText">
         <source>(Requires the JavaScript Diagnostics component)</source>
-        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <target state="translated">(Exige o componente de Diagnóstico de JavaScript)</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkJSWebView2DebuggingText">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <target state="translated">Habilitar o depurador JavaScript para Microsoft Edge (Chromium) com base no WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
