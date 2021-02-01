@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var launchSettings = launchSettingsMock.Object;
 
             var settingsProviderMock = new Mock<ILaunchSettingsProvider>();
-            settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult(launchSettings));
+            settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult<ILaunchSettings?>(launchSettings));
 
             if (setActiveProfileCallback != null)
             {

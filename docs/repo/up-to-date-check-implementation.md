@@ -71,5 +71,5 @@ For each `_copiedOutputFiles` source/destination
 
 ## Implementation
 
-- [`BuildUpToDateCheck.cs`](https://github.com/dotnet/project-system/blob/master/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/UpToDate/BuildUpToDateCheck.cs)
-- [`BuildUpToDateCheckTests.cs`](https://github.com/dotnet/project-system/blob/master/tests/Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests/ProjectSystem/UpToDate/BuildUpToDateCheckTests.cs)
+- [`BuildUpToDateCheck.cs`](/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/UpToDate/BuildUpToDateCheck.cs)
+- [`BuildUpToDateCheckTests.cs`](/tests/Microsoft.VisualStudio.ProjectSystem.Managed.UnitTests/ProjectSystem/UpToDate/BuildUpToDateCheckTests.cs)

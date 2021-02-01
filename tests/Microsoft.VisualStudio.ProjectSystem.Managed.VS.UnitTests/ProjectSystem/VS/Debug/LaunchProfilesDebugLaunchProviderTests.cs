@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             new(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst);
 
         private readonly Mock<ConfiguredProject> _configuredProjectMoq = new();
-        private readonly Mock<ILaunchSettingsProvider> _LaunchSettingsProviderMoq = new();
+        private readonly Mock<ILaunchSettingsProvider> _launchSettingsProviderMoq = new();
         private readonly List<IDebugLaunchSettings> _webProviderSettings = new();
         private readonly List<IDebugLaunchSettings> _dockerProviderSettings = new();
         private readonly List<IDebugLaunchSettings> _exeProviderSettings = new();
@@ -40,16 +40,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockDockerProvider.Object, mockMetadata.Object));
             _launchProviders.Add(new Lazy<IDebugProfileLaunchTargetsProvider, IOrderPrecedenceMetadataView>(() => _mockExeProvider.Object, mockMetadata.Object));
 
-            _LaunchSettingsProviderMoq.Setup(x => x.ActiveProfile).Returns(() => _activeProfile);
-            _LaunchSettingsProviderMoq.Setup(x => x.WaitForFirstSnapshot(It.IsAny<int>())).Returns(() =>
-            {
-                if (_activeProfile != null)
-                {
-                    return Task.FromResult((ILaunchSettings)new LaunchSettings(new List<ILaunchProfile>() { _activeProfile }, null, _activeProfile.Name));
-                }
-
-                return Task.FromResult((ILaunchSettings)new LaunchSettings());
-            });
+            _launchSettingsProviderMoq.Setup(x => x.ActiveProfile).Returns(() => _activeProfile);
+            _launchSettingsProviderMoq.Setup(x => x.WaitForFirstSnapshot(It.IsAny<int>())).Returns(() =>
+                _activeProfile != null ?
+                    Task.FromResult((ILaunchSettings?)new LaunchSettings(new List<ILaunchProfile> { _activeProfile }, null, _activeProfile.Name)) :
+                    Task.FromResult((ILaunchSettings?)new LaunchSettings()));
         }
 
         [Fact]
@@ -67,10 +62,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public void GetLaunchTargetsProviderForProfileTestsAsync()
         {
             var provider = CreateInstance();
-            Assert.Equal(_mockWebProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IISExpress" }));
-            Assert.Equal(_mockDockerProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Docker" }));
-            Assert.Equal(_mockExeProvider.Object,  provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "Project" }));
-            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile() { Name = "test", CommandName = "IIS" }));
+            Assert.Equal(_mockWebProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IISExpress" }));
+            Assert.Equal(_mockDockerProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Docker" }));
+            Assert.Equal(_mockExeProvider.Object, provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "Project" }));
+            Assert.Null(provider.GetLaunchTargetsProvider(new LaunchProfile { Name = "test", CommandName = "IIS" }));
         }
 
         [Fact]
@@ -78,15 +73,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var provider = CreateInstance();
 
-            _activeProfile = new LaunchProfile() { Name = "test", CommandName = "IISExpress" };
+            _activeProfile = new LaunchProfile { Name = "test", CommandName = "IISExpress" };
             var result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_webProviderSettings, result);
 
-            _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Docker" };
+            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Docker" };
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_dockerProviderSettings, result);
 
-            _activeProfile = new LaunchProfile() { Name = "test", CommandName = "Project" };
+            _activeProfile = new LaunchProfile { Name = "test", CommandName = "Project" };
             result = await provider.QueryDebugTargetsAsync(0);
             Assert.Equal(_exeProviderSettings, result);
         }
@@ -97,27 +92,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var provider = CreateInstance();
             _activeProfile = null;
 
-            await Assert.ThrowsAsync<Exception>(() =>
-            {
-                return provider.QueryDebugTargetsAsync(0);
-            });
+            await Assert.ThrowsAsync<Exception>(() => provider.QueryDebugTargetsAsync(0));
         }
 
         [Fact]
         public async Task QueryDebugTargetsAsync_WhenNoInstalledProvider_Throws()
         {
             var provider = CreateInstance();
-            _activeProfile = new LaunchProfile() { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
+            _activeProfile = new LaunchProfile { Name = "NoActionProfile", CommandName = "SomeOtherExtension" };
 
-            await Assert.ThrowsAsync<Exception>(() =>
-            {
-                return provider.QueryDebugTargetsAsync(0);
-            });
+            await Assert.ThrowsAsync<Exception>(() => provider.QueryDebugTargetsAsync(0));
         }
 
         private LaunchProfilesDebugLaunchProvider CreateInstance()
         {
-            var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _LaunchSettingsProviderMoq.Object, vsDebuggerService: null!);
+            var provider = new LaunchProfilesDebugLaunchProvider(_configuredProjectMoq.Object, _launchSettingsProviderMoq.Object, vsDebuggerService: null!);
 
             provider.LaunchTargetsProviders.Add(_mockWebProvider.Object);
             provider.LaunchTargetsProviders.Add(_mockDockerProvider.Object);

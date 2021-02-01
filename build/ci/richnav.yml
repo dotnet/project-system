@@ -1,7 +1,7 @@
 # Name: DotNet-Project-System Rich Code Navigation
 # URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
 #
-# Creates the Rich Navigation index for navigation throughout the master branch
+# Creates the Rich Navigation index for navigation throughout the main branch
 # of dotnet/project-system
 #
 
@@ -9,7 +9,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
     - dev*
     - feature/*
 
@@ -17,7 +17,7 @@ trigger:
 pr:
   branches:
     include:
-    - master
+    - main
     - dev*
     - feature/*
 

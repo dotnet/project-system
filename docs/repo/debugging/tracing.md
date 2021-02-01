@@ -6,7 +6,7 @@ Common Project System (CPS) writes traces messages to both a TraceSource and a c
 
 When you build this repository under debug either within Visual Studio or via the command-line, a trace listener is hooked up to output CPS tracing to the Debug category of the Output Window. You can use this to diagnose lots of issues, such as failing rules or missing snapshots.
 
-You can increase the verbosity of what is output to the window by changing the verbosity level in [ManagedProjectSystemPackage.DebuggingTraceListener](https://github.com/dotnet/project-system/blob/master/src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/Packaging/ManagedProjectSystemPackage.DebuggerTraceListener.cs#L44).
+You can increase the verbosity of what is output to the window by changing the verbosity level in [ManagedProjectSystemPackage.DebuggingTraceListener](/src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/Packaging/DebuggerTraceListener.cs).
 
 ## Inspecting Trace Within a Memory Dump
 

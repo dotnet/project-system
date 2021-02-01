@@ -12,7 +12,7 @@ jobs:
     
     steps:
       - name: Notify
-        uses: davidwengier/PostAdaptiveCard@v1.0.1
+        uses: davidwengier/PostAdaptiveCard@v1.0.4
         if: github.repository == 'dotnet/project-system'
         with:
-          webhook-uri: https://outlook.office.com/webhook/4ba7372f-2799-4677-89f0-7a1aaea3706c@72f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/461ee56585254d63b67f15afdf6a1513/b4e5dfd6-185f-4aed-90e3-aa15b6f398ba
+          webhook_uri: https://microsoft.webhook.office.com/webhookb2/4ba7372f-2799-4677-89f0-7a1aaea3706c@72f988bf-86f1-41af-91ab-2d7cd011db47/IncomingWebhook/461ee56585254d63b67f15afdf6a1513/b4e5dfd6-185f-4aed-90e3-aa15b6f398ba
