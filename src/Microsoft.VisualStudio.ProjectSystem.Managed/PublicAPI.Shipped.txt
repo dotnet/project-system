@@ -37,14 +37,14 @@ Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.ActiveProfile.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateGlobalSettingAsync(string! settingName, object! settingContent) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.AddOrUpdateProfileAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, bool addToFront) -> System.Threading.Tasks.Task!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.CurrentSnapshot.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.CurrentSnapshot.get -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.LaunchSettingsFile.get -> string!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveGlobalSettingAsync(string! settingName) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.RemoveProfileAsync(string! profileName) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SetActiveProfileAsync(string! profileName) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.SourceBlock.get -> System.Threading.Tasks.Dataflow.IReceivableSourceBlock<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.UpdateAndSaveSettingsAsync(Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings! profiles) -> System.Threading.Tasks.Task!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.WaitForFirstSnapshot(int timeout) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider.WaitForFirstSnapshot(int timeout) -> System.Threading.Tasks.Task<Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettings?>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync() -> System.Threading.Tasks.Task<string!>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsSerializationProvider
