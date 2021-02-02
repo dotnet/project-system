@@ -259,12 +259,12 @@
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression</source>
-        <target state="needs-review-translation">Botão de opção da Licença do Pacote Expression</target>
+        <target state="translated">Expressão da Licença do Pacote</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File</source>
-        <target state="needs-review-translation">Botão de Opção do Arquivo de Licença do Pacote</target>
+        <target state="translated">Arquivo da Licença do Pacote</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
