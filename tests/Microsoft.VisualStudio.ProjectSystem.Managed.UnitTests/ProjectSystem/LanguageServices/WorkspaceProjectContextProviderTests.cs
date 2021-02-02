@@ -166,6 +166,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         [Fact]
+        public async Task CreateProjectContextAsync_ReturnsContextWithTargetFrameworkSet()
+        {
+            var context = new Mock<IWorkspaceProjectContext>();
+
+            context.Setup(c => c.SetProperty("TargetFramework", "net5.0"));
+
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => context.Object);
+            var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
+
+            var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
+
+            var result = await provider.CreateProjectContextAsync(project);
+
+            Assert.NotNull(result);
+
+            context.VerifyAll();
+        }
+
+        [Fact]
         public async Task CreateProjectContextAsync_WhenCreateProjectContextThrows_ReturnsNull()
         {
             var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => { throw new Exception(); });
@@ -210,7 +229,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ""Properties"": {
         ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
         ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
+        ""TargetPath"": ""C:\\Target.dll"",
+        ""TargetFramework"": ""net5.0""
     }
 }");
 

@@ -18,6 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public string ProjectFilePath;
             public Guid ProjectGuid;
             public string WorkspaceProjectContextId;
+            public string TargetFramework;
 
             public bool IsInvalid()
             {
@@ -38,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.LanguageServiceNameProperty, out data.LanguageName);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetPathProperty, out data.BinOutputPath);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out data.ProjectFilePath);
+                snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out data.TargetFramework);
 
                 data.ProjectGuid = projectGuid;
                 data.WorkspaceProjectContextId = GetWorkspaceProjectContextId(data.ProjectFilePath, projectGuid, configuration);

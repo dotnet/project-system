@@ -86,6 +86,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     hostObject,
                                                                                     data.BinOutputPath);
 
+                context.SetProperty(ConfigurationGeneral.TargetFrameworkProperty, data.TargetFramework ?? "");
+
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
 
                 return context;
