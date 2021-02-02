@@ -146,7 +146,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public async Task<IImmutableSet<string>> GetExistingItemTypesAsync()
         {
-            var snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(snapshot);
+
             return snapshot.Profiles.Count > 0
                 ? s_itemTypes
                 : ImmutableSortedSet<string>.Empty;
@@ -166,7 +168,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         public async Task<IEnumerable<IProjectItem>> GetItemsAsync()
         {
-            var snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            Assumes.NotNull(snapshot);
+
             if (snapshot.Profiles.Count == 0)
             {
                 return ImmutableArray<IProjectItem>.Empty;
