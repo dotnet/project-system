@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await instance.OpenContextForWriteAsync(action);
         }
 
-        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        public async Task<T?> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
         {
             Requires.NotNull(action, nameof(action));
 

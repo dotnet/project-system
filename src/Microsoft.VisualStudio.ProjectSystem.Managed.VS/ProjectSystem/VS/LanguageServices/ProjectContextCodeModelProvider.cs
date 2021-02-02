@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             _projectContextHost = projectContextHost;
         }
 
-        public CodeModel GetCodeModel(Project project)
+        public CodeModel? GetCodeModel(Project project)
         {
             Requires.NotNull(project, nameof(project));
 
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             });
         }
 
-        private async Task<CodeModel> GetCodeModelAsync(Project project)
+        private async Task<CodeModel?> GetCodeModelAsync(Project project)
         {
             await _threadingService.SwitchToUIThread();
 

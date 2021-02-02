@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        public async Task<T?> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
         {
             while (true)
             {
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         return await host.OpenContextForWriteAsync(action);
                     }
 
-                    return default!;
+                    return default;
                 }
                 catch (ActiveProjectConfigurationChangedException)
                 {   // Host was unloaded because configuration changed, retry on new config

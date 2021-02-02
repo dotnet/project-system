@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The <see cref="Func{T, TResult}"/> to run while holding the lock.
         /// </param>
         /// <returns>
-        ///     The result of <paramref name="action"/>.
+        ///     The result of <paramref name="action"/>, or <see langword="null"/> if no host is active.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="action"/> is <see langword="null"/>.
@@ -68,6 +68,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     The <see cref="IWorkspaceProjectContextHost"/> represents the active one, and
         ///     the configuration changed.
         /// </exception>
-        Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action);
+        Task<T?> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action);
     }
 }

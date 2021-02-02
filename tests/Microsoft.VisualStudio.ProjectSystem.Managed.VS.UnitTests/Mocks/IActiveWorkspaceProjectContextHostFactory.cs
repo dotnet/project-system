@@ -52,9 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 return action(_accessor);
             }
 
-            public Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+            public Task<T?> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
             {
-                return action(_accessor);
+                return action(_accessor)!;
             }
         }
     }
