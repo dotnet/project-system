@@ -232,9 +232,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             int callCount = 0;
             await instance.ExecuteUnderLockAsync(async (_) =>
             {
-                await instance.ExecuteUnderLockAsync(async (__) =>
+                await instance.ExecuteUnderLockAsync(async (_) =>
                 {
-                    await instance.ExecuteUnderLockAsync((___) =>
+                    await instance.ExecuteUnderLockAsync((_) =>
                     {
                         callCount++;
                         return Task.CompletedTask;
@@ -253,9 +253,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             int callCount = 0;
             await instance.ExecuteUnderLockAsync(async (_) =>
             {
-                await instance.ExecuteUnderLockAsync(async (__) =>
+                await instance.ExecuteUnderLockAsync(async (_) =>
                 {
-                    await instance.ExecuteUnderLockAsync((___) =>
+                    await instance.ExecuteUnderLockAsync((_) =>
                     {
                         callCount++;
                         return TaskResult.Null<string>();
