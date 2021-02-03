@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             {
                 bool isRestoreUpToDate = IsRestoreUpToDate(value.Value.Item1, value.Value.Item2);
 
-                _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerRestoreCompleted, isRestoreUpToDate, _packageRestoreProgressTrackerId);
+                _packageReferenceTelemetryService.PostPackageRestoreCompletedEvent(isRestoreUpToDate, _packageRestoreProgressTrackerId);
 
                 if (isRestoreUpToDate)
                 {
