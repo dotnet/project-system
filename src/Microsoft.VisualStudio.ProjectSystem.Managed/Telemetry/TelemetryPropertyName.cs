@@ -134,6 +134,16 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string WorkspaceContextProjectId = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextProjectId");
 
         /// <summary>
+        ///     Indicates the ID of a workspace context telemetry event
+        /// </summary>
+        public static readonly string WorkspaceContextEventId = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextEventId");
+
+        /// <summary>
+        ///     Indicates the ID of a workspace context
+        /// </summary>
+        public static readonly string WorkspaceContextId = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextId");
+
+        /// <summary>
         ///     Indicates the workspace context is for the active configuration
         /// </summary>
         public static readonly string WorkspaceContextIsActiveConfiguration = BuildPropertyName(TelemetryEventName.LanguageServiceOperation, "WorkspaceContextIsActiveConfiguration");

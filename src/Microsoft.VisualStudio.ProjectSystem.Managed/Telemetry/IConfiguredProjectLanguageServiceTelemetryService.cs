@@ -19,13 +19,16 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         /// <param name="languageServiceOperationName">The name of the specific language service operation that was invoked.</param>
         /// <param name="state">The state of the language service operation.</param>
-        void PostLanguageServiceEvent(string languageServiceOperationName, ContextState state);
+        /// <param name="workspaceContextId">An identifier of the workspace in which a language service operation has occurred.</param>
+        /// <param name="eventId">An identifier to enable correlation of the specific language service operation events.</param>
+        void PostLanguageServiceEvent(string languageServiceOperationName, ContextState state, long workspaceContextId, long eventId);
 
         /// <summary>
-        /// Post a language service telemetry event without any corresponding metadata.
+        /// Post a language service telemetry event with a correlation identifier.
         /// </summary>
         /// <param name="languageServiceOperationName">The name of the specific language service operation that was invoked.</param>
-        void PostLanguageServiceEvent(string languageServiceOperationName);
+        /// <param name="workspaceContextId">An identifier to enable correlation of events.</param>
+        void PostLanguageServiceEvent(string languageServiceOperationName, long workspaceContextId);
 
         /// <summary>
         /// Post a telemetry event when a event with an operation counter has been processed.

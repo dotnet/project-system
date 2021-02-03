@@ -29,6 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
         private readonly IConfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
+        private long _telemetryWorkspaceContextId;
+
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
                                            IProjectThreadingService threadingService,
@@ -56,19 +58,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public Task ActivateAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostActivating);
+            _telemetryWorkspaceContextId++;
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostActivating, _telemetryWorkspaceContextId);
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostDeactivating);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostDeactivating, _telemetryWorkspaceContextId);
             return UnloadAsync();
         }
 
         public Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostPublishing);
+            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostPublishing, _telemetryWorkspaceContextId);
             return WaitForLoadedAsync(cancellationToken);
         }
 
@@ -104,7 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider,
                 _applyChangesToWorkspaceContextFactory,
                 _dataProgressTrackerService,
-                _languageServiceTelemetryService);
+                _languageServiceTelemetryService,
+                _telemetryWorkspaceContextId);
         }
     }
 }
