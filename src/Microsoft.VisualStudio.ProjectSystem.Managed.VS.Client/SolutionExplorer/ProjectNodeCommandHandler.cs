@@ -98,8 +98,9 @@ namespace Microsoft.VisualStudio.SolutionExplorer
 
                 try
                 {
-                    if (openDocumentService != null)
-                        await openDocumentService.OpenDocumentAsync(node.NodeMoniker, cancellationToken: default);
+                    if (openDocumentService != null &&
+                        node is IFileSystemNode fileSystemNode)
+                        await openDocumentService.OpenDocumentAsync(fileSystemNode.FullPath, cancellationToken: default);
                     //else
                         // TODO: figure out what to tell the user if we can't get the service
                         // https://github.com/dotnet/project-system/issues/6306

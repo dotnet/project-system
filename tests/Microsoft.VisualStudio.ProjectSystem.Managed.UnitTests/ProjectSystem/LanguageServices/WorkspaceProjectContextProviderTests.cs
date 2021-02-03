@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var snapshot = IProjectRuleSnapshotFactory.FromJson(json);
 
             int callCount = 0;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => { callCount++; return null; });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { callCount++; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectRuleSnapshot: snapshot);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(new Guid(guid));
 
             string? result = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, ___, ____, ______, _______) => { result = id; return null; });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, _, _, _, _) => { result = id; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration);
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSucceededSetToFalse()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => context);
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => context);
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task CreateProjectContextAsync_WhenCreateProjectContextThrows_ReturnsNull()
         {
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, __, ___, ____, ______, _______) => { throw new Exception(); });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { throw new Exception(); });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");

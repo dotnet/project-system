@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|TreatAsUsed|Description">
         <source>Indicates that this reference should be treated as if it were used.</source>
-        <target state="new">Indicates that this reference should be treated as if it were used.</target>
+        <target state="translated">指示应将此引用看作是已被使用一样。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatAsUsed|DisplayName">
         <source>Treat as used</source>
-        <target state="new">Treat as used</target>
+        <target state="translated">视为已使用</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|DisplayName">

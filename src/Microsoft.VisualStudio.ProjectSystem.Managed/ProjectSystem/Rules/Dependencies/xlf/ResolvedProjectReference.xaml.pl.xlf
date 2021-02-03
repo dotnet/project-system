@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|TreatAsUsed|Description">
         <source>Indicates that this reference should be treated as if it were used.</source>
-        <target state="new">Indicates that this reference should be treated as if it were used.</target>
+        <target state="translated">Wskazuje, że to odwołanie powinno być traktowane tak, jakby było używane.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatAsUsed|DisplayName">
         <source>Treat as used</source>
-        <target state="new">Treat as used</target>
+        <target state="translated">Traktuj jako używane</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedProjectReference|DisplayName">

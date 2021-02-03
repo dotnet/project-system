@@ -227,7 +227,7 @@ Project
         {
             var defaultEditorFactory = Guid.NewGuid();
 
-            var options = IProjectSystemOptionsFactory.ImplementGetUseDesignerByDefaultAsync((_, defaultValue, __) => defaultValue);
+            var options = IProjectSystemOptionsFactory.ImplementGetUseDesignerByDefaultAsync((_, defaultValue, _) => defaultValue);
             var provider = CreateInstanceWithDefaultEditorProvider(tree, options, defaultEditorFactory);
 
             var result = await provider.GetSpecificEditorAsync(@"C:\Foo.cs");
@@ -260,7 +260,7 @@ Project
         {
             string? categoryResult = null;
             bool? valueResult = null;
-            var options = IProjectSystemOptionsFactory.ImplementSetUseDesignerByDefaultAsync((category, value, __) => { categoryResult = category; valueResult = value; return Task.CompletedTask; });
+            var options = IProjectSystemOptionsFactory.ImplementSetUseDesignerByDefaultAsync((category, value, _) => { categoryResult = category; valueResult = value; return Task.CompletedTask; });
             var provider = CreateInstanceWithDefaultEditorProvider(tree, options);
 
             var result = await provider.SetUseGlobalEditorAsync(@"C:\Foo.cs", useGlobalEditor: true);

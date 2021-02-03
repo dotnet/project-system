@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="JSWebView2DebuggingAdditionalText">
         <source>(Requires the JavaScript Diagnostics component)</source>
-        <target state="new">(Requires the JavaScript Diagnostics component)</target>
+        <target state="translated">(需要 JavaScript 诊断组件)</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
@@ -249,7 +249,7 @@
       </trans-unit>
       <trans-unit id="chkJSWebView2DebuggingText">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
+        <target state="translated">启用适用于基于 Microsoft Edge (Chromium)的 WebView2 的 JavaScript 调试程序</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">

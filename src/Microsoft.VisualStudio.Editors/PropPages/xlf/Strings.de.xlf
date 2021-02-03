@@ -57,17 +57,17 @@
       </trans-unit>
       <trans-unit id="latest">
         <source>latest</source>
-        <target state="new">latest</target>
+        <target state="translated">Neueste</target>
         <note />
       </trans-unit>
       <trans-unit id="none">
         <source>none</source>
-        <target state="new">none</target>
+        <target state="translated">Keine</target>
         <note />
       </trans-unit>
       <trans-unit id="preview">
         <source>preview</source>
-        <target state="new">preview</target>
+        <target state="translated">Vorschau</target>
         <note />
       </trans-unit>
     </body>
