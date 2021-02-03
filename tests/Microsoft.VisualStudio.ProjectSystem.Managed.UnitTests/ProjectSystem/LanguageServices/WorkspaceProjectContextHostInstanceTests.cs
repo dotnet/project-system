@@ -264,7 +264,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
                                                            dataProgressTrackerService,
-                                                           languageServiceTelemetryService);
+                                                           languageServiceTelemetryService,
+                                                           workspaceContextId: 0);
         }
     }
 }

@@ -152,7 +152,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 dataProgressTrackerService,
                 packageRestoreDataSource,
                 projectSubscriptionService,
-                packageReferenceTelemetryService);
+                packageReferenceTelemetryService,
+                packageRestoreProgressTrackerId: 0);
         }
     }
 }
