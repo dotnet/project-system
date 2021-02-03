@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
 
-#pragma warning disable CS0067
+#pragma warning disable CS0067 // Unused event
 
         /// <remarks>
         /// This would fire when an item is about to be renamed, but this provider does not
