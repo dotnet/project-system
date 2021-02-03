@@ -5,13 +5,28 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
+    /**
+     * The managed project system is responsible for initiating the creation of the Roslyn
+     * IWorkspaceProjectContext for each project in the solution. This interface enables
+     * the UnconfiguredProject scope components related to the IWorkspaceProjectContext
+     * to post events indicating successful initialization. The absence of these events
+     * would indicate an initialization failure.
+     */
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IUnconfiguredProjectLanguageServiceTelemetryService
     {
         /// <summary>
-        /// Post a language service telemetry event from an unconfigured project.
+        /// Posts a <see cref="TelemetryEventName.LanguageServiceOperation"/> event with the
+        /// <see cref="TelemetryPropertyName.LanguageServiceOperationName"/> value
+        /// of <see cref="LanguageServiceOperationNames.ActiveWorkspaceProjectContextHostPublishing"/>
         /// </summary>
-        /// <param name="languageServiceOperationName">The name of the specific language service operation that was invoked.</param>
-        void PostLanguageServiceEvent(string languageServiceOperationName);
+        void PostActiveWorkspaceProjectContextHostPublishingEvent();
+
+        /// <summary>
+        /// Posts a <see cref="TelemetryEventName.LanguageServiceOperation"/> event with the
+        /// <see cref="TelemetryPropertyName.LanguageServiceOperationName"/> value
+        /// of <see cref="LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized"/>
+        /// </summary>
+        void PostWorkspaceProjectContextHostInitiatorInitializedEvent();
     }
 }

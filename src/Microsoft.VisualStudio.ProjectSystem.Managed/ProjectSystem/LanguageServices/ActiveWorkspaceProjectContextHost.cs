@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         public async Task PublishAsync(CancellationToken cancellationToken = default)
         {
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ActiveWorkspaceProjectContextHostPublishing);
+            _languageServiceTelemetryService.PostActiveWorkspaceProjectContextHostPublishingEvent();
 
             // The active configuration can change multiple times during initialization in cases where we've incorrectly
             // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.

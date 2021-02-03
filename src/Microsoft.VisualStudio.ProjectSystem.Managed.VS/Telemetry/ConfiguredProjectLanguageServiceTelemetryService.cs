@@ -32,8 +32,10 @@ namespace Microsoft.VisualStudio.Telemetry
                 });
         }
 
-        public void PostLanguageServiceEvent(string languageServiceOperationName, ContextState state, long workspaceContextId, long eventId)
+        public void PostApplyProjectChangesEvent(ContextState state, long workspaceContextId, long eventId, bool starting)
         {
+            string languageServiceOperationName = starting ? LanguageServiceOperationNames.ApplyingProjectChangesStarted : LanguageServiceOperationNames.ApplyingProjectChangesCompleted;
+
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
                     (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),

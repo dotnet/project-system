@@ -21,7 +21,17 @@ namespace Microsoft.VisualStudio.Telemetry
 
         private string ProjectTelemetryId => _projectTelemetryId ??= _telemetryService.GetProjectId(_project);
 
-        public void PostLanguageServiceEvent(string languageServiceOperationName)
+        public void PostActiveWorkspaceProjectContextHostPublishingEvent()
+        {
+            PostLanguageServiceEvent(LanguageServiceOperationNames.ActiveWorkspaceProjectContextHostPublishing);
+        }
+
+        public void PostWorkspaceProjectContextHostInitiatorInitializedEvent()
+        {
+            PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInitiatorInitialized);
+        }
+
+        private void PostLanguageServiceEvent(string languageServiceOperationName)
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {

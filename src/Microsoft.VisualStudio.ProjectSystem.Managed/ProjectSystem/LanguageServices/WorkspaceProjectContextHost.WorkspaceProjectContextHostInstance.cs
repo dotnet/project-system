@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
 
-                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ApplyingProjectChangesStarted, state, _workspaceContextId, _projectChangeId);
+                _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: true);
 
                 context.StartBatch();
 
@@ -219,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
 
-                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ApplyingProjectChangesCompleted, state, _workspaceContextId, _projectChangeId);
+                    _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: false);
                 }
             }
 
