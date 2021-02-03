@@ -107,9 +107,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             List<IProjectItem> projectItems = new();
 
-            foreach (Tuple<string, string, IEnumerable<KeyValuePair<string, string>>?> item in items)
+            foreach ((string itemType, string include, IEnumerable<KeyValuePair<string, string>>? metadata) in items)
             {
-                (string itemType, string include, IEnumerable<KeyValuePair<string, string>>? metadata) = item;
                 IProjectItem? projectItem = await AddAsync(itemType, include, metadata);
                 if (projectItem is not null)
                 {
