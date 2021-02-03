@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         public static string ItemType = "LaunchProfile";
 
-        private static readonly ImmutableSortedSet<string> s_itemTypes = ImmutableSortedSet.Create(ItemType);
+        private static readonly ImmutableSortedSet<string> s_itemTypes = ImmutableSortedSet.Create(StringComparers.ItemTypes, ItemType);
         private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
 
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return GetItemsAsync();
             }
 
-            return Task.FromResult(Enumerable.Empty<ProjectItem>());
+            return Task.FromResult(Enumerable.Empty<IProjectItem>());
         }
 
         public async Task<IEnumerable<IProjectItem>> GetItemsAsync(string itemType, string evaluatedInclude)
