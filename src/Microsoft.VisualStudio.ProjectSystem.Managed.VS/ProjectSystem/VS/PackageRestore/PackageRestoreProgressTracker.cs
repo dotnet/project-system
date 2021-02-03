@@ -20,6 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IPackageRestoreDataSource _dataSource;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
         private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
+        private long _telemetryPackageRestoreProgressTrackerId;
 
         [ImportingConstructor]
         public PackageRestoreProgressTracker(
@@ -43,14 +44,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         public Task ActivateAsync()
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating);
+            _telemetryPackageRestoreProgressTrackerId++;
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating, _telemetryPackageRestoreProgressTrackerId);
 
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating);
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating, _telemetryPackageRestoreProgressTrackerId);
 
             return UnloadAsync();
         }
@@ -64,7 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _dataProgressTrackerService,
                 _dataSource,
                 _projectSubscriptionService,
-                _packageReferenceTelemetryService);
+                _packageReferenceTelemetryService,
+                _telemetryPackageRestoreProgressTrackerId);
         }
     }
 }

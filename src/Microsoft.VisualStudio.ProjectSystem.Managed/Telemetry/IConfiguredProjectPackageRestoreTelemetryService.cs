@@ -15,10 +15,18 @@ namespace Microsoft.VisualStudio.Telemetry
         void PostPackageRestoreEvent(string packageRestoreOperationName);
 
         /// <summary>
+        /// Posts a telemetry event from a package restore component.
+        /// </summary>
+        /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
+        /// <param name="packageRestoreProgressTrackerId">An identifier to enable correlation of events.</param>
+        void PostPackageRestoreEvent(string packageRestoreOperationName, long packageRestoreProgressTrackerId);
+
+        /// <summary>
         /// Posts a telemetry event from package restore components including whether package restore is up to date.
         /// </summary>
         /// <param name="packageRestoreOperationName">The name of the specific package restore operation.</param>
         /// <param name="isRestoreUpToDate">Flag indicating whether the restore is up to date.</param>
-        void PostPackageRestoreEvent(string packageRestoreOperationName, bool isRestoreUpToDate);
+        /// <param name="packageRestoreProgressTrackerId">An identifier to enable correlation of events.</param>
+        void PostPackageRestoreEvent(string packageRestoreOperationName, bool isRestoreUpToDate, long packageRestoreProgressTrackerId);
     }
 }

@@ -159,6 +159,11 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string PackageRestoreProjectId = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "ProjectId");
 
         /// <summary>
+        ///     Indicates the ID of the package restore progress tracker involved in a package restore operation
+        /// </summary>
+        public static readonly string PackageRestoreProgressTrackerId = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "PackageRestoreProgressTrackerId");
+
+        /// <summary>
         ///     Indicates which specific package restore operation is relevant
         /// </summary>
         public static readonly string PackageRestoreOperation = BuildPropertyName(TelemetryEventName.ProcessPackageRestore, "OperationName");
