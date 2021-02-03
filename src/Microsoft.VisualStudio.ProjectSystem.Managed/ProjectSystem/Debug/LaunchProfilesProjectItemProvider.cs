@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             if (snapshot.Profiles.Count == 0)
             {
-                return ImmutableArray<IProjectItem>.Empty;
+                return Enumerable.Empty<IProjectItem>();
             }
 
             return snapshot.Profiles.Select(p => new ProjectItem(p.Name ?? string.Empty, _project.FullPath, this));
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return GetItemsAsync();
             }
 
-            return Task.FromResult<IEnumerable<IProjectItem>>(ImmutableArray<ProjectItem>.Empty);
+            return Task.FromResult(Enumerable.Empty<ProjectItem>());
         }
 
         public async Task<IEnumerable<IProjectItem>> GetItemsAsync(string itemType, string evaluatedInclude)
