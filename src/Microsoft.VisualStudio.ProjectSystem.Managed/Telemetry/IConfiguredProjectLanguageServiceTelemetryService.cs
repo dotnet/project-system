@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
@@ -12,7 +13,7 @@ namespace Microsoft.VisualStudio.Telemetry
     /// the ConfiguredProject scope components related to the IWorkspaceProjectContext
     /// to post events indicating successful initialization. More crucially, the workspace
     /// project context management system needs to report that changes have been successfully
-    /// been applied to the IWorkspaceProjectContext for each project by posting these events:
+    /// been applied to the <see cref="IWorkspaceProjectContext"/> for each project by posting these events:
     /// 
     /// Table 1:
     ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,6 +36,9 @@ namespace Microsoft.VisualStudio.Telemetry
     /// | <see cref="TelemetryEventName.DesignTimeBuildComplete"/>  | <see cref="TelemetryPropertyName.DesignTimeBuildCompleteSucceeded"/> | <see langword="false"/>                                                     |
     /// | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> |
     ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /// In case of a failure due to an exception when applying changes to the
+    /// <see cref="IWorkspaceProjectContext"/>, the Language Service Operation with the
+    /// <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> will not be posted.
     /// 
     /// To determine whether changes have been successfully applied to the IWorkspaceProjectContext,
     /// it is therefore sufficient to ensure that the sequence of events in Table 1 is present for
