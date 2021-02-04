@@ -218,9 +218,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     context.EndBatch();
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
-
-                    _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: false);
                 }
+
+                _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: false);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)
