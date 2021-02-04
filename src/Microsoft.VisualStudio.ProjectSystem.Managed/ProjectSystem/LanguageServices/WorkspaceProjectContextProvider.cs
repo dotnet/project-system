@@ -86,6 +86,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     hostObject,
                                                                                     data.BinOutputPath);
 
+                // Roslyn needs a way to identify which workspace project context a given dependencies tree node relates to.
+                // Ideally we would store the project context ID on the node itself for Roslyn to query, however we are late
+                // in the 16.9 cycle and the magnitude of that change would likely make it too risky. For now, we pass the
+                // TargetFramework property value to the language service, so it can match the value against the
+                // "$TFM:net5.0"-style value found in the nodes capabilities property value.
                 context.SetProperty(ConfigurationGeneral.TargetFrameworkProperty, data.TargetFramework ?? "");
 
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
