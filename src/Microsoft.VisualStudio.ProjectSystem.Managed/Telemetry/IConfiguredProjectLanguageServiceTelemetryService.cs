@@ -6,43 +6,43 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    /**
-     * The managed project system is responsible for initiating the creation of the Roslyn
-     * IWorkspaceProjectContext for each project. This interface enables
-     * the ConfiguredProject scope components related to the IWorkspaceProjectContext
-     * to post events indicating successful initialization. More crucially, the workspace
-     * project context management system needs to report that changes have been successfully
-     * been applied to the IWorkspaceProjectContext for each project by posting these events:
-     * 
-     * Table 1:
-     *  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-     * | Event Name                                                | Property Name                                                        | Property Value                                                              |
-     * |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-     * | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesStarted"/>   |
-     * | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> |
-     *  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-     * 
-     * In case of a design time build failure, a <see cref="TelemetryEventName.DesignTimeBuildComplete"/> event
-     * with the <see cref="TelemetryPropertyName.DesignTimeBuildCompleteSucceeded"/>
-     * property set to false will be posted. Should this happen, these sequence of
-     * events will be posted:
-     * 
-     * Table 2:
-     *  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-     * | Event Name                                                | Property Name                                                        | Property Value                                                              |
-     * |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-     * | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesStarted"/>   |
-     * | <see cref="TelemetryEventName.DesignTimeBuildComplete"/>  | <see cref="TelemetryPropertyName.DesignTimeBuildCompleteSucceeded"/> | <see langword="false"/>                                                     |
-     * | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> |
-     *  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-     * 
-     * To determine whether changes have been successfully applied to the IWorkspaceProjectContext,
-     * it is therefore sufficient to ensure that the sequence of events in Table 1 is present for
-     * each project while that of Table 2 is not present for each project.
-     *
-     * This interface also provides methods for the package restore components to post telemetry events
-     * indicating whether the initialization (for the corresponding ConfiguredProject) suceeded.
-     */
+    /// <summary>
+    /// The managed project system is responsible for initiating the creation of the Roslyn
+    /// IWorkspaceProjectContext for each project. This interface enables
+    /// the ConfiguredProject scope components related to the IWorkspaceProjectContext
+    /// to post events indicating successful initialization. More crucially, the workspace
+    /// project context management system needs to report that changes have been successfully
+    /// been applied to the IWorkspaceProjectContext for each project by posting these events:
+    /// 
+    /// Table 1:
+    ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /// | Event Name                                                | Property Name                                                        | Property Value                                                              |
+    /// |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    /// | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesStarted"/>   |
+    /// | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> |
+    ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /// 
+    /// In case of a design time build failure, a <see cref="TelemetryEventName.DesignTimeBuildComplete"/> event
+    /// with the <see cref="TelemetryPropertyName.DesignTimeBuildCompleteSucceeded"/>
+    /// property set to false will be posted. Should this happen, these sequence of
+    /// events will be posted:
+    /// 
+    /// Table 2:
+    ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /// | Event Name                                                | Property Name                                                        | Property Value                                                              |
+    /// |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    /// | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesStarted"/>   |
+    /// | <see cref="TelemetryEventName.DesignTimeBuildComplete"/>  | <see cref="TelemetryPropertyName.DesignTimeBuildCompleteSucceeded"/> | <see langword="false"/>                                                     |
+    /// | <see cref="TelemetryEventName.LanguageServiceOperation"/> | <see cref="TelemetryPropertyName.LanguageServiceOperationName"/>     | <see cref="LanguageServiceOperationNames.ApplyingProjectChangesCompleted"/> |
+    ///  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /// 
+    /// To determine whether changes have been successfully applied to the IWorkspaceProjectContext,
+    /// it is therefore sufficient to ensure that the sequence of events in Table 1 is present for
+    /// each project while that of Table 2 is not present for each project.
+    /// 
+    /// This interface also provides methods for the package restore components to post telemetry events
+    /// indicating whether the initialization (for the corresponding ConfiguredProject) suceeded.
+    /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IConfiguredProjectLanguageServiceTelemetryService
     {

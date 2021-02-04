@@ -5,13 +5,13 @@ using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
-    /**
-     * The managed project system is responsible for initiating the creation of the Roslyn
-     * IWorkspaceProjectContext for each project in the solution. This interface enables
-     * the UnconfiguredProject scope components related to the IWorkspaceProjectContext
-     * to post events indicating successful initialization. The absence of these events
-     * would indicate an initialization failure.
-     */
+    /// <summary>
+    /// The managed project system is responsible for initiating the creation of the Roslyn
+    /// IWorkspaceProjectContext for each project in the solution. This interface enables
+    /// the UnconfiguredProject scope components related to the IWorkspaceProjectContext
+    /// to post events indicating successful initialization. The absence of these events
+    /// would indicate an initialization failure.
+    /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IUnconfiguredProjectLanguageServiceTelemetryService
     {
