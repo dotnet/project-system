@@ -57,6 +57,16 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string ProjectUnloadDependencies = BuildEventName("ProjectUnload/Dependencies");
 
+        /// <summary>
+        ///     Indicates that a package restore component has an operation in progress.
+        /// </summary>
+        public static readonly string ProcessPackageRestore = BuildEventName("PackageRestore");
+
+        /// <summary>
+        ///     Indicates that the language service has an operation in progress.
+        /// </summary>
+        public static readonly string LanguageServiceOperation = BuildEventName("LanguageService");
+
         private static string BuildEventName(string eventName)
         {
             return Prefix + "/" + eventName.ToLowerInvariant();

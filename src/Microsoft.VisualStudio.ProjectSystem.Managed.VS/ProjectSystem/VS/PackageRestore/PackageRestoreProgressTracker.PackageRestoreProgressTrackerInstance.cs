@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Telemetry;
 using StageId = Microsoft.VisualStudio.ProjectSystem.OperationProgress.OperationProgressStageId;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -38,6 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
             private readonly IPackageRestoreDataSource _dataSource;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
+            private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
+            private readonly long _packageRestoreProgressTrackerId;
 
             private IDataProgressTrackerServiceRegistration? _progressRegistration;
             private IDisposable? _subscription;
@@ -49,7 +52,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 IProjectFaultHandlerService projectFaultHandlerService,
                 IDataProgressTrackerService dataProgressTrackerService,
                 IPackageRestoreDataSource dataSource,
-                IProjectSubscriptionService projectSubscriptionService)
+                IProjectSubscriptionService projectSubscriptionService,
+                IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService,
+                long packageRestoreProgressTrackerId)
                 : base(threadingService.JoinableTaskContext)
             {
                 ConfiguredProject = project;
@@ -57,6 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _dataProgressTrackerService = dataProgressTrackerService;
                 _dataSource = dataSource;
                 _projectSubscriptionService = projectSubscriptionService;
+                _packageReferenceTelemetryService = packageReferenceTelemetryService;
+                _packageRestoreProgressTrackerId = packageRestoreProgressTrackerId;
             }
 
             public ConfiguredProject ConfiguredProject { get; }
@@ -87,12 +94,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                         linkOptions: DataflowOption.PropagateCompletion,
                         cancellationToken: cancellationToken);
 
+                _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerInstanceInitialized, _packageRestoreProgressTrackerId);
+
                 return Task.CompletedTask;
             }
 
             internal void OnRestoreCompleted(IProjectVersionedValue<ValueTuple<IProjectSnapshot, RestoreData>> value)
             {
-                if (IsRestoreUpToDate(value.Value.Item1, value.Value.Item2))
+                bool isRestoreUpToDate = IsRestoreUpToDate(value.Value.Item1, value.Value.Item2);
+
+                _packageReferenceTelemetryService.PostPackageRestoreCompletedEvent(isRestoreUpToDate, _packageRestoreProgressTrackerId);
+
+                if (isRestoreUpToDate)
                 {
                     _progressRegistration!.NotifyOutputDataCalculated(value.DataSourceVersions);
                 }

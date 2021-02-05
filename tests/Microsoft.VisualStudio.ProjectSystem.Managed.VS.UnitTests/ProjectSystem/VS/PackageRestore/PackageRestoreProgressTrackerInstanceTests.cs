@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Telemetry;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreProgressTracker;
 
@@ -142,6 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             IProjectThreadingService threadingService = IProjectThreadingServiceFactory.Create();
             IProjectFaultHandlerService projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService = IConfiguredProjectPackageRestoreTelemetryServiceFactory.Create();
 
             return new PackageRestoreProgressTrackerInstance(
                 project,
@@ -149,7 +151,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 projectFaultHandlerService,
                 dataProgressTrackerService,
                 packageRestoreDataSource,
-                projectSubscriptionService);
+                projectSubscriptionService,
+                packageReferenceTelemetryService,
+                packageRestoreProgressTrackerId: 0);
         }
     }
 }
