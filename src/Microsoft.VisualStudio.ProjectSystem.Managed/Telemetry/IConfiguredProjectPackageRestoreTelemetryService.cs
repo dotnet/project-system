@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.Telemetry
     ///  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /// | Event Name                                             | Property Name                                                | Property Value                                                                           |
     /// |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    /// | <see cref="TelemetryEventName.ProcessPackageRestore"/> | <see cref="TelemetryPropertyName.PackageRestoreOperation"/>  | <see cref="PackageRestoreOperationNames.PackageRestoreProgressTrackerRestoreCompleted"/> |
+    /// | <see cref="TelemetryEventName.ProcessPackageRestore"/> | <see cref="TelemetryPropertyName.PackageRestoreOperation"/>  | PackageRestoreOperationNames.PackageRestoreProgressTrackerRestoreCompleted               |
     /// |                                                        | <see cref="TelemetryPropertyName.PackageRestoreIsUpToDate"/> | True when operation progress is notified                                                 |
     ///  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     ///
