@@ -80,7 +80,7 @@
 
   <ContentType
     Name="WindowsResource"
-    DisplayName="Windows Resourcs file"
+    DisplayName="Windows Resource file"
     ItemType="None">
     <NameValuePair Name="SuppressNumericSuffix" Value="true" />
   </ContentType>

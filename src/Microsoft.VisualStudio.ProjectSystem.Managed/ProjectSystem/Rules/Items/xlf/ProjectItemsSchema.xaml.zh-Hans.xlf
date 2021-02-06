@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="ContentType|WindowsResource|DisplayName">
-        <source>Windows Resourcs file</source>
-        <target state="translated">Windows 资源文件</target>
+        <source>Windows Resource file</source>
+        <target state="needs-review-translation">Windows 资源文件</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">
