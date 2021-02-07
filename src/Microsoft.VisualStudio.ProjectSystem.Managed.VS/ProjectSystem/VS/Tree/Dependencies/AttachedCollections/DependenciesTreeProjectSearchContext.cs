@@ -61,12 +61,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
                 IProjectSubscriptionUpdate subscriptionUpdate = (await configuredProject.Services.ProjectSubscription.ProjectRuleSource.GetLatestVersionAsync(configuredProject, cancellationToken: cancellationToken)).Value;
 
                 if (!subscriptionUpdate.CurrentState.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectRuleSnapshot configurationGeneralSnapshot) ||
-                    !configurationGeneralSnapshot.Properties.TryGetValue(ConfigurationGeneral.TargetFrameworkMonikerProperty, out string tfm))
+                    !configurationGeneralSnapshot.Properties.TryGetValue(ConfigurationGeneral.TargetFrameworkProperty, out string tf))
                 {
                     return null;
                 }
 
-                IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + tfm));
+                IProjectTree? targetNode = _dependenciesNode.FindChildWithFlags(ProjectTreeFlags.Create("$TFM:" + tf));
 
                 if (targetNode == null)
                 {
