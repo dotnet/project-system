@@ -110,12 +110,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         protected override void Dispose(bool disposing)
         {
-            if (_handlers != null)
+            foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
-                foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
-                {
-                    handler.Dispose();
-                }
+                handler.Dispose();
             }
 
             _context = null;
