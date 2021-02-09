@@ -32,4 +32,26 @@
   <StringProperty Name="RunAnalyzersDuringLiveAnalysis"
                   ReadOnly="True"
                   Visible="False" />
+
+  <!--
+      Roslyn needs a way to identify which workspace project context a given dependencies tree node relates to.
+      Ideally we would store the project context ID on the node itself for Roslyn to query, however we are late
+      in the 16.9 cycle and the magnitude of that change would likely make it too risky. For now, we pass the
+      TargetFramework property value to the language service, so it can match the value against the
+      "$TFM:net5.0"-style value found in the nodes capabilities property value.
+
+      Note, the "$TFM" prefix exists for back compat. It's not actually the TFM, but the TF.
+
+      To discourage misuse of this value, we rename it.
+  -->
+  <StringProperty Name="TemporaryDependencyNodeTargetIdentifier"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext"
+                  PersistedName="TargetFramework" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
 </Rule>
