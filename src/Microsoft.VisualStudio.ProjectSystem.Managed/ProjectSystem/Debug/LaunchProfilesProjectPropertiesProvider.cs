@@ -1,10 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 
@@ -62,137 +59,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         public IProjectProperties GetCommonProperties()
         {
-            return new CommonProperties(_project.FullPath);
+            return GetProperties(_project.FullPath, itemType: null, item: null);
         }
 
         public IProjectProperties GetItemProperties(string? itemType, string? item)
         {
-            throw new NotImplementedException();
+            return GetProperties(_project.FullPath, itemType, item);
         }
 
-        // This should also return an empty IProjectProperties--there are no properties that
-        // are defined _to have the same value_ for all launch profiles. There are some properties
-        // that exist on each LaunchProfile, but each one will have different values.
         public IProjectProperties GetItemTypeProperties(string? itemType)
         {
-            throw new NotImplementedException();
+            return GetProperties(_project.FullPath, itemType, item: null);
         }
 
-        // This should just end up deferring to the other Get*Properties methods.
         public IProjectProperties GetProperties(string file, string? itemType, string? item)
         {
-            if (StringComparers.Paths.Equals(file, _project.FullPath)
-                && itemType is null
-                && item is null)
+            if (item is null
+                || (itemType is not null
+                    && itemType != LaunchProfilesProjectItemProvider.ItemType))
             {
-                return GetCommonProperties();
+                // The interface is CPS currently asserts that the Get*Properties methods return a
+                // non-null value, but this is incorrect--in practice the implementations do return
+                // null.
+                return null!;
             }
 
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// A no-op implementation of <see cref="IProjectProperties"/> to represent the
-        /// (non-existent) project-level launch settings.
-        /// </summary>
-        private class CommonProperties : IProjectProperties
-        {
-            private static readonly Task<IEnumerable<string>> s_emptyNames = Task.FromResult(Enumerable.Empty<string>());
-            
-            public CommonProperties(string fileFullPath)
-            {
-                FileFullPath = fileFullPath;
-                Context = new Context(isProjectFile: true, FileFullPath, itemType: null, itemName: null);
-            }
-
-            public IProjectPropertiesContext Context { get; }
-
-            public string FileFullPath { get; }
-
-            public PropertyKind PropertyKind => PropertyKind.PropertyGroup;
-
-            /// <remarks>
-            /// Throws a <see cref="NotSupportedException"/> as there are no properties we can delete.
-            /// </remarks>
-            public Task DeleteDirectPropertiesAsync()
-            {
-                throw new NotSupportedException();
-            }
-
-            /// <remarks>
-            /// Throws a <see cref="NotSupportedException"/> as there are no properties we can delete.
-            /// </remarks>
-            public Task DeletePropertyAsync(string propertyName, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
-            {
-                throw new NotSupportedException();
-            }
-
-            /// <remarks>
-            /// There are no common (that is, project-level) properties for a launch profile.
-            /// </remarks>
-            public Task<IEnumerable<string>> GetDirectPropertyNamesAsync()
-            {
-                return s_emptyNames;
-            }
-
-            /// <remarks>
-            /// Throws a <see cref="NotSupportedException"/> as there are no properties that can provide a value.
-            /// </remarks>
-            public Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
-            {
-                throw new NotSupportedException();
-            }
-
-            /// <remarks>
-            /// There are no common (that is, project-level) properties for a launch profile.
-            /// </remarks>
-            public Task<IEnumerable<string>> GetPropertyNamesAsync()
-            {
-                return s_emptyNames;
-            }
-
-            /// <remarks>
-            /// Throws a <see cref="NotSupportedException"/> as there are no properties that can provide a value.
-            /// </remarks>
-            public Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
-            {
-                throw new NotSupportedException();
-            }
-
-            /// <remarks>
-            /// Always returns <c>false</c> as there are no project-level properties for launch profiles.
-            /// </remarks> 
-            public Task<bool> IsValueInheritedAsync(string propertyName)
-            {
-                return TaskResult.False;
-            }
-
-            /// <remarks>
-            /// Throws a <see cref="NotSupportedException"/> as there are no properties for which you can provide a value;
-            /// </remarks>
-            public Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        private class Context : IProjectPropertiesContext
-        {
-            public Context(bool isProjectFile, string file, string? itemType, string? itemName)
-            {
-                IsProjectFile = isProjectFile;
-                File = file;
-                ItemType = itemType;
-                ItemName = itemName;
-            }
-
-            public bool IsProjectFile { get; }
-
-            public string File { get; }
-
-            public string? ItemType { get; }
-
-            public string? ItemName { get; }
         }
     }
 }
