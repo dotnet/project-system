@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Imaging;
@@ -178,14 +177,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 _project,
                                 nameFormat: "Import Tree Action: {1}");
 
-                        using (TrySuppressExecutionContextFlow())
-                        {
-                            _subscriptions.Add(ProjectDataSources.SyncLinkTo(
+                        _subscriptions.Add(
+                            ProjectDataSources.SyncLinkTo(
                                 importTreeSource.SyncLinkOptions(),
                                 intermediateBlock.SyncLinkOptions(),
                                 actionBlock,
                                 linkOptions: DataflowOption.PropagateCompletion));
-                        }
 
                         JoinUpstreamDataSources(_projectSubscriptionService.ImportTreeSource);
 
@@ -287,13 +284,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 IProjectTree2 AddChild(IProjectTree2 child) => (IProjectTree2)tree.Add(child).Parent!;
                                 IProjectTree2 ReplaceChild(IProjectTree2 oldChild, IProjectTree2 newChild) => (IProjectTree2)tree.Remove(oldChild).Add(newChild).Parent!;
                             }
-                        }
-
-                        static IDisposable TrySuppressExecutionContextFlow()
-                        {
-                            return ExecutionContext.IsFlowSuppressed()
-                                ? EmptyDisposable.Instance
-                                : ExecutionContext.SuppressFlow();
                         }
                     }
 
