@@ -14,7 +14,7 @@ This document provides a high-level overview of the new project property pages, 
 
 The following diagram identifies the major components of the new property pages, their layering, and which repo the contains the relevant code.
 
-![](property-page-architecture.drawio.svg)
+![](architecture.drawio.svg)
 
 ## Components
 
