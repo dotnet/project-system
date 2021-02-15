@@ -1,18 +1,20 @@
-## About
+# Back-end Architecture
 
-This document provides a high-level overview of the new project property pages, with an emphasis on helping the reader understand the major components and where the implementations of those components may be found. It does _not_ cover the design of individual components in depth, nor does it get into the implementation details. For the former, please see the CPS documentation in [Microsoft/VSProjectSystem](https://github.com/Microsoft/VSProjectSystem); for the latter your best course is to examine the code itself in the [CPS](https://devdiv.visualstudio.com/DevDiv/_git/CPS) and [dotnet/project-system](https://github.com/dotnet/project-system) repos.
+This document provides a high-level overview of the components that comprise the new project property pages back-end, with an emphasis on helping the reader understand the major components and where the implementations of those components may be found. It does _not_ cover the design of individual components in depth, nor does it get into the implementation details. For the former, please see the CPS documentation in [Microsoft/VSProjectSystem](https://github.com/Microsoft/VSProjectSystem); for the latter your best course is to examine the code itself in the [CPS](https://devdiv.visualstudio.com/DevDiv/_git/CPS) (Microsoft internal) and [dotnet/project-system](https://github.com/dotnet/project-system) repos.
 
 ## Layer Diagram
 
-The following diagram identifies the major components of the new property pages, their layering, and which repo the contains the relevant code.
+The following diagram identifies the major components of the new property pages back-end, their layering, and which repo the contains the relevant code.
 
-![](architecture.drawio.svg)
+![](back-end-architecture.drawio.svg)
 
 ## Components
 
 ### 1. UI
 
 The new UI is built on top of WPF, as it provides better support for VS theming and visual customization than WinForms. The UI elements are created on the fly based on the data returned by the Project Query API.
+
+For more details, see [UI Architecture](ui-architecture-md).
 
 ### 2. Project Query API
 
