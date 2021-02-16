@@ -16,7 +16,7 @@ Here is a complex example of a string property that demonstrates the majority of
 <StringProperty Name="MyProperty"
                 DisplayName="My property"
                 Description="This is my property."
-                HelpUrl="https://helpful.com/all-about-my-property"
+                HelpUrl="https://example.com/all-about-my-property"
                 Category="MyCategory">
   <StringProperty.Metadata>
     <NameValuePair Name="DependsOn" Value="OtherPage::OtherProperty;OtherPage::AnotherProperty" />
@@ -92,7 +92,9 @@ internal sealed class MyPropertyEditor : IPropertyEditor
 }
 ```
 
-The `IPropertyEditor` is quite thoroughly documented. See that documentation for guidance on implementing the interface correctly.
+The `IPropertyEditor` is quite thoroughly documented. See that API documentation for guidance on implementing the interface correctly.
+
+Note that the `IPropertyEditor` class is defined in CPS (Microsoft internal) however the documentation is available via IntelliSense.
 
 ## Property Dependencies
 

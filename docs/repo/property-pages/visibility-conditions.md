@@ -49,7 +49,7 @@ To make this language useful, we need the ability to perform operations with the
 | `(concat "a" "b")`     | `"ab"`  |
 | `(concat "a" "b" "c")` | `"abc"` |
 
-Hopefully these examples are straightforward enough. The parentheses envelop a list of values. The evaluation of that list involves treating the first item as a function identifier, and passing the remainder of that list to that function as arguments. You'll notice that some functions accept one argument (`not`), others two arguments (`eq`, `lt`), while others accept an arbitrary number of arguments (`add`, `concat`, `and`, `or`). The number of arguments that a function accepts is its _arity_. Functions that accept an arbitrary number of arguments are known as _variadic_.
+The parentheses envelop a list of values. The evaluation of that list involves treating the first item as a function identifier, and passing the remainder of that list to that function as arguments. You'll notice that some functions accept one argument (`not`), others two arguments (`eq`, `lt`), while others accept an arbitrary number of arguments (`add`, `concat`, `and`, `or`). The number of arguments that a function accepts is its _arity_. Functions that accept an arbitrary number of arguments are known as _variadic_.
 
 These expressions compose nicely. An expression may be an argument to another function. For example `(eq 5 (add 2 3))` is `true`.
 
@@ -93,10 +93,6 @@ The following table details the default set of visibility expression functions:
 | `unevaluated`          | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
 | `has-evaluated-value`  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
 | `is-codespaces-client` | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
-
-
-- `(unevaluated "MyPage" "MyProperty")` similarly returns the unevaluated value of the same property
-- `(has-evaluated "MyPage" "MyProperty")` similarly returns the unevaluated value of the same property
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
