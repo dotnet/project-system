@@ -96,10 +96,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '
             'AnalysisLevelComboBox
             '
+            resources.ApplyResources(Me.AnalysisLevelComboBox, "AnalysisLevelComboBox")
             Me.AnalysisLevelComboBox.AutoCompleteCustomSource.AddRange(New String() {resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource1"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource2"), resources.GetString("AnalysisLevelComboBox.AutoCompleteCustomSource3")})
             Me.AnalysisLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.AnalysisLevelComboBox.FormattingEnabled = True
-            resources.ApplyResources(Me.AnalysisLevelComboBox, "AnalysisLevelComboBox")
             Me.AnalysisLevelComboBox.Name = "AnalysisLevelComboBox"
             '
             'RunAnalyzersDuringLiveAnalysis
