@@ -4,7 +4,7 @@ This document details how properties are specified, which controls their appeara
 
 ## XAML Rule Files
 
-The set of properties to display in the UI are outlined declaratively in XAML files that ship with the Project System. This means that the vast majority of modifications to the Project Properties UI can be achieved by simply modifying an XML file.
+The set of properties to display in the UI are outlined declaratively in XAML files that ship with the Project System. This means that most modifications to the Project Properties UI can be achieved by simply modifying an XML file.
 
 Here we will walk through the structure of these files. Some familiarity with XAML rule files is assumed. We will not discuss data sources here.
 
@@ -59,7 +59,40 @@ The UI ships a default editor for each of the available property types.
 
 If a non-standard editor is required for a given property, one may be provided via MEF.
 
-⚠ Editor extensivility is under development, tracked by https://github.com/dotnet/project-system/issues/6895. This section will be updated when the issue is resolved.
+⚠ Editor extensibility is under development, tracked by https://github.com/dotnet/project-system/issues/6895. This section will be updated when the issue is resolved.
+
+Using custom editors requires both specifying the editor to use in the XAML rule file (along with any metadata is consumes), as well as ensuring an editor with corresponding name is exported in the client.
+
+To specify a custom editor, add to the property's `ValueEditors` collection in XAML:
+
+```xml
+<StringProperty Name="MyProperty">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="MyEditor">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="Key" Value="Value" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+If the `ValueEditors` collection contains multiple entries, the first one having a matching editor on the client is used. If no matching editors are found, the default property editor for the underlying property type (string, in this example) is used.
+
+To expose an editor, export an instance of `IPropertyEditor`, setting the `Name` metadata on the export to match the property's `ValueEditor` `EditorType`.
+
+Continuing the above example:
+
+```c#
+[Export(typeof(IPropertyEditor))]
+[ExportMetadata("Name", "MyEditor")]
+internal sealed class MyPropertyEditor : IPropertyEditor
+{
+    // ...
+}
+```
+
+The `IPropertyEditor` is quite thoroughly documented. See that documentation for guidance on implementing the interface correctly.
 
 ## Property Dependencies
 
