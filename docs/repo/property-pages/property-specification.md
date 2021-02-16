@@ -143,7 +143,7 @@ The editor must specify two metadata values:
 This goes in concert with the export of the corresponding no-op interception code:
 
 ```c#
-[ExportInterceptingPropertyValueProvider("InstallOtherFrameworks", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
@@ -180,7 +180,7 @@ The editor must specify two metadata values:
 This goes in concert with the export of the corresponding no-op interception code:
 
 ```c#
-[ExportInterceptingPropertyValueProvider("InstallOtherFrameworks", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+[ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
 internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
