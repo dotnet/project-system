@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="tr" original="../ProjectDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
-        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
-        <target state="translated">Yönetilen ve yerel kod için birlikte hata ayıklamayı (karma mod hata ayıklama olarak da bilinir) etkinleştirir. </target>
+        <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
+        <target state="needs-review-translation">Yönetilen ve yerel kod için birlikte hata ayıklamayı (karma mod hata ayıklama olarak da bilinir) etkinleştirir. </target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -20,6 +20,11 @@
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
         <target state="translated">Uzak makine kullan</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SqlDebugging|Description">
+        <source>Enable debugging of SQL scripts and stored procedures.</source>
+        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
