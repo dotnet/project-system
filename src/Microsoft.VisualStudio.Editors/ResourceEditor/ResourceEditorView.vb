@@ -2495,6 +2495,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Formatter As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             Dim Stream As New MemoryStream
             Formatter.Serialize(Stream, ResourcesData)
+            TelemetryLogger.LogBinaryFormatterEvent(NameOf(CreateDataObjectFromResources), NameOf(ResourceEditorView), TelemetryLogger.BinaryFormatterType.Serialize)
 
             '... and stuff into a DataObject
             Stream.Seek(0, SeekOrigin.Begin)
@@ -2994,6 +2995,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim MemoryStream As New MemoryStream(RawBytes)
             Dim Formatter As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             Dim ResourcesData As ResourcesDataFormat = DirectCast(Formatter.Deserialize(MemoryStream), ResourcesDataFormat)
+            TelemetryLogger.LogBinaryFormatterEvent(NameOf(DragDropPasteFromResourceEditor), NameOf(ResourceEditorView), TelemetryLogger.BinaryFormatterType.Deserialize)
 
             'Okay, we have our copied resources, let's add them
             AddResources(ResourcesData.Resources, CopyFileIfExists, AddToProject:=True)

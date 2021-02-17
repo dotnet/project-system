@@ -5,6 +5,7 @@ Imports System.ComponentModel.Design.Serialization
 Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
+Imports Microsoft.VisualStudio.Editors.Common
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
@@ -111,7 +112,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="Stream">The stream to load from</param>
         Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
             Dim f As New BinaryFormatter
-            Return DirectCast(f.Deserialize(Stream), GenericComponentSerializationStore)
+            Dim StreamObject As Object = f.Deserialize(Stream)
+            TelemetryLogger.LogBinaryFormatterEvent(NameOf(Load), NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterType.Deserialize)
+            Return DirectCast(StreamObject, GenericComponentSerializationStore)
         End Function
 
         ''' <summary>
@@ -126,6 +129,8 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             Dim f As New BinaryFormatter
             f.Serialize(Stream, Me)
+            TelemetryLogger.LogBinaryFormatterEvent(NameOf(Save), NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterType.Serialize)
+
         End Sub
 
 #End Region
@@ -470,6 +475,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Else
                     Dim MemoryStream As New MemoryStream
                     Call New BinaryFormatter().Serialize(MemoryStream, [Object])
+                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializeObject), NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterType.Serialize)
                     Return MemoryStream.ToArray()
                 End If
             End Function
@@ -479,7 +485,9 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Return Nothing
                 Else
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return (New BinaryFormatter).Deserialize(MemoryStream)
+                    Dim StreamObject As Object = (New BinaryFormatter).Deserialize(MemoryStream)
+                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(DeserializeObject), NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterType.Deserialize)
+                    Return StreamObject
                 End If
             End Function
 

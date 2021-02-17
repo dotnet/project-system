@@ -1641,6 +1641,20 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
+            Private Const BinaryFormatterEventName As String = "vs/projectsystem/editors/binaryformatter"
+            Public Enum BinaryFormatterType
+                Serialize = 0
+                Deserialize = 1
+            End Enum
+
+            Public Shared Sub LogBinaryFormatterEvent(functionName As String, className As String, type As BinaryFormatterType)
+                Dim userTask = New UserTaskEvent(BinaryFormatterEventName, TelemetryResult.Success)
+                userTask.Properties("vs.projectsystem.editors.binaryformatter.functionname") = functionName
+                userTask.Properties("vs.projectsystem.editors.binaryformatter.classname") = className
+                userTask.Properties("vs.projectsystem.editors.binaryformatter.type") = type
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
         End Class
 #End Region
     End Module
