@@ -50,9 +50,10 @@
 
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging"
-                Description="Enables debugging for managed and native code together, also known as mixed-mode debugging." />
+                Description="Enable debugging for managed and native code together, also known as mixed-mode debugging." />
 
   <BoolProperty Name="SqlDebugging"
-                DisplayName="Enable SQL Server debugging" />
+                DisplayName="Enable SQL Server debugging"
+                Description="Enable debugging of SQL scripts and stored procedures." />
 
 </Rule>
