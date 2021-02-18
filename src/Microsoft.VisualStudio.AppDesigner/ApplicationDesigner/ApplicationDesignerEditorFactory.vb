@@ -7,7 +7,6 @@ Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
-Imports Microsoft.VisualStudio.Telemetry
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
 
@@ -182,14 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             ' If we're using the new project properties editor, delegate to its editor factory
             Dim shouldUseNewEditor As Boolean = UseNewEditor(Hierarchy)
 
-            Dim TelemetryEventRootPath As String = "vs/projectsystem/propertiespages/"
-            Dim TelemetryPropertyPrefix As String = "vs.projectsystem.propertiespages."
-
-            Dim telemetryEvent As TelemetryEvent = New TelemetryEvent(TelemetryEventRootPath + "CreateLegacyEditor")
-            telemetryEvent.Properties(TelemetryPropertyPrefix + "CreateLegacyEditor.UseNewEditor") = shouldUseNewEditor
-            telemetryEvent.Properties(TelemetryPropertyPrefix + "CreateLegacyEditor.FileName") = New TelemetryPiiProperty(FileName)
-            telemetryEvent.Properties(TelemetryPropertyPrefix + "CreateLegacyEditor.PhysicalView") = PhysicalView
-            TelemetryService.DefaultSession.PostEvent(telemetryEvent)
+            Common.TelemetryLogger.LogEditorCreation(shouldUseNewEditor, FileName, PhysicalView)
 
             If shouldUseNewEditor Then
                 Return GetNewEditorFactory().CreateEditorInstance(
