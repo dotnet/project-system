@@ -186,6 +186,11 @@
                 DisplayName="Treat warnings as errors"
                 Description="Used to specify which warnings are treated as errors."
                 Category="ErrorsAndWarnings" >
+    
+    <EnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception" />
+    </EnumProperty.DataSource>
+    
     <EnumValue Name="false"
                DisplayName="None" />
     <EnumValue Name="true"
@@ -196,7 +201,27 @@
                   DisplayName="Treat specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                   Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
-                  Category="ErrorsAndWarnings" />
+                  Category="ErrorsAndWarnings">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "false")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
+
+  <StringProperty Name="WarningsNotAsErrors"
+                  DisplayName="Exempt specific warnings from being treated as errors"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
+                  Description="Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Category="ErrorsAndWarnings">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "true")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <StringProperty Name="BaseOutputPath"
                   DisplayName="Base output path"
