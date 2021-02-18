@@ -4,6 +4,7 @@ Imports System.ComponentModel.Design
 Imports System.Drawing
 Imports System.IO
 Imports System.Reflection
+Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
@@ -626,6 +627,12 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Private Const UNKNOWN_PAGE As Byte = &HFF
             Private Const DEFAULT_PAGE As Byte = 0
 
+            Private Const ProjectSystemEventNamePrefix As String = "vs/projectsystem/"
+            Private Const AppDesignerEventNamePrefix As String = ProjectSystemEventNamePrefix + "appdesigner/"
+
+            Private Const ProjectSystemPropertyNamePrefix As String = "vs.projectsystem."
+            Private Const AppDesignerPropertyNamePrefix As String = ProjectSystemPropertyNamePrefix + "appdesigner."
+
             ''' <summary>
             ''' Map a known property page or designer id to telemetry display name to log.
             ''' </summary>
@@ -648,34 +655,39 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 LogAppDesignerPageOpened(pageId, pageGuid, tabTitle, alreadyOpened)
             End Sub
 
+            Private Const PageOpenedEventName As String = AppDesignerEventNamePrefix + "page-opened"
+            Private Const PageOpenedPropertyName As String = AppDesignerPropertyNamePrefix + "page-opened"
+            Private Const PageOpenedPropertyNamePrefix As String = PageOpenedPropertyName + "."
+
             Private Shared Sub LogAppDesignerPageOpened(pageId As Byte, Optional pageGuid As Guid? = Nothing, Optional tabTitle As String = Nothing, Optional alreadyOpened As Boolean = False)
-                Dim userTask = New UserTaskEvent("vs/projectsystem/appdesigner/page-opened", TelemetryResult.Success)
-                userTask.Properties("vs.projectsystem.appdesigner.page-opened") = pageId
+                Dim userTask = New UserTaskEvent(PageOpenedEventName, TelemetryResult.Success)
+                userTask.Properties(PageOpenedPropertyName) = pageId
 
                 If pageGuid IsNot Nothing Then
-                    userTask.Properties("vs.projectsystem.appdesigner.page-opened.pageguid") = pageGuid.Value.ToString()
+                    userTask.Properties(PageOpenedPropertyNamePrefix + "pageguid") = pageGuid.Value.ToString()
                 End If
 
                 If tabTitle IsNot Nothing Then
-                    userTask.Properties("vs.projectsystem.appdesigner.page-opened.tabtitle") = tabTitle
+                    userTask.Properties(PageOpenedPropertyNamePrefix + "tabtitle") = tabTitle
                 End If
 
-                userTask.Properties("vs.projectsystem.appdesigner.page-opened.alreadyopened") = alreadyOpened
+                userTask.Properties(PageOpenedPropertyNamePrefix + "alreadyopened") = alreadyOpened
 
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
-            Private Const BinaryFormatterEventName As String = "vs/projectsystem/appdesigner/binaryformatter"
-            Public Enum BinaryFormatterType
+            Private Const BinaryFormatterEventName As String = AppDesignerEventNamePrefix + "binaryformatter"
+            Private Const BinaryFormatterPropertyNamePrefix As String = AppDesignerPropertyNamePrefix + "binaryformatter."
+            Public Enum BinaryFormatterOperation
                 Serialize = 0
                 Deserialize = 1
             End Enum
 
-            Public Shared Sub LogBinaryFormatterEvent(functionName As String, className As String, type As BinaryFormatterType)
+            Public Shared Sub LogBinaryFormatterEvent(className As String, operation As BinaryFormatterOperation, <CallerMemberName> Optional functionName As String = Nothing)
                 Dim userTask = New UserTaskEvent(BinaryFormatterEventName, TelemetryResult.Success)
-                userTask.Properties("vs.projectsystem.appdesigner.binaryformatter.functionname") = functionName
-                userTask.Properties("vs.projectsystem.appdesigner.binaryformatter.classname") = className
-                userTask.Properties("vs.projectsystem.appdesigner.binaryformatter.type") = type
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "functionname") = functionName
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "classname") = className
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "operation") = operation
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
