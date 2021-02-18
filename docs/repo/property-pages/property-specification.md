@@ -220,3 +220,7 @@ It is possible to achieve this by authoring a property whose data source uses `P
 ## Localization
 
 XAML files in the dotnet/project-system repo are configured for automatic localization via XLF files, which are automatically generated and updated during build via [xliff-tasks](https://github.com/dotnet/xliff-tasks) MSBuild tasks/targets.
+
+## Examples
+
+- [Implement WarningsNotAsErrors in the new property pages](https://github.com/dotnet/project-system/pull/6971) - Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
