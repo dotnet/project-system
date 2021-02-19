@@ -4,6 +4,7 @@ Imports System.ComponentModel.Design
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.Versioning
 Imports System.Text
@@ -1611,7 +1612,13 @@ Namespace Microsoft.VisualStudio.Editors.Common
 #Region "Telemetry"
         Public Class TelemetryLogger
 
-            Private Const InputXmlFormEventName As String = "vs/projectsystem/editors/inputxmlform"
+            Private Const ProjectSystemEventNamePrefix As String = "vs/projectsystem/"
+            Private Const EditorsEventNamePrefix As String = ProjectSystemEventNamePrefix + "editors/"
+
+            Private Const ProjectSystemPropertyNamePrefix As String = "vs.projectsystem."
+            Private Const EditorsPropertyNamePrefix As String = ProjectSystemPropertyNamePrefix + "editors."
+
+            Private Const InputXmlFormEventName As String = EditorsEventNamePrefix + "inputxmlform"
             Public Enum InputXmlFormEvent
                 FormOpened
                 FromFileButtonClicked
@@ -1621,7 +1628,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Public Shared Sub LogInputXmlFormEvent(eventValue As InputXmlFormEvent)
                 Dim userTask = New UserTaskEvent(InputXmlFormEventName, TelemetryResult.Success)
-                userTask.Properties("vs.projectsystem.editors.inputxmlform") = eventValue
+                userTask.Properties(EditorsPropertyNamePrefix + "inputxmlform") = eventValue
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
@@ -1629,7 +1636,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
 
-            Private Const AdvBuildSettingsPropPageEventName As String = "vs/projectsystem/appdesigner/advbuildsettingsproppage"
+            Private Const AdvBuildSettingsPropPageEventName As String = ProjectSystemEventNamePrefix + "appdesigner/advbuildsettingsproppage"
             Public Enum AdvBuildSettingsPropPageEvent
                 FormOpened = 0
                 LangVersionMoreInfoLinkClicked = 1
@@ -1637,7 +1644,22 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Public Shared Sub LogAdvBuildSettingsPropPageEvent(eventValue As AdvBuildSettingsPropPageEvent)
                 Dim userTask = New UserTaskEvent(AdvBuildSettingsPropPageEventName, TelemetryResult.Success)
-                userTask.Properties("vs.projectsystem.appdesigner.advbuildsettingsproppage") = eventValue
+                userTask.Properties(ProjectSystemPropertyNamePrefix + "appdesigner.advbuildsettingsproppage") = eventValue
+                TelemetryService.DefaultSession.PostEvent(userTask)
+            End Sub
+
+            Private Const BinaryFormatterEventName As String = EditorsEventNamePrefix + "binaryformatter"
+            Private Const BinaryFormatterPropertyNamePrefix As String = EditorsPropertyNamePrefix + "binaryformatter."
+            Public Enum BinaryFormatterOperation
+                Serialize = 0
+                Deserialize = 1
+            End Enum
+
+            Public Shared Sub LogBinaryFormatterEvent(className As String, operation As BinaryFormatterOperation, <CallerMemberName> Optional functionName As String = Nothing)
+                Dim userTask = New UserTaskEvent(BinaryFormatterEventName, TelemetryResult.Success)
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "functionname") = functionName
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "classname") = className
+                userTask.Properties(BinaryFormatterPropertyNamePrefix + "operation") = operation
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
