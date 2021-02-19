@@ -38,17 +38,17 @@ namespace Microsoft.VisualStudio.Packaging
 
         public override void Write(string message)
         {
-            if (Debugger.IsLogging())
+            if (System.Diagnostics.Debugger.IsLogging())
             {
-                Debugger.Log(0, null, message);
+                System.Diagnostics.Debugger.Log(0, null, message);
             }
         }
 
         public override void WriteLine(string message)
         {
-            if (Debugger.IsLogging())
+            if (System.Diagnostics.Debugger.IsLogging())
             {
-                Debugger.Log(0, null, message + Environment.NewLine);
+                System.Diagnostics.Debugger.Log(0, null, message + Environment.NewLine);
             }
         }
     }
