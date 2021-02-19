@@ -291,9 +291,6 @@
   <data name="&gt;&gt;AnalysisLevelLabel.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="AnalysisLevelComboBox.AccessibleName" xml:space="preserve">
-    <value>Analysis level value</value>
-  </data>
   <data name="AnalysisLevelComboBox.AutoCompleteCustomSource" xml:space="preserve">
     <value>preview</value>
   </data>
