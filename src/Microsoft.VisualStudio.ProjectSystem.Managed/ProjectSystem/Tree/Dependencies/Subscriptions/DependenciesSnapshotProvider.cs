@@ -311,7 +311,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
         private Task OnConfiguredProjectEvaluatedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> e)
         {
             // If "TargetFrameworks" property has changed, we need to refresh the project context and subscriptions.
-            if (HasTargetFrameworksChanged())
+            // If no context exists yet, create one.
+            if (HasTargetFrameworksChanged() || _context.Current == null)
             {
                 return UpdateProjectContextAndSubscriptionsAsync();
             }
