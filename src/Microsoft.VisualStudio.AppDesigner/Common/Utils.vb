@@ -676,14 +676,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
-            Public Shared Sub LogEditorCreation(useNewEditor As Boolean, fileName As String, physicalView As String)
-                Dim telemetryEventRootPath As String = "vs/projectsystem/propertiespages/"
-                Dim telemetryPropertyPrefix As String = "vs.projectsystem.propertiespages."
+            Private Const EditorCreationEventName As String = ProjectSystemEventNamePrefix + "propertiespages/createEditor"
+            Private Const EditorCreationPropertyNamePrefix As String = ProjectSystemPropertyNamePrefix + "propertiespages.createEditor."
 
-                Dim telemetryEvent As TelemetryEvent = New TelemetryEvent(telemetryEventRootPath + "createEditor")
-                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.UseNewEditor") = useNewEditor
-                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.FileName") = New TelemetryPiiProperty(fileName)
-                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.PhysicalView") = physicalView
+            Public Shared Sub LogEditorCreation(useNewEditor As Boolean, fileName As String, physicalView As String)
+                Dim telemetryEvent As TelemetryEvent = New TelemetryEvent(EditorCreationEventName)
+                telemetryEvent.Properties(EditorCreationPropertyNamePrefix + "UseNewEditor") = useNewEditor
+                telemetryEvent.Properties(EditorCreationPropertyNamePrefix + "FileName") = New TelemetryPiiProperty(fileName)
+                telemetryEvent.Properties(EditorCreationPropertyNamePrefix + "PhysicalView") = physicalView
                 TelemetryService.DefaultSession.PostEvent(telemetryEvent)
             End Sub
 

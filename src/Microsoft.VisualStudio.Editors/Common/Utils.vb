@@ -1636,7 +1636,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 TelemetryService.DefaultSession.PostFault(InputXmlFormEventName, "Exception encountered during Xml Schema Inference", ex)
             End Sub
 
-            ' TODO: Not sure why this is using "appdesigner" in the editors project
             Private Const AdvBuildSettingsPropPageEventName As String = ProjectSystemEventNamePrefix + "appdesigner/advbuildsettingsproppage"
             Public Enum AdvBuildSettingsPropPageEvent
                 FormOpened = 0
