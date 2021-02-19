@@ -179,7 +179,11 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements IVsEditorFactory.CreateEditorInstance
 
             ' If we're using the new project properties editor, delegate to its editor factory
-            If UseNewEditor(Hierarchy) Then
+            Dim shouldUseNewEditor As Boolean = UseNewEditor(Hierarchy)
+
+            Common.TelemetryLogger.LogEditorCreation(shouldUseNewEditor, FileName, PhysicalView)
+
+            If shouldUseNewEditor Then
                 Return GetNewEditorFactory().CreateEditorInstance(
                     vscreateeditorflags,
                     FileName,
