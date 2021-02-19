@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
             // a snapshot is produced).
-            ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(5000);
+            ILaunchSettings? currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(5000);
             ILaunchProfile? activeProfile = currentProfiles?.ActiveProfile;
 
             // Should have a profile

@@ -352,6 +352,16 @@
         <target state="translated">将特定警告视为错误</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
+        <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
+        <source>Exempt specific warnings from being treated as errors</source>
+        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

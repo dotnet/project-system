@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        private sealed class ItemComparer : IEqualityComparer<(string path, string? link, CopyType copyType)>
+        internal sealed class ItemComparer : IEqualityComparer<(string path, string? link, CopyType copyType)>
         {
             public static readonly ItemComparer Instance = new();
 

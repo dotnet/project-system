@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
         }
 
-        private static ProjectId GetProjectId(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost projectContextHost)
+        private static ProjectId? GetProjectId(IProjectThreadingService threadingService, IActiveWorkspaceProjectContextHost projectContextHost)
         {
             return threadingService.ExecuteSynchronously(() =>
             {

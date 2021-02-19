@@ -723,16 +723,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// This function blocks until a snapshot is available. It will return null if the timeout occurs
         /// prior to the snapshot is available
         /// </summary>
-        public async Task<ILaunchSettings> WaitForFirstSnapshot(int timeout)
+        public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
         {
             if (CurrentSnapshot != null)
             {
                 return CurrentSnapshot;
             }
 
-            await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout);
+            if (await _firstSnapshotCompletionSource.Task.TryWaitForCompleteOrTimeout(timeout))
+            {
+                Assumes.NotNull(CurrentSnapshot);
+            }
 
-            Assumes.NotNull(CurrentSnapshot);
             return CurrentSnapshot;
         }
 
@@ -865,7 +867,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </summary>
         public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
         {
-            ILaunchSettings currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
+            ILaunchSettings? currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))
             {
                 string fileName = await GetLaunchSettingsFilePathAsync();

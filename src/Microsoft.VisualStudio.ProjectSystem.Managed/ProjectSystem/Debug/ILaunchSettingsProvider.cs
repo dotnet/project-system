@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         IReceivableSourceBlock<ILaunchSettings> SourceBlock { get; }
 
-        ILaunchSettings CurrentSnapshot { get; }
+        ILaunchSettings? CurrentSnapshot { get; }
 
         [Obsolete("Use ILaunchSettingsProvider2.GetLaunchSettingsFilePathAsync instead.")]
         string LaunchSettingsFile { get; }
@@ -34,7 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Blocks until at least one snapshot has been generated.
         /// </summary>
         /// <param name="timeout">The timeout in milliseconds.</param>
-        Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
+        /// <returns>
+        /// The current <see cref="ILaunchSettings"/> snapshot, or <see langword="null"/> if the
+        /// timeout expires before the snapshot become available.
+        /// </returns>
+        Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout);
 
         /// <summary>
         /// Adds the given profile to the list and saves to disk. If a profile with the same

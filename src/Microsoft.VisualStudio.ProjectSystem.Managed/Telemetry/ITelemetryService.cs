@@ -89,5 +89,13 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <param name="value">Value to hashed.</param>
         /// <returns>Hashed value.</returns>
         string HashValue(string value);
+
+        /// <summary>
+        /// Computes a hash value that can be used to differentiate the
+        /// projects in telemetry events.
+        /// </summary>
+        /// <param name="project">The project whose identifying hash is required.</param>
+        /// <returns>A unique identifier for the project.</returns>
+        string GetProjectId(UnconfiguredProject project);
     }
 }

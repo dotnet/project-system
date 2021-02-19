@@ -676,6 +676,17 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
+            Public Shared Sub LogEditorCreation(useNewEditor As Boolean, fileName As String, physicalView As String)
+                Dim telemetryEventRootPath As String = "vs/projectsystem/propertiespages/"
+                Dim telemetryPropertyPrefix As String = "vs.projectsystem.propertiespages."
+
+                Dim telemetryEvent As TelemetryEvent = New TelemetryEvent(telemetryEventRootPath + "createEditor")
+                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.UseNewEditor") = useNewEditor
+                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.FileName") = New TelemetryPiiProperty(fileName)
+                telemetryEvent.Properties(telemetryPropertyPrefix + "createEditor.PhysicalView") = physicalView
+                TelemetryService.DefaultSession.PostEvent(telemetryEvent)
+            End Sub
+
             Private Const BinaryFormatterEventName As String = AppDesignerEventNamePrefix + "binaryformatter"
             Private Const BinaryFormatterPropertyNamePrefix As String = AppDesignerPropertyNamePrefix + "binaryformatter."
             Public Enum BinaryFormatterOperation

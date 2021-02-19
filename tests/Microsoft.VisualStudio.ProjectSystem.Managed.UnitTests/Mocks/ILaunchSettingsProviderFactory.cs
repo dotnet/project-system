@@ -16,20 +16,36 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// Creates a mock <see cref="ILaunchSettingsProvider"/> for testing purposes.
         /// </summary>
         /// <param name="activeProfileName">The name of the active profile in the new object.</param>
-        /// <param name="launchProfiles">The set of launch profiles to expose through the provider.</param>
+        /// <param name="launchProfiles">The initial set of launch profiles to expose through the provider.</param>
         /// <param name="setActiveProfileCallback">An optional method to call when the active profile is set.</param>
-        /// <param name="updateLaunchSettingsCallback">An optional method to call when the when the set of launch settings is updated</param>
+        /// <param name="updateLaunchSettingsCallback">An optional method to call when the set of launch settings is updated</param>
+        /// <param name="getProfilesCallback">
+        /// A optional method to call when the set of profile is queried. Given the initial set of <paramref name="launchProfiles"/> as an argument.
+        /// </param>
+        /// <param name="addOrUpdateProfileCallback">An optional method to call when a profile is added or updated.</param>
+        /// <param name="removeProfileCallback">An optional methods to call when a profile is removed.</param>
         public static ILaunchSettingsProvider Create(
             string? activeProfileName = null,
             IEnumerable<ILaunchProfile>? launchProfiles = null,
             Action<string>? setActiveProfileCallback = null,
-            Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
+            Action<ILaunchSettings>? updateLaunchSettingsCallback = null,
+            Func<ImmutableList<ILaunchProfile>, ImmutableList<ILaunchProfile>>? getProfilesCallback = null,
+            Action<ILaunchProfile, bool>? addOrUpdateProfileCallback = null,
+            Action<string>? removeProfileCallback = null)
         {
             var launchSettingsMock = new Mock<ILaunchSettings>();
 
-            if (launchProfiles != null)
+            var initialLaunchProfiles = launchProfiles is not null
+                ? launchProfiles.ToImmutableList()
+                : ImmutableList<ILaunchProfile>.Empty;
+
+            if (getProfilesCallback is not null)
             {
-                launchSettingsMock.Setup(t => t.Profiles).Returns(launchProfiles.ToImmutableList());
+                launchSettingsMock.Setup(t => t.Profiles).Returns(() => getProfilesCallback(initialLaunchProfiles));
+            }
+            else
+            {
+                launchSettingsMock.Setup(t => t.Profiles).Returns(initialLaunchProfiles);
             }
 
             if (activeProfileName != null)
@@ -42,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var launchSettings = launchSettingsMock.Object;
 
             var settingsProviderMock = new Mock<ILaunchSettingsProvider>();
-            settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult(launchSettings));
+            settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult<ILaunchSettings?>(launchSettings));
 
             if (setActiveProfileCallback != null)
             {
@@ -60,6 +76,26 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     .Returns<ILaunchSettings>(v =>
                     {
                         updateLaunchSettingsCallback(v);
+                        return Task.CompletedTask;
+                    });
+            }
+
+            if (addOrUpdateProfileCallback is not null)
+            {
+                settingsProviderMock.Setup(t => t.AddOrUpdateProfileAsync(It.IsAny<ILaunchProfile>(), It.IsAny<bool>()))
+                    .Returns<ILaunchProfile, bool>((profile, addToFront) =>
+                    {
+                        addOrUpdateProfileCallback(profile, addToFront);
+                        return Task.CompletedTask;
+                    });
+            }
+
+            if (removeProfileCallback is not null)
+            {
+                settingsProviderMock.Setup(t => t.RemoveProfileAsync(It.IsAny<string>()))
+                    .Returns<string>(name =>
+                    {
+                        removeProfileCallback(name);
                         return Task.CompletedTask;
                     });
             }

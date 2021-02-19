@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../ProjectDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
-        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
-        <target state="translated">관리형 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)할 수 있도록 설정합니다. </target>
+        <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
+        <target state="needs-review-translation">관리형 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)할 수 있도록 설정합니다. </target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -20,6 +20,11 @@
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
         <target state="translated">원격 머신 사용</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SqlDebugging|Description">
+        <source>Enable debugging of SQL scripts and stored procedures.</source>
+        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">

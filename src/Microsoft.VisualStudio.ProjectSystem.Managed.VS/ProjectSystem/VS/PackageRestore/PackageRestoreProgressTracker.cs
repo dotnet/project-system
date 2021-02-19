@@ -2,6 +2,7 @@
 
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
@@ -18,6 +19,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
         private readonly IPackageRestoreDataSource _dataSource;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
+        private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
+        private long _telemetryPackageRestoreProgressTrackerId;
 
         [ImportingConstructor]
         public PackageRestoreProgressTracker(
@@ -26,7 +29,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectFaultHandlerService projectFaultHandlerService,
             IDataProgressTrackerService dataProgressTrackerService,
             IPackageRestoreDataSource dataSource,
-            IProjectSubscriptionService projectSubscriptionService)
+            IProjectSubscriptionService projectSubscriptionService,
+            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -35,15 +39,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _dataProgressTrackerService = dataProgressTrackerService;
             _dataSource = dataSource;
             _projectSubscriptionService = projectSubscriptionService;
+            _packageReferenceTelemetryService = packageReferenceTelemetryService;
         }
 
         public Task ActivateAsync()
         {
+            _telemetryPackageRestoreProgressTrackerId++;
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerActivating, _telemetryPackageRestoreProgressTrackerId);
+
             return LoadAsync();
         }
 
         public Task DeactivateAsync()
         {
+            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreProgressTrackerDeactivating, _telemetryPackageRestoreProgressTrackerId);
+
             return UnloadAsync();
         }
 
@@ -55,7 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _projectFaultHandlerService,
                 _dataProgressTrackerService,
                 _dataSource,
-                _projectSubscriptionService);
+                _projectSubscriptionService,
+                _packageReferenceTelemetryService,
+                _telemetryPackageRestoreProgressTrackerId);
         }
     }
 }

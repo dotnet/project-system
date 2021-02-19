@@ -57,9 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Requires.NotNull(accessor, nameof(accessor));
 
-            // TODO: https://github.com/dotnet/project-system/issues/353.
-            await _threadingService.SwitchToUIThread();
-
             try
             {
                 accessor.Context.Dispose();

@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -19,20 +20,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IActiveConfiguredValue<IWorkspaceProjectContextHost?> _activeHost;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
         private readonly IUnconfiguredProjectTasksService _tasksService;
+        private readonly IUnconfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
         [ImportingConstructor]
         public ActiveWorkspaceProjectContextHost(
             IActiveConfiguredValue<IWorkspaceProjectContextHost?> activeHost,
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
-            IUnconfiguredProjectTasksService tasksService)
+            IUnconfiguredProjectTasksService tasksService,
+            IUnconfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
         {
             _activeHost = activeHost;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
             _tasksService = tasksService;
+            _languageServiceTelemetryService = languageServiceTelemetryService;
         }
 
         public async Task PublishAsync(CancellationToken cancellationToken = default)
         {
+            _languageServiceTelemetryService.PostActiveWorkspaceProjectContextHostPublishingEvent();
+
             // The active configuration can change multiple times during initialization in cases where we've incorrectly
             // guessed the configuration via our IProjectConfigurationDimensionsProvider3 implementation.
             // Wait until that has been determined before we publish the wrong configuration.
@@ -80,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        public async Task<T> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
+        public async Task<T?> OpenContextForWriteAsync<T>(Func<IWorkspaceProjectContextAccessor, Task<T>> action)
         {
             while (true)
             {
@@ -92,7 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         return await host.OpenContextForWriteAsync(action);
                     }
 
-                    return default!;
+                    return default;
                 }
                 catch (ActiveProjectConfigurationChangedException)
                 {   // Host was unloaded because configuration changed, retry on new config

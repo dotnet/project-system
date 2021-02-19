@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.Telemetry;
 using Moq;
 using Xunit;
 
@@ -561,7 +562,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
                                     .ToArray();
 
-            var applyChangesToWorkspaceContext = new ApplyChangesToWorkspaceContext(project, logger, factories);
+            IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService = IConfiguredProjectLanguageServiceTelemetryServiceFactory.Create();
+
+            var applyChangesToWorkspaceContext = new ApplyChangesToWorkspaceContext(project, logger, factories, languageServiceTelemetryService);
 
             applyChangesToWorkspaceContext.CommandLineParsers.Add(commandLineParser);
 
