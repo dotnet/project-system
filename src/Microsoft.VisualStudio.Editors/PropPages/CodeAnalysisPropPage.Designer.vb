@@ -101,6 +101,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Me.AnalysisLevelComboBox.FormattingEnabled = True
             resources.ApplyResources(Me.AnalysisLevelComboBox, "AnalysisLevelComboBox")
             Me.AnalysisLevelComboBox.Name = "AnalysisLevelComboBox"
+            Me.AnalysisLevelComboBox.AccessibleName = Me.AnalysisLevelLabel.Text
             '
             'RunAnalyzersDuringLiveAnalysis
             '
