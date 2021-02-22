@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private void PublishFiles(string[] files)
         {
             _version++;
-            _broadcastBlock.Post(new ProjectVersionedValue<string[]>(
+            _broadcastBlock?.Post(new ProjectVersionedValue<string[]>(
                 files,
                 Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
         }

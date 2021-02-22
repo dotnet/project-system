@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private void PublishSnapshot(DesignTimeInputSnapshot snapshot)
         {
             _version++;
-            _broadcastBlock.Post(new ProjectVersionedValue<DesignTimeInputSnapshot>(
+            _broadcastBlock?.Post(new ProjectVersionedValue<DesignTimeInputSnapshot>(
                 snapshot,
                 Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
         }
