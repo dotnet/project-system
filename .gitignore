@@ -169,3 +169,4 @@ $RECYCLE.BIN/
 .DS_Store
 TRXUnit.zip
 RoslynTools.VSIXExpInstaller.zip
+*_wpftmp.csproj
