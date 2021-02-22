@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             EnsureInitialized(true);
 
             _version++;
-            await _broadcastBlock.SendAsync(new ProjectVersionedValue<T>(
+            await _broadcastBlock!.SendAsync(new ProjectVersionedValue<T>(
                      value,
                      ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, _version)));
         }
