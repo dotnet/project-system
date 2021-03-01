@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug.Designer
                 // When the client requests the service we expect it to pass the target project's
                 // GUID, which is how we figure out which list of launch profiles to provide.
                 if (options.ActivationArguments is null
-                    || !options.ActivationArguments.TryGetValue("ProjectGuid", out string projectGuidString))
+                    || !options.ActivationArguments.TryGetValue(ProjectGuidActivationArgumentName, out string projectGuidString))
                 {
                     throw new InvalidOperationException($"Missing required activation argument \"{ProjectGuidActivationArgumentName}\".");
                 }
