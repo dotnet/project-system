@@ -60,6 +60,7 @@ M:Microsoft.VisualStudio.ProjectSystem.IProjectThreadingService.Fork(System.Func
 
 T:System.Threading.Tasks.Dataflow.ActionBlock`1;Use DataflowUtilities.LinkToAction/LinkToAsyncAction or DataflowBlockFactory.CreateActionBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.BroadcastBlock`1;Use DataflowBlockSlim.CreateBroadcastBlock to reduce memory and avoid the overhead of the built-in blocks
+T:System.Threading.Tasks.Dataflow.BufferBlock`1;Use DataflowBlockSlim.CreateSimpleBufferBlock to reduce memory and avoid the overhead of the built-in blocks
 T:System.Threading.Tasks.Dataflow.TransformManyBlock`2;Use DataflowBlockSlim.CreateTransformManyBlock to reduce memory and avoid the overhead of the built-in blocks
 
 M:Microsoft.VisualStudio.ProjectSystem.DataflowBlockSlim.CreateActionBlock`1(System.Action{``0},System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions);Use DataflowBlockFactory.CreateActionBlock to ensure failed blocks are reported as non-fatal watsons and assigned to the correct component
