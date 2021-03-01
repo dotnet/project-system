@@ -211,7 +211,9 @@ When a property's value represents a file or directory path, it should be modell
                 ...>
 ```
 
-### Synthetic Properties
+This will produce an editor that comprises a text box and _Browse_ button, which launches a file or directory picker dialog.
+
+## Synthetic Properties
 
 Sometimes it is useful to present the user with a property that does not directly map to any persisted property value. For example, there may be multiple modes that a feature works in, where each mode has a set of properties that apply only during that mode. From the user's perspective, it may make sense to present a synthetic property that selects the mode to use, which then causes only properties relevant to that mode to appear on screen. This synthetic property is not read or written to the project file.
 
