@@ -14,12 +14,19 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug.Designer
 {
+    /// <summary>
+    /// Reponsible for proffering the <see cref="ILaunchProfileEditorService"/> through
+    /// the <see cref="IServiceBroker"/>.
+    /// </summary>
     [Export(typeof(IPackageService))]
     internal sealed class LaunchProfileEditorServiceFactory : IPackageService, IDisposable
     {
         private const string LaunchProfileEditorServiceName = "Microsoft.VisualStudio.ProjectSystem.Managed.LaunchProfileEditorService";
         private const string ProjectGuidActivationArgumentName = "ProjectGuid";
 
+        /// <summary>
+        /// The actual service descriptor the client UI would use to request the service.
+        /// </summary>
         internal static readonly ServiceJsonRpcDescriptor LaunchProfileEditorServiceDescriptorV1 = new(
             new ServiceMoniker(LaunchProfileEditorServiceName, new Version(0, 1)),
             ServiceJsonRpcDescriptor.Formatters.UTF8,
@@ -50,6 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug.Designer
             {
                 await authorizationServiceClient.AuthorizeOrThrowAsync(WellKnownProtectedOperations.CreateClientIsOwner(), cancellationToken);
 
+                // When the client requests the service we expect it to pass the target project's
+                // GUID, which is how we figure out which list of launch profiles to provide.
                 if (options.ActivationArguments is null
                     || !options.ActivationArguments.TryGetValue("ProjectGuid", out string projectGuidString))
                 {
@@ -61,11 +70,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug.Designer
                     throw new InvalidOperationException($"Unable to parse activation argument \"{ProjectGuidActivationArgumentName}\": \"{projectGuidString}\".");
                 }
 
+                // We also expect the client to provide an ILaunchProfileEditorClientSession; this
+                // is the interface we use when we want to communicate information back to the
+                // client (e.g., the list of launch profiles, updates to properties, etc.).
                 if (options.ClientRpcTarget is not ILaunchProfileEditorClientSession clientSession)
                 {
                     throw new InvalidOperationException($"Missing client RPC target \"{nameof(ILaunchProfileEditorClientSession)}\".");
                 }
 
+                // Obtain the MEF-exported ILaunchProfileEditorService so we can delegate to that.
                 if (_launchProfileEditorService is null)
                 {
                     _launchProfileEditorService = _projectServiceAccessor
@@ -76,6 +89,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug.Designer
                         .Value;
                 }
 
+                // Create the new ILaunchProfileEditorConnection that we pass back to the client,
+                // so the client can add/remove/update the launch profiles.
                 if (await _launchProfileEditorService.CreateConnectionAsync(projectGuid, clientSession) is not ILaunchProfileEditorConnection connection)
                 {
                     throw new InvalidOperationException($"Unable to connect to project with GUID \"{projectGuid}\".");
