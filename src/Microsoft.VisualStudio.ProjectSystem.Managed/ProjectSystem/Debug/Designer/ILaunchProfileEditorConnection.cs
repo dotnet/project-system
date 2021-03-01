@@ -15,12 +15,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug.Designer
     /// </remarks>
     internal interface ILaunchProfileEditorConnection : IAsyncDisposable
     {
-        Task SetValuesAsync(Guid correlationId, ImmutableArray<PropertyValueChangeRequest> changes);
+        Task SetValuesAsync(Guid correlationId, string profileName, ImmutableArray<PropertyValueChangeRequest> changes);
 
         /// <summary>
-        /// Returns the set of available debug command names.
+        /// Returns the set of available profile types.
         /// </summary>
-        Task<ImmutableArray<string>> GetDebugCommandNamesAsync();
+        Task<ImmutableArray<ProfileType>> GetProfileTypesAsync();
 
         /// <summary>
         /// Adds a profile with the given name and debug command name.
