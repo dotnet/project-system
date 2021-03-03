@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var snapshot = IProjectRuleSnapshotFactory.FromJson(json);
 
             int callCount = 0;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContextAsync(delegate { callCount++; return Task.FromResult<IWorkspaceProjectContext>(null!); });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { callCount++; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectRuleSnapshot: snapshot);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(new Guid(guid));
 
             string? result = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContextAsync((_, id, _, _, _, _, _) => { result = id; return Task.FromResult<IWorkspaceProjectContext>(null!); });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, _, _, _, _) => { result = id; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration);
@@ -128,14 +128,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             string? languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
             Guid? projectGuidResult = null;
             object? hierarchyResult = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContextAsync((languageName, _, projectFilePath, guid, hierarchy, binOutputPath, _) =>
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath) =>
             {
                 languageNameResult = languageName;
                 projectFilePathResult = projectFilePath;
                 projectGuidResult = guid;
                 hierarchyResult = hierarchy;
                 binOutputPathResult = binOutputPath;
-                return Task.FromResult<IWorkspaceProjectContext>(null!);
+                return null;
             });
 
             var provider = CreateInstance(project: unconfiguredProject, workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSucceededSetToFalse()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContextAsync((_, _, _, _, _, _, _) => Task.FromResult(context));
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => context);
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task CreateProjectContextAsync_WhenCreateProjectContextThrows_ReturnsNull()
         {
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContextAsync((_, _, _, _, _, _, _) => { throw new(); });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { throw new Exception(); });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -203,7 +203,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await provider.ReleaseProjectContextAsync(accessor);
         }
 
-        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject? project = null, IWorkspaceProjectContextFactory? workspaceProjectContextFactory = null, ISafeProjectGuidService? projectGuidService = null, IProjectRuleSnapshot? projectRuleSnapshot = null)
+        private static WorkspaceProjectContextProvider CreateInstance(UnconfiguredProject? project = null, IProjectThreadingService? threadingService = null, IWorkspaceProjectContextFactory? workspaceProjectContextFactory = null, ISafeProjectGuidService? projectGuidService = null, IProjectRuleSnapshot? projectRuleSnapshot = null)
         {
             projectRuleSnapshot ??= IProjectRuleSnapshotFactory.FromJson(
 @"{
@@ -216,10 +216,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var projectFaultService = IProjectFaultHandlerServiceFactory.Create();
             project ??= UnconfiguredProjectFactory.Create();
+            threadingService ??= IProjectThreadingServiceFactory.Create();
             workspaceProjectContextFactory ??= IWorkspaceProjectContextFactoryFactory.Create();
             projectGuidService ??= ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(Guid.NewGuid());
 
-            var mock = new Mock<WorkspaceProjectContextProvider>(project, projectGuidService, projectFaultService, workspaceProjectContextFactory.AsLazy());
+            var mock = new Mock<WorkspaceProjectContextProvider>(project, threadingService, projectGuidService, projectFaultService, workspaceProjectContextFactory.AsLazy());
             mock.Protected().Setup<Task<IProjectRuleSnapshot>>("GetLatestSnapshotAsync", ItExpr.IsAny<ConfiguredProject>())
                             .ReturnsAsync(projectRuleSnapshot);
 
