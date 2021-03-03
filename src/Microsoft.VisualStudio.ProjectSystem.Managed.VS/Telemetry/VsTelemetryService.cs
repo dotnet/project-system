@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.VisualStudio.ProjectSystem;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -82,12 +81,6 @@ namespace Microsoft.VisualStudio.Telemetry
             byte[] inputBytes = Encoding.UTF8.GetBytes(value);
             using var cryptoServiceProvider = new SHA256CryptoServiceProvider();
             return BitConverter.ToString(cryptoServiceProvider.ComputeHash(inputBytes));
-        }
-
-        public string GetProjectId(UnconfiguredProject project)
-        {
-            string? fullPath = project?.FullPath;
-            return Strings.IsNullOrEmpty(fullPath) ? string.Empty : HashValue(fullPath);
         }
     }
 }
