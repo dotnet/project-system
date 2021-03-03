@@ -75,6 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             try
             {
                 // Call into Roslyn to init language service for this project
+#pragma warning disable 612,618
                 IWorkspaceProjectContext context = _workspaceProjectContextFactory.Value.CreateProjectContext(
                                                                                     data.LanguageName,
                                                                                     data.WorkspaceProjectContextId,
@@ -82,6 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     data.ProjectGuid,
                                                                                     hostObject,
                                                                                     data.BinOutputPath);
+#pragma warning restore 612,618
 
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
 
