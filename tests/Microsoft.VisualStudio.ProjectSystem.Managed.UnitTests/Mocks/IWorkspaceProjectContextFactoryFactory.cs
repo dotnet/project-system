@@ -16,10 +16,10 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
         {
             var mock = new Mock<IWorkspaceProjectContextFactory>();
 
-#pragma warning disable 618
+#pragma warning disable 612,618
             mock.Setup(c => c.CreateProjectContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<object>(), It.IsAny<string>()))
                 .Returns(action!);
-#pragma warning restore 618
+#pragma warning restore 612,618
 
             return mock.Object;
         }
