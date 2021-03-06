@@ -1,7 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Query;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -64,6 +67,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
 
             return hashCode;
+        }
+
+        public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? context)
+        {
+            if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
+            {
+                id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemType);
+                id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemName);
+                context = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
+                return true;
+            }
+
+            context = null;
+            return false;
         }
     }
 }

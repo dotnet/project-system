@@ -71,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IEntityValue parent,
             IPropertyPageQueryCache cache,
             Rule schema,
+            QueryProjectPropertiesContext context,
             string propertyName,
             IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
@@ -103,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             foreach (ProjectConfiguration configuration in configurations)
             {
-                if (await cache.BindToRule(configuration, schema.Name, QueryProjectPropertiesContext.ProjectFile) is IRule rule
+                if (await cache.BindToRule(configuration, schema.Name, context) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);

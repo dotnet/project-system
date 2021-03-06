@@ -25,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 parent,
                 providerState.Cache,
                 providerState.ContainingRule,
+                providerState.Context,
                 providerState.PropertyName,
                 _properties);
         }
