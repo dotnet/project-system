@@ -18,15 +18,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// provider is currently used by the legacy property pages and the VS property APIs; these are
     /// designed to be used by the new property pages.
     /// </remarks>
-    [ExportInterceptingPropertyValueProvider("ApplicationManifestKind", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(ApplicationManifestKindProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationManifestKindValueProvider : InterceptingPropertyValueProviderBase
     {
+        private const string ApplicationManifestKindProperty = "ApplicationManifestKind";
         private const string NoManifestMSBuildProperty = "NoWin32Manifest";
         private const string ApplicationManifestMSBuildProperty = "ApplicationManifest";
         private const string NoManifestValue = "NoManifest";
         private const string DefaultManifestValue = "DefaultManifest";
         private const string CustomManifestValue = "CustomManifest";
-
         private readonly ITemporaryPropertyStorage _temporaryPropertyStorage;
 
         [ImportingConstructor]
@@ -45,7 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         ///     - It's the value "DefaultManifest" which means that the application will have a default manifest.
         ///
         /// These three values map to two MSBuild properties - ApplicationManifest (for the first case) or NoWin32Manifest
-        /// which is true for the second case and false or non-existent for the third.
+        /// which is true for the second case and false or non-existent for the third. If those two properties aren't set
+        /// then we'll use the stored value (if any) or default to DefaultManifest.
         /// </remarks>
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
@@ -58,6 +59,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             if (StringComparers.PropertyLiteralValues.Equals(noManifestPropertyValue, "true"))
             {
                 return NoManifestValue;
+            }
+
+            if (_temporaryPropertyStorage.GetPropertyValue(ApplicationManifestKindProperty) is string storedValue)
+            {
+                return storedValue;
             }
 
             // It doesn't matter if it is set to false or the value is not present. We default to "DefaultManifest" scenario.
@@ -75,18 +81,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, DefaultManifestValue))
             {
+                _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestKindProperty, DefaultManifestValue);
+
                 await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
             else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, NoManifestValue))
             {
+                _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestKindProperty, NoManifestValue);
+
                 await defaultProperties.SaveValueIfCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(ApplicationManifestMSBuildProperty);
                 await defaultProperties.SetPropertyValueAsync(NoManifestMSBuildProperty, "true");
             }
             else if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, CustomManifestValue))
             {
+                _temporaryPropertyStorage.AddOrUpdatePropertyValue(ApplicationManifestKindProperty, CustomManifestValue);
+
                 await defaultProperties.RestoreValueIfNotCurrentlySetAsync(ApplicationManifestMSBuildProperty, _temporaryPropertyStorage);
                 await defaultProperties.DeletePropertyAsync(NoManifestMSBuildProperty);
             }
