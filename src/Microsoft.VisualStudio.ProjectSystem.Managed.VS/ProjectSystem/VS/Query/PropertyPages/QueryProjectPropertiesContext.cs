@@ -19,6 +19,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </remarks>
     internal sealed class QueryProjectPropertiesContext : IProjectPropertiesContext, IEquatable<QueryProjectPropertiesContext>
     {
+        /// <summary>
+        /// A well-known context representing the project file as a whole.
+        /// </summary>
+        /// <remarks>
+        /// Note that if an <see cref="IProjectPropertiesContext"/> has the <see cref="IProjectPropertiesContext.IsProjectFile"/>
+        /// property is set to <c>true</c> and the <see cref="IProjectPropertiesContext.ItemType"/>
+        /// and <see cref="IProjectPropertiesContext.ItemName"/> properties are <c>null</c>
+        /// then the properties system treats it as referring to the project file as a whole
+        /// regardless of the <see cref="IProjectPropertiesContext.File"/> property. This
+        /// lets us get away with setting it to the empty string and re-using the same
+        /// instance across projects.
+        /// </remarks>
         public static readonly QueryProjectPropertiesContext ProjectFile = new(isProjectFile: true, file: string.Empty, itemType: null, itemName: null);
 
         public QueryProjectPropertiesContext(bool isProjectFile, string file, string? itemType, string? itemName)
@@ -69,6 +81,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return hashCode;
         }
 
+        /// <summary>
+        /// Creates a <see cref="QueryProjectPropertiesContext"/> from a Project Query API
+        /// <see cref="EntityIdentity"/>.
+        /// </summary>
         public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? context)
         {
             if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
