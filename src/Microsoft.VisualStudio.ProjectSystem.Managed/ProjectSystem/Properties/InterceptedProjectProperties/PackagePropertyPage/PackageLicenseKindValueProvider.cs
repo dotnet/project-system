@@ -83,7 +83,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return FileValue;
             }
 
-            if (_temporaryPropertyStorage.GetPropertyValue(PackageLicenseKindProperty) is string storedValue)
+            string? storedValue = _temporaryPropertyStorage.GetPropertyValue(PackageLicenseKindProperty);
+            if (!Strings.IsNullOrEmpty(storedValue))
             {
                 return storedValue;
             }

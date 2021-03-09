@@ -61,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return NoManifestValue;
             }
 
-            if (_temporaryPropertyStorage.GetPropertyValue(ApplicationManifestKindProperty) is string storedValue)
+            string? storedValue = _temporaryPropertyStorage.GetPropertyValue(ApplicationManifestKindProperty);
+            if (!Strings.IsNullOrEmpty(storedValue))
             {
                 return storedValue;
             }
