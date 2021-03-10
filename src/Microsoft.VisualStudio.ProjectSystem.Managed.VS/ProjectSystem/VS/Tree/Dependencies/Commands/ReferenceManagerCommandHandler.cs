@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
             string? identifier = GetReferenceProviderIdentifier(commandId);
             if (identifier != null)
             {
-                Lazy<IVsReferenceManagerUserAsync> user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
+                Lazy<IVsReferenceManagerUserAsync>? user = ReferenceManagerUsers.FirstOrDefault(u => u.Metadata.ProviderContextIdentifier == identifier);
 
                 return user?.Value.IsApplicable() == true;
             }

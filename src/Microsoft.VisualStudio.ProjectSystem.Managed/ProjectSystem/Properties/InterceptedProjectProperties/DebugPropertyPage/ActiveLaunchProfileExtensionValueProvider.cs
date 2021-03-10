@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             ILaunchProfile? activeProfile = launchSettings.ActiveProfile;
 
-            string? activeProfilePropertyValue = propertyName switch
+            string activeProfilePropertyValue = propertyName switch
             {
                 AuthenticationModePropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, string.Empty),
                 NativeDebuggingPropertyName => GetOtherProperty(activeProfile, LaunchProfileExtensions.NativeDebuggingProperty, false) ? True : False,

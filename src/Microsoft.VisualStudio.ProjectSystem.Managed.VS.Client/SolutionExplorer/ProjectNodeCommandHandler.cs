@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         /// Handles opening the file associated with the given <paramref name="node"/>.
         /// </summary>
         /// <param name="node"></param>
-        private void OpenFile(WorkspaceVisualNodeBase node)
+        private void OpenFile(WorkspaceVisualNodeBase? node)
         {
             if (node == null
                 || string.IsNullOrEmpty(node.NodeMoniker))
