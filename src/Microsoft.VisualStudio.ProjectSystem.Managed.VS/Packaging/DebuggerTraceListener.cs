@@ -21,14 +21,22 @@ namespace Microsoft.VisualStudio.Packaging
             // There's no public API registering a trace listener for a 
             // non-public trace source, so we need to use reflection
             string assemblyName = typeof(AppliesToAttribute).Assembly.FullName;
+            string typeName = $"Microsoft.VisualStudio.ProjectSystem.TraceUtilities, {assemblyName}";
 
-            var type = Type.GetType($"Microsoft.VisualStudio.ProjectSystem.TraceUtilities, {assemblyName}");
-            Assumes.NotNull(type);
+            var type = Type.GetType(typeName);
+            if (type is null)
+            {
+                Assumes.Fail($"Could not find type '{typeName}'");
+            }
 
-            FieldInfo field = type.GetField("Source", BindingFlags.NonPublic | BindingFlags.Static);
-            Assumes.NotNull(field);
+            const string sourcePropertyName = "Source";
+            PropertyInfo property = type.GetProperty(sourcePropertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            if (property is null)
+            {
+                Assumes.Fail($"Could not find property '{sourcePropertyName}' in type '{typeName}'");
+            }
 
-            var source = (TraceSource)field.GetValue(null);
+            var source = (TraceSource)property.GetValue(null);
 
             source.Switch.Level = SourceLevels.Warning;
             source.Listeners.Add(this);
