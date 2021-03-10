@@ -155,8 +155,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                         IReceivableSourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> projectRuleSource
                             = _projectSubscriptionService.ProjectRuleSource.SourceBlock;
 
-                        IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>> intermediateBlock
-                            = DataflowBlockSlim.CreateSimpleBufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>("Import Tree Intermediate: {1}");
+                        var intermediateBlock =
+                            new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
+                                new ExecutionDataflowBlockOptions
+                                {
+                                    NameFormat = "Import Tree Intermediate: {1}"
+                                });
 
                         _subscriptions ??= new DisposableBag();
 
