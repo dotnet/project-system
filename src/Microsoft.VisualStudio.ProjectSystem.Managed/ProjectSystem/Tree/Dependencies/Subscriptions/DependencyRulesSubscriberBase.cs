@@ -68,17 +68,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             IProjectValueDataSource<IProjectSubscriptionUpdate> dataSource,
             string[] ruleNames,
             string nameFormat,
-            Func<(BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink)
+            Func<(ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<T>> Action), IDisposable> syncLink)
         {
             // Use an intermediate buffer block for project rule data to allow subsequent blocks
             // to only observe specific rule name(s).
 
-            var intermediateBlock =
-                new BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(
-                    new ExecutionDataflowBlockOptions
-                    {
-                        NameFormat = nameFormat
-                    });
+            IPropagatorBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectVersionedValue<IProjectSubscriptionUpdate>>? intermediateBlock
+                = DataflowBlockSlim.CreateSimpleBufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(nameFormat);
 
             ITargetBlock<IProjectVersionedValue<T>> actionBlock =
                 DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<T>>(

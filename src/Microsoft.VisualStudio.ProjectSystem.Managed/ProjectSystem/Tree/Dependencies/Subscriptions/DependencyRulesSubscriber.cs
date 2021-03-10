@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
                 "CrossTarget Joint Input: {1}",
                 SyncLink);
 
-            IDisposable SyncLink((BufferBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<EventData>> Action) blocks)
+            IDisposable SyncLink((ISourceBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>> Intermediate, ITargetBlock<IProjectVersionedValue<EventData>> Action) blocks)
             {
                 return ProjectDataSources.SyncLinkTo(
                     blocks.Intermediate.SyncLinkOptions(),
