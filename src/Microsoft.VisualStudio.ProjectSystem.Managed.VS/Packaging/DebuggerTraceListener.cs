@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.Packaging
             }
 
             const string sourcePropertyName = "Source";
-            PropertyInfo property = type.GetProperty(sourcePropertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            PropertyInfo? property = type.GetProperty(sourcePropertyName, BindingFlags.NonPublic | BindingFlags.Static);
             if (property is null)
             {
                 Assumes.Fail($"Could not find property '{sourcePropertyName}' in type '{typeName}'");
