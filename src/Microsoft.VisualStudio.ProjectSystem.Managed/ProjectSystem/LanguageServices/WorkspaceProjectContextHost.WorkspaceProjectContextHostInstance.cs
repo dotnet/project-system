@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
-using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -29,20 +28,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
-            private readonly IConfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
-            private readonly long _workspaceContextId;
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
             private DisposableBag? _disposables;
             private IWorkspaceProjectContextAccessor? _contextAccessor;
             private ExportLifetimeContext<IApplyChangesToWorkspaceContext>? _applyChangesToWorkspaceContext;
-
-            /// <summary>
-            /// A unique identifier for correlating the events posted between the LanguageServiceOperationNames.ApplyingProjectChangesStarted
-            /// and LanguageServiceOperationNames.ApplyingProjectChangesCompleted operations.
-            /// </summary>
-            private long _projectChangeId;
 
             public WorkspaceProjectContextHostInstance(ConfiguredProject project,
                                                        IProjectThreadingService threadingService,
@@ -52,9 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                                        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
-                                                       IDataProgressTrackerService dataProgressTrackerService,
-                                                       IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService,
-                                                       long workspaceContextId)
+                                                       IDataProgressTrackerService dataProgressTrackerService)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
@@ -65,8 +54,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
-                _languageServiceTelemetryService = languageServiceTelemetryService;
-                _workspaceContextId = workspaceContextId;
             }
 
             public Task InitializeAsync()
@@ -76,15 +63,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             protected override async Task InitializeCoreAsync(CancellationToken cancellationToken)
             {
-                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationStarted, _workspaceContextId);
-
                 _contextAccessor = await _workspaceProjectContextProvider.CreateProjectContextAsync(_project);
 
                 if (_contextAccessor == null)
-                {
-                    _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationAborted, _workspaceContextId);
                     return;
-                }
 
                 _activeWorkspaceProjectContextTracker.RegisterContext(_contextAccessor.ContextId);
 
@@ -121,8 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                             cancellationToken: cancellationToken),
 
                 };
-
-                _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.WorkspaceProjectContextHostInstanceInitializationComplete, _workspaceContextId);
             }
 
             private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
@@ -188,17 +168,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation, CancellationToken cancellationToken)
             {
-                // Update the project change id. It is safe to do so since we are in a critical section.
-                _projectChangeId++;
-
                 IWorkspaceProjectContext context = _contextAccessor!.Context;
                 IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = update.Value.project == _project;
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
-
-                _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: true);
 
                 context.StartBatch();
 
@@ -219,8 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
-
-                _languageServiceTelemetryService.PostApplyProjectChangesEvent(state, _workspaceContextId, _projectChangeId, starting: false);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)

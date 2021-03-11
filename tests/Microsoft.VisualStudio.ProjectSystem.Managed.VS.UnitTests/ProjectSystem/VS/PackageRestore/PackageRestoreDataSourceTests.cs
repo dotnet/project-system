@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-using Microsoft.VisualStudio.Telemetry;
 using NuGet.SolutionRestoreManager;
 using Xunit;
 
@@ -94,7 +93,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
-            var packageReferenceTelemetryService = IUnconfiguredProjectPackageRestoreTelemetryServiceFactory.Create();
             var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
 
             return new PackageRestoreDataSource(
@@ -104,7 +102,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 solutionRestoreService,
                 fileSystem,
                 logger,
-                packageReferenceTelemetryService,
                 projectDependentFileChangeNotificationService);
         }
     }

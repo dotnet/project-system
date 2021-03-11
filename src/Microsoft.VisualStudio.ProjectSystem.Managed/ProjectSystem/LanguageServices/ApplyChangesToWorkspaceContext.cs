@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -30,18 +29,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ConfiguredProject _project;
         private readonly IProjectLogger _logger;
         private readonly ExportFactory<IWorkspaceContextHandler>[] _workspaceContextHandlerFactories;
-        private readonly IConfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
-
         private IWorkspaceProjectContext? _context;
         private ExportLifetimeContext<IWorkspaceContextHandler>[] _handlers = Array.Empty<ExportLifetimeContext<IWorkspaceContextHandler>>();
 
         [ImportingConstructor]
-        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories, IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
+        public ApplyChangesToWorkspaceContext(ConfiguredProject project, IProjectLogger logger, [ImportMany]ExportFactory<IWorkspaceContextHandler>[] workspaceContextHandlerFactories)
         {
             _project = project;
             _logger = logger;
             _workspaceContextHandlerFactories = workspaceContextHandlerFactories;
-            _languageServiceTelemetryService = languageServiceTelemetryService;
 
             CommandLineParsers = new OrderPrecedenceImportCollection<ICommandLineParserService>(projectCapabilityCheckProvider: project);
         }
@@ -75,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 ProcessOptions(projectChange.After);
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
-                ProcessProjectBuildFailure(projectChange.After, state);
+                ProcessProjectBuildFailure(projectChange.After);
             }
         }
 
@@ -132,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot, ContextState state)
+        private void ProcessProjectBuildFailure(IProjectRuleSnapshot snapshot)
         {
             Assumes.NotNull(_context);
 
@@ -142,10 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             // successful build occurs, because it will be diff between it and this failed build.
 
             bool succeeded = snapshot.IsEvaluationSucceeded();
-            if (!succeeded)
-            {
-                _languageServiceTelemetryService.PostDesignTimeBuildFailureEvent();
-            }
 
             if (_context.LastDesignTimeBuildSucceeded != succeeded)
             {
@@ -178,8 +170,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private Task ProcessCommandLineHandlersAsync(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, CancellationToken cancellationToken)
         {
-            int invokedHandlers = 0;
-
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -187,19 +177,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 if (handler.Value is ICommandLineHandler commandLineHandler)
                 {
                     commandLineHandler.Handle(version, added, removed, state, _logger);
-                    invokedHandlers++;
                 }
             }
-
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.CommandLineParsersProcessed, invokedHandlers);
 
             return Task.CompletedTask;
         }
 
         private Task ProcessProjectEvaluationHandlersAsync(IComparable version, IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
         {
-            int invokedHandlers = 0;
-
             foreach (ExportLifetimeContext<IWorkspaceContextHandler> handler in _handlers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -211,11 +196,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         continue;
 
                     evaluationHandler.Handle(version, projectChange, state, _logger);
-                    invokedHandlers++;
                 }
             }
-
-            _languageServiceTelemetryService.PostLanguageServiceEvent(LanguageServiceOperationNames.ProjectEvaluationHandlersProcessed, invokedHandlers);
 
             return Task.CompletedTask;
         }

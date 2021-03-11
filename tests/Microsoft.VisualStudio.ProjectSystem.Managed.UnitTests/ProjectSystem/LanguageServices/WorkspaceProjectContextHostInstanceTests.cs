@@ -5,7 +5,6 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.Telemetry;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
@@ -253,7 +252,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
-            IConfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService = IConfiguredProjectLanguageServiceTelemetryServiceFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -263,9 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeEditorContextTracker,
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
-                                                           dataProgressTrackerService,
-                                                           languageServiceTelemetryService,
-                                                           workspaceContextId: 0);
+                                                           dataProgressTrackerService);
         }
     }
 }
