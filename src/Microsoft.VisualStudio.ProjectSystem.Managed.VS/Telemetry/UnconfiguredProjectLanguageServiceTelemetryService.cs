@@ -1,10 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.VS;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.Telemetry
 {
@@ -13,21 +10,16 @@ namespace Microsoft.VisualStudio.Telemetry
     {
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService _telemetryService;
-        private readonly AsyncLazy<Guid> _projectGuidLazy;
+        private string? _projectTelemetryId;
 
         [ImportingConstructor]
-        public UnconfiguredProjectLanguageServiceTelemetryService(UnconfiguredProject project, ITelemetryService telemetryService, IProjectThreadingService projectThreadingService)
+        public UnconfiguredProjectLanguageServiceTelemetryService(UnconfiguredProject project, ITelemetryService telemetryService)
         {
             _project = project;
             _telemetryService = telemetryService;
-
-            _projectGuidLazy = new AsyncLazy<Guid>(async () =>
-            {
-                return await _project.GetProjectGuidAsync();
-            }, projectThreadingService.JoinableTaskFactory);
         }
 
-        private Guid ProjectGuid => _projectGuidLazy.GetValue();
+        private string ProjectTelemetryId => _projectTelemetryId ??= _telemetryService.GetProjectId(_project);
 
         public void PostActiveWorkspaceProjectContextHostPublishingEvent()
         {
@@ -43,7 +35,7 @@ namespace Microsoft.VisualStudio.Telemetry
         {
             _telemetryService.PostProperties(TelemetryEventName.LanguageServiceOperation, new (string propertyName, object propertyValue)[]
                 {
-                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectGuid),
+                    (TelemetryPropertyName.WorkspaceContextProjectId, ProjectTelemetryId),
                     (TelemetryPropertyName.LanguageServiceOperationName, languageServiceOperationName),
                 });
         }
