@@ -10,7 +10,6 @@ using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
-using Microsoft.VisualStudio.Telemetry;
 using Microsoft.VisualStudio.Threading;
 using NuGet.SolutionRestoreManager;
 
@@ -63,7 +62,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
         private readonly IProjectLogger _logger;
-        private readonly IUnconfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
         private readonly IProjectDependentFileChangeNotificationService _projectDependentFileChangeNotificationService;
 
         private byte[]? _latestHash;
@@ -77,7 +75,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
             IProjectLogger logger,
-            IUnconfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService,
             IProjectDependentFileChangeNotificationService projectDependentFileChangeNotificationService)
             : base(project, synchronousDisposal : true, registerDataSource : false)
         {
@@ -87,7 +84,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _solutionRestoreService = solutionRestoreService;
             _fileSystem = fileSystem;
             _logger = logger;
-            _packageReferenceTelemetryService = packageReferenceTelemetryService;
             _projectDependentFileChangeNotificationService = projectDependentFileChangeNotificationService;
         }
 
@@ -100,8 +96,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             DisposableValue<ISourceBlock<IProjectVersionedValue<RestoreData>>> transformBlock = _dataSource.SourceBlock.TransformManyWithNoDelta(RestoreAsync);
 
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
-
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLinkedToExternalInput);
 
             return transformBlock;
         }
@@ -166,7 +160,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private async Task<bool> NominateForRestoreAsync(ProjectRestoreInfo restoreInfo, CancellationToken cancellationToken)
         {
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.BeginNominateRestore);
             RestoreLogger.BeginNominateRestore(_logger, _project.FullPath, restoreInfo);
 
             try
@@ -178,7 +171,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 CodeMarkers.Instance.CodeMarker(CodeMarkerTimerId.PerfPackageRestoreEnd);
 
                 RestoreLogger.EndNominateRestore(_logger, _project.FullPath);
-                _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.EndNominateRestore);
             }
         }
 
@@ -204,8 +196,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         {
             _enabled = true;
 
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceLoading);
-
             EnsureInitialized();
 
             return Task.CompletedTask;
@@ -214,8 +204,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         public Task UnloadAsync()
         {
             _enabled = false;
-
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreDataSourceUnloading);
 
             return Task.CompletedTask;
         }

@@ -3,7 +3,6 @@
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -22,29 +21,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly IUnconfiguredProjectTasksService _tasksService;
         private readonly IActiveWorkspaceProjectContextHost _activeWorkspaceProjectContextHost;
         private readonly IProjectFaultHandlerService _projectFaultHandler;
-        private readonly IUnconfiguredProjectLanguageServiceTelemetryService _languageServiceTelemetryService;
 
         [ImportingConstructor]
-        public WorkspaceProjectContextHostInitiator(
-            UnconfiguredProject project,
-            IUnconfiguredProjectTasksService tasksService,
-            IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost,
-            IProjectFaultHandlerService projectFaultHandler,
-            IUnconfiguredProjectLanguageServiceTelemetryService languageServiceTelemetryService)
+        public WorkspaceProjectContextHostInitiator(UnconfiguredProject project, IUnconfiguredProjectTasksService tasksService, IActiveWorkspaceProjectContextHost activeWorkspaceProjectContextHost, IProjectFaultHandlerService projectFaultHandler)
         {
             _project = project;
             _tasksService = tasksService;
             _activeWorkspaceProjectContextHost = activeWorkspaceProjectContextHost;
             _projectFaultHandler = projectFaultHandler;
-            _languageServiceTelemetryService = languageServiceTelemetryService;
         }
 
         [ProjectAutoLoad(startAfter: ProjectLoadCheckpoint.AfterLoadInitialConfiguration, completeBy: ProjectLoadCheckpoint.ProjectFactoryCompleted)]
         [AppliesTo(ProjectCapability.DotNetLanguageService)]
         public Task InitializeAsync()
         {
-            _languageServiceTelemetryService.PostWorkspaceProjectContextHostInitiatorInitializedEvent();
-
             // While we want make sure it's loaded before PrioritizedProjectLoadedInHost, 
             // we don't want to block project factory completion on its load, so fire and forget
             Task result = _tasksService.PrioritizedProjectLoadedInHostAsync(() => _activeWorkspaceProjectContextHost.PublishAsync());

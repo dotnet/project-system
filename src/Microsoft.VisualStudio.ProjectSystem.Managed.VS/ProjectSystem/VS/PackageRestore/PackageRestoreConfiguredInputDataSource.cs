@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Telemetry;
 using RestoreUpdate = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore.PackageRestoreConfiguredInput>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -29,18 +28,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                                                                         .Add(CollectedPackageReference.SchemaName);         // Project Build
         private readonly UnconfiguredProject _containingProject;
         private readonly IProjectSubscriptionService _projectSubscriptionService;
-        private readonly IConfiguredProjectPackageRestoreTelemetryService _packageReferenceTelemetryService;
 
         [ImportingConstructor]
-        public PackageRestoreConfiguredInputDataSource(
-            ConfiguredProject project,
-            IProjectSubscriptionService projectSubscriptionService,
-            IConfiguredProjectPackageRestoreTelemetryService packageReferenceTelemetryService)
+        public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
             : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _containingProject = project.UnconfiguredProject;
             _projectSubscriptionService = projectSubscriptionService;
-            _packageReferenceTelemetryService = packageReferenceTelemetryService;
         }
 
         protected override UnconfiguredProject ContainingProject
@@ -63,8 +57,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Join the source blocks, so if they need to switch to UI thread to complete 
             // and someone is blocked on us on the same thread, the call proceeds
             JoinUpstreamDataSources(source);
-
-            _packageReferenceTelemetryService.PostPackageRestoreEvent(PackageRestoreOperationNames.PackageRestoreConfiguredInputDataSourceLinkedToExternalInput);
 
             return transformBlock;
         }
