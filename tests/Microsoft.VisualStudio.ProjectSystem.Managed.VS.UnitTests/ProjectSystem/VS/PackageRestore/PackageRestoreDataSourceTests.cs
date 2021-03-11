@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
@@ -79,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assert.Equal(1, callCount); // Should have only been called once
         }
 
-        private PackageRestoreDataSource CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private static PackageRestoreDataSource CreateInitializedInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             var instance = CreateInstance(project, dataSource, solutionRestoreService);
             instance.LoadAsync();
@@ -87,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return instance;
         }
 
-        private PackageRestoreDataSource CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
+        private static PackageRestoreDataSource CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
             project ??= UnconfiguredProjectFactory.Create(IProjectThreadingServiceFactory.Create());
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
@@ -95,9 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectLogger logger = IProjectLoggerFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
-            var hintService = new Lazy<IProjectChangeHintSubmissionService>(() => IProjectChangeHintSubmissionServiceFactory.Create());
-            var projectAccessor = IProjectAccessorFactory.Create();
             var packageReferenceTelemetryService = IUnconfiguredProjectPackageRestoreTelemetryServiceFactory.Create();
+            var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
 
             return new PackageRestoreDataSource(
                 project,
@@ -105,10 +103,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 projectAsynchronousTasksService,
                 solutionRestoreService,
                 fileSystem,
-                hintService,
-                projectAccessor,
                 logger,
-                packageReferenceTelemetryService);
+                packageReferenceTelemetryService,
+                projectDependentFileChangeNotificationService);
         }
     }
 }
