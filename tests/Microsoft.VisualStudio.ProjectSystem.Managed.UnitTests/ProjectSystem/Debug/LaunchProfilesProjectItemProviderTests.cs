@@ -14,13 +14,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public async Task GetItemTypesAsync_ReturnsLaunchProfile()
         {
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 ILaunchSettingsProviderFactory.Create());
 
             var itemTypes = await itemProvider.GetItemTypesAsync();
 
-            Assert.Single(itemTypes, LaunchProfilesProjectItemProvider.ItemType);
+            Assert.Single(itemTypes, LaunchProfileProjectItemProvider.ItemType);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new LaunchProfile[0]);
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -45,13 +45,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
             var existingItemTypes = await itemProvider.GetExistingItemTypesAsync();
 
-            Assert.Single(existingItemTypes, LaunchProfilesProjectItemProvider.ItemType);
+            Assert.Single(existingItemTypes, LaunchProfileProjectItemProvider.ItemType);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new LaunchProfile[0]);
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -96,17 +96,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
-            var items = await itemProvider.GetItemsAsync(LaunchProfilesProjectItemProvider.ItemType);
+            var items = await itemProvider.GetItemsAsync(LaunchProfileProjectItemProvider.ItemType);
 
             Assert.Collection(items,
                 item => Assert.Equal("Profile1", item.EvaluatedInclude),
                 item => Assert.Equal("Profile2", item.EvaluatedInclude));
 
-            items = await itemProvider.GetItemsAsync(LaunchProfilesProjectItemProvider.ItemType, "Profile2");
+            items = await itemProvider.GetItemsAsync(LaunchProfileProjectItemProvider.ItemType, "Profile2");
 
             Assert.Collection(items,
                 item => Assert.Equal("Profile2", item.EvaluatedInclude));
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -188,14 +188,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
             var context = new TestProjectPropertiesContext(
                 isProjectFile: true,
                 file: "Foo",
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 itemName: "Profile2");
 
             var item = await itemProvider.GetItemAsync(context);
@@ -218,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     profile3.ToLaunchProfile()
                 });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -226,7 +226,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 new TestProjectPropertiesContext(true, "Foo", null, "Profile3"),
                 new TestProjectPropertiesContext(true, "Foo", "RandomItemType", "Profile2"),
-                new TestProjectPropertiesContext(true, "Foo", LaunchProfilesProjectItemProvider.ItemType, "Profile1")
+                new TestProjectPropertiesContext(true, "Foo", LaunchProfileProjectItemProvider.ItemType, "Profile1")
             };
 
             var items = await itemProvider.GetItemsAsync(contexts);
@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -263,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create();
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -308,11 +308,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     return initialProfiles.Add(newProfile!);
                 });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
-            var item = await itemProvider.AddAsync(itemType: LaunchProfilesProjectItemProvider.ItemType, include: "Alpha Profile");
+            var item = await itemProvider.AddAsync(itemType: LaunchProfileProjectItemProvider.ItemType, include: "Alpha Profile");
 
             Assert.Equal(expected: "Alpha Profile", actual: item!.EvaluatedInclude);
             Assert.Equal(expected: "Alpha Profile", actual: item!.UnevaluatedInclude);
@@ -332,16 +332,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     return initialProfiles.AddRange(newProfiles);
                 });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
             var items = await itemProvider.AddAsync(
                 new Tuple<string, string, IEnumerable<KeyValuePair<string, string>>?>[]
                 {
-                    new(LaunchProfilesProjectItemProvider.ItemType, "Alpha Profile", null),
-                    new(LaunchProfilesProjectItemProvider.ItemType, "Beta Profile", null),
-                    new(LaunchProfilesProjectItemProvider.ItemType, "Gamma Profile", null),
+                    new(LaunchProfileProjectItemProvider.ItemType, "Alpha Profile", null),
+                    new(LaunchProfileProjectItemProvider.ItemType, "Beta Profile", null),
+                    new(LaunchProfileProjectItemProvider.ItemType, "Gamma Profile", null),
 
                 });
 
@@ -355,7 +355,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task WhenAddingAnItemAsAPath_AnInvalidOperationExceptionIsThrown()
         {
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create();
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -369,7 +369,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public async Task WhenAddingItemsAsPaths_AnInvalidOperationExceptionIsThrown()
         {
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create();
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -391,7 +391,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
             var itemToRename = await itemProvider.FindItemByNameAsync("Profile1");
@@ -416,7 +416,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() },
                 removeProfileCallback: name => removedProfileName = name);
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
             
@@ -436,11 +436,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() },
                 removeProfileCallback: name => removedProfileName = name);
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
-            await itemProvider.RemoveAsync(itemType: LaunchProfilesProjectItemProvider.ItemType, include: "Profile1");
+            await itemProvider.RemoveAsync(itemType: LaunchProfileProjectItemProvider.ItemType, include: "Profile1");
 
             Assert.Equal(expected: "Profile1", actual: removedProfileName);
         }
@@ -453,7 +453,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -472,7 +472,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -491,7 +491,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -499,7 +499,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Assert.NotNull(projectItem);
 
-            Assert.Equal(expected: LaunchProfilesProjectItemProvider.ItemType, actual: projectItem!.ItemType);
+            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: projectItem!.ItemType);
         }
 
         [Fact]
@@ -510,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -530,7 +530,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -550,7 +550,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -570,7 +570,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.ImplementFullPath(@"C:\alpha\beta\gamma.csproj"),
                 launchSettingsProvider);
 
@@ -580,7 +580,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(expected: @"C:\alpha\beta\gamma.csproj", actual: propertiesContext.File);
             Assert.True(propertiesContext.IsProjectFile);
             Assert.Equal(expected: "Profile2", actual: propertiesContext.ItemName);
-            Assert.Equal(expected: LaunchProfilesProjectItemProvider.ItemType, actual: propertiesContext.ItemType);
+            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: propertiesContext.ItemType);
         }
 
         [Fact]
@@ -594,7 +594,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() },
                 removeProfileCallback: name => removedProfileName = name);
 
-            var itemProvider = new LaunchProfilesProjectItemProvider(
+            var itemProvider = new LaunchProfileProjectItemProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 

@@ -12,11 +12,11 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    [Export("LaunchProfiles", typeof(IProjectPropertiesProvider))]
+    [Export("LaunchProfile", typeof(IProjectPropertiesProvider))]
     [Export(typeof(IProjectPropertiesProvider))]
-    [ExportMetadata("Name", "LaunchProfiles")]
+    [ExportMetadata("Name", "LaunchProfile")]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchProfilesProjectPropertiesProvider : IProjectPropertiesProvider
+    internal class LaunchProfileProjectPropertiesProvider : IProjectPropertiesProvider
     {
         private const string CommandNamePropertyName = "CommandName";
         private const string ExecutablePathPropertyName = "ExecutablePath";
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
 
         [ImportingConstructor]
-        public LaunchProfilesProjectPropertiesProvider(UnconfiguredProject project,
+        public LaunchProfileProjectPropertiesProvider(UnconfiguredProject project,
             ILaunchSettingsProvider launchSettingsProvider)
         {
             _project = project;
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (item is null
                 || (itemType is not null
-                    && itemType != LaunchProfilesProjectItemProvider.ItemType)
+                    && itemType != LaunchProfileProjectItemProvider.ItemType)
                 || !StringComparers.Paths.Equals(_project.FullPath, file))
             {
                 // The interface is CPS currently asserts that the Get*Properties methods return a
@@ -194,9 +194,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private class LaunchProfileProperties : IProjectProperties
         {
             private readonly LaunchProfilePropertiesContext _context;
-            private readonly LaunchProfilesProjectPropertiesProvider _provider;
+            private readonly LaunchProfileProjectPropertiesProvider _provider;
 
-            public LaunchProfileProperties(string filePath, string profileName, LaunchProfilesProjectPropertiesProvider provider)
+            public LaunchProfileProperties(string filePath, string profileName, LaunchProfileProjectPropertiesProvider provider)
             {
                 _context = new LaunchProfilePropertiesContext(filePath, profileName);
                 _provider = provider;
@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 public string File { get; }
 
-                public string ItemType => LaunchProfilesProjectItemProvider.ItemType;
+                public string ItemType => LaunchProfileProjectItemProvider.ItemType;
 
                 public string ItemName { get; }
             }

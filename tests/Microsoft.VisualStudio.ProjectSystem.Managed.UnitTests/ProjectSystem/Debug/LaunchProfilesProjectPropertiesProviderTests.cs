@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void DefaultProjectPath_IsTheProjectPath()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 ILaunchSettingsProviderFactory.Create());
 
@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void WhenRetrievingProjectLevelProperties_NullIsReturned()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
                 ILaunchSettingsProviderFactory.Create());
 
@@ -37,11 +37,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void WhenRetrievingItemTypeProperties_NullIsReturned()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
                 ILaunchSettingsProviderFactory.Create());
 
-            var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfilesProjectItemProvider.ItemType);
+            var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfileProjectItemProvider.ItemType);
 
             Assert.Null(itemTypeProperties);
         }
@@ -50,11 +50,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void WhenRetrievingItemProperties_NullIsReturnedIfTheItemIsNull()
         {
             var project = UnconfiguredProjectFactory.Create();
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
                 ILaunchSettingsProviderFactory.Create());
 
-            var itemProperties = provider.GetItemProperties(LaunchProfilesProjectItemProvider.ItemType, item: null);
+            var itemProperties = provider.GetItemProperties(LaunchProfileProjectItemProvider.ItemType, item: null);
 
             Assert.Null(itemProperties);
         }
@@ -62,12 +62,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeMatches()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
                 CreateDefaultTestLaunchSettings());
 
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             Assert.NotNull(properties);
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void WhenRetrievingItemProperties_PropertiesAreReturnedIfTheItemTypeIsNull()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
                 CreateDefaultTestLaunchSettings());
 
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile(), profile2.ToLaunchProfile() });
 
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
                 launchSettingsProvider);
 
@@ -109,13 +109,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void WhenRetrievingItemProperties_NullIsReturnedWhenTheFilePathIsNotTheProjectPath()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 CreateDefaultTestLaunchSettings());
 
             var properties = provider.GetProperties(
                 file: @"C:\sigma\lambda\other.csproj",
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             Assert.Null(properties);
@@ -124,30 +124,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void WhenRetrievingItemProperties_TheContextHasTheExpectedValues()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 CreateDefaultTestLaunchSettings());
 
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
             var context = properties.Context;
 
             Assert.Equal(expected: DefaultTestProjectPath, actual: context.File);
             Assert.True(context.IsProjectFile);
             Assert.Equal(expected: "Profile1", actual: context.ItemName);
-            Assert.Equal(expected: LaunchProfilesProjectItemProvider.ItemType, actual: context.ItemType);
+            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: context.ItemType);
         }
 
         [Fact]
         public void WhenRetrievingItemProperties_TheFilePathIsTheProjectPath()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 CreateDefaultTestLaunchSettings());
 
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             Assert.Equal(expected: DefaultTestProjectPath, actual: properties.FileFullPath);
@@ -156,12 +156,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         [Fact]
         public void WhenRetrievingItemProperties_ThePropertyKindIsItemGroup()
         {
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 CreateDefaultTestLaunchSettings());
 
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             Assert.Equal(expected: PropertyKind.ItemGroup, actual: properties.PropertyKind);
@@ -174,17 +174,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile() });
 
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 launchSettingsProvider);
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
             var propertyNames = await properties.GetPropertyNamesAsync();
 
             Assert.Contains("CommandName", propertyNames);
             Assert.Contains("ExecutablePath", propertyNames);
-            Assert.Contains("CommandLineArgs", propertyNames);
+            Assert.Contains("CommandLineArguments", propertyNames);
             Assert.Contains("WorkingDirectory", propertyNames);
             Assert.Contains("LaunchBrowser", propertyNames);
             Assert.Contains("LaunchUrl", propertyNames);
@@ -198,18 +198,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile() });
 
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 launchSettingsProvider);
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             var standardPropertyNames = new[]
             {
                 "CommandName",
                 "ExecutablePath",
-                "CommandLineArgs",
+                "CommandLineArguments",
                 "WorkingDirectory",
                 "LaunchUrl",
                 "EnvironmentVariables"
@@ -231,11 +231,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile() });
 
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 launchSettingsProvider);
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             var evaluatedValue = await properties.GetEvaluatedPropertyValueAsync("LaunchBrowser");
@@ -261,16 +261,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
                 launchProfiles: new[] { profile1.ToLaunchProfile() });
-            var provider = new LaunchProfilesProjectPropertiesProvider(
+            var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
                 launchSettingsProvider);
             var properties = provider.GetItemProperties(
-                itemType: LaunchProfilesProjectItemProvider.ItemType,
+                itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
 
             var expectedValues = new Dictionary<string, string>
             {
-                ["CommandLineArgs"] = "alpha beta gamma",
+                ["CommandLineArguments"] = "alpha beta gamma",
                 ["CommandName"] = "epsilon",
                 ["EnvironmentVariables"] = "One=1,Two=2",
                 ["ExecutablePath"] = @"D:\five\six\seven\eight.exe",

@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                         QueryProjectPropertiesContext context = new(
                             isProjectFile: true,
                             file: project.FullPath,
-                            itemType: LaunchProfilesProjectItemProvider.ItemType,
+                            itemType: LaunchProfileProjectItemProvider.ItemType,
                             itemName: profile.Name);
 
                         IEntityValue launchProfileValue = CreateLaunchProfileValue(parent, context, rule, index, propertyPageQueryCache);

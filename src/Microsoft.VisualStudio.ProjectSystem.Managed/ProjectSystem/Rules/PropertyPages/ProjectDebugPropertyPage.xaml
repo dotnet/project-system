@@ -19,7 +19,7 @@
   </Rule.Metadata>
 
   <Rule.DataSource>
-    <DataSource Persistence="LaunchProfiles"
+    <DataSource Persistence="LaunchProfile"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
