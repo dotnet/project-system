@@ -18,6 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchProfilesProjectPropertiesProvider : IProjectPropertiesProvider
     {
+        private const string CommandNamePropertyName = "CommandName";
+        private const string ExecutablePathPropertyName = "ExecutablePath";
+        private const string CommandLineArgumentsPropertyName = "CommandLineArguments";
+        private const string WorkingDirectoryPropertyName = "WorkingDirectory";
+        private const string LaunchBrowserPropertyName = "LaunchBrowser";
+        private const string LaunchUrlPropertyName = "LaunchUrl";
+        private const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
+
         /// <remarks>
         /// These correspond to the properties explicitly declared on <see cref="ILaunchProfile"/>
         /// and as such they are always considered to exist on the profile, though they may
@@ -25,13 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         private static readonly string[] s_standardPropertyNames = new[]
         {
-            "CommandName",
-            "ExecutablePath",
-            "CommandLineArgs",
-            "WorkingDirectory",
-            "LaunchBrowser",
-            "LaunchUrl",
-            "EnvironmentVariables"
+            CommandNamePropertyName,
+            ExecutablePathPropertyName,
+            CommandLineArgumentsPropertyName,
+            WorkingDirectoryPropertyName,
+            LaunchBrowserPropertyName,
+            LaunchUrlPropertyName,
+            EnvironmentVariablesPropertyName
         };
 
         private readonly UnconfiguredProject _project;
@@ -156,13 +164,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             return propertyName switch
             {
-                "CommandName" => profile.CommandName ?? string.Empty,
-                "ExecutablePath" => profile.ExecutablePath ?? string.Empty,
-                "CommandLineArgs" => profile.CommandLineArgs ?? string.Empty,
-                "WorkingDirectory" => profile.WorkingDirectory ?? string.Empty,
-                "LaunchBrowser" => profile.LaunchBrowser ? "true" : "false",
-                "LaunchUrl" => profile.LaunchUrl ?? string.Empty,
-                "EnvironmentVariables" => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
+                CommandNamePropertyName => profile.CommandName ?? string.Empty,
+                ExecutablePathPropertyName => profile.ExecutablePath ?? string.Empty,
+                CommandLineArgumentsPropertyName => profile.CommandLineArgs ?? string.Empty,
+                WorkingDirectoryPropertyName => profile.WorkingDirectory ?? string.Empty,
+                LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
+                LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
+                EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
                 _ => null
                 // TODO: Handle properties supported by launch profile extenders.
             };
