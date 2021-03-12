@@ -22,13 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(category, nameof(category));
 
-            string categoryName = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
-
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
-                    new(ProjectModelIdentityKeys.CategoryName, categoryName)
+                    new(ProjectModelIdentityKeys.CategoryName, category.Name)
                 });
 
             return CreateCategoryValue(parent.EntityRuntime, identity, rule, category, order, requestedProperties);
@@ -46,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                newCategory.Name = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
+                newCategory.Name = category.Name;
             }
 
             if (requestedProperties.Order)
@@ -59,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newCategory;
         }
 
-        public static IEnumerable<IEntityValue> CreateCategoryValues(IEntityValue parent, Rule rule, List<Rule> debugChildRules, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateCategoryValues(IEntityValue parent, Rule rule, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             int index = 0;
             foreach (Category category in rule.EvaluatedCategories)
@@ -67,16 +65,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 IEntityValue categoryValue = CreateCategoryValue(parent, rule, category, index, requestedProperties);
                 yield return categoryValue;
                 index++;
-            }
-
-            foreach (Rule childRule in debugChildRules)
-            {
-                foreach (Category category in childRule.EvaluatedCategories)
-                {
-                    IEntityValue categoryValue = CreateCategoryValue(parent, childRule, category, index, requestedProperties);
-                    yield return categoryValue;
-                    index++;
-                }
             }
         }
 
@@ -89,8 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string categoryName,
             ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            (propertyPageName, categoryName) = DebugUtilities.ConvertDebugPageAndCategoryToRealPageAndCategory(propertyPageName, categoryName);
-
             if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && projectCatalog.GetSchema(propertyPageName) is Rule rule)
