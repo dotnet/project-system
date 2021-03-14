@@ -11,14 +11,14 @@ This repository contains the following broad features:
 ![Visual Basic project system](/docs/repo/images/appdesigner.png)
 
 ## Property Pages
-[Source](/src/Microsoft.VisualStudio.Editors/PropPages)
+[Source](/src/Microsoft.VisualStudio.Editors/PropPages?raw=true)
 
 ## Resources Editor
 [Source](/src/Microsoft.VisualStudio.Editors/ResourceEditor)
 
-![Resources Editor](/docs/repo/images/resourceseditor.png)
+![Resources Editor](/docs/repo/images/resourceseditor.png?raw=true)
 
 ## Settings Designer
 [Source](/src/Microsoft.VisualStudio.Editors/SettingsDesigner)
 
-![Settings Designer](/docs/repo/images/settingsdesigner.png)
+![Settings Designer](/docs/repo/images/settingsdesigner.png?raw=true)
