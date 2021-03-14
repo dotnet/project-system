@@ -8,7 +8,7 @@ This repository contains the following broad features:
 ## Application Designer ("AppDesigner")
 [Source](/src/Microsoft.VisualStudio.AppDesigner)
 
-![Visual Basic project system](/docs/repo/images/appdesigner.png?raw=true)
+![Visual Basic project system](/docs/repo/images/appdesigner.png)
 
 ## Property Pages
 [Source](/src/Microsoft.VisualStudio.Editors/PropPages)
@@ -16,9 +16,9 @@ This repository contains the following broad features:
 ## Resources Editor
 [Source](/src/Microsoft.VisualStudio.Editors/ResourceEditor)
 
-![Resources Editor](/docs/repo/images/resourceseditor.png?raw=true)
+![Resources Editor](/docs/repo/images/resourceseditor.png)
 
 ## Settings Designer
 [Source](/src/Microsoft.VisualStudio.Editors/SettingsDesigner)
 
-![Settings Designer](/docs/repo/images/settingsdesigner.png?raw=true)
+![Settings Designer](/docs/repo/images/settingsdesigner.png)
