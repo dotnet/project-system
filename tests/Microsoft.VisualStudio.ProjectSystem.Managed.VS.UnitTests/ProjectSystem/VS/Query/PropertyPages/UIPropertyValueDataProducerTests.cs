@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var cache = IPropertyPageQueryCacheFactory.Create(
                 projectConfigurations: ImmutableHashSet<ProjectConfiguration>.Empty.Add(defaultConfiguration).Add(otherConfiguration),
                 defaultConfiguration: defaultConfiguration,
-                bindToRule: (config, schemaName) => IRuleFactory.Create(
+                bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                     name: "ParentName",
                     properties: new[] { IPropertyFactory.Create("MyProperty") }));
 
@@ -158,6 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 parent,
                 cache,
                 schema,
+                context: QueryProjectPropertiesContext.ProjectFile,
                 propertyName,
                 requestedProperties);
 

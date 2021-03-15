@@ -39,7 +39,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </remarks>
     internal interface IPropertyPageQueryCache
     {
-        Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName);
+        /// <summary>
+        /// Binds the specified schema to a particular context within the given project configuration.
+        /// </summary>
+        Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext context);
         Task<IImmutableSet<ProjectConfiguration>?> GetKnownConfigurationsAsync();
         Task<ProjectConfiguration?> GetSuggestedConfigurationAsync();
     }

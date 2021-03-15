@@ -18,9 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
+                QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 debugChildRules: new List<Rule>(),
-                properties);
+                requestedProperties: properties);
 
             Assert.Equal(expected: "MyRule", actual: propertyPage.Name);
             Assert.Equal(expected: "My Rule Display Name", actual: propertyPage.DisplayName);
@@ -36,9 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
+                QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 debugChildRules: new List<Rule>(),
-                properties) ;
+                requestedProperties: properties);
 
             Assert.IsType<PropertyPageProviderState>(propertyPage.ProviderState);
         }
@@ -51,9 +53,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
                 IPropertyPageQueryCacheFactory.Create(),
+                QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 debugChildRules: new List<Rule>(),
-                properties);
+                requestedProperties: properties);
 
             Assert.Equal(expected: "MyRule", actual: propertyPage.Id[ProjectModelIdentityKeys.PropertyPageName]);
         }

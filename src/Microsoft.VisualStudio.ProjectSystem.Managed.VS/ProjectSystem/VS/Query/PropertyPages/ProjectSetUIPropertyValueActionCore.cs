@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             foreach (ProjectConfiguration knownConfiguration in knownConfigurations)
                             {
                                 if (knownConfiguration.MatchesDimensions(_dimensions)
-                                    && await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
+                                    && await propertyPageCache.BindToRule(knownConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                                 {
                                     projectRules.Add(boundRule);
                                 }
@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         // The property is configuration-independent; we only need the bound rule for a single
                         // configuration.
                         if (await propertyPageCache.GetSuggestedConfigurationAsync() is ProjectConfiguration suggestedConfiguration
-                            && await propertyPageCache.BindToRule(suggestedConfiguration, _pageName) is IRule boundRule)
+                            && await propertyPageCache.BindToRule(suggestedConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                         {
                             projectRules.Add(boundRule);
                         }

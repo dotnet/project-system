@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Dictionary<ProjectConfiguration, IPropertyPagesCatalog?> _catalogCache;
-        private readonly Dictionary<(ProjectConfiguration, string), IRule?> _ruleCache;
+        private readonly Dictionary<(ProjectConfiguration, string, QueryProjectPropertiesContext), IRule?> _ruleCache;
 
         private readonly AsyncLazy<IImmutableSet<ProjectConfiguration>?> _knownProjectConfigurations;
         private readonly AsyncLazy<ProjectConfiguration?> _defaultProjectConfiguration;
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _knownProjectConfigurations = new AsyncLazy<IImmutableSet<ProjectConfiguration>?>(CreateKnownConfigurationsAsync, joinableTaskFactory);
             _defaultProjectConfiguration = new AsyncLazy<ProjectConfiguration?>(CreateDefaultConfigurationAsync, joinableTaskFactory);
             _catalogCache = new Dictionary<ProjectConfiguration, IPropertyPagesCatalog?>();
-            _ruleCache = new Dictionary<(ProjectConfiguration, string), IRule?>();
+            _ruleCache = new Dictionary<(ProjectConfiguration, string, QueryProjectPropertiesContext), IRule?>();
         }
 
         /// <summary>
@@ -87,11 +87,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         /// <summary>
         /// Retrieves the <see cref="IRule"/> with name "<paramref name="schemaName"/>" within the given <paramref
-        /// name="projectConfiguration"/>.
+        /// name="projectConfiguration"/> and <paramref name="context"/>.
         /// </summary>
-        public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName)
+        public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext context)
         {
-            if (_ruleCache.TryGetValue((projectConfiguration, schemaName), out IRule? cachedRule))
+            if (_ruleCache.TryGetValue((projectConfiguration, schemaName, context), out IRule? cachedRule))
             {
                 return cachedRule;
             }
@@ -99,10 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IRule? rule = null;
             if (await GetProjectLevelPropertyPagesCatalogAsync(projectConfiguration) is IPropertyPagesCatalog catalog)
             {
-                rule = catalog.BindToContext(schemaName, file: null, itemType: null, itemName: null);
+                rule = catalog.BindToContext(schemaName, context);
             }
 
-            _ruleCache.Add((projectConfiguration, schemaName), rule);
+            _ruleCache.Add((projectConfiguration, schemaName, context), rule);
             return rule;
         }
     }

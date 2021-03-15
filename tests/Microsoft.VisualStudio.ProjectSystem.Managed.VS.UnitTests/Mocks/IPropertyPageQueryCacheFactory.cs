@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         internal static IPropertyPageQueryCache Create(
             IImmutableSet<ProjectConfiguration>? projectConfigurations = null,
             ProjectConfiguration? defaultConfiguration = null,
-            Func<ProjectConfiguration, string, IRule>? bindToRule = null)
+            Func<ProjectConfiguration, string, QueryProjectPropertiesContext, IRule>? bindToRule = null)
         {
             var mock = new Mock<IPropertyPageQueryCache>();
 
@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (bindToRule is not null)
             {
                 mock.Setup(cache => cache
-                    .BindToRule(It.IsAny<ProjectConfiguration>(), It.IsAny<string>()))
-                    .Returns((ProjectConfiguration config, string schema) => Task.FromResult<IRule?>(bindToRule(config, schema)));
+                    .BindToRule(It.IsAny<ProjectConfiguration>(), It.IsAny<string>(), It.IsAny<QueryProjectPropertiesContext>()))
+                    .Returns((ProjectConfiguration config, string schema, QueryProjectPropertiesContext context) => Task.FromResult<IRule?>(bindToRule(config, schema, context)));
             }
 
             return mock.Object;
