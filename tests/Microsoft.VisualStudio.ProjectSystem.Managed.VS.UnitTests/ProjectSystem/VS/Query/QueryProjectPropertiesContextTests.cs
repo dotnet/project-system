@@ -13,6 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public void Equal(IProjectPropertiesContext a, IProjectPropertiesContext b)
         {
             Assert.True(a.Equals(b));
+            Assert.True(b.Equals(a));
             Assert.True(a.GetHashCode() == b.GetHashCode());
         }
 
@@ -40,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             return new QueryProjectPropertiesContext[][]
             {
-                new QueryProjectPropertiesContext[] { new QueryProjectPropertiesContext(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
+                new QueryProjectPropertiesContext[] { new(false, string.Empty, null, null), QueryProjectPropertiesContext.ProjectFile },
                 new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, null), new(true, @"C:\alpha\gamma", null, null) },
                 new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", "myItemType", null), new(true, @"C:\alpha\beta", "MyOtherItemType", null) },
                 new QueryProjectPropertiesContext[] { new(true, @"C:\alpha\beta", null, "MyItemName"), new(true, @"C:\alpha\beta", null, "MyOtherItemName") }
