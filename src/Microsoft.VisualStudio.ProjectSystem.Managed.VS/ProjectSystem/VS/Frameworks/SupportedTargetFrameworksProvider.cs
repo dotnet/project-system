@@ -108,7 +108,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             {
                 EnumCollectionProjectValue snapshot = await SourceBlock.ReceiveAsync();
 
-                return snapshot.Value;
+                // TODO: This is a hotfix for item ordering. Remove this OrderBy when completing: https://github.com/dotnet/project-system/issues/7025
+                return snapshot.Value.OrderBy(e => e.DisplayName).ToArray();
             }
         }
 
