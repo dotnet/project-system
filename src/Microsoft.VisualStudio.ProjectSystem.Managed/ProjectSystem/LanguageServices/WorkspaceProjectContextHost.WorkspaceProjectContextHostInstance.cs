@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
@@ -136,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    await ExecuteUnderLockAsync(_ => action(_contextAccessor!), _tasksService.UnloadCancellationToken);
+                    await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
                 {   // We treat cancellation because our instance was disposed differently from when the project is unloading.
@@ -153,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 try
                 {
-                    return await ExecuteUnderLockAsync(_ => action(_contextAccessor!), _tasksService.UnloadCancellationToken);
+                    return await ExecuteUnderLockAsync(_ => action(_contextAccessor), _tasksService.UnloadCancellationToken);
                 }
                 catch (OperationCanceledException ex) when (ex.CancellationToken == DisposalToken)
                 {
@@ -168,7 +169,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation, CancellationToken cancellationToken)
             {
-                IWorkspaceProjectContext context = _contextAccessor!.Context;
+                CheckForInitialized();
+
+                IWorkspaceProjectContext context = _contextAccessor.Context;
                 IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = update.Value.project == _project;
@@ -210,6 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
+            [MemberNotNull(nameof(_contextAccessor))]
             private void CheckForInitialized()
             {
                 // We should have been initialized by our 
