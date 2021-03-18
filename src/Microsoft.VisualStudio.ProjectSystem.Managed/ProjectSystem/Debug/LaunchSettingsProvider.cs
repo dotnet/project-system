@@ -25,8 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     [Export(typeof(ILaunchSettingsProvider))]
     [Export(typeof(ILaunchSettingsProvider2))]
+    [Export(typeof(ILaunchSettingsProvider3))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
+    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider3
     {
         public const string LaunchSettingsFilename = "launchSettings.json";
         public const string ProfilesSectionName = "profiles";
@@ -815,6 +816,47 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             });
         }
 
+        public Task UpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction)
+        {
+            // Updates need to be sequenced
+            return _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchProfile? existingProfile = null;
+                int insertionIndex = 0;
+                foreach (ILaunchProfile p in currentSettings.Profiles)
+                {
+                    if (LaunchProfile.IsSameProfileName(p.Name, profileName))
+                    {
+                        existingProfile = p;
+                        break;
+                    }
+                    insertionIndex++;
+                }
+
+                if (existingProfile is null)
+                {
+                    return;
+                }
+
+                var writableProfile = new WritableLaunchProfile(existingProfile);
+                updateAction(writableProfile);
+                ILaunchProfile updatedProfile = writableProfile.ToLaunchProfile();
+
+                ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
+
+                // Insertion index will point to where the previous one was found
+                profiles = profiles.Insert(insertionIndex, updatedProfile);
+
+                // If the updated profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based
+                // profile
+                bool saveToDisk = !updatedProfile.IsInMemoryObject() || (existingProfile?.IsInMemoryObject() == false);
+
+                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+            });
+        }
+
         /// <summary>
         /// Adds or updates the global settings represented by settingName. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
@@ -858,6 +900,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
                 }
+            });
+        }
+
+        /// <summary>
+        /// Retrieves and updates the global setting as a single operation and saves the
+        /// settings to disk.
+        /// </summary>
+        /// <returns></returns>
+        public Task UpdateGlobalSettingAsync(string settingName, Func<object?, object?> updateFunction)
+        {
+            return _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
+                currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue);
+
+                bool originalValueWasSavedToDisk = currentValue?.IsInMemoryObject() == false;
+
+                object? newValue = updateFunction(currentValue);
+
+                globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                if (newValue is not null)
+                {
+                    globalSettings = globalSettings.Add(settingName, newValue);
+                }
+
+                bool saveToDisk = (newValue is not null && !newValue.IsInMemoryObject())
+                    || originalValueWasSavedToDisk;
+
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
             });
         }
 

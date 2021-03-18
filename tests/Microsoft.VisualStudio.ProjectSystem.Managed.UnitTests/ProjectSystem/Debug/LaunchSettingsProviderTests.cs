@@ -637,6 +637,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
+        [InlineData(1, false, false)]
+        [InlineData(1, true, false)]
+        [InlineData(1, true, true)]
+        public async Task UpdateProfileAsync_ProfileExists(int expectedIndex, bool isInMemory, bool existingIsInMemory)
+        {
+            var moqFS = new IFileSystemMock();
+            using var provider = GetLaunchSettingsProvider(moqFS);
+            var profiles = new List<ILaunchProfile>()
+                {
+                    {new LaunchProfile() { Name = "IIS Express", CommandName="IISExpress", LaunchBrowser=true } },
+                    {new LaunchProfile() { Name = "test", ExecutablePath ="c:\\test\\project\\bin\\test.exe", CommandLineArgs=@"-someArg", DoNotPersist = existingIsInMemory} },
+                    {new LaunchProfile() { Name = "bar", ExecutablePath ="c:\\test\\project\\bin\\bar.exe"} }
+                };
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.Profiles).Returns(profiles.ToImmutableList());
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
+
+            await provider.UpdateProfileAsync("test", p =>
+            {
+                p.CommandName = "Test";
+                var persist = (IWritablePersistOption)p;
+                persist.DoNotPersist = isInMemory;
+            });
+
+            // Check disk file was written unless in memory profile
+            Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 3);
+            Assert.Equal("test", provider.CurrentSnapshot.Profiles[expectedIndex].Name);
+            Assert.Equal("Test", provider.CurrentSnapshot.Profiles[expectedIndex].CommandName);
+            Assert.Equal("c:\\test\\project\\bin\\test.exe", provider.CurrentSnapshot.Profiles[expectedIndex].ExecutablePath);
+        }
+
+        [Theory]
         [InlineData(false)]
         [InlineData(true)]
         public async Task RemoveProfileAsync_ProfileExists(bool isInMemory)
@@ -721,6 +760,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task UpdateGlobalSettingAsync_SettingDoesntExist(bool isInMemory)
+        {
+            var moqFS = new IFileSystemMock();
+            using var provider = GetLaunchSettingsProvider(moqFS);
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("test", new LaunchProfile());
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
+
+            await provider.UpdateGlobalSettingAsync("iisSettings", existing => newSettings);
+
+            // Check disk file was written
+            Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
+            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            // Check snapshot
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
+
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+        }
+
+        [Theory]
         [InlineData(false, false)]
         [InlineData(false, true)]
         [InlineData(true, false)]
@@ -754,6 +823,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
         }
+
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        public async Task UpdateGlobalSettingAsync_SettingExists(bool isInMemory, bool existingIsInMemory)
+        {
+            var moqFS = new IFileSystemMock();
+            using var provider = GetLaunchSettingsProvider(moqFS);
+            SetJsonSerializationProviders(provider);
+
+            var globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal
+                .Add("test", new LaunchProfile())
+                .Add("iisSettings", new IISSettingsData() { DoNotPersist = existingIsInMemory });
+
+            var testSettings = new Mock<ILaunchSettings>();
+            testSettings.Setup(m => m.GlobalSettings).Returns(globalSettings);
+            testSettings.Setup(m => m.Profiles).Returns(ImmutableList<ILaunchProfile>.Empty);
+
+            provider.SetCurrentSnapshot(testSettings.Object);
+
+            var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
+
+            await provider.UpdateGlobalSettingAsync("iisSettings", existing => newSettings);
+
+            // Check disk file was written
+            Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));
+
+            // Check snapshot
+            AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
+
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
+        }
+
         [Fact]
         public async Task RemoveGlobalSettingAsync_SettingDoesntExist()
         {
