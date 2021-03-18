@@ -96,9 +96,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 new TestProperty { Name = "Gamma" },
             });
             rule.EndInit();
-            var debugChildRules = new List<Rule>();
 
-            var result = UIPropertyDataProducer.CreateUIPropertyValues(parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, rule, debugChildRules, properties);
+            var result = UIPropertyDataProducer.CreateUIPropertyValues(parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, rule, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {

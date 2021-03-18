@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyPageProviderState providerState)
         {
-            return Task.FromResult(CategoryDataProducer.CreateCategoryValues(parent, providerState.Rule, providerState.DebugChildRules, _properties));
+            return Task.FromResult(CategoryDataProducer.CreateCategoryValues(parent, providerState.Rule, _properties));
         }
     }
 }

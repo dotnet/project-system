@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyPageProviderState providerState)
         {
-            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(parent, providerState.Cache, providerState.Context, providerState.Rule, providerState.DebugChildRules, _properties));
+            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(parent, providerState.Cache, providerState.Context, providerState.Rule, _properties));
         }
     }
 }

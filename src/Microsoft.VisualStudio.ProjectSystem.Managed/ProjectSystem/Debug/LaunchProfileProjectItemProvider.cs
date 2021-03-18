@@ -30,9 +30,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </para>
     /// </remarks>
     [Export(typeof(IProjectItemProvider))]
-    [ExportMetadata("Name", "LaunchProfiles")]
+    [ExportMetadata("Name", "LaunchProfile")]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchProfilesProjectItemProvider : IProjectItemProvider
+    internal class LaunchProfileProjectItemProvider : IProjectItemProvider
     {
         /// <remarks>
         /// <para>
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 #pragma warning restore CS0067
 
         [ImportingConstructor]
-        public LaunchProfilesProjectItemProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider)
+        public LaunchProfileProjectItemProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider)
         {
             _project = project;
             _launchSettingsProvider = launchSettingsProvider;
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             if (!StringComparers.ItemTypes.Equals(itemType, ItemType))
             {
-                throw new ArgumentException($"The {nameof(LaunchProfilesProjectItemProvider)} does not handle the '{itemType}' item type.");
+                throw new ArgumentException($"The {nameof(LaunchProfileProjectItemProvider)} does not handle the '{itemType}' item type.");
             }
 
             WritableLaunchProfile newLaunchProfile = new() { Name = include };
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         public Task<IProjectItem> AddAsync(string path)
         {
-            throw new InvalidOperationException($"The {nameof(LaunchProfilesProjectItemProvider)} does not support adding items as paths.");
+            throw new InvalidOperationException($"The {nameof(LaunchProfileProjectItemProvider)} does not support adding items as paths.");
         }
 
         /// <remarks>
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         public Task<IReadOnlyList<IProjectItem>> AddAsync(IEnumerable<string> paths)
         {
-            throw new InvalidOperationException($"The {nameof(LaunchProfilesProjectItemProvider)} does not support adding items as paths.");
+            throw new InvalidOperationException($"The {nameof(LaunchProfileProjectItemProvider)} does not support adding items as paths.");
         }
 
         public async Task<IProjectItem?> FindItemByNameAsync(string evaluatedInclude)
@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// </remarks>
         public Task SetUnevaluatedIncludesAsync(IReadOnlyCollection<KeyValuePair<IProjectItem, string>> renames)
         {
-            throw new InvalidOperationException($"The {nameof(LaunchProfilesProjectItemProvider)} does not support renaming items.");
+            throw new InvalidOperationException($"The {nameof(LaunchProfileProjectItemProvider)} does not support renaming items.");
         }
 
         /// <summary>
@@ -256,9 +256,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             private readonly string _name;
             private readonly string _projectFilePath;
-            private readonly LaunchProfilesProjectItemProvider _provider;
+            private readonly LaunchProfileProjectItemProvider _provider;
 
-            public ProjectItem(string name, string projectFilePath, LaunchProfilesProjectItemProvider provider)
+            public ProjectItem(string name, string projectFilePath, LaunchProfileProjectItemProvider provider)
             {
                 _name = name;
                 _projectFilePath = projectFilePath;
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 PropertiesContext = new ProjectPropertiesContext(name, projectFilePath);
             }
 
-            public string ItemType => LaunchProfilesProjectItemProvider.ItemType;
+            public string ItemType => LaunchProfileProjectItemProvider.ItemType;
 
             /// <remarks>
             /// Launch profiles have no concept of evaluation, so the evaluated and unevaluated
@@ -303,13 +303,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             /// <remarks>
-            /// The <see cref="LaunchProfilesProjectItemProvider"/> only supports one item type and
+            /// The <see cref="LaunchProfileProjectItemProvider"/> only supports one item type and
             /// there is no meaningful "conversion" to other item types, so we don't allow this
             /// operation.
             /// </remarks>
             public Task SetItemTypeAsync(string value)
             {
-                throw new InvalidOperationException($"The {nameof(LaunchProfilesProjectItemProvider)} does not support changing item types.");
+                throw new InvalidOperationException($"The {nameof(LaunchProfileProjectItemProvider)} does not support changing item types.");
             }
 
             /// <remarks>
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             /// </remarks>
             public Task SetUnevaluatedIncludeAsync(string value)
             {
-                throw new InvalidOperationException($"The {nameof(LaunchProfilesProjectItemProvider)} does not support renaming items.");
+                throw new InvalidOperationException($"The {nameof(LaunchProfileProjectItemProvider)} does not support renaming items.");
             }
 
             /// <summary>
@@ -348,7 +348,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 /// </remarks>
                 public string File => _projectFilePath;
 
-                public string? ItemType => LaunchProfilesProjectItemProvider.ItemType;
+                public string? ItemType => LaunchProfileProjectItemProvider.ItemType;
 
                 public string? ItemName => _name;
             }

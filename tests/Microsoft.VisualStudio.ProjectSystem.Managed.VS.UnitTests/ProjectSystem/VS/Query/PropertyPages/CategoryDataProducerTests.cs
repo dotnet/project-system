@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
@@ -84,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = CategoryDataProducer.CreateCategoryValues(parentEntity, rule, new List<Rule>(), properties);
+            var result = CategoryDataProducer.CreateCategoryValues(parentEntity, rule, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {

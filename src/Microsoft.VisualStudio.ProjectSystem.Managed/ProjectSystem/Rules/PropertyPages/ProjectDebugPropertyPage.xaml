@@ -10,10 +10,16 @@
 
   <Rule.Metadata>
     <sys:String x:Key="CommandName">Project</sys:String>
+
+    <!-- KnownImageIds.ImageCatalogGuid -->
+    <sys:Guid x:Key="ImageMonikerGuid">AE27A6B0-E345-4288-96DF-5EAF394EE369</sys:Guid>
+
+    <!-- KnownImageIds.SettingsGroup-->
+    <sys:Int32 x:Key="ImageMonikerId">2770</sys:Int32>
   </Rule.Metadata>
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFileWithInterception"
+    <DataSource Persistence="LaunchProfile"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
