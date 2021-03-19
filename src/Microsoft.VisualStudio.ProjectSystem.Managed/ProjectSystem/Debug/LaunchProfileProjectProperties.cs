@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    internal class LaunchProfileProperties : IProjectProperties
+    internal class LaunchProfileProjectProperties : IProjectProperties
     {
         private const string CommandNamePropertyName = "CommandName";
         private const string ExecutablePathPropertyName = "ExecutablePath";
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly LaunchProfilePropertiesContext _context;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
 
-        public LaunchProfileProperties(string filePath, string profileName, ILaunchSettingsProvider launchSettingsProvider)
+        public LaunchProfileProjectProperties(string filePath, string profileName, ILaunchSettingsProvider launchSettingsProvider)
         {
             _context = new LaunchProfilePropertiesContext(filePath, profileName);
             _launchSettingsProvider = launchSettingsProvider;

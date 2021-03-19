@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return null!;
             }
 
-            return new LaunchProfileProperties(file, item, _launchSettingsProvider);
+            return new LaunchProfileProjectProperties(file, item, _launchSettingsProvider);
         }
     }
 }
