@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// for a similar interface for intercepting callbacks for properties stored in
     /// MSBuild files.
     /// </remarks>
+    [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Extension, Cardinality = Composition.ImportCardinality.ZeroOrMore)]
     public interface ILaunchProfileExtensionValueProvider
     {
         /// <summary>
