@@ -354,12 +354,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Ne traite pas les avertissements spécifiés en tant qu'erreurs. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <target state="translated">Ne traite pas des avertissements spécifiques en tant qu'erreurs</target>
         <note />
       </trans-unit>
     </body>

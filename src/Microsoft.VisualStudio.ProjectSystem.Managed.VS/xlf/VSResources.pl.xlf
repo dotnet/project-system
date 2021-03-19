@@ -173,7 +173,7 @@ Aby debugować ten projekt, dodaj projekt wykonywalny do tego rozwiązania, któ
       </trans-unit>
       <trans-unit id="Restore_PropertyWithInconsistentValues">
         <source>The value of the '{0}' property is inconsistent between target frameworks. This property must be identical for NuGet restore to function correctly. The value '{1}' from the '{2}' configuration will be used, other target frameworks may fail to pick NuGet assets.</source>
-        <target state="translated">Wartość „{0}" właściwości jest niezgodna między platformami docelowymi. Ta właściwość musi być identyczna, aby przywracanie pakietu NuGet działało poprawnie. Zostanie użyta wartość „{1}” z konfiguracji „{2}”, inne platformy docelowe mogą nie móc wybrać zasobów pakietu NuGet.</target>
+        <target state="translated">Wartość „{0}” właściwości jest niezgodna między platformami docelowymi. Ta właściwość musi być identyczna, aby przywracanie pakietu NuGet działało poprawnie. Zostanie użyta wartość „{1}” z konfiguracji „{2}”, inne platformy docelowe mogą nie móc wybrać zasobów pakietu NuGet.</target>
         <note />
       </trans-unit>
       <trans-unit id="Restore_DuplicateToolReferenceItems">

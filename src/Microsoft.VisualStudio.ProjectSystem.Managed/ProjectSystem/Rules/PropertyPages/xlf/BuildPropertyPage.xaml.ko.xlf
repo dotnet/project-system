@@ -354,12 +354,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">지정된 경고가 오류로 처리되지 않도록 합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <target state="translated">특정 경고가 오류로 처리되지 않도록 함</target>
         <note />
       </trans-unit>
     </body>
