@@ -13,13 +13,18 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.</source>
-        <target state="new">The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed directly from the Debug menu, or via the Start button the tool bar. Alternatively, click the link below.</source>
+        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed directly from the Debug menu, or via the Start button the tool bar. Alternatively, click the link below.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
         <target state="new">Ignored</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
+        <source>Open debug launch profiles UI</source>
+        <target state="new">Open debug launch profiles UI</target>
         <note />
       </trans-unit>
     </body>
