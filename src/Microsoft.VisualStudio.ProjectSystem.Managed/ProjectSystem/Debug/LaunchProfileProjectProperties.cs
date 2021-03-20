@@ -8,6 +8,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
+using LaunchProfileValueProviderAndMetadata = System.Lazy<
+    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProvider,
+    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata>;
+using GlobalSettingValueProviderAndMetadata = System.Lazy<
+    Microsoft.VisualStudio.ProjectSystem.Debug.IGlobalSettingExtensionValueProvider,
+    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
@@ -39,11 +45,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         private readonly LaunchProfilePropertiesContext _context;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata> _launchProfileValueProviders;
+        private readonly ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata> _globalSettingValueProviders;
 
-        public LaunchProfileProjectProperties(string filePath, string profileName, ILaunchSettingsProvider launchSettingsProvider)
+        public LaunchProfileProjectProperties(
+            string filePath,
+            string profileName,
+            ILaunchSettingsProvider launchSettingsProvider,
+            ImmutableArray<LaunchProfileValueProviderAndMetadata> launchProfileExtensionValueProviders,
+            ImmutableArray<GlobalSettingValueProviderAndMetadata> globalSettingExtensionValueProviders)
         {
             _context = new LaunchProfilePropertiesContext(filePath, profileName);
             _launchSettingsProvider = launchSettingsProvider;
+
+            ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata>.Builder launchProfileValueBuilder =
+                ImmutableDictionary.CreateBuilder<string, LaunchProfileValueProviderAndMetadata>(StringComparers.PropertyNames);
+            foreach (LaunchProfileValueProviderAndMetadata valueProvider in launchProfileExtensionValueProviders)
+            {
+                string[] propertyNames = valueProvider.Metadata.PropertyNames;
+
+                foreach (string propertyName in propertyNames)
+                {
+                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
+
+                    // CONSIDER: Allow duplicate intercepting property value providers for same property name.
+                    Requires.Argument(!launchProfileValueBuilder.ContainsKey(propertyName), nameof(launchProfileValueBuilder), "Duplicate property value providers for same property name");
+
+                    launchProfileValueBuilder.Add(propertyName, valueProvider);
+                }
+            }
+            _launchProfileValueProviders = launchProfileValueBuilder.ToImmutable();
+
+            ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata>.Builder globalSettingValueBuilder =
+                ImmutableDictionary.CreateBuilder<string, GlobalSettingValueProviderAndMetadata>(StringComparers.PropertyNames);
+            foreach (GlobalSettingValueProviderAndMetadata valueProvider in globalSettingExtensionValueProviders)
+            {
+                string[] propertyNames = valueProvider.Metadata.PropertyNames;
+
+                foreach (string propertyName in propertyNames)
+                {
+                    Requires.Argument(!string.IsNullOrEmpty(propertyName), nameof(valueProvider), "A null or empty property name was found");
+
+                    // CONSIDER: Allow duplicate intercepting property value providers for same property name.
+                    Requires.Argument(!globalSettingValueBuilder.ContainsKey(propertyName), nameof(globalSettingValueBuilder), "Duplicate property value providers for same property name");
+
+                    globalSettingValueBuilder.Add(propertyName, valueProvider);
+                }
+            }
+            _globalSettingValueProviders = globalSettingValueBuilder.ToImmutable();
         }
 
         public IProjectPropertiesContext Context => _context;
@@ -87,10 +136,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             {
                 return Enumerable.Empty<string>();
             }
+            ImmutableDictionary<string, object> globalSettings = snapshot.GlobalSettings;
 
-            return s_standardPropertyNames;
+            ImmutableSortedSet<string>.Builder builder = ImmutableSortedSet.CreateBuilder<string>(StringComparers.PropertyNames);
+            builder.UnionWith(s_standardPropertyNames);
 
-            // TODO: Handle property names supported by launch profile extenders.
+            foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)
+            {
+                // TODO: Pass the Rule
+                string propertyValue = await provider.Value.OnGetPropertyValueAsync(propertyName, profile, globalSettings, rule: null);
+                if (!Strings.IsNullOrEmpty(propertyValue))
+                {
+                    builder.Add(propertyName);
+                }
+            }
+
+            foreach ((string propertyName, GlobalSettingValueProviderAndMetadata provider) in _globalSettingValueProviders)
+            {
+                // TODO: Pass the Rule
+                string propertyValue = await provider.Value.OnGetPropertyValueAsync(propertyName, globalSettings, rule: null);
+                if (!Strings.IsNullOrEmpty(propertyValue))
+                {
+                    builder.Add(propertyName);
+                }
+            }
+
+            return builder.ToImmutable();
         }
 
         /// <returns>
@@ -118,8 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
                 EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
-                _ => null
-                // TODO: Handle properties supported by launch profile extenders.
+                _ => await GetPropertyValueFromExtendersAsync(propertyName, profile, snapshot.GlobalSettings)
             };
         }
 
@@ -131,6 +201,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<string?> GetPropertyValueFromExtendersAsync(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
+        {
+            if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
+            {
+                // TODO: Pass the Rule
+                return await launchProfileValueProvider.Value.OnGetPropertyValueAsync(propertyName, profile, globalSettings, rule: null);
+            }
+
+            if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
+            {
+                // TODO: Pass the Rule
+                return await globalSettingValueProvider.Value.OnGetPropertyValueAsync(propertyName, globalSettings, rule: null);
+            }
+
+            return null;
         }
 
         private static string? ConvertDictionaryToString(ImmutableDictionary<string, string>? value)

@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Xunit;
@@ -9,12 +11,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfilesProjectPropertiesProviderTests
     {
+        private static readonly IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
+            Enumerable.Empty<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+        private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders = 
+            Enumerable.Empty<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+
         [Fact]
         public void DefaultProjectPath_IsTheProjectPath()
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var defaultProjectPath = provider.DefaultProjectPath;
             Assert.Equal(expected: DefaultTestProjectPath, actual: defaultProjectPath);
@@ -26,7 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var commonProperties = provider.GetCommonProperties();
 
@@ -39,7 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfileProjectItemProvider.ItemType);
 
@@ -52,7 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var itemProperties = provider.GetItemProperties(LaunchProfileProjectItemProvider.ItemType, item: null);
 
@@ -64,7 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
@@ -78,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: null,
@@ -97,7 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: "RandomItemType",
@@ -111,7 +132,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetProperties(
                 file: @"C:\sigma\lambda\other.csproj",
@@ -126,7 +149,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
@@ -144,7 +169,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
@@ -158,7 +185,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
@@ -176,7 +205,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
@@ -200,7 +231,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
@@ -233,7 +266,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");
@@ -263,7 +298,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 launchProfiles: new[] { profile1.ToLaunchProfile() });
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
                 item: "Profile1");

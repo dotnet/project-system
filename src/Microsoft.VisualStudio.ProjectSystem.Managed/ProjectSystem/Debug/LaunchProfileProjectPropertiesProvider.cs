@@ -1,6 +1,8 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
@@ -15,13 +17,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     {
         private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly ImmutableArray<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> _launchProfileExtensionValueProviders;
+        private readonly ImmutableArray<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> _globalSettingExtensionValueProviders;
 
         [ImportingConstructor]
-        public LaunchProfileProjectPropertiesProvider(UnconfiguredProject project,
-            ILaunchSettingsProvider launchSettingsProvider)
+        public LaunchProfileProjectPropertiesProvider(
+            UnconfiguredProject project,
+            ILaunchSettingsProvider launchSettingsProvider,
+            [ImportMany]IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> launchProfileExtensionValueProviders,
+            [ImportMany]IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> globalSettingExtensionValueProviders)
         {
             _project = project;
             _launchSettingsProvider = launchSettingsProvider;
+            _launchProfileExtensionValueProviders = launchProfileExtensionValueProviders.ToImmutableArray();
+            _globalSettingExtensionValueProviders = globalSettingExtensionValueProviders.ToImmutableArray();
         }
 
         /// <remarks>
@@ -88,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return null!;
             }
 
-            return new LaunchProfileProjectProperties(file, item, _launchSettingsProvider);
+            return new LaunchProfileProjectProperties(file, item, _launchSettingsProvider, _launchProfileExtensionValueProviders, _globalSettingExtensionValueProviders);
         }
     }
 }
