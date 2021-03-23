@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ///     Supports the retrieval and update of a given global setting as a single
         ///     operation. When <paramref name="updateFunction"/> is called it is given the
         ///     current value of the <paramref name="settingName"/> global setting (which may be
-        ///     <c>null</c> if no such setting exists and returns the updated object (or
-        ///     <c>null</c> if the setting is to be removed).
+        ///     <see langword="null"/> if no such setting exists and returns the updated object (or
+        ///     <see langword="null"/> if the setting is to be removed).
         /// </summary>
         /// <param name="settingName"></param>
         /// <param name="updateFunction"></param>

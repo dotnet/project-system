@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             await QueryDebugTargetsAsync(launchOptions, activeProfile, validateSettings: false) ?? throw new Exception(VSResources.ProjectNotRunnableDirectly);
 
         /// <summary>
-        /// Returns <c>null</c> if the debug launch settings are <c>null</c>. Otherwise, the list of debug launch settings.
+        /// Returns <see langword="null"/> if the debug launch settings are <see langword="null"/>. Otherwise, the list of debug launch settings.
         /// </summary>
         private async Task<IReadOnlyList<IDebugLaunchSettings>?> QueryDebugTargetsAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile, bool validateSettings)
         {
@@ -200,7 +200,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// This is called on F5 to return the list of debug targets. What we return depends on the type
         /// of project.
         /// </summary>
-        /// <returns><c>null</c> if the runnable project information is <c>null</c>. Otherwise, the debug launch settings.</returns>
+        /// <returns><see langword="null"/> if the runnable project information is <see langword="null"/>. Otherwise, the debug launch settings.</returns>
         private async Task<DebugLaunchSettings?> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
@@ -415,7 +415,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// Queries properties from the project to get information on how to run the application. The returned Tuple contains:
         /// exeToRun, arguments, workingDir
         /// </summary>
-        /// <returns><c>null</c> if the command string is <c>null</c>. Otherwise, the tuple containing the runnable project information.</returns>
+        /// <returns><see langword="null"/> if the command string is <see langword="null"/>. Otherwise, the tuple containing the runnable project information.</returns>
         private async Task<(string Command, string Arguments, string WorkingDirectory)?> GetRunnableProjectInformationAsync(
             ConfiguredProject configuredProject,
             bool validateSettings)
@@ -443,7 +443,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         /// <summary>
-        /// Returns <c>null</c> if it is not a valid debug target. Otherwise, returns the command string for debugging.
+        /// Returns <see langword="null"/> if it is not a valid debug target. Otherwise, returns the command string for debugging.
         /// </summary>
         private async Task<string?> GetTargetCommandAsync(
             IProjectProperties properties,

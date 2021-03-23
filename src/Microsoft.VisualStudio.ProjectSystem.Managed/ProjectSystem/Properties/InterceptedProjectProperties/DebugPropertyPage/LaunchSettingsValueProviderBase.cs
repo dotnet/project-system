@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         /// <returns>
         /// The value of the property if it is found in the <paramref name="launchSettings"/>;
-        /// otherwise a default value or <c>null</c> if there is no applicable default.
+        /// otherwise a default value or <see langword="null"/> if there is no applicable default.
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the given <paramref name="propertyName"/> is not known (that is, it is

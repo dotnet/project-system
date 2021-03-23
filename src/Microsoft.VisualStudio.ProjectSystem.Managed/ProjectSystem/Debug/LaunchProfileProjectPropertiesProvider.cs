@@ -147,8 +147,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <returns>
-        /// If the profile does not exist, returns <c>null</c>. Otherwise, returns the value
-        /// of the property if the property is not defined, or <c>null</c> otherwise. The
+        /// If the profile does not exist, returns <see langword="null"/>. Otherwise, returns the value
+        /// of the property if the property is not defined, or <see langword="null"/> otherwise. The
         /// standard properties are always considered to be defined.
         /// </returns>
         private async Task<string?> GetUnevaluatedPropertyValueAsync(string profileName, string propertyName)

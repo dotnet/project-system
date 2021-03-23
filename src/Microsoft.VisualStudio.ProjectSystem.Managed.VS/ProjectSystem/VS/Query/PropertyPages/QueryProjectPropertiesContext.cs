@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <remarks>
         /// Note that if an <see cref="IProjectPropertiesContext"/> has the <see cref="IProjectPropertiesContext.IsProjectFile"/>
         /// property is set to <c>true</c> and the <see cref="IProjectPropertiesContext.ItemType"/>
-        /// and <see cref="IProjectPropertiesContext.ItemName"/> properties are <c>null</c>
+        /// and <see cref="IProjectPropertiesContext.ItemName"/> properties are <see langword="null"/>
         /// then the properties system treats it as referring to the project file as a whole
         /// regardless of the <see cref="IProjectPropertiesContext.File"/> property. This
         /// lets us get away with setting it to the empty string and re-using the same
