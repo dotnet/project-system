@@ -389,12 +389,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">Vyloučí zadaná upozornění, která se tak nebudou považovat za chyby. Více čísel upozornění oddělte čárkou (,) nebo středníkem (;).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <target state="translated">Vyloučit zadaná upozornění, která se tak nebudou považovat za chyby</target>
         <note />
       </trans-unit>
     </body>
