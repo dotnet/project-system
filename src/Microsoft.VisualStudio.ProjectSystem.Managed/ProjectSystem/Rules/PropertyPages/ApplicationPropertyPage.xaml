@@ -54,6 +54,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
@@ -71,6 +72,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(evaluated "Application" "TargetMultipleFrameworks")</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </StringProperty.Metadata>
   </StringProperty>

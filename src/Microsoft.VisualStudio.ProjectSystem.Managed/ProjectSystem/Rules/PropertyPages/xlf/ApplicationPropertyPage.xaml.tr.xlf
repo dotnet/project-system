@@ -52,6 +52,11 @@
         <target state="translated">Hedef çerçeve</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
         <target state="translated">Uygulama Windows Vista'da veya üzeri bir sürümde Kullanıcı Hesabı Denetimi (UAC) altında çalıştırıldığında bir bildirim oluşturma seçeneği belirler. Seçenekler arasında varsayılan bir bildirim olabilir, bildirim olmayabilir veya projeniz tarafından sağlanan özel bir bildirim olabilir.</target>
@@ -185,6 +190,11 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
         <target state="translated">Hedef çerçeveler</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
