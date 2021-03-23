@@ -226,3 +226,4 @@ XAML files in the dotnet/project-system repo are configured for automatic locali
 ## Examples
 
 - [Implement WarningsNotAsErrors in the new property pages](https://github.com/dotnet/project-system/pull/6971) - Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
