@@ -226,3 +226,5 @@ XAML files in the dotnet/project-system repo are configured for automatic locali
 ## Examples
 
 - [Implement WarningsNotAsErrors in the new property pages](https://github.com/dotnet/project-system/pull/6971) - Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
+- [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
