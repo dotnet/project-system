@@ -225,7 +225,8 @@ XAML files in the dotnet/project-system repo are configured for automatic locali
 
 ## Examples
 
-- [Implement WarningsNotAsErrors in the new property pages](https://github.com/dotnet/project-system/pull/6971) - Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Add `WarningsNotAsErrors` property](https://github.com/dotnet/project-system/pull/6971) &mdash; Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Reorder properties within a page](https://github.com/dotnet/project-system/pull/7038) &mdash; Demonstrates reordering properties within a single category on a single page. This simple change is made entirely within a XAML rule file.
 - [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
 - [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
 - [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
