@@ -52,6 +52,11 @@
         <target state="translated">目标框架</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
         <target state="translated">当应用程序在 Windows Vista 或更高版本下的用户帐户控制(UAC)下运行时，选择一个清单生成选项。选项包括默认清单、无清单或由项目提供的自定义清单。</target>
@@ -185,6 +190,11 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
         <target state="translated">目标框架</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">

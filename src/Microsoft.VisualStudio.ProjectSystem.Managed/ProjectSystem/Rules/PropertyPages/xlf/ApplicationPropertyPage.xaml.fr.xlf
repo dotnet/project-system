@@ -52,6 +52,11 @@
         <target state="translated">Framework cible</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
         <target state="translated">Sélectionne une option de génération de manifeste quand l'application s'exécute sur Windows Vista ou une version ultérieure sous UAC (contrôle de compte d'utilisateur). Les options incluent la génération d'un manifeste par défaut, la non-génération de manifeste ou la génération d'un manifeste personnalisé fourni par votre projet.</target>
@@ -185,6 +190,11 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
         <target state="translated">Frameworks cibles</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
