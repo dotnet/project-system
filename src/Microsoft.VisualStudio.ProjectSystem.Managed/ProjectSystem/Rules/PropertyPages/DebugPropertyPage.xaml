@@ -15,4 +15,17 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
+  <StringProperty Name="DebugPagePlaceholderDescription"
+                  DisplayName="Ignored"
+                  Description="The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="DebugPagePlaceholderDescription"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="Description" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
 </Rule>
