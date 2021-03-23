@@ -816,7 +816,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             });
         }
 
-        public Task UpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction)
+        public Task<bool> TryUpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction)
         {
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
@@ -836,7 +836,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 if (existingProfile is null)
                 {
-                    return;
+                    return false;
                 }
 
                 var writableProfile = new WritableLaunchProfile(existingProfile);
@@ -854,6 +854,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+
+                return true;
             });
         }
 

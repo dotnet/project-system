@@ -658,7 +658,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newProfile = new LaunchProfile() { Name = "test", CommandName = "Test", DoNotPersist = isInMemory };
 
-            await provider.UpdateProfileAsync("test", p =>
+            await provider.TryUpdateProfileAsync("test", p =>
             {
                 p.CommandName = "Test";
                 var persist = (IWritablePersistOption)p;

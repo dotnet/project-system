@@ -1,4 +1,4 @@
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.TryUpdateProfileAsync(string! profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile!>! updateAction) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateGlobalSettingAsync(string! settingName, System.Func<object?, object?>! updateFunction) -> System.Threading.Tasks.Task!
-Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateProfileAsync(string! profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile!>! updateAction) -> System.Threading.Tasks.Task!
 const Microsoft.VisualStudio.ProjectSystem.Debug.UIProfilePropertyName.JSWebView2Debugging = "JSWebView2Debugging" -> string!

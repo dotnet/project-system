@@ -35,7 +35,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ///     <paramref name="profileName"/> profile. It will update the profile as
         ///     appropriate and when it is done the profile is applied to the settings.
         /// </summary>
-        Task UpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction);
+        /// <returns>
+        ///     <see langword="true"/> if <paramref name="profileName"/> was found and <paramref name="updateAction"/>
+        ///     executed; <see langword="false"/> if <paramref name="profileName"/> was not found.
+        /// </returns>
+        Task<bool> TryUpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction);
 
         /// <summary>
         ///     Supports the retrieval and update of a given global setting as a single
@@ -44,9 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ///     <see langword="null"/> if no such setting exists and returns the updated object (or
         ///     <see langword="null"/> if the setting is to be removed).
         /// </summary>
-        /// <param name="settingName"></param>
-        /// <param name="updateFunction"></param>
-        /// <returns></returns>
         Task UpdateGlobalSettingAsync(string settingName, Func<object?, object?> updateFunction);
     }
 }
