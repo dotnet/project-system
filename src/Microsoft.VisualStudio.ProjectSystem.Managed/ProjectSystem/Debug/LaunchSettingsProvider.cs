@@ -751,7 +751,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile? existingProfile = null;
                 int insertionIndex = 0;
                 foreach (ILaunchProfile p in currentSettings.Profiles)
@@ -802,7 +802,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
                 if (existingProfile != null)
                 {
@@ -821,7 +821,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile? existingProfile = null;
                 int insertionIndex = 0;
                 foreach (ILaunchProfile p in currentSettings.Profiles)
@@ -866,7 +866,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
@@ -892,7 +892,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
@@ -912,7 +912,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
                 currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue);
 
@@ -938,7 +938,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Helper retrieves the current snapshot (waiting up to 5s) and if there were errors in the launchsettings.json file
         /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned
         /// </summary>
-        public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
+        public async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
         {
             ILaunchSettings? currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))
