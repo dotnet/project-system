@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Xunit;
 
@@ -182,6 +183,198 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 Assert.Equal(expectedPropertyValue, actualUnevaluatedValue);
                 Assert.Equal(expectedPropertyValue, actualEvaluatedValue);
             }
+        }
+
+        [Fact]
+        public async Task WhenRetrievingAnExtensionProperty_TheExtensionValueProviderIsCalled()
+        {
+            string? requestedPropertyName = null;
+            var extensionValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
+                (propertyName, profile, globals, rule) =>
+                {
+                    requestedPropertyName = propertyName;
+                    return Task.FromResult("alpha");
+                });
+            var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
+
+            var lazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => extensionValueProvider,
+                metadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                ImmutableArray.Create(lazy),
+                EmptyGlobalSettingExtensionValueProviders);
+
+            var propertyValue = await properties.GetEvaluatedPropertyValueAsync("MyProperty");
+            Assert.Equal(expected: "MyProperty", actual: requestedPropertyName);
+            Assert.Equal(expected: "alpha", actual: propertyValue);
+        }
+
+        [Fact]
+        public async Task WhenRetrievingPropertyNames_LaunchProfileExtensionNamesAreIncludedForDefinedProperties()
+        {
+            var alphaValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
+                (propertyName, profile, globals, rule) =>
+                {
+                    return Task.FromResult("alpha");
+                });
+            var alphaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("AlphaProperty");
+            var alphaLazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => alphaValueProvider,
+                alphaMetadata);
+
+            var betaValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
+                (propertyName, profile, globals, rule) =>
+                {
+                    return Task.FromResult("");
+                });
+            var betaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("BetaProperty");
+            var betaLazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => betaValueProvider,
+                betaMetadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                ImmutableArray.Create(alphaLazy, betaLazy),
+                EmptyGlobalSettingExtensionValueProviders);
+
+            var names = await properties.GetPropertyNamesAsync();
+
+            Assert.Contains("AlphaProperty", names);
+            Assert.DoesNotContain("BetaProperty", names);
+        }
+
+        [Fact(Skip = "I got ahead of myself and setting property values is not yet supported")]
+        public async Task WhenSettingAnExtensionProperty_TheExtensionValueProviderIsCalled()
+        {
+            string? updatedPropertyName = null;
+            string? updatedPropertyValue = null;
+            var extensionValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
+                onSetPropertyValueAsync: (propertyName, value, profile, globals, rule) =>
+                {
+                    updatedPropertyName = propertyName;
+                    updatedPropertyValue = value;
+
+                    return Task.CompletedTask;
+                });
+            var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
+
+            var lazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => extensionValueProvider,
+                metadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                ImmutableArray.Create(lazy),
+                EmptyGlobalSettingExtensionValueProviders);
+
+            await properties.SetPropertyValueAsync("MyProperty", "alpha");
+
+            Assert.Equal(expected: "MyProperty", actual: updatedPropertyName);
+            Assert.Equal(expected: "alpha", actual: updatedPropertyValue);
+        }
+
+        [Fact]
+        public async Task WhenRetrievingAGlobalProperty_TheExtensionValueProviderIsCalled()
+        {
+            string? requestedPropertyName = null;
+            var extensionValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
+                (propertyName, globals, rule) =>
+                {
+                    requestedPropertyName = propertyName;
+                    return Task.FromResult("alpha");
+                });
+            var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
+
+            var lazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => extensionValueProvider,
+                metadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                ImmutableArray.Create(lazy));
+
+            var propertyValue = await properties.GetEvaluatedPropertyValueAsync("MyProperty");
+            Assert.Equal(expected: "MyProperty", actual: requestedPropertyName);
+            Assert.Equal(expected: "alpha", actual: propertyValue);
+        }
+
+        [Fact(Skip = "I got ahead of myself and setting property values is not yet supported")]
+        public async Task WhenSettingAGlobalProperty_TheExtensionValueProviderIsCalled()
+        {
+            string? updatedPropertyName = null;
+            string? updatedPropertyValue = null;
+            var extensionValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
+                onSetPropertyValueAsync: (propertyName, value, globals, rule) =>
+                {
+                    updatedPropertyName = propertyName;
+                    updatedPropertyValue = value;
+
+                    return Task.FromResult(globals.Add(propertyName, value));
+                });
+            var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
+
+            var lazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => extensionValueProvider,
+                metadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                ImmutableArray.Create(lazy));
+
+            await properties.SetPropertyValueAsync("MyProperty", "alpha");
+
+            Assert.Equal(expected: "MyProperty", actual: updatedPropertyName);
+            Assert.Equal(expected: "alpha", actual: updatedPropertyValue);
+        }
+
+        [Fact]
+        public async Task WhenRetrievingPropertyNames_GlobalSettingExtensionNamesAreIncludedForDefinedProperties()
+        {
+            var alphaValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
+                (propertyName,  globals, rule) =>
+                {
+                    return Task.FromResult("alpha");
+                });
+            var alphaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("AlphaProperty");
+            var alphaLazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => alphaValueProvider,
+                alphaMetadata);
+
+            var betaValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
+                (propertyName, globals, rule) =>
+                {
+                    return Task.FromResult("");
+                });
+            var betaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("BetaProperty");
+            var betaLazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
+                () => betaValueProvider,
+                betaMetadata);
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                ImmutableArray.Create(alphaLazy, betaLazy));
+
+            var names = await properties.GetPropertyNamesAsync();
+
+            Assert.Contains("AlphaProperty", names);
+            Assert.DoesNotContain("BetaProperty", names);
         }
 
         /// <summary>
