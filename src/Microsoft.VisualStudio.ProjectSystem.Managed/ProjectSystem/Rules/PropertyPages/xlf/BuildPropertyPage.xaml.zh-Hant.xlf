@@ -32,6 +32,16 @@
         <target state="translated">已選取;未選取</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="new">Delay sign only</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
         <target state="translated">指定編譯器是否應為相同的輸入產生相同的元件。</target>
@@ -67,6 +77,16 @@
         <target state="translated">最佳化;最佳化</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="new">Sign the assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">設定建置過程的錯誤和警告選項。</target>
@@ -90,6 +110,16 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">輸出</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|Description">
+        <source>Configures strong name signing of build outputs.</source>
+        <target state="new">Configures strong name signing of build outputs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|DisplayName">
+        <source>Strong naming</source>
+        <target state="new">Strong naming</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -282,6 +312,11 @@
         <target state="translated">建置</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="new">Strong name key file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">指定建置期間，用以存放專案之中繼輸出的基底位置。此路徑會附加子資料夾，以區分專案設定。</target>
@@ -354,12 +389,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">避免將指定的警告視為錯誤。請以逗號 (',') 或分號 (';') 分隔多個警告編號。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <target state="translated">避免將特定警告視為錯誤</target>
         <note />
       </trans-unit>
     </body>

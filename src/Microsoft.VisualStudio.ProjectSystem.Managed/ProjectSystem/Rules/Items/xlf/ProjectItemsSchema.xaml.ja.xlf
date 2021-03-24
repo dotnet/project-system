@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="ContentType|WindowsResource|DisplayName">
         <source>Windows Resource file</source>
-        <target state="needs-review-translation">Windows リソース ファイル</target>
+        <target state="translated">Windows リソース ファイル</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|XML|DisplayName">

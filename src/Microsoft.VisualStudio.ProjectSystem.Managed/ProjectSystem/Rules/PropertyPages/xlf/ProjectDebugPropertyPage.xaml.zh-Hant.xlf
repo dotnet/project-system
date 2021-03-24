@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="needs-review-translation">同時為受控碼及機器碼啟用偵錯，也稱為混合模式偵錯。</target>
+        <target state="translated">同時為受控碼和機器碼啟用偵錯，也稱為混合模式偵錯。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
+        <target state="translated">啟用 SQL 指令碼偵錯與預存程序偵錯。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">

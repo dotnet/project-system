@@ -52,6 +52,11 @@
         <target state="translated">Целевая платформа</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
         <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project.</source>
         <target state="translated">Выбирает параметр создания манифеста при запуске приложения в Windows Vista или в более поздних версиях ОС Windows в разделе "Управление учетными записями пользователей" (UAC). Возможные значения параметра: манифест по умолчанию, без манифеста или пользовательский манифест, предоставленный вашим проектом.</target>
@@ -185,6 +190,11 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
         <target state="translated">Целевые платформы</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">

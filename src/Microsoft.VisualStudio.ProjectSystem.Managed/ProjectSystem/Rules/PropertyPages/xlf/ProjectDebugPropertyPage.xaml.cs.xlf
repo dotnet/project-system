@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="needs-review-translation">Povolí společné ladění spravovaného a nativního kódu, což se označuje také jako ladění v kombinovaném režimu. </target>
+        <target state="translated">Povolí společné ladění spravovaného a nativního kódu, což se označuje také jako ladění v kombinovaném režimu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
+        <target state="translated">Povolí ladění skriptů SQL a uložených procedur.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">

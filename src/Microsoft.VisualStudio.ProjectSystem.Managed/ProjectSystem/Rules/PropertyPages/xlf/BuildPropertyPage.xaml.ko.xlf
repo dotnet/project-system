@@ -32,6 +32,16 @@
         <target state="translated">선택됨;선택 취소됨</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="new">Delay sign only</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
         <target state="translated">컴파일러가 동일한 입력에 대해 동일한 어셈블리를 생성해야 하는지 여부를 나타냅니다.</target>
@@ -67,6 +77,16 @@
         <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="new">Sign the assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">빌드 프로세스의 오류 및 경고 옵션을 구성합니다.</target>
@@ -90,6 +110,16 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">출력</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|Description">
+        <source>Configures strong name signing of build outputs.</source>
+        <target state="new">Configures strong name signing of build outputs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|DisplayName">
+        <source>Strong naming</source>
+        <target state="new">Strong naming</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -282,6 +312,11 @@
         <target state="translated">빌드</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="new">Strong name key file</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
         <target state="translated">빌드하는 동안 프로젝트의 중간 출력에 대한 기본 위치를 지정합니다. 프로젝트 구성을 구분하기 위해 이 경로에 하위 폴더가 추가됩니다.</target>
@@ -354,12 +389,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">지정된 경고가 오류로 처리되지 않도록 합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <target state="translated">특정 경고가 오류로 처리되지 않도록 함</target>
         <note />
       </trans-unit>
     </body>
