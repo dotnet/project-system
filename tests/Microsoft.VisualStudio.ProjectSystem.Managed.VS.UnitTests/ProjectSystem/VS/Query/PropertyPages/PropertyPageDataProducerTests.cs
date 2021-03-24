@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
@@ -33,6 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
@@ -48,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,

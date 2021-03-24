@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    foreach (IEntityValue categoryValue in await CreateValuesAsync(request.RequestData, providerState))
+                    foreach (IEntityValue categoryValue in await CreateValuesAsync(request.QueryExecutionContext, request.RequestData, providerState))
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(categoryValue, request, ProjectModelZones.Cps));
                     }
@@ -40,6 +40,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Given the <paramref name="parent"/> entity and the associated <paramref name="providerState"/>,
         /// returns a set of child entities.
         /// </summary>
-        protected abstract Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, T providerState);
+        protected abstract Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, T providerState);
     }
 }
