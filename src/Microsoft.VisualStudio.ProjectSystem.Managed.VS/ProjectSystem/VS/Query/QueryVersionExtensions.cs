@@ -11,5 +11,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             unconfiguredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
             executionContext.ReportInputDataVersion(versionKey, versionNumber);
         }
+
+        public static void ReportProjectUpdate(this IQueryExecutionContext executionContext, UnconfiguredProject unconfiguredProject)
+        {
+            unconfiguredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
+            executionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
+        }
     }
 }

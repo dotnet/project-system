@@ -61,7 +61,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project)
             {
-                await _coreExecutor.ExecuteAsync(project);
+                if (await _coreExecutor.ExecuteAsync(project))
+                {
+                    result.Request.QueryExecutionContext.ReportProjectUpdate(project);
+                }
             }
 
             await ResultReceiver.ReceiveResultAsync(result);
