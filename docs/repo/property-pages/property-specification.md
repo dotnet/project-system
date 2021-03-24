@@ -106,6 +106,37 @@ To address this issue, a property may declare that it depends upon the value of 
 
 Most property updates are very fast, so this feature is only expected to help in cases where an update is unexpectedly slow, or the user is unexpectedly fast.
 
+## Description Text
+
+It can sometimes be useful to insert free-standing text within a series of properties. This can be achieved via the `Description` editor type. The underlying property type does not matter, as no value is presented.
+
+The property's `ValueEditor` has `EditorType="Description"` which selects a UI that presents the property's `Description` value as a text block. The `DisplayName` is ignored. The user cannot interact with this text. It does participate in search.
+
+
+```xml
+<StringProperty Name="MyDescriptionProperty"
+                DisplayName="Ignored"
+                Description="This is the text that will appear in the UI.">
+  <StringProperty.DataSource>
+    <DataSource PersistedName="MyDescriptionProperty"
+                Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="False" />
+  </StringProperty.DataSource>
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="Description" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+This goes in concert with the export of the corresponding no-op interception code:
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyDescriptionProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyDescriptionPropertyValueProvider : NoOpInterceptingPropertyValueProvider
+{
+}
+```
+
 ## Link Actions
 
 It is useful to insert hyperlinks between properties that either link to URLs or perform arbitrary actions. This can be achieved via the `ActionLink` editor type. The underlying property type does not matter, as no value is presented.
