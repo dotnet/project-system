@@ -84,14 +84,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string propertyPageName,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                && !rule.PropertyPagesHidden)
+            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project)
             {
-                IPropertyPageQueryCache propertyPageQueryCache = queryCacheProvider.CreateCache(project);
-                IEntityValue propertyPageValue = CreatePropertyPageValue(executionContext, id, propertyPageQueryCache, context, rule, requestedProperties);
-                return propertyPageValue;
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
+                    && !rule.PropertyPagesHidden)
+                {
+                    IPropertyPageQueryCache propertyPageQueryCache = queryCacheProvider.CreateCache(project);
+                    IEntityValue propertyPageValue = CreatePropertyPageValue(executionContext, id, propertyPageQueryCache, context, rule, requestedProperties);
+                    return propertyPageValue;
+                }
             }
 
             return null;

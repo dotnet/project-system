@@ -24,6 +24,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
+            executionContext.ReportProjectVersion(providerState);
+
             return PropertyPageDataProducer.CreatePropertyPageValuesAsync(executionContext, parent, providerState, _queryCacheProvider, _properties);
         }
     }

@@ -155,6 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyName = "MyProperty";
             var requestedProperties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus();
             var results = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                IQueryExecutionContextFactory.Create(),
                 parent,
                 cache,
                 schema,

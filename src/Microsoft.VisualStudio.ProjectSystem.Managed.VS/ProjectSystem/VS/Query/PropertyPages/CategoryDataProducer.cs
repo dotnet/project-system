@@ -78,22 +78,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string categoryName,
             ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule)
+            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project)
             {
-                // We need the category's index in order to populate the "Order" field of the query model.
-                // This requires that we do a linear traversal of the categories, even though we only care
-                // about one.
-                //
-                // TODO: if the "Order" property hasn't been requested, we can skip the linear traversal in
-                // favor of just looking it up by name.
-                foreach ((int index, Category category) in rule.EvaluatedCategories.WithIndices())
+                executionContext.ReportProjectVersion(project);
+
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule)
                 {
-                    if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
+                    // We need the category's index in order to populate the "Order" field of the query model.
+                    // This requires that we do a linear traversal of the categories, even though we only care
+                    // about one.
+                    //
+                    // TODO: if the "Order" property hasn't been requested, we can skip the linear traversal in
+                    // favor of just looking it up by name.
+                    foreach ((int index, Category category) in rule.EvaluatedCategories.WithIndices())
                     {
-                        IEntityValue categoryValue = CreateCategoryValue(executionContext, id, rule, category, index, requestedProperties);
-                        return categoryValue;
+                        if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
+                        {
+                            IEntityValue categoryValue = CreateCategoryValue(executionContext, id, rule, category, index, requestedProperties);
+                            return categoryValue;
+                        }
                     }
                 }
             }

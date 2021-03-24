@@ -131,15 +131,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string propertyName,
             IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
-                && property.Visible)
+            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project)
             {
-                IPropertyPageQueryCache cache = queryCacheProvider.CreateCache(project);
-                IEntityValue propertyValue = CreateUIPropertyValue(executionContext, requestId, cache, context, property, index, requestedProperties);
-                return propertyValue;
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
+                    && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
+                    && property.Visible)
+                {
+                    IPropertyPageQueryCache cache = queryCacheProvider.CreateCache(project);
+                    IEntityValue propertyValue = CreateUIPropertyValue(executionContext, requestId, cache, context, property, index, requestedProperties);
+                    return propertyValue;
+                }
             }
 
             return null;

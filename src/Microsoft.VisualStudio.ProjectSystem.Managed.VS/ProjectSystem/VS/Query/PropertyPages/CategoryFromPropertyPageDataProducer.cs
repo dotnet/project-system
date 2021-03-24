@@ -23,6 +23,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyPageProviderState providerState)
         {
+            (string versionKey, long versionNumber) = providerState.Cache.GetUnconfiguredProjectVersion();
+            executionContext.ReportInputDataVersion(versionKey, versionNumber);
+
             return Task.FromResult(CategoryDataProducer.CreateCategoryValues(executionContext, parent, providerState.Rule, _properties));
         }
     }
