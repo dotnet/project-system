@@ -61,6 +61,39 @@ namespace Microsoft.VisualStudio.Threading.Tasks
             }
         }
 
+        public Task<T> ExecuteTask<T>(Func<Task<T>> asyncFunction)
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(SequentialTaskExecutor));
+            }
+
+            lock (_syncObject)
+            {
+                // If we are on the same execution chain, run the task directly
+                if (_executingTask.Value)
+                {
+                    return asyncFunction();
+                }
+
+                _taskAdded = _taskAdded.ContinueWith(async t =>
+                {
+                    _disposedCancelTokenSource.Token.ThrowIfCancellationRequested();
+                    try
+                    {
+                        _executingTask.Value = true;
+                        return await asyncFunction();
+                    }
+                    finally
+                    {
+                        _executingTask.Value = false;
+                    }
+                }, TaskScheduler.Default).Unwrap();
+
+                return (Task<T>)_taskAdded;
+            }
+        }
+
         /// <summary>
         /// Dispose cancels outstanding tasks
         /// </summary>
