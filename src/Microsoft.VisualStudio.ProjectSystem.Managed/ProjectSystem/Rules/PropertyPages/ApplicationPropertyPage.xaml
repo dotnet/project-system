@@ -22,15 +22,17 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
-  <StringProperty Name="AssemblyName"
-                  DisplayName="Assembly name"
-                  Description="Specifies the name of the output file that will hold the assembly manifest."
-                  Category="General" />
-
-  <StringProperty Name="RootNamespace"
-                  DisplayName="Default namespace"
-                  Description="Specifies the base namespace for files added to the project."
-                  Category="General" />
+  <EnumProperty Name="OutputType"
+                DisplayName="Output type"
+                Description="Specifies the type of application to build."
+                Category="General">
+    <EnumValue Name="Library"
+               DisplayName="Class Library" />
+    <EnumValue Name="Exe"
+               DisplayName="Console Application" />
+    <EnumValue Name="WinExe"
+               DisplayName="Windows Application" />
+  </EnumProperty>
 
   <BoolProperty Name="TargetMultipleFrameworks"
                 DisplayName="Target multiple frameworks"
@@ -94,18 +96,6 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <EnumProperty Name="OutputType"
-                DisplayName="Output type"
-                Description="Specifies the type of application to build."
-                Category="General">
-    <EnumValue Name="Library"
-               DisplayName="Class Library" />
-    <EnumValue Name="Exe"
-               DisplayName="Console Application" />
-    <EnumValue Name="WinExe"
-               DisplayName="Windows Application" />
-  </EnumProperty>
-
   <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."
@@ -117,6 +107,16 @@
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
+
+  <StringProperty Name="AssemblyName"
+                  DisplayName="Assembly name"
+                  Description="Specifies the name of the output file that will hold the assembly manifest."
+                  Category="General" />
+
+  <StringProperty Name="RootNamespace"
+                  DisplayName="Default namespace"
+                  Description="Specifies the base namespace for files added to the project."
+                  Category="General" />
 
   <EnumProperty Name="ResourceSpecificationKind"
                 DisplayName="Resources"
