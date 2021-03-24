@@ -146,7 +146,7 @@ This goes in concert with the export of the corresponding no-op interception cod
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
+internal sealed class MyUrlPropertyValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
 ```
@@ -183,7 +183,7 @@ This goes in concert with the export of the corresponding no-op interception cod
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
+internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
 ```
