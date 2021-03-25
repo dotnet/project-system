@@ -15,6 +15,29 @@
       https://devdiv.pkgs.visualstudio.com/_packaging/vs-impl/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
+    <PackageReference Include="VSLangProj" Version="7.0.3300" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="EnvDTE" Version="$(VSSDK_GeneralVersion)" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.OLE.Interop" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.8.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.6.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30320" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
 
   <ItemGroup>
 
@@ -88,8 +111,8 @@
     <PackageReference Update="EnvDTE"                                                                 Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
-    <PackageReference Include ="Microsoft.VisualStudio.Interop"                                       Version="17.0.0-preview-1-30928-1111"/>
-    <PackageReference Include ="Microsoft.Internal.VisualStudio.Interop"                              Version="17.0.0-preview-1-30928-1111"/>
+    <PackageReference Include ="Microsoft.VisualStudio.Interop"                                       Version="$(VisualStudioInteropVersion)"/>
+    <PackageReference Include ="Microsoft.Internal.VisualStudio.Interop"                              Version="$(VisualStudioInteropVersion)"/>
     
 
     <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
