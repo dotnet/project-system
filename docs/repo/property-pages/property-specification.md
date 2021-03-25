@@ -106,6 +106,37 @@ To address this issue, a property may declare that it depends upon the value of 
 
 Most property updates are very fast, so this feature is only expected to help in cases where an update is unexpectedly slow, or the user is unexpectedly fast.
 
+## Description Text
+
+It can sometimes be useful to insert free-standing text within a series of properties. This can be achieved via the `Description` editor type. The underlying property type does not matter, as no value is presented.
+
+The property's `ValueEditor` has `EditorType="Description"` which selects a UI that presents the property's `Description` value as a text block. The `DisplayName` is ignored. The user cannot interact with this text. It does participate in search.
+
+
+```xml
+<StringProperty Name="MyDescriptionProperty"
+                DisplayName="Ignored"
+                Description="This is the text that will appear in the UI.">
+  <StringProperty.DataSource>
+    <DataSource PersistedName="MyDescriptionProperty"
+                Persistence="ProjectFileWithInterception"
+                HasConfigurationCondition="False" />
+  </StringProperty.DataSource>
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="Description" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+This goes in concert with the export of the corresponding no-op interception code:
+
+```c#
+[ExportInterceptingPropertyValueProvider("MyDescriptionProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+internal sealed class MyDescriptionPropertyValueProvider : NoOpInterceptingPropertyValueProvider
+{
+}
+```
+
 ## Link Actions
 
 It is useful to insert hyperlinks between properties that either link to URLs or perform arbitrary actions. This can be achieved via the `ActionLink` editor type. The underlying property type does not matter, as no value is presented.
@@ -146,7 +177,7 @@ This goes in concert with the export of the corresponding no-op interception cod
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyUrlProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
+internal sealed class MyUrlPropertyValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
 ```
@@ -183,7 +214,7 @@ This goes in concert with the export of the corresponding no-op interception cod
 
 ```c#
 [ExportInterceptingPropertyValueProvider("MyCommandProperty", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-internal sealed class MyUrlValueProvider : NoOpInterceptingPropertyValueProvider
+internal sealed class MyCommandPropertyValueProvider : NoOpInterceptingPropertyValueProvider
 {
 }
 ```
@@ -230,3 +261,4 @@ XAML files in the dotnet/project-system repo are configured for automatic locali
 - [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
 - [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
 - [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
+- [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
