@@ -18,6 +18,10 @@
     <Category Name="Output"
               Description="Configures the output options for the build process."
               DisplayName="Output" />
+
+    <Category Name="StrongNaming"
+              Description="Configures strong name signing of build outputs."
+              DisplayName="Strong naming" />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -268,5 +272,50 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <BoolProperty Name="SignAssembly"
+                Description="Sign the output assembly to give it a strong name."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147136"
+                DisplayName="Sign the assembly"
+                Category="StrongNaming">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="AssemblyOriginatorKeyFile"
+                  DisplayName="Strong name key file"
+                  Category="StrongNaming"
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Build" "SignAssembly")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="DelaySign"
+                Description="Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147243"
+                DisplayName="Delay sign only"
+                Category="StrongNaming">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Build" "SignAssembly")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
 </Rule>

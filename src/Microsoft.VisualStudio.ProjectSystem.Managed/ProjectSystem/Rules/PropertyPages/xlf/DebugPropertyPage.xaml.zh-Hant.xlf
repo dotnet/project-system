@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hant" original="../DebugPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|DebugPropertyPage|Description">
+        <source>Debug</source>
+        <target state="new">Debug</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|DebugPropertyPage|DisplayName">
+        <source>Debug</source>
+        <target state="new">Debug</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
+        <source>The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.</source>
+        <target state="new">The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
+        <source>Ignored</source>
+        <target state="new">Ignored</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

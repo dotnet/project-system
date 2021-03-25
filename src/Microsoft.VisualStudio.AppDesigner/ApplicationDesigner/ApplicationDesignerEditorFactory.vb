@@ -230,8 +230,8 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Function
 
         Private Function UseNewEditor(vsHierarchy As IVsHierarchy) As Boolean
-            If Not vsHierarchy.IsCapabilityMatch("CPS") Then
-                ' The new editor is only available for CPS-based projects
+            If Not vsHierarchy.IsCapabilityMatch("CPS & CSharp") Then
+                ' The new editor is only available for CPS-based C# projects
                 Return False
             End If
 

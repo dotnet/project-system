@@ -25,8 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     [Export(typeof(ILaunchSettingsProvider))]
     [Export(typeof(ILaunchSettingsProvider2))]
+    [Export(typeof(ILaunchSettingsProvider3))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider2
+    internal class LaunchSettingsProvider : OnceInitializedOnceDisposed, ILaunchSettingsProvider3
     {
         public const string LaunchSettingsFilename = "launchSettings.json";
         public const string ProfilesSectionName = "profiles";
@@ -750,7 +751,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile? existingProfile = null;
                 int insertionIndex = 0;
                 foreach (ILaunchProfile p in currentSettings.Profiles)
@@ -801,7 +802,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ILaunchProfile existingProfile = currentSettings.Profiles.FirstOrDefault(p => LaunchProfile.IsSameProfileName(p.Name, profileName));
                 if (existingProfile != null)
                 {
@@ -815,6 +816,49 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             });
         }
 
+        public Task<bool> TryUpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction)
+        {
+            // Updates need to be sequenced
+            return _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
+                ILaunchProfile? existingProfile = null;
+                int insertionIndex = 0;
+                foreach (ILaunchProfile p in currentSettings.Profiles)
+                {
+                    if (LaunchProfile.IsSameProfileName(p.Name, profileName))
+                    {
+                        existingProfile = p;
+                        break;
+                    }
+                    insertionIndex++;
+                }
+
+                if (existingProfile is null)
+                {
+                    return false;
+                }
+
+                var writableProfile = new WritableLaunchProfile(existingProfile);
+                updateAction(writableProfile);
+                ILaunchProfile updatedProfile = writableProfile.ToLaunchProfile();
+
+                ImmutableList<ILaunchProfile> profiles = currentSettings.Profiles.Remove(existingProfile);
+
+                // Insertion index will point to where the previous one was found
+                profiles = profiles.Insert(insertionIndex, updatedProfile);
+
+                // If the updated profile is in-memory only, we don't want to touch the disk unless it replaces an existing disk based
+                // profile
+                bool saveToDisk = !updatedProfile.IsInMemoryObject() || (existingProfile?.IsInMemoryObject() == false);
+
+                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+
+                return true;
+            });
+        }
+
         /// <summary>
         /// Adds or updates the global settings represented by settingName. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
@@ -824,7 +868,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
@@ -850,7 +894,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Updates need to be sequenced
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
-                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrors();
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
                 if (currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue))
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
@@ -862,10 +906,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
+        /// Retrieves and updates the global setting as a single operation and saves the
+        /// settings to disk.
+        /// </summary>
+        /// <returns></returns>
+        public Task UpdateGlobalSettingAsync(string settingName, Func<object?, object?> updateFunction)
+        {
+            return _sequentialTaskQueue.ExecuteTask(async () =>
+            {
+                ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
+                ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
+                currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue);
+
+                bool originalValueWasSavedToDisk = currentValue?.IsInMemoryObject() == false;
+
+                object? newValue = updateFunction(currentValue);
+
+                globalSettings = currentSettings.GlobalSettings.Remove(settingName);
+                if (newValue is not null)
+                {
+                    globalSettings = globalSettings.Add(settingName, newValue);
+                }
+
+                bool saveToDisk = (newValue is not null && !newValue.IsInMemoryObject())
+                    || originalValueWasSavedToDisk;
+
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
+            });
+        }
+
+        /// <summary>
         /// Helper retrieves the current snapshot (waiting up to 5s) and if there were errors in the launchsettings.json file
         /// or there isn't a snapshot, it throws an error. There should always be a snapshot of some kind returned
         /// </summary>
-        public async Task<ILaunchSettings> GetSnapshotThrowIfErrors()
+        public async Task<ILaunchSettings> GetSnapshotThrowIfErrorsAsync()
         {
             ILaunchSettings? currentSettings = await WaitForFirstSnapshot(WaitForFirstSnapshotDelayMillis);
             if (currentSettings == null || (currentSettings.Profiles.Count == 1 && string.Equals(currentSettings.Profiles[0].CommandName, ErrorProfileCommandName, StringComparisons.LaunchProfileCommandNames)))

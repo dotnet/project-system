@@ -169,7 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation, CancellationToken cancellationToken)
             {
-                CheckForInitialized();
+                // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
+                Assumes.NotNull(_contextAccessor);
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
                 IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);

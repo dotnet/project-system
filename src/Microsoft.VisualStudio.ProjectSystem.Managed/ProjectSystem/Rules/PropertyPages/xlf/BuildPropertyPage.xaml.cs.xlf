@@ -32,6 +32,16 @@
         <target state="translated">zaškrtnuto;nezaškrtnuto</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="new">Delay sign only</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
         <target state="translated">Označuje, jestli by kompilátor měl pro identické vstupy vytvořit identická sestavení.</target>
@@ -67,6 +77,16 @@
         <target state="translated">optimalizovat;optimalizace</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="new">Sign the assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Instruct the compiler to treat warnings as errors.</source>
         <target state="new">Instruct the compiler to treat warnings as errors.</target>
@@ -100,6 +120,16 @@
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
         <target state="translated">Výstup</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|Description">
+        <source>Configures strong name signing of build outputs.</source>
+        <target state="new">Configures strong name signing of build outputs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|DisplayName">
+        <source>Strong naming</source>
+        <target state="new">Strong naming</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -270,6 +300,11 @@
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">Sestavení</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="new">Strong name key file</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">

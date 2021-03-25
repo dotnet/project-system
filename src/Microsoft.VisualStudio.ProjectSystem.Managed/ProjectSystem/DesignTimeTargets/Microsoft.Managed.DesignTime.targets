@@ -190,6 +190,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebugPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PackagePropertyPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -214,10 +218,6 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SigningPropertyPage.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-    
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
