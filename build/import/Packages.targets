@@ -88,6 +88,9 @@
     <PackageReference Update="EnvDTE"                                                                 Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
+    <PackageReference Include ="Microsoft.VisualStudio.Interop"                                       Version="17.0.0-preview-1-30928-1111"/>
+    <PackageReference Include ="Microsoft.Internal.VisualStudio.Interop"                              Version="17.0.0-preview-1-30928-1111"/>
+    
 
     <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
     <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
