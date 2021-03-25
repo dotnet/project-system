@@ -13,6 +13,8 @@
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
       https://devdiv.pkgs.visualstudio.com/_packaging/vs-impl/nuget/v3/index.json;
+      <!-- TODO: MergedPIAs Remove as Microsoft.VisualStudio.Shell.Design should be published elsewhere-->
+      \\ansarratserver\Share\PrivateVSSDK;
     </RestoreSources>
   
   </PropertyGroup>
@@ -21,7 +23,6 @@
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
     <PackageReference Include="VSLangProj" Version="7.0.3300" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="EnvDTE" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
@@ -68,8 +69,8 @@
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="16.0.28321-alpha"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21023" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="16.0.28321-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="$(VisualStudioInteropVersion)" />
-    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="$(VisualStudioInteropVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-1-30928-1112" />
+    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.0.0-preview-1-30928-1112" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
     <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.10.14-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.3.104" />
@@ -89,7 +90,7 @@
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="16.0.28321-alpha" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="16.0.28321-alpha" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
-    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="$(VisualStudioInteropVersion)"/>
+    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.0.0-preview-1-30928-1112"/>
     <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="$(VisualStudioInteropVersion)"/>
     
 
