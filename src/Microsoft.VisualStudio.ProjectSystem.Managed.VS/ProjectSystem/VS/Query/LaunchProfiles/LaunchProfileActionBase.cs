@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Query;
@@ -25,12 +26,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project
                 && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider)
             {
-                await ExecuteAsync(launchSettingsProvider);
+                await ExecuteAsync(launchSettingsProvider, result.Request.QueryExecutionContext.CancellationToken);
             }
 
             await ResultReceiver.ReceiveResultAsync(result);
         }
 
-        protected abstract Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider);
+        protected abstract Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider, CancellationToken cancellationToken);
     }
 }
