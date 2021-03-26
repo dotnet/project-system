@@ -20,11 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
         public ProjectImageMoniker? GetProjectImage(string key)
         {
             Requires.NotNullOrEmpty(key, nameof(key));
-            //TODO: Merged PIAs
-            //return key == ProjectImageKey.ProjectRoot ?
-            //    KnownMonikers.FSProjectNode.ToProjectSystemType() :
-            //    null;
-            return null;
+            return key == ProjectImageKey.ProjectRoot ?
+                KnownMonikers.FSProjectNode.ToProjectSystemType() :
+                null;
         }
     }
 }

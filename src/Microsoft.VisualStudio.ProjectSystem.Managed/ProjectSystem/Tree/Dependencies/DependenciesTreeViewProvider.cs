@@ -76,8 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            //TODO: Merged PIAs
-            ProjectImageMoniker rootIcon = null;// = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
+            ProjectImageMoniker rootIcon = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
 
@@ -354,9 +353,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     caption: viewModel.Caption,
                     filePath: viewModel.FilePath,
                     browseObjectProperties: browseObjectProperties,
-                    //TODO: Merged PIAs
-                    //icon: viewModel.Icon.ToProjectSystemType(),
-                    //expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    icon: viewModel.Icon.ToProjectSystemType(),
+                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
                     flags: filteredFlags);
             }
@@ -373,9 +371,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     caption: viewModel.Caption,
                     itemContext: itemContext,
                     browseObjectProperties: browseObjectProperties,
-                    //TODO: Merged PIAs
-                    //icon: viewModel.Icon.ToProjectSystemType(),
-                    //expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    icon: viewModel.Icon.ToProjectSystemType(),
+                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
                     flags: filteredFlags);
             }
@@ -392,9 +389,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     Caption = viewModel.Caption,
                     Flags = viewModel.Flags,
-                    //TODO: Merged PIAs
-                    //Icon = viewModel.Icon.ToProjectSystemType(),
-                    //ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
+                    Icon = viewModel.Icon.ToProjectSystemType(),
+                    ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
                 };
 
                 foreach (Lazy<IProjectTreePropertiesProvider, IOrderPrecedenceMetadataView> provider in _projectTreePropertiesProviders)

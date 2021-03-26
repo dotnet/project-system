@@ -297,9 +297,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = Resources.DependenciesNodeName,
-                    //TODO: Merged PIAs
-                    //Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
-                    //ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
