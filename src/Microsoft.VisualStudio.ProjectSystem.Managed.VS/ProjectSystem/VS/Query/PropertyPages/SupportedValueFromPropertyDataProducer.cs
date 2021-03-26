@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyValueProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyValueProviderState providerState)
         {
             return SupportedValueDataProducer.CreateSupportedValuesAsync(parent, providerState.Property, _properties);
         }

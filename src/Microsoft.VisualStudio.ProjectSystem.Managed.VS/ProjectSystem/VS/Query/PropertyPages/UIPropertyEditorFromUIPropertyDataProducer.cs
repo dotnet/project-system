@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -19,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, PropertyProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyProviderState providerState)
         {
-            return Task.FromResult(UIPropertyEditorDataProducer.CreateEditorValues(parent, providerState.ContainingRule, providerState.PropertyName, _properties));
+            return Task.FromResult(UIPropertyEditorDataProducer.CreateEditorValues(executionContext, parent, providerState.ContainingRule, providerState.PropertyName, _properties));
         }
     }
 }

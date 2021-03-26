@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _projectService = projectService;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
         {
             if (id.KeysCount == 4
                 && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
@@ -32,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && id.TryGetValue(ProjectModelIdentityKeys.EditorName, out string editorName))
             {
                 return UIPropertyEditorDataProducer.CreateEditorValueAsync(
-                    runtimeModel,
+                    executionContext,
                     id,
                     _projectService,
                     projectPath,

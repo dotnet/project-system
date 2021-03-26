@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -68,6 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         }
 
         public static async Task<IEnumerable<IEntityValue>> CreateUIPropertyValueValuesAsync(
+            IQueryExecutionContext executionContext,
             IEntityValue parent,
             IPropertyPageQueryCache cache,
             Rule schema,
@@ -104,6 +106,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             foreach (ProjectConfiguration configuration in configurations)
             {
+                (string versionKey, long versionNumber) = await cache.GetConfiguredProjectVersionAsync(configuration);
+                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+
                 if (await cache.BindToRule(configuration, schema.Name, context) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {

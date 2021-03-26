@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 try
                 {
-                    IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext.EntityRuntime, requestId);
+                    IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext, requestId);
                     if (entityValue is not null)
                     {
                         await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(entityValue, request, ProjectModelZones.Cps));
@@ -37,6 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
         }
 
-        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id);
+        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id);
     }
 }
