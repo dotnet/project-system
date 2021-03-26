@@ -1,20 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using System.Linq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     public class LaunchProfilesProjectPropertiesProviderTests
     {
+        private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
+
+        private static readonly IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyLaunchProfileExtensionValueProviders =
+            Enumerable.Empty<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+        private static readonly IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> EmptyGlobalSettingExtensionValueProviders = 
+            Enumerable.Empty<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>>();
+
         [Fact]
         public void DefaultProjectPath_IsTheProjectPath()
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var defaultProjectPath = provider.DefaultProjectPath;
             Assert.Equal(expected: DefaultTestProjectPath, actual: defaultProjectPath);
@@ -26,7 +35,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var commonProperties = provider.GetCommonProperties();
 
@@ -39,7 +50,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var itemTypeProperties = provider.GetItemTypeProperties(LaunchProfileProjectItemProvider.ItemType);
 
@@ -52,7 +65,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var project = UnconfiguredProjectFactory.Create();
             var provider = new LaunchProfileProjectPropertiesProvider(
                 project,
-                ILaunchSettingsProviderFactory.Create());
+                ILaunchSettingsProviderFactory.Create(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var itemProperties = provider.GetItemProperties(LaunchProfileProjectItemProvider.ItemType, item: null);
 
@@ -64,7 +79,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: LaunchProfileProjectItemProvider.ItemType,
@@ -78,7 +95,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: null,
@@ -97,7 +116,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var provider = new LaunchProfileProjectPropertiesProvider(
                 UnconfiguredProjectFactory.Create(),
-                launchSettingsProvider);
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetItemProperties(
                 itemType: "RandomItemType",
@@ -111,7 +132,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var provider = new LaunchProfileProjectPropertiesProvider(
                 CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
+                CreateDefaultTestLaunchSettings(),
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
 
             var properties = provider.GetProperties(
                 file: @"C:\sigma\lambda\other.csproj",
@@ -119,173 +142,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 item: "Profile1");
 
             Assert.Null(properties);
-        }
-
-        [Fact]
-        public void WhenRetrievingItemProperties_TheContextHasTheExpectedValues()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
-
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-            var context = properties.Context;
-
-            Assert.Equal(expected: DefaultTestProjectPath, actual: context.File);
-            Assert.True(context.IsProjectFile);
-            Assert.Equal(expected: "Profile1", actual: context.ItemName);
-            Assert.Equal(expected: LaunchProfileProjectItemProvider.ItemType, actual: context.ItemType);
-        }
-
-        [Fact]
-        public void WhenRetrievingItemProperties_TheFilePathIsTheProjectPath()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
-
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-
-            Assert.Equal(expected: DefaultTestProjectPath, actual: properties.FileFullPath);
-        }
-
-        [Fact]
-        public void WhenRetrievingItemProperties_ThePropertyKindIsItemGroup()
-        {
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                CreateDefaultTestLaunchSettings());
-
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-
-            Assert.Equal(expected: PropertyKind.ItemGroup, actual: properties.PropertyKind);
-        }
-
-        [Fact]
-        public async Task WhenRetrievingItemPropertyNames_AllStandardProfilePropertyNamesAreReturnedEvenIfNotDefined()
-        {
-            var profile1 = new WritableLaunchProfile { Name = "Profile1" };
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile() });
-
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                launchSettingsProvider);
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-            var propertyNames = await properties.GetPropertyNamesAsync();
-
-            Assert.Contains("CommandName", propertyNames);
-            Assert.Contains("ExecutablePath", propertyNames);
-            Assert.Contains("CommandLineArguments", propertyNames);
-            Assert.Contains("WorkingDirectory", propertyNames);
-            Assert.Contains("LaunchBrowser", propertyNames);
-            Assert.Contains("LaunchUrl", propertyNames);
-            Assert.Contains("EnvironmentVariables", propertyNames);
-        }
-
-        [Fact]
-        public async Task WhenRetrievingStandardPropertyValues_TheEmptyStringIsReturnedForUndefinedProperties()
-        {
-            var profile1 = new WritableLaunchProfile { Name = "Profile1" };
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile() });
-
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                launchSettingsProvider);
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-
-            var standardPropertyNames = new[]
-            {
-                "CommandName",
-                "ExecutablePath",
-                "CommandLineArguments",
-                "WorkingDirectory",
-                "LaunchUrl",
-                "EnvironmentVariables"
-            };
-
-            foreach (var standardPropertyName in standardPropertyNames)
-            {
-                var evaluatedValue = await properties.GetEvaluatedPropertyValueAsync(standardPropertyName);
-                Assert.Equal(expected: string.Empty, actual: evaluatedValue);
-                var unevaluatedValue = await properties.GetUnevaluatedPropertyValueAsync(standardPropertyName);
-                Assert.Equal(expected: string.Empty, actual: unevaluatedValue);
-            }
-        }
-
-        [Fact]
-        public async Task WhenRetrievingTheLaunchBrowserValue_TheDefaultValueIsFalse()
-        {
-            var profile1 = new WritableLaunchProfile { Name = "Profile1" };
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile() });
-
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                launchSettingsProvider);
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-
-            var evaluatedValue = await properties.GetEvaluatedPropertyValueAsync("LaunchBrowser");
-            Assert.Equal(expected: "false", actual: evaluatedValue);
-            var unevaluatedValue = await properties.GetUnevaluatedPropertyValueAsync("LaunchBrowser");
-            Assert.Equal(expected: "false", actual: unevaluatedValue);
-        }
-
-        [Fact]
-        public async Task WhenRetrievingStandardPropertyValues_TheExpectedValuesAreReturned()
-        {
-            var profile1 = new WritableLaunchProfile
-            {
-                Name = "Profile1",
-                CommandLineArgs = "alpha beta gamma",
-                CommandName = "epsilon",
-                EnvironmentVariables = { ["One"] = "1", ["Two"] = "2" },
-                ExecutablePath = @"D:\five\six\seven\eight.exe",
-                LaunchBrowser = true,
-                LaunchUrl = "https://localhost/profile",
-                WorkingDirectory = @"C:\users\other\temp"
-            };
-
-            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
-                launchProfiles: new[] { profile1.ToLaunchProfile() });
-            var provider = new LaunchProfileProjectPropertiesProvider(
-                CreateDefaultTestProject(),
-                launchSettingsProvider);
-            var properties = provider.GetItemProperties(
-                itemType: LaunchProfileProjectItemProvider.ItemType,
-                item: "Profile1");
-
-            var expectedValues = new Dictionary<string, string>
-            {
-                ["CommandLineArguments"] = "alpha beta gamma",
-                ["CommandName"] = "epsilon",
-                ["EnvironmentVariables"] = "One=1,Two=2",
-                ["ExecutablePath"] = @"D:\five\six\seven\eight.exe",
-                ["LaunchBrowser"] = "true",
-                ["LaunchUrl"] = "https://localhost/profile",
-                ["WorkingDirectory"] = @"C:\users\other\temp",
-            };
-
-            foreach (var (propertyName, expectedPropertyValue) in expectedValues)
-            {
-                var actualUnevaluatedValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
-                var actualEvaluatedValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
-                Assert.Equal(expectedPropertyValue, actualUnevaluatedValue);
-                Assert.Equal(expectedPropertyValue, actualEvaluatedValue);
-            }
         }
 
         /// <summary>
@@ -310,6 +166,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return launchSettingsProvider;
         }
 
-        private const string DefaultTestProjectPath = @"C:\alpha\beta\gamma.csproj";
+
     }
 }

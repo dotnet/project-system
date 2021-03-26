@@ -1,3 +1,18 @@
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderAttribute
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderAttribute.ExportLaunchProfileExtensionValueProviderAttribute(string![]! propertyNames, Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope scope) -> void
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderAttribute.PropertyNames.get -> string![]!
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope.GlobalSettings = 1 -> Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope.LaunchProfile = 0 -> Microsoft.VisualStudio.ProjectSystem.Debug.ExportLaunchProfileExtensionValueProviderScope
+Microsoft.VisualStudio.ProjectSystem.Debug.IGlobalSettingExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IGlobalSettingExtensionValueProvider.OnGetPropertyValueAsync(string! propertyName, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.IGlobalSettingExtensionValueProvider.OnSetPropertyValueAsync(string! propertyName, string! propertyValue, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> System.Threading.Tasks.Task<System.Collections.Immutable.ImmutableDictionary<string!, object!>!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProvider.OnGetPropertyValueAsync(string! propertyName, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! launchProfile, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> System.Threading.Tasks.Task<string!>!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProvider.OnSetPropertyValueAsync(string! propertyName, string! propertyValue, Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile! launchProfile, System.Collections.Immutable.ImmutableDictionary<string!, object!>! globalSettings, Microsoft.Build.Framework.XamlTypes.Rule? rule) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata
+Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata.PropertyNames.get -> string![]!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.TryUpdateProfileAsync(string! profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile!>! updateAction) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateGlobalSettingAsync(string! settingName, System.Func<object?, object?>! updateFunction) -> System.Threading.Tasks.Task!
