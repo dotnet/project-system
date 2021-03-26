@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
             If projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing Then
 
-                Dim fileName As String = projectItem.FileNames(1)
+                Dim fileName As String = projectItem.get_FileNames(1)
                 Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "bogus ProjectItem.FileNames(1) value?")
 
                 Dim isLocalizedResxFile As Boolean = ResourceEditorView.IsLocalizedResXFile(fileName)

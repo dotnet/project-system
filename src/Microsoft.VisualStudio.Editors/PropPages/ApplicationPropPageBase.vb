@@ -198,7 +198,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         'Could not copy
                         ApplicationIconCombobox.SelectedItem = _lastIconImage
                     Else
-                        Dim sRelativePath As String = GetProjectRelativeFilePath(ProjectItem.FileNames(1))
+                        Dim sRelativePath As String = GetProjectRelativeFilePath(ProjectItem.get_FileNames(1))
 
                         'Find the item in the list and select it
                         ApplicationIconCombobox.SelectedIndex = -1
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         If ApplicationIconCombobox.SelectedIndex = -1 Then
                             'Icon is not in the list, so add it to the list
                             'Now get the new path of copied file
-                            sRelativePath = GetProjectRelativeFilePath(ProjectItem.FileNames(1))
+                            sRelativePath = GetProjectRelativeFilePath(ProjectItem.get_FileNames(1))
                             AddIconEntryToCombobox(ApplicationIconCombobox, sRelativePath)
                             ApplicationIconCombobox.SelectedItem = sRelativePath
                         End If
@@ -333,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         End Try
 
                         'Now get the new path of copied file
-                        sRelativePath = GetProjectRelativeFilePath(ProjectItem.FileNames(1))
+                        sRelativePath = GetProjectRelativeFilePath(ProjectItem.get_FileNames(1))
 
                     End If
 
@@ -392,7 +392,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ProjectItem"></param>
         Protected Sub AddIconsFromProjectItem(ProjectItem As ProjectItem, ApplicationIconCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
-                Dim FileName As String = ProjectItem.FileNames(Index)
+                Dim FileName As String = ProjectItem.get_FileNames(Index)
                 Dim ext As String = IO.Path.GetExtension(FileName)
                 If ext.Equals(".ico", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationIconCombobox.Items.Add(GetProjectRelativeFilePath(FileName))
@@ -497,7 +497,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="ProjectItem"></param>
         Protected Sub AddManifestsFromProjectItem(ProjectItem As ProjectItem, ApplicationManifestCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
-                Dim FileName As String = ProjectItem.FileNames(Index)
+                Dim FileName As String = ProjectItem.get_FileNames(Index)
                 Dim ext As String = IO.Path.GetExtension(FileName)
                 If ext.Equals(".manifest", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationManifestCombobox.Items.Add(GetProjectRelativeFilePath(FileName))

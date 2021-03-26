@@ -76,7 +76,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Shared Function FindAllFilesWithExtension(ProjectItems As ProjectItems, Extension As String, SearchChildren As Boolean) As List(Of ProjectItem)
             Dim ResXFiles As New List(Of ProjectItem)
             For Each Item As ProjectItem In ProjectItems
-                If Path.GetExtension(Item.FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
+                If Path.GetExtension(Item.get_FileNames(1)).Equals(Extension, StringComparison.OrdinalIgnoreCase) Then
                     ResXFiles.Add(Item)
                 End If
 
@@ -105,7 +105,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             ' The ProjectItem.FileNames collection is 1 based...
-            Return ProjectItem.FileNames(1)
+            Return ProjectItem.get_FileNames(1)
         End Function
 
         ''' <summary>
@@ -212,7 +212,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     EnvDTE.Constants.vsProjectItemKindPhysicalFile, StringComparison.OrdinalIgnoreCase) AndAlso
                     projectItem.FileCount > 0 Then
 
-                    Dim itemFileName As String = Path.GetFileName(projectItem.FileNames(1))
+                    Dim itemFileName As String = Path.GetFileName(projectItem.get_FileNames(1))
                     If String.Equals(fileName, itemFileName, StringComparison.OrdinalIgnoreCase) Then
                         Return projectItem
                     End If
@@ -228,7 +228,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Public Shared Function ItemIdOfProjectItem(Hierarchy As IVsHierarchy, ProjectItem As ProjectItem) As UInteger
             Dim FoundItemId As UInteger
-            VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(ProjectItem.FileNames(1), FoundItemId))
+            VSErrorHandler.ThrowOnFailure(Hierarchy.ParseCanonicalName(ProjectItem.get_FileNames(1), FoundItemId))
             Return FoundItemId
         End Function
 
