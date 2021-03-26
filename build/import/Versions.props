@@ -24,6 +24,6 @@
 
     <!-- VS SDK -->
     <VSSDK_GeneralVersion>17.0.0-preview-1-31116-427</VSSDK_GeneralVersion>
-    <VisualStudioInteropVersion>17.0.0-preview-1-30928-1111</VisualStudioInteropVersion>
+    <VisualStudioInteropVersion>17.0.0-preview-1-30928-1112</VisualStudioInteropVersion>
   </PropertyGroup>
 </Project>

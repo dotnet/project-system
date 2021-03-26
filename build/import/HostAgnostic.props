@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
     
     <!-- CPS -->
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
@@ -93,8 +93,8 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
-           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
+           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
@@ -110,7 +110,6 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.10.0'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.11.0'
            or '%(FileName)' == 'Microsoft.VisualStudio.Feedback.Interop.12.0.DesignTime'
-           or '%(FileName)' == 'microsoft.visualstudio.designer.interfaces'
            or '%(FileName)' == 'EnvDTE80'
            or '%(FileName)' == 'EnvDTE90'
            or '%(FileName)' == 'EnvDTE100'
