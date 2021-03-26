@@ -53,7 +53,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
-            'TODO: Merged PAIs
+            'TODO: Merged PIAs
             'prgAdditionalCheckoutVSITEMIDS = Nothing
             'If AllowSymbolRename Then
             '    Return NativeMethods.S_OK

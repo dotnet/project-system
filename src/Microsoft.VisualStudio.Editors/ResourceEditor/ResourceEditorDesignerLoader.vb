@@ -111,7 +111,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim mtSvr As MultiTargetService
 
                     Try
-                        'TODO: Merged PAIs
+                        'TODO: Merged PIAs
                         'mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
                         mtSvr = Nothing
                     Catch ex As ArgumentException

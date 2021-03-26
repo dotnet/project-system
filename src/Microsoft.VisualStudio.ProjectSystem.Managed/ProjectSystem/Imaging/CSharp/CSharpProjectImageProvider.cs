@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.CSharp
 
             switch (key)
             {
-                //TODO: Merged PAIs
+                //TODO: Merged PIAs
                 case ProjectImageKey.ProjectRoot:
                     //return KnownMonikers.CSProjectNode.ToProjectSystemType();
 

@@ -1008,7 +1008,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         Private Shared Function GetSupportedType(sourceType As Type, projectHierarchy As IVsHierarchy) As Type
-            'TODO: Merged PAIs
+            'TODO: Merged PIAs
             'If projectHierarchy Is Nothing Then Return sourceType
             'Dim mtSvc As MultiTargetService = New MultiTargetService(projectHierarchy, VSConstants.VSITEMID_ROOT, False)
             'Dim supportedType As Type = mtSvc.GetSupportedType(sourceType, True)

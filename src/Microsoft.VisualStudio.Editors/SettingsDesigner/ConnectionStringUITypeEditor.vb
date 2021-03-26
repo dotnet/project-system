@@ -106,7 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Dim normalizedConnectionString As String = Nothing
                         Try
                             If connectionStringConverter IsNot Nothing AndAlso dteProj IsNot Nothing AndAlso value.ProviderName <> "" Then
-                                'TODO: Merged PAIs
+                                'TODO: Merged PIAs
                                 'normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
                             End If
                         Catch ex As ArgumentException
@@ -153,7 +153,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     }
                         If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
                             ' Go back to the runtime representation of the string...
-                            ' TODO: Merged PAIs
+                            ' TODO: Merged PIAs
                             'newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
                         End If
 
@@ -325,7 +325,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                'TODO: Merged PAIs - Uncomment once Microsoft.VSDesigner is updated
+                'TODO: Merged PIAs - Uncomment once Microsoft.VSDesigner is updated
                 'Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
                 Return True
             End Function

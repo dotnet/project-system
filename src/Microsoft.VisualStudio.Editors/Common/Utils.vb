@@ -1342,7 +1342,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>True is the current Framework Profile is Client</returns>
         Friend Function IsClientFrameworkSubset(Hierarchy As IVsHierarchy) As Boolean
             Debug.Assert(Hierarchy IsNot Nothing, "Hierarchy is required")
-            'TODO: Merged PAIs
+            'TODO: Merged PIAs
             'Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
             '' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
             '' before enabling server-specific functionality

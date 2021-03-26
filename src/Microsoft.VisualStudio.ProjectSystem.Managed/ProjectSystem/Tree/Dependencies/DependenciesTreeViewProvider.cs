@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             dependenciesTree = CleanupOldNodes(dependenciesTree, currentNodes);
 
-            //TODO: Merged PAIs
+            //TODO: Merged PIAs
             ProjectImageMoniker rootIcon = null;// = _viewModelFactory.GetDependenciesRootIcon(snapshot.MaximumVisibleDiagnosticLevel).ToProjectSystemType();
 
             return dependenciesTree.SetProperties(icon: rootIcon, expandedIcon: rootIcon);
@@ -354,7 +354,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     caption: viewModel.Caption,
                     filePath: viewModel.FilePath,
                     browseObjectProperties: browseObjectProperties,
-                    //TODO: Merged PAIs
+                    //TODO: Merged PIAs
                     //icon: viewModel.Icon.ToProjectSystemType(),
                     //expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     caption: viewModel.Caption,
                     itemContext: itemContext,
                     browseObjectProperties: browseObjectProperties,
-                    //TODO: Merged PAIs
+                    //TODO: Merged PIAs
                     //icon: viewModel.Icon.ToProjectSystemType(),
                     //expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
                     visible: true,
@@ -392,7 +392,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     Caption = viewModel.Caption,
                     Flags = viewModel.Flags,
-                    //TODO: Merged PAIs
+                    //TODO: Merged PIAs
                     //Icon = viewModel.Icon.ToProjectSystemType(),
                     //ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
                 };

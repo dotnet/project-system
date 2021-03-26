@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 "XmpCore"
             };
 
-            // TODO: Merged PAIs - uncomment this once Microsoft.Test.Apex.VisualStudio is updated
+            // TODO: Merged PIAs - uncomment this once Microsoft.Test.Apex.VisualStudio is updated
             //var projects = (Array)VisualStudio.Dte.ActiveSolutionProjects;
             //var vsproject = (VSLangProj.VSProject)projects.Cast<EnvDTE.Project>().First().Object;
             //var actual = vsproject.References

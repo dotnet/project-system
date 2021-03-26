@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
     internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
-        //TODO: Merged PAIs
+        //TODO: Merged PIAs
         private static readonly ProjectImageMoniker s_rootIcon;// = KnownMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon;// = KnownMonikers.TargetFile.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeImplicitIcon;// = KnownMonikers.TargetFilePrivate.ToProjectSystemType();

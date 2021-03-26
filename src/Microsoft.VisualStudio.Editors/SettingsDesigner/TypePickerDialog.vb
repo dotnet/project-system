@@ -197,7 +197,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim Node As TypeTVNode = TryCast(e.Node, TypeTVNode)
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
                     Node.RemoveDummyNode()
-                    ' TODO: Merged PAIs
+                    ' TODO: Merged PIAs
                     'Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
                     '    If mtsrv IsNot Nothing Then
                     '        Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
@@ -276,7 +276,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             If References IsNot Nothing Then
-                ' TODO: Merged PAIs
+                ' TODO: Merged PIAs
                 'Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
                 '    For ReferenceNo As Integer = 1 To References.Count()
                 '        Dim reference As String = References.Item(ReferenceNo).Name()

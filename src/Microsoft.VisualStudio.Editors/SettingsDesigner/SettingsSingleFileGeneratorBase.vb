@@ -911,7 +911,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
             prgAdditionalCheckoutVSITEMIDS = Nothing
 
-            'TODO: Merged PAIs
+            'TODO: Merged PIAs
             'Dim isRootNamespaceRename As Boolean = RenamingHelper.IsRootNamespaceRename(phier, cRQNames, rglpszRQName, lpszNewName)
             Dim isRootNamespaceRename As Boolean = True
 
