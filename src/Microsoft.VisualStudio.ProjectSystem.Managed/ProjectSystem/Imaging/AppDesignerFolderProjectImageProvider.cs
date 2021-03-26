@@ -12,8 +12,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging
     [AppliesTo(ProjectCapability.AppDesigner)]
     internal class AppDesignerFolderProjectImageProvider : IProjectImageProvider
     {
-        private static readonly ProjectImageMoniker s_iconClosed = KnownMonikers.PropertiesFolderClosed.ToProjectSystemType();
-        private static readonly ProjectImageMoniker s_iconOpened = KnownMonikers.PropertiesFolderOpen.ToProjectSystemType();
+        //TODO: Merged PAIs
+        private static readonly ProjectImageMoniker s_iconClosed;// = KnownMonikers.PropertiesFolderClosed.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_iconOpened;// = KnownMonikers.PropertiesFolderOpen.ToProjectSystemType();
 
         [ImportingConstructor]
         public AppDesignerFolderProjectImageProvider()

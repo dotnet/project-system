@@ -14,9 +14,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.FSharp
     {
         private static readonly Dictionary<string, ProjectImageMoniker> s_fileExtensionImageMap = new(StringComparers.Paths)
         {
-            { ".fs",   KnownMonikers.FSFileNode.ToProjectSystemType() },
-            { ".fsi",  KnownMonikers.FSSignatureFile.ToProjectSystemType() },
-            { ".fsx",  KnownMonikers.FSScript.ToProjectSystemType() }
+            //TODO: Merged PAIs
+            //{ ".fs",   KnownMonikers.FSFileNode.ToProjectSystemType() },
+            //{ ".fsi",  KnownMonikers.FSSignatureFile.ToProjectSystemType() },
+            //{ ".fsx",  KnownMonikers.FSScript.ToProjectSystemType() }
         };
 
         public void CalculatePropertyValues(IProjectTreeCustomizablePropertyContext propertyContext, IProjectTreeCustomizablePropertyValues propertyValues)

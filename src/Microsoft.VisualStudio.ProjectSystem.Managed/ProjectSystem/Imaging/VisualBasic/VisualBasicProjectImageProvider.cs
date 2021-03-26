@@ -23,12 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Imaging.VisualBasic
 
             switch (key)
             {
+                //TODO: Merged PAIs
                 case ProjectImageKey.ProjectRoot:
-                    return KnownMonikers.VBProjectNode.ToProjectSystemType();
+                   // return KnownMonikers.VBProjectNode.ToProjectSystemType();
 
                 case ProjectImageKey.SharedItemsImportFile:
                 case ProjectImageKey.SharedProjectRoot:
-                    return KnownMonikers.VBSharedProject.ToProjectSystemType();
+                    //return KnownMonikers.VBSharedProject.ToProjectSystemType();
 
                 default:
                     return null;
