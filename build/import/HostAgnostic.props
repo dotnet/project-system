@@ -35,6 +35,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
