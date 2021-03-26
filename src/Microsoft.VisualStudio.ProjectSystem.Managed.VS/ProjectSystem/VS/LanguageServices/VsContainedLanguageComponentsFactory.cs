@@ -76,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync();
 
-            object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
+            //TODO: Merged PIAs
+            object service = null;// = await serviceProvider.QueryServiceAsync(ref languageServiceId);
 
             // NOTE: While this type is implemented in Roslyn, we force the cast on 
             // the UI thread because they are free to change this to an STA object
