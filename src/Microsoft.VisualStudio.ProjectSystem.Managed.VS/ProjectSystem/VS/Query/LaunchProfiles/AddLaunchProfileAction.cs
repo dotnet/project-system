@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _executableStep = executableStep;
         }
 
-        protected override async Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider)
+        protected override Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider)
         {
-            await launchSettingsProvider.AddOrUpdateProfileAsync(
+            return launchSettingsProvider.AddOrUpdateProfileAsync(
                 new WritableLaunchProfile
                 {
                     Name = _executableStep.NewProfileName,
