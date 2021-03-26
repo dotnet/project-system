@@ -53,18 +53,19 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <param name="prgAdditionalCheckoutVSITEMIDS">array of VSITEMID's if the RefactorNotify implementor needs to check out additional files</param>
         ''' <returns>error code</returns>
         Private Function OnBeforeGlobalSymbolRenamed(phier As IVsHierarchy, itemId As UInteger, cRQNames As UInteger, rglpszRQName() As String, lpszNewName As String, ByRef prgAdditionalCheckoutVSITEMIDS As Array) As Integer Implements IVsRefactorNotify.OnBeforeGlobalSymbolRenamed
-            prgAdditionalCheckoutVSITEMIDS = Nothing
-            If AllowSymbolRename Then
-                Return NativeMethods.S_OK
-            Else
-                If RenamingHelper.IsRootNamespaceRename(phier, cRQNames, rglpszRQName, lpszNewName) Then
-                    Return NativeMethods.S_OK
-                Else
-                    Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_RenameNotSupported)
-                    ' Always return an error code to disable renaming of generated code
-                    Return NativeMethods.E_NOTIMPL
-                End If
-            End If
+            'TODO: Merged PAIs
+            'prgAdditionalCheckoutVSITEMIDS = Nothing
+            'If AllowSymbolRename Then
+            '    Return NativeMethods.S_OK
+            'Else
+            '    If RenamingHelper.IsRootNamespaceRename(phier, cRQNames, rglpszRQName, lpszNewName) Then
+            '        Return NativeMethods.S_OK
+            '    Else
+            '        Common.SetErrorInfo(Common.ServiceProviderFromHierarchy(phier), NativeMethods.E_NOTIMPL, My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_RenameNotSupported)
+            '        ' Always return an error code to disable renaming of generated code
+            '        Return NativeMethods.E_NOTIMPL
+            '    End If
+            'End If
         End Function
 
         ''' <summary>

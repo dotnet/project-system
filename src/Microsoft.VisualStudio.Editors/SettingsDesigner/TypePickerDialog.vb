@@ -197,23 +197,24 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Dim Node As TypeTVNode = TryCast(e.Node, TypeTVNode)
                 If Node IsNot Nothing AndAlso Node.IsAssemblyNode AndAlso Node.HasDummyNode Then
                     Node.RemoveDummyNode()
-                    Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
-                        If mtsrv IsNot Nothing Then
-                            Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
-                            For Each availableType As Type In availableTypes
+                    ' TODO: Merged PAIs
+                    'Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
+                    '    If mtsrv IsNot Nothing Then
+                    '        Dim availableTypes As Type() = mtsrv.GetSupportedTypes(Node.Text, AddressOf GetAssemblyCallback)
+                    '        For Each availableType As Type In availableTypes
 
-                                If availableType.FullName.Contains(".") Then
+                    '            If availableType.FullName.Contains(".") Then
 
-                                    ' NOTE that GetRuntimeType returns null when there's a failure resolving the type
-                                    Dim runtimeType = mtsrv.GetRuntimeType(availableType)
-                                    If runtimeType IsNot Nothing AndAlso SettingTypeValidator.IsValidSettingType(runtimeType) Then
-                                        _typeTreeView.AddTypeNode(Node, availableType.FullName)
-                                    End If
+                    '                ' NOTE that GetRuntimeType returns null when there's a failure resolving the type
+                    '                Dim runtimeType = mtsrv.GetRuntimeType(availableType)
+                    '                If runtimeType IsNot Nothing AndAlso SettingTypeValidator.IsValidSettingType(runtimeType) Then
+                    '                    _typeTreeView.AddTypeNode(Node, availableType.FullName)
+                    '                End If
 
-                                End If
-                            Next
-                        End If
-                    End Using
+                    '            End If
+                    '        Next
+                    '    End If
+                    'End Using
                 End If
             End If
         End Sub
@@ -275,14 +276,15 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             If References IsNot Nothing Then
-                Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
-                    For ReferenceNo As Integer = 1 To References.Count()
-                        Dim reference As String = References.Item(ReferenceNo).Name()
-                        If mtsrv Is Nothing OrElse mtsrv.IsSupportedAssembly(reference) Then
-                            _typeTreeView.AddAssemblyNode(reference)
-                        End If
-                    Next
-                End Using
+                ' TODO: Merged PAIs
+                'Using mtsrv As New VSDesigner.MultiTargetService(_vsHierarchy, _projectItemid, False)
+                '    For ReferenceNo As Integer = 1 To References.Count()
+                '        Dim reference As String = References.Item(ReferenceNo).Name()
+                '        If mtsrv Is Nothing OrElse mtsrv.IsSupportedAssembly(reference) Then
+                '            _typeTreeView.AddAssemblyNode(reference)
+                '        End If
+                '    Next
+                'End Using
             Else
                 Dim Resolver As SettingsTypeCache = DirectCast(GetService(GetType(SettingsTypeCache)), SettingsTypeCache)
                 If Resolver IsNot Nothing Then

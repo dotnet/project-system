@@ -106,7 +106,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Dim normalizedConnectionString As String = Nothing
                         Try
                             If connectionStringConverter IsNot Nothing AndAlso dteProj IsNot Nothing AndAlso value.ProviderName <> "" Then
-                                normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
+                                'TODO: Merged PAIs
+                                'normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
                             End If
                         Catch ex As ArgumentException
                         Catch ex As ConnectionStringConverterServiceException
@@ -152,7 +153,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     }
                         If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
                             ' Go back to the runtime representation of the string...
-                            newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
+                            ' TODO: Merged PAIs
+                            'newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
                         End If
 
                         Return newValue
@@ -323,7 +325,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
+                'TODO: Merged PAIs - Uncomment once Microsoft.VSDesigner is updated
+                'Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
+                Return True
             End Function
         End Class
 
