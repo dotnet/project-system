@@ -681,6 +681,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     _projectRuleSubscriptionLink.Dispose();
                     _projectRuleSubscriptionLink = null;
                 }
+
+                _firstSnapshotCompletionSource.TrySetCanceled();
             }
         }
 
@@ -722,7 +724,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// This function blocks until a snapshot is available. It will return null if the timeout occurs
-        /// prior to the snapshot is available
+        /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed.
         /// </summary>
         public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
         {
