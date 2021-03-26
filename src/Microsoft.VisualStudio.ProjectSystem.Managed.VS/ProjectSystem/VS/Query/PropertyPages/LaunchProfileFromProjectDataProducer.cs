@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             if (_properties.Name)
             {
-                newLaunchProfile.Name = context.ItemType;
+                newLaunchProfile.Name = context.ItemName;
             }
 
             if (_properties.CommandName)
