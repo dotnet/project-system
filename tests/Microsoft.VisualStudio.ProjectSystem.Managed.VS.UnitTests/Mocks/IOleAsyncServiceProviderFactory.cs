@@ -2,9 +2,9 @@
 
 using System;
 using Moq;
-using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
+using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Microsoft.VisualStudio.Shell
 {
     internal static class IOleAsyncServiceProviderFactory
     {
