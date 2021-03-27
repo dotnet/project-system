@@ -12,7 +12,6 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
-      https://devdiv.pkgs.visualstudio.com/_packaging/vs-impl/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
