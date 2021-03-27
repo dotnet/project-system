@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Resources
 {
     public sealed class ResourceTests
     {
-        [Theory]
+        [Theory(Skip = "TODO: Merged PIAs")]
         [InlineData(@"src\Microsoft.VisualStudio.AppDesigner\Resources\Designer.Designer.vb", "Microsoft.VisualStudio.AppDesigner.Designer")]
         [InlineData(@"src\Microsoft.VisualStudio.Editors\AddImportsDialogs\AddImports.Designer.vb", "AddImports")]
         [InlineData(@"src\Microsoft.VisualStudio.Editors\OptionPages\GeneralOptionPageResources.Designer.vb", "GeneralOptionPageResources")]
