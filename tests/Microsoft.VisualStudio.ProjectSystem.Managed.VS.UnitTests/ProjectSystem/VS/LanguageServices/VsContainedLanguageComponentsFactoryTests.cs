@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
     {
         private const string LanguageServiceId = "{517FA117-46EB-4402-A0D5-D4B7D89FCC33}";
 
-        [Fact(Skip = "Thats how you ignore a test")]
+        [Fact(Skip = "TODO: Merged PIAs")]
         public void GetContainedLanguageFactoryForFile_WhenIsDocumentInProjectFails_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(HResult.Fail);
@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "Thats how you ignore a test")]
+        [Fact(Skip = "TODO: Merged PIAs")]
         public void GetContainedLanguageFactoryForFile_WhenFilePathNotFound_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: false);
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "Thats how you ignore a test")]
+        [Fact(Skip = "TODO: Merged PIAs")]
         public void GetContainedLanguageFactoryForFile_WhenNoContainedLanguageFactory_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "Thats how you ignore a test")]
+        [Fact(Skip = "TODO: Merged PIAs")]
         public void GetContainedLanguageFactoryForFile_WhenReturnsResult_ReturnsS_OK()
         {
             var hierarchy = IVsHierarchyFactory.Create();

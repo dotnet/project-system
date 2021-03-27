@@ -12,8 +12,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             var mock = new Mock<IOleAsyncServiceProvider>();
 
+            //TODO: Merged PIAs
             //mock.Setup(p => p.QueryServiceAsync(ref clsid))
-              //  .Returns(IVsTaskFactory.FromResult(service));
+            //  .Returns(IVsTaskFactory.FromResult(service));
 
             return mock.Object;
         }
