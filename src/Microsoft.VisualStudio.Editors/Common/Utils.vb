@@ -1342,11 +1342,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <returns>True is the current Framework Profile is Client</returns>
         Friend Function IsClientFrameworkSubset(Hierarchy As IVsHierarchy) As Boolean
             Debug.Assert(Hierarchy IsNot Nothing, "Hierarchy is required")
-            Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
-            ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
-            ' before enabling server-specific functionality
-            Return Not service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService))
-
+            'TODO: Merged PIAs
+            'Dim service As MultiTargetService = New MultiTargetService(Hierarchy, VSConstants.VSITEMID_ROOT, False)
+            '' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
+            '' before enabling server-specific functionality
+            'Return Not service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService))
+            Return True
         End Function
 
 #Region "Wrapper that allows indirect calls into the static helpers in order to help unit test our code"

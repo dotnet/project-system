@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public T GetOption<T>(string category, string page, string option, T defaultValue)
         {
-            EnvDTE.Properties? properties = _dte.Value.Properties[category, page];
+            EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
 
             if (properties != null)
             {
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public void SetOption<T>(string category, string page, string option, T newValue)
         {
-            EnvDTE.Properties? properties = _dte.Value.Properties[category, page];
+            EnvDTE.Properties? properties = _dte.Value.get_Properties(category, page);
 
             if (properties != null)
             {

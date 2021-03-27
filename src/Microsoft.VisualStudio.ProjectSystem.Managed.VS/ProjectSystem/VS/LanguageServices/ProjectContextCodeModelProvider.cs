@@ -53,29 +53,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private async Task<CodeModel?> GetCodeModelAsync(Project project)
         {
             await _threadingService.SwitchToUIThread();
+            return null;
+            //TODO: Merged PIAs - microsoft.visualstudio.languageservices
+            //return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            //{
+            //    return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
 
-            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
-            {
-                return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
-            });
+            //});
         }
 
         private async Task<FileCodeModel?> GetFileCodeModelAsync(ProjectItem fileItem)
         {
             await _threadingService.SwitchToUIThread();
+            return null;
+            //TODO: Merged PIAs - microsoft.visualstudio.languageservices
+            //return await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            //{
+            //    try
+            //    {
+            //        return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
+            //    }
+            //    catch (NotImplementedException)
+            //    {   // Isn't a file that Roslyn knows about
+            //    }
 
-            return await _projectContextHost.OpenContextForWriteAsync(accessor =>
-            {
-                try
-                {
-                    return Task.FromResult<FileCodeModel?>(_codeModelFactory.GetFileCodeModel(accessor.Context, fileItem));
-                }
-                catch (NotImplementedException)
-                {   // Isn't a file that Roslyn knows about
-                }
-
-                return TaskResult.Null<FileCodeModel>();
-            });
+            //    return TaskResult.Null<FileCodeModel>();
+            //});
         }
     }
 }

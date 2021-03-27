@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
-using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
+using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -76,7 +76,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
             IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync();
 
-            object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
+            //TODO: Merged PIAs
+            object service = null;// = await serviceProvider.QueryServiceAsync(ref languageServiceId);
 
             // NOTE: While this type is implemented in Roslyn, we force the cast on 
             // the UI thread because they are free to change this to an STA object

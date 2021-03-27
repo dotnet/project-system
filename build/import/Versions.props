@@ -21,5 +21,9 @@
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <MicroBuildPluginsSwixBuildVersion>1.0.147</MicroBuildPluginsSwixBuildVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
+
+    <!-- VS SDK -->
+    <VSSDK_GeneralVersion>17.0.0-preview-1-31116-427</VSSDK_GeneralVersion>
+    <VisualStudioInteropVersion>17.0.0-preview-1-30928-1112</VisualStudioInteropVersion>
   </PropertyGroup>
 </Project>

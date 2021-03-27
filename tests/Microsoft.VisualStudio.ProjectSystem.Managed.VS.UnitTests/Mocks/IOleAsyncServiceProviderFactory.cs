@@ -2,7 +2,7 @@
 
 using System;
 using Moq;
-using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
+using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
@@ -12,8 +12,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
         {
             var mock = new Mock<IOleAsyncServiceProvider>();
 
-            mock.Setup(p => p.QueryServiceAsync(ref clsid))
-                .Returns(IVsTaskFactory.FromResult(service));
+            //TODO: Merged PIAs
+            //mock.Setup(p => p.QueryServiceAsync(ref clsid))
+            //  .Returns(IVsTaskFactory.FromResult(service));
 
             return mock.Object;
         }

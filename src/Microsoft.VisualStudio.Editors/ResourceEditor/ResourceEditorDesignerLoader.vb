@@ -111,7 +111,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim mtSvr As MultiTargetService
 
                     Try
-                        mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
+                        'TODO: Merged PIAs
+                        'mtSvr = New MultiTargetService(VsHierarchy, ProjectItemid, isGlobalDTAR:=False)
+                        mtSvr = Nothing
                     Catch ex As ArgumentException
                         ' Failed to follow a type forward
                         mtSvr = Nothing

@@ -249,7 +249,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.guidPortSupplier = info.PortSupplierGuid;
             debugInfo.bstrPortName = info.PortName;
             debugInfo.bstrOptions = info.Options;
-            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? 1 : 0;
+            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? true : false;
             debugInfo.dwProcessId = unchecked((uint)info.ProcessId);
             debugInfo.pUnknown = info.Unknown;
             debugInfo.guidProcessLanguage = info.ProcessLanguageGuid;
