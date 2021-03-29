@@ -179,16 +179,14 @@
                DisplayName="5" />
   </EnumProperty>
 
-  <!-- TODO: Create fwlink for this HelpUrl -->
   <StringProperty Name="NoWarn"
                   DisplayName="Suppress specific warnings"
                   Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
-                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-suppress-compiler-warnings"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
                   Category="ErrorsAndWarnings" />
 
-  <!-- TODO: Create fwlink for this HelpUrl -->
   <BoolProperty Name="TreatWarningsAsErrors"
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/api/system.codedom.compiler.compilerparameters.treatwarningsaserrors"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
                 Description="Instruct the compiler to treat warnings as errors."
                 Category="ErrorsAndWarnings" >
@@ -197,10 +195,9 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
-  <!-- TODO: Create fwlink for this HelpUrl -->
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Treat specific warnings as errors"
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.tasks.csc.warningsaserrors"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                   Description="Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
@@ -211,10 +208,9 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <!-- TODO: Create fwlink for this HelpUrl -->
   <StringProperty Name="WarningsNotAsErrors"
                   DisplayName="Exclude specific warnings as errors"
-                  HelpUrl="https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.tasks.csc.warningsnotaserrors"
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                   Description="Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
