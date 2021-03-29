@@ -86,7 +86,7 @@ steps:
       '**/*.pdb
       **/*.dll
       **/*.exe'
-    indexSources: false
+    indexSources: true
     publishSymbols: true
     SymbolServerType: TeamServices
     SymbolsProduct: 'Roslyn Project System'
