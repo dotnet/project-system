@@ -10,8 +10,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private readonly Stack<IReferenceCommand> _undoStack = new Stack<IReferenceCommand>();
         private readonly Stack<IReferenceCommand> _redoStack = new Stack<IReferenceCommand>();
 
-        public async Task ExecuteCommandAsync(IReferenceCommand command)
+        public async Task ExecuteCommandAsync(IReferenceCommand? command)
         {
+            if (command is null)
+            {
+                return;
+            }
+
             // Clear redo stack
             _redoStack.Clear();
             await command.Execute();

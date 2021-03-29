@@ -129,6 +129,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             return new RemoveReferenceCommand(this, selectedConfiguredProject, referenceUpdate);
         }
-
     }
 }

@@ -35,6 +35,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             return (await services.PackageReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
         }
-
     }
 }
