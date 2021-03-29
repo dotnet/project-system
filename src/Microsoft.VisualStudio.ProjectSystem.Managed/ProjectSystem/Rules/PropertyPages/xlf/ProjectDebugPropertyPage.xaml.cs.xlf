@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
-        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">Schéma ověřování, které se má použít při připojování na vzdáleném počítači. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <source>The authentication scheme to use when connecting to the remote machine.</source>
+        <target state="needs-review-translation">Schéma ověřování, které se má použít při připojování na vzdáleném počítači. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -73,8 +73,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
-        <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">Název a číslo portu vzdáleného počítače ve formátu název:port. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <source>The name and port number of the remote machine in 'name:port' format.</source>
+        <target state="needs-review-translation">Název a číslo portu vzdáleného počítače ve formátu název:port. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
