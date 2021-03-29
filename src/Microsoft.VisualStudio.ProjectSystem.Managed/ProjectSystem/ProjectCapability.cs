@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ProjectConfigurationsDeclaredDimensions = ProjectCapabilities.ProjectConfigurationsDeclaredDimensions;
         public const string LanguageService = nameof(LanguageService);
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
-        public const string CachedProjectEvaluation = ProjectCapabilities.CachedProjectEvaluation;
+        public const string UseProjectEvaluationCache = ProjectCapabilities.UseProjectEvaluationCache;
 
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.

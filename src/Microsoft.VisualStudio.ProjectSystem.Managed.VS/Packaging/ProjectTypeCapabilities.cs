@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.Packaging
                                       ProjectCapability.ProjectConfigurationsDeclaredDimensions + "; " +
                                       ProjectCapability.LanguageService + "; " +
                                       ProjectCapability.DotNet + "; " +
-                                      ProjectCapability.CachedProjectEvaluation;
+                                      ProjectCapability.UseProjectEvaluationCache;
 
         /// <summary>
         ///     Represents F#'s (fsproj) set of capabilities that are always present ("fixed").
