@@ -35,16 +35,30 @@
 
   <BoolProperty Name="RemoteDebugEnabled"
                 DisplayName="Use remote machine"
-                Description="Indicates that the debugger should attach to a process on a remote machine."/>
+                Description="Indicates that the debugger should attach to a process on a remote machine." />
 
   <StringProperty Name="RemoteDebugMachine"
                   DisplayName="Remote machine name"
-                  Description="The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled."/>
+                  Description="The name and port number of the remote machine in 'name:port' format.">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <DynamicEnumProperty Name="AuthenticationMode"
                        DisplayName="Authentication mode"
-                       Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
-                       EnumProvider="AuthenticationModeEnumProvider" />
+                       Description="The authentication scheme to use when connecting to the remote machine."
+                       EnumProvider="AuthenticationModeEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
 
   <StringProperty Name="EnvironmentVariables"
                   DisplayName="Environment variables"
