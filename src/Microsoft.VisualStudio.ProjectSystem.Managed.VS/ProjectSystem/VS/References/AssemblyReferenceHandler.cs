@@ -35,6 +35,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return services.AssemblyReferences.RemoveAsync(assemblyName, assemblyPath);
         }
 
+        protected override Task AddReferenceAsync(ConfiguredProjectServices services, ProjectSystemReferenceInfo referencesInfo)
+        {
+            Assumes.Present(services.AssemblyReferences);
+
+            AssemblyName? assemblyName = null;
+            string? assemblyPath = null;
+
+            if (Path.IsPathRooted((referencesInfo.ItemSpecification)))
+            {
+                assemblyPath = referencesInfo.ItemSpecification;
+            }
+            else
+            {
+                assemblyName = new AssemblyName(referencesInfo.ItemSpecification);
+            }
+
+            // todo: get path from the Remove Command
+            return services.AssemblyReferences.AddAsync(assemblyName, assemblyPath);
+        }
+
         protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
         {
             Assumes.Present(services.AssemblyReferences);

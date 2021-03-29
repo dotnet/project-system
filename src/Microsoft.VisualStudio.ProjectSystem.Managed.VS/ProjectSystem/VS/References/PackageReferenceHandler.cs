@@ -21,11 +21,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return services.PackageReferences.RemoveAsync(referencesInfo.ItemSpecification);
         }
 
+        protected override Task AddReferenceAsync(ConfiguredProjectServices services, ProjectSystemReferenceInfo referenceInfo)
+        {
+            Assumes.Present(services.PackageReferences);
+
+            // todo: Get the Version from the Remove Command
+            return services.PackageReferences.AddAsync(referenceInfo.ItemSpecification, "");
+        }
+
         protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)
         {
             Assumes.Present(services.PackageReferences);
 
             return (await services.PackageReferences.GetUnresolvedReferencesAsync()).Cast<IProjectItem>();
         }
+
     }
 }

@@ -28,7 +28,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         protected abstract Task RemoveReferenceAsync(ConfiguredProjectServices services,
             ProjectSystemReferenceInfo referencesInfo);
 
-        private Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProject selectedConfiguredProject)
+        internal Task AddReferenceAsync(ConfiguredProject configuredProject,
+            ProjectSystemReferenceInfo reference)
+        {
+            Requires.NotNull(configuredProject, nameof(configuredProject));
+            Assumes.Present(configuredProject.Services);
+
+            return AddReferenceAsync(configuredProject.Services, reference);
+        }
+
+        protected abstract Task AddReferenceAsync(ConfiguredProjectServices services,
+            ProjectSystemReferenceInfo referencesInfo);
+
+        public Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProject selectedConfiguredProject)
         {
             Requires.NotNull(selectedConfiguredProject, nameof(selectedConfiguredProject));
             Assumes.Present(selectedConfiguredProject.Services);
@@ -95,5 +107,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             return wasUpdated;
         }
+
+        internal IReferenceCommand CreateUpdateReferenceCommand(ConfiguredProject selectedConfiguredProject,
+            ProjectSystemReferenceUpdate referenceUpdate)
+        {
+            IReferenceCommand? cmd = null;
+            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed)
+            {
+                cmd = new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
+            }
+            else
+            {
+                cmd = new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
+            }
+
+            return cmd;
+        }
+
+        internal IReferenceCommand? CreateRemoveReferenceCommand(ConfiguredProject selectedConfiguredProject,
+            ProjectSystemReferenceUpdate referenceUpdate)
+        {
+            return new RemoveReferenceCommand(this, selectedConfiguredProject, referenceUpdate);
+        }
+
     }
 }
