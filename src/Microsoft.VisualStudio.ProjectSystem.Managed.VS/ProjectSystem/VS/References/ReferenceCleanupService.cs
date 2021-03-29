@@ -15,6 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [Export(typeof(IProjectSystemReferenceCleanupService))]
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService
     {
+        private static readonly ReferenceCleanUpInvoker s_commandInvoker = new ReferenceCleanUpInvoker();
+
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
             new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
             {
@@ -109,22 +111,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
+            int Undo = 3;   // todo: remove this when referenceUpdate adds the new acction for Undo/Redo
 
             cancellationToken.ThrowIfCancellationRequested();
 
             if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed ||
                 referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
             {
-                wasUpdated =
-                    await referenceHandler.UpdateReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken);
-            }
-            else
+                IReferenceCommand? cmd = referenceHandler.CreateUpdateReferenceCommand(selectedConfiguredProject, referenceUpdate);
+                await s_commandInvoker.ExecuteCommandAsync(cmd);
+                wasUpdated = true;
+            } else if (referenceUpdate.Action == ProjectSystemUpdateAction.Remove)
             {
                 if (await referenceHandler.CanRemoveReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken))
                 {
-                    await referenceHandler.RemoveReferenceAsync(selectedConfiguredProject, referenceUpdate.ReferenceInfo);
+                    IReferenceCommand? cmd = referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate);
+                    await s_commandInvoker.ExecuteCommandAsync(cmd);
+
                     wasUpdated = true;
                 }
+            } else if (referenceUpdate.Action == (ProjectSystemUpdateAction)Undo)
+            {
+                await s_commandInvoker.UndoCommand();
+            }
+            else
+            {
+                await s_commandInvoker.RedoCommand();
             }
 
             return wasUpdated;
