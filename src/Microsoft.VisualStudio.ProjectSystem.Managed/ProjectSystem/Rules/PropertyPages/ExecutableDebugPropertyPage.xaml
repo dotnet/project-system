@@ -20,7 +20,8 @@
 
   <Rule.DataSource>
     <DataSource Persistence="LaunchProfile"
-                HasConfigurationCondition="False" />
+                HasConfigurationCondition="False"
+                ItemType="LaunchProfile"/>
   </Rule.DataSource>
 
   <StringProperty Name="ExecutablePath"

@@ -16,12 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "Parent", value: "KeyValue");
             var rule = new Rule();
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "CategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(parentEntity, rule, category, order, properties);
+            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.Equal(expected: "CategoryDisplayName", actual: result.DisplayName);
             Assert.Equal(expected: "CategoryName", actual: result.Name);
@@ -33,12 +34,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "Parent", value: "KeyValue");
             var rule = new Rule();
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "CategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(parentEntity, rule, category, order, properties);
+            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.Equal(expected: category, actual: ((IEntityValueFromProvider)result).ProviderState);
         }
@@ -48,12 +50,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "Parent", value: "KeyValue");
             var rule = new Rule();
             var category = new Category { DisplayName = "CategoryDisplayName", Name = "MyCategoryName" };
             var order = 42;
 
-            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(parentEntity, rule, category, order, properties);
+            var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
             Assert.True(result.Id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string name));
             Assert.Equal(expected: "MyCategoryName", actual: name);
@@ -64,6 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateCategoryPropertiesAvailableStatus(includeAllProperties: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "A", value: "B");
             var rule = new Rule
             {
@@ -83,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = CategoryDataProducer.CreateCategoryValues(parentEntity, rule, properties);
+            var result = CategoryDataProducer.CreateCategoryValues(context, parentEntity, rule, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {

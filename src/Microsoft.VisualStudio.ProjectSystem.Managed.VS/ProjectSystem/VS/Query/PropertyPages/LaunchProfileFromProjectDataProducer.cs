@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, UnconfiguredProject providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
             return CreateLaunchProfileValuesAsync(parent, providerState);
         }
@@ -94,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             if (_properties.Name)
             {
-                newLaunchProfile.Name = context.ItemType;
+                newLaunchProfile.Name = context.ItemName;
             }
 
             if (_properties.CommandName)

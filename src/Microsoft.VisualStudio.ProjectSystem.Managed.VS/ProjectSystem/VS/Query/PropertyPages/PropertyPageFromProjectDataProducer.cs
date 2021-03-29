@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -21,9 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IEntityValue parent, UnconfiguredProject providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
-            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(parent, providerState, _queryCacheProvider, _properties);
+            executionContext.ReportProjectVersion(providerState);
+
+            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(executionContext, parent, providerState, _queryCacheProvider, _properties);
         }
     }
 }
