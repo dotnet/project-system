@@ -87,7 +87,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             return LaunchProfileDataProducer.CreateLaunchProfileValue(executionContext, identity, context, rule, order, propertyPageQueryCache, _properties);
         }
-
-        
     }
 }
