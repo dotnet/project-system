@@ -43,6 +43,11 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>false</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
   </BoolProperty>
 
   <DynamicEnumProperty Name="TargetFramework"
