@@ -44,3 +44,12 @@ steps:
   inputs:
     languages: 'csharp'
   continueOnError: true
+
+- task: cesve.one-loc-build.one-loc-build.OneLocBuild@2
+  displayName: Generate Localization PR
+  inputs:
+    isCreatePrSelected: true
+    repoType: gitHub
+    gitHubPatVariable: '$(GitHubPat)'
+    packageSourceAuth: patAuth
+    patVariable: '$(OneLocBuildPat)'
