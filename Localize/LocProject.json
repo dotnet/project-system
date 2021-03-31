@@ -8,49 +8,49 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\ApplicationDesignerView.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\ApplicationDesignerView.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\SpecialFileCustomView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\SpecialFileCustomView.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\SpecialFileCustomView.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\ErrorControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\PropPageDesignerView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\lcl\\{Lang}\\PropPageDesignerView.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\lcl\\{Lang}\\PropPageDesignerView.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\PropPageHostDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageHostDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageHostDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\PropPageUserControlBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageUserControlBase.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageUserControlBase.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\Designer.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\lcl\\{Lang}\\Designer.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\lcl\\{Lang}\\Designer.resx.lcl"
         }
       ]
     },
@@ -62,287 +62,287 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AddImports.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AddImports.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\AutoAddImportsCollisionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsCollisionDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsCollisionDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\AutoAddImportsExtensionCollisionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsExtensionCollisionDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsExtensionCollisionDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\ErrorControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\AddMyExtensionsDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AddMyExtensionsDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AddMyExtensionsDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\AssemblyOptionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AssemblyOptionDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AssemblyOptionDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\MyExtensibilityPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\MyExtensibilityPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\MyExtensibilityPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\GeneralOptionPageResources.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\lcl\\{Lang}\\GeneralOptionPageResources.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\lcl\\{Lang}\\GeneralOptionPageResources.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvancedServicesDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvancedServicesDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvancedServicesDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvBuildSettingsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvBuildSettingsPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvBuildSettingsPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvCompilerSettingsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvCompilerSettingsPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvCompilerSettingsPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageBase.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageBase.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageVBBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBBase.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBBase.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageVBWinForms.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBWinForms.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBWinForms.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AssemblyInfoPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AssemblyInfoPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AssemblyInfoPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildEventCommandLineDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventCommandLineDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventCommandLineDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildEventsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventsPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventsPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\CodeAnalysisPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CodeAnalysisPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CodeAnalysisPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\compileproppage2.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\compileproppage2.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\compileproppage2.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\CSharpApplicationPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CSharpApplicationPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CSharpApplicationPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\DebugPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\DebugPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\DebugPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\PackagePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\PackagePropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\PackagePropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ReferencePathsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePathsPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePathsPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ReferencePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ServicesAuthenticationForm.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesAuthenticationForm.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesAuthenticationForm.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ServicesPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesPropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesPropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\Strings.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\Strings.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\Strings.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\UnusedReferencePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\UnusedReferencePropPage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\UnusedReferencePropPage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\DialogQueryName.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\DialogQueryName.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\DialogQueryName.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\OpenFileWarningDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\OpenFileWarningDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\OpenFileWarningDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\ResourceEditorView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\ResourceEditorView.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\ResourceEditorView.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\Microsoft.VisualStudio.Editors.Designer.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\Microsoft.VisualStudio.Editors.Designer.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\Microsoft.VisualStudio.Editors.Designer.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\MyExtensibilityRes.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\MyExtensibilityRes.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\MyExtensibilityRes.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\SettingsDesignerView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\SettingsDesignerView.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\SettingsDesignerView.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\TypeEditorHostControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypeEditorHostControl.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypeEditorHostControl.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\TypePickerDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypePickerDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypePickerDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\InputXmlForm.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\InputXmlForm.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\InputXmlForm.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\PasteXmlDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\PasteXmlDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\PasteXmlDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\WebUrlDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\WebUrlDialog.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\WebUrlDialog.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Menus.vsct",
@@ -356,7 +356,7 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\{Lang}\\VSPackage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\{Lang}\\VSPackage.resx.lcl"
         }
       ]
     },
@@ -662,7 +662,7 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\lcl\\{Lang}\\Resources.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\lcl\\{Lang}\\Resources.resx.lcl"
         }
       ]
     },
@@ -674,7 +674,7 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\lcl\\{Lang}\\PropertyPageResources.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\lcl\\{Lang}\\PropertyPageResources.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\Menus.vsct",
@@ -688,14 +688,14 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSPackage.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSPackage.resx.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\VSResources.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSResources.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSResources.resx.lcl"
         }
       ]
     },
