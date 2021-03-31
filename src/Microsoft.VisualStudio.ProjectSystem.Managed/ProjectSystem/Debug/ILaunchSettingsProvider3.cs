@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 
@@ -42,12 +43,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task<bool> TryUpdateProfileAsync(string profileName, Action<IWritableLaunchProfile> updateAction);
 
         /// <summary>
-        ///     Supports the retrieval and update of a given global setting as a single
-        ///     operation. When <paramref name="updateFunction"/> is called it is given the
-        ///     current value of the <paramref name="settingName"/> global setting (which may be
-        ///     <see langword="null"/> if no such setting exists and returns the updated object (or
-        ///     <see langword="null"/> if the setting is to be removed).
+        ///     Supports the retrieval and update of the global settings as a single operation.
+        ///     When <paramref name="updateFunction"/> is called it is given the current global
+        ///     settings and is expected to return a set of the values that have changed. If the
+        ///     value for a given key is <see langword="null" /> the corresponding global
+        ///     setting will be removed, otherwise the setting will be updated.
         /// </summary>
-        Task UpdateGlobalSettingAsync(string settingName, Func<object?, object?> updateFunction);
+        Task UpdateGlobalSettingsAsync(Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>> updateFunction);
     }
 }

@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
         /// "Profile1" and "Profile2".
         /// </summary>
-        private static ILaunchSettingsProvider CreateDefaultTestLaunchSettings()
+        private static ILaunchSettingsProvider3 CreateDefaultTestLaunchSettings()
         {
             var profile1 = new WritableLaunchProfile { Name = "Profile1" };
             var profile2 = new WritableLaunchProfile { Name = "Profile2" };
