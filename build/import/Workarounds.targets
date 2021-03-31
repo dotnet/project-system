@@ -24,4 +24,13 @@
   <!-- WORKAROUND: https://github.com/dotnet/wpf/issues/810 -->
   <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).targets" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).targets')"/>
 
+  <!-- WORKAROUND: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/1450/OneLocBuild-Non-Enu-source-file-support-(workaround) -->
+  <Target Name="RenameEnUsXlfToRemoveEnUsSuffix" AfterTargets="AfterBuild">
+    <!-- https://stackoverflow.com/a/49437884/294804 -->
+    <ItemGroup>
+      <RenameEnUsXlfFile Include="$(ProjectDir)\**\xlf\*.en-us.xlf" />
+    </ItemGroup>
+    <Move SourceFiles="@(RenameEnUsXlfFile)" DestinationFiles="@(RenameEnUsXlfFile -> Replace('.en-us.xlf', '.xlf'))" />
+  </Target>
+
 </Project>

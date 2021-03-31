@@ -1,54 +1,125 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" original="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml">
+  <file datatype="xml" source-language="en" target-language="en-us" original="../ProjectItemsSchema.xaml">
     <body>
-      <group id="src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Rules/ProjectItemsSchema.xaml" />
-      <trans-unit id="ContentType|Text|DisplayName">
-        <source>Text file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="ContentType|XML|DisplayName">
-        <source>Xml file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="ContentType|HTML|DisplayName">
-        <source>Html file</source>
+      <trans-unit id="ContentType|AppInstaller|DisplayName">
+        <source>App Installer file</source>
+        <target state="new">App Installer file</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|CSS|DisplayName">
         <source>Cascading style sheet</source>
+        <target state="new">Cascading style sheet</target>
         <note />
       </trans-unit>
-      <trans-unit id="ContentType|Json|DisplayName">
-        <source>Json file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="ContentType|Font|DisplayName">
-        <source>Font file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="ContentType|Media|DisplayName">
-        <source>Media file</source>
-        <note />
-      </trans-unit>
-      <trans-unit id="ContentType|Image|DisplayName">
-        <source>Image file</source>
+      <trans-unit id="ContentType|Config|DisplayName">
+        <source>Config file</source>
+        <target state="new">Config file</target>
         <note />
       </trans-unit>
       <trans-unit id="ContentType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
+        <target state="new">Embedded resource</target>
         <note />
       </trans-unit>
-      <trans-unit id="ItemType|None|DisplayName">
-        <source>None</source>
+      <trans-unit id="ContentType|Font|DisplayName">
+        <source>Font file</source>
+        <target state="new">Font file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|HTML|DisplayName">
+        <source>Html file</source>
+        <target state="new">Html file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Image|DisplayName">
+        <source>Image file</source>
+        <target state="new">Image file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Json|DisplayName">
+        <source>Json file</source>
+        <target state="new">Json file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Manifest|DisplayName">
+        <source>Manifest file</source>
+        <target state="new">Manifest file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Media|DisplayName">
+        <source>Media file</source>
+        <target state="new">Media file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|PackageLayout|DisplayName">
+        <source>Package Layout file</source>
+        <target state="new">Package Layout file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Page|DisplayName">
+        <source>Page file</source>
+        <target state="new">Page file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="new">Resource</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|Text|DisplayName">
+        <source>Text file</source>
+        <target state="new">Text file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|WindowsResource|DisplayName">
+        <source>Windows Resource file</source>
+        <target state="new">Windows Resource file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XML|DisplayName">
+        <source>Xml file</source>
+        <target state="new">Xml file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ContentType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="new">Workflow definition</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|ApplicationDefinition|DisplayName">
+        <source>Application definition</source>
+        <target state="new">Application definition</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Content|DisplayName">
         <source>Content</source>
+        <target state="new">Content</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|EmbeddedResource|DisplayName">
         <source>Embedded resource</source>
+        <target state="new">Embedded resource</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|None|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Page|DisplayName">
+        <source>Page</source>
+        <target state="new">Page</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Resource|DisplayName">
+        <source>Resource</source>
+        <target state="new">Resource</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|XamlAppDef|DisplayName">
+        <source>Workflow definition</source>
+        <target state="new">Workflow definition</target>
         <note />
       </trans-unit>
     </body>

@@ -49,6 +49,7 @@ steps:
   displayName: Generate Localization PR
   inputs:
     isCreatePrSelected: true
+    isAutoCompletePrSelected: false
     repoType: gitHub
     gitHubPatVariable: '$(GitHubPat)'
     packageSourceAuth: patAuth
