@@ -8,49 +8,49 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\ApplicationDesignerView.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\ApplicationDesignerView.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\SpecialFileCustomView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\SpecialFileCustomView.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\ApplicationDesigner\\lcl\\{Lang}\\SpecialFileCustomView.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\ErrorControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\lcl\\ErrorControl.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\PropPageDesignerView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\lcl\\PropPageDesignerView.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPageDesigner\\lcl\\{Lang}\\PropPageDesignerView.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\PropPageHostDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\PropPageHostDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageHostDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\PropPageUserControlBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\PropPageUserControlBase.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\PropPages\\lcl\\{Lang}\\PropPageUserControlBase.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\Designer.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\lcl\\Designer.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.AppDesigner\\Resources\\lcl\\{Lang}\\Designer.lcl"
         }
       ]
     },
@@ -62,301 +62,301 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\AddImports.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AddImports.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\AutoAddImportsCollisionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\AutoAddImportsCollisionDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsCollisionDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\AutoAddImportsExtensionCollisionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\AutoAddImportsExtensionCollisionDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\AddImportsDialogs\\lcl\\{Lang}\\AutoAddImportsExtensionCollisionDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\ErrorControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\lcl\\ErrorControl.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\DesignerFramework\\lcl\\{Lang}\\ErrorControl.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\AddMyExtensionsDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\AddMyExtensionsDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AddMyExtensionsDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\AssemblyOptionDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\AssemblyOptionDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\AssemblyOptionDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\MyExtensibilityPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\MyExtensibilityPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\MyExtensibility\\lcl\\{Lang}\\MyExtensibilityPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\GeneralOptionPageResources.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\lcl\\GeneralOptionPageResources.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\lcl\\{Lang}\\GeneralOptionPageResources.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvancedServicesDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\AdvancedServicesDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvancedServicesDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvBuildSettingsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\AdvBuildSettingsPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvBuildSettingsPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvCompilerSettingsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\AdvCompilerSettingsPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvCompilerSettingsPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ApplicationPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ApplicationPropPageBase.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageBase.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageVBBase.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ApplicationPropPageVBBase.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBBase.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ApplicationPropPageVBWinForms.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ApplicationPropPageVBWinForms.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ApplicationPropPageVBWinForms.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AssemblyInfoPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\AssemblyInfoPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AssemblyInfoPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildEventCommandLineDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\BuildEventCommandLineDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventCommandLineDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildEventsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\BuildEventsPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildEventsPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\BuildPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\BuildPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\BuildPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\CodeAnalysisPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\CodeAnalysisPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CodeAnalysisPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\compileproppage2.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\compileproppage2.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\compileproppage2.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\CSharpApplicationPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\CSharpApplicationPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\CSharpApplicationPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\DebugPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\DebugPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\DebugPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\PackagePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\PackagePropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\PackagePropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ReferencePathsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ReferencePathsPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePathsPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ReferencePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ReferencePropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ReferencePropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ServicesAuthenticationForm.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ServicesAuthenticationForm.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesAuthenticationForm.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\ServicesPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\ServicesPropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\ServicesPropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\Strings.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\Strings.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\Strings.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\UnusedReferencePropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\UnusedReferencePropPage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\UnusedReferencePropPage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\DialogQueryName.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\DialogQueryName.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\DialogQueryName.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\OpenFileWarningDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\OpenFileWarningDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\OpenFileWarningDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\ResourceEditorView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\ResourceEditorView.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\ResourceEditor\\lcl\\{Lang}\\ResourceEditorView.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\Microsoft.VisualStudio.Editors.Designer.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\Microsoft.VisualStudio.Editors.Designer.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\Microsoft.VisualStudio.Editors.Designer.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\MyExtensibilityRes.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\Resources\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\MyExtensibilityRes.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\Resources\\lcl\\{Lang}\\MyExtensibilityRes.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\SettingsDesignerView.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\SettingsDesignerView.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\SettingsDesignerView.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\TypeEditorHostControl.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\TypeEditorHostControl.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypeEditorHostControl.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\TypePickerDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\TypePickerDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\SettingsDesigner\\lcl\\{Lang}\\TypePickerDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\InputXmlForm.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\InputXmlForm.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\InputXmlForm.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\PasteXmlDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\PasteXmlDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\PasteXmlDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\WebUrlDialog.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\WebUrlDialog.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\WebUrlDialog.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Menus.vsct",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\Menus.vsct.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\{Lang}\\Menus.vsct.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\VSPackage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\VSPackage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\{Lang}\\VSPackage.lcl"
         }
       ]
     },
@@ -368,301 +368,301 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\AnalyzerReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\AnalyzerReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\AssemblyReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\AssemblyReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\AssemblyReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\COMReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\COMReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\COMReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\FrameworkReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\FrameworkReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\FrameworkReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\PackageReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\PackageReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\PackageReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ProjectReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ProjectReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ProjectReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedAnalyzerReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedAnalyzerReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedAnalyzerReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedAssemblyReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedAssemblyReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedAssemblyReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedCOMReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedCOMReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedCOMReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedFrameworkReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedFrameworkReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedFrameworkReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedPackageReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedPackageReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedPackageReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedProjectReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedProjectReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedProjectReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\ResolvedSdkReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\ResolvedSdkReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\ResolvedSdkReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\SdkReference.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\SdkReference.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Dependencies\\lcl\\{Lang}\\SdkReference.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Compile.BrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Compile.BrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.BrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Compile.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Compile.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Compile.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Compile.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Content.BrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Content.BrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.BrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Content.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Content.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Content.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Content.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EditorConfigFiles.BrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EditorConfigFiles.BrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.BrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EditorConfigFiles.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EditorConfigFiles.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EditorConfigFiles.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EditorConfigFiles.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EmbeddedResource.BrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EmbeddedResource.BrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.BrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EmbeddedResource.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EmbeddedResource.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\EmbeddedResource.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\EmbeddedResource.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\Folder.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\Folder.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Folder.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\None.BrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\None.BrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.BrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\None.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\None.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\None.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\None.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\ProjectItemsSchema.CSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\ProjectItemsSchema.CSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\ProjectItemsSchema.CSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\ProjectItemsSchema.FSharp.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\ProjectItemsSchema.FSharp.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\ProjectItemsSchema.FSharp.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\ProjectItemsSchema.VisualBasic.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\ProjectItemsSchema.VisualBasic.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\ProjectItemsSchema.VisualBasic.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\ProjectItemsSchema.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\ProjectItemsSchema.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\ProjectItemsSchema.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\ApplicationPropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\ApplicationPropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\ApplicationPropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\BuildPropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\BuildPropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\BuildPropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\DebugPropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\DebugPropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\DebugPropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\ExecutableDebugPropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\ExecutableDebugPropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\ExecutableDebugPropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\PackagePropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\PackagePropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\PackagePropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\ProjectDebugPropertyPage.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\ProjectDebugPropertyPage.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\PropertyPages\\lcl\\{Lang}\\ProjectDebugPropertyPage.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\DebuggerGeneral.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\lcl\\DebuggerGeneral.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\lcl\\{Lang}\\DebuggerGeneral.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\GeneralBrowseObject.xaml",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\lcl\\GeneralBrowseObject.xaml.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\lcl\\{Lang}\\GeneralBrowseObject.xaml.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\Resources.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\lcl\\Resources.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\lcl\\{Lang}\\Resources.lcl"
         }
       ]
     },
@@ -674,28 +674,28 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\lcl\\PropertyPageResources.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\lcl\\{Lang}\\PropertyPageResources.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\Menus.vsct",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\Menus.vsct.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\Menus.vsct.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\VSPackage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\VSPackage.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSPackage.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\VSResources.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\VSResources.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSResources.lcl"
         }
       ]
     },
@@ -707,7 +707,7 @@
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\lcl\\Menus.vsct.{Lang}.lcl"
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\lcl\\{Lang}\\Menus.vsct.lcl"
         }
       ]
     }
