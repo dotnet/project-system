@@ -2,7 +2,6 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
@@ -10,14 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class UnSetAttributeCommand : IReferenceCommand
     {
         private readonly ConfiguredProject _selectedConfiguredProject;
-        private readonly ProjectSystemReferenceUpdate _referenceUpdate;
+        private readonly string _itemSpecification;
         private readonly AbstractReferenceHandler _referenceHandler;
 
-        public UnSetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate)
+        public UnSetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
         {
             _referenceHandler = abstractReferenceHandler;
             _selectedConfiguredProject = selectedConfiguredProject;
-            _referenceUpdate = referenceUpdate;
+            _itemSpecification = itemSpecification;
         }
 
         public async Task ExecuteAsync()
@@ -25,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
             var item = projectItems
-                .FirstOrDefault(c => c.EvaluatedInclude == _referenceUpdate.ReferenceInfo.ItemSpecification);
+                .FirstOrDefault(c => c.EvaluatedInclude == _itemSpecification);
 
             if (item != null)
             {
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
             var item = projectItems
-                .FirstOrDefault(c => c.EvaluatedInclude == _referenceUpdate.ReferenceInfo.ItemSpecification);
+                .FirstOrDefault(c => c.EvaluatedInclude == _itemSpecification);
 
             if (item != null)
             {

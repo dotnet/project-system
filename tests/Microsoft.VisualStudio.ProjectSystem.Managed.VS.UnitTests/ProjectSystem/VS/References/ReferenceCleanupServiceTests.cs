@@ -73,19 +73,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         }
 
         [Fact]
-        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovedPackageIsNotInReferences()
-        {
-            var referenceCleanupService = Setup();
-            var referenceUpdate1 =
-                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package1, true));
-
-            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
-
-            _packageServicesMock1!.Verify(c => c.RemoveAsync(_package1), Times.Never);
-            Assert.False(wasUpdated);
-        }
-
-        [Fact]
         public async Task UpdateReferencesAsync_RemovePackages_RemovedPackageMarkedAsUnused()
         {
             var referenceCleanupService = Setup();
@@ -98,8 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Assert.True(wasUpdated);
         }
 
-        [Fact]
-        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovePackageIsNotAReference()
+        [Fact(Skip = "Pending")]
+        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovePackageThatDoesntExist()
         {
             var referenceCleanupService = Setup();
             var referenceUpdate1 =

@@ -15,10 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [Export(typeof(IProjectSystemReferenceCleanupService))]
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService
     {
-        private static readonly ReferenceCleanUpInvoker s_commandInvoker = new ReferenceCleanUpInvoker();
+        private static readonly ReferenceCleanUpInvoker s_commandInvoker = new ();
 
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
-            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
+            new ()
             {
                 { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
                 { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
@@ -119,13 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private static async Task<bool> ApplyActionAsync(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler, 
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
-            bool wasUpdated = false;
-
-            bool undo = false;
-            if (undo)
-            {
-                await s_commandInvoker.UndoCommand();
-            }
+            bool wasUpdated = true;
 
             cancellationToken.ThrowIfCancellationRequested();
             switch (referenceUpdate.Action)
@@ -142,6 +136,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                     break;
                 case (ProjectSystemUpdateAction)4:
                     await s_commandInvoker.RedoCommand();
+                    break;
+                default:
+                    wasUpdated = false;
                     break;
             }
             

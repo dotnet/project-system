@@ -7,8 +7,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     internal class ReferenceCleanUpInvoker
     {
-        private readonly Stack<IReferenceCommand> _undoStack = new Stack<IReferenceCommand>();
-        private readonly Stack<IReferenceCommand> _redoStack = new Stack<IReferenceCommand>();
+        private readonly Stack<IReferenceCommand> _undoStack = new();
+        private readonly Stack<IReferenceCommand> _redoStack = new();
 
         public async Task ExecuteCommandAsync(IReferenceCommand? command)
         {

@@ -77,26 +77,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
         }
 
-        internal async Task<bool> UpdateReferenceAsync(ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
-        {
-            bool wasUpdated = false;
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            IProjectItem items = await GetProjectItems(selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
-
-            if (items != null)
-            {
-                string newValue = PropertySerializer.SimpleTypes.ToString(referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed);
-
-                await items.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, newValue, null);
-
-                wasUpdated = true;
-            }
-
-            return wasUpdated;
-        }
-
         private async Task<IProjectItem> GetProjectItems(ConfiguredProject selectedConfiguredProject,
             string itemSpecification)
         {
@@ -112,10 +92,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed)
             {
-                return new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
+                return new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
             }
 
-            return new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
+            return new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
         }
 
         internal IReferenceCommand? CreateRemoveReferenceCommand(ConfiguredProject selectedConfiguredProject,
@@ -126,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public async Task<Dictionary<string, string>> GetAttributesAsync(ConfiguredProject selectedConfiguredProject, string itemSpecification)
         {
-            Dictionary<string, string> propertyValues = new Dictionary<string, string>();
+            Dictionary<string, string> propertyValues = new ();
 
             IProjectItem items = await GetProjectItems(selectedConfiguredProject, itemSpecification);
 
@@ -141,8 +121,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return propertyValues;
         }
 
-        public async Task SetAttributes(ConfiguredProject selectedConfiguredProject, string itemSpecification, Dictionary<string, string> projectPropertiesValues)
+        public async Task SetAttributes(ConfiguredProject selectedConfiguredProject, string itemSpecification, Dictionary<string, string>? projectPropertiesValues)
         {
+            if (projectPropertiesValues is null)
+            {
+                return;
+            }
+
             IProjectItem items = await GetProjectItems(selectedConfiguredProject, itemSpecification);
 
             if (items != null)
