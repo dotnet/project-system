@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
@@ -20,8 +21,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
     [QueryDataProvider(LaunchProfileType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.TypeName, ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName)]
     [QueryDataProviderZone(ProjectModelZones.Cps)]
+    [Export(typeof(IQueryByIdDataProvider))]
     [Export(typeof(IQueryByRelationshipDataProvider))]
-    internal class LaunchProfileDataProvider : QueryDataProviderBase, IQueryByRelationshipDataProvider
+    internal class LaunchProfileDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
         private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
@@ -32,6 +34,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             : base(projectServiceAccessor)
         {
             _queryCacheProvider = queryCacheProvider;
+        }
+
+        public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
+        {
+            return new LaunchProfileByIdDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, ProjectService, _queryCacheProvider);
         }
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)

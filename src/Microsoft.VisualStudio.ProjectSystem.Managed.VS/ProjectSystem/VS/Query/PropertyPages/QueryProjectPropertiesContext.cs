@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
             {
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemType);
-                id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemName);
+                id.TryGetValue(ProjectModelIdentityKeys.SourceItemName, out string? itemName);
                 context = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
                 return true;
             }
