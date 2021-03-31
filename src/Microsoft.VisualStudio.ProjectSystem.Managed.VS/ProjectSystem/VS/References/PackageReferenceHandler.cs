@@ -14,19 +14,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         { }
 
         protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            ProjectSystemReferenceInfo referencesInfo)
+            string itemSpecification)
         {
             Assumes.Present(services.PackageReferences);
 
-            return services.PackageReferences.RemoveAsync(referencesInfo.ItemSpecification);
+            return services.PackageReferences.RemoveAsync(itemSpecification);
         }
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, ProjectSystemReferenceInfo referenceInfo)
+        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
         {
             Assumes.Present(services.PackageReferences);
 
             // todo: Get the Version from the Remove Command
-            return services.PackageReferences.AddAsync(referenceInfo.ItemSpecification, "");
+            return services.PackageReferences.AddAsync(itemSpecification, "");
         }
 
         protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)

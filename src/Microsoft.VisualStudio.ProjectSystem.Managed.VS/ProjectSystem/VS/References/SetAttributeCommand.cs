@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _referenceUpdate = referenceUpdate;
         }
 
-        public async Task Execute()
+        public async Task ExecuteAsync()
         {
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
         }
 
-        public async Task Undo()
+        public async Task UndoAsync()
         {
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
@@ -46,17 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
         }
 
-        public async Task Redo()
-        {
-            var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
-
-            var item = projectItems
-                .FirstOrDefault(c => c.EvaluatedInclude == _referenceUpdate.ReferenceInfo.ItemSpecification);
-
-            if (item != null)
-            {
-                await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(true), null);
-            }
-        }
+        public Task RedoAsync() => ExecuteAsync();
     }
 }

@@ -14,18 +14,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         { }
 
         protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            ProjectSystemReferenceInfo referencesInfo)
+            string itemSpecification)
         {
             Assumes.Present(services.ProjectReferences);
 
-            return services.ProjectReferences.RemoveAsync(referencesInfo.ItemSpecification);
+            return services.ProjectReferences.RemoveAsync(itemSpecification);
         }
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, ProjectSystemReferenceInfo referenceInfo)
+        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
         {
             Assumes.Present(services.ProjectReferences);
 
-            return services.ProjectReferences.AddAsync(referenceInfo.ItemSpecification);
+            return services.ProjectReferences.AddAsync(itemSpecification);
         }
 
         protected override async Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services)

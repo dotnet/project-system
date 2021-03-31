@@ -10,10 +10,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     /// </summary>
     internal interface IReferenceCommand
     {
-        Task Execute();
+        Task ExecuteAsync();
 
-        Task Undo();
+        Task UndoAsync();
 
-        Task Redo();
+        Task RedoAsync();
     }
 }

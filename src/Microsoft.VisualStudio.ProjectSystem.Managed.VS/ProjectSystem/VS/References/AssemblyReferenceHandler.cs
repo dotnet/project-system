@@ -16,39 +16,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         { }
 
         protected override Task RemoveReferenceAsync(ConfiguredProjectServices services,
-            ProjectSystemReferenceInfo referencesInfo)
+            string itemSpecification)
         {
             Assumes.Present(services.AssemblyReferences);
 
             AssemblyName? assemblyName = null;
             string? assemblyPath = null;
 
-            if (Path.IsPathRooted((referencesInfo.ItemSpecification)))
+            if (Path.IsPathRooted(itemSpecification))
             {
-                assemblyPath = referencesInfo.ItemSpecification;
+                assemblyPath = itemSpecification;
             }
             else
             {
-                assemblyName = new AssemblyName(referencesInfo.ItemSpecification);
+                assemblyName = new AssemblyName(itemSpecification);
             }
 
             return services.AssemblyReferences.RemoveAsync(assemblyName, assemblyPath);
         }
 
-        protected override Task AddReferenceAsync(ConfiguredProjectServices services, ProjectSystemReferenceInfo referencesInfo)
+        protected override Task AddReferenceAsync(ConfiguredProjectServices services, string itemSpecification)
         {
             Assumes.Present(services.AssemblyReferences);
 
             AssemblyName? assemblyName = null;
             string? assemblyPath = null;
 
-            if (Path.IsPathRooted((referencesInfo.ItemSpecification)))
+            if (Path.IsPathRooted(itemSpecification))
             {
-                assemblyPath = referencesInfo.ItemSpecification;
+                assemblyPath = itemSpecification;
             }
             else
             {
-                assemblyName = new AssemblyName(referencesInfo.ItemSpecification);
+                assemblyName = new AssemblyName(itemSpecification);
             }
 
             // todo: get path from the Remove Command

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             // Clear redo stack
             _redoStack.Clear();
-            await command.Execute();
+            await command.ExecuteAsync();
             _undoStack.Push(command);
         }
 
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
 
             IReferenceCommand cmd = _undoStack.Peek();
-            await cmd.Undo();
+            await cmd.UndoAsync();
             _redoStack.Push(cmd);
             _undoStack.Pop();
         }
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             }
 
             IReferenceCommand cmd = _redoStack.Peek();
-            await cmd.Redo();
+            await cmd.RedoAsync();
             _undoStack.Push(cmd);
             _redoStack.Pop();
         }
