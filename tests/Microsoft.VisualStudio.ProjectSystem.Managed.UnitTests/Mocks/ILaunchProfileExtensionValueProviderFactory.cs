@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
@@ -12,21 +11,21 @@ namespace Microsoft.VisualStudio.Mocks
     internal class ILaunchProfileExtensionValueProviderFactory
     {
         public static ILaunchProfileExtensionValueProvider Create(
-            Func<string, ILaunchProfile, ImmutableDictionary<string, object>, Rule?, Task<string>>? onGetPropertyValueAsync = null,
-            Func<string, string, IWritableLaunchProfile, ImmutableDictionary<string, object>, Rule?, Task>? onSetPropertyValueAsync = null)
+            Func<string, ILaunchProfile, ImmutableDictionary<string, object>, Rule?, string>? onGetPropertyValue = null,
+            Action<string, string, IWritableLaunchProfile, ImmutableDictionary<string, object>, Rule?>? onSetPropertyValue = null)
         {
             var providerMock = new Mock<ILaunchProfileExtensionValueProvider>();
 
-            if (onGetPropertyValueAsync is not null)
+            if (onGetPropertyValue is not null)
             {
-                providerMock.Setup(t => t.OnGetPropertyValueAsync(It.IsAny<string>(), It.IsAny<ILaunchProfile>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
-                    .Returns(onGetPropertyValueAsync);
+                providerMock.Setup(t => t.OnGetPropertyValue(It.IsAny<string>(), It.IsAny<ILaunchProfile>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
+                    .Returns(onGetPropertyValue);
             }
 
-            if (onSetPropertyValueAsync is not null)
+            if (onSetPropertyValue is not null)
             {
-                providerMock.Setup(t => t.OnSetPropertyValueAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IWritableLaunchProfile>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
-                    .Returns(onSetPropertyValueAsync);
+                providerMock.Setup(t => t.OnSetPropertyValue(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IWritableLaunchProfile>(), It.IsAny<ImmutableDictionary<string, object>>(), It.IsAny<Rule?>()))
+                    .Callback(onSetPropertyValue);
             }
 
             return providerMock.Object;

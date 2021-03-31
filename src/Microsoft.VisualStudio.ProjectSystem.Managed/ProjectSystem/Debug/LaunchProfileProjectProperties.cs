@@ -44,14 +44,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         };
 
         private readonly LaunchProfilePropertiesContext _context;
-        private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly ILaunchSettingsProvider3 _launchSettingsProvider;
         private readonly ImmutableDictionary<string, LaunchProfileValueProviderAndMetadata> _launchProfileValueProviders;
         private readonly ImmutableDictionary<string, GlobalSettingValueProviderAndMetadata> _globalSettingValueProviders;
 
         public LaunchProfileProjectProperties(
             string filePath,
             string profileName,
-            ILaunchSettingsProvider launchSettingsProvider,
+            ILaunchSettingsProvider3 launchSettingsProvider,
             ImmutableArray<LaunchProfileValueProviderAndMetadata> launchProfileExtensionValueProviders,
             ImmutableArray<GlobalSettingValueProviderAndMetadata> globalSettingExtensionValueProviders)
         {
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)
             {
                 // TODO: Pass the Rule
-                string propertyValue = await provider.Value.OnGetPropertyValueAsync(propertyName, profile, globalSettings, rule: null);
+                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: null);
                 if (!Strings.IsNullOrEmpty(propertyValue))
                 {
                     builder.Add(propertyName);
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             foreach ((string propertyName, GlobalSettingValueProviderAndMetadata provider) in _globalSettingValueProviders)
             {
                 // TODO: Pass the Rule
-                string propertyValue = await provider.Value.OnGetPropertyValueAsync(propertyName, globalSettings, rule: null);
+                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: null);
                 if (!Strings.IsNullOrEmpty(propertyValue))
                 {
                     builder.Add(propertyName);
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
                 EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
-                _ => await GetPropertyValueFromExtendersAsync(propertyName, profile, snapshot.GlobalSettings)
+                _ => GetPropertyValueFromExtendersAsync(propertyName, profile, snapshot.GlobalSettings)
             };
         }
 
@@ -198,23 +198,107 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             return TaskResult.False;
         }
 
-        public Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            throw new NotImplementedException();
+            Action<IWritableLaunchProfile>? profileUpdateAction = null;
+
+            // If this is a standard property, handle it ourselves.
+
+            profileUpdateAction = propertyName switch
+            {
+                CommandNamePropertyName => profile => profile.CommandName = unevaluatedPropertyValue,
+                ExecutablePathPropertyName => profile => profile.ExecutablePath = unevaluatedPropertyValue,
+                CommandLineArgumentsPropertyName => profile => profile.CommandLineArgs = unevaluatedPropertyValue,
+                WorkingDirectoryPropertyName => profile => profile.WorkingDirectory = unevaluatedPropertyValue,
+                LaunchBrowserPropertyName => setLaunchBrowserProperty,
+                LaunchUrlPropertyName => profile => profile.LaunchUrl = unevaluatedPropertyValue,
+                EnvironmentVariablesPropertyName => setEnvironmentVariablesProperty,
+                _ => null
+            };
+
+            if (profileUpdateAction is not null)
+            {
+                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
+                return;
+            }
+
+            // Next, check if a launch profile extender can handle it.
+
+            profileUpdateAction = await GetPropertyValueSetterFromLaunchProfileExtendersAsync(propertyName, unevaluatedPropertyValue);
+            if (profileUpdateAction is not null)
+            {
+                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
+                return;
+            }
+
+            // Finally, check if a global setting extender can handle it.
+
+            Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? globalSettingsUpdateFunction = GetPropertyValueSetterFromGlobalExtenders(propertyName, unevaluatedPropertyValue);
+            if (globalSettingsUpdateFunction is not null)
+            {
+                await _launchSettingsProvider.UpdateGlobalSettingsAsync(globalSettingsUpdateFunction);
+                return;
+            }
+
+            void setLaunchBrowserProperty(IWritableLaunchProfile profile)
+            {
+                if (bool.TryParse(unevaluatedPropertyValue, out bool result))
+                {
+                    profile.LaunchBrowser = result;
+                }
+            }
+
+            void setEnvironmentVariablesProperty(IWritableLaunchProfile profile)
+            {
+                ParseStringIntoDictionary(unevaluatedPropertyValue, profile.EnvironmentVariables);
+            }
         }
 
-        private async Task<string?> GetPropertyValueFromExtendersAsync(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
+        private string? GetPropertyValueFromExtendersAsync(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
         {
             if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
             {
                 // TODO: Pass the Rule
-                return await launchProfileValueProvider.Value.OnGetPropertyValueAsync(propertyName, profile, globalSettings, rule: null);
+                return launchProfileValueProvider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: null);
             }
 
             if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
             {
                 // TODO: Pass the Rule
-                return await globalSettingValueProvider.Value.OnGetPropertyValueAsync(propertyName, globalSettings, rule: null);
+                return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: null);
+            }
+
+            return null;
+        }
+
+        private async Task<Action<IWritableLaunchProfile>?> GetPropertyValueSetterFromLaunchProfileExtendersAsync(string propertyName, string unevaluatedValue)
+        {
+            if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
+            {
+                ILaunchSettings? currentSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+                Assumes.NotNull(currentSettings);
+
+                ImmutableDictionary<string, object>? globalSettings = currentSettings.GlobalSettings;
+
+                return profile =>
+                {
+                    // TODO: Pass the Rule
+                    launchProfileValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, profile, globalSettings, rule: null);
+                };
+            }
+
+            return null;
+        }
+
+        private Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? GetPropertyValueSetterFromGlobalExtenders(string propertyName, string unevaluatedValue)
+        {
+            if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
+            {
+                return globalSettings =>
+                {
+                    // TODO: Pass the Rule
+                    return globalSettingValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, globalSettings, rule: null);
+                };
             }
 
             return null;
@@ -232,6 +316,75 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             static string encode(string value)
             {
                 return value.Replace("/", "//").Replace(",", "/,").Replace("=", "/=");
+            }
+        }
+
+        private static void ParseStringIntoDictionary(string value, Dictionary<string, string> dictionary)
+        {
+            dictionary.Clear();
+
+            foreach (string entry in readEntries(value))
+            {
+                (string entryKey, string entryValue) = splitEntry(entry);
+                string decodedEntryKey = decode(entryKey);
+                string decodedEntryValue = decode(entryValue);
+
+                if (!string.IsNullOrEmpty(decodedEntryKey))
+                {
+                    dictionary[decodedEntryKey] = decodedEntryValue;
+                }
+            }
+
+            static IEnumerable<string> readEntries(string rawText)
+            {
+                bool escaped = false;
+                int entryStart = 0;
+                for (int i = 0; i < rawText.Length; i++)
+                {
+                    if (rawText[i] == ',' && !escaped)
+                    {
+                        yield return rawText.Substring(entryStart, i - entryStart);
+                        entryStart = i + 1;
+                        escaped = false;
+                    }
+                    else if (rawText[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+
+                yield return rawText.Substring(entryStart);
+            }
+
+            static (string encodedKey, string encodedValue) splitEntry(string entry)
+            {
+                bool escaped = false;
+                for (int i = 0; i < entry.Length; i++)
+                {
+                    if (entry[i] == '=' && !escaped)
+                    {
+                        return (entry.Substring(0, i), entry.Substring(i + 1));
+                    }
+                    else if (entry[i] == '/')
+                    {
+                        escaped = !escaped;
+                    }
+                    else
+                    {
+                        escaped = false;
+                    }
+                }
+
+                return (string.Empty, string.Empty);
+            }
+
+            static string decode(string value)
+            {
+                return value.Replace("/=", "=").Replace("/,", ",").Replace("//", "/");
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -55,11 +54,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// The <paramref name="rule"/> provides access to metadata that may influence the
         /// conversion of the property to a <see cref="string"/>.
         /// </remarks>
-        Task<string> OnGetPropertyValueAsync(string propertyName, ImmutableDictionary<string, object> globalSettings, Rule? rule);
+        string OnGetPropertyValue(string propertyName, ImmutableDictionary<string, object> globalSettings, Rule? rule);
 
         /// <summary>
         /// Converts the <paramref name="propertyValue"/> from a <see cref="string"/> and
-        /// updates the <paramref name="globalSettings"/> as appropriate.
+        /// produces a set of changes to apply to the <paramref name="globalSettings"/>.
         /// </summary>
         /// <param name="propertyName">
         /// The name of the property, as known to the CPS properties system.
@@ -74,12 +73,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// An optional <see cref="Rule"/> associated with the <see cref="IProjectProperties"/>
         /// calling this provider.</param>
         /// <returns>
-        /// The updated set of global settings.
+        /// A set of changes to apply to the global settings. If the value for a given key
+        /// is <see langword="null" /> the corresponding global setting will be removed,
+        /// otherwise the setting will be updated.
         /// </returns>
         /// <remarks>
         /// The <paramref name="rule"/> provides access to metadata that may influence the
         /// conversion of the property from a <see cref="string"/>.
         /// </remarks>
-        Task<ImmutableDictionary<string, object>> OnSetPropertyValueAsync(string propertyName, string propertyValue, ImmutableDictionary<string, object> globalSettings, Rule? rule);
+        ImmutableDictionary<string, object?> OnSetPropertyValue(string propertyName, string propertyValue, ImmutableDictionary<string, object> globalSettings, Rule? rule);
     }
 }
