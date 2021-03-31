@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="ResolvedPackageReference" Description="Package Reference Properties" DisplayName="Package Reference" PageTemplate="generic" xmlns="http://schemas.microsoft.com/build/2009/properties">
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="False" ItemType="PackageReference" MSBuildTarget="ResolvePackageDependenciesDesignTime" Persistence="ResolvedReference" SourceOfDefaultValue="AfterContext" SourceType="TargetResults"/>
+  </Rule.DataSource>
+
+  <StringListProperty Name="Aliases" Description="A comma-delimited list of aliases to assembly references contained in this package." DisplayName="Aliases" Separator=",">
+    <StringListProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </StringListProperty.DataSource>
+  </StringListProperty>
+
+   <StringProperty Name="BrowsePath" ReadOnly="True" Visible="False">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="Path" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+    
+  <StringProperty Name="ExcludeAssets" Description="Assets to exclude from this reference." DisplayName="Excluded Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="DiagnosticLevel" ReadOnly="True" Visible="False"/>
+
+  <BoolProperty Name="GeneratePathProperty" Description="Indicates whether to generate an MSBuild property with the location of the package's root directory. The generated property name is in the form of 'Pkg[PackageID]', where '[PackageID]' is the ID of the package with any periods '.' replaced with underscores '_'." DisplayName="Generate Path Property">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="IncludeAssets" Description="Assets to include from this reference." DisplayName="Included Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="IsImplicitlyDefined" ReadOnly="True" Visible="False"/>
+
+  <StringProperty Name="Name" ReadOnly="True" DisplayName="Name"/>
+
+  <StringProperty Name="NoWarn" Description="Comma-delimited list of warnings that should be suppressed for this package." DisplayName="Suppress Warnings" Visible="True">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty Name="OriginalItemSpec" ReadOnly="True" Visible="False"/>
+
+  <StringProperty Name="Path" Description="Location of the package being referenced." ReadOnly="True" DisplayName="Path"/>
+
+  <StringProperty Name="PrivateAssets" Description="Assets that are private in this reference." DisplayName="Private Assets">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" ItemType="PackageReference" Persistence="ProjectFile" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <!-- NOTE since 16.7 the SDK only returns "Package" items, however we keep this field to allow filtering in the case a user explicitly uses an older SDK version -->
+  <StringProperty Name="Type" ReadOnly="True" Visible="False"/>
+
+  <StringProperty Name="Version" Description="Version of dependency." DisplayName="Version" ReadOnly="True">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute" SourceOfDefaultValue="AfterContext"/>
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="Visible" ReadOnly="True" Visible="False"/>
+
+  <BoolProperty Name="TreatAsUsed" ReadOnly="True" Visible="False"/>
+
+</Rule>
