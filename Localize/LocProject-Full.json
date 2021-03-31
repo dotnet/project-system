@@ -114,6 +114,13 @@
           "LclFile": "src\\Microsoft.VisualStudio.Editors\\OptionPages\\lcl\\{Lang}\\GeneralOptionPageResources.resx.lcl"
         },
         {
+          "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvancedServicesDialog.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src\\Microsoft.VisualStudio.Editors\\PropPages\\xlf",
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\lcl\\{Lang}\\AdvancedServicesDialog.resx.lcl"
+        },
+        {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\PropPages\\AdvBuildSettingsPropPage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
@@ -336,6 +343,13 @@
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\xlf",
           "LclFile": "src\\Microsoft.VisualStudio.Editors\\XmlToSchema\\lcl\\{Lang}\\WebUrlDialog.resx.lcl"
+        },
+        {
+          "SourceFile": "src\\Microsoft.VisualStudio.Editors\\Menus.vsct",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src\\Microsoft.VisualStudio.Editors\\xlf",
+          "LclFile": "src\\Microsoft.VisualStudio.Editors\\lcl\\{Lang}\\Menus.vsct.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.Editors\\VSPackage.resx",
@@ -663,6 +677,13 @@
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\ProjectSystem\\VS\\PropertyPages\\lcl\\{Lang}\\PropertyPageResources.resx.lcl"
         },
         {
+          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\Menus.vsct",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\Menus.vsct.lcl"
+        },
+        {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\VSPackage.resx",
           "Languages": "",
           "CopyOption": "LangIDOnName",
@@ -675,6 +696,18 @@
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\xlf",
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS\\lcl\\{Lang}\\VSResources.resx.lcl"
+        }
+      ]
+    },
+    {
+      "LanguageSet": "VS_Main_Languages",
+      "LocItems": [
+        {
+          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\Menus.vsct",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\xlf",
+          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\\lcl\\{Lang}\\Menus.vsct.lcl"
         }
       ]
     }
