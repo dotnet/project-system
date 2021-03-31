@@ -50,15 +50,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         protected abstract Task<IEnumerable<IProjectItem>> GetUnresolvedReferencesAsync(ConfiguredProjectServices services);
 
-        internal async Task<bool> CanRemoveReferenceAsync(ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
-        {
-            var references = await GetReferencesAsync(selectedConfiguredProject, cancellationToken);
-
-            ProjectSystemReferenceInfo referenceInfo = references.FirstOrDefault(c => c.ItemSpecification == referenceUpdate.ReferenceInfo.ItemSpecification);
-
-            return !(referenceInfo is null);
-        }
-
         internal async Task<List<ProjectSystemReferenceInfo>> GetReferencesAsync(ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -80,6 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static async Task<bool> GetAttributeTreatAsUsedAsync(IProjectProperties metadata)
         {
+            var propertyNames = await metadata.GetPropertyNamesAsync();
             string? value = await metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty);
 
             return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
@@ -111,23 +103,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal IReferenceCommand CreateUpdateReferenceCommand(ConfiguredProject selectedConfiguredProject,
             ProjectSystemReferenceUpdate referenceUpdate)
         {
-            IReferenceCommand? cmd = null;
             if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed)
             {
-                cmd = new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
-            }
-            else
-            {
-                cmd = new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
+                return new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate);
             }
 
-            return cmd;
+            return new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate); ;
         }
 
         internal IReferenceCommand? CreateRemoveReferenceCommand(ConfiguredProject selectedConfiguredProject,
             ProjectSystemReferenceUpdate referenceUpdate)
         {
             return new RemoveReferenceCommand(this, selectedConfiguredProject, referenceUpdate);
+        }
+
+        public async Task<Dictionary<string, string>> GetAttributesAsync(ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceInfo referenceInfo)
+        {
+            Dictionary<string, string> propertyValues = new Dictionary<string, string>();
+
+            var projectItems = await GetUnresolvedReferencesAsync(selectedConfiguredProject);
+
+            var item = projectItems
+                .FirstOrDefault(c => c.EvaluatedInclude == referenceInfo.ItemSpecification);
+
+            var propertyNames = await item.Metadata.GetPropertyNamesAsync();
+
+            foreach (var property in propertyNames)
+            {
+                var value = await item.Metadata.GetEvaluatedPropertyValueAsync(property);
+                propertyValues.Add(string.Copy(property), string.Copy(value));
+            }
+
+            return propertyValues;
+        }
+
+        public async Task SetAttributes(ConfiguredProject selectedConfiguredProject, ProjectSystemReferenceInfo referenceUpdateReferenceInfo, Dictionary<string, string> projectPropertiesValues)
+        {
+            var projectItems = await GetUnresolvedReferencesAsync(selectedConfiguredProject);
+
+            var item = projectItems
+                .FirstOrDefault(c => c.EvaluatedInclude == referenceUpdateReferenceInfo.ItemSpecification);
+
+            if (item != null)
+            {
+                foreach (var property in projectPropertiesValues)
+                {
+                    await item.Metadata.SetPropertyValueAsync(property.Key, property.Value, null);
+                }
+            }
         }
     }
 }

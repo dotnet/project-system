@@ -36,6 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 LazyThreadSafetyMode.PublicationOnly);
         }
 
+        /// <summary>
+        /// Return the set of direct Project and Package References for the given project. This
+        /// is used to get the initial state of the TreatAsUsed attribute for each reference.
+        /// </summary>
         public async Task<ImmutableArray<ProjectSystemReferenceInfo>> GetProjectReferencesAsync(string projectPath, CancellationToken cancellationToken)
         {
             List<ProjectSystemReferenceInfo> references;
@@ -89,6 +93,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return references;
         }
 
+        /// <summary>
+        /// Updates the project’s references by removing or marking references as
+        /// TreatAsUsed in the project file.
+        /// </summary>
+        /// <returns>True, if the reference was updated.</returns>
         public async Task<bool> TryUpdateReferenceAsync(string projectPath, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
@@ -111,34 +120,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
-            int Undo = 3;   // todo: remove this when referenceUpdate adds the new acction for Undo/Redo
 
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed ||
-                referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
-            {
-                IReferenceCommand? cmd = referenceHandler.CreateUpdateReferenceCommand(selectedConfiguredProject, referenceUpdate);
-                await s_commandInvoker.ExecuteCommandAsync(cmd);
-                wasUpdated = true;
-            } else if (referenceUpdate.Action == ProjectSystemUpdateAction.Remove)
-            {
-                if (await referenceHandler.CanRemoveReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken))
-                {
-                    IReferenceCommand? cmd = referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate);
-                    await s_commandInvoker.ExecuteCommandAsync(cmd);
-
-                    wasUpdated = true;
-                }
-            } else if (referenceUpdate.Action == (ProjectSystemUpdateAction)Undo)
+            bool undo = false;
+            if (undo)
             {
                 await s_commandInvoker.UndoCommand();
             }
-            else
-            {
-                await s_commandInvoker.RedoCommand();
-            }
 
+            cancellationToken.ThrowIfCancellationRequested();
+            switch (referenceUpdate.Action)
+            {
+                case ProjectSystemUpdateAction.SetTreatAsUsed:
+                case ProjectSystemUpdateAction.UnsetTreatAsUsed:
+                    await s_commandInvoker.ExecuteCommandAsync(referenceHandler.CreateUpdateReferenceCommand(selectedConfiguredProject, referenceUpdate));
+                    break;
+                case ProjectSystemUpdateAction.Remove:
+                    await s_commandInvoker.ExecuteCommandAsync(referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate));
+                    break;
+                case (ProjectSystemUpdateAction)3:
+                    await s_commandInvoker.UndoCommand();
+                    break;
+                case (ProjectSystemUpdateAction)4:
+                    await s_commandInvoker.RedoCommand();
+                    break;
+            }
+            
             return wasUpdated;
         }
     }
