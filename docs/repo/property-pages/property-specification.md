@@ -226,7 +226,7 @@ The click handler is exported via:
 [ExportMetadata("CommandName", "MyCommandName")]
 internal sealed class MyCommandActionHandler : ILinkActionHandler
 {
-    public void Handle(IReadOnlyDictionary<string, string> editorMetadata)
+    public void Handle(ProjectContext projectContext, IReadOnlyDictionary<string, string> editorMetadata)
     {
         // Handle command invocation
     }
