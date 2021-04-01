@@ -34,7 +34,7 @@ variables:
   BuildPlatform: any cpu
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   EnableRichCodeNavigation: true
-  
+
 steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /ci /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
@@ -45,7 +45,14 @@ steps:
     languages: 'csharp'
   continueOnError: true
 
-- task: cesve.one-loc-build.one-loc-build.OneLocBuild@2
+- task: PowerShell@2
+  displayName: Create Neutral .xlf Files
+  inputs:
+    targetType: 'inline'
+    script: 'Get-ChildItem -Include *.es.xlf -File -Recurse | Copy-Item -Destination { $_.FullName.Replace(''.es.xlf'', ''.xlf'') }'
+    workingDirectory: 'src'
+
+- task: OneLocBuild@2
   displayName: Generate Localization PR
   inputs:
     isCreatePrSelected: true
