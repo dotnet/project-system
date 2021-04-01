@@ -17,7 +17,7 @@
 
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed directly from the Debug menu, or via the Start button the tool bar. Alternatively, click the link below.">
+                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.">
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
     </StringProperty.ValueEditors>
