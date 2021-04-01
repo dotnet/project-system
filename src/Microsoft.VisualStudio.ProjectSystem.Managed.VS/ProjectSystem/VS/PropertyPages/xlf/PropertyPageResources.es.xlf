@@ -4,272 +4,272 @@
     <body>
       <trans-unit id="AllFiles">
         <source>All files</source>
-        <target state="translated">Todos los archivos</target>
+        <target state="new">All files</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArgumentsWatermark">
         <source>Arguments to be passed to the application</source>
-        <target state="translated">Argumentos que se pasan a la aplicación</target>
+        <target state="new">Arguments to be passed to the application</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationMode">
         <source>Au_thentication mode:</source>
-        <target state="translated">_Modo de autenticación:</target>
+        <target state="new">Au_thentication mode:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
         <source>Debug</source>
-        <target state="translated">Depurar</target>
+        <target state="new">Debug</target>
         <note />
       </trans-unit>
       <trans-unit id="DuplicateKey">
         <source>Duplicate Key</source>
-        <target state="translated">Clave duplicada</target>
+        <target state="new">Duplicate Key</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvVariableNameWatermark">
         <source>Key</source>
-        <target state="translated">Clave</target>
+        <target state="new">Key</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvVariableValueWatermark">
         <source>Value</source>
-        <target state="translated">Valor</target>
+        <target state="new">Value</target>
         <note />
       </trans-unit>
       <trans-unit id="ExecutableFiles">
         <source>Executable files</source>
-        <target state="translated">Archivos ejecutables</target>
+        <target state="new">Executable files</target>
         <note />
       </trans-unit>
       <trans-unit id="ExecutablePathWatermark">
         <source>Path to the executable to run</source>
-        <target state="translated">Ruta de acceso al archivo ejecutable que debe ejecutarse</target>
+        <target state="new">Path to the executable to run</target>
         <note />
       </trans-unit>
       <trans-unit id="FindBtn">
         <source>_Find...</source>
-        <target state="translated">_Buscar...</target>
+        <target state="new">_Find...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
         <source>The host name is invalid.</source>
-        <target state="translated">El nombre de host no es válido.</target>
+        <target state="new">The host name is invalid.</target>
         <note />
       </trans-unit>
       <trans-unit id="JSWebView2DebuggingAdditionalText">
         <source>(Requires the JavaScript Diagnostics component)</source>
-        <target state="translated">(Requiere el componente Diagnóstico de JavaScript)</target>
+        <target state="new">(Requires the JavaScript Diagnostics component)</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchUrlWatermark">
         <source>Absolute or relative URL</source>
-        <target state="translated">URL absoluta o relativa</target>
+        <target state="new">Absolute or relative URL</target>
         <note />
       </trans-unit>
       <trans-unit id="NameCannotBeEmpty">
         <source>Name cannot be empty.</source>
-        <target state="translated">El nombre no puede estar vacío.</target>
+        <target state="new">Name cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileCaption">
         <source>New profile</source>
-        <target state="translated">Nuevo perfil</target>
+        <target state="new">New profile</target>
         <note />
       </trans-unit>
       <trans-unit id="NewProfileSeedName">
         <source>newProfile</source>
-        <target state="translated">newProfile</target>
+        <target state="new">newProfile</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindExecutableName">
         <source>Executable</source>
-        <target state="translated">Archivo ejecutable</target>
+        <target state="new">Executable</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindIISExpressName">
         <source>IIS Express</source>
-        <target state="translated">IIS Express</target>
+        <target state="new">IIS Express</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindNoActionName">
         <source>Start</source>
-        <target state="translated">Inicio</target>
+        <target state="new">Start</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileKindProjectName">
         <source>Project</source>
-        <target state="translated">Proyecto</target>
+        <target state="new">Project</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileNameInvalid">
         <source>That profile name is invalid or there is an existing profile with the same name.</source>
-        <target state="translated">Ese nombre de perfil no es válido o ya hay un perfil con el mismo nombre.</target>
+        <target state="new">That profile name is invalid or there is an existing profile with the same name.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileNameRequired">
         <source>You must specify a profile name.</source>
-        <target state="translated">Debe especificar un nombre de perfil.</target>
+        <target state="new">You must specify a profile name.</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
         <source>_Use remote machine:</source>
-        <target state="translated">_Usar máquina remota:</target>
+        <target state="new">_Use remote machine:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
         <source>Remote machine host name</source>
-        <target state="translated">Nombre de host de la máquina remota</target>
+        <target state="new">Remote machine host name</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteHostNameRequired">
         <source>You must specify a remote machine's host name.</source>
-        <target state="translated">Debe especificar el nombre de host de una máquina remota.</target>
+        <target state="new">You must specify a remote machine's host name.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
-        <target state="translated">El valor no puede estar vacío.</target>
+        <target state="new">Value cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectoryWatermark">
         <source>Absolute path to working directory</source>
-        <target state="translated">Ruta de acceso absoluta al directorio de trabajo</target>
+        <target state="new">Absolute path to working directory</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorsMustBeCorrectedPriorToSaving">
         <source>The errors on the page must be corrected prior to saving your changes.</source>
-        <target state="translated">Deben corregirse los errores de la página antes de guardar los cambios.</target>
+        <target state="new">The errors on the page must be corrected prior to saving your changes.</target>
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
         <source>_Add</source>
-        <target state="translated">_Agregar</target>
+        <target state="new">_Add</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
         <source>Application ar_guments:</source>
-        <target state="translated">Arg_umentos de aplicación:</target>
+        <target state="new">Application ar_guments:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
         <source>_Browse...</source>
-        <target state="translated">_Examinar...</target>
+        <target state="new">_Browse...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
         <source>_Delete</source>
-        <target state="translated">_Eliminar</target>
+        <target state="new">_Delete</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
         <source>Environ_ment variables:</source>
-        <target state="translated">Variables de e_ntorno:</target>
+        <target state="new">Environ_ment variables:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
         <source>_Executable:</source>
-        <target state="translated">Arc_hivo ejecutable:</target>
+        <target state="new">_Executable:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
         <source>_Launch:</source>
-        <target state="translated">_Iniciar:</target>
+        <target state="new">_Launch:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
         <source>Launch browser:</source>
-        <target state="translated">Iniciar explorador:</target>
+        <target state="new">Launch browser:</target>
         <note />
       </trans-unit>
       <trans-unit id="NameHeader">
         <source>Name</source>
-        <target state="translated">Nombre</target>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">
         <source>_New...</source>
-        <target state="translated">_Nuevo...</target>
+        <target state="new">_New...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
         <source>_Profile:</source>
-        <target state="translated">_Perfil:</target>
+        <target state="new">_Profile:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
         <source>_Remove</source>
-        <target state="translated">_Quitar</target>
+        <target state="new">_Remove</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
         <source>Value</source>
-        <target state="translated">Valor</target>
+        <target state="new">Value</target>
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
         <source>_Working directory:</source>
-        <target state="translated">Dir_ectorio de trabajo:</target>
+        <target state="new">_Working directory:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
         <source>Cancel</source>
-        <target state="translated">Cancelar</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtn">
         <source>OK</source>
-        <target state="translated">Aceptar</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="ProfileName">
         <source>Profile name:</source>
-        <target state="translated">Nombre de perfil:</target>
+        <target state="new">Profile name:</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtnHelpText">
         <source>Delete the current profile and change to the next available profile</source>
-        <target state="translated">Eliminar el perfil actual y cambiar al siguiente perfil disponible</target>
+        <target state="new">Delete the current profile and change to the next available profile</target>
         <note />
       </trans-unit>
       <trans-unit id="NewBtnHelpText">
         <source>Open the new profile dialog</source>
-        <target state="translated">Abrir el cuadro de diálogo del nuevo perfil</target>
+        <target state="new">Open the new profile dialog</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtnHelpText">
         <source>Return to the debug property page with no changes</source>
-        <target state="translated">Volver a la página de propiedades de depuración sin cambios</target>
+        <target state="new">Return to the debug property page with no changes</target>
         <note />
       </trans-unit>
       <trans-unit id="OKBtnHelpText">
         <source>Create the profile and return to the debug property page with the new profile selected</source>
-        <target state="translated">Crear el perfil y volver a la página de propiedades de depuración con el nuevo perfil seleccionado</target>
+        <target state="new">Create the profile and return to the debug property page with the new profile selected</target>
         <note />
       </trans-unit>
       <trans-unit id="chkJSWebView2DebuggingText">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</source>
-        <target state="translated">Habilitar el depurador de JavaScript para WebView2 basado en Microsoft Edge (Chromium)</target>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="chkLaunchBrowserHelpText">
         <source>Checking enables a textbox to specify an absolute or relative URl</source>
-        <target state="translated">La comprobación habilita un cuadro de texto para especificar un URI absoluto o relativo</target>
+        <target state="new">Checking enables a textbox to specify an absolute or relative URl</target>
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
         <source>Enable nati_ve code debugging</source>
-        <target state="translated">Habilitar depuración de código nati_vo</target>
+        <target state="new">Enable nati_ve code debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
         <source>Enable remote debugging</source>
-        <target state="translated">Habilitar depuración remota</target>
+        <target state="new">Enable remote debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
         <source>Enable _SQL Server debugging</source>
-        <target state="translated">Habilitar depuración de _SQL Server</target>
+        <target state="new">Enable _SQL Server debugging</target>
         <note />
       </trans-unit>
     </body>

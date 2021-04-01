@@ -4,125 +4,125 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="translated">Поток системных данных проекта "{0}" закрыт из-за исключения: {1}.</target>
+        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
         <source>Imports</source>
-        <target state="translated">Импортирует</target>
+        <target state="new">Imports</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
-        <target state="translated">{0} — {1}</target>
+        <target state="new">{0} - {1}</target>
         <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
       </trans-unit>
       <trans-unit id="NeutralLanguage_NoneValue">
         <source>(None)</source>
-        <target state="translated">(Нет)</target>
+        <target state="new">(None)</target>
         <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="translated">Запуск</target>
+        <target state="new">Start</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">Перед применением изменений необходимо исправить ошибки в "{0}".</target>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">
         <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
-        <target state="translated">Указанное для удаления значение "{0}" отсутствовало в свойстве "{1}"</target>
+        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRename">
         <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
-        <target state="translated">Указанное для переименования значение "{0}" отсутствовало в свойстве "{1}"</target>
+        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="translated">Анализаторы</target>
+        <target state="new">Analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="translated">Сборки</target>
+        <target state="new">Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="new">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="translated">Зависимости</target>
+        <target state="new">Dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="translated">Сборки платформы</target>
+        <target state="new">Framework Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="translated">без проверки подлинности</target>
+        <target state="new">No Authentication</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
-        <target state="translated">Содержит все сборки, необходимые при публикации проекта .NET Core.</target>
+        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
-        <target state="translated">Элементы для публикации</target>
+        <target state="new">Publish Items</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="translated">Не удается открыть файл проекта "{0}".
+        <target state="new">The project file '{0}' cannot be opened. 
 
-Этот проект был загружен с использованием неправильного типа проекта, вероятно, в результате переименования расширения проекта вне Visual Studio. Удалите и повторно добавьте проект, чтобы решение правильно определило тип проекта.</target>
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="translated">Проекты</target>
+        <target state="new">Projects</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">ПАКЕТ SDK</target>
+        <target state="new">SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkNodeName">
         <source>Frameworks</source>
-        <target state="translated">Платформы</target>
+        <target state="new">Frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="PackagesNodeName">
         <source>Packages</source>
-        <target state="translated">Пакеты</target>
+        <target state="new">Packages</target>
         <note />
       </trans-unit>
       <trans-unit id="SpecialFileProvider_FileOrFolderAlreadyExists">
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="translated">Файл или папка с именем "{0}" уже существуют в этом расположении на диске. Выберите другое имя.
+        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
-Если этот файл или папка не отображаются в обозревателе решений, то они сейчас не являются элементом проекта. Чтобы просмотреть файлы, которые есть на диске, но не включены в проект, выберите пункт "Показать все файлы" в меню "Проект".</target>
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="translated">Аутентификация Windows</target>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

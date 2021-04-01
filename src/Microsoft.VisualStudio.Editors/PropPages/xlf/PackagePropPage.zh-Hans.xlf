@@ -4,272 +4,272 @@
     <body>
       <trans-unit id="AssemblyVersionLabel.Text">
         <source>&amp;Assembly version:</source>
-        <target state="translated">程序集版本(&amp;A):</target>
+        <target state="new">&amp;Assembly version:</target>
         <note />
       </trans-unit>
       <trans-unit id="CopyrightLabel.Text">
         <source>&amp;Copyright:</source>
-        <target state="translated">版权(&amp;C):</target>
+        <target state="new">&amp;Copyright:</target>
         <note />
       </trans-unit>
       <trans-unit id="DescriptionLabel.Text">
         <source>&amp;Description:</source>
-        <target state="translated">说明(&amp;D):</target>
+        <target state="new">&amp;Description:</target>
         <note />
       </trans-unit>
       <trans-unit id="IconFileBrowseButton.AccessibleName">
         <source>Package Icon File Browse</source>
-        <target state="translated">包图标文件浏览</target>
+        <target state="new">Package Icon File Browse</target>
         <note />
       </trans-unit>
       <trans-unit id="IconFileBrowseButton.Text">
         <source>Browse...</source>
-        <target state="translated">浏览...</target>
+        <target state="new">Browse...</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIcon.AccessibleName">
         <source>Package Icon URL</source>
-        <target state="translated">包图标 URL</target>
+        <target state="new">Package Icon URL</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconLabel.Text">
         <source>&amp;Icon File:</source>
-        <target state="translated">图标文件(&amp;I):</target>
+        <target state="new">&amp;Icon File:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIconUrlWarning.Text">
         <source>PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</source>
-        <target state="translated">检测到 PackageIconUrl，但它已被弃用。请改用 PackageIcon。</target>
+        <target state="new">PackageIconUrl detected but is deprecated. Please use PackageIcon instead.</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersionLabel.Text">
         <source>Package &amp;version:</source>
-        <target state="translated">包版本(&amp;V):</target>
+        <target state="new">Package &amp;version:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTagsLabel.Text">
         <source>&amp;Tags:</source>
-        <target state="translated">标记(&amp;T):</target>
+        <target state="new">&amp;Tags:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrlLabel.Text">
         <source>&amp;Repository URL:</source>
-        <target state="translated">存储库 URL (&amp;R):</target>
+        <target state="new">&amp;Repository URL:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotesLabel.Text">
         <source>Release &amp;notes:</source>
-        <target state="translated">发行说明(&amp;N):</target>
+        <target state="new">Release &amp;notes:</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryTypeLabel.Text">
         <source>&amp;Repository type:</source>
-        <target state="translated">存储库类型(&amp;R):</target>
+        <target state="new">&amp;Repository type:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrlLabel.Text">
         <source>&amp;Project URL:</source>
-        <target state="translated">项目 URL (&amp;P):</target>
+        <target state="new">&amp;Project URL:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratePackageOnBuild.Text">
         <source>&amp;Generate NuGet package on build</source>
-        <target state="translated">在构建时生成 NuGet 包(&amp;G)</target>
+        <target state="new">&amp;Generate NuGet package on build</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageLabel.Text">
         <source>Assembly &amp;neutral language:</source>
-        <target state="translated">程序集非特定语言(&amp;N):</target>
+        <target state="new">Assembly &amp;neutral language:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionRevisionTextBox.AccessibleName">
         <source>Assembly Version Revision</source>
-        <target state="translated">程序集版本修订</target>
+        <target state="new">Assembly Version Revision</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionBuildTextBox.AccessibleName">
         <source>Assembly Version Build</source>
-        <target state="translated">程序集版本生成</target>
+        <target state="new">Assembly Version Build</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMinorTextBox.AccessibleName">
         <source>Assembly Version Minor</source>
-        <target state="translated">程序集次要版本</target>
+        <target state="new">Assembly Version Minor</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyVersionMajorTextBox.AccessibleName">
         <source>Assembly Version Major</source>
-        <target state="translated">程序集主要版本</target>
+        <target state="new">Assembly Version Major</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionRevisionTextBox.AccessibleName">
         <source>Assembly File Verison Revision</source>
-        <target state="translated">程序集文件版本修订</target>
+        <target state="new">Assembly File Verison Revision</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionBuildTextBox.AccessibleName">
         <source>Assembly File Verison Build</source>
-        <target state="translated">程序集文件版本生成</target>
+        <target state="new">Assembly File Verison Build</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMinorTextBox.AccessibleName">
         <source>Assembly File Verison Minor</source>
-        <target state="translated">程序集文件次要版本</target>
+        <target state="new">Assembly File Verison Minor</target>
         <note />
       </trans-unit>
       <trans-unit id="FileVersionMajorTextBox.AccessibleName">
         <source>Assembly File Verison Major</source>
-        <target state="translated">程序集文件主要版本</target>
+        <target state="new">Assembly File Verison Major</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageRequireLicenseAcceptance.Text">
         <source>Require &amp;license acceptance</source>
-        <target state="translated">要求接受许可证(&amp;L)</target>
+        <target state="new">Require &amp;license acceptance</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageIdLabel.Text">
         <source>Package &amp;id:</source>
-        <target state="translated">包 ID (&amp;I):</target>
+        <target state="new">Package &amp;id:</target>
         <note />
       </trans-unit>
       <trans-unit id="AuthorsLabel.Text">
         <source>&amp;Authors:</source>
-        <target state="translated">作者(&amp;A):</target>
+        <target state="new">&amp;Authors:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompanyLabel.Text">
         <source>Compan&amp;y:</source>
-        <target state="translated">公司(&amp;Y):</target>
+        <target state="new">Compan&amp;y:</target>
         <note />
       </trans-unit>
       <trans-unit id="ProductLabel.Text">
         <source>&amp;Product:</source>
-        <target state="translated">产品(&amp;P):</target>
+        <target state="new">&amp;Product:</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyFileVersionLabel.Text">
         <source>Assembly &amp;file version:</source>
-        <target state="translated">程序集文件版本(&amp;F):</target>
+        <target state="new">Assembly &amp;file version:</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseLabel.Text">
         <source>&amp;Licensing:</source>
-        <target state="translated">许可(&amp;L):</target>
+        <target state="new">&amp;Licensing:</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpressionLabel.Text">
         <source>&amp;Expression:</source>
-        <target state="translated">表达式(&amp;E):</target>
+        <target state="new">&amp;Expression:</target>
         <note />
       </trans-unit>
       <trans-unit id="OrLabel.Text">
         <source>&amp;OR</source>
-        <target state="translated">OR(&amp;O)</target>
+        <target state="new">&amp;OR</target>
         <note />
       </trans-unit>
       <trans-unit id="FileLabel.Text">
         <source>&amp;File:</source>
-        <target state="translated">文件(&amp;F):</target>
+        <target state="new">&amp;File:</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.Text">
         <source>Browse...</source>
-        <target state="translated">浏览...</target>
+        <target state="new">Browse...</target>
         <note />
       </trans-unit>
       <trans-unit id="Copyright.AccessibleName">
         <source>Package Copyright</source>
-        <target state="translated">程序包版权</target>
+        <target state="new">Package Copyright</target>
         <note />
       </trans-unit>
       <trans-unit id="Description.AccessibleName">
         <source>Package Description</source>
-        <target state="translated">程序包说明</target>
+        <target state="new">Package Description</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageProjectUrl.AccessibleName">
         <source>Package Project URL</source>
-        <target state="translated">包项目 URL</target>
+        <target state="new">Package Project URL</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageVersion.AccessibleName">
         <source>Package Version</source>
-        <target state="translated">包版本</target>
+        <target state="new">Package Version</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryUrl.AccessibleName">
         <source>Package Repository URL</source>
-        <target state="translated">包存储库 URL</target>
+        <target state="new">Package Repository URL</target>
         <note />
       </trans-unit>
       <trans-unit id="RepositoryType.AccessibleName">
         <source>Package Repository Type</source>
-        <target state="translated">包存储库类型</target>
+        <target state="new">Package Repository Type</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageReleaseNotes.AccessibleName">
         <source>Package Release Notes</source>
-        <target state="translated">软件包发行说明</target>
+        <target state="new">Package Release Notes</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguageComboBox.AccessibleName">
         <source>Package Assembly Neutral Language</source>
-        <target state="translated">包程序集中性语言</target>
+        <target state="new">Package Assembly Neutral Language</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageId.AccessibleName">
         <source>Package ID</source>
-        <target state="translated">包 ID</target>
+        <target state="new">Package ID</target>
         <note />
       </trans-unit>
       <trans-unit id="Authors.AccessibleName">
         <source>Package Authors</source>
-        <target state="translated">包作者</target>
+        <target state="new">Package Authors</target>
         <note />
       </trans-unit>
       <trans-unit id="AssemblyCompany.AccessibleName">
         <source>Package Company</source>
-        <target state="translated">程序包公司</target>
+        <target state="new">Package Company</target>
         <note />
       </trans-unit>
       <trans-unit id="Product.AccessibleName">
         <source>Package Product</source>
-        <target state="translated">程序包产品</target>
+        <target state="new">Package Product</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseBrowseButton.AccessibleName">
         <source>Package License File Browse</source>
-        <target state="translated">包许可证文件浏览</target>
+        <target state="new">Package License File Browse</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileNameTextBox.AccessibleName">
         <source>Package License File Path</source>
-        <target state="translated">包许可证文件路径</target>
+        <target state="new">Package License File Path</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageLicenseExpression.AccessibleName">
         <source>Package License Expression</source>
-        <target state="translated">包许可证表达式</target>
+        <target state="new">Package License Expression</target>
         <note />
       </trans-unit>
       <trans-unit id="PackageTags.AccessibleName">
         <source>Package Tags</source>
-        <target state="translated">包标记</target>
+        <target state="new">Package Tags</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseExpressionRadioButton.AccessibleName">
         <source>Package License Expression</source>
-        <target state="translated">包许可证表达式</target>
+        <target state="new">Package License Expression</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseFileRadioButton.AccessibleName">
         <source>Package License File</source>
-        <target state="translated">包许可证文件</target>
+        <target state="new">Package License File</target>
         <note />
       </trans-unit>
       <trans-unit id="LicenseUrlWarning.Text">
         <source>PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</source>
-        <target state="translated">检测到 PackageLicenseURL，但它已被弃用。请改用表达式或文件。</target>
+        <target state="new">PackageLicenseURL detected but is deprecated. Please use Expression or File instead.</target>
         <note />
       </trans-unit>
     </body>

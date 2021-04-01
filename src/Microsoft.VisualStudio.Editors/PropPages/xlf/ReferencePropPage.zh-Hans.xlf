@@ -4,107 +4,107 @@
     <body>
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <target state="translated">引用(&amp;R):</target>
+        <target state="new">&amp;References:</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
         <source>Reference Name</source>
-        <target state="translated">引用名称</target>
+        <target state="new">Reference Name</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <target state="translated">类型</target>
+        <target state="new">Type</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <target state="translated">版本</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <target state="translated">复制本地</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">路径</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <target state="translated">未使用的引用(&amp;N)...</target>
+        <target state="new">U&amp;nused References...</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <target state="translated">引用路径(&amp;P)...</target>
+        <target state="new">Reference &amp;Paths...</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <target state="translated">删除(&amp;V)</target>
+        <target state="new">Remo&amp;ve</target>
         <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
         <source>Reference...</source>
-        <target state="translated">引用...</target>
+        <target state="new">Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="webReferenceToolStripMenuItem.Text">
         <source>Web Reference...</source>
-        <target state="translated">Web 引用...</target>
+        <target state="new">Web Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="serviceReferenceToolStripMenuItem.Text">
         <source>Service Reference...</source>
-        <target state="translated">服务引用...</target>
+        <target state="new">Service Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <target state="translated">添加(&amp;A)...</target>
+        <target state="new">&amp;Add...</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">更新(&amp;U)</target>
+        <target state="new">&amp;Update</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <target state="translated">添加用户导入(&amp;O)</target>
+        <target state="new">Add User Imp&amp;ort</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <target state="translated">更新用户导入(&amp;D)</target>
+        <target state="new">Up&amp;date User Import</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
         <source>List of imported namespaces.</source>
-        <target state="translated">导入的命名空间的列表。</target>
+        <target state="new">List of imported namespaces.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleName">
         <source>Imported Namespaces:</source>
-        <target state="translated">导入的命名空间:</target>
+        <target state="new">Imported Namespaces:</target>
         <note />
       </trans-unit>
       <trans-unit id="UserImportTextBox.AccessibleName">
         <source>Imported Namespace:</source>
-        <target state="translated">导入的命名空间:</target>
+        <target state="new">Imported Namespace:</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <target state="translated">导入的命名空间(&amp;I):</target>
+        <target state="new">&amp;Imported namespaces:</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">
         <source>ReferencePageSplitContainer</source>
-        <target state="translated">ReferencePageSplitContainer</target>
+        <target state="new">ReferencePageSplitContainer</target>
         <note />
       </trans-unit>
     </body>

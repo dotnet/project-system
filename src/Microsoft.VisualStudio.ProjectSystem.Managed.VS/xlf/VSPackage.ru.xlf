@@ -4,87 +4,87 @@
     <body>
       <trans-unit id="3">
         <source>Console App (.NET Core)</source>
-        <target state="translated">Консольное приложение (.NET Core)</target>
+        <target state="new">Console App (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="4">
         <source>A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Проект для создания приложения командной строки, которое может выполняться в среде .NET Core в Windows, Linux и Mac OS.</target>
+        <target state="new">A project for creating a command-line application that can run on .NET Core on Windows, Linux and MacOS.</target>
         <note />
       </trans-unit>
       <trans-unit id="5">
         <source>Class Library (.NET Standard)</source>
-        <target state="translated">Библиотека классов (.NET Standard)</target>
+        <target state="new">Class Library (.NET Standard)</target>
         <note />
       </trans-unit>
       <trans-unit id="6">
         <source>A project for creating a class library that targets .NET Standard.</source>
-        <target state="translated">Проект для создания библиотеки классов, предназначенной для .NET Standard.</target>
+        <target state="new">A project for creating a class library that targets .NET Standard.</target>
         <note />
       </trans-unit>
       <trans-unit id="9">
         <source>Class Library (.NET Core)</source>
-        <target state="translated">Библиотека классов (.NET Core)</target>
+        <target state="new">Class Library (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="10">
         <source>A project for creating a class library that targets .NET Core.</source>
-        <target state="translated">Проект для создания библиотеки классов, использующей .NET Core.</target>
+        <target state="new">A project for creating a class library that targets .NET Core.</target>
         <note />
       </trans-unit>
       <trans-unit id="11">
         <source>xUnit Test Project (.NET Core)</source>
-        <target state="translated">Тестовый проект xUnit (.NET Core)</target>
+        <target state="new">xUnit Test Project (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="12">
         <source>A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Проект с тестами xUnit.net, которые могут выполняться на базе .NET Core в Windows, Linux и MacOS.</target>
+        <target state="new">A project that contains xUnit.net tests that can run on .NET Core on Windows, Linux and MacOS.</target>
         <note />
       </trans-unit>
       <trans-unit id="13">
         <source>NUnit Test Project (.NET Core)</source>
-        <target state="translated">Тестовый проект NUnit (.NET Core)</target>
+        <target state="new">NUnit Test Project (.NET Core)</target>
         <note />
       </trans-unit>
       <trans-unit id="14">
         <source>A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</source>
-        <target state="translated">Проект с тестами NUnit, которые могут выполняться на базе .NET Core в Windows, Linux и MacOS.</target>
+        <target state="new">A project that contains NUnit tests that can run on .NET Core on Windows, Linux and MacOS.</target>
         <note />
       </trans-unit>
       <trans-unit id="21">
         <source>Visual Basic</source>
-        <target state="translated">Visual Basic</target>
+        <target state="new">Visual Basic</target>
         <note />
       </trans-unit>
       <trans-unit id="22">
         <source>Visual Basic Project Files (*.vbproj);*.vbproj</source>
-        <target state="translated">Файлы проектов Visual Basic (*.vbproj);*.vbproj</target>
+        <target state="new">Visual Basic Project Files (*.vbproj);*.vbproj</target>
         <note />
       </trans-unit>
       <trans-unit id="23">
         <source>F#</source>
-        <target state="translated">F#</target>
+        <target state="new">F#</target>
         <note />
       </trans-unit>
       <trans-unit id="24">
         <source>F# Project Files (*.fsproj);*.fsproj</source>
-        <target state="translated">Файлы проектов F# (*.fsproj);*.fsproj</target>
+        <target state="new">F# Project Files (*.fsproj);*.fsproj</target>
         <note />
       </trans-unit>
       <trans-unit id="25">
         <source>C#</source>
-        <target state="translated">C#</target>
+        <target state="new">C#</target>
         <note />
       </trans-unit>
       <trans-unit id="26">
         <source>C# Project Files (*.csproj);*.csproj</source>
-        <target state="translated">Файлы проектов C# (*.csproj);*.csproj</target>
+        <target state="new">C# Project Files (*.csproj);*.csproj</target>
         <note />
       </trans-unit>
       <trans-unit id="27">
         <source>.NET Core 2015 Project Files (*.xproj);*.xproj</source>
-        <target state="translated">Файлы проектов .NET Core 2015 (*.xproj);*.xproj</target>
+        <target state="new">.NET Core 2015 Project Files (*.xproj);*.xproj</target>
         <note />
       </trans-unit>
     </body>

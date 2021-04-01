@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="buttonOK.Text">
         <source>OK</source>
-        <target state="translated">OK</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonCancel.Text">
         <source>Cancel</source>
-        <target state="translated">Abbrechen</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionName.Text">
         <source>Name</source>
-        <target state="translated">Name</target>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionVersion.Text">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="listViewExtensions.AccessibleName">
         <source>Available My Namespace Extensions</source>
-        <target state="translated">Verfügbare My-Namespaceerweiterungen</target>
+        <target state="new">Available My Namespace Extensions</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Visual Basic My Namespace Extension</source>
-        <target state="translated">Visual Basic-My-Namespaceerweiterung hinzufügen</target>
+        <target state="new">Add Visual Basic My Namespace Extension</target>
         <note />
       </trans-unit>
       <trans-unit id="colHeaderExtensionDescription.Text">
         <source>Description</source>
-        <target state="translated">Beschreibung</target>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
     </body>

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="ShowEditorButton.AccessibleName">
         <source>Show type editor</source>
-        <target state="translated">형식 편집기 표시</target>
+        <target state="new">Show type editor</target>
         <note />
       </trans-unit>
     </body>

@@ -4,37 +4,37 @@
     <body>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <target state="translated">Tür</target>
+        <target state="new">Type</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Yol</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferenceList.AccessibleName">
         <source>Unused references</source>
-        <target state="translated">Kullanılmayan başvurular</target>
+        <target state="new">Unused references</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
         <source>Reference Name</source>
-        <target state="translated">Başvuru Adı</target>
+        <target state="new">Reference Name</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <target state="translated">Sürüm</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <target state="translated">Yereli Kopyala</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferencesListLabel.Text">
         <source>Clicking "Remove" will remove all checked references.</source>
-        <target state="translated">"Kaldır" seçeneğine tıklandığında tüm işaretli başvurular kaldırılır.</target>
+        <target state="new">Clicking "Remove" will remove all checked references.</target>
         <note />
       </trans-unit>
     </body>

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="$this.Name">
         <source>PropPageUserControlBase</source>
-        <target state="translated">PropPageUserControlBase</target>
+        <target state="new">PropPageUserControlBase</target>
         <note />
       </trans-unit>
     </body>

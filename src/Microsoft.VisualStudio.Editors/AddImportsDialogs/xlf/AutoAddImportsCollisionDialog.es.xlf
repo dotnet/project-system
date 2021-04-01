@@ -4,17 +4,17 @@
     <body>
       <trans-unit id="m_cancelButton.Text">
         <source>Cancel</source>
-        <target state="translated">Cancelar</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="m_okButton.Text">
         <source>OK</source>
-        <target state="translated">Aceptar</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <target state="translated">Error de validación al agregar Imports</target>
+        <target state="new">Add Imports Validation Error</target>
         <note />
       </trans-unit>
     </body>

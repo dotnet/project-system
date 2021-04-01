@@ -4,42 +4,42 @@
     <body>
       <trans-unit id="lblPreBuildEventCommandLine.Text">
         <source>P&amp;re-build event command line:</source>
-        <target state="translated">&amp;Ligne de commande de l'événement pré-build :</target>
+        <target state="new">P&amp;re-build event command line:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPreBuildBuilder.Text">
         <source>Ed&amp;it Pre-build...</source>
-        <target state="translated">M&amp;odifier pré-build...</target>
+        <target state="new">Ed&amp;it Pre-build...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPostBuildEventCommandLine.Text">
         <source>P&amp;ost-build event command line:</source>
-        <target state="translated">&amp;Ligne de commande de l'événement post-build :</target>
+        <target state="new">P&amp;ost-build event command line:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnPostBuildBuilder.Text">
         <source>Edit Post-b&amp;uild...</source>
-        <target state="translated">&amp;Modifier post-build...</target>
+        <target state="new">Edit Post-b&amp;uild...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblRunPostBuildEvent.Text">
         <source>Ru&amp;n the post-build event:</source>
-        <target state="translated">Exécuter l'évé&amp;nement post-build :</target>
+        <target state="new">Ru&amp;n the post-build event:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items">
         <source>Always</source>
-        <target state="translated">Toujours</target>
+        <target state="new">Always</target>
         <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items1">
         <source>On successful build</source>
-        <target state="translated">En cas de build réussie</target>
+        <target state="new">On successful build</target>
         <note />
       </trans-unit>
       <trans-unit id="cboRunPostBuildEvent.Items2">
         <source>When the build updates the project output</source>
-        <target state="translated">Lorsque la build met à jour la sortie du projet</target>
+        <target state="new">When the build updates the project output</target>
         <note />
       </trans-unit>
     </body>
