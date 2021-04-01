@@ -469,39 +469,11 @@
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.BrowseObject.xaml.xlf.lcl"
         },
         {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Compile.FSharp.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.FSharp.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Compile.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Compile.xaml.xlf.lcl"
-        },
-        {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Content.BrowseObject.xaml.xlf",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.BrowseObject.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Content.FSharp.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.FSharp.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Content.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\Content.xaml.xlf.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EditorConfigFiles.BrowseObject.xaml.xlf",
@@ -511,39 +483,11 @@
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.BrowseObject.xaml.xlf.lcl"
         },
         {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EditorConfigFiles.FSharp.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.FSharp.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EditorConfigFiles.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EditorConfigFiles.xaml.xlf.lcl"
-        },
-        {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EmbeddedResource.BrowseObject.xaml.xlf",
           "Languages": "",
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.BrowseObject.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EmbeddedResource.FSharp.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.FSharp.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\EmbeddedResource.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\EmbeddedResource.xaml.xlf.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\Folder.xaml.xlf",
@@ -558,20 +502,6 @@
           "CopyOption": "LangIDOnName",
           "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
           "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.BrowseObject.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\None.FSharp.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.FSharp.xaml.xlf.lcl"
-        },
-        {
-          "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\None.xaml.xlf",
-          "Languages": "",
-          "CopyOption": "LangIDOnName",
-          "OutputPath": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf",
-          "LclFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\lcl\\{Lang}\\None.xaml.xlf.lcl"
         },
         {
           "SourceFile": "src\\Microsoft.VisualStudio.ProjectSystem.Managed\\ProjectSystem\\Rules\\Items\\xlf\\ProjectItemsSchema.CSharp.xaml.xlf",
