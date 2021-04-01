@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="en-us" original="../Strings.resx">
+    <body>
+      <trans-unit id="ErrorLoadingPermissions">
+        <source>Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+ 
+1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+ 
+2. Restart Visual Studio.</source>
+        <target state="new">Visual Studio was unable to determine the Code Access Security (CAS) permissions that are applicable to your project. The most likely cause is that your project references a strongly-named assembly that defines custom permissions, but that is not properly installed in the global assembly cache (GAC). To correct this, try the following:
+ 
+1. Ensure that any custom permissions defining assemblies referenced by your project have been properly installed to the GAC. If any of these assemblies have been rebuilt or have had their version numbers modified, you must install the new assemblies in the GAC.
+ 
+2. Restart Visual Studio.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersInstallFailedMessage">
+        <source>Failed to install the latest Microsoft.CodeAnalysis.FxCopAnalyzers package</source>
+        <target state="new">Failed to install the latest Microsoft.CodeAnalysis.FxCopAnalyzers package</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FxCopAnalyzersUninstallFailedMessage">
+        <source>Failed to uninstall Microsoft.CodeAnalysis.FxCopAnalyzers version '{0}'</source>
+        <target state="new">Failed to uninstall Microsoft.CodeAnalysis.FxCopAnalyzers version '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InstallOtherFrameworks">
+        <source>Install other frameworks...</source>
+        <target state="new">Install other frameworks...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="LanguageVersionAutomaticallySelected">
+        <source>Automatically selected based on framework version</source>
+        <target state="new">Automatically selected based on framework version</target>
+        <note>Refers to the C# language version being automatically selected based on the target framework</note>
+      </trans-unit>
+      <trans-unit id="NoAuthentication">
+        <source>No Authentication</source>
+        <target state="new">No Authentication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NotInstalledText">
+        <source>(not installed)</source>
+        <target state="new">(not installed)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RestoringPackagesMessage">
+        <source>Restoring Packages...</source>
+        <target state="new">Restoring Packages...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WindowsAuthentication">
+        <source>Windows Authentication</source>
+        <target state="new">Windows Authentication</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="latest">
+        <source>latest</source>
+        <target state="new">latest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="none">
+        <source>none</source>
+        <target state="new">none</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="preview">
+        <source>preview</source>
+        <target state="new">preview</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -30,7 +30,7 @@
     <ItemGroup>
       <RenameEnUsXlfFile Include="$(ProjectDir)\**\xlf\*.en-us.xlf" />
     </ItemGroup>
-    <Move SourceFiles="@(RenameEnUsXlfFile)" DestinationFiles="@(RenameEnUsXlfFile -> Replace('.en-us.xlf', '.xlf'))" />
+    <Copy SourceFiles="@(RenameEnUsXlfFile)" DestinationFiles="@(RenameEnUsXlfFile -> Replace('.en-us.xlf', '.xlf'))" />
   </Target>
 
 </Project>
