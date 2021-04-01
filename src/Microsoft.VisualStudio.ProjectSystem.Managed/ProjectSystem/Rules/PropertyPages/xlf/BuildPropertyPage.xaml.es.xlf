@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">Use la firma retrasada cuando el acceso a la clave privada esté restringido. La clave pública se usará durante la compilación y la adición de la información de clave privada se aplazará hasta la entrega del ensamblado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">Solo retrasar firma</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <target state="translated">Firme el ensamblado de salida para asignarle un nombre seguro.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">Firmar el ensamblado</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
@@ -124,12 +124,12 @@
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
-        <target state="new">Configures strong name signing of build outputs.</target>
+        <target state="translated">Configura la firma con nombre seguro de los resultados de compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|DisplayName">
         <source>Strong naming</source>
-        <target state="new">Strong naming</target>
+        <target state="translated">Asignación de nombre seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">Archivo de clave de nombre seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
@@ -359,17 +359,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">Bloquea la capacidad del compilador para generar una o más advertencias. Separe varios números de advertencia con una coma (",") o punto y coma (";").</target>
+        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress specific warnings</source>
-        <target state="needs-review-translation">Suprimir las advertencias</target>
+        <target state="new">Suppress specific warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">Trata las advertencias especificadas como errores. Separe varios números de advertencia con una coma (",") o punto y coma (";").</target>
+        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">允许使用“不安全”这一关键字编译的代码。</target>
+        <target state="translated">允许使用“unsafe”这一关键字编译的代码。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">访问私钥受限制时使用延迟签名。生成期间将使用公钥，在程序集切换之前，私钥信息的添加会延迟。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">仅延迟签名</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
         <source>Deterministic</source>
-        <target state="translated">是确定的</target>
+        <target state="translated">确定性输出</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <target state="translated">对输出程序集进行签名来向其提供强名称。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">对程序集签名</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
@@ -124,12 +124,12 @@
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
-        <target state="new">Configures strong name signing of build outputs.</target>
+        <target state="translated">配置生成输出的强名称签名。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|DisplayName">
         <source>Strong naming</source>
-        <target state="new">Strong naming</target>
+        <target state="translated">强命名</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -154,12 +154,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="translated">指定项目范围的 C# 可为空上下文。仅适用于使用 C# 8.0 或更高版本的项目。</target>
+        <target state="translated">指定项目范围内 C# 可为 Null 的类型的上下文。仅适用于使用 C# 8.0 或更高版本的项目。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
-        <target state="translated">可为 Null</target>
+        <target state="translated">可为 Null 的类型</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
@@ -304,12 +304,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">强名称密钥文件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">指定生成期间项目的中间输出的基位置。为了区分项目配置，子文件夹将追加到此路径。</target>
+        <target state="translated">指定生成期间项目的中间输出的基位置。为了区分项目配置，将把子文件夹追加到此路径。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
@@ -319,7 +319,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">指定生成期间项目输出的基位置。为了区分项目配置，子文件夹将追加到此路径。</target>
+        <target state="translated">指定生成期间项目输出的基位置。为了区分项目配置，将把子文件夹追加到此路径。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
@@ -359,17 +359,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">阻止编译器生成一个或多个警告的能力。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
+        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress specific warnings</source>
-        <target state="needs-review-translation">取消显示警告</target>
+        <target state="new">Suppress specific warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">将指定的警告视为错误。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
+        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">

@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">在私密金鑰的存取權受限時使用延遲簽署。在建置期間將會使用公開金鑰，且私密金鑰資訊會延遲到提交組件時才新增。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">僅延遲簽署</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <target state="translated">簽署輸出組件，賦予其強式名稱。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
+        <target state="translated">簽署組件</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
@@ -124,12 +124,12 @@
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
-        <target state="new">Configures strong name signing of build outputs.</target>
+        <target state="translated">設定建置輸出的強式名稱簽署。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|DisplayName">
         <source>Strong naming</source>
-        <target state="new">Strong naming</target>
+        <target state="translated">強式命名</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">強式名稱金鑰檔案</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
@@ -359,17 +359,17 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">使編譯器無法產生一或多個警告。請以逗號 (',') 或分號 (';') 分隔多個警告編號。</target>
+        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress specific warnings</source>
-        <target state="needs-review-translation">隱藏警告</target>
+        <target state="new">Suppress specific warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">將指定的警告視為錯誤。請以逗號 (',') 或分號 (';') 分隔多個警告編號。</target>
+        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
