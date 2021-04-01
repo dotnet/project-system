@@ -4,67 +4,67 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="translated">일반</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>Project Properties</source>
-        <target state="translated">프로젝트 속성</target>
+        <target state="new">Project Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">일반</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="translated">일반</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="translated">항상</target>
+        <target state="new">Always</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>On successful build</source>
-        <target state="translated">빌드가 성공한 경우</target>
+        <target state="new">On successful build</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <target state="translated">빌드에서 프로젝트 출력을 업데이트한 경우</target>
+        <target state="new">When the build updates the project output</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>File Name</source>
-        <target state="translated">파일 이름</target>
+        <target state="new">File Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <target state="translated">프로젝트 폴더</target>
+        <target state="new">Project Folder</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
-        <target state="translated">프로젝트 파일의 이름입니다.</target>
+        <target state="new">Name of the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the project file.</source>
-        <target state="translated">프로젝트 파일의 위치입니다.</target>
+        <target state="new">Location of the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
         <source>Full Path</source>
-        <target state="translated">전체 경로</target>
+        <target state="new">Full Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|Description">
         <source>Full name of the project file.</source>
-        <target state="translated">프로젝트 파일의 전체 이름입니다.</target>
+        <target state="new">Full name of the project file.</target>
         <note />
       </trans-unit>
     </body>

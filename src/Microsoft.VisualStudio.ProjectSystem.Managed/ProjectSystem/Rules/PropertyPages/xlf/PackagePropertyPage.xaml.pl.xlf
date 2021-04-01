@@ -4,232 +4,232 @@
     <body>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|Description">
         <source>Produce a package file during build operations.</source>
-        <target state="translated">Generuj plik pakietu podczas operacji kompilowania.</target>
+        <target state="new">Produce a package file during build operations.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GeneratePackageOnBuild|DisplayName">
         <source>Generate NuGet package on build</source>
-        <target state="translated">Generuj pakiet NuGet podczas kompilacji</target>
+        <target state="new">Generate NuGet package on build</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
-        <target state="translated">Monituj użytkownika o zaakceptowanie licencji podczas instalowania tego pakietu.</target>
+        <target state="new">Prompt the user to accept the license when installing this package.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|DisplayName">
         <source>Require license acceptance</source>
-        <target state="translated">Wymagaj zaakceptowania licencji</target>
+        <target state="new">Require license acceptance</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the package.</source>
-        <target state="translated">Ogólne ustawienia pakietu.</target>
+        <target state="new">General settings for the package.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">Ogólne</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|Description">
         <source>Specifies the license for the package.</source>
-        <target state="translated">Określa licencję dla pakietu.</target>
+        <target state="new">Specifies the license for the package.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|License|DisplayName">
         <source>License</source>
-        <target state="translated">Licencja</target>
+        <target state="new">License</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|NeutralLanguage|DisplayName">
         <source>Assembly neutral language</source>
-        <target state="translated">Język neutralny zestawu</target>
+        <target state="new">Assembly neutral language</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|Description">
         <source>Specify a license for the project's package.</source>
-        <target state="translated">Określ licencję dla pakietu projektu.</target>
+        <target state="new">Specify a license for the project's package.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PackageLicenseKind|DisplayName">
         <source>Package License</source>
-        <target state="translated">Licencja pakietu</target>
+        <target state="new">Package License</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.Expression|DisplayName">
         <source>SPDX License Expression</source>
-        <target state="translated">Wyrażenie licencji SPDX</target>
+        <target state="new">SPDX License Expression</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.File|DisplayName">
         <source>Embedded File</source>
-        <target state="translated">Osadzony plik</target>
+        <target state="new">Embedded File</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PackageLicenseKind.None|DisplayName">
         <source>None</source>
-        <target state="translated">Brak</target>
+        <target state="new">None</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|Description">
         <source>Properties related to producing NuGet packages.</source>
-        <target state="translated">Właściwości związane z tworzeniem pakietów NuGet.</target>
+        <target state="new">Properties related to producing NuGet packages.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Package|DisplayName">
         <source>Package</source>
-        <target state="translated">Pakiet</target>
+        <target state="new">Package</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyVersion|DisplayName">
         <source>Assembly version</source>
-        <target state="translated">Wersja zestawu</target>
+        <target state="new">Assembly version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|Description">
         <source>A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</source>
-        <target state="translated">Rozdzielana przecinkami lista autorów pakietów pasujących do nazw profilów w witrynie nuget.org. Są one wyświetlane w galerii NuGet w witrynie nuget.org i służą jak odsyłacze do pakietów tych samych autorów.</target>
+        <target state="new">A comma-separated list of packages authors, matching the profile names on nuget.org. These are displayed in the NuGet Gallery on nuget.org and are used to cross-reference packages by the same authors.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Authors|DisplayName">
         <source>Authors</source>
-        <target state="translated">Autorzy</target>
+        <target state="new">Authors</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Company|DisplayName">
         <source>Company</source>
-        <target state="translated">Firma</target>
+        <target state="new">Company</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|Description">
         <source>Copyright details for the package.</source>
-        <target state="translated">Szczegóły dotyczące praw autorskich pakietu.</target>
+        <target state="new">Copyright details for the package.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Copyright|DisplayName">
         <source>Copyright</source>
-        <target state="translated">Prawa autorskie</target>
+        <target state="new">Copyright</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>A description of the package for UI display.</source>
-        <target state="translated">Opis pakietu na potrzeby wyświetlania w interfejsie użytkownika.</target>
+        <target state="new">A description of the package for UI display.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="translated">Opis</target>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileVersion|DisplayName">
         <source>File version</source>
-        <target state="translated">Wersja pliku</target>
+        <target state="new">File version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="translated">Ścieżka względna z katalogu głównego pakietu do pliku ikony. Oprócz ustawienia tej właściwości należy upewnić się, że plik jest dołączony do pakietu. Rozmiar pliku obrazu jest ograniczony do 1 MB. Obsługiwane formaty plików to JPEG i PNG. Zaleca się rozdzielność obrazu 128x128.</target>
+        <target state="new">The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon file</source>
-        <target state="translated">Plik ikony</target>
+        <target state="new">Icon file</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
         <source>The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</source>
-        <target state="translated">Identyfikator pakietu nieuwzględniający wielkości liter, który musi być unikatowy w ramach witryny nuget.org lub dowolnej galerii, w której znajduje się pakiet. Identyfikatory nie mogą zawierać spacji ani znaków, które są nieprawidłowe w adresie URL, i zazwyczaj są zgodne z regułami przestrzeni nazw platformy .NET.</target>
+        <target state="new">The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|DisplayName">
         <source>Package ID</source>
-        <target state="translated">Identyfikator pakietu</target>
+        <target state="new">Package ID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|Description">
         <source>An SPDX license expression, often shown in UIs like nuget.org.</source>
-        <target state="translated">Wyrażenie licencji SPDX często wyświetlane w interfejsach użytkownika, np. w witrynie nuget.org.</target>
+        <target state="new">An SPDX license expression, often shown in UIs like nuget.org.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseExpression|DisplayName">
         <source>License expression</source>
-        <target state="translated">Wyrażenie licencji</target>
+        <target state="new">License expression</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageLicenseFile|DisplayName">
         <source>License file</source>
-        <target state="translated">Plik licencji</target>
+        <target state="new">License file</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|Description">
         <source>A URL for the package's home page, often shown in UI displays as well as nuget.org.</source>
-        <target state="translated">Adres URL strony głównej pakietu często wyświetlany w interfejsach użytkownika oraz w witrynie nuget.org.</target>
+        <target state="new">A URL for the package's home page, often shown in UI displays as well as nuget.org.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Project URL</source>
-        <target state="translated">Adres URL projektu</target>
+        <target state="new">Project URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
         <source>A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</source>
-        <target state="translated">Opis zmian wprowadzonych w tej wersji pakietu często używany w interfejsie użytkownika, na przykład na karcie Aktualizacje menedżera pakietów programu Visual Studio, w miejscu opisu pakietu.</target>
+        <target state="new">A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|DisplayName">
         <source>Release notes</source>
-        <target state="translated">Informacje o wersji</target>
+        <target state="new">Release notes</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|Description">
         <source>A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</source>
-        <target state="translated">Rozdzielana średnikami lista tagów i słów kluczowych, które opisują pakiet i ułatwiają odnajdywanie pakietu za pomocą funkcji wyszukiwania i filtrowania.</target>
+        <target state="new">A semicolon-delimited list of tags and keywords that describe the package and aid discoverability of packages through search and filtering.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageTags|DisplayName">
         <source>Tags</source>
-        <target state="translated">Tagi</target>
+        <target state="new">Tags</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Product|DisplayName">
         <source>Product</source>
-        <target state="translated">Produkt</target>
+        <target state="new">Product</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ReadAboutSpdxExpressions|DisplayName">
         <source>Read about SPDX license expressions</source>
-        <target state="translated">Informacje o wyrażeniach licencji SPDX</target>
+        <target state="new">Read about SPDX license expressions</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|Description">
         <source>Specifies the type of the repository. Default is 'git'.</source>
-        <target state="translated">Określa typ repozytorium. Wartość domyślna to „git”.</target>
+        <target state="new">Specifies the type of the repository. Default is 'git'.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryType|DisplayName">
         <source>Repository type</source>
-        <target state="translated">Typ repozytorium</target>
+        <target state="new">Repository type</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|Description">
         <source>Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</source>
-        <target state="translated">Określa adres URL repozytorium, w którym znajduje się kod źródłowy pakietu i/lub z którego jest on kompilowany. Zamiast łączenia ze stroną projektu użyj pola „Adres URL projektu”.</target>
+        <target state="new">Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RepositoryUrl|DisplayName">
         <source>Repository URL</source>
-        <target state="translated">Adres URL repozytorium</target>
+        <target state="new">Repository URL</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</source>
-        <target state="translated">Wersja pakietu zgodna ze wzorcem numer_główny.numer_pomocniczy.numer_poprawki. Numery wersji mogą obejmować sufiks wersji wstępnej.</target>
+        <target state="new">The version of the package, following the major.minor.patch pattern. Version numbers may include a pre-release suffix.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Package Version</source>
-        <target state="translated">Wersja pakietu</target>
+        <target state="new">Package Version</target>
         <note />
       </trans-unit>
     </body>

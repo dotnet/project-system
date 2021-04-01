@@ -4,67 +4,67 @@
     <body>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
         <source>preview</source>
-        <target state="translated">anteprima</target>
+        <target state="new">preview</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
         <source>latest</source>
-        <target state="translated">più recente</target>
+        <target state="new">latest</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
         <source>5.0</source>
-        <target state="translated">5.0</target>
+        <target state="new">5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
         <source>none</source>
-        <target state="translated">nessuno</target>
+        <target state="new">none</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelLabel.Text">
         <source>Analysis Level</source>
-        <target state="translated">Livello di analisi</target>
+        <target state="new">Analysis Level</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableNETAnalyzersCheckBox.Text">
         <source>Enable .NET analyzers</source>
-        <target state="translated">Abilita gli analizzatori .NET</target>
+        <target state="new">Enable .NET analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build (experimental)</source>
-        <target state="translated">Applica CodeStyle durante la compilazione (sperimentale)</target>
+        <target state="new">Enforce CodeStyle on build (experimental)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>.NET analyzers</source>
-        <target state="translated">Analizzatori .NET</target>
+        <target state="new">.NET analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="NETAnalyzersLinkLabel.Text">
         <source>What are .NET analyzers?</source>
-        <target state="translated">Che cosa sono gli analizzatori .NET?</target>
+        <target state="new">What are .NET analyzers?</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
         <source>All analyzers</source>
-        <target state="translated">Tutti gli analizzatori</target>
+        <target state="new">All analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
         <source>What are the benefits of source code analyzers?</source>
-        <target state="translated">Quali sono i vantaggi degli analizzatori del codice sorgente?</target>
+        <target state="new">What are the benefits of source code analyzers?</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
         <source>Run on &amp;live analysis</source>
-        <target state="translated">Esegui durante l'analisi in tempo &amp;reale</target>
+        <target state="new">Run on &amp;live analysis</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringBuild.Text">
         <source>Run on &amp;build</source>
-        <target state="translated">Esegui durante la &amp;compilazione</target>
+        <target state="new">Run on &amp;build</target>
         <note />
       </trans-unit>
     </body>

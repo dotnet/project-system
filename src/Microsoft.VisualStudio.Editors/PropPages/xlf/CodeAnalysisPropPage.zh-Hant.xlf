@@ -4,67 +4,67 @@
     <body>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
         <source>preview</source>
-        <target state="translated">預覽</target>
+        <target state="new">preview</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
         <source>latest</source>
-        <target state="translated">最新</target>
+        <target state="new">latest</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
         <source>5.0</source>
-        <target state="translated">5.0</target>
+        <target state="new">5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
         <source>none</source>
-        <target state="translated">無</target>
+        <target state="new">none</target>
         <note />
       </trans-unit>
       <trans-unit id="AnalysisLevelLabel.Text">
         <source>Analysis Level</source>
-        <target state="translated">分析層級</target>
+        <target state="new">Analysis Level</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableNETAnalyzersCheckBox.Text">
         <source>Enable .NET analyzers</source>
-        <target state="translated">啟用 .NET 分析器</target>
+        <target state="new">Enable .NET analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
         <source>Enforce CodeStyle on build (experimental)</source>
-        <target state="translated">在建置時強制執行 CodeStyle (實驗性)</target>
+        <target state="new">Enforce CodeStyle on build (experimental)</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>.NET analyzers</source>
-        <target state="translated">.NET 分析器</target>
+        <target state="new">.NET analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="NETAnalyzersLinkLabel.Text">
         <source>What are .NET analyzers?</source>
-        <target state="translated">什麼是 .NET 分析器?</target>
+        <target state="new">What are .NET analyzers?</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
         <source>All analyzers</source>
-        <target state="translated">所有分析器</target>
+        <target state="new">All analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">
         <source>What are the benefits of source code analyzers?</source>
-        <target state="translated">原始程式碼分析器有哪些優點?</target>
+        <target state="new">What are the benefits of source code analyzers?</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringLiveAnalysis.Text">
         <source>Run on &amp;live analysis</source>
-        <target state="translated">在即時分析時執行(&amp;L)</target>
+        <target state="new">Run on &amp;live analysis</target>
         <note />
       </trans-unit>
       <trans-unit id="RunAnalyzersDuringBuild.Text">
         <source>Run on &amp;build</source>
-        <target state="translated">建置時執行(&amp;B)</target>
+        <target state="new">Run on &amp;build</target>
         <note />
       </trans-unit>
     </body>

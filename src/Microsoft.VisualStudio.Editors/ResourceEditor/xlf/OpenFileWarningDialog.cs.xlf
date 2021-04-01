@@ -4,32 +4,32 @@
     <body>
       <trans-unit id="alwaysCheckCheckBox.Text">
         <source>&amp;Always ask before opening this file type.</source>
-        <target state="translated">&amp;Před otevřením tohoto typu souboru se vždy zeptat.</target>
+        <target state="new">&amp;Always ask before opening this file type.</target>
         <note />
       </trans-unit>
       <trans-unit id="messageLabel.Text">
         <source>The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</source>
-        <target state="translated">Editor spravovaných prostředků nepodporuje požadovaný typ souboru. Chcete otevřít výchozí editor pro {0}?</target>
+        <target state="new">The Managed Resource Editor does not support the requested file type. Would you like to open the default editor for "{0}"?</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonOK.Text">
         <source>OK</source>
-        <target state="translated">OK</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonCancel.Text">
         <source>Cancel</source>
-        <target state="translated">Zrušit</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="messageLabel2.Text">
         <source>Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</source>
-        <target state="translated">Obsah některých souborů může být nebezpečný.  Zvolte Ano, jen když důvěřujete zdroji tohoto souboru.</target>
+        <target state="new">Some files could contain malicious content.  You should only answer Yes if you trust the source of this file.</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Open File</source>
-        <target state="translated">Otevřít soubor</target>
+        <target state="new">Open File</target>
         <note />
       </trans-unit>
     </body>

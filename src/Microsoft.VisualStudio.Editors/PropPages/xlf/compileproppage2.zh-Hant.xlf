@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="BuildOutputPathButton.AccessibleName">
         <source>Browse...</source>
-        <target state="translated">瀏覽...</target>
+        <target state="new">Browse...</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathButton.Text">
         <source>B&amp;rowse...</source>
-        <target state="translated">瀏覽(&amp;R)...</target>
+        <target state="new">B&amp;rowse...</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionExplicitLabel.Text">
         <source>Option e&amp;xplicit:</source>
-        <target state="translated">Option Explicit(&amp;X):</target>
+        <target state="new">Option e&amp;xplicit:</target>
         <note />
       </trans-unit>
       <trans-unit id="DisableAllWarningsCheckBox.Text">
         <source>D&amp;isable all warnings</source>
-        <target state="translated">停用所有警告(&amp;I)</target>
+        <target state="new">D&amp;isable all warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsAsErrorCheckBox.Text">
         <source>Treat a&amp;ll warnings as errors</source>
-        <target state="translated">將所有警告視為錯誤(&amp;L)</target>
+        <target state="new">Treat a&amp;ll warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildEventsButton.Text">
         <source>Build Eve&amp;nts...</source>
-        <target state="translated">建置事件(&amp;N)...</target>
+        <target state="new">Build Eve&amp;nts...</target>
         <note />
       </trans-unit>
       <trans-unit id="RegisterForComInteropCheckBox.Text">
         <source>R&amp;egister for COM interop</source>
-        <target state="translated">註冊 COM Interop(&amp;E)</target>
+        <target state="new">R&amp;egister for COM interop</target>
         <note />
       </trans-unit>
       <trans-unit id="GenerateXMLCheckBox.Text">
         <source>&amp;Generate XML documentation file</source>
-        <target state="translated">產生 XML 文件檔案(&amp;G)</target>
+        <target state="new">&amp;Generate XML documentation file</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionStrictLabel.Text">
         <source>Option &amp;strict:</source>
-        <target state="translated">Option Strict(&amp;S):</target>
+        <target state="new">Option &amp;strict:</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionCompareLabel.Text">
         <source>Option c&amp;ompare:</source>
-        <target state="translated">Option Compare(&amp;O):</target>
+        <target state="new">Option c&amp;ompare:</target>
         <note />
       </trans-unit>
       <trans-unit id="OptionInferLabel.Text">
         <source>Option in&amp;fer:</source>
-        <target state="translated">Option Infer(&amp;F):</target>
+        <target state="new">Option in&amp;fer:</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningsConfigurationsGridViewLabel.Text">
         <source>Warning configurations:</source>
-        <target state="translated">警告組態:</target>
+        <target state="new">Warning configurations:</target>
         <note />
       </trans-unit>
       <trans-unit id="ConditionColumn.HeaderText">
         <source>Condition</source>
-        <target state="translated">條件</target>
+        <target state="new">Condition</target>
         <note />
       </trans-unit>
       <trans-unit id="NotificationColumn.HeaderText">
         <source>Notification</source>
-        <target state="translated">通知</target>
+        <target state="new">Notification</target>
         <note />
       </trans-unit>
       <trans-unit id="AdvancedOptionsButton.Text">
         <source>&amp;Advanced Compile Options...</source>
-        <target state="translated">進階編譯選項(&amp;A)...</target>
+        <target state="new">&amp;Advanced Compile Options...</target>
         <note />
       </trans-unit>
       <trans-unit id="CompileOptionsGroupBox.Text">
         <source>Compile Options:</source>
-        <target state="translated">編譯選項:</target>
+        <target state="new">Compile Options:</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildOutputPathLabel.Text">
         <source>B&amp;uild output path:</source>
-        <target state="translated">建置輸出路徑(&amp;U):</target>
+        <target state="new">B&amp;uild output path:</target>
         <note />
       </trans-unit>
       <trans-unit id="TargetCPULabel.Text">
         <source>&amp;Target CPU:</source>
-        <target state="translated">目標 CPU(&amp;T):</target>
+        <target state="new">&amp;Target CPU:</target>
         <note />
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">建議使用 32 位元(&amp;P)</target>
+        <target state="new">&amp;Prefer 32-bit</target>
         <note />
       </trans-unit>
     </body>

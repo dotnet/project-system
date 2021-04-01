@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="translated">No llame a MSBuild si un proyecto parece estar actualizado.</target>
+        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <target state="translated">Nivel de registro:</target>
+        <target state="new">Logging Level:</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="translated">Información</target>
+        <target state="new">Info</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Minimal">
         <source>Minimal</source>
-        <target state="translated">Mínimo</target>
+        <target state="new">Minimal</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="translated">Ninguno</target>
+        <target state="new">None</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <target state="translated">Detallado</target>
+        <target state="new">Verbose</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <target state="translated">Comprobaciones de actualizaciones</target>
+        <target state="new">Up to Date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
-        <target state="translated">Ignorar la configuración de la solución y el proyecto</target>
+        <target state="new">Ignore solution and project settings</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
-        <target state="translated">Configuración del anidamiento de archivos</target>
+        <target state="new">File Nesting Settings</target>
         <note />
       </trans-unit>
     </body>

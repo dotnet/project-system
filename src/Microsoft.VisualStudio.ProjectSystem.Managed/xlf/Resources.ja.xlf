@@ -4,125 +4,125 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="translated">例外 {1} が発生したため、プロジェクトのシステム データ フロー '{0}' が終了しました。</target>
+        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
         <source>Imports</source>
-        <target state="translated">インポート</target>
+        <target state="new">Imports</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
-        <target state="translated">{0} - {1}</target>
+        <target state="new">{0} - {1}</target>
         <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
       </trans-unit>
       <trans-unit id="NeutralLanguage_NoneValue">
         <source>(None)</source>
-        <target state="translated">(なし)</target>
+        <target state="new">(None)</target>
         <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="translated">開始</target>
+        <target state="new">Start</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">'{0}' のエラーは、変更を適用する前に修正する必要があります。</target>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">
         <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
-        <target state="translated">'{0}' を削除するための指定の値は、プロパティ '{1}' に存在しませんでした。</target>
+        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRename">
         <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
-        <target state="translated">'{0}' を名前変更するための指定の値は、プロパティ '{1}' に存在しませんでした。</target>
+        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="translated">アナライザー</target>
+        <target state="new">Analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="translated">アセンブリ</target>
+        <target state="new">Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="new">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="translated">依存関係</target>
+        <target state="new">Dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="translated">フレームワーク アセンブリ</target>
+        <target state="new">Framework Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="translated">認証なし</target>
+        <target state="new">No Authentication</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
-        <target state="translated">.NET Core プロジェクトの公開時に必要なすべてのアセンブリが含まれています。</target>
+        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
-        <target state="translated">項目の公開</target>
+        <target state="new">Publish Items</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="translated">プロジェクト ファイル '{0}' を開くことができません。
+        <target state="new">The project file '{0}' cannot be opened. 
 
-このプロジェクトは、間違ったプロジェクトの種類を使用して読み込まれました。これは、Visual Studio の外部でプロジェクト拡張機能の名前を変更した結果である可能性があります。ソリューションで正しいプロジェクトの種類が選択されるようにするため、プロジェクトを削除してから再度追加してください。</target>
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="translated">プロジェクト</target>
+        <target state="new">Projects</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">SDK</target>
+        <target state="new">SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkNodeName">
         <source>Frameworks</source>
-        <target state="translated">フレームワーク</target>
+        <target state="new">Frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="PackagesNodeName">
         <source>Packages</source>
-        <target state="translated">パッケージ</target>
+        <target state="new">Packages</target>
         <note />
       </trans-unit>
       <trans-unit id="SpecialFileProvider_FileOrFolderAlreadyExists">
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="translated">'{0}' という名前のファイルまたはフォルダーがこの場所のディスクに既に存在します。別の名前を選んでください。
+        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
-このファイルまたはフォルダーがソリューション エクスプローラーに表示されない場合は、そのファイルまたはフォルダーは現在プロジェクトの一部ではありません。ディスク上にあってプロジェクトにないファイルを表示するには、[プロジェクト] メニューの [すべてのファイルを表示] をクリックしてください。</target>
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="translated">Windows 認証</target>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

@@ -4,62 +4,62 @@
     <body>
       <trans-unit id="Rule|ResolvedSdkReference|DisplayName">
         <source>SDK Reference</source>
-        <target state="translated">Ссылка на пакет SDK</target>
+        <target state="new">SDK Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedSdkReference|Description">
         <source>SDK Reference Properties</source>
-        <target state="translated">Свойства ссылки на пакет SDK</target>
+        <target state="new">SDK Reference Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AppXLocation|DisplayName">
         <source>App Package Location</source>
-        <target state="translated">Расположение пакета приложения</target>
+        <target state="new">App Package Location</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FrameworkIdentity|DisplayName">
         <source>FrameworkIdentity</source>
-        <target state="translated">FrameworkIdentity</target>
+        <target state="new">FrameworkIdentity</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <target state="translated">Копировать полезные данные</target>
+        <target state="new">Copy Payload</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">
         <source>Expand Content</source>
-        <target state="translated">Расширить содержимое</target>
+        <target state="new">Expand Content</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandReferenceAssemblies|DisplayName">
         <source>Expand Reference Assemblies</source>
-        <target state="translated">Расширить эталонные сборки</target>
+        <target state="new">Expand Reference Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalExpandedReferenceAssemblies|DisplayName">
         <source>Copy Local Expanded Reference Assemblies</source>
-        <target state="translated">Копировать локальные расширенные ссылочные сборки</target>
+        <target state="new">Copy Local Expanded Reference Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SDKRootFolder|DisplayName">
         <source>SDK Root</source>
-        <target state="translated">Корень пакета SDK</target>
+        <target state="new">SDK Root</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Name|DisplayName">
         <source>Name</source>
-        <target state="translated">Имя</target>
+        <target state="new">Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Версия</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="translated">Копировать полезные данные в подкаталог</target>
+        <target state="new">Copy Payload to Subdirectory</target>
         <note />
       </trans-unit>
     </body>

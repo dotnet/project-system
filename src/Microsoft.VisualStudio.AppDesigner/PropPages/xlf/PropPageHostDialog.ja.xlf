@@ -4,17 +4,17 @@
     <body>
       <trans-unit id="OK.Text">
         <source>OK</source>
-        <target state="translated">OK</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="Cancel.Text">
         <source>Cancel</source>
-        <target state="translated">キャンセル</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>PropPageHostDialog</source>
-        <target state="translated">PropPageHostDialog</target>
+        <target state="new">PropPageHostDialog</target>
         <note />
       </trans-unit>
     </body>

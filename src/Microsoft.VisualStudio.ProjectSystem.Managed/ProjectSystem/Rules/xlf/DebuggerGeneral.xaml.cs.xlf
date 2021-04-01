@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
         <source>Debugger General Properties</source>
-        <target state="translated">Obecné vlastnosti ladicího programu</target>
+        <target state="new">Debugger General Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebuggerGeneralProperties|Description">
         <source>General Debugger options</source>
-        <target state="translated">Obecné možnosti ladicího programu</target>
+        <target state="new">General Debugger options</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|DisplayName">
         <source>Symbol Search Path</source>
-        <target state="translated">Cesta pro hledání symbolů</target>
+        <target state="new">Symbol Search Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <target state="translated">Vyhledávací cesta, kterou ladicí program používá pro vyhledávání symbolů</target>
+        <target state="new">The search path used by the debugger to locate symbols.</target>
         <note />
       </trans-unit>
     </body>

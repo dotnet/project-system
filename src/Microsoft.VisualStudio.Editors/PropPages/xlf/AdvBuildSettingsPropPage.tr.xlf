@@ -4,72 +4,72 @@
     <body>
       <trans-unit id="lblLanguageVersion.Text">
         <source>&amp;Language version:</source>
-        <target state="translated">&amp;Dil sürümü:</target>
+        <target state="new">&amp;Language version:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblReportCompilerErrors.Text">
         <source>&amp;Internal compiler error reporting:</source>
-        <target state="translated">&amp;İç derleyici hata raporlama:</target>
+        <target state="new">&amp;Internal compiler error reporting:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDebugInfo.Text">
         <source>D&amp;ebugging information:</source>
-        <target state="translated">H&amp;ata ayıklama bilgileri:</target>
+        <target state="new">D&amp;ebugging information:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblFileAlignment.Text">
         <source>&amp;File alignment:</source>
-        <target state="translated">&amp;Dosya hizalama:</target>
+        <target state="new">&amp;File alignment:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items">
         <source>512</source>
-        <target state="translated">512</target>
+        <target state="new">512</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items1">
         <source>1024</source>
-        <target state="translated">1024</target>
+        <target state="new">1024</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items2">
         <source>2048</source>
-        <target state="translated">2048</target>
+        <target state="new">2048</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items3">
         <source>4096</source>
-        <target state="translated">4096</target>
+        <target state="new">4096</target>
         <note />
       </trans-unit>
       <trans-unit id="cboFileAlignment.Items4">
         <source>8192</source>
-        <target state="translated">8192</target>
+        <target state="new">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="lblDLLBase.Text">
         <source>Library &amp;base address:</source>
-        <target state="translated">Kitaplık &amp;temel adresi:</target>
+        <target state="new">Library &amp;base address:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
         <source>Output</source>
-        <target state="translated">Çıkış</target>
+        <target state="new">Output</target>
         <note />
       </trans-unit>
       <trans-unit id="generalLabel.Text">
         <source>General</source>
-        <target state="translated">Genel</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOverflow.Text">
         <source>Chec&amp;k for arithmetic overflow</source>
-        <target state="translated">&amp;Aritmetik taşmayı denetle</target>
+        <target state="new">Chec&amp;k for arithmetic overflow</target>
         <note />
       </trans-unit>
       <trans-unit id="lnkLabel.Text">
         <source>Why can't I select a different C# version?</source>
-        <target state="translated">Neden farklı bir C# sürümü seçemiyorum?</target>
+        <target state="new">Why can't I select a different C# version?</target>
         <note />
       </trans-unit>
     </body>
