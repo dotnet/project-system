@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Mocks;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     public class LaunchProfilesProjectPropertiesTests
     {
