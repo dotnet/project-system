@@ -6,16 +6,16 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Threading;
 using LaunchProfileValueProviderAndMetadata = System.Lazy<
-    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProvider,
-    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata>;
+    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider,
+    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
 using GlobalSettingValueProviderAndMetadata = System.Lazy<
-    Microsoft.VisualStudio.ProjectSystem.Debug.IGlobalSettingExtensionValueProvider,
-    Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfileExtensionValueProviderMetadata>;
+    Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider,
+    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     internal class LaunchProfileProjectProperties : IProjectProperties
     {

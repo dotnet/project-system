@@ -4,9 +4,9 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.Build.Framework.XamlTypes;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// <para>

@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Debug
+namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Exports a <see cref="ILaunchProfileExtensionValueProvider" /> or <see cref="IGlobalSettingExtensionValueProvider"/>.
