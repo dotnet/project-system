@@ -2,14 +2,8 @@
 <Project>
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="'$(IsTestProject)' == 'true'">true</BannedSymbolsOptOut>
-    <!-- WORKAROUND: https://ceapex.visualstudio.com/CEINTL/_wiki/wikis/CEINTL.wiki/1450/OneLocBuild-Non-Enu-source-file-support-(workaround)
-         The XlfLanguages list seems to work properly if updated/set prior to importing the XliffTasks/RoslynTools.RepoToolset packages.
-         The latter package is the one that actually runs the .xlf generation process. It would be preferable to have this property change in
-         Workarounds.props, but it unfortunately doesn't seem to work that late in the build process. The target related to this property change is
-         RenameEnUsXlfToRemoveEnUsSuffix in Workarounds.props. -->
-    <XlfLanguages>$(XlfLanguages);en-us</XlfLanguages>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <!-- Framework -->
     <Reference Include="PresentationCore" />
@@ -20,7 +14,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
-    
+
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="All" />
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="All" />
@@ -34,7 +28,7 @@
     <PackageReference Include="Codecov"                             ExcludeAssets="all" />
     <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
-    
+
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
@@ -44,12 +38,12 @@
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
-    
+
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
-    
+
     <!-- Analyzers-->
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
