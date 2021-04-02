@@ -1,0 +1,34 @@
+# Name: DotNet-Project-System OneLocBuild
+# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+#
+# Creates the OneLocBuild PR for localization of the dotnet/project-system
+#
+
+resources:
+- repo: self
+  clean: true
+pool:
+  name: NetCorePublic-Pool
+  queue: BuildPool.Windows.10.Amd64.VS2019.Pre.Open
+  demands: Cmd
+  timeoutInMinutes: 15
+variables:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+steps:
+- task: PowerShell@2
+  displayName: Create Neutral .xlf Files
+  inputs:
+    targetType: 'inline'
+    script: 'Get-ChildItem -Include *.es.xlf -File -Recurse | Copy-Item -Destination { $newPath = $_.FullName.Replace(''.es.xlf'', ''.xlf''); Write-Host "Creating $newPath"; $newPath }'
+    workingDirectory: 'src'
+
+- task: OneLocBuild@2
+  displayName: Generate Localization PR
+  inputs:
+    isCreatePrSelected: true
+    isAutoCompletePrSelected: false
+    repoType: gitHub
+    gitHubPatVariable: '$(GitHubPat)'
+    packageSourceAuth: patAuth
+    patVariable: '$(OneLocBuildPat)'
