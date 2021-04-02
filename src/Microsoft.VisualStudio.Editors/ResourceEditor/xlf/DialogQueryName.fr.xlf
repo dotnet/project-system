@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="LabelDescription.Text">
         <source>P&amp;lease enter a name for the new resource.</source>
-        <target state="translated">&amp;Entrez un nom pour la nouvelle ressource.</target>
+        <target state="new">P&amp;lease enter a name for the new resource.</target>
         <note />
       </trans-unit>
       <trans-unit id="ButtonCancel.Text">
         <source>Cancel</source>
-        <target state="translated">Annuler</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="ButtonAdd.Text">
         <source>&amp;Add</source>
-        <target state="translated">&amp;Ajouter</target>
+        <target state="new">&amp;Add</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add New Resource</source>
-        <target state="translated">Ajouter une nouvelle ressource</target>
+        <target state="new">Add New Resource</target>
         <note />
       </trans-unit>
     </body>

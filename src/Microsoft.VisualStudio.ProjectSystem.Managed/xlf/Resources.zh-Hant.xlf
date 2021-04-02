@@ -4,125 +4,125 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="translated">因為發生下列例外狀況，而導致專案系統資料流程 '{0}' 關閉: {1}。</target>
+        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
         <source>Imports</source>
-        <target state="translated">匯入</target>
+        <target state="new">Imports</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
-        <target state="translated">{0} - {1}</target>
+        <target state="new">{0} - {1}</target>
         <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
       </trans-unit>
       <trans-unit id="NeutralLanguage_NoneValue">
         <source>(None)</source>
-        <target state="translated">(無)</target>
+        <target state="new">(None)</target>
         <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="translated">啟動</target>
+        <target state="new">Start</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">必須先修正 '{0}' 中的錯誤，才能套用變更。</target>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">
         <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
-        <target state="translated">屬性 '{1}' 中不存在要移除的指定值 '{0}'</target>
+        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRename">
         <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
-        <target state="translated">屬性 '{1}' 中不存在要重新命名的指定值 '{0}'</target>
+        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="translated">分析器</target>
+        <target state="new">Analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="translated">組件</target>
+        <target state="new">Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="new">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="translated">相依性</target>
+        <target state="new">Dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="translated">架構組件</target>
+        <target state="new">Framework Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="translated">非驗證</target>
+        <target state="new">No Authentication</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
-        <target state="translated">包含發佈 .NET Core 專案時所需的所有組件。</target>
+        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
-        <target state="translated">發佈項目</target>
+        <target state="new">Publish Items</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="translated">無法開啟專案檔 '{0}'。
+        <target state="new">The project file '{0}' cannot be opened. 
 
-此專案使用了錯誤的專案類型載入。這可能是在 Visual Studio 外部重新命名了專案延伸模組所致。請移除再重新新增該專案，以便於解決方案能夠挑選正確的專案類型。</target>
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="translated">專案</target>
+        <target state="new">Projects</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">SDK</target>
+        <target state="new">SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkNodeName">
         <source>Frameworks</source>
-        <target state="translated">架構</target>
+        <target state="new">Frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="PackagesNodeName">
         <source>Packages</source>
-        <target state="translated">套件</target>
+        <target state="new">Packages</target>
         <note />
       </trans-unit>
       <trans-unit id="SpecialFileProvider_FileOrFolderAlreadyExists">
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="translated">磁碟這個位置已經有名稱為 '{0}' 的檔案或資料夾存在，請另選名稱。
+        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
-[方案總管] 如果沒有這個檔案或資料夾，表示目前不屬於專案的一部分。若要檢視磁碟中有哪些檔案不在專案中，請從 [專案] 功能表選取 [顯示所有檔案]。</target>
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="translated">Windows 驗證</target>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>

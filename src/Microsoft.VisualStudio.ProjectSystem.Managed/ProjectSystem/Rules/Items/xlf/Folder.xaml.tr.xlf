@@ -4,32 +4,32 @@
     <body>
       <trans-unit id="Rule|Folder|DisplayName">
         <source>General</source>
-        <target state="translated">Genel</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Folder|Description">
         <source>Folder Properties</source>
-        <target state="translated">Klasör Özellikleri</target>
+        <target state="new">Folder Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Full Path</source>
-        <target state="translated">Tam Yol</target>
+        <target state="new">Full Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the folder.</source>
-        <target state="translated">Klasörün konumu.</target>
+        <target state="new">Location of the folder.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|DisplayName">
         <source>Folder Name</source>
-        <target state="translated">Klasör Adı</target>
+        <target state="new">Folder Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FolderName|Description">
         <source>Name of this folder.</source>
-        <target state="translated">Bu klasörün adı.</target>
+        <target state="new">Name of this folder.</target>
         <note />
       </trans-unit>
     </body>

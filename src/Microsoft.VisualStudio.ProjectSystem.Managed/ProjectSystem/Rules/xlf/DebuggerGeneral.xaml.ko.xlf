@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
         <source>Debugger General Properties</source>
-        <target state="translated">디버거 일반 속성</target>
+        <target state="new">Debugger General Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebuggerGeneralProperties|Description">
         <source>General Debugger options</source>
-        <target state="translated">일반 디버거 옵션</target>
+        <target state="new">General Debugger options</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|DisplayName">
         <source>Symbol Search Path</source>
-        <target state="translated">기호 검색 경로</target>
+        <target state="new">Symbol Search Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <target state="translated">디버거가 기호를 찾기 위해 사용하는 검색 경로입니다.</target>
+        <target state="new">The search path used by the debugger to locate symbols.</target>
         <note />
       </trans-unit>
     </body>

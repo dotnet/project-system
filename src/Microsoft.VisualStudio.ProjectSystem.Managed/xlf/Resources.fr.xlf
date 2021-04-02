@@ -4,125 +4,125 @@
     <body>
       <trans-unit id="DataFlowFaults">
         <source>Project system data flow '{0}' closed because of an exception: {1}.</source>
-        <target state="translated">Le flux de données '{0}' du système de projet s'est fermé en raison d'une exception : {1}.</target>
+        <target state="new">Project system data flow '{0}' closed because of an exception: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsTreeNodeName">
         <source>Imports</source>
-        <target state="translated">Importations</target>
+        <target state="new">Imports</target>
         <note />
       </trans-unit>
       <trans-unit id="NeutralLanguage_DisplayNameFormatString">
         <source>{0} - {1}</source>
-        <target state="translated">{0} - {1}</target>
+        <target state="new">{0} - {1}</target>
         <note>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </note>
       </trans-unit>
       <trans-unit id="NeutralLanguage_NoneValue">
         <source>(None)</source>
-        <target state="translated">(Aucun)</target>
+        <target state="new">(None)</target>
         <note>Special value to show in the project property pages when the NeutralLanguage property has no value.</note>
       </trans-unit>
       <trans-unit id="NoActionProfileName">
         <source>Start</source>
-        <target state="translated">Démarrer</target>
+        <target state="new">Start</target>
         <note />
       </trans-unit>
       <trans-unit id="JsonErrorNeedToBeCorrected">
         <source>Errors in '{0}' need to be corrected before applying changes.</source>
-        <target state="translated">Vous devez corriger les erreurs dans '{0}' avant d'appliquer les modifications.</target>
+        <target state="new">Errors in '{0}' need to be corrected before applying changes.</target>
         <note />
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRemove">
         <source>The specified value to remove '{0}' was not present in the property '{1}'</source>
-        <target state="translated">La valeur spécifiée pour supprimer '{0}' n'est pas présente dans la propriété '{1}'</target>
+        <target state="new">The specified value to remove '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="MsBuildMissingValueToRename">
         <source>The specified value to rename '{0}' was not present in the property '{1}'</source>
-        <target state="translated">La valeur spécifiée pour renommer '{0}' n'est pas présente dans la propriété '{1}'</target>
+        <target state="new">The specified value to rename '{0}' was not present in the property '{1}'</target>
         <note>{0} will be a specific property value such as "Debug", {1} will be an MsBuild property name such as "Configurations". Neither of those values will be localized.</note>
       </trans-unit>
       <trans-unit id="AnalyzersNodeName">
         <source>Analyzers</source>
-        <target state="translated">Analyseurs</target>
+        <target state="new">Analyzers</target>
         <note />
       </trans-unit>
       <trans-unit id="AssembliesNodeName">
         <source>Assemblies</source>
-        <target state="translated">Assemblys</target>
+        <target state="new">Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="ComNodeName">
         <source>COM</source>
-        <target state="translated">COM</target>
+        <target state="new">COM</target>
         <note />
       </trans-unit>
       <trans-unit id="DependenciesNodeName">
         <source>Dependencies</source>
-        <target state="translated">Dépendances</target>
+        <target state="new">Dependencies</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkAssembliesNodeName">
         <source>Framework Assemblies</source>
-        <target state="translated">Assemblys de framework</target>
+        <target state="new">Framework Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="NoAuth">
         <source>No Authentication</source>
-        <target state="translated">Aucune authentification</target>
+        <target state="new">No Authentication</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDescription">
         <source>Contains all the assemblies needed when publishing a .NET Core project.</source>
-        <target state="translated">Contient tous les assemblys nécessaires à la publication d'un projet .NET Core.</target>
+        <target state="new">Contains all the assemblies needed when publishing a .NET Core project.</target>
         <note />
       </trans-unit>
       <trans-unit id="OutputGroupPublishItemsDisplayName">
         <source>Publish Items</source>
-        <target state="translated">Éléments de publication</target>
+        <target state="new">Publish Items</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectLoadedWithWrongProjectType">
         <source>The project file '{0}' cannot be opened. 
 
 This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</source>
-        <target state="translated">Impossible d'ouvrir le fichier projet '{0}'. 
+        <target state="new">The project file '{0}' cannot be opened. 
 
-Ce projet a été chargé à l'aide d'un type de projet incorrect, probablement à la suite du renommage de l'extension de projet en dehors de Visual Studio. Supprimez et rajoutez le projet pour que la solution prenne le bon type de projet.</target>
+This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProjectsNodeName">
         <source>Projects</source>
-        <target state="translated">Projets</target>
+        <target state="new">Projects</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkNodeName">
         <source>SDK</source>
-        <target state="translated">Kit de développement logiciel</target>
+        <target state="new">SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="FrameworkNodeName">
         <source>Frameworks</source>
-        <target state="translated">Frameworks</target>
+        <target state="new">Frameworks</target>
         <note />
       </trans-unit>
       <trans-unit id="PackagesNodeName">
         <source>Packages</source>
-        <target state="translated">Packages</target>
+        <target state="new">Packages</target>
         <note />
       </trans-unit>
       <trans-unit id="SpecialFileProvider_FileOrFolderAlreadyExists">
         <source>A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
 If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</source>
-        <target state="translated">Il existe déjà un fichier ou un dossier nommé '{0}' à cet emplacement sur le disque. Choisissez un autre nom.
+        <target state="new">A file or folder with the name '{0}' already exists on disk at this location. Please choose another name.
 
-Si ce fichier ou dossier n'apparaît pas dans l'Explorateur de solutions, cela signifie qu'il ne fait pas partie de votre projet. Pour voir les fichiers qui existent sur le disque mais qui ne font pas partie du projet, sélectionnez Afficher tous les fichiers dans le menu Projet.</target>
+If this file or folder does not appear in Solution Explorer, then it is not currently part of your project. To view files which exist on disk, but are not in the project, select Show All Files from the Project menu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsAuth">
         <source>Windows Authentication</source>
-        <target state="translated">Authentification Windows</target>
+        <target state="new">Windows Authentication</target>
         <note />
       </trans-unit>
     </body>
