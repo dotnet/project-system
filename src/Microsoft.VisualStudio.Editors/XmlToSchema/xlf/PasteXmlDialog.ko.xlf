@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="okButton.Text">
         <source>&amp;OK</source>
-        <target state="translated">확인(&amp;O)</target>
+        <target state="new">&amp;OK</target>
         <note />
       </trans-unit>
       <trans-unit id="cancelButton.Text">
         <source>Cancel</source>
-        <target state="translated">취소</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="Label1.Text">
         <source>&amp;Type or paste an XML document</source>
-        <target state="translated">XML 문서 입력 또는 붙여넣기(&amp;T)</target>
+        <target state="new">&amp;Type or paste an XML document</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add XML</source>
-        <target state="translated">XML 추가</target>
+        <target state="new">Add XML</target>
         <note />
       </trans-unit>
     </body>

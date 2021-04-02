@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">启用对托管代码和本机代码的调试，这也被称为混合模式调试。</target>
+        <target state="new">Enable debugging for managed and native code together, also known as mixed-mode debugging.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">启用本机代码调试</target>
+        <target state="new">Enable native code debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">指示调试器应附加到远程计算机上的进程。</target>
+        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">使用远程计算机</target>
+        <target state="new">Use remote machine</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">启用 SQL 脚本和存储过程的调试。</target>
+        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">启用 SQL Server 调试</target>
+        <target state="new">Enable SQL Server debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">连接到远程计算机时要使用的身份验证方案。仅在启用“使用远程计算机”时适用。</target>
+        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">身份验证模式</target>
+        <target state="new">Authentication mode</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">与启动和调试指定可执行文件关联的属性。</target>
+        <target state="new">Properties associated with launching and debugging a specified executable file.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">可执行文件</target>
+        <target state="new">Executable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">要传递到可执行文件的命令行参数。</target>
+        <target state="new">Command line arguments to pass to the executable.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">命令行参数</target>
+        <target state="new">Command line arguments</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">在运行进程之前要设置的环境变量。变量由逗号(,)分隔，变量名称和值以等号(=)分隔。示例: var1=value1,var2=value2,var3=value3。变量中出现的逗号和等号可使用正斜杠(/)进行转义。</target>
+        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">环境变量</target>
+        <target state="new">Environment variables</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">要运行的可执行文件的路径。</target>
+        <target state="new">Path to the executable to run.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">可执行文件</target>
+        <target state="new">Executable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">采用 "name:port" 格式的远程计算机的名称和端口号。仅在启用“使用远程计算机”时适用。</target>
+        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">远程计算机名称</target>
+        <target state="new">Remote machine name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">将在其中启动进程的工作目录的路径。</target>
+        <target state="new">Path to the working directory where the process will be started.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">工作目录</target>
+        <target state="new">Working directory</target>
         <note />
       </trans-unit>
     </body>

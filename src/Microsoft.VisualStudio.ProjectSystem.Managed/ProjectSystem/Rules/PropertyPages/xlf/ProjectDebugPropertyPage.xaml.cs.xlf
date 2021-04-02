@@ -4,92 +4,92 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">Povolí společné ladění spravovaného a nativního kódu, což se označuje také jako ladění v kombinovaném režimu.</target>
+        <target state="new">Enable debugging for managed and native code together, also known as mixed-mode debugging.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">Povolit ladění nativního kódu</target>
+        <target state="new">Enable native code debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">Určuje, že se ladicí program má připojit k procesu na vzdáleném počítači.</target>
+        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">Použít vzdálený počítač</target>
+        <target state="new">Use remote machine</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">Povolí ladění skriptů SQL a uložených procedur.</target>
+        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">Povolit ladění SQL Serveru</target>
+        <target state="new">Enable SQL Server debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">Schéma ověřování, které se má použít při připojování na vzdáleném počítači. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">Režim ověřování</target>
+        <target state="new">Authentication mode</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
-        <target state="translated">Vlastnosti přidružené ke spouštění a ladění výstupu projektu</target>
+        <target state="new">Properties associated with launching and debugging the project output.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|DisplayName">
         <source>Project</source>
-        <target state="translated">Projekt</target>
+        <target state="new">Project</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Argumenty příkazového řádku, které se mají předat spustitelnému souboru</target>
+        <target state="new">Command line arguments to pass to the executable.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">Argumenty příkazového řádku</target>
+        <target state="new">Command line arguments</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Proměnné prostředí, které se mají nastavit před spuštěním procesu. Proměnné se oddělují čárkami (,) a názvy a hodnoty proměnných se oddělují znakem rovnítka (=). Příklad: prom1=hodnota1,prom2=hodnota2,prom3=hodnota3. Čárky a znaky rovnítka, které se vyskytují v proměnné, je možné uvést lomítkem (/).</target>
+        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">Proměnné prostředí</target>
+        <target state="new">Environment variables</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">Název a číslo portu vzdáleného počítače ve formátu název:port. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">Název vzdáleného počítače</target>
+        <target state="new">Remote machine name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">Cesta k pracovnímu adresáři, ve kterém se spustí proces</target>
+        <target state="new">Path to the working directory where the process will be started.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">Pracovní adresář</target>
+        <target state="new">Working directory</target>
         <note />
       </trans-unit>
     </body>

@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="cmdidNavigateToProject|ButtonText">
         <source>N&amp;avigate to Project</source>
-        <target state="translated">&amp;Navegar al proyecto</target>
+        <target state="new">N&amp;avigate to Project</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidProjectDebugger|ButtonText">
         <source>Web Debugger</source>
-        <target state="translated">Depurador web</target>
+        <target state="new">Web Debugger</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ButtonText">
         <source>&amp;Pack</source>
-        <target state="translated">&amp;Paquete</target>
+        <target state="new">&amp;Pack</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|ToolTipText">
         <source>Generate NuGet Package</source>
-        <target state="translated">Generar paquete NuGet</target>
+        <target state="new">Generate NuGet Package</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageProjectContextMenu|CommandName">
         <source>GenerateNuGetPackageProjectContextMenu</source>
-        <target state="translated">GenerateNuGetPackageProjectContextMenu</target>
+        <target state="new">GenerateNuGetPackageProjectContextMenu</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ButtonText">
         <source>&amp;Pack selection</source>
-        <target state="translated">Selección de &amp;paquete</target>
+        <target state="new">&amp;Pack selection</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|ToolTipText">
         <source>Generate NuGet Package for selected project</source>
-        <target state="translated">Generar paquete NuGet para el proyecto seleccionado</target>
+        <target state="new">Generate NuGet Package for selected project</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidGenerateNuGetPackageTopLevelBuild|CommandName">
         <source>GenerateNuGetPackageTopLevelBuild</source>
-        <target state="translated">GenerateNuGetPackageTopLevelBuild</target>
+        <target state="new">GenerateNuGetPackageTopLevelBuild</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugTargetMenuDebugFrameworkMenu|ButtonText">
         <source>Framework</source>
-        <target state="translated">Plataforma</target>
+        <target state="new">Framework</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidDebugFrameworks|ButtonText">
         <source>Framework</source>
-        <target state="translated">Plataforma</target>
+        <target state="new">Framework</target>
         <note />
       </trans-unit>
       <trans-unit id="AddAboveMenu|ButtonText">
         <source>&amp;Add Above</source>
-        <target state="translated">Agregar &amp;encima</target>
+        <target state="new">&amp;Add Above</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">Agregar &amp;nuevo elemento</target>
+        <target state="new">&amp;Add New Item...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemAbove|CommandName">
         <source>AddNewItemAbove</source>
-        <target state="translated">AddNewItemAbove</target>
+        <target state="new">AddNewItemAbove</target>
         <note />
       </trans-unit>
       <trans-unit id="AddBelowMenu|ButtonText">
         <source>&amp;Add Below</source>
-        <target state="translated">Agregar de&amp;bajo</target>
+        <target state="new">&amp;Add Below</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">Agregar elemento existe&amp;nte</target>
+        <target state="new">&amp;Add Existing Item...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemAbove|CommandName">
         <source>AddExistingItemAbove</source>
-        <target state="translated">AddExistingItemAbove</target>
+        <target state="new">AddExistingItemAbove</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|ButtonText">
         <source>&amp;Add New Item...</source>
-        <target state="translated">Agregar &amp;nuevo elemento</target>
+        <target state="new">&amp;Add New Item...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddNewItemBelow|CommandName">
         <source>AddNewItemBelow</source>
-        <target state="translated">AddNewItemBelow</target>
+        <target state="new">AddNewItemBelow</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|ButtonText">
         <source>&amp;Add Existing Item...</source>
-        <target state="translated">Agregar elemento existe&amp;nte</target>
+        <target state="new">&amp;Add Existing Item...</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidAddExistingItemBelow|CommandName">
         <source>AddExistingItemBelow</source>
-        <target state="translated">AddExistingItemBelow</target>
+        <target state="new">AddExistingItemBelow</target>
         <note />
       </trans-unit>
     </body>

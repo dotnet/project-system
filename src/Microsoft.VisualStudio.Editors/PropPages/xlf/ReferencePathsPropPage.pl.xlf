@@ -4,52 +4,52 @@
     <body>
       <trans-unit id="AddFolder.Text">
         <source>&amp;Add Folder</source>
-        <target state="translated">&amp;Dodaj folder</target>
+        <target state="new">&amp;Add Folder</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateFolder.Text">
         <source>&amp;Update</source>
-        <target state="translated">&amp;Aktualizuj</target>
+        <target state="new">&amp;Update</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePath.AccessibleName">
         <source>Order of Reference Paths</source>
-        <target state="translated">Kolejność ścieżek odwołania</target>
+        <target state="new">Order of Reference Paths</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathLabel.Text">
         <source>Reference &amp;paths:</source>
-        <target state="translated">Ścieżki &amp;odwołania:</target>
+        <target state="new">Reference &amp;paths:</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.AccessibleName">
         <source>Browse for Folder</source>
-        <target state="translated">Przeglądaj w poszukiwaniu folderu</target>
+        <target state="new">Browse for Folder</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderBrowse.Text">
         <source>Browse...</source>
-        <target state="translated">Przeglądaj...</target>
+        <target state="new">Browse...</target>
         <note />
       </trans-unit>
       <trans-unit id="MoveUp.AccessibleName">
         <source>Move up</source>
-        <target state="translated">Przesuń w górę</target>
+        <target state="new">Move up</target>
         <note />
       </trans-unit>
       <trans-unit id="MoveDown.AccessibleName">
         <source>Move down</source>
-        <target state="translated">Przesuń w dół</target>
+        <target state="new">Move down</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveFolder.AccessibleName">
         <source>Delete</source>
-        <target state="translated">Usuń</target>
+        <target state="new">Delete</target>
         <note />
       </trans-unit>
       <trans-unit id="FolderLabel.Text">
         <source>&amp;Folder:</source>
-        <target state="translated">&amp;Folder:</target>
+        <target state="new">&amp;Folder:</target>
         <note />
       </trans-unit>
     </body>

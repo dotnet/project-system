@@ -4,67 +4,67 @@
     <body>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|DisplayName">
         <source>General</source>
-        <target state="translated">Generale</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ConfigurationGeneralBrowseObject|Description">
         <source>Project Properties</source>
-        <target state="translated">Proprietà progetto</target>
+        <target state="new">Project Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">Generale</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General</source>
-        <target state="translated">Generale</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="translated">Sempre</target>
+        <target state="new">Always</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>On successful build</source>
-        <target state="translated">Dopo una compilazione riuscita</target>
+        <target state="new">On successful build</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the build updates the project output</source>
-        <target state="translated">Quando la compilazione aggiorna l'output del progetto</target>
+        <target state="new">When the build updates the project output</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|DisplayName">
         <source>File Name</source>
-        <target state="translated">Nome file</target>
+        <target state="new">File Name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|DisplayName">
         <source>Project Folder</source>
-        <target state="translated">Cartella di progetto</target>
+        <target state="new">Project Folder</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FileName|Description">
         <source>Name of the project file.</source>
-        <target state="translated">Nome del file di progetto.</target>
+        <target state="new">Name of the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullPath|Description">
         <source>Location of the project file.</source>
-        <target state="translated">Percorso del file di progetto.</target>
+        <target state="new">Location of the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|DisplayName">
         <source>Full Path</source>
-        <target state="translated">Percorso completo</target>
+        <target state="new">Full Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|FullProjectFileName|Description">
         <source>Full name of the project file.</source>
-        <target state="translated">Nome completo del file di progetto.</target>
+        <target state="new">Full name of the project file.</target>
         <note />
       </trans-unit>
     </body>

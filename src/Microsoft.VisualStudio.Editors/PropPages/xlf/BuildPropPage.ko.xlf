@@ -4,157 +4,157 @@
     <body>
       <trans-unit id="cboWarningLevel.Items5">
         <source>5</source>
-        <target state="translated">5</target>
+        <target state="new">5</target>
         <note />
       </trans-unit>
       <trans-unit id="lblConditionalCompilationSymbols.Text">
         <source>Conditional compilation s&amp;ymbols:</source>
-        <target state="translated">조건부 컴파일 기호(&amp;Y):</target>
+        <target state="new">Conditional compilation s&amp;ymbols:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblNullable.Text">
         <source>Nulla&amp;ble:</source>
-        <target state="translated">Null 허용(&amp;B):</target>
+        <target state="new">Nulla&amp;ble:</target>
         <note />
       </trans-unit>
       <trans-unit id="outputLabel.Text">
         <source>Output</source>
-        <target state="translated">출력</target>
+        <target state="new">Output</target>
         <note />
       </trans-unit>
       <trans-unit id="generalLabel.Text">
         <source>General</source>
-        <target state="translated">일반</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="treatWarningsAsErrorsLabel.Text">
         <source>Treat warnings as errors</source>
-        <target state="translated">경고를 오류로 처리</target>
+        <target state="new">Treat warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="errorsAndWarningsLabel.Text">
         <source>Errors and warnings</source>
-        <target state="translated">오류 및 경고</target>
+        <target state="new">Errors and warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRegisterForCOM.Text">
         <source>Register for &amp;COM interop</source>
-        <target state="translated">COM interop 등록(&amp;C)</target>
+        <target state="new">Register for &amp;COM interop</target>
         <note />
       </trans-unit>
       <trans-unit id="chkXMLDocumentationFile.Text">
         <source>&amp;XML documentation file:</source>
-        <target state="translated">XML 문서 파일(&amp;X):</target>
+        <target state="new">&amp;XML documentation file:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnOutputPathBrowse.Text">
         <source>B&amp;rowse...</source>
-        <target state="translated">찾아보기(&amp;R)...</target>
+        <target state="new">B&amp;rowse...</target>
         <note />
       </trans-unit>
       <trans-unit id="lblOutputPath.Text">
         <source>&amp;Output path:</source>
-        <target state="translated">출력 경로(&amp;O):</target>
+        <target state="new">&amp;Output path:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningSpecific.Text">
         <source>Specif&amp;ic warnings:</source>
-        <target state="translated">특정 경고(&amp;I):</target>
+        <target state="new">Specif&amp;ic warnings:</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningAll.Text">
         <source>A&amp;ll</source>
-        <target state="translated">모두(&amp;L)</target>
+        <target state="new">A&amp;ll</target>
         <note />
       </trans-unit>
       <trans-unit id="rbWarningNone.Text">
         <source>&amp;None</source>
-        <target state="translated">없음(&amp;N)</target>
+        <target state="new">&amp;None</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSupressWarnings.Text">
         <source>&amp;Suppress warnings:</source>
-        <target state="translated">경고 표시 안 함(&amp;S):</target>
+        <target state="new">&amp;Suppress warnings:</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items">
         <source>0</source>
-        <target state="translated">0</target>
+        <target state="new">0</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items1">
         <source>1</source>
-        <target state="translated">1</target>
+        <target state="new">1</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items2">
         <source>2</source>
-        <target state="translated">2</target>
+        <target state="new">2</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items3">
         <source>3</source>
-        <target state="translated">3</target>
+        <target state="new">3</target>
         <note />
       </trans-unit>
       <trans-unit id="cboWarningLevel.Items4">
         <source>4</source>
-        <target state="translated">4</target>
+        <target state="new">4</target>
         <note />
       </trans-unit>
       <trans-unit id="lblWarningLevel.Text">
         <source>W&amp;arning level:</source>
-        <target state="translated">경고 수준(&amp;A):</target>
+        <target state="new">W&amp;arning level:</target>
         <note />
       </trans-unit>
       <trans-unit id="chkOptimizeCode.Text">
         <source>Optimi&amp;ze code</source>
-        <target state="translated">코드 최적화(&amp;Z)</target>
+        <target state="new">Optimi&amp;ze code</target>
         <note />
       </trans-unit>
       <trans-unit id="chkAllowUnsafeCode.Text">
         <source>Allow unsa&amp;fe code</source>
-        <target state="translated">안전하지 않은 코드 허용(&amp;F)</target>
+        <target state="new">Allow unsa&amp;fe code</target>
         <note />
       </trans-unit>
       <trans-unit id="chkPrefer32Bit.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">32비트 기본 사용(&amp;P)</target>
+        <target state="new">&amp;Prefer 32-bit</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineTrace.Text">
         <source>Define &amp;TRACE constant</source>
-        <target state="translated">TRACE 상수 정의(&amp;T)</target>
+        <target state="new">Define &amp;TRACE constant</target>
         <note />
       </trans-unit>
       <trans-unit id="lblPlatformTarget.Text">
         <source>Platform tar&amp;get:</source>
-        <target state="translated">플랫폼 대상(&amp;G):</target>
+        <target state="new">Platform tar&amp;get:</target>
         <note />
       </trans-unit>
       <trans-unit id="lblSGenOption.Text">
         <source>G&amp;enerate serialization assembly:</source>
-        <target state="translated">Serialization 어셈블리 생성(&amp;E):</target>
+        <target state="new">G&amp;enerate serialization assembly:</target>
         <note />
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">고급(&amp;D)...</target>
+        <target state="new">A&amp;dvanced...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">
         <source>Define DEB&amp;UG constant</source>
-        <target state="translated">DEBUG 상수 정의(&amp;U)</target>
+        <target state="new">Define DEB&amp;UG constant</target>
         <note />
       </trans-unit>
       <trans-unit id="txtSpecificWarnings.AccessibleName">
         <source>Specific Warnings To Treat As Errors</source>
-        <target state="translated">오류로 처리할 특정 경고</target>
+        <target state="new">Specific Warnings To Treat As Errors</target>
         <note />
       </trans-unit>
       <trans-unit id="txtXMLDocumentationFile.AccessibleName">
         <source>XML Document File Path</source>
-        <target state="translated">XML 문서 파일 경로</target>
+        <target state="new">XML Document File Path</target>
         <note />
       </trans-unit>
     </body>

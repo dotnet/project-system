@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="ContentType|CSharpFile|DisplayName">
         <source>C# file</source>
-        <target state="translated">C# 檔案</target>
+        <target state="new">C# file</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|Compile|DisplayName">
         <source>C# compiler</source>
-        <target state="translated">C# 編譯器</target>
+        <target state="new">C# compiler</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|AdditionalFiles|DisplayName">
         <source>C# analyzer additional file</source>
-        <target state="translated">C# 分析器其他檔案</target>
+        <target state="new">C# analyzer additional file</target>
         <note />
       </trans-unit>
       <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
         <source>.editorconfig file</source>
-        <target state="translated">.editorconfig 檔案</target>
+        <target state="new">.editorconfig file</target>
         <note />
       </trans-unit>
     </body>

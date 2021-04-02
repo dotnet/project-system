@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="Rule|DebuggerGeneralProperties|DisplayName">
         <source>Debugger General Properties</source>
-        <target state="translated">Hata Ayıklayıcı Genel Özellikleri</target>
+        <target state="new">Debugger General Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebuggerGeneralProperties|Description">
         <source>General Debugger options</source>
-        <target state="translated">Genel Hata Ayıklayıcı seçenekleri</target>
+        <target state="new">General Debugger options</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|DisplayName">
         <source>Symbol Search Path</source>
-        <target state="translated">Simge Arama Yolu</target>
+        <target state="new">Symbol Search Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SymbolsPath|Description">
         <source>The search path used by the debugger to locate symbols.</source>
-        <target state="translated">Simgeleri bulmak için hata ayıklayıcısı tarafından kullanılan arama yolu.</target>
+        <target state="new">The search path used by the debugger to locate symbols.</target>
         <note />
       </trans-unit>
     </body>

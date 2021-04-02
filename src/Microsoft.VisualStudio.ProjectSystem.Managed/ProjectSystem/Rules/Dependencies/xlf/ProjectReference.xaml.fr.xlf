@@ -4,152 +4,152 @@
     <body>
       <trans-unit id="BoolProperty|TreatAsUsed|Description">
         <source>Indicates that this reference should be treated as if it were used.</source>
-        <target state="translated">Indique que cette référence doit être traitée comme si elle était utilisée.</target>
+        <target state="new">Indicates that this reference should be treated as if it were used.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatAsUsed|DisplayName">
         <source>Treat as used</source>
-        <target state="translated">Traiter comme étant utilisée</target>
+        <target state="new">Treat as used</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|DisplayName">
         <source>Project Reference</source>
-        <target state="translated">Référence de projet</target>
+        <target state="new">Project Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectReference|Description">
         <source>Project Reference Properties</source>
-        <target state="translated">Propriétés de référence du projet</target>
+        <target state="new">Project Reference Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|DisplayName">
         <source>Reference Output Assembly</source>
-        <target state="translated">Assembly de sortie de référence</target>
+        <target state="new">Reference Output Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ReferenceOutputAssembly|Description">
         <source>A value indicating whether the compiler should include a reference to the target project's primary output assembly.</source>
-        <target state="translated">Valeur indiquant si le compilateur doit inclure une référence à l'assembly de sortie principale du projet cible.</target>
+        <target state="new">A value indicating whether the compiler should include a reference to the target project's primary output assembly.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|DisplayName">
         <source>Copy Local Satellite Assemblies</source>
-        <target state="translated">Copier les assemblys satellites locaux</target>
+        <target state="new">Copy Local Satellite Assemblies</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocalSatelliteAssemblies|Description">
         <source>Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</source>
-        <target state="translated">Indique si les assemblys satellites de la cible de référence doivent être copiés dans le répertoire de sortie de ce projet.</target>
+        <target state="new">Indicates whether the satellite assemblies of the reference target should be copied into this project's output directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="translated">Copie locale</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">Indique si la référence sera copiée dans le répertoire de sortie.</target>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|DisplayName">
         <source>Include Assets</source>
-        <target state="translated">Inclure les composants</target>
+        <target state="new">Include Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|IncludeAssets|Description">
         <source>Assets to include from this reference.</source>
-        <target state="translated">Composants à inclure à partir de cette référence.</target>
+        <target state="new">Assets to include from this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|DisplayName">
         <source>Exclude Assets</source>
-        <target state="translated">Exclure les composants</target>
+        <target state="new">Exclude Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExcludeAssets|Description">
         <source>Assets to exclude from this reference.</source>
-        <target state="translated">Composants à exclure de cette référence.</target>
+        <target state="new">Assets to exclude from this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|DisplayName">
         <source>Private Assets</source>
-        <target state="translated">Composants privés</target>
+        <target state="new">Private Assets</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PrivateAssets|Description">
         <source>Assets that are private in this reference.</source>
-        <target state="translated">Composants privés dans cette référence.</target>
+        <target state="new">Assets that are private in this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="translated">Alias</target>
+        <target state="new">Aliases</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="translated">Liste d'alias à cette référence délimités par des virgules.</target>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|DisplayName">
         <source>Culture</source>
-        <target state="translated">Culture</target>
+        <target state="new">Culture</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Culture|Description">
         <source>The value of the culture field from the assembly metadata.</source>
-        <target state="translated">Valeur du champ Culture des métadonnées de l'assembly.</target>
+        <target state="new">The value of the culture field from the assembly metadata.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|DisplayName">
         <source>Description</source>
-        <target state="translated">Description</target>
+        <target state="new">Description</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Description|Description">
         <source>The value of the Title field from the assembly metadata.</source>
-        <target state="translated">Valeur du champ Title des métadonnées de l'assembly.</target>
+        <target state="new">The value of the Title field from the assembly metadata.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="translated">Incorporer les types d'interopérabilité</target>
+        <target state="new">Embed Interop Types</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="translated">Indique si les types définis dans cet assembly seront incorporés dans l'assembly cible.</target>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="translated">Identité</target>
+        <target state="new">Identity</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">Identité de sécurité de l'assembly référencé (consultez System.Reflection.Assembly.Evidence ou System.Security.Policy.Evidence).</target>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">Chemin d'accès</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="translated">Emplacement du fichier référencé.</target>
+        <target state="new">Location of the file being referenced.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Version</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="translated">Version de référence.</target>
+        <target state="new">Version of reference.</target>
         <note />
       </trans-unit>
     </body>

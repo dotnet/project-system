@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="PlatformLabel.Text">
         <source>Platfor&amp;m:</source>
-        <target state="translated">Platfor&amp;m:</target>
+        <target state="new">Platfor&amp;m:</target>
         <note />
       </trans-unit>
       <trans-unit id="ConfigurationLabel.Text">
         <source>&amp;Configuration:</source>
-        <target state="translated">&amp;Yapılandırma:</target>
+        <target state="new">&amp;Configuration:</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertyPagePanel.AccessibleName">
         <source>Property Page Panel</source>
-        <target state="translated">Özellik Sayfası Paneli</target>
+        <target state="new">Property Page Panel</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertyPagePanel.Text">
         <source>PropertyPagePanel</source>
-        <target state="translated">PropertyPagePanel</target>
+        <target state="new">PropertyPagePanel</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.AccessibleName">
         <source>Property Designer Panel</source>
-        <target state="translated">Özellik Tasarımcısı Paneli</target>
+        <target state="new">Property Designer Panel</target>
         <note />
       </trans-unit>
     </body>

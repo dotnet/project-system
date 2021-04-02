@@ -4,17 +4,17 @@
     <body>
       <trans-unit id="m_cancelButton.Text">
         <source>Cancel</source>
-        <target state="translated">취소</target>
+        <target state="new">Cancel</target>
         <note />
       </trans-unit>
       <trans-unit id="m_okButton.Text">
         <source>OK</source>
-        <target state="translated">확인</target>
+        <target state="new">OK</target>
         <note />
       </trans-unit>
       <trans-unit id="$this.Text">
         <source>Add Imports Validation Error</source>
-        <target state="translated">가져오기 추가 유효성 검사 오류</target>
+        <target state="new">Add Imports Validation Error</target>
         <note />
       </trans-unit>
     </body>

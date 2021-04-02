@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="General_FastUpToDateCheck">
         <source>Don't call MSBuild if a project appears to be up to date.</source>
-        <target state="translated">Nevolejte MSBuild, pokud se projekt jeví jako aktuální.</target>
+        <target state="new">Don't call MSBuild if a project appears to be up to date.</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel">
         <source>Logging Level:</source>
-        <target state="translated">Úroveň protokolování:</target>
+        <target state="new">Logging Level:</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Info">
         <source>Info</source>
-        <target state="translated">Informace</target>
+        <target state="new">Info</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Minimal">
         <source>Minimal</source>
-        <target state="translated">Minimální</target>
+        <target state="new">Minimal</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_None">
         <source>None</source>
-        <target state="translated">Žádné</target>
+        <target state="new">None</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_LogLevel_Verbose">
         <source>Verbose</source>
-        <target state="translated">Podrobná</target>
+        <target state="new">Verbose</target>
         <note />
       </trans-unit>
       <trans-unit id="General_FastUpToDateCheck_Title">
         <source>Up to Date Checks</source>
-        <target state="translated">Kontroly aktuálnosti</target>
+        <target state="new">Up to Date Checks</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingIgnoreSolutionAndProjectProfiles">
         <source>Ignore solution and project settings</source>
-        <target state="translated">Ignorovat nastavení řešení a projektů</target>
+        <target state="new">Ignore solution and project settings</target>
         <note />
       </trans-unit>
       <trans-unit id="General_NestingSettings_Title">
         <source>File Nesting Settings</source>
-        <target state="translated">Nastavení vnořování souborů</target>
+        <target state="new">File Nesting Settings</target>
         <note />
       </trans-unit>
     </body>

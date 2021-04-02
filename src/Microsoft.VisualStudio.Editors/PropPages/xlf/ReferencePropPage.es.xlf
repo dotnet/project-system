@@ -4,107 +4,107 @@
     <body>
       <trans-unit id="ReferenceListLabel.Text">
         <source>&amp;References:</source>
-        <target state="translated">&amp;Referencias:</target>
+        <target state="new">&amp;References:</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_RefName.Text">
         <source>Reference Name</source>
-        <target state="translated">Nombre de referencia</target>
+        <target state="new">Reference Name</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Type.Text">
         <source>Type</source>
-        <target state="translated">Tipo</target>
+        <target state="new">Type</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Version.Text">
         <source>Version</source>
-        <target state="translated">Versión</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_CopyLocal.Text">
         <source>Copy Local</source>
-        <target state="translated">Copia local</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="ColHdr_Path.Text">
         <source>Path</source>
-        <target state="translated">Ruta de acceso</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="UnusedReferences.Text">
         <source>U&amp;nused References...</source>
-        <target state="translated">Referencias &amp;no usadas...</target>
+        <target state="new">U&amp;nused References...</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePathsButton.Text">
         <source>Reference &amp;Paths...</source>
-        <target state="translated">Rutas de acce&amp;so de referencias...</target>
+        <target state="new">Reference &amp;Paths...</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveReference.Text">
         <source>Remo&amp;ve</source>
-        <target state="translated">&amp;Quitar</target>
+        <target state="new">Remo&amp;ve</target>
         <note />
       </trans-unit>
       <trans-unit id="referenceToolStripMenuItem.Text">
         <source>Reference...</source>
-        <target state="translated">Referencia...</target>
+        <target state="new">Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="webReferenceToolStripMenuItem.Text">
         <source>Web Reference...</source>
-        <target state="translated">Referencia web...</target>
+        <target state="new">Web Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="serviceReferenceToolStripMenuItem.Text">
         <source>Service Reference...</source>
-        <target state="translated">Referencia de servicio...</target>
+        <target state="new">Service Reference...</target>
         <note />
       </trans-unit>
       <trans-unit id="addSplitButton.Text">
         <source>&amp;Add...</source>
-        <target state="translated">&amp;Agregar...</target>
+        <target state="new">&amp;Add...</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateReferences.Text">
         <source>&amp;Update</source>
-        <target state="translated">&amp;Actualizar</target>
+        <target state="new">&amp;Update</target>
         <note />
       </trans-unit>
       <trans-unit id="AddUserImportButton.Text">
         <source>Add User Imp&amp;ort</source>
-        <target state="translated">Agregar imp&amp;ortación del usuario</target>
+        <target state="new">Add User Imp&amp;ort</target>
         <note />
       </trans-unit>
       <trans-unit id="UpdateUserImportButton.Text">
         <source>Up&amp;date User Import</source>
-        <target state="translated">Actualizar importación &amp;del usuario</target>
+        <target state="new">Up&amp;date User Import</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleDescription">
         <source>List of imported namespaces.</source>
-        <target state="translated">Lista de espacios de nombres importados.</target>
+        <target state="new">List of imported namespaces.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportList.AccessibleName">
         <source>Imported Namespaces:</source>
-        <target state="translated">Espacios de nombres importados:</target>
+        <target state="new">Imported Namespaces:</target>
         <note />
       </trans-unit>
       <trans-unit id="UserImportTextBox.AccessibleName">
         <source>Imported Namespace:</source>
-        <target state="translated">Espacio de nombres importado:</target>
+        <target state="new">Imported Namespace:</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsListLabel.Text">
         <source>&amp;Imported namespaces:</source>
-        <target state="translated">Espacios de no&amp;mbres importados:</target>
+        <target state="new">&amp;Imported namespaces:</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferencePageSplitContainer.Text">
         <source>ReferencePageSplitContainer</source>
-        <target state="translated">ReferencePageSplitContainer</target>
+        <target state="new">ReferencePageSplitContainer</target>
         <note />
       </trans-unit>
     </body>
