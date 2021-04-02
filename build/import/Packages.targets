@@ -12,12 +12,13 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
+      <!-- TODO: Merged PIAs - Microsoft.VisualStudio.XmlEditor should be on a public feed -->
+      https://pkgs.dev.azure.com/devdiv/_packaging/vs-impl/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
-    <PackageReference Include="VSLangProj" Version="7.0.3300" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="EnvDTE" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="EnvDTE80" Version="16.9.30921.310" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
@@ -59,7 +60,7 @@
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
 
     <!-- VS SDK -->
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.9.1025" />
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.0.50-dev17-g2de5c827" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.0.18-g637bb03c64"/>
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.5.13"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="9.0.21023" />
@@ -83,7 +84,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.0.0-preview-1-30928-1111" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="16.9.32" />
     <PackageReference Update="Microsoft.VisualStudio.Workspace.VSIntegration"                         Version="16.7.47-preview-0001" />
-    <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="16.0.28321-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.0.0-preview-1-30928-1112" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="16.0.28321-alpha" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
     <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-preview-1-30928-1112"/>
@@ -101,13 +102,13 @@
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="16.10.127-pre" />
     
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.10.0-2.21121.14" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.10.0-2.21121.14" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-1.21181.18" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.0.0-1.21181.18" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0" />
