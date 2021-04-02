@@ -17,14 +17,14 @@ variables:
 
 steps:
 - task: PowerShell@2
-  displayName: Create Neutral .xlf Files
+  displayName: Create Language-Neutral .xlf Files
   inputs:
     targetType: 'inline'
     script: 'Get-ChildItem -Include *.es.xlf -File -Recurse | Copy-Item -Destination { $newPath = $_.FullName.Replace(''.es.xlf'', ''.xlf''); Write-Host "Creating $newPath"; $newPath }'
     workingDirectory: 'src'
 
 - task: OneLocBuild@2
-  displayName: Generate Localization PR
+  displayName: Run Localization Process
   inputs:
     isCreatePrSelected: true
     isAutoCompletePrSelected: false
@@ -32,3 +32,10 @@ steps:
     gitHubPatVariable: '$(GitHubPat)'
     packageSourceAuth: patAuth
     patVariable: '$(OneLocBuildPat)'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Localization Artifacts
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\loc'
+    ArtifactName: 'OneLocBuild'
+    publishLocation: 'Container'
