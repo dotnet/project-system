@@ -34,8 +34,17 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "build", "build\build.shproj", "{41D1FA55-B719-4E8D-9D79-F7610004D496}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7349958E-C619-481F-BB2A-8A4CA2E349D9}"
+	ProjectSection(SolutionItems) = preProject
+		tests\.editorconfig = tests\.editorconfig
+		tests\Directory.Build.props = tests\Directory.Build.props
+		tests\Directory.Build.targets = tests\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1FF0293B-6808-4BB1-8370-1FE222986654}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "docs", "docs\docs.shproj", "{FF972A03-384A-4B2D-A254-F21CF000DAB9}"
 EndProject
@@ -44,6 +53,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client", "src\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.csproj", "{90F64FB6-87AA-4841-A272-AD363608E17B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests", "tests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests\Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.UnitTests.csproj", "{857E59F7-3FE9-4A12-A841-DFC4707C0DE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{5204CAC5-CAD7-4291-BDCD-AF5D8AC37560}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.vsconfig = .vsconfig
+		build.cmd = build.cmd
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		codecov.yml = codecov.yml
+		CONTRIBUTING.md = CONTRIBUTING.md
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Launch.cmd = Launch.cmd
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		SECURITY.md = SECURITY.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
