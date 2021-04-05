@@ -32,6 +32,8 @@ steps:
     gitHubPatVariable: '$(GitHubPat)'
     packageSourceAuth: patAuth
     patVariable: '$(OneLocBuildPat)'
+    lclSource: lclFilesfromPackage
+    lclPackageId: 'LCL-JUNO-PROD-INTERWIN'
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Localization Artifacts
