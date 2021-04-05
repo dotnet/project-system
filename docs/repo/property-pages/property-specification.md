@@ -53,7 +53,25 @@ The Project Properties UI maps each of the above property types to a default edi
 
 Properties may specify additional metadata to modify and/or configure the editor used in the UI. See [property specification](property-specification.md) for further information.
 
-The UI ships a default editor for each of the available property types. 
+The UI ships a default editor for each of the available property types.
+
+### Multi-line Strings
+
+Most `StringProperty` properties are expected to have short values that fit on one line.
+
+If a property is expected to have multiple lines of text, the editor should be changed to `MultiLineString`. For example:
+
+```xml
+<StringProperty Name="Description"
+                DisplayName="Description"
+                Description="A description of the package for UI display."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238"
+                Category="General">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="MultiLineString" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
 
 ### Custom Editors
 
