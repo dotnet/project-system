@@ -4,127 +4,127 @@
     <body>
       <trans-unit id="BoolProperty|Isolated|DisplayName">
         <source>Isolated</source>
-        <target state="translated">独立</target>
+        <target state="new">Isolated</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMajor|DisplayName">
         <source>Major Version</source>
-        <target state="translated">主版本</target>
+        <target state="new">Major Version</target>
         <note />
       </trans-unit>
       <trans-unit id="IntProperty|VersionMinor|DisplayName">
         <source>Minor Version</source>
-        <target state="translated">次要版本</target>
+        <target state="new">Minor Version</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|DisplayName">
         <source>COM Reference</source>
-        <target state="translated">COM 引用</target>
+        <target state="new">COM Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResolvedCOMReference|Description">
         <source>COM Reference Properties</source>
-        <target state="translated">COM 引用属性</target>
+        <target state="new">COM Reference Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="translated">别名</target>
+        <target state="new">Aliases</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="translated">此引用的别名的逗号分隔列表。</target>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="translated">复制本地</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">指示是否将引用复制到输出目录。</target>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="translated">嵌入互操作类型</target>
+        <target state="new">Embed Interop Types</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="translated">指示是否将此程序集中定义的类型嵌入目标程序集。</target>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Assembly|DisplayName">
         <source>.NET assembly</source>
-        <target state="translated">.NET 程序集</target>
+        <target state="new">.NET assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.ActiveX|DisplayName">
         <source>COM type library</source>
-        <target state="translated">COM 类型库</target>
+        <target state="new">COM type library</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileType.Native Assembly|DisplayName">
         <source>Native Assembly</source>
-        <target state="translated">本机程序集</target>
+        <target state="new">Native Assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|Description">
         <source>The GUID of the COM server.</source>
-        <target state="translated">COM 服务器的 GUID。</target>
+        <target state="new">The GUID of the COM server.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Guid|DisplayName">
         <source>CLSID</source>
-        <target state="translated">CLSID</target>
+        <target state="new">CLSID</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="translated">标识</target>
+        <target state="new">Identity</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">所引用程序集的安全标识(参见 System.Reflection.Assembly.Evidence 或 System.Security.Policy.Evidence)。</target>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|Description">
         <source>The LCID of the COM server.</source>
-        <target state="translated">COM 服务器的 LCID。</target>
+        <target state="new">The LCID of the COM server.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Lcid|DisplayName">
         <source>Locale</source>
-        <target state="translated">区域设置</target>
+        <target state="new">Locale</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">路径</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="translated">所引用的文件的位置。</target>
+        <target state="new">Location of the file being referenced.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">版本</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="translated">引用的版本。</target>
+        <target state="new">Version of reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WrapperTool|DisplayName">
         <source>Wrapper Tool</source>
-        <target state="translated">包装器工具</target>
+        <target state="new">Wrapper Tool</target>
         <note />
       </trans-unit>
     </body>

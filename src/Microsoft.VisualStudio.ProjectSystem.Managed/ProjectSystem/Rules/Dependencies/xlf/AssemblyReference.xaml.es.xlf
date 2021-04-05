@@ -4,92 +4,92 @@
     <body>
       <trans-unit id="BoolProperty|TreatAsUsed|Description">
         <source>Indicates that this reference should be treated as if it were used.</source>
-        <target state="translated">Indica que esta referencia debe tratarse como si se utilizara.</target>
+        <target state="new">Indicates that this reference should be treated as if it were used.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatAsUsed|DisplayName">
         <source>Treat as used</source>
-        <target state="translated">Tratar como usada</target>
+        <target state="new">Treat as used</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|DisplayName">
         <source>Assembly Reference</source>
-        <target state="translated">Referencia de ensamblado</target>
+        <target state="new">Assembly Reference</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|AssemblyReference|Description">
         <source>Assembly Reference Properties</source>
-        <target state="translated">Propiedades de la referencia de ensamblado</target>
+        <target state="new">Assembly Reference Properties</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|DisplayName">
         <source>Aliases</source>
-        <target state="translated">Alias</target>
+        <target state="new">Aliases</target>
         <note />
       </trans-unit>
       <trans-unit id="StringListProperty|Aliases|Description">
         <source>A comma-delimited list of aliases to this reference.</source>
-        <target state="translated">Lista de alias delimitada con comas para esta referencia.</target>
+        <target state="new">A comma-delimited list of aliases to this reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|DisplayName">
         <source>Copy Local</source>
-        <target state="translated">Copia local</target>
+        <target state="new">Copy Local</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CopyLocal|Description">
         <source>Indicates whether the reference will be copied to the output directory.</source>
-        <target state="translated">Indica si la referencia se copiará en el directorio de salida.</target>
+        <target state="new">Indicates whether the reference will be copied to the output directory.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|DisplayName">
         <source>Embed Interop Types</source>
-        <target state="translated">Incrustar tipos de interoperabilidad</target>
+        <target state="new">Embed Interop Types</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EmbedInteropTypes|Description">
         <source>Indicates whether types defined in this assembly will be embedded into the target assembly.</source>
-        <target state="translated">Indica si los tipos definidos en este ensamblado se incrustarán en el ensamblado de destino.</target>
+        <target state="new">Indicates whether types defined in this assembly will be embedded into the target assembly.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|DisplayName">
         <source>Specific Version</source>
-        <target state="translated">Versión específica</target>
+        <target state="new">Specific Version</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SpecificVersion|Description">
         <source>Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</source>
-        <target state="translated">Indica si este ensamblado se puede resolver independientemente de las reglas de compatibilidad con múltiples versiones (multi-targeting) para la resolución de ensamblados.</target>
+        <target state="new">Indicates whether this assembly can be resolved without regard to multi-targeting rules for assembly resolution.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|DisplayName">
         <source>Identity</source>
-        <target state="translated">Identidad</target>
+        <target state="new">Identity</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Identity|Description">
         <source>Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</source>
-        <target state="translated">Identidad de seguridad del ensamblado al que se hace referencia (vea System.Reflection.Assembly.Evidence o System.Security.Policy.Evidence).</target>
+        <target state="new">Security identity of the referenced assembly (see System.Reflection.Assembly.Evidence or System.Security.Policy.Evidence).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|DisplayName">
         <source>Path</source>
-        <target state="translated">Ruta de acceso</target>
+        <target state="new">Path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResolvedPath|Description">
         <source>Location of the file being referenced.</source>
-        <target state="translated">Ubicación del archivo al que se hace referencia.</target>
+        <target state="new">Location of the file being referenced.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|DisplayName">
         <source>Version</source>
-        <target state="translated">Versión</target>
+        <target state="new">Version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Version|Description">
         <source>Version of reference.</source>
-        <target state="translated">Versión de referencia.</target>
+        <target state="new">Version of reference.</target>
         <note />
       </trans-unit>
     </body>

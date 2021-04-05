@@ -4,32 +4,32 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">允许使用“不安全”这一关键字编译的代码。</target>
+        <target state="new">Allows code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Allow unsafe code</source>
-        <target state="translated">允许使用不安全代码</target>
+        <target state="new">Allow unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
         <source>pointers</source>
-        <target state="translated">指针</target>
+        <target state="new">pointers</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">指定如果整数算法导致出现数据类型范围之外的值以及未在已选或未选关键字的范围内，那么该算法是否会导致运行时异常。</target>
+        <target state="new">Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
         <source>Check for arithmetic overflow</source>
-        <target state="translated">检查算术溢出</target>
+        <target state="new">Check for arithmetic overflow</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Metadata|SearchTerms">
         <source>checked;unchecked</source>
-        <target state="translated">选中;取消选中</target>
+        <target state="new">checked;unchecked</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|Description">
@@ -44,37 +44,37 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">指示编译器是否应为相同的输入生成相同的程序集。</target>
+        <target state="new">Indicates whether the compiler should produce identical assemblies for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
         <source>Deterministic</source>
-        <target state="translated">是确定的</target>
+        <target state="new">Deterministic</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|Description">
         <source>Generate a file containing API documentation.</source>
-        <target state="translated">生成包含 API 文档的文件。</target>
+        <target state="new">Generate a file containing API documentation.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|GenerateDocumentationFile|DisplayName">
         <source>Documentation file</source>
-        <target state="translated">文档文件</target>
+        <target state="new">Documentation file</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">启用或禁用由编译器执行的优化，以使输出文件更小、更快、更高效。</target>
+        <target state="new">Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
-        <target state="translated">优化代码</target>
+        <target state="new">Optimize code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
-        <target state="translated">优化;最优化</target>
+        <target state="new">optimise;optimisation</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -99,27 +99,27 @@
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
-        <target state="translated">为生成过程配置错误和警告选项。</target>
+        <target state="new">Configures the error and warning options for the build process.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
         <source>Errors and warnings</source>
-        <target state="translated">错误和警告</target>
+        <target state="new">Errors and warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
-        <target state="translated">常规</target>
+        <target state="new">General</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|Description">
         <source>Configures the output options for the build process.</source>
-        <target state="translated">配置生成过程的输出选项。</target>
+        <target state="new">Configures the output options for the build process.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Output|DisplayName">
         <source>Output</source>
-        <target state="translated">输出</target>
+        <target state="new">Output</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
@@ -134,172 +134,172 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">控制何时向 Microsoft 发送内部编译器错误(ICE)。</target>
+        <target state="new">Controls when internal compiler error (ICE) reports are sent to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
         <source>Internal compiler error reporting</source>
-        <target state="translated">内部编译器错误报告</target>
+        <target state="new">Internal compiler error reporting</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|Description">
         <source>Specifies, in bytes, where to align the sections of the output file.</source>
-        <target state="translated">指定在何处对齐输出文件的各个部分(以字节为单位)。</target>
+        <target state="new">Specifies, in bytes, where to align the sections of the output file.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FileAlignment|DisplayName">
         <source>File alignment</source>
-        <target state="translated">文件对齐</target>
+        <target state="new">File alignment</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|Description">
         <source>Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</source>
-        <target state="translated">指定项目范围的 C# 可为空上下文。仅适用于使用 C# 8.0 或更高版本的项目。</target>
+        <target state="new">Specifies the project-wide C# nullable context. Only available for projects that use C# 8.0 or later.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
-        <target state="translated">可为 Null</target>
+        <target state="new">Nullable</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|Description">
         <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">指定输出文件要面向的处理器。为任何 32 位 Intel 兼容处理器选择 "x86"，为任何 64 位 Intel 兼容处理器选择 "x64"，或者选择“任何 CPU”来指定可接受任何处理器。项目的默认设置是“任何 CPU”，因为它允许应用程序在范围最广泛的硬件上运行。</target>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
-        <target state="translated">平台目标</target>
+        <target state="new">Platform target</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
         <source>Specifies the level to display for compiler warnings.</source>
-        <target state="translated">指定显示编译器警告的等级。</target>
+        <target state="new">Specifies the level to display for compiler warnings.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
-        <target state="translated">警告级别</target>
+        <target state="new">Warning level</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
         <source>Never send</source>
-        <target state="translated">从不发送</target>
+        <target state="new">Never send</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.prompt|DisplayName">
         <source>Prompt before sending</source>
-        <target state="translated">发送前提示</target>
+        <target state="new">Prompt before sending</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.queue|DisplayName">
         <source>Queue</source>
-        <target state="translated">队列</target>
+        <target state="new">Queue</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.send|DisplayName">
         <source>Send</source>
-        <target state="translated">发送</target>
+        <target state="new">Send</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.1024|DisplayName">
         <source>1024</source>
-        <target state="translated">1024</target>
+        <target state="new">1024</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.2048|DisplayName">
         <source>2048</source>
-        <target state="translated">2048</target>
+        <target state="new">2048</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.4096|DisplayName">
         <source>4096</source>
-        <target state="translated">4096</target>
+        <target state="new">4096</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.512|DisplayName">
         <source>512</source>
-        <target state="translated">512</target>
+        <target state="new">512</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|FileAlignment.8192|DisplayName">
         <source>8192</source>
-        <target state="translated">8192</target>
+        <target state="new">8192</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.annotations|DisplayName">
         <source>Annotations</source>
-        <target state="translated">注释</target>
+        <target state="new">Annotations</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.disable|DisplayName">
         <source>Disable</source>
-        <target state="translated">禁用</target>
+        <target state="new">Disable</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.enable|DisplayName">
         <source>Enable</source>
-        <target state="translated">启用</target>
+        <target state="new">Enable</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|Nullable.warnings|DisplayName">
         <source>Warnings</source>
-        <target state="translated">警告</target>
+        <target state="new">Warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
         <source>Any CPU</source>
-        <target state="translated">任何 CPU</target>
+        <target state="new">Any CPU</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
         <source>x64</source>
-        <target state="translated">x64</target>
+        <target state="new">x64</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
         <source>x86</source>
-        <target state="translated">x86</target>
+        <target state="new">x86</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
-        <target state="translated">0</target>
+        <target state="new">0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.1|DisplayName">
         <source>1</source>
-        <target state="translated">1</target>
+        <target state="new">1</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.2|DisplayName">
         <source>2</source>
-        <target state="translated">2</target>
+        <target state="new">2</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.3|DisplayName">
         <source>3</source>
-        <target state="translated">3</target>
+        <target state="new">3</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.4|DisplayName">
         <source>4</source>
-        <target state="translated">4</target>
+        <target state="new">4</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.5|DisplayName">
         <source>5</source>
-        <target state="translated">5</target>
+        <target state="new">5</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|Description">
         <source>Specifies properties that control how the project builds.</source>
-        <target state="translated">指定控制如何生成项目的属性。</target>
+        <target state="new">Specifies properties that control how the project builds.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
-        <target state="translated">生成</target>
+        <target state="new">Build</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
@@ -309,72 +309,72 @@
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
         <source>Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">指定生成期间项目的中间输出的基位置。为了区分项目配置，子文件夹将追加到此路径。</target>
+        <target state="new">Specifies the base location for the project's intermediate output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|DisplayName">
         <source>Base intermediate output path</source>
-        <target state="translated">中间输出的基路径</target>
+        <target state="new">Base intermediate output path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|Description">
         <source>Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</source>
-        <target state="translated">指定生成期间项目输出的基位置。为了区分项目配置，子文件夹将追加到此路径。</target>
+        <target state="new">Specifies the base location for the project's output during build. Subfolders will be appended to this path to differentiate project configuration.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseOutputPath|DisplayName">
         <source>Base output path</source>
-        <target state="translated">输出的基路径</target>
+        <target state="new">Base output path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|Description">
         <source>Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</source>
-        <target state="translated">指定要在其上执行条件编译的符号。使用分号(";")来分隔符号。</target>
+        <target state="new">Specifies symbols on which to perform conditional compilation. Separate symbols with a semi-colon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DefineConstants|DisplayName">
         <source>Conditional compilation symbols</source>
-        <target state="translated">条件编译符号</target>
+        <target state="new">Conditional compilation symbols</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|Description">
         <source>Optional path for the API documentation file. Leave blank to use the default location.</source>
-        <target state="translated">API 文档文件的可选路径。若要使用默认位置，请保留为空。</target>
+        <target state="new">Optional path for the API documentation file. Leave blank to use the default location.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DocumentationFile|DisplayName">
         <source>XML documentation file path</source>
-        <target state="translated">XML 文档文件路径</target>
+        <target state="new">XML documentation file path</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>Why can't I select the C# language version?</source>
-        <target state="translated">为何无法选择 C# 语言版本?</target>
+        <target state="new">Why can't I select the C# language version?</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
         <source>Language version</source>
-        <target state="translated">语言版本</target>
+        <target state="new">Language version</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">阻止编译器生成一个或多个警告的能力。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
+        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress specific warnings</source>
-        <target state="needs-review-translation">取消显示警告</target>
+        <target state="new">Suppress specific warnings</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">将指定的警告视为错误。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
+        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
         <source>Treat specific warnings as errors</source>
-        <target state="translated">将特定警告视为错误</target>
+        <target state="new">Treat specific warnings as errors</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">

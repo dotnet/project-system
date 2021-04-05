@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">Включение совместной отладки управляемого и машинного кода (смешанный режим отладки).</target>
+        <target state="new">Enable debugging for managed and native code together, also known as mixed-mode debugging.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">Включить отладку машинного кода</target>
+        <target state="new">Enable native code debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">Указывает, что отладчик должен подключаться к процессу на удаленном компьютере.</target>
+        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">Использование удаленного компьютера</target>
+        <target state="new">Use remote machine</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">Включение отладки скриптов SQL и хранимых процедур.</target>
+        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">Включить отладку SQL Server</target>
+        <target state="new">Enable SQL Server debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">Схема проверки подлинности, используемая для подключения к удаленному компьютеру. Применяется, только если включено "Использование удаленного компьютера".</target>
+        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">Режим проверки подлинности</target>
+        <target state="new">Authentication mode</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">Свойства, связанные с запуском и отладкой указанного исполняемого файла.</target>
+        <target state="new">Properties associated with launching and debugging a specified executable file.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">Исполняемый файл</target>
+        <target state="new">Executable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Аргументы командной строки для передачи исполняемому файлу.</target>
+        <target state="new">Command line arguments to pass to the executable.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">Аргументы командной строки</target>
+        <target state="new">Command line arguments</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Переменные среды, которые необходимо задать перед запуском процесса. Переменные разделяются запятыми (,), а имена переменных и значения разделяются знаком равенства (=). Пример: var1=value1,var2=value2,var3=value3. Запятые и знак равенства внутри переменной можно экранировать с помощью косой черты (/).</target>
+        <target state="new">The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">Переменные среды</target>
+        <target state="new">Environment variables</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">Путь к исполняемому файлу для запуска.</target>
+        <target state="new">Path to the executable to run.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">Исполняемый файл</target>
+        <target state="new">Executable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">Имя и номер порта удаленного компьютера в формате "имя:порт". Применяется, только если включено "Использование удаленного компьютера".</target>
+        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">Имя удаленного компьютера</target>
+        <target state="new">Remote machine name</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">Путь к рабочему каталогу, в котором будет запущен процесс.</target>
+        <target state="new">Path to the working directory where the process will be started.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">Рабочий каталог</target>
+        <target state="new">Working directory</target>
         <note />
       </trans-unit>
     </body>

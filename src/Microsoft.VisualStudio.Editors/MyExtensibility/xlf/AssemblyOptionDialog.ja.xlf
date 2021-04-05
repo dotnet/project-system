@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="buttonYes.Text">
         <source>&amp;Yes</source>
-        <target state="translated">はい(&amp;Y)</target>
+        <target state="new">&amp;Yes</target>
         <note />
       </trans-unit>
       <trans-unit id="buttonNo.Text">
         <source>&amp;No</source>
-        <target state="translated">いいえ(&amp;N)</target>
+        <target state="new">&amp;No</target>
         <note />
       </trans-unit>
     </body>
