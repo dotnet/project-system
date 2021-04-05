@@ -87,16 +87,6 @@
         <target state="translated">Assembly signieren</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
-        <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
-        <note />
-      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">Hiermit werden die Fehler- und Warnungsoptionen für den Buildprozess konfiguriert.</target>
@@ -170,6 +160,16 @@
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
         <target state="translated">Zielplattform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
+        <source>Used to specify which warnings are treated as errors.</source>
+        <target state="translated">Hiermit wird angegeben, welche Warnungen als Fehler behandelt werden.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Warnungen als Fehler behandeln</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -260,6 +260,16 @@
       <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
         <source>x86</source>
         <target state="translated">x86</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|TreatWarningsAsErrors.false|DisplayName">
+        <source>None</source>
+        <target state="translated">Keine</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|TreatWarningsAsErrors.true|DisplayName">
+        <source>All</source>
+        <target state="translated">Alle</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -358,18 +368,18 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Hiermit wird die Fähigkeit des Compilers blockiert, mindestens eine Warnung zu generieren. Trennen Sie mehrere Warnungsnummern durch ein Komma (",") oder ein Semikolon (";").</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress specific warnings</source>
-        <target state="new">Suppress specific warnings</target>
+        <source>Suppress warnings</source>
+        <target state="translated">Warnungen unterdrücken</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
-        <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Hiermit werden die angegebenen Warnungen als Fehler behandelt. Trennen Sie mehrere Warnungsnummern durch ein Komma (",") oder ein Semikolon (";").</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
@@ -378,13 +388,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
-        <source>Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Hiermit werden die angegebenen Warnungen von der Behandlung als Fehler ausgenommen. Trennen Sie mehrere Warnungsnummern durch ein Komma (",") oder ein Semikolon (";").</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
-        <source>Exclude specific warnings as errors</source>
-        <target state="new">Exclude specific warnings as errors</target>
+        <source>Exempt specific warnings from being treated as errors</source>
+        <target state="translated">Bestimmte Warnungen von der Behandlung als Fehler ausnehmen</target>
         <note />
       </trans-unit>
     </body>
