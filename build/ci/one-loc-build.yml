@@ -1,5 +1,6 @@
 # Name: DotNet-Project-System OneLocBuild
-# URL: https://dev.azure.com/devdiv/DevDiv/_build?definitionId=9675
+# Pipeline: https://dev.azure.com/dnceng/public/_build?definitionId=981
+# LCL Source: https://dev.azure.com/ceapex/CEINTL/_git/LCL-JUNO-PROD-PRJSYS
 #
 # Creates the OneLocBuild PR for localization of the dotnet/project-system
 #
@@ -33,7 +34,7 @@ steps:
     packageSourceAuth: patAuth
     patVariable: '$(OneLocBuildPat)'
     lclSource: lclFilesfromPackage
-    lclPackageId: 'LCL-JUNO-PROD-PRJSYSTEM'
+    lclPackageId: 'LCL-JUNO-PROD-PRJSYS'
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Localization Artifacts
