@@ -33,7 +33,7 @@ steps:
     packageSourceAuth: patAuth
     patVariable: '$(OneLocBuildPat)'
     lclSource: lclFilesfromPackage
-    lclPackageId: 'LCL-JUNO-PROD-INTERWIN'
+    lclPackageId: 'LCL-JUNO-PROD-PRJSYSTEM'
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Localization Artifacts
