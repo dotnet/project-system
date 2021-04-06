@@ -198,7 +198,7 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ExecutableDebugPropertyPage.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ExecDebugPropertyPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 

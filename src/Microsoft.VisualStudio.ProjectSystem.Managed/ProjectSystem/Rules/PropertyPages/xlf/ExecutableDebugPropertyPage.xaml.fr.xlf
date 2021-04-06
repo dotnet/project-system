@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="fr" original="../ExecutableDebugPropertyPage.xaml">
+  <file datatype="xml" source-language="en" target-language="fr" original="../ExecDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
@@ -42,12 +42,12 @@
         <target state="translated">Mode d'authentification</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
+      <trans-unit id="Rule|ExecDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
         <target state="translated">Propriétés associées au lancement et au débogage d'un fichier exécutable spécifique.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ExecDebugPropertyPage|DisplayName">
         <source>Executable</source>
         <target state="translated">Exécutable</target>
         <note />
