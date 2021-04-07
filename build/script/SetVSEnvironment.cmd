@@ -4,7 +4,7 @@ REM Configures the build environment to be able to build the tree
 REM
 REM Downloads VSWhere, uses it to find a compatible Visual Studio and call a developer prompt to set the environment.
 
-FOR /F "USEBACKQ delims=" %%i IN (`powershell -NonInteractive -NoLogo -NoProfile -Command "([xml](Get-Content %~dp0\..\import\Versions.props)).Project.PropertyGroup.ProjectSystemVersion"`) DO SET RequiredVSVersion=%%i
+FOR /F "USEBACKQ delims=" %%i IN (`powershell -NonInteractive -NoLogo -NoProfile -Command "([xml](Get-Content %~dp0\..\import\Versions.props)).Project.PropertyGroup.MinimumRequiredVSVersion"`) DO SET RequiredVSVersion=%%i
 
 REM Are we already in Developer Command Prompt?
 if defined VSINSTALLDIR (
