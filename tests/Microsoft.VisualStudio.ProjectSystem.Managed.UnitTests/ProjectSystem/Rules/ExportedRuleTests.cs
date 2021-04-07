@@ -100,7 +100,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             Assert.NotNull(attribute);
 
-            var assembly = Assembly.Load(attribute.XamlResourceAssemblyName);
+            // HERE BE DRAGONS
+            // Note the following are *not* equivalent:
+            //   Assembly.Load(assemblyNameString)
+            //   Assembly.Load(new AssemblyName(assemblyNameString))
+            // The first will accept certain malformed assembly names that the second does not,
+            // and will successfully load the assembly where the second throws an exception.
+            // CPS uses the second form when loading assemblies to extract embedded XAML, and
+            // so we must do the same in this test.
+            var assemblyName = new AssemblyName(attribute.XamlResourceAssemblyName);
+            var assembly = Assembly.Load(assemblyName);
 
             using Stream stream = assembly.GetManifestResourceStream(attribute.XamlResourceStreamName);
 
