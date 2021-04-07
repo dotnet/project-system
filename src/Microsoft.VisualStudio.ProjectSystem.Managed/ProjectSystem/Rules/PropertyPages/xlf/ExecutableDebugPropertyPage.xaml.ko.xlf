@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="cs" original="../ExecDebugPropertyPage.xaml">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ExecutableDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">Povolí společné ladění spravovaného a nativního kódu, což se označuje také jako ladění v kombinovaném režimu.</target>
+        <target state="translated">관리 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)을 사용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">Povolit ladění nativního kódu</target>
+        <target state="translated">네이티브 코드 디버깅 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">Určuje, že se ladicí program má připojit k procesu na vzdáleném počítači.</target>
+        <target state="translated">디버거가 원격 머신의 프로세스에 연결되어야 함을 나타냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">Použít vzdálený počítač</target>
+        <target state="translated">원격 머신 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">Povolí ladění skriptů SQL a uložených procedur.</target>
+        <target state="translated">SQL 스크립트와 저장 프로시저 디버깅을 사용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">Povolit ladění SQL Serveru</target>
+        <target state="translated">SQL Server 디버깅 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">Schéma ověřování, které se má použít při připojování na vzdáleném počítači. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <target state="needs-review-translation">원격 머신에 연결할 때 사용할 인증 체계입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">Režim ověřování</target>
+        <target state="translated">인증 모드</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|Description">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">Vlastnosti přidružené ke spouštění a ladění zadaného spustitelného souboru</target>
+        <target state="translated">지정된 실행 파일의 시작 및 디버깅과 관련된 속성입니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">Spustitelný soubor</target>
+        <target state="translated">실행 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Argumenty příkazového řádku, které se mají předat spustitelnému souboru</target>
+        <target state="translated">실행 파일에 전달할 명령줄 인수입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">Argumenty příkazového řádku</target>
+        <target state="translated">명령줄 인수</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Proměnné prostředí, které se mají nastavit před spuštěním procesu. Proměnné se oddělují čárkami (,) a názvy a hodnoty proměnných se oddělují znakem rovnítka (=). Příklad: prom1=hodnota1,prom2=hodnota2,prom3=hodnota3. Čárky a znaky rovnítka, které se vyskytují v proměnné, je možné uvést lomítkem (/).</target>
+        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다. 변수는 쉼표(,)로 구분하고 변수 이름과 값은 등호(=)로 구분합니다(예: var1=value1,var2=value2,var3=value3). 변수 내에 나타나는 쉼표와 등호는 슬래시(/)로 이스케이프할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">Proměnné prostředí</target>
+        <target state="translated">환경 변수</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">Cesta ke spouštěnému souboru</target>
+        <target state="translated">실행할 실행 파일 경로입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">Spustitelný soubor</target>
+        <target state="translated">실행 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">Název a číslo portu vzdáleného počítače ve formátu název:port. Dá se použít jen v případě, že je povolená možnost Použít vzdálený počítač.</target>
+        <target state="needs-review-translation">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">Název vzdáleného počítače</target>
+        <target state="translated">원격 머신 이름</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">Cesta k pracovnímu adresáři, ve kterém se spustí proces</target>
+        <target state="translated">프로세스가 시작될 작업 디렉터리 경로입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">Pracovní adresář</target>
+        <target state="translated">작업 디렉터리</target>
         <note />
       </trans-unit>
     </body>

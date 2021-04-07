@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
-    internal partial class ExecDebugPropertyPage
+    internal partial class ExecutableDebugPropertyPage
     {
     }
 }

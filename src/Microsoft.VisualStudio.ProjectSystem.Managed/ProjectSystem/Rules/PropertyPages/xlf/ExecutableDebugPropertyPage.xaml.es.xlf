@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pt-BR" original="../ExecDebugPropertyPage.xaml">
+  <file datatype="xml" source-language="en" target-language="es" original="../ExecutableDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">Permitir a depuração de código gerenciado e nativo em conjunto, também conhecida como depuração de modo misto.</target>
+        <target state="translated">Habilita la depuración de código administrado y nativo a la vez, lo que también se conoce como depuración en modo mixto.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">Habilitar depuração de código nativo</target>
+        <target state="translated">Habilitar depuración de código nativo</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">Indica que o depurador deve ser anexado a um processo em um computador remoto.</target>
+        <target state="translated">Indica que el depurador debe asociarse a un proceso en una máquina remota.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">Usar computador remoto</target>
+        <target state="translated">Usar máquina remota</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">Habilitar a depuração de scripts SQL e de procedimentos armazenados.</target>
+        <target state="translated">Habilita la depuración de scripts SQL y procedimientos almacenados.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">Habilitar a depuração do SQL Server</target>
+        <target state="translated">Habilitar depuración de SQL Server</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">O esquema de autenticação a ser usado durante a conexão com o computador remoto. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
+        <target state="needs-review-translation">Esquema de autenticación que se va a usar al conectarse a la máquina remota. Solo es aplicable cuando la opción "Usar máquina remota" está habilitada.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">Modo de autenticação</target>
+        <target state="translated">Modo de autenticación</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|Description">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">Propriedades associadas à inicialização e à depuração de um arquivo executável especificado.</target>
+        <target state="translated">Propiedades asociadas al inicio y la depuración de un archivo ejecutable especificado.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">Executável</target>
+        <target state="translated">Ejecutable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Argumentos da linha de comando a serem passados para o executável.</target>
+        <target state="translated">Argumentos de la línea de comandos que se van a pasar al ejecutable.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">Argumentos da linha de comando</target>
+        <target state="translated">Argumentos de la línea de comandos</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">As variáveis de ambiente a serem definidas antes da execução do processo. As variáveis são separadas por uma vírgula (,) e os valores e os nomes de variáveis são separados por um sinal de igual (=). Exemplo: var1=value1,var2=value2,var3=value3. As vírgulas e os sinais de igual que aparecem dentro de uma variável podem ter uma barra (/) como escape.</target>
+        <target state="translated">Variables de entorno que se van a establecer antes de ejecutar el proceso. Las variables se separan con una coma (,) y los nombres y los valores de las variables se separan con un signo igual (=). Ejemplo: var1=valor1,var2=valor2,var3=valor3. A las comas y los signos igual que aparecen en una variable se les puede agregar una barra diagonal (/) como carácter de escape.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">Variáveis de ambiente</target>
+        <target state="translated">Variables de entorno</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">Caminho para o executável ser executado.</target>
+        <target state="translated">Ruta de acceso al archivo ejecutable que debe ejecutarse.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">Executável</target>
+        <target state="translated">Ejecutable</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">O nome e o número da porta do computador remoto no formato 'name:port'. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
+        <target state="needs-review-translation">El nombre y el número de puerto de la máquina remota con el formato "nombre:puerto". Solo es aplicable cuando la opción "Usar máquina remota" está habilitada.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">Nome do computador remoto</target>
+        <target state="translated">Nombre de la máquina remota</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">Caminho para o diretório de trabalho em que o processo será iniciado.</target>
+        <target state="translated">Ruta de acceso al directorio de trabajo en el que se iniciará el proceso.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">Diretório de trabalho</target>
+        <target state="translated">Directorio de trabajo</target>
         <note />
       </trans-unit>
     </body>

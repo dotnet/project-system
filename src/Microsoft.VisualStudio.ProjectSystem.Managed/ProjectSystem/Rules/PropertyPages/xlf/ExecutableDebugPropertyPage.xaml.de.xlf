@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="pl" original="../ExecDebugPropertyPage.xaml">
+  <file datatype="xml" source-language="en" target-language="de" original="../ExecutableDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">Włącz wspólne debugowanie kodu zarządzanego i natywnego (debugowanie mieszane).</target>
+        <target state="translated">Hiermit wird das gemeinsame Debuggen für verwalteten und nativen Code aktiviert. Dies wird auch als Debuggen im gemischten Modus bezeichnet.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">Włącz debugowanie kodu natywnego</target>
+        <target state="translated">Debuggen von nativem Code aktivieren</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">Wskazuje, że debuger powinien dołączyć do procesu na maszynie zdalnej.</target>
+        <target state="translated">Gibt an, dass der Debugger an einen Prozess auf einem Remotecomputer angefügt werden soll.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">Użyj maszyny zdalnej</target>
+        <target state="translated">Remotecomputer verwenden</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">Włącz debugowanie skryptów SQL i procedur składowanych.</target>
+        <target state="translated">Hiermit wird das Debuggen von SQL-Skripts und gespeicherten Prozeduren aktiviert.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">Włącz debugowanie programu SQL Server</target>
+        <target state="translated">SQL Server-Debuggen aktivieren</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">Schemat uwierzytelniania, który ma być używany podczas nawiązywania połączenia z maszyną zdalną. Ma zastosowanie tylko wtedy, gdy jest włączona funkcja „Użyj maszyny zdalnej”.</target>
+        <target state="needs-review-translation">Das Authentifizierungsschema, das beim Herstellen einer Verbindung mit dem Remotecomputer verwendet werden soll. Gilt nur, wenn "Remotecomputer verwenden" aktiviert ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">Tryb uwierzytelniania</target>
+        <target state="translated">Authentifizierungsmodus</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|Description">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">Właściwości skojarzone z uruchamianiem i debugowaniem określonego pliku wykonywalnego.</target>
+        <target state="translated">Eigenschaften, die mit dem Starten und Debuggen einer angegebenen ausführbaren Datei verknüpft sind.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">Plik wykonywalny</target>
+        <target state="translated">Ausführbare Datei</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">Argumenty wiersza polecenia do przekazania do pliku wykonywalnego.</target>
+        <target state="translated">Befehlszeilenargumente, die an die ausführbare Datei übergeben werden sollen.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">Argumenty wiersza polecenia</target>
+        <target state="translated">Befehlszeilenargumente</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">Zmienne środowiskowe do ustawiania przed uruchomieniem procesu. Zmienne są rozdzielane przecinkami (,), a nazwy i wartości zmiennych — znakami równości (=). Przykład: var1=wartość1,var2=wartość2, var3=wartość3. Jeśli przecinki i znaki równości pojawią się w obrębie zmiennej, ich znaczenie może zostać zmienione przez zastosowanie ukośnika (/).</target>
+        <target state="translated">Die Umgebungsvariablen, die vor dem Ausführen des Prozesses festgelegt werden sollen. Variablen werden durch ein Komma (,) getrennt, und Variablennamen und Werte werden durch ein Gleichheitszeichen (=) getrennt. Beispiel: var1=wert1,var2=wert2,var3=wert3. Kommas und Gleichheitszeichen innerhalb einer Variablen können mit einem Schrägstrich (/) als Escapezeichen versehen werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">Zmienne środowiskowe</target>
+        <target state="translated">Umgebungsvariablen</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">Ścieżka pliku wykonywalnego do uruchomienia.</target>
+        <target state="translated">Pfad der zu startenden ausführbaren Datei.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">Plik wykonywalny</target>
+        <target state="translated">Ausführbare Datei</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">Nazwa i numer portu maszyny zdalnej w formacie „Nazwa:Port”. Ma zastosowanie tylko wtedy, gdy jest włączona funkcja „Użyj maszyny zdalnej”.</target>
+        <target state="needs-review-translation">Der Name und die Portnummer des Remotecomputers im Format "Name:Port". Gilt nur, wenn "Remotecomputer verwenden" aktiviert ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">Nazwa mazyny zdalnej</target>
+        <target state="translated">Name des Remotecomputers</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">Ścieżka do katalogu roboczego, w którym zostanie uruchomiony proces.</target>
+        <target state="translated">Pfad zum Arbeitsverzeichnis, in dem der Prozess gestartet wird.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">Katalog roboczy</target>
+        <target state="translated">Arbeitsverzeichnis</target>
         <note />
       </trans-unit>
     </body>

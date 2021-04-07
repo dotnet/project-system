@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="ja" original="../ExecDebugPropertyPage.xaml">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../ExecutableDebugPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="translated">マネージドおよびネイティブ コードのデバッグを同時に有効にします。これは、混合モード デバッグとも呼ばれます。</target>
+        <target state="translated">Permitir a depuração de código gerenciado e nativo em conjunto, também conhecida como depuração de modo misto.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="translated">ネイティブ コードのデバッグを有効にする</target>
+        <target state="translated">Habilitar depuração de código nativo</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="translated">リモート マシン上のプロセスにデバッガーをアタッチする必要があることを示します。</target>
+        <target state="translated">Indica que o depurador deve ser anexado a um processo em um computador remoto.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="translated">リモート マシンを使用する</target>
+        <target state="translated">Usar computador remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="translated">SQL スクリプトおよびストアド プロシージャのデバッグを有効にします。</target>
+        <target state="translated">Habilitar a depuração de scripts SQL e de procedimentos armazenados.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="translated">SQL Server デバッグを有効にする</target>
+        <target state="translated">Habilitar a depuração do SQL Server</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">リモート マシンへの接続時に使用する認証方式。[リモート マシンを使用する] が有効になっている場合にのみ適用されます。</target>
+        <target state="needs-review-translation">O esquema de autenticação a ser usado durante a conexão com o computador remoto. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="translated">認証モード</target>
+        <target state="translated">Modo de autenticação</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|Description">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging a specified executable file.</source>
-        <target state="translated">指定した実行可能ファイルの起動とデバッグに関連付けるプロパティ。</target>
+        <target state="translated">Propriedades associadas à inicialização e à depuração de um arquivo executável especificado.</target>
         <note />
       </trans-unit>
-      <trans-unit id="Rule|ExecDebugPropertyPage|DisplayName">
+      <trans-unit id="Rule|ExecutableDebugPropertyPage|DisplayName">
         <source>Executable</source>
-        <target state="translated">実行可能ファイル</target>
+        <target state="translated">Executável</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="translated">実行可能ファイルに渡すコマンド ライン引数。</target>
+        <target state="translated">Argumentos da linha de comando a serem passados para o executável.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="translated">コマンド ライン引数</target>
+        <target state="translated">Argumentos da linha de comando</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|Description">
         <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
-        <target state="translated">プロセスを実行する前に設定する環境変数。変数はコンマ (,) で区切られ、変数名と値は等号 (=) で区切られます。例: var1=value1,var2=value2,var3=value3。変数内に表示されるコンマと等号は、スラッシュ (/) を使用してエスケープできます。</target>
+        <target state="translated">As variáveis de ambiente a serem definidas antes da execução do processo. As variáveis são separadas por uma vírgula (,) e os valores e os nomes de variáveis são separados por um sinal de igual (=). Exemplo: var1=value1,var2=value2,var3=value3. As vírgulas e os sinais de igual que aparecem dentro de uma variável podem ter uma barra (/) como escape.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
         <source>Environment variables</source>
-        <target state="translated">環境変数</target>
+        <target state="translated">Variáveis de ambiente</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">
         <source>Path to the executable to run.</source>
-        <target state="translated">実行する実行可能ファイルのパス。</target>
+        <target state="translated">Caminho para o executável ser executado.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|DisplayName">
         <source>Executable</source>
-        <target state="translated">実行可能ファイル</target>
+        <target state="translated">Executável</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">'name:port' 形式のリモート マシンの名前とポート番号。[リモート マシンを使用する] が有効になっている場合にのみ適用されます。</target>
+        <target state="needs-review-translation">O nome e o número da porta do computador remoto no formato 'name:port'. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="translated">リモート マシン名</target>
+        <target state="translated">Nome do computador remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="translated">プロセスが開始される作業ディレクトリへのパス。</target>
+        <target state="translated">Caminho para o diretório de trabalho em que o processo será iniciado.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="translated">作業ディレクトリ</target>
+        <target state="translated">Diretório de trabalho</target>
         <note />
       </trans-unit>
     </body>
