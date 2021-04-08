@@ -108,7 +108,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         {
             Assert.NotNull(attribute);
 
-            _output.WriteLine($"{nameof(RuleExporterTests)}.{nameof(ExportedRulesMustExist)}: loading assembly {attribute.XamlResourceAssemblyName}");
+            var message = $"{nameof(RuleExporterTests)}.{nameof(ExportedRulesMustExist)}: loading assembly {attribute.XamlResourceAssemblyName}";
+            Console.Write(message);
+            _output.WriteLine(message);
 
             // HERE BE DRAGONS
             // Note the following are *not* equivalent:
