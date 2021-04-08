@@ -93,6 +93,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return references;
         }
 
+        public Task<bool> TryUpdateReferenceAsync(string projectPath,
+            ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets an operation that can update the project’s references by removing or marking references as
         /// TreatAsUsed in the project file.
