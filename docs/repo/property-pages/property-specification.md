@@ -53,7 +53,25 @@ The Project Properties UI maps each of the above property types to a default edi
 
 Properties may specify additional metadata to modify and/or configure the editor used in the UI. See [property specification](property-specification.md) for further information.
 
-The UI ships a default editor for each of the available property types. 
+The UI ships a default editor for each of the available property types.
+
+### Multi-line Strings
+
+Most `StringProperty` properties are expected to have short values that fit on one line.
+
+If a property is expected to have multiple lines of text, the editor should be changed to `MultiLineString`. For example:
+
+```xml
+<StringProperty Name="Description"
+                DisplayName="Description"
+                Description="A description of the package for UI display."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238"
+                Category="General">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="MultiLineString" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
 
 ### Custom Editors
 
@@ -262,3 +280,4 @@ XAML files in the dotnet/project-system repo are configured for automatic locali
 - [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
 - [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
 - [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
+- [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.

@@ -73,7 +73,11 @@
                   DisplayName="Description"
                   Description="A description of the package for UI display."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
 
   <StringProperty Name="Copyright"
                   DisplayName="Copyright"
