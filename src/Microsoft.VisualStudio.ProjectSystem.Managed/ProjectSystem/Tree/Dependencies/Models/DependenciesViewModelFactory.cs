@@ -27,13 +27,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             return new TargetDependencyViewModel(targetFramework, maximumDiagnosticLevel);
         }
 
-        public IDependencyViewModel? CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel)
+        public (IDependencyViewModel? GroupNodeViewModel, ProjectTreeFlags? GroupNodeFlag) CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel)
         {
             IProjectDependenciesSubTreeProvider? provider = GetProvider();
 
             IDependencyModel? dependencyModel = provider?.CreateRootDependencyNode();
 
-            return dependencyModel?.ToViewModel(maximumDiagnosticLevel);
+            IDependencyViewModel? groupNodeViewModel = dependencyModel?.ToViewModel(maximumDiagnosticLevel);
+
+            ProjectTreeFlags? groupNodeFlag = provider is IProjectDependenciesSubTreeProvider2 provider2
+                ? provider2.GroupNodeFlag
+                : null;
+
+            return (groupNodeViewModel, groupNodeFlag);
 
             IProjectDependenciesSubTreeProvider? GetProvider()
             {

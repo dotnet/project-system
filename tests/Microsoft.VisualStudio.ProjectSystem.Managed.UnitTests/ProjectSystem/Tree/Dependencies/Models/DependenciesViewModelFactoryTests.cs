@@ -62,7 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var subTreeProvider1 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider1",
-                createRootDependencyNode: dependencyModel);
+                createRootDependencyNode: dependencyModel,
+                groupNodeFlags: DependencyTreeFlags.ProjectDependencyGroup);
             var subTreeProvider2 = IProjectDependenciesSubTreeProviderFactory.Implement(
                 providerType: "MyProvider2");
 
@@ -70,9 +71,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var result = factory.CreateGroupNodeViewModel("MyProvider1", maximumDiagnosticLevel: DiagnosticLevel.None);
 
-            Assert.NotNull(result);
-            Assert.Equal("ZzzDependencyRoot", result!.Caption);
-            Assert.Equal(KnownMonikers.AboutBox, result.Icon);
+            Assert.NotNull(result.GroupNodeViewModel);
+            Assert.Equal(DependencyTreeFlags.ProjectDependencyGroup, result.GroupNodeFlag);
+            Assert.Equal("ZzzDependencyRoot", result.GroupNodeViewModel!.Caption);
+            Assert.Equal(KnownMonikers.AboutBox, result.GroupNodeViewModel!.Icon);
         }
 
         [Fact]
@@ -86,7 +88,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             var result = factory.CreateGroupNodeViewModel("UnknownProviderType", maximumDiagnosticLevel: DiagnosticLevel.None);
 
-            Assert.Null(result);
+            Assert.Null(result.GroupNodeViewModel);
+            Assert.Null(result.GroupNodeFlag);
         }
 
         [Fact]
