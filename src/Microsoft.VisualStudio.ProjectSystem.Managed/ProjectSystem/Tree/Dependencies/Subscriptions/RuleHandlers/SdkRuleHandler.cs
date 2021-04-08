@@ -9,8 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(IDependenciesRuleHandler))]
+    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class SdkRuleHandler : DependenciesRuleHandlerBase
