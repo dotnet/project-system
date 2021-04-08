@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">O esquema de autenticação a ser usado durante a conexão com o computador remoto. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
+        <target state="translated">O esquema de autenticação a ser usado durante a conexão com o computador remoto.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">O nome e o número da porta do computador remoto no formato 'name:port'. Aplica-se somente quando 'Usar computador remoto' está habilitado.</target>
+        <target state="translated">O nome e o número da porta do computador remoto no formato 'name:port'.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
