@@ -13,15 +13,17 @@ using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [Export(typeof(IProjectSystemReferenceCleanupService))]
-    internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService
+    internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService2
     {
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
-            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
+            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>
             {
                 { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
                 { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
                 { ProjectSystemReferenceType.Assembly, new AssemblyReferenceHandler() }
             };
+
+        private static readonly IProjectSystemUpdateReferenceOperation s_nullCommand = new NullCommand();
 
         private readonly Lazy<IProjectService2> _projectService;
         protected IProjectService2 ProjectService => _projectService.Value;
@@ -34,6 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 LazyThreadSafetyMode.PublicationOnly);
         }
 
+        /// <summary>
+        /// Return the set of direct Project and Package References for the given project. This
+        /// is used to get the initial state of the TreatAsUsed attribute for each reference.
+        /// </summary>
         public async Task<ImmutableArray<ProjectSystemReferenceInfo>> GetProjectReferencesAsync(string projectPath, CancellationToken cancellationToken)
         {
             List<ProjectSystemReferenceInfo> references;
@@ -87,47 +93,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return references;
         }
 
-        public async Task<bool> TryUpdateReferenceAsync(string projectPath, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
+        /// <summary>
+        /// Gets an operation that can update the project’s references by removing or marking references as
+        /// TreatAsUsed in the project file.
+        /// </summary>
+        public async Task<IProjectSystemUpdateReferenceOperation> GetUpdateReferenceOperationAsync(string projectPath, ProjectSystemReferenceUpdate referenceUpdate,
+            CancellationToken cancellationToken)
         {
-            bool wasUpdated = false;
-
             cancellationToken.ThrowIfCancellationRequested();
 
             var activeConfiguredProject = await GetActiveConfiguredProjectByPathAsync(projectPath, cancellationToken);
 
             var referenceHandler = s_mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
 
+            IProjectSystemUpdateReferenceOperation command = s_nullCommand;
             if (referenceHandler != null)
             {
-                wasUpdated = await ApplyActionAsync(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
+                command = CreateCommand(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }
 
-            return wasUpdated;
+            return command;
         }
 
-        private static async Task<bool> ApplyActionAsync(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler, 
+        private IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler,
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
-            bool wasUpdated = false;
-
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed ||
-                referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
+            IProjectSystemUpdateReferenceOperation? command;
+            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed)
             {
-                wasUpdated =
-                    await referenceHandler.UpdateReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken);
+                command = referenceHandler.CreateSetAttributeCommand(selectedConfiguredProject, referenceUpdate);
+            }
+            else if (referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
+            {
+                command = referenceHandler.CreateUnSetAttributeCommand(selectedConfiguredProject, referenceUpdate);
             }
             else
             {
-                if (await referenceHandler.CanRemoveReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken))
-                {
-                    await referenceHandler.RemoveReferenceAsync(selectedConfiguredProject, referenceUpdate.ReferenceInfo);
-                    wasUpdated = true;
-                }
+                // ProjectSystemUpdateAction.Remove:
+                command = referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate);
             }
-
-            return wasUpdated;
+            return command;
         }
     }
 }
