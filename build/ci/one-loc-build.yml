@@ -16,22 +16,21 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 steps:
-- task: PowerShell@2
-  displayName: Create Language-Neutral .xlf Files
+- task: DotNetCoreCLI@2
+  displayName: Run Localization Setup
   inputs:
-    targetType: 'inline'
-    script: 'Get-ChildItem -Include *.es.xlf -File -Recurse | Copy-Item -Destination { $newPath = $_.FullName.Replace(''.es.xlf'', ''.xlf''); Write-Host "Creating $newPath"; $newPath }'
-    workingDirectory: 'src'
+    command: 'run'
+    projects: 'build\loc\OneLocBuildSetup.csproj'
+    arguments: '$(System.DefaultWorkingDirectory)'
 
 - task: OneLocBuild@2
   displayName: Run Localization Process
   inputs:
+    locProj: 'loc/LocProject.json'
     isCreatePrSelected: true
     isAutoCompletePrSelected: false
     repoType: gitHub
     gitHubPatVariable: '$(GitHubPat)'
-    packageSourceAuth: patAuth
-    patVariable: '$(OneLocBuildPat)'
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Localization Artifacts

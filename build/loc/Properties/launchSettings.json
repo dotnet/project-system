@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OneLocBuildSetup": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Code\\project-system"
+    }
+  }
+}
