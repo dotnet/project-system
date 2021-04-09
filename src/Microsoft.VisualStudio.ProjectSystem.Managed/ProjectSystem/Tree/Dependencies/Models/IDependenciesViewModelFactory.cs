@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
         /// <summary>
         /// Returns a view model for a node that groups dependencies from a given provider.
         /// </summary>
-        IDependencyViewModel? CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel);
+        (IDependencyViewModel? GroupNodeViewModel, ProjectTreeFlags? GroupNodeFlag) CreateGroupNodeViewModel(string providerType, DiagnosticLevel maximumDiagnosticLevel);
 
         /// <summary>
         /// Returns the icon to use for the "Dependencies" root node.

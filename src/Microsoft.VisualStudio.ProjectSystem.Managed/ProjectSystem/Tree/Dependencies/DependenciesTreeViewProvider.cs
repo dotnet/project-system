@@ -196,9 +196,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var currentNodes = new HashSet<IProjectTree>(capacity: groupedByProviderType.Count);
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
+
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
+                (IDependencyViewModel? subTreeViewModel, ProjectTreeFlags? subtreeFlag) = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
                     targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
@@ -209,7 +210,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     continue;
                 }
 
-                IProjectTree? subTreeNode = rootNode.FindChildWithCaption(subTreeViewModel.Caption);
+                IProjectTree? subTreeNode = subtreeFlag != null
+                    ? rootNode.FindChildWithFlags(subtreeFlag.Value)
+                    : rootNode.FindChildWithCaption(subTreeViewModel.Caption);
+
                 bool isNewSubTreeNode = subTreeNode == null;
 
                 ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any)

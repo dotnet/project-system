@@ -43,6 +43,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
+        public override ProjectTreeFlags GroupNodeFlag => DependencyTreeFlags.PackageDependencyGroup;
+
         protected override void HandleAddedItem(
             string projectFullPath,
             string addedItem,
