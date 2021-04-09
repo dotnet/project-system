@@ -5,27 +5,27 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using CommandLine;
+
 // ReSharper disable SuggestVarOrType_BuiltInTypes
 // ReSharper disable SuggestVarOrType_Elsewhere
 
 namespace OneLocBuildSetup
 {
     [SuppressMessage("Style", "IDE0008:Use explicit type")]
-    public class Program
+    internal class Program
     {
         private const string XlfExtension = ".xlf";
         private const string SpanishXlfExtension = ".es" + XlfExtension;
 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            if (args.Length < 1 && !Directory.Exists(args[0]))
-            {
-                Console.WriteLine("Please provide the repository's root path as an argument to this application.");
-                return 1;
-            }
+            Parser.Default.ParseArguments<Arguments>(args).WithParsed(RunSetup);
+        }
 
-            var rootPath = args[0];
-            var srcPath = Path.Combine(rootPath, "src");
+        private static void RunSetup(Arguments args)
+        {
+            var srcPath = Path.Combine(args.RepositoryPath, "src");
             var esXlfPaths = Directory.GetFiles(srcPath, $"*{SpanishXlfExtension}", SearchOption.AllDirectories);
             var filePaths = esXlfPaths.Select(es => (esXlfPath: es, xlfPath: es.Replace(SpanishXlfExtension, XlfExtension))).ToArray();
             foreach ((string esXlfPath, string xlfPath) in filePaths)
@@ -36,7 +36,7 @@ namespace OneLocBuildSetup
 
             var locProject = new LocProject(filePaths
                 .Select(fp => (
-                    xlfPath: fp.xlfPath.Remove(0, rootPath.Length).TrimStart(Path.PathSeparator),
+                    xlfPath: fp.xlfPath.Remove(0, args.RepositoryPath.Length).TrimStart(Path.PathSeparator),
                     projectName: GetProjectName(fp.xlfPath, srcPath)))
                 .GroupBy(p => p.projectName)
                 .OrderBy(pg => pg.Key)
@@ -46,14 +46,12 @@ namespace OneLocBuildSetup
                     .ToArray()))
                 .ToArray());
 
-            var locPath = Path.Combine(rootPath, "loc");
+            var locPath = Path.Combine(args.OutputPath, "loc");
             Directory.CreateDirectory(locPath);
             var locProjectPath = Path.Combine(locPath, "LocProject.json");
             var locProjectJson = JsonSerializer.Serialize(locProject, new JsonSerializerOptions { WriteIndented = true });
             Console.WriteLine($"Creating {locProjectPath}");
             File.WriteAllText(locProjectPath, locProjectJson);
-
-            return 0;
         }
 
         private static string GetProjectName(string xlfPath, string srcPath) => xlfPath

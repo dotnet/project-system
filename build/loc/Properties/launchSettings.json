@@ -2,7 +2,7 @@
   "profiles": {
     "OneLocBuildSetup": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Code\\project-system"
+      "commandLineArgs": "-r \"C:\\Code\\project-system\" -o \"C:\\Code\\project-system\""
     }
   }
 }

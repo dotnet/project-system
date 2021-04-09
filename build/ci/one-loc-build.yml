@@ -21,12 +21,12 @@ steps:
   inputs:
     command: 'run'
     projects: 'build\loc\OneLocBuildSetup.csproj'
-    arguments: '$(System.DefaultWorkingDirectory)'
+    arguments: '-r "$(System.DefaultWorkingDirectory)" -o "$(Build.ArtifactStagingDirectory)"'
 
 - task: OneLocBuild@2
   displayName: Run Localization Process
   inputs:
-    locProj: 'loc/LocProject.json'
+    locProj: '$(Build.ArtifactStagingDirectory)\loc\LocProject.json'
     isCreatePrSelected: true
     isAutoCompletePrSelected: false
     repoType: gitHub
