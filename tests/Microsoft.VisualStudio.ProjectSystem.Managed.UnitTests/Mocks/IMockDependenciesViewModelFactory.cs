@@ -31,15 +31,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     mock.Setup(x => x.CreateGroupNodeViewModel(
                             It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.None))
-                        .Returns(d.ToViewModel(DiagnosticLevel.None));
+                        .Returns((d.ToViewModel(DiagnosticLevel.None), null));
                     mock.Setup(x => x.CreateGroupNodeViewModel(
                             It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.Warning))
-                        .Returns(d.ToViewModel(DiagnosticLevel.Warning));
+                        .Returns((d.ToViewModel(DiagnosticLevel.Warning), null));
                     mock.Setup(x => x.CreateGroupNodeViewModel(
                             It.Is<string>(t => string.Equals(t, d.ProviderType, StringComparison.OrdinalIgnoreCase)),
                             DiagnosticLevel.Error))
-                        .Returns(d.ToViewModel(DiagnosticLevel.Error));
+                        .Returns((d.ToViewModel(DiagnosticLevel.Error), null));
                 }
             }
 

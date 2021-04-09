@@ -46,6 +46,10 @@
   <StringProperty Name="BaseIntermediateOutputPath"
                   Visible="False" />
 
+  <StringProperty Name="CmdUIContextGuid"
+                  ReadOnly="True"
+                  Visible="False" />
+
   <StringProperty Name="Configuration"
                   Visible="False" />
 
@@ -57,6 +61,22 @@
 
   <StringProperty Name="DefaultPlatform"
                   Visible="False" />
+
+  <EnumProperty Name="DesignerFunctionVisibility"
+                Visible="False">
+    <EnumValue Name="Friend" />
+    <EnumValue Name="Private" />
+    <EnumValue Name="Public" />
+  </EnumProperty>
+
+  <StringListProperty Name="DesignerHiddenCodeGeneration"
+                      Visible="False" />
+
+  <EnumProperty Name="DesignerVariableNaming"
+                Visible="False">
+    <EnumValue Name="Camel" />
+    <EnumValue Name="VB" />
+  </EnumProperty>
 
   <BoolProperty Name="DisableFastUpToDateCheck"
                 Visible="False">
@@ -206,6 +226,14 @@
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <StringProperty Name="SupportedMyApplicationTypes"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringListProperty Name="SupportedOutputTypes"
+                      ReadOnly="True"
+                      Visible="False" />
 
   <BoolProperty Name="SuppressOutOfDateMessageOnBuild"
                 Visible="False" />

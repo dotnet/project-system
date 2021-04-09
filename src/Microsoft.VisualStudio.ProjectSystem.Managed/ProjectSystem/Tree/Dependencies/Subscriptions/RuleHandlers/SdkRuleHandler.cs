@@ -9,8 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers
 {
-    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract,
-            typeof(IDependenciesRuleHandler))]
+    [Export(DependencyRulesSubscriber.DependencyRulesSubscriberContract, typeof(IDependenciesRuleHandler))]
     [Export(typeof(IProjectDependenciesSubTreeProvider))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
     internal class SdkRuleHandler : DependenciesRuleHandlerBase
@@ -35,6 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
         }
 
         public override string ProviderType => ProviderTypeString;
+
+        public override ProjectTreeFlags GroupNodeFlag => DependencyTreeFlags.SdkDependencyGroup;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 

@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="needs-review-translation">连接到远程计算机时要使用的身份验证方案。仅在启用“使用远程计算机”时适用。</target>
+        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="needs-review-translation">采用 "name:port" 格式的远程计算机的名称和端口号。仅在启用“使用远程计算机”时适用。</target>
+        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

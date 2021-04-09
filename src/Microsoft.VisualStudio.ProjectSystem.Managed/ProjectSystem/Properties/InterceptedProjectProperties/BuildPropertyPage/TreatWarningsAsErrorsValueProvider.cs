@@ -21,18 +21,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            if (!bool.TryParse(unevaluatedPropertyValue, out bool value))
+            if (StringComparers.PropertyLiteralValues.Equals(unevaluatedPropertyValue, "true"))
             {
-                return null;
+                // When setting this to "true", remove WarningsAsErrors
+                await defaultProperties.SaveValueIfCurrentlySetAsync(WarningsAsErrorsProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(WarningsAsErrorsProperty, dimensionalConditions);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(WarningsNotAsErrorsProperty, _temporaryPropertyStorage);
             }
-
-            // When true, remove WarningsAsErrors. Otherwise, remove WarningsNotAsErrors.
-            string removePropertyName = value ? WarningsAsErrorsProperty : WarningsNotAsErrorsProperty;
-            string restorePropertyName = value ? WarningsNotAsErrorsProperty : WarningsAsErrorsProperty;
-
-            await defaultProperties.SaveValueIfCurrentlySetAsync(removePropertyName, _temporaryPropertyStorage);
-            await defaultProperties.DeletePropertyAsync(removePropertyName, dimensionalConditions);
-            await defaultProperties.RestoreValueIfNotCurrentlySetAsync(restorePropertyName, _temporaryPropertyStorage);
+            else
+            {
+                // When settings this to "false", remove WarningsNotAsErrors
+                await defaultProperties.SaveValueIfCurrentlySetAsync(WarningsNotAsErrorsProperty, _temporaryPropertyStorage);
+                await defaultProperties.DeletePropertyAsync(WarningsNotAsErrorsProperty, dimensionalConditions);
+                await defaultProperties.RestoreValueIfNotCurrentlySetAsync(WarningsAsErrorsProperty, _temporaryPropertyStorage);
+            }
 
             return await base.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
         }

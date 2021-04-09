@@ -186,6 +186,48 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         [Fact]
+        public async Task WhenSettingStandardPropertyValues_StandardCallbacksAreFound()
+        {
+            var profile1 = new WritableLaunchProfile
+            {
+                Name = "Profile1",
+                CommandName = "epsilon",
+            };
+
+            bool callbackInvoked;
+            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+                launchProfiles: new[] { profile1.ToLaunchProfile() },
+                tryUpdateProfileCallback: (profile, action) =>
+                {
+                    callbackInvoked = true;
+                });
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
+
+            var newValues = new Dictionary<string, string>
+            {
+                ["CommandLineArguments"] = "delta epsilon",
+                ["CommandName"] = "arugula",
+                ["EnvironmentVariables"] = "Three=3,Four=4",
+                ["ExecutablePath"] = @"D:\nine\ten.exe",
+                ["LaunchBrowser"] = "false",
+                ["LaunchUrl"] = "https://localhost/myOtherProfile",
+                ["WorkingDirectory"] = @"D:\aardvark",
+            };
+
+            foreach (var (propertyName, newPropertyValue) in newValues)
+            {
+                callbackInvoked = false;
+                await properties.SetPropertyValueAsync(propertyName, newPropertyValue);
+                Assert.True(callbackInvoked);
+            }
+        }
+
+        [Fact]
         public async Task WhenRetrievingAnExtensionProperty_TheExtensionValueProviderIsCalled()
         {
             string? requestedPropertyName = null;
@@ -193,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 (propertyName, profile, globals, rule) =>
                 {
                     requestedPropertyName = propertyName;
-                    return Task.FromResult("alpha");
+                    return "alpha";
                 });
             var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
 
@@ -219,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var alphaValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
                 (propertyName, profile, globals, rule) =>
                 {
-                    return Task.FromResult("alpha");
+                    return "alpha";
                 });
             var alphaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("AlphaProperty");
             var alphaLazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
@@ -229,7 +271,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var betaValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
                 (propertyName, profile, globals, rule) =>
                 {
-                    return Task.FromResult("");
+                    return "";
                 });
             var betaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("BetaProperty");
             var betaLazy = new Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
@@ -255,12 +297,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             string? updatedPropertyName = null;
             string? updatedPropertyValue = null;
             var extensionValueProvider = ILaunchProfileExtensionValueProviderFactory.Create(
-                onSetPropertyValueAsync: (propertyName, value, profile, globals, rule) =>
+                onSetPropertyValue: (propertyName, value, profile, globals, rule) =>
                 {
                     updatedPropertyName = propertyName;
                     updatedPropertyValue = value;
-
-                    return Task.CompletedTask;
                 });
             var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
 
@@ -289,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 (propertyName, globals, rule) =>
                 {
                     requestedPropertyName = propertyName;
-                    return Task.FromResult("alpha");
+                    return "alpha";
                 });
             var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
 
@@ -315,12 +355,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             string? updatedPropertyName = null;
             string? updatedPropertyValue = null;
             var extensionValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
-                onSetPropertyValueAsync: (propertyName, value, globals, rule) =>
+                onSetPropertyValue: (propertyName, value, globals, rule) =>
                 {
                     updatedPropertyName = propertyName;
                     updatedPropertyValue = value;
-
-                    return Task.FromResult(globals.Add(propertyName, value));
+                    return ImmutableDictionary<string, object?>.Empty.Add(propertyName, value);
                 });
             var metadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("MyProperty");
 
@@ -347,7 +386,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var alphaValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
                 (propertyName,  globals, rule) =>
                 {
-                    return Task.FromResult("alpha");
+                    return "alpha";
                 });
             var alphaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("AlphaProperty");
             var alphaLazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
@@ -357,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var betaValueProvider = IGlobalSettingExtensionValueProviderFactory.Create(
                 (propertyName, globals, rule) =>
                 {
-                    return Task.FromResult("");
+                    return "";
                 });
             var betaMetadata = ILaunchProfileExtensionValueProviderMetadataFactory.Create("BetaProperty");
             var betaLazy = new Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>(
@@ -381,7 +420,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
         /// "Profile1" and "Profile2".
         /// </summary>
-        private static ILaunchSettingsProvider CreateDefaultTestLaunchSettings()
+        private static ILaunchSettingsProvider3 CreateDefaultTestLaunchSettings()
         {
             var profile1 = new WritableLaunchProfile { Name = "Profile1" };
             var profile2 = new WritableLaunchProfile { Name = "Profile2" };

@@ -38,6 +38,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies
         event EventHandler<DependenciesChangedEventArgs> DependenciesChanged;
     }
 
+    internal interface IProjectDependenciesSubTreeProvider2 : IProjectDependenciesSubTreeProvider
+    {
+        /// <summary>
+        /// Gets a flag that uniquely identifies the group node among its siblings.
+        /// </summary>
+        /// <remarks>
+        /// For example <see cref="DependencyTreeFlags.ProjectDependencyGroup"/>.
+        /// </remarks>
+        ProjectTreeFlags GroupNodeFlag { get; }
+    }
+
     public sealed class DependenciesChangedEventArgs
     {
         [Obsolete("Constructor includes unused properties")]

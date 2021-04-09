@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -48,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private const string True = "true";
         private const string False = "false";
 
-        public Task<string> OnGetPropertyValueAsync(string propertyName, ILaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
+        public string OnGetPropertyValue(string propertyName, ILaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
         {
             string propertyValue = propertyName switch
             {
@@ -61,10 +60,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 _ => throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.")
             };
 
-            return Task.FromResult(propertyValue);
+            return propertyValue;
         }
 
-        public Task OnSetPropertyValueAsync(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
+        public void OnSetPropertyValue(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule)
         {
             switch (propertyName)
             {
@@ -91,8 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 default:
                     throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.");
             }
-
-            return Task.CompletedTask;
         }
 
         private static T GetOtherProperty<T>(ILaunchProfile launchProfile, string propertyName, T defaultValue)

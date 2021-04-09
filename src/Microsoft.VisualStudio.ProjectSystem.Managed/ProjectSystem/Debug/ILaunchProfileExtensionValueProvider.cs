@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Immutable;
-using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -58,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// The <paramref name="rule"/> provides access to metadata that may influence the
         /// conversion of the property to a <see cref="string"/>.
         /// </remarks>
-        Task<string> OnGetPropertyValueAsync(string propertyName, ILaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule);
+        string OnGetPropertyValue(string propertyName, ILaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule);
 
         /// <summary>
         /// Converts the <paramref name="propertyValue"/> from a <see cref="string"/> and
@@ -84,6 +83,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// The <paramref name="rule"/> provides access to metadata that may influence the
         /// conversion of the property from a <see cref="string"/>.
         /// </remarks>
-        Task OnSetPropertyValueAsync(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule);
+        void OnSetPropertyValue(string propertyName, string propertyValue, IWritableLaunchProfile launchProfile, ImmutableDictionary<string, object> globalSettings, Rule? rule);
     }
 }

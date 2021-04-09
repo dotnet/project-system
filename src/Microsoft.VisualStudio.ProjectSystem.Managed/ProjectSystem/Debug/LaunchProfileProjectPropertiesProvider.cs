@@ -16,14 +16,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     internal partial class LaunchProfileProjectPropertiesProvider : IProjectPropertiesProvider
     {
         private readonly UnconfiguredProject _project;
-        private readonly ILaunchSettingsProvider _launchSettingsProvider;
+        private readonly ILaunchSettingsProvider3 _launchSettingsProvider;
         private readonly ImmutableArray<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> _launchProfileExtensionValueProviders;
         private readonly ImmutableArray<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> _globalSettingExtensionValueProviders;
 
         [ImportingConstructor]
         public LaunchProfileProjectPropertiesProvider(
             UnconfiguredProject project,
-            ILaunchSettingsProvider launchSettingsProvider,
+            ILaunchSettingsProvider3 launchSettingsProvider,
             [ImportMany]IEnumerable<Lazy<ILaunchProfileExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> launchProfileExtensionValueProviders,
             [ImportMany]IEnumerable<Lazy<IGlobalSettingExtensionValueProvider, ILaunchProfileExtensionValueProviderMetadata>> globalSettingExtensionValueProviders)
         {

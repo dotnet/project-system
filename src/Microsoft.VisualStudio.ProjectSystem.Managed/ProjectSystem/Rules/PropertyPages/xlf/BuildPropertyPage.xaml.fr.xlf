@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|Description">
         <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
-        <target state="new">Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</target>
+        <target state="translated">L'utilisation de la signature différée au moment de l'accès à la clé privée est restreinte. La clé publique est utilisée pendant la génération. De plus, l'ajout des informations relatives à la clé privée est différé jusqu'à ce que l'assembly soit transféré.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|DelaySign|DisplayName">
         <source>Delay sign only</source>
-        <target state="new">Delay sign only</target>
+        <target state="translated">Différer la signature uniquement</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
@@ -79,22 +79,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
-        <target state="new">Sign the output assembly to give it a strong name.</target>
+        <target state="translated">Signe l'assembly de sortie pour lui donner un nom fort.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|DisplayName">
         <source>Sign the assembly</source>
-        <target state="new">Sign the assembly</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
-        <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
-        <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
+        <target state="translated">Signer l'assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -124,12 +114,12 @@
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
-        <target state="new">Configures strong name signing of build outputs.</target>
+        <target state="translated">Configure la signature de nom fort des sorties de build.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|DisplayName">
         <source>Strong naming</source>
-        <target state="new">Strong naming</target>
+        <target state="translated">Nommage fort</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -170,6 +160,16 @@
       <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
         <source>Platform target</source>
         <target state="translated">Plateforme cible</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
+        <source>Used to specify which warnings are treated as errors.</source>
+        <target state="translated">Permet de spécifier les avertissements qui doivent être traités en tant qu'erreurs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Considérer les avertissements comme des erreurs</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -262,6 +262,16 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|TreatWarningsAsErrors.false|DisplayName">
+        <source>None</source>
+        <target state="translated">Aucun</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|TreatWarningsAsErrors.true|DisplayName">
+        <source>All</source>
+        <target state="translated">Tout</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
         <target state="translated">0</target>
@@ -304,7 +314,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
         <source>Strong name key file</source>
-        <target state="new">Strong name key file</target>
+        <target state="translated">Fichier de clé de nom fort</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
@@ -358,18 +368,18 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">Bloque la capacité du compilateur à générer un ou plusieurs avertissements. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
+        <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Bloque la capacité du compilateur à générer un ou plusieurs avertissements. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress specific warnings</source>
-        <target state="needs-review-translation">Supprimer les avertissements</target>
+        <source>Suppress warnings</source>
+        <target state="translated">Supprimer les avertissements</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
-        <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="needs-review-translation">Traite les avertissements spécifiés en tant qu'erreurs. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
+        <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Traite les avertissements spécifiés en tant qu'erreurs. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
@@ -378,13 +388,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
-        <source>Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Ne traite pas les avertissements spécifiés en tant qu'erreurs. Séparez plusieurs numéros d'avertissement par une virgule (',') ou un point-virgule (';').</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
-        <source>Exclude specific warnings as errors</source>
-        <target state="new">Exclude specific warnings as errors</target>
+        <source>Exempt specific warnings from being treated as errors</source>
+        <target state="translated">Ne traite pas des avertissements spécifiques en tant qu'erreurs</target>
         <note />
       </trans-unit>
     </body>
