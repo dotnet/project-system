@@ -21,7 +21,7 @@ steps:
   inputs:
     command: 'run'
     projects: 'build\loc\OneLocBuildSetup.csproj'
-    arguments: '-r "$(System.DefaultWorkingDirectory)" -o "$(Build.ArtifactStagingDirectory)"'
+    arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.ArtifactStagingDirectory)"'
 
 - task: OneLocBuild@2
   displayName: Run Localization Process
