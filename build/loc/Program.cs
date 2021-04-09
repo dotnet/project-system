@@ -31,10 +31,9 @@ namespace OneLocBuildSetup
                 File.Copy(esXlfPath, xlfPath, true);
             }
 
-            Console.WriteLine($"Path Separator: {Path.PathSeparator}");
             var locProject = new LocProject(filePaths
                 .Select(fp => (
-                    xlfPath: fp.xlfPath.Remove(0, args.RepositoryPath.Length).TrimStart('\\').TrimStart('/'),
+                    xlfPath: fp.xlfPath.Remove(0, args.RepositoryPath.Length).TrimStart(Path.DirectorySeparatorChar),
                     projectName: GetProjectName(fp.xlfPath, srcPath)))
                 .GroupBy(p => p.projectName)
                 .OrderBy(pg => pg.Key)
