@@ -54,7 +54,7 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="new">TFM</target>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
@@ -194,7 +194,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="new">TFM</target>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
