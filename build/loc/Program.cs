@@ -18,10 +18,7 @@ namespace OneLocBuildSetup
         private const string XlfExtension = ".xlf";
         private const string SpanishXlfExtension = ".es" + XlfExtension;
 
-        public static void Main(string[] args)
-        {
-            Parser.Default.ParseArguments<Arguments>(args).WithParsed(RunSetup);
-        }
+        public static void Main(string[] args) => Parser.Default.ParseArguments<Arguments>(args).WithParsed(RunSetup);
 
         private static void RunSetup(Arguments args)
         {
@@ -50,6 +47,13 @@ namespace OneLocBuildSetup
             Directory.CreateDirectory(locPath);
             var locProjectPath = Path.Combine(locPath, "LocProject.json");
             var locProjectJson = JsonSerializer.Serialize(locProject, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine($"Creating {locProjectPath}");
+            File.WriteAllText(locProjectPath, locProjectJson);
+
+            // Duplicating the file writing as using a custom locProj is (likely) broken.
+            locPath = Path.Combine(args.RepositoryPath, "Localize");
+            Directory.CreateDirectory(locPath);
+            locProjectPath = Path.Combine(locPath, "LocProject.json");
             Console.WriteLine($"Creating {locProjectPath}");
             File.WriteAllText(locProjectPath, locProjectJson);
         }
