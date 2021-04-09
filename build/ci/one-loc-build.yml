@@ -36,6 +36,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Localization Artifacts
+  condition: succeededOrFailed()
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\loc'
     ArtifactName: 'OneLocBuild'
