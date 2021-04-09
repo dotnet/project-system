@@ -44,20 +44,3 @@ steps:
   inputs:
     languages: 'csharp'
   continueOnError: true
-
-- task: PowerShell@2
-  displayName: Create Neutral .xlf Files
-  inputs:
-    targetType: 'inline'
-    script: 'Get-ChildItem -Include *.es.xlf -File -Recurse | Copy-Item -Destination { $_.FullName.Replace(''.es.xlf'', ''.xlf'') }'
-    workingDirectory: 'src'
-
-- task: OneLocBuild@2
-  displayName: Generate Localization PR
-  inputs:
-    isCreatePrSelected: true
-    isAutoCompletePrSelected: false
-    repoType: gitHub
-    gitHubPatVariable: '$(GitHubPat)'
-    packageSourceAuth: patAuth
-    patVariable: '$(OneLocBuildPat)'
