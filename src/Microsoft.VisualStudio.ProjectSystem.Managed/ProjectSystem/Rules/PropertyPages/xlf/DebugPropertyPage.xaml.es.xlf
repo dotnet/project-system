@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="Rule|DebugPropertyPage|Description">
         <source>Debug</source>
-        <target state="new">Debug</target>
+        <target state="translated">Depurar</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|DebugPropertyPage|DisplayName">
         <source>Debug</source>
-        <target state="new">Debug</target>
+        <target state="translated">Depurar</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
