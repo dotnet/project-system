@@ -61,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.OptionPages
         ''' The UIElement is backed by a copy of the main options; when/if the user
         ''' saves their changes we'll copy the options back to the main instance.
         ''' </summary>
-        Protected Overrides ReadOnly Property Child As Windows.UIElement
+        Protected Overrides ReadOnly Property Child As System.Windows.UIElement
             Get
                 If _optionsControl Is Nothing Then
                     ' Get a snapshot of the current settings for the page to modify. When the user

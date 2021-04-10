@@ -1,7 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Explicit On
-Option Strict On
+Option Strict Off
 Option Compare Binary
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
@@ -2012,9 +2012,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function IsConvertibleFromToString(Value As Object, ValueTypeName As String, IsResXNullRef As Boolean) As Boolean
             Dim TC As TypeConverter = GetTypeConverter(Value, ValueTypeName, IsResXNullRef)
             If TC IsNot Nothing Then
-                If TC.GetType.Equals(GetType(Windows.Forms.CursorConverter)) Then
+                If TC.GetType.Equals(GetType(System.Windows.Forms.CursorConverter)) Then
                     'The CursorConverter lies to us - says it's convertible from/to string.  But this is only true from the
-                    '  property sheet for the standard cursors that they support from the Windows Forms designer.  If we happen
+                    '  property sheet for the standard cursors that they support from the System.Windows.Forms designer.  If we happen
                     '  upon a custom cursor in the resx file (possible but not likely), this would get us into trouble.
                     Return False
                 End If

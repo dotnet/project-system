@@ -1503,7 +1503,7 @@ Namespace My.Resources
         End Property
 
         '''<summary>
-        '''  Looks up a localized string similar to Windows Forms Application.
+        '''  Looks up a localized string similar to System.Windows.Forms Application.
         '''</summary>
         Friend Shared ReadOnly Property PPG_WindowsFormsApp() As String
             Get

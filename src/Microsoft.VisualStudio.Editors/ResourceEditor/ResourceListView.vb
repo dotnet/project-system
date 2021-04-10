@@ -217,11 +217,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Shadows Property View As ResourceView
             Get
                 Select Case MyBase.View
-                    Case Windows.Forms.View.Details
+                    Case System.Windows.Forms.View.Details
                         Return ResourceView.Details
-                    Case Windows.Forms.View.LargeIcon
+                    Case System.Windows.Forms.View.LargeIcon
                         Return ResourceView.Thumbnail
-                    Case Windows.Forms.View.List
+                    Case System.Windows.Forms.View.List
                         Return ResourceView.List
                     Case Else
                         Debug.Fail("MyBase.View should not have been any other value")
@@ -231,11 +231,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Select Case Value
                     Case ResourceView.Details
                         InitializeColumns()
-                        MyBase.View = Windows.Forms.View.Details
+                        MyBase.View = System.Windows.Forms.View.Details
                     Case ResourceView.List
-                        MyBase.View = Windows.Forms.View.List
+                        MyBase.View = System.Windows.Forms.View.List
                     Case ResourceView.Thumbnail
-                        MyBase.View = Windows.Forms.View.LargeIcon
+                        MyBase.View = System.Windows.Forms.View.LargeIcon
                     Case Else
                         Debug.Fail("Unrecognized view")
                 End Select

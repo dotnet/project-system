@@ -260,9 +260,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 var processStartupInfo = new VsDebugStartupInfo
                 {
-                    hStdInput = unchecked((uint)info.StandardInputHandle.ToInt32()),
-                    hStdOutput = unchecked((uint)info.StandardOutputHandle.ToInt32()),
-                    hStdError = unchecked((uint)info.StandardErrorHandle.ToInt32()),
+                    hStdInput = unchecked((IntPtr)(uint)info.StandardInputHandle.ToInt32()),
+                    hStdOutput = unchecked((IntPtr)(uint)info.StandardOutputHandle.ToInt32()),
+                    hStdError = unchecked((IntPtr)(uint)info.StandardErrorHandle.ToInt32()),
                     flags = (uint)__DSI_FLAGS.DSI_USESTDHANDLES,
                 };
                 debugInfo.pStartupInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(processStartupInfo));

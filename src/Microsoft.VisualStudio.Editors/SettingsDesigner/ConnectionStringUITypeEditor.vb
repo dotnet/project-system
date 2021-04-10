@@ -232,9 +232,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                        DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
                                                              My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
                                                              DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
-                                                             Windows.Forms.MessageBoxButtons.YesNo,
-                                                             Windows.Forms.MessageBoxIcon.Warning,
-                                                             Windows.Forms.MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes _
+                                                             System.Windows.Forms.MessageBoxButtons.YesNo,
+                                                             System.Windows.Forms.MessageBoxIcon.Warning,
+                                                             System.Windows.Forms.MessageBoxDefaultButton.Button2) = System.Windows.Forms.DialogResult.Yes _
                 Then
                     Return RawConnectionString
                 End If

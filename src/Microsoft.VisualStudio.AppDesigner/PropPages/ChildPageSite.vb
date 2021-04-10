@@ -83,7 +83,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         '''   before the page does.  Return S_OK to indicate we have handled it, S_FALSE to indicate we did not
         '''   process it, and E_NOTIMPL to indicate that the site does not support keyboard processing.
         ''' </remarks>
-        Public Function TranslateAccelerator(msg As Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
+        Public Function TranslateAccelerator(msg As System.Windows.Forms.Message) As Integer Implements IPropertyPageSiteInternal.TranslateAccelerator
             Return _wrappedInternalSite.TranslateAccelerator(msg)
         End Function
 

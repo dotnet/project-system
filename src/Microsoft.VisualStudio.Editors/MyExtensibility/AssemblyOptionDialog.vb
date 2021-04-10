@@ -17,8 +17,8 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
     ''' and remember the option for the trigger assembly.
     ''' </summary>
     Friend Class AssemblyOptionDialog
-#If False Then ' To edit in WinForms Designer: Change False -> True and checkboxOption to System.Windows.Forms.Checkbox
-        Inherits System.Windows.Forms.Form
+#If False Then ' To edit in WinForms Designer: Change False -> True and checkboxOption to System.System.Windows.Forms.Checkbox
+        Inherits System.System.Windows.Forms.Form
 
         Public Sub New()
             MyBase.New()
@@ -107,26 +107,26 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
         Private Sub buttonYes_Click(sender As Object, e As EventArgs) Handles buttonYes.Click
             Close()
-            DialogResult = Windows.Forms.DialogResult.Yes
+            DialogResult = System.Windows.Forms.DialogResult.Yes
         End Sub
 
 #Region "Windows Form Designer generated code"
-        Friend WithEvents labelQuestion As Windows.Forms.Label
-        Friend WithEvents tableLayoutOverarching As Windows.Forms.TableLayoutPanel
-        Friend WithEvents listBoxItems As Windows.Forms.ListBox
-        Friend WithEvents tableLayoutYesNoButtons As Windows.Forms.TableLayoutPanel
-        Friend WithEvents buttonYes As Windows.Forms.Button
+        Friend WithEvents labelQuestion As System.Windows.Forms.Label
+        Friend WithEvents tableLayoutOverarching As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents listBoxItems As System.Windows.Forms.ListBox
+        Friend WithEvents tableLayoutYesNoButtons As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents buttonYes As System.Windows.Forms.Button
         Friend WithEvents checkBoxOption As DesignerFramework.WrapCheckBox
-        Friend WithEvents buttonNo As Windows.Forms.Button
+        Friend WithEvents buttonNo As System.Windows.Forms.Button
 
         Private Sub InitializeComponent()
             Dim resources As ComponentResourceManager = New ComponentResourceManager(GetType(AssemblyOptionDialog))
-            tableLayoutOverarching = New Windows.Forms.TableLayoutPanel
-            labelQuestion = New Windows.Forms.Label
-            listBoxItems = New Windows.Forms.ListBox
-            tableLayoutYesNoButtons = New Windows.Forms.TableLayoutPanel
-            buttonYes = New Windows.Forms.Button
-            buttonNo = New Windows.Forms.Button
+            tableLayoutOverarching = New System.Windows.Forms.TableLayoutPanel
+            labelQuestion = New System.Windows.Forms.Label
+            listBoxItems = New System.Windows.Forms.ListBox
+            tableLayoutYesNoButtons = New System.Windows.Forms.TableLayoutPanel
+            buttonYes = New System.Windows.Forms.Button
+            buttonNo = New System.Windows.Forms.Button
             checkBoxOption = New DesignerFramework.WrapCheckBox
             tableLayoutOverarching.SuspendLayout()
             tableLayoutYesNoButtons.SuspendLayout()
@@ -167,7 +167,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
             '
             'buttonNo
             '
-            buttonNo.DialogResult = Windows.Forms.DialogResult.Cancel
+            buttonNo.DialogResult = System.Windows.Forms.DialogResult.Cancel
             resources.ApplyResources(buttonNo, "buttonNo")
             buttonNo.Name = "buttonNo"
             buttonNo.UseVisualStyleBackColor = True
