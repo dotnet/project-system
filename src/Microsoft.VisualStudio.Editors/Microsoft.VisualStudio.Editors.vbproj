@@ -281,9 +281,7 @@
       <DependentUpon>PackagePropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="PropPages\PackagePropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="PropPages\PackagePropPage.vb" />
     <Compile Update="PropPages\AssemblyInfoPropPage.Designer.vb">
       <DependentUpon>AssemblyInfoPropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
@@ -332,9 +330,7 @@
       <DependentUpon>ServicesPropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="PropPages\TextBoxWithWorkaroundForAutoCompleteAppend.vb" />
     <Compile Update="PropPages\UnusedReferencePropPage.Designer.vb">
       <DependentUpon>UnusedReferencePropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
@@ -346,9 +342,7 @@
     <Compile Include="..\Common\ManagedCodeMarkers.vb">
       <Link>ManagedCodeMarkers.vb</Link>
     </Compile>
-    <Compile Update="AddImportsDialogs\AddImportDialogBase.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="AddImportsDialogs\AddImportDialogBase.vb" />
     <Compile Update="AddImportsDialogs\AddImports.Designer.vb">
       <DependentUpon>AddImports.resx</DependentUpon>
     </Compile>
@@ -356,171 +350,75 @@
       <DependentUpon>AutoAddImportsCollisionDialog.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="AddImportsDialogs\AutoAddImportsCollisionDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsCollisionDialog.vb" />
     <Compile Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.Designer.vb">
       <DependentUpon>AutoAddImportsExtensionCollisionDialog.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\BaseDesignerView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\BaseDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\DesignerDataGridView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\DesignerListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\DesignerToolbarPanel.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="AddImportsDialogs\AutoAddImportsExtensionCollisionDialog.vb" />
+    <Compile Update="DesignerFramework\BaseDesignerView.vb" />
+    <Compile Update="DesignerFramework\BaseDialog.vb" />
+    <Compile Update="DesignerFramework\DesignerDataGridView.vb" />
+    <Compile Update="DesignerFramework\DesignerListView.vb" />
+    <Compile Update="DesignerFramework\DesignerToolbarPanel.vb" />
     <Compile Update="DesignerFramework\ErrorControl.Designer.vb">
       <DependentUpon>ErrorControl.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="DesignerFramework\ErrorControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="DesignerFramework\WrapCheckBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="MyExtensibility\AddMyExtensionsDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="MyExtensibility\AssemblyOptionDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="MyExtensibility\MyExtensibilityPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="MyExtensibility\MyExtensionDataGridView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="PropPages\AdvancedServicesDialog.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\AdvBuildSettingsPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\AdvCompilerSettingsPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ApplicationPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="DesignerFramework\ErrorControl.vb" />
+    <Compile Update="DesignerFramework\WrapCheckBox.vb" />
+    <Compile Update="MyExtensibility\AddMyExtensionsDialog.vb" />
+    <Compile Update="MyExtensibility\AssemblyOptionDialog.vb" />
+    <Compile Update="MyExtensibility\MyExtensibilityPropPage.vb" />
+    <Compile Update="MyExtensibility\MyExtensionDataGridView.vb" />
+    <Compile Update="PropPages\AdvancedServicesDialog.vb" />
+    <Compile Update="PropPages\AdvBuildSettingsPropPage.vb" />
+    <Compile Update="PropPages\AdvCompilerSettingsPropPage.vb" />
+    <Compile Update="PropPages\ApplicationPropPage.vb" />
     <Compile Update="PropPages\ApplicationPropPage.Designer.vb">
       <DependentUpon>ApplicationPropPage.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="PropPages\ApplicationPropPageBase.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ApplicationPropPageInternalBase.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ApplicationPropPageVBBase.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ApplicationPropPageVBWinForms.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\AssemblyInfoPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\BuildEventCommandLineDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PropPages\BuildEventsPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\BuildPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\BuildPropPageBase.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\CodeAnalysisPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\CompilePropPage2.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ComponentWrapper.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="PropPages\CSharpApplicationPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\DebugPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ReferenceComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="PropPages\ReferencePathsPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ReferencePropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\ServiceReferenceComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="PropPages\ServicesAuthenticationForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PropPages\ServicesPropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="PropPages\ApplicationPropPageBase.vb" />
+    <Compile Update="PropPages\ApplicationPropPageInternalBase.vb" />
+    <Compile Update="PropPages\ApplicationPropPageVBBase.vb" />
+    <Compile Update="PropPages\ApplicationPropPageVBWinForms.vb" />
+    <Compile Update="PropPages\AssemblyInfoPropPage.vb" />
+    <Compile Update="PropPages\BuildEventCommandLineDialog.vb" />
+    <Compile Update="PropPages\BuildEventsPropPage.vb" />
+    <Compile Update="PropPages\BuildPropPage.vb" />
+    <Compile Update="PropPages\BuildPropPageBase.vb" />
+    <Compile Update="PropPages\CodeAnalysisPropPage.vb" />
+    <Compile Update="PropPages\CompilePropPage2.vb" />
+    <Compile Update="PropPages\ComponentWrapper.vb" />
+    <Compile Update="PropPages\CSharpApplicationPropPage.vb" />
+    <Compile Update="PropPages\DebugPropPage.vb" />
+    <Compile Update="PropPages\ReferenceComponent.vb" />
+    <Compile Update="PropPages\ReferencePathsPropPage.vb" />
+    <Compile Update="PropPages\ReferencePropPage.vb" />
+    <Compile Update="PropPages\ServiceReferenceComponent.vb" />
+    <Compile Update="PropPages\ServicesAuthenticationForm.vb" />
+    <Compile Update="PropPages\ServicesPropPage.vb" />
     <Compile Update="PropPages\Strings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Update="PropPages\UnusedReferencePropPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\WebReferenceComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="PropPages\UnusedReferencePropPage.vb" />
+    <Compile Update="PropPages\WebReferenceComponent.vb" />
     <Compile Update="PropPages\WPF\AppDotXamlErrorControl.Designer.vb">
       <DependentUpon>AppDotXamlErrorControl.vb</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="PropPages\WPF\AppDotXamlErrorControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="PropPages\WPF\ApplicationPropPageVBWPF.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\DialogQueryName.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\OpenFileWarningDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorRootComponent.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceEditorView_EditorState.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="ResourceEditor\ResourceStringTable.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="PropPages\WPF\AppDotXamlErrorControl.vb" />
+    <Compile Update="PropPages\WPF\ApplicationPropPageVBWPF.vb" />
+    <Compile Update="ResourceEditor\DialogQueryName.vb" />
+    <Compile Update="ResourceEditor\OpenFileWarningDialog.vb" />
+    <Compile Update="ResourceEditor\ResourceEditorRootComponent.vb" />
+    <Compile Update="ResourceEditor\ResourceEditorView.vb" />
+    <Compile Update="ResourceEditor\ResourceEditorView_EditorState.vb" />
+    <Compile Update="ResourceEditor\ResourceListView.vb" />
+    <Compile Update="ResourceEditor\ResourceStringTable.vb" />
     <Compile Update="Resources\Microsoft.VisualStudio.Editors.Designer.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -531,48 +429,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyExtensibilityRes.resx</DependentUpon>
     </Compile>
-    <Compile Update="SettingsDesigner\DataGridViewUITypeEditorEditingControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="SettingsDesigner\DesignTimeSettingInstance.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="SettingsDesigner\DesignTimeSettings.vb">
-      <SubType>Designer</SubType>
-    </Compile>
-    <Compile Update="SettingsDesigner\SettingsDesignerView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="SettingsDesigner\TypeEditorHostControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="SettingsDesigner\TypePickerDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="SettingsDesigner\DataGridViewUITypeEditorEditingControl.vb" />
+    <Compile Update="SettingsDesigner\DesignTimeSettingInstance.vb" />
+    <Compile Update="SettingsDesigner\DesignTimeSettings.vb" />
+    <Compile Update="SettingsDesigner\SettingsDesignerView.vb" />
+    <Compile Update="SettingsDesigner\TypeEditorHostControl.vb" />
+    <Compile Update="SettingsDesigner\TypePickerDialog.vb" />
     <Compile Update="XmlToSchema\InputXmlForm.Designer.vb">
       <DependentUpon>InputXmlForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="XmlToSchema\InputXmlForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="XmlToSchema\InputXmlForm.vb" />
     <Compile Update="XmlToSchema\PasteXmlDialog.Designer.vb">
       <DependentUpon>PasteXmlDialog.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="XmlToSchema\PasteXmlDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="XmlToSchema\Utilities.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="XmlToSchema\PasteXmlDialog.vb" />
+    <Compile Update="XmlToSchema\Utilities.vb" />
     <Compile Update="XmlToSchema\WebUrlDialog.Designer.vb">
       <DependentUpon>WebUrlDialog.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="XmlToSchema\WebUrlDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="XmlToSchema\WebUrlDialog.vb" />
     <Compile Update="XmlToSchema\Wizard.vb" />
   </ItemGroup>
   <ItemGroup>

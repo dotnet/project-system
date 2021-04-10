@@ -106,8 +106,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                         Dim normalizedConnectionString As String = Nothing
                         Try
                             If connectionStringConverter IsNot Nothing AndAlso dteProj IsNot Nothing AndAlso value.ProviderName <> "" Then
-                                'TODO: Merged PIAs
-                                'normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
+                                normalizedConnectionString = connectionStringConverter.ToDesignTime(dteProj, value.ConnectionString, value.ProviderName)
                             End If
                         Catch ex As ArgumentException
                         Catch ex As ConnectionStringConverterServiceException
@@ -153,8 +152,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     }
                         If dteProj IsNot Nothing AndAlso connectionStringConverter IsNot Nothing Then
                             ' Go back to the runtime representation of the string...
-                            ' TODO: Merged PIAs
-                            'newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
+                            newValue.ConnectionString = connectionStringConverter.ToRunTime(dteProj, newValue.ConnectionString, newValue.ProviderName)
                         End If
 
                         Return newValue
@@ -234,9 +232,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                        DesignerFramework.DesignerMessageBox.Show(ServiceProvider,
                                                              My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_IncludeSensitiveInfoInConnectionStringWarning,
                                                              DesignerFramework.DesignUtil.GetDefaultCaption(ServiceProvider),
-                                                             Windows.Forms.MessageBoxButtons.YesNo,
-                                                             Windows.Forms.MessageBoxIcon.Warning,
-                                                             Windows.Forms.MessageBoxDefaultButton.Button2) = Windows.Forms.DialogResult.Yes _
+                                                             System.Windows.Forms.MessageBoxButtons.YesNo,
+                                                             System.Windows.Forms.MessageBoxIcon.Warning,
+                                                             System.Windows.Forms.MessageBoxDefaultButton.Button2) = System.Windows.Forms.DialogResult.Yes _
                 Then
                     Return RawConnectionString
                 End If
@@ -325,9 +323,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Sub
 
             Public Function IsCombinationSupported(source As Guid, provider As Guid) As Boolean
-                'TODO: Merged PIAs - Uncomment once Microsoft.VSDesigner is updated
-                'Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
-                Return True
+                Return VSDesigner.Data.DataProviderProjectControl.IsProjectSupported(provider, _targetProject)
             End Function
         End Class
 
