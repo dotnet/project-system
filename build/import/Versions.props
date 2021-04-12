@@ -18,7 +18,7 @@
     <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
     <RoslynToolsSignToolVersion>1.0.0-beta-62414-01</RoslynToolsSignToolVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
-    <MicrosoftDotNetIBCMergeVersion>4.7.1-alpha-00001</MicrosoftDotNetIBCMergeVersion>
+    <MicrosoftDotNetIBCMergeVersion>5.0.7-beta.20159.1</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <MicroBuildPluginsSwixBuildVersion>1.0.147</MicroBuildPluginsSwixBuildVersion>
     <CodecovVersion>1.1.0</CodecovVersion>
