@@ -37,6 +37,9 @@ steps:
     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
     nugetConfigPath: 'NuGet.config'
 
+- task: NuGetAuthenticate@0
+  displayName: authenticate for internal feed
+
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
