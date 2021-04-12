@@ -32,10 +32,10 @@ steps:
 - task: NuGetCommand@2
   displayName: Restore the 'Microsoft.DotNet.IBCMerge' package
   inputs:
-  command: restore
-  feedsToUse: config
-  restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
-  nugetConfigPath: 'NuGet.config'
+    command: restore
+    feedsToUse: config
+    restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
+    nugetConfigPath: 'NuGet.config'
 
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
