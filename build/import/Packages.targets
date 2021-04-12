@@ -14,6 +14,7 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
       <!-- TODO: Merged PIAs - Microsoft.VSDesigner should be on a public feed -->
       https://pkgs.dev.azure.com/devdiv/DevDiv/_packaging/vssdk-unifiedPIAs/nuget/v3/index.json;
+      https://devdiv.pkgs.visualstudio.com/_packaging/dotnet-core-internal-tooling/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
