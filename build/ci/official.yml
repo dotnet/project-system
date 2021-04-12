@@ -10,7 +10,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEng-MicroBuildVS2019
+  name: VSEngSS-MicroBuild2019
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -30,7 +30,7 @@ steps:
   displayName: Install Swix Plugin
 
 - task: NuGetCommand@2
-  displayName: Restore the 'Microsoft.DotNet.IBCMerge' package
+  displayName: Restore 'Microsoft.DotNet.IBCMerge' package
   inputs:
     command: restore
     feedsToUse: config
