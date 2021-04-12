@@ -37,9 +37,11 @@ steps:
     restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
     nugetConfigPath: 'NuGet.config'
 
+# TODO: Merged PIAs - remove this authenticate once private feeds are removed
 - task: NuGetAuthenticate@0
   displayName: authenticate for internal feed
 
+# TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
