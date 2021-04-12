@@ -5,8 +5,9 @@
 *.vb linguist-vendored
 *.reg text
 
-# Collapse XLF files in PRs by default
+# Collapse these files in PRs by default
 *.xlf linguist-generated=true
+*.lcl linguist-generated=true
 
 ###############################################################################
 # Set default behavior for command prompt diff.
