@@ -19,6 +19,10 @@
               Description="Configures the output options for the build process."
               DisplayName="Output" />
 
+    <Category Name="Events"
+              Description="Configures custom events that run before and after build."
+              DisplayName="Events" />
+
     <Category Name="StrongNaming"
               Description="Configures strong name signing of build outputs."
               DisplayName="Strong naming" />
@@ -274,6 +278,63 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <StringProperty Name="PreBuildEvent"
+                  DisplayName="Pre-build event"
+                  Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
+                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <StringProperty Name="PostBuildEvent"
+                  DisplayName="Post-build event"
+                  Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
+                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <EnumProperty Name="RunPostBuildEvent"
+                DisplayName="When to run the post-build event"
+                Description="Specifies under which condition the post-build event will be executed."
+                HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                Category="Events">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunPostBuildEvent"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" />
+    <EnumValue Name="OnBuildSuccess" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" />
+  </EnumProperty>
 
   <BoolProperty Name="SignAssembly"
                 Description="Sign the output assembly to give it a strong name."
