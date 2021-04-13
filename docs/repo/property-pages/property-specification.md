@@ -2,13 +2,93 @@
 
 This document details how properties are specified, which controls their appearance and behavior in the Project Properties UI and how they are written to the project file.
 
+## Examples
+
+Firstly, here are some commits and PRs that provide good examples of common changes you might make to a set of properties:
+
+- [Add `WarningsNotAsErrors` property](https://github.com/dotnet/project-system/pull/6971) &mdash; Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Reorder properties within a page](https://github.com/dotnet/project-system/pull/7038) &mdash; Demonstrates reordering properties within a single category on a single page. This simple change is made entirely within a XAML rule file.
+- [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
+- [Add a paragraph between properties](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
+- [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
+- [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
+- [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
+
 ## XAML Rule Files
 
-The set of properties to display in the UI are outlined declaratively in XAML files that ship with the Project System. This means that most modifications to the Project Properties UI can be achieved by simply modifying an XML file.
+The set of properties to display in the UI are outlined declaratively in XAML files. This means that most modifications to the Project Properties UI can be achieved by simply modifying an XML file.
+
+### Adding rules as MSBuild items
+
+Any rule file to be included in the UI must be added to the project's evaluation. Each file must be added with an item of type `PropertyPageSchema`. For example in a `.props` or `.targets` file:
+
+```xml
+<ItemGroup>
+  <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LocaleFolder)MyProjectPropertiesPage.xaml" />
+</ItemGroup>
+```
+
+Note that rules files contain display strings which must be localised. Depending upon how you produce your package, you will want to make sure that the localised file is included.
+
+### Structure of a XAML rule file
 
 Here we will walk through the structure of these files. Some familiarity with XAML rule files is assumed. We will not discuss data sources here.
 
 Each XAML rule file describes a single page of properties. Multiple pages are displayed at once, so there are multiple rule files involved in the end-to-end experience. 
+
+```xml
+<Rule Name="MyProjectPropertiesPage"
+      Description="A description of my project properties page."
+      DisplayName="My Properties"
+      PageTemplate="generic"
+      Order="500"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <!-- TODO add properties here -->
+
+</Rule>
+```
+
+- `PageTemplate` must be `generic` for project properties, or `commandNameBasedDebugger` for launch profiles.
+- `Order` controls ordering of pages in the UI. Lower numbers appear towards the top, with the one exception of pages having zero order appearing at the end (to prevent pages accidentally appearing in prime position).
+- `DisplayName` value will appear in group headings and the navigation tree.
+- `Description` is currently unused.
+
+The `DataSource` specified here will be applied to all properties, however properties may override data source properties as needed.
+
+- `Persistence` may have several values:
+  - `ProjectFile` means that the value will be read and written from the project file directly.
+  - `ProjectFileWithInterception` means that a MEF part exists that will handle read/write operations for the property (see below).
+- `HasConfigurationCondition` controls whether the property is intended to be varied by project configuration (e.g. Debug/Release, platform, target framework...). Setting this to true allows varying property values by configuration dimensions.
+
+### Categories
+
+Unless otherwise specified, each property will be placed into the `General` category.
+
+If you wish to assign properties to specific categories, you must declare them up-front as follows:
+
+```xml
+  <Rule.Categories>
+    <Category Name="General"
+              DisplayName="General"
+              Description="General settings for the application." />
+    <Category Name="Resources"
+              DisplayName="Resources"
+              Description="Resource settings for the application." />
+  </Rule.Categories>
+```
+
+- `Name` is a non-visible identifier, used in properties' `Category` attributes.
+- `DisplayName` value will appear in group headings and the navigation tree.
+- `Description` is currently unused.
+
+### An example property
 
 Here is a complex example of a string property that demonstrates the majority of features we will discuss below.
 
@@ -29,8 +109,11 @@ Here is a complex example of a string property that demonstrates the majority of
 
 Breaking this down:
 
-- The outer element specifies the _property type_ (see [Property Types](#Property-Types))
-- The property defines some metadata values
+- The outer element specifies the [property type](#Property-Types) (`StringProperty` in this example).
+- `DisplayName` and `Description` are localised values that will appear in the UI.
+- `HelpUrl` is an optional URL that causes a help icon to appear next to the property's name. For Microsoft components, this should be a fwlink, to allow fixing dead links in future.
+- `Category` is an optional string that must match the `Name` of a declared category (see above). If omitted, the property is assigned category `General`.
+- This property defines some optional metadata values:
   - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#Property-Dependencies))
   - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility Conditions](visibility-conditions.md))
 
@@ -271,13 +354,3 @@ It is possible to achieve this by authoring a property whose data source uses `P
 ## Localization
 
 XAML files in the dotnet/project-system repo are configured for automatic localization via XLF files, which are automatically generated and updated during build via [xliff-tasks](https://github.com/dotnet/xliff-tasks) MSBuild tasks/targets.
-
-## Examples
-
-- [Add `WarningsNotAsErrors` property](https://github.com/dotnet/project-system/pull/6971) &mdash; Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
-- [Reorder properties within a page](https://github.com/dotnet/project-system/pull/7038) &mdash; Demonstrates reordering properties within a single category on a single page. This simple change is made entirely within a XAML rule file.
-- [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
-- [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
-- [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
-- [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
-- [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
