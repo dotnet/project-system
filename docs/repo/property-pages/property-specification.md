@@ -2,6 +2,18 @@
 
 This document details how properties are specified, which controls their appearance and behavior in the Project Properties UI and how they are written to the project file.
 
+## Examples
+
+Firstly, here are some commits and PRs that provide good examples of common changes you might make to a set of properties:
+
+- [Add `WarningsNotAsErrors` property](https://github.com/dotnet/project-system/pull/6971) &mdash; Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
+- [Reorder properties within a page](https://github.com/dotnet/project-system/pull/7038) &mdash; Demonstrates reordering properties within a single category on a single page. This simple change is made entirely within a XAML rule file.
+- [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
+- [Add a paragraph between properties](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
+- [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
+- [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
+- [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
+
 ## XAML Rule Files
 
 The set of properties to display in the UI are outlined declaratively in XAML files that ship with the Project System. This means that most modifications to the Project Properties UI can be achieved by simply modifying an XML file.
@@ -271,13 +283,3 @@ It is possible to achieve this by authoring a property whose data source uses `P
 ## Localization
 
 XAML files in the dotnet/project-system repo are configured for automatic localization via XLF files, which are automatically generated and updated during build via [xliff-tasks](https://github.com/dotnet/xliff-tasks) MSBuild tasks/targets.
-
-## Examples
-
-- [Add `WarningsNotAsErrors` property](https://github.com/dotnet/project-system/pull/6971) &mdash; Demonstrates the addition of a new property, the use of `VisibilityCondition` and `DependsOn` metadata, and the implementation of an `IInterceptingPropertyValueProvider`. Includes an extensive explanation of the change in the commit message.
-- [Reorder properties within a page](https://github.com/dotnet/project-system/pull/7038) &mdash; Demonstrates reordering properties within a single category on a single page. This simple change is made entirely within a XAML rule file.
-- [Add a new page of properties](https://github.com/dotnet/project-system/commit/a442d8e91fec98cb493d924f0903308efe188344) &mdash; Adds a new, empty, page that will appear as a top-level navigation item in the Project Properties UI.
-- [Add a description property](https://github.com/dotnet/project-system/commit/64b7693e104a725fc0ac9d2bbda76909d9a7b9d1) &mdash; Adds a single synthetic property which appears in the UI as a fixed (localized) block of text.
-- [Add search term alias](https://github.com/dotnet/project-system/pull/7041) &mdash; shows how to add additional terms for the purposes of search. These terms will not appear in the UI, but will cause a search operation to match the property. Useful for synonyms and common misspellings.
-- [Add an editor type](https://devdiv.visualstudio.com/DevDiv/_git/CPS/pullrequest/312423) (MS internal) &mdash; Adds a new editor type, which a property may elect to display itself in the UI.
-- [Change a string property to allow multiple lines of text](https://github.com/dotnet/project-system/commit/5a37eb52aeb93ae5f8a13c2cccfde79ae371a9ac) &mdash; Shows using the `MultiLineString` editor so that a property may have more than one line of text entered.
