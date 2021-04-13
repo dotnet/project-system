@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var expected = "echo $(ProjectDir)";
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", expected);
-            var (success, actual) = await systemUnderTest.TryGetPropertyAsync(projectProperties);
+            var (success, actual) = await systemUnderTest.TryGetUnevaluatedPropertyValueAsync(projectProperties);
             Assert.True(success);
             Assert.Equal(expected, actual);
         }

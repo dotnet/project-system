@@ -22,16 +22,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             _helper = helper;
         }
 
+        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(
+            string propertyName,
+            string unevaluatedPropertyValue,
+            IProjectProperties defaultProperties)
+        {
+            (bool success, string? property) = await _helper.TryGetUnevaluatedPropertyValueAsync(defaultProperties);
+
+            if (success)
+            {
+                return property ?? string.Empty;
+            }
+
+            return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.TryGetValueFromTarget(projectXml)) ?? string.Empty;
+        }
+
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(
             string propertyName,
             string evaluatedPropertyValue,
             IProjectProperties defaultProperties)
         {
-            (bool success, string? property) = await _helper.TryGetPropertyAsync(defaultProperties);
+            (bool success, string property) = await _helper.TryGetEvaluatedPropertyValueAsync(defaultProperties);
 
             if (success)
             {
-                return property ?? string.Empty;
+                return property;
             }
 
             return await _projectAccessor.OpenProjectXmlForReadAsync(_unconfiguredProject, projectXml => _helper.TryGetValueFromTarget(projectXml)) ?? string.Empty;

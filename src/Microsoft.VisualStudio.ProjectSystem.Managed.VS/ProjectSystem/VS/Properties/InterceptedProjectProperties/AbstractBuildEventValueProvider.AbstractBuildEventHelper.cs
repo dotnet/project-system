@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<(bool success, string? property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
+            public async Task<(bool success, string? value)> TryGetUnevaluatedPropertyValueAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
@@ -41,6 +41,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
 
                 return (false, null);
+            }
+
+            public async Task<(bool success, string value)> TryGetEvaluatedPropertyValueAsync(IProjectProperties defaultProperties)
+            {
+                string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
+
+                if (unevaluatedPropertyValue is null)
+                {
+                    return (false, "");
+                }
+
+                string evaluatedPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(BuildEvent);
+                return (true, evaluatedPropertyValue);
             }
 
             public string? TryGetValueFromTarget(ProjectRootElement projectXml)
