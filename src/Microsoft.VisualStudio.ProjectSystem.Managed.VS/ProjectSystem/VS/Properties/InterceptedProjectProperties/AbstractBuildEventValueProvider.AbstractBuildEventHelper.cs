@@ -45,7 +45,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
 
             public string? GetProperty(ProjectRootElement projectXml)
             {
-                return GetFromTargets(projectXml);
+                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
+
+                if (execTask == null)
+                {
+                    return null;
+                }
+
+                if (execTask.Parameters.TryGetValue(Command, out string commandText))
+                {
+                    return commandText.Replace("%25", "%");
+                }
+
+                return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
             public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -80,23 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
 
                 SetParameter(projectXml, unevaluatedPropertyValue);
-            }
-
-            private string? GetFromTargets(ProjectRootElement projectXml)
-            {
-                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
-
-                if (execTask == null)
-                {
-                    return null;
-                }
-
-                if (execTask.Parameters.TryGetValue(Command, out string commandText))
-                {
-                    return commandText.Replace("%25", "%");
-                }
-
-                return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
             private static bool OnlyWhitespaceCharacters(string unevaluatedPropertyValue)
