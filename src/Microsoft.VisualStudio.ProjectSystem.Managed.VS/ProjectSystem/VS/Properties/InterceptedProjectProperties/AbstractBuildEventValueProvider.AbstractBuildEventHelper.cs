@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return (false, null);
             }
 
-            public string? GetProperty(ProjectRootElement projectXml)
+            public string? TryGetValueFromTarget(ProjectRootElement projectXml)
             {
                 ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
 
