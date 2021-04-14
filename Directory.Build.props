@@ -36,6 +36,8 @@
 
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ForceGenerationOfBindingRedirects>true</ForceGenerationOfBindingRedirects>
+
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <!-- 
