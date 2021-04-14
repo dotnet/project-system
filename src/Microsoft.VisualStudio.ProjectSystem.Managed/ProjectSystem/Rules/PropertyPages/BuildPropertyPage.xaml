@@ -91,6 +91,30 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <!-- TODO create fwlink for this HelpUrl, and find or create a better documentation source -->
+  <EnumProperty Name="DebugType"
+                DisplayName="Debug symbols"
+                Description="Specifies the kind of debug symbols produced during build."
+                HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
+                Category="General">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="none"
+               DisplayName="No symbols are emitted" />
+    <!--
+    Note that 'pdbonly' is the same as 'full'.
+    <EnumValue Name="pdbonly"
+               DisplayName="PDB Only" />
+    -->
+    <EnumValue Name="full"
+               DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable"
+               DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded"
+               DisplayName="Embedded in DLL/EXE, portable across platforms" />
+  </EnumProperty>
+
   <StringProperty Name="LangVersion"
                   DisplayName="Language version"
                   Description="Why can't I select the C# language version?">

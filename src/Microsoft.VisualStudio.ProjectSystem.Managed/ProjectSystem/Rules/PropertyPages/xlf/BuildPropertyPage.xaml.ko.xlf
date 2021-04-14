@@ -142,6 +142,16 @@
         <target state="translated">강력한 이름 지정</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="new">Debug symbols</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
         <target state="translated">ICE(내부 컴파일러 오류) 보고서가 Microsoft로 전송되는 경우를 제어합니다.</target>
@@ -200,6 +210,26 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">경고 수준</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="new">PDB file, current platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="new">No symbols are emitted</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="new">PDB file, portable across platforms</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
