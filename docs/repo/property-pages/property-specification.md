@@ -145,13 +145,27 @@ Most `StringProperty` properties are expected to have short values that fit on o
 If a property is expected to have multiple lines of text, the editor should be changed to `MultiLineString`. For example:
 
 ```xml
-<StringProperty Name="Description"
-                DisplayName="Description"
-                Description="A description of the package for UI display."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147238"
-                Category="General">
+<StringProperty Name="MyMultiLineProperty"
+                DisplayName="A Multi-line Property"
+                Description="A property that may contain multiple lines of text.">
   <StringProperty.ValueEditors>
     <ValueEditor EditorType="MultiLineString" />
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
+If the text within this editor should be displayed with a monospace (fixed width) font, as would be common for code or other text which might be expected to align by column, add `UseMonospaceFont` following metadata with a value of `True`:
+
+```xml
+<StringProperty Name="MyMultiLineProperty"
+                DisplayName="A Multi-line Property"
+                Description="A property that may contain multiple lines of text.">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="MultiLineString">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="UseMonospaceFont" Value="True" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
   </StringProperty.ValueEditors>
 </StringProperty>
 ```
