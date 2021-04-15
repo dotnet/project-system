@@ -8,6 +8,7 @@
 .vs/
 .vscode/
 .tools/
+/build/loc/Properties/launchSettings.json
 
 # Build results, but not the debug folder under projectsystem
 [Aa]rtifacts/
