@@ -260,6 +260,11 @@
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "GenerateDocumentationFile")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
   </BoolProperty>
 
   <!-- TODO consider removing this property from the UI altogether -->

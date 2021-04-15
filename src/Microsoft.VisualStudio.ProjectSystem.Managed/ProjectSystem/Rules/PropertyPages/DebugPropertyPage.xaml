@@ -18,6 +18,11 @@
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
                   Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
     </StringProperty.ValueEditors>
@@ -25,6 +30,11 @@
 
   <StringProperty Name="OpenLaunchProfilesEditor"
                   DisplayName="Open debug launch profiles UI">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="LinkAction">
         <ValueEditor.Metadata>
