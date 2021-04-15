@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return AddMessageResult.NotHandled;
 
-            bool handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            bool? handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
 
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return TaskResult.False;
             });
 
-            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
+            return handled ?? false ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)
