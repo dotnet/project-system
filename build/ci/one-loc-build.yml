@@ -1,0 +1,43 @@
+# Name: DotNet-Project-System OneLocBuild
+# Pipeline: https://dev.azure.com/dnceng/public/_build?definitionId=981
+#
+# Creates the OneLocBuild PR for localization of the dotnet/project-system
+#
+
+resources:
+- repo: self
+  clean: true
+pool:
+  name: NetCorePublic-Pool
+  queue: BuildPool.Windows.10.Amd64.VS2019.Pre.Open
+  demands: Cmd
+  timeoutInMinutes: 15
+variables:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Run Localization Setup
+  inputs:
+    command: 'run'
+    projects: 'build\loc\OneLocBuildSetup.csproj'
+    arguments: '-- -r "$(System.DefaultWorkingDirectory)" -o "$(Build.ArtifactStagingDirectory)"'
+
+- task: OneLocBuild@2
+  displayName: Run Localization Process
+  inputs:
+    locProj: '$(Build.ArtifactStagingDirectory)\loc\LocProject.json'
+    isCreatePrSelected: true
+    isAutoCompletePrSelected: false
+    repoType: gitHub
+    gitHubPatVariable: '$(GitHubPat)'
+    packageSourceAuth: patAuth
+    patVariable: '$(OneLocBuildPat)'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Localization Artifacts
+  condition: succeededOrFailed()
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\loc'
+    ArtifactName: 'OneLocBuild'
+    publishLocation: 'Container'

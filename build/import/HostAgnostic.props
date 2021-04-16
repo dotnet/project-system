@@ -3,7 +3,7 @@
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="'$(IsTestProject)' == 'true'">true</BannedSymbolsOptOut>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <!-- Framework -->
     <Reference Include="PresentationCore" />
@@ -14,7 +14,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
-    
+
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="All" />
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="All" />
@@ -28,7 +28,7 @@
     <PackageReference Include="Codecov"                             ExcludeAssets="all" />
     <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
-    
+
     <!-- CPS -->
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
@@ -38,12 +38,12 @@
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
-    
+
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
-    
+
     <!-- Analyzers-->
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />

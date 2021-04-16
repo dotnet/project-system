@@ -88,10 +88,6 @@
     <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
 
-    <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
-    <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
-    <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
-
     <!-- CPS -->
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.10.137-pre" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.10.137-pre" />
@@ -137,6 +133,12 @@
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
 
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IncludeVSSDKPackages)' != 'false'">
+    <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
+    <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
+    <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
   </ItemGroup>
 
 </Project>
