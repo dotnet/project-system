@@ -184,49 +184,43 @@
   </EnumProperty>
 
   <StringProperty Name="NoWarn"
-                  DisplayName="Suppress warnings"
-                  Description="Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  DisplayName="Suppress specific warnings"
+                  Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
                   Category="ErrorsAndWarnings" />
 
-  <EnumProperty Name="TreatWarningsAsErrors"
+  <BoolProperty Name="TreatWarningsAsErrors"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
-                Description="Used to specify which warnings are treated as errors."
+                Description="Instruct the compiler to treat warnings as errors."
                 Category="ErrorsAndWarnings" >
-
-    <EnumProperty.DataSource>
+    <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" />
-    </EnumProperty.DataSource>
-
-    <EnumValue Name="false"
-               DisplayName="None" />
-    <EnumValue Name="true"
-               DisplayName="All" />
-  </EnumProperty>
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Treat specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "false")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" false)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
 
   <StringProperty Name="WarningsNotAsErrors"
-                  DisplayName="Exempt specific warnings from being treated as errors"
+                  DisplayName="Exclude specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "true")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
