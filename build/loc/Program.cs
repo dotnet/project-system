@@ -8,12 +8,13 @@ using System.Linq;
 using System.Text.Json;
 using CommandLine;
 
-// ReSharper disable SuggestVarOrType_BuiltInTypes
-// ReSharper disable SuggestVarOrType_Elsewhere
-
 namespace OneLocBuildSetup
 {
     [SuppressMessage("Style", "IDE0008:Use explicit type")]
+    [SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression")]
+    [SuppressMessage("ReSharper", "SuggestVarOrType_BuiltInTypes")]
+    [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal class Program
     {
         private const string XlfExtension = ".xlf";
