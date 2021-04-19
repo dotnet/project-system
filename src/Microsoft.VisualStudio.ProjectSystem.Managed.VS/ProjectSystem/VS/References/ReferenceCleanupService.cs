@@ -121,26 +121,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return command;
         }
 
-        private IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler,
-            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            IProjectSystemUpdateReferenceOperation? command;
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed)
+        private IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
+            AbstractReferenceHandler referenceHandler,
+            ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken) =>
+            referenceUpdate.Action switch
             {
-                command = referenceHandler.CreateSetAttributeCommand(selectedConfiguredProject, referenceUpdate);
-            }
-            else if (referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
-            {
-                command = referenceHandler.CreateUnSetAttributeCommand(selectedConfiguredProject, referenceUpdate);
-            }
-            else
-            {
-                // ProjectSystemUpdateAction.Remove:
-                command = referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate);
-            }
-            return command;
-        }
+                ProjectSystemUpdateAction.SetTreatAsUsed => referenceHandler.CreateSetAttributeCommand(
+                    selectedConfiguredProject, referenceUpdate),
+                ProjectSystemUpdateAction.UnsetTreatAsUsed => referenceHandler.CreateUnSetAttributeCommand(
+                    selectedConfiguredProject, referenceUpdate),
+                ProjectSystemUpdateAction.Remove => referenceHandler.CreateRemoveReferenceCommand(
+                    selectedConfiguredProject, referenceUpdate)
+            };
     }
 }

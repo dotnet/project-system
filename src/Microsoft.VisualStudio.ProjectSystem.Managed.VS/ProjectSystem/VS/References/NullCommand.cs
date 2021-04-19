@@ -2,19 +2,20 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
-    class NullCommand : IProjectSystemUpdateReferenceOperation
+    internal class NullCommand : IProjectSystemUpdateReferenceOperation
     {
         public Task<bool> ApplyAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
 
         public Task<bool> RevertAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(false);
+            return TaskResult.False;
         }
     }
 }
