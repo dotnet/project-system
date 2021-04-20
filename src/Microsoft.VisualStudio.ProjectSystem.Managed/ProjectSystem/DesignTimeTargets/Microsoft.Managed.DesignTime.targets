@@ -222,6 +222,18 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SdkSupportedTargetPlatformIdentifier.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SdkSupportedTargetPlatformVersion.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedTargetFrameworkAlias.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
