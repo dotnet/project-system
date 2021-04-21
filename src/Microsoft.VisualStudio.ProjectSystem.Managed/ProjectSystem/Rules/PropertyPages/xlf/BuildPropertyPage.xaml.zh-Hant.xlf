@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
         <source>Treat warnings as errors</source>
-        <target state="new">Treat warnings as errors</target>
+        <target state="translated">將警告視為錯誤</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
