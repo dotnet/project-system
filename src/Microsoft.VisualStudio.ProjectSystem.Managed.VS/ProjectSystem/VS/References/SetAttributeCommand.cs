@@ -1,12 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
-    internal class SetAttributeCommand : IReferenceCommand
+    internal class SetAttributeCommand : IProjectSystemUpdateReferenceOperation
     {
         private readonly ConfiguredProject _selectedConfiguredProject;
         private readonly string _itemSpecification;
@@ -19,32 +20,41 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _itemSpecification = itemSpecification;
         }
 
-        public async Task ExecuteAsync()
+        public async Task<bool> ApplyAsync(CancellationToken cancellationToken)
+        {
+            IProjectItem item = await GetProjectItem();
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(true), null);
+
+            return true;
+        }
+        
+        public async Task<bool> RevertAsync(CancellationToken cancellationToken)
+        {
+            IProjectItem item = await GetProjectItem();
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(false), null);
+
+            return true;
+        }
+
+        private async Task<IProjectItem> GetProjectItem()
         {
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
             var item = projectItems
                 .FirstOrDefault(c => c.EvaluatedInclude == _itemSpecification);
-
-            if (item != null)
-            {
-                await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(true), null);
-            }
+            return item;
         }
-
-        public async Task UndoAsync()
-        {
-            var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
-
-            var item = projectItems
-                .FirstOrDefault(c => c.EvaluatedInclude == _itemSpecification);
-
-            if (item != null)
-            {
-                await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(false), null);
-            }
-        }
-
-        public Task RedoAsync() => ExecuteAsync();
     }
 }
