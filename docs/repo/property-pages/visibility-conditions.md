@@ -75,24 +75,25 @@ Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
 
 The following table details the default set of visibility expression functions:
 
-| Function               | Arity    | Description                                                                                     |
-|------------------------|----------|-------------------------------------------------------------------------------------------------|
-| `add`                  | Variadic | Adds integer arguments                                                                          |
-| `concat`               | Variadic | Concatenates string arguments                                                                   |
-| `eq`                   | 2        | Computes `arg0 == arg1`                                                                         |
-| `ne`                   | 2        | Computes `arg0 != arg1`                                                                         |
-| `lt`                   | 2        | Computes `arg0 <  arg1`                                                                         |
-| `lte`                  | 2        | Computes `arg0 <= arg1`                                                                         |
-| `gt`                   | 2        | Computes `arg0 >  arg1`                                                                         |
-| `gte`                  | 2        | Computes `arg0 >= arg1`                                                                         |
-| `and`                  | Variadic | Computes logical AND of arguments                                                               |
-| `or`                   | Variadic | Computes logical OR of arguments                                                                |
-| `xor`                  | 2        | Computes exclusive logical OR of arguments                                                      |
-| `not`                  | 1        | Computes logical NOT of argument                                                                |
-| `evaluated`            | 2        | Returns the evaluated value of property on page `arg0` with name `arg1`                         |
-| `unevaluated`          | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
-| `has-evaluated-value`  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
-| `is-codespaces-client` | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
+| Function                 | Arity    | Description                                                                                     |
+|--------------------------|----------|-------------------------------------------------------------------------------------------------|
+| `add`                    | Variadic | Adds integer arguments                                                                          |
+| `concat`                 | Variadic | Concatenates string arguments                                                                   |
+| `eq`                     | 2        | Computes `arg0 == arg1`                                                                         |
+| `ne`                     | 2        | Computes `arg0 != arg1`                                                                         |
+| `lt`                     | 2        | Computes `arg0 <  arg1`                                                                         |
+| `lte`                    | 2        | Computes `arg0 <= arg1`                                                                         |
+| `gt`                     | 2        | Computes `arg0 >  arg1`                                                                         |
+| `gte`                    | 2        | Computes `arg0 >= arg1`                                                                         |
+| `and`                    | Variadic | Computes logical AND of arguments                                                               |
+| `or`                     | Variadic | Computes logical OR of arguments                                                                |
+| `xor`                    | 2        | Computes exclusive logical OR of arguments                                                      |
+| `not`                    | 1        | Computes logical NOT of argument                                                                |
+| `evaluated`              | 2        | Returns the evaluated value of property on page `arg0` with name `arg1`                         |
+| `unevaluated`            | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
+| `has-evaluated-value`    | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
+| `is-codespaces-client`   | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
+| `has-project-capability` | 1        | Returns true if the project has the specified capability.                                       |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
