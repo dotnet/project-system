@@ -150,8 +150,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.NotNull(_context);
 
+            // The order of options matters and we should use warnaserror- and then warnaserror+
+            // Depending which comes first, the compiler produces different diagnostics.
+            // We just need to move warnaserror+ to the end.
+            var warnaserrorPlus = snapshot.Items.Where(a => a.Key.Contains("/warnaserror+")).FirstOrDefault();
+            ImmutableArray<string> commandLineArguments = warnaserrorPlus.Key is null ? snapshot.Items.Keys.ToImmutableArray() : 
+                snapshot.Items.Remove(warnaserrorPlus.Key).Keys.ToArray().Append(warnaserrorPlus.Key).ToImmutableArray();
+ 
             // We just pass all options to Roslyn
-            _context.SetOptions(snapshot.Items.Keys.ToImmutableArray());
+            _context.SetOptions(commandLineArguments);
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)
