@@ -71,7 +71,7 @@ You should now be able to build and see the MyPropertyPage.xaml copied as-is to 
 
 Next you need to update your .props or .targets files to properly reference the property page so Visual Studio can find it. Note that the creation and distribution of the .props and .targets files (as well as the distribution of MyPropertyPage.xaml itself) is beyond the scope of this document.
 
-Add the following item to your .targets file:
+Add the following item to your .props or .targets file:
 
 ``` xml
 <PropertyPageSchema Include="path\to\MyPropertyPage.xaml">
