@@ -12,11 +12,16 @@ This documentation details the updated Project Properties UI and associated back
 4. Extensibility. We need to support 3rd parties (both internal and external) adding both entirely new pages _and_ customizing the pages we provide. 
 5. Support new functionality. We want to enable scenarios such as searching for properties, editing the MSBuild expressions that underpin many properties, and collecting the most commonly used properties in one area.
 
-## How-To Guides
+## Customising Project Properties
 
-These guides describe how to get specific scenarios up and running, step by step.
+To customise or extend the properties displayed for a given project start with these HOW TO guides:
 
 - [HOW TO: Add a new property page](how-to-add-a-new-property-page.md)
+
+And then check these documents for more details:
+
+- [Property Specification](property-specification.md)
+- [Visibility Conditions](visibility-conditions.md)
 
 ## Architecture
 
@@ -26,10 +31,3 @@ Each layer is documented in more detail:
 
 - [UI Architecture](ui-architecture.md)
 - [Back-end Architecture](back-end-architecture.md)
-
-## Customising Project Properties
-
-If your goal is to customise or extend the properties displayed for a given project, you're unlikely to need information about the architecture of the system. Instead, start with these documents:
-
-- [Property Specification](property-specification.md)
-- [Visibility Conditions](visibility-conditions.md)
