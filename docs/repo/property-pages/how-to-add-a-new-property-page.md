@@ -10,7 +10,11 @@ In this option, the XAML resides in a standalone .xaml file on disk and is inclu
 
 This may be an attractive option if you already have a NuGet package or Visual Studio extension that injects MSBuild .props and .targets files into the end user's project, or if you want to use MSBuild `Condition`s to control when the property page is available to a project. 
 
-### Step 1: Define the XAML file
+### Step 1 (optional): Add the Microsoft.Build.Framework package
+
+Use the NuGet Package Manager to add the Microsoft.Build.Framework package to your project. This is an optional step, but it will allow the XAML editor to find the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) type (and related types) and provide code completion, tool tips, Go to Definition, and other features while you type.
+
+### Step 2: Define the XAML file
 
 Add a new XAML file named "MyPropertyPage.xaml" to your project. Depending on how the file is created you may end up with a `<Page>` item in your project but this is not what we want as we're not using the file to describe a piece of WPF UI.
 
@@ -31,11 +35,19 @@ Update your project to replace the `<Page>` item with one of the following:
 
 Now VS won't do anything with this file but copy it to the output directory when you build.
 
-### Step 2 (optional): Add the Microsoft.Build.Framework package
+### Step 3: Define the `PropertyPageSchema` item
 
-Use the NuGet Package Manager to add the Microsoft.Build.Framework package to your project. This is an optional step, but it will allow the XAML editor to find the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) type (and related types) and provide code completion, tool tips, Go to Definition, and other features while you type.
+Next you need to update the .props or .targets files imported by the end users' projects to properly reference the property page so Visual Studio can find it. Note that the creation and distribution of the .props and .targets files (as well as the distribution of MyPropertyPage.xaml itself) is beyond the scope of this document.
 
-### Step 3: Describe the property page
+Add the following item to your .props or .targets file:
+
+``` xml
+<PropertyPageSchema Include="path\to\MyPropertyPage.xaml">
+  <Context>Project</Context>
+</PropertyPageSchema>
+```
+
+### Step 4: Describe the property page
 
 Replace the contents of MyPropertyPage.xaml with the following:
 
@@ -66,18 +78,6 @@ The format of the file is described in detail in [Property Specification](proper
 - The `PageTemplate` attribute must have the value `"generic"`.
 
 You should now be able to build and see the MyPropertyPage.xaml copied as-is to the output directory.
-
-### Step 4: Define the `PropertyPageSchema` item
-
-Next you need to update your .props or .targets files to properly reference the property page so Visual Studio can find it. Note that the creation and distribution of the .props and .targets files (as well as the distribution of MyPropertyPage.xaml itself) is beyond the scope of this document.
-
-Add the following item to your .props or .targets file:
-
-``` xml
-<PropertyPageSchema Include="path\to\MyPropertyPage.xaml">
-  <Context>Project</Context>
-</PropertyPageSchema>
-```
 
 And you're done. Projects that import the .targets file will now show this page when editing the project properties.
 
