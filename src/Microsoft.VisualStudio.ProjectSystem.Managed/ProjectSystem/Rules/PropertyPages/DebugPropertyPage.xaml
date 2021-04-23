@@ -22,6 +22,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
@@ -34,6 +35,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="LinkAction">
