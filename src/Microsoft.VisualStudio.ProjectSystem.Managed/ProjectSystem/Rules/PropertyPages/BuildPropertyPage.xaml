@@ -98,7 +98,8 @@
                 HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
                 Category="General">
     <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False" />
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
     <EnumValue Name="none"
                DisplayName="No symbols are emitted" />
