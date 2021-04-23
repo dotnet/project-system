@@ -18,18 +18,6 @@
   <ItemGroup>
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
     <PackageReference Include="EnvDTE" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.12.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.6.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" Version="$(VSSDK_GeneralVersion)" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.VisualStudio.TextManager.Interop.10.0" Version="10.0.30320" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
