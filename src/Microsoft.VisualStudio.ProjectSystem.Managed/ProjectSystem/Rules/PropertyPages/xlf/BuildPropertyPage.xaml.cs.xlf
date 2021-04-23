@@ -152,6 +152,11 @@
         <target state="new">Debug symbols</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="new">debug type</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
         <target state="translated">Určuje, kdy se budou Microsoftu posílat zprávy o vnitřních chybách kompilátoru (ICE).</target>

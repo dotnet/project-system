@@ -101,6 +101,9 @@
       <DataSource HasConfigurationCondition="False"
                   Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="debug type" />
+    </EnumProperty.Metadata>
     <EnumValue Name="none"
                DisplayName="No symbols are emitted" />
     <!--
