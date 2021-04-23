@@ -176,15 +176,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 "XmpCore"
             };
 
-            // TODO: Merged PIAs - uncomment this once Microsoft.Test.Apex.VisualStudio is updated
-            //var projects = (Array)VisualStudio.Dte.ActiveSolutionProjects;
-            //var vsproject = (VSLangProj.VSProject)projects.Cast<EnvDTE.Project>().First().Object;
-            //var actual = vsproject.References
-            //    .Cast<VSLangProj.Reference>()
-            //    .Select(r => r.Name)
-            //    .ToList();
+            var projects = (Array)VisualStudio.Dte.ActiveSolutionProjects;
+            var vsproject = (VSLangProj.VSProject)projects.Cast<EnvDTE.Project>().First().Object;
+            var actual = vsproject.References
+                .Cast<VSLangProj.Reference>()
+                .Select(r => r.Name)
+                .ToList();
 
-            //CollectionAssert.AreEquivalent(expected, actual);
+            CollectionAssert.AreEquivalent(expected, actual);
         }
     }
 }
