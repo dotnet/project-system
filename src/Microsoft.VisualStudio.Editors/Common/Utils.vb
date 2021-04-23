@@ -8,6 +8,7 @@ Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.Versioning
 Imports System.Text
+Imports System.Text.Json
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
@@ -1665,5 +1666,22 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         End Class
 #End Region
+
+        Public Class SerializationProvider
+
+            Public Shared Sub Serialize(Of T)(stream As Stream, value As T)
+                Dim writer As New StreamWriter(stream)
+                writer.Write(JsonSerializer.Serialize(value))
+                writer.Flush()
+                stream.Position = 0
+            End Sub
+
+            Public Shared Function Deserialize(Of T)(stream As Stream) As T
+                Dim streamAsString = New StreamReader(stream).ReadToEnd()
+                Return JsonSerializer.Deserialize(Of T)(streamAsString)
+            End Function
+
+        End Class
+
     End Module
 End Namespace

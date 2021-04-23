@@ -4,7 +4,6 @@ Imports System.ComponentModel
 Imports System.ComponentModel.Design
 Imports System.IO
 Imports System.Runtime.Serialization
-Imports System.Runtime.Serialization.Formatters.Binary
 Imports Microsoft.VisualStudio.Editors.AppDesCommon
 
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
@@ -133,7 +132,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Public Shared Function Load(Stream As Stream) As PropertyPageSerializationStore
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(PropertyPageSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
-                Return DirectCast((New BinaryFormatter).Deserialize(Stream), PropertyPageSerializationStore)
+                'Return DirectCast((New BinaryFormatter).Deserialize(Stream), PropertyPageSerializationStore)
+                'Return New PropertyPageSerializationStore
+                'Dim streamAsString = New StreamReader(Stream).ReadToEnd()
+                'Return JsonSerializer.Deserialize(Of PropertyPageSerializationStore)(streamAsString)
+                Return SerializationProvider.Deserialize(Of PropertyPageSerializationStore)(Stream)
             End Function
 
             ''' <summary>
@@ -148,7 +151,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(PropertyPageSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
-                Call (New BinaryFormatter).Serialize(Stream, Me)
+                'Call (New BinaryFormatter).Serialize(Stream, Me)
+                'Dim writer As New StreamWriter(Stream)
+                'writer.Write(JsonSerializer.Serialize(Me))
+                'writer.Flush()
+                'Stream.Position = 0
+                SerializationProvider.Serialize(Stream, Me)
             End Sub
 
 #End Region
@@ -293,7 +301,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Debug.Assert(ComponentToSerializeTo IsNot Nothing, "Should never occur for PropertyPages")
 
                             'Deserialize the property value and apply it to the Component instance
-                            SetProperty(ComponentToSerializeTo, SerializedObject.PropertyName, SerializedObject.GetPropertyValue())
+                            SetProperty(ComponentToSerializeTo, SerializedObject.PropertyName, SerializedObject.GetPropertyValue(Of Component))
 
                             '... and add the Component to our list
                             If Not NewObjects.Contains(ComponentToSerializeTo) Then
@@ -513,8 +521,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
                     Dim MemoryStream As New MemoryStream
-                    Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
-                    Return MemoryStream.ToArray()
+                    'Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
+                    'Dim writer As New StreamWriter(memoryStream)
+                    'writer.Write(JsonSerializer.Serialize([Object]))
+                    'writer.Flush()
+                    SerializationProvider.Serialize(MemoryStream, [Object])
+                    Return memoryStream.ToArray()
                 End Function
 
                 ''' <summary>
@@ -529,14 +541,16 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), PropPageDesignerRootComponent)
+                    'Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), PropPageDesignerRootComponent)
+                    'Return New PropPageDesignerRootComponent
+                    Return SerializationProvider.Deserialize(Of PropPageDesignerRootComponent)(MemoryStream)
                 End Function
 
                 ''' <summary>
                 ''' Deserializes a property value which has been serialized.
                 ''' </summary>
                 ''' <remarks>Can only be called if IsEntireComponentObject = False</remarks>
-                Public Function GetPropertyValue() As Object
+                Public Function GetPropertyValue(Of T)() As T
                     If IsEntireComponentObject() Then
                         Throw New Package.InternalException
                     End If
@@ -548,7 +562,9 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return (New BinaryFormatter).Deserialize(MemoryStream)
+                    'Return (New BinaryFormatter).Deserialize(MemoryStream)
+                    'Return New MemoryStream
+                    Return SerializationProvider.Deserialize(Of T)(MemoryStream)
                 End Function
 
             End Class 'SerializedProperty
