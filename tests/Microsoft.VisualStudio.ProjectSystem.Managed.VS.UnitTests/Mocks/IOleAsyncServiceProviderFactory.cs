@@ -8,13 +8,12 @@ namespace Microsoft.VisualStudio.Shell.Interop
 {
     internal static class IOleAsyncServiceProviderFactory
     {
-        public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object? service, Guid clsid)
+        public static IOleAsyncServiceProvider ImplementQueryServiceAsync(object? service, Type clsid)
         {
             var mock = new Mock<IOleAsyncServiceProvider>();
 
-            //TODO: Merged PIAs
-            //mock.Setup(p => p.QueryServiceAsync(ref clsid))
-            //  .Returns(IVsTaskFactory.FromResult(service));
+            mock.Setup(p => p.GetServiceAsync(clsid))
+              .Returns((System.Threading.Tasks.Task<object?>)IVsTaskFactory.FromResult(service));
 
             return mock.Object;
         }
