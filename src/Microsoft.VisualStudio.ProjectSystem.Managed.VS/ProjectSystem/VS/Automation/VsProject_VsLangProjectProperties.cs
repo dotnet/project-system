@@ -178,6 +178,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 
         public object get_Extender(string ExtenderName) => throw new NotImplementedException();
 
-        public object Extender => throw new NotImplementedException();
+        object VSLangProj.ProjectProperties.Extender => throw new NotImplementedException();
     }
 }

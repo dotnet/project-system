@@ -84,14 +84,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             // Gather the appliesTo metadata from all exports of the same part.
             var appliesToMetadata = new List<string>();
-            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
             {
                 if (exportDefinitionPair.Key?.IsStatic == true)
                     continue;
 
                 ExportDefinition exportDefinition = exportDefinitionPair.Value;
-                exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata);
-                appliesToMetadata.Add((string)metadata);
+                exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? metadata);
+                if (null != metadata)
+                    appliesToMetadata.Add((string)metadata);
             }
 
             // Now check all of them should be the same.
@@ -119,11 +120,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             if (definition!.Type.FullName == "Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.DependenciesSnapshotProvider")
                 return;
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> exportDefinitionPair in definition!.ExportDefinitions)
             {
                 ExportDefinition export = exportDefinitionPair.Value;
                 if (contractsWithFixedCapabilities.Contains(export.ContractName) &&
-                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object metadata) &&
+                    export.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? metadata) &&
                     metadata is string appliesTo)
                 {
                     IEnumerable<string> capabilities = GetRawCapabilities(appliesTo);
@@ -188,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition!.ExportDefinitions)
             {
                 var contractsRequiringMetadata = ComponentComposition.Instance.ContractsRequiringAppliesTo;
 
@@ -203,15 +204,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // If it matches one of the contract, we will report an error, because it lacks the required metadata.
                 if (contractsRequiringMetadata.TryGetValue(exportDefinition.ContractName, out ISet<Type> contractTypes))
                 {
-                    MemberRef exportMember = export.Key;
                     Type exportType;
-                    if (exportMember == null)
+                    if (export.Key == null)
                     {
                         exportType = definition.Type;
                     }
                     else
                     {
-                        exportType = exportMember.DeclaringType.Resolve();
+                        exportType = export.Key.DeclaringType.Resolve();
                     }
 
                     if (contractTypes.Any(t => t.IsAssignableFrom(exportType)))
@@ -266,7 +266,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
                 if (contracts.TryGetValue(importDefinition.ContractName, out ComponentComposition.ContractMetadata importContractMetadata) && importContractMetadata.Scope != null)
                 {
-                    foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition.ExportDefinitions)
+                    foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition.ExportDefinitions)
                     {
                         if (contracts.TryGetValue(export.Value.ContractName, out ComponentComposition.ContractMetadata exportContractMetadata) && exportContractMetadata.Scope != null)
                         {
@@ -311,7 +311,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             Assert.NotNull(definition);
 
-            foreach (KeyValuePair<MemberRef, ExportDefinition> export in definition!.ExportDefinitions)
+            foreach (KeyValuePair<MemberRef?, ExportDefinition> export in definition!.ExportDefinitions)
             {
                 ExportDefinition exportDefinition = export.Value;
                 if (!CheckContractHasMetadata(exportDefinition.ContractName, definition, ComponentComposition.Instance.Contracts, ComponentComposition.Instance.InterfaceNames))
@@ -334,7 +334,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static string GetContractName(ImportDefinition import)
         {
-            if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value))
+            if (import.Metadata.TryGetValue("System.ComponentModel.Composition.GenericContractName", out var value) && null != value)
             {
                 return (string)value;
             }
@@ -376,7 +376,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <returns>returns null if the metadata cannot be found.</returns>
         private static string? GetAppliesToMetadata(ExportDefinition exportDefinition)
         {
-            if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object appliesToMetadata))
+            if (exportDefinition.Metadata.TryGetValue(nameof(AppliesToAttribute.AppliesTo), out object? appliesToMetadata) && null != appliesToMetadata)
             {
                 return (string)appliesToMetadata;
             }

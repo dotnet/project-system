@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -68,30 +67,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return (itemid, _projectVsServices.VsHierarchy, containedLanguageFactory);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ApiDesign", "RS0030:Do not used banned APIs", Justification = "We are using IVsService and SwitchToUIThread")]
         private async Task<IVsContainedLanguageFactory?> GetContainedLanguageFactoryAsync()
         {
-            Guid languageServiceId = await GetLanguageServiceId();
-            if (languageServiceId == Guid.Empty)
+            Type languageServiceType = await GetLanguageServiceType();
+            if (languageServiceType == null)
                 return null;
 
             IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync();
 
-            //TODO: Merged PIAs
-            object service = null;// = await serviceProvider.QueryServiceAsync(ref languageServiceId);
+            object? service = await serviceProvider.GetServiceAsync(languageServiceType);
 
             // NOTE: While this type is implemented in Roslyn, we force the cast on 
             // the UI thread because they are free to change this to an STA object
             // which would result in an RPC call from a background thread.
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            return (IVsContainedLanguageFactory)service;
+            if(null != service)
+            {
+                return (IVsContainedLanguageFactory)service;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        private async Task<Guid> GetLanguageServiceId()
+        private async Task<Type> GetLanguageServiceType()
         {
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 
-            return await properties.LanguageServiceId.GetValueAsGuidAsync();
+            return properties.LanguageServiceId.GetType();
         }
     }
 }
