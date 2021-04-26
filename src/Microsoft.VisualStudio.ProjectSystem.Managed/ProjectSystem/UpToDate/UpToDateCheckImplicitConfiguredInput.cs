@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
-        public ImmutableHashSet<string> ResolvedCompilationReferencePaths { get; }
+        public ImmutableArray<string> ResolvedCompilationReferencePaths { get; }
 
         /// <summary>
         /// Holds the set of observed <see cref="CopyUpToDateMarker"/> metadata values from all
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckBuiltItemsBySetName = emptyItemBySetName;
             CopiedOutputFiles = ImmutableDictionary.Create<string, string>(StringComparers.Paths);
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
-            ResolvedCompilationReferencePaths = emptyPathSet;
+            ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = emptyPathSet;
             AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
             LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue;
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItemsBySetName,
             ImmutableDictionary<string, string> copiedOutputFiles,
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
-            ImmutableHashSet<string> resolvedCompilationReferencePaths,
+            ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableHashSet<string> copyReferenceInputs,
             IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
             DateTime lastAdditionalDependentFileTimesChangedAtUtc,
@@ -268,11 +268,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 copyUpToDateMarkerItem = CopyUpToDateMarkerItem;
             }
 
-            ImmutableHashSet<string> resolvedCompilationReferencePaths;
+            ImmutableArray<string> resolvedCompilationReferencePaths;
             ImmutableHashSet<string> copyReferenceInputs;
             if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedCompilationReference.SchemaName, out change) && change.Difference.AnyChanges)
             {
-                ImmutableHashSet<string>.Builder resolvedCompilationReferencePathsBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
+                HashSet<string> resolvedCompilationReferencePathsBuilder = new(StringComparers.Paths);
                 ImmutableHashSet<string>.Builder copyReferenceInputsBuilder = ImmutableHashSet.CreateBuilder(StringComparers.Paths);
 
                 foreach (IImmutableDictionary<string, string> itemMetadata in change.After.Items.Values)
@@ -294,7 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                resolvedCompilationReferencePaths = resolvedCompilationReferencePathsBuilder.ToImmutable();
+                resolvedCompilationReferencePaths = resolvedCompilationReferencePathsBuilder.ToImmutableArray();
                 copyReferenceInputs = copyReferenceInputsBuilder.ToImmutable();
             }
             else
