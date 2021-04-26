@@ -349,6 +349,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             List<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType)> changes = new();
 
+            // If an item type was removed, remove all items of that type
             foreach (string removedItemType in itemTypeDiff.Removed)
             {
                 itemTypesChanged = true;
