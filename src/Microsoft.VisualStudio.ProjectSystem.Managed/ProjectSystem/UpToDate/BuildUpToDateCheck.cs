@@ -115,11 +115,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            string copyAlwaysItemPath = state.ItemsByItemType.SelectMany(kvp => kvp.Value).FirstOrDefault(item => item.CopyType == CopyType.CopyAlways).Path;
-
-            if (copyAlwaysItemPath != null)
+            foreach ((_, ImmutableArray<(string Path, string? Link, CopyType CopyType)> items) in state.ItemsByItemType)
             {
-                return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(copyAlwaysItemPath));
+                foreach ((string path, _, CopyType copyType) in items)
+                {
+                    if (copyType == CopyType.CopyAlways)
+                    {
+                        return log.Fail("CopyAlwaysItemExists", "Item '{0}' has CopyToOutputDirectory set to 'Always', not up to date.", _configuredProject.UnconfiguredProject.MakeRooted(path));
+                    }
+                }
             }
 
             return true;
@@ -287,10 +291,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     {
                         log.Verbose("Adding {0} inputs:", itemType);
 
-                        foreach (string input in changes.Select(item => _configuredProject.UnconfiguredProject.MakeRooted(item.path)))
+                        foreach ((string path, _, _) in changes)
                         {
-                            log.Verbose("    '{0}'", input);
-                            yield return (Path: input, IsRequired: true);
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return (Path: absolutePath, IsRequired: true);
                         }
                     }
                 }
@@ -298,30 +303,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
-                    foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in state.ResolvedAnalyzerReferencePaths)
                     {
-                        log.Verbose("    '{0}'", input);
-                        yield return (Path: input, IsRequired: true);
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return (Path: absolutePath, IsRequired: true);
                     }
                 }
 
                 if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
-                    foreach (string input in state.ResolvedCompilationReferencePaths)
+                    foreach (string path in state.ResolvedCompilationReferencePaths)
                     {
-                        log.Verbose("    '{0}'", input);
-                        yield return (Path: input, IsRequired: true);
+                        log.Verbose("    '{0}'", path);
+                        yield return (Path: path, IsRequired: true);
                     }
                 }
 
                 if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                    foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckInputItems)
                     {
-                        log.Verbose("    '{0}'", input);
-                        yield return (Path: input, IsRequired: true);
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return (Path: absolutePath, IsRequired: true);
                     }
                 }
 
@@ -330,10 +337,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
                 {
                     log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
-                    foreach ((string input, DateTime _) in state.AdditionalDependentFileTimes)
+                    foreach ((string path, DateTime _) in state.AdditionalDependentFileTimes)
                     {
-                        log.Verbose("    '{0}'", input);
-                        yield return (Path: input, IsRequired: false);
+                        log.Verbose("    '{0}'", path);
+                        yield return (Path: path, IsRequired: false);
                     }
                 }
 #endif
@@ -345,10 +352,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                    foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckOutputItems)
                     {
-                        log.Verbose("    '{0}'", output);
-                        yield return output;
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return absolutePath;
                     }
                 }
 
@@ -356,10 +364,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
-                    foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckBuiltItems)
                     {
-                        log.Verbose("    '{0}'", output);
-                        yield return output;
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return absolutePath;
                     }
                 }
             }
@@ -369,10 +378,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
-                    foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckInputItems)
                     {
-                        log.Verbose("    '{0}'", input);
-                        yield return (Path: input, IsRequired: true);
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return (Path: absolutePath, IsRequired: true);
                     }
                 }
             }
@@ -383,10 +393,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
 
-                    foreach (string output in upToDateCheckOutputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckOutputItems)
                     {
-                        log.Verbose("    '{0}'", output);
-                        yield return output;
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return absolutePath;
                     }
                 }
 
@@ -394,10 +405,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
 
-                    foreach (string output in upToDateCheckBuiltItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
+                    foreach (string path in upToDateCheckBuiltItems)
                     {
-                        log.Verbose("    '{0}'", output);
-                        yield return output;
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    '{0}'", absolutePath);
+                        yield return absolutePath;
                     }
                 }
             }
@@ -506,52 +518,59 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private bool CheckCopyToOutputDirectoryFiles(Log log, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
         {
-            IEnumerable<(string Path, string? Link, CopyType CopyType)> items = state.ItemsByItemType.SelectMany(kvp => kvp.Value).Where(item => item.CopyType == CopyType.CopyIfNewer);
-
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((string path, string? link, _) in items)
+            foreach ((_, ImmutableArray<(string Path, string? Link, CopyType CopyType)> items) in state.ItemsByItemType)
             {
-                token.ThrowIfCancellationRequested();
-
-                string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                string filename = Strings.IsNullOrEmpty(link) ? rootedPath : link;
-
-                if (string.IsNullOrEmpty(filename))
+                foreach ((string path, string? link, CopyType copyType) in items)
                 {
-                    continue;
-                }
+                    // Only consider items with CopyType of CopyIfNewer
+                    if (copyType != CopyType.CopyIfNewer)
+                    {
+                        continue;
+                    }
 
-                filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
+                    token.ThrowIfCancellationRequested();
 
-                log.Info("Checking PreserveNewest file '{0}':", rootedPath);
+                    string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                    string filename = Strings.IsNullOrEmpty(link) ? rootedPath : link;
 
-                DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
+                    if (string.IsNullOrEmpty(filename))
+                    {
+                        continue;
+                    }
 
-                if (itemTime != null)
-                {
-                    log.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
-                }
-                else
-                {
-                    return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
-                }
+                    filename = _configuredProject.UnconfiguredProject.MakeRelative(filename);
 
-                string destination = Path.Combine(outputFullPath, filename);
-                DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+                    log.Info("Checking PreserveNewest file '{0}':", rootedPath);
 
-                if (destinationTime != null)
-                {
-                    log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
-                }
-                else
-                {
-                    return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
-                }
+                    DateTime? itemTime = timestampCache.GetTimestampUtc(rootedPath);
 
-                if (destinationTime < itemTime)
-                {
-                    return log.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
+                    if (itemTime != null)
+                    {
+                        log.Info("    Source {0}: '{1}'.", itemTime, rootedPath);
+                    }
+                    else
+                    {
+                        return log.Fail("CopyToOutputDirectory", "Source '{0}' does not exist, not up to date.", rootedPath);
+                    }
+
+                    string destination = Path.Combine(outputFullPath, filename);
+                    DateTime? destinationTime = timestampCache.GetTimestampUtc(destination);
+
+                    if (destinationTime != null)
+                    {
+                        log.Info("    Destination {0}: '{1}'.", destinationTime, destination);
+                    }
+                    else
+                    {
+                        return log.Fail("CopyToOutputDirectory", "Destination '{0}' does not exist, not up to date.", destination);
+                    }
+
+                    if (destinationTime < itemTime)
+                    {
+                        return log.Fail("CopyToOutputDirectory", "PreserveNewest source is newer than destination, not up to date.");
+                    }
                 }
             }
 
