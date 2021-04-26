@@ -69,17 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public ImmutableDictionary<string, ImmutableArray<string>> UpToDateCheckBuiltItemsBySetName { get; }
 
         /// <summary>
-        /// Holds <see cref="UpToDateCheckBuilt"/> items which are copied, not built.</summary>
+        /// Holds <see cref="UpToDateCheckBuilt"/> items which are copied, not built.
+        /// </summary>
         /// <remarks>
-        /// <para>
-        /// Key is destination, value is source.
-        /// </para>
-        /// <para>
         /// Projects add to this collection by specifying the <see cref="UpToDateCheckBuilt.OriginalProperty"/>
         /// on <see cref="UpToDateCheckBuilt"/> items.
-        /// </para>
         /// </remarks>
-        public ImmutableDictionary<string, string> CopiedOutputFiles { get; }
+        public ImmutableArray<(string DestinationRelative, string SourceRelative)> CopiedOutputFiles { get; }
 
         public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
@@ -135,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckInputItemsBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsBySetName = emptyItemBySetName;
-            CopiedOutputFiles = ImmutableDictionary.Create<string, string>(StringComparers.Paths);
+            CopiedOutputFiles = ImmutableArray<(string DestinationRelative, string SourceRelative)>.Empty;
             ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = ImmutableArray<string>.Empty;
             CopyReferenceInputs = ImmutableArray<string>.Empty;
@@ -156,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableDictionary<string, ImmutableArray<string>> upToDateCheckInputItemsBySetName,
             ImmutableDictionary<string, ImmutableArray<string>> upToDateCheckOutputItemsBySetName,
             ImmutableDictionary<string, ImmutableArray<string>> upToDateCheckBuiltItemsBySetName,
-            ImmutableDictionary<string, string> copiedOutputFiles,
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> copiedOutputFiles,
             ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableArray<string> resolvedCompilationReferencePaths,
             ImmutableArray<string> copyReferenceInputs,
@@ -303,11 +299,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             ImmutableDictionary<string, ImmutableArray<string>> upToDateCheckBuiltItems;
-            ImmutableDictionary<string, string> copiedOutputFiles;
+            ImmutableArray<(string DestinationRelative, string SourceRelative)> copiedOutputFiles;
             if (jointRuleUpdate.ProjectChanges.TryGetValue(UpToDateCheckBuilt.SchemaName, out change) && change.Difference.AnyChanges)
             {
                 var itemsBySet = new Dictionary<string, HashSet<string>>(BuildUpToDateCheck.SetNameComparer);
-                ImmutableDictionary<string, string>.Builder copiedOutputFilesBuilder = ImmutableDictionary.CreateBuilder<string, string>(StringComparers.Paths);
+                var copiedOutputFilesBuilder = new Dictionary<string, string>(StringComparers.Paths);
 
                 foreach ((string destination, IImmutableDictionary<string, string> metadata) in change.After.Items)
                 {
@@ -332,7 +328,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
 
                 upToDateCheckBuiltItems = itemsBySet.ToImmutableDictionary(pair => pair.Key, pair => pair.Value.ToImmutableArray(), BuildUpToDateCheck.SetNameComparer);
-                copiedOutputFiles = copiedOutputFilesBuilder.ToImmutable();
+                copiedOutputFiles = copiedOutputFilesBuilder.Select(kvp => (kvp.Key, kvp.Value)).ToImmutableArray();
             }
             else
             {
