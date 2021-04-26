@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableHashSet<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableArray<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {

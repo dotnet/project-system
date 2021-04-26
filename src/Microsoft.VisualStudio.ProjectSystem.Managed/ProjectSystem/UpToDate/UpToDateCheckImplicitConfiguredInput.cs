@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableArray<string> ItemTypes { get; }
 
-        public ImmutableDictionary<string, ImmutableHashSet<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>> ItemsByItemType { get; }
+        public ImmutableDictionary<string, ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>> ItemsByItemType { get; }
 
         public ImmutableArray<string> SetNames { get; }
 
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             LastItemsChangedAtUtc = DateTime.MinValue;
             ItemTypes = ImmutableArray<string>.Empty;
-            ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>>(StringComparers.ItemTypes);
+            ItemsByItemType = ImmutableDictionary.Create<string, ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsBySetName = emptyItemBySetName;
             UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IComparable? lastVersionSeen,
             bool isDisabled,
             ImmutableArray<string> itemTypes,
-            ImmutableDictionary<string, ImmutableHashSet<(string, string?, BuildUpToDateCheck.CopyType)>> itemsByItemType,
+            ImmutableDictionary<string, ImmutableArray<(string, string?, BuildUpToDateCheck.CopyType)>> itemsByItemType,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckInputItemsBySetName,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItemsBySetName,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItemsBySetName,
@@ -388,11 +388,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (projectChange.After.Items.Count == 0)
                     continue;
 
-                IEnumerable<(string Path, string? Link, BuildUpToDateCheck.CopyType)>? before = Array.Empty<(string Path, string? Link, BuildUpToDateCheck.CopyType)>();
-                if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableHashSet<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>? beforeItems))
+                ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType)> before = ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType)>.Empty;
+                if (itemsByItemTypeBuilder.TryGetValue(itemType, out ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> beforeItems))
                     before = beforeItems;
 
-                var after = projectChange.After.Items.Select(item => (Path: item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToImmutableHashSet(BuildUpToDateCheck.ItemComparer.Instance);
+                var after = projectChange.After.Items.Select(item => (Path: item.Key, GetLink(item.Value), GetCopyType(item.Value))).ToHashSet(BuildUpToDateCheck.ItemComparer.Instance);
 
                 var diff = new SetDiff<(string, string?, BuildUpToDateCheck.CopyType)>(before, after, BuildUpToDateCheck.ItemComparer.Instance);
 
@@ -406,7 +406,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     changes.Add((false, itemType, path, link, copyType));
                 }
 
-                itemsByItemTypeBuilder[itemType] = after;
+                itemsByItemTypeBuilder[itemType] = after.ToImmutableArray();
                 itemsChanged = true;
             }
 
