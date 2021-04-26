@@ -81,7 +81,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public ImmutableDictionary<string, string> CopiedOutputFiles { get; }
 
-        public ImmutableHashSet<string> ResolvedAnalyzerReferencePaths { get; }
+        public ImmutableArray<string> ResolvedAnalyzerReferencePaths { get; }
 
         public ImmutableHashSet<string> ResolvedCompilationReferencePaths { get; }
 
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             UpToDateCheckOutputItemsBySetName = emptyItemBySetName;
             UpToDateCheckBuiltItemsBySetName = emptyItemBySetName;
             CopiedOutputFiles = ImmutableDictionary.Create<string, string>(StringComparers.Paths);
-            ResolvedAnalyzerReferencePaths = emptyPathSet;
+            ResolvedAnalyzerReferencePaths = ImmutableArray<string>.Empty;
             ResolvedCompilationReferencePaths = emptyPathSet;
             CopyReferenceInputs = emptyPathSet;
             AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItemsBySetName,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckBuiltItemsBySetName,
             ImmutableDictionary<string, string> copiedOutputFiles,
-            ImmutableHashSet<string> resolvedAnalyzerReferencePaths,
+            ImmutableArray<string> resolvedAnalyzerReferencePaths,
             ImmutableHashSet<string> resolvedCompilationReferencePaths,
             ImmutableHashSet<string> copyReferenceInputs,
             IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
@@ -224,10 +224,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // save memory and time by only considering this first path (dotnet/project-system#4333).
             string? newestImportInput = new LazyStringSplit(msBuildAllProjects, ';').FirstOrDefault();
 
-            ImmutableHashSet<string> resolvedAnalyzerReferencePaths;
+            ImmutableArray<string> resolvedAnalyzerReferencePaths;
             if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription change) && change.Difference.AnyChanges)
             {
-                resolvedAnalyzerReferencePaths = change.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]).ToImmutableHashSet(StringComparers.Paths);
+                resolvedAnalyzerReferencePaths = change.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]).Distinct(StringComparers.Paths).ToImmutableArray();
             }
             else
             {
