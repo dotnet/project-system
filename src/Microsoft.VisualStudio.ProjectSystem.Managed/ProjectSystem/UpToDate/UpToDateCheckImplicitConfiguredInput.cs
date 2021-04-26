@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </remarks>
         public DateTime LastItemsChangedAtUtc { get; }
 
-        public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType)> LastItemChanges { get; }
+        public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> LastItemChanges { get; }
 
         public ImmutableArray<string> ItemTypes { get; }
 
@@ -163,7 +163,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
             DateTime lastAdditionalDependentFileTimesChangedAtUtc,
             DateTime lastItemsChangedAtUtc,
-            ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType)> lastItemChanges)
+            ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> lastItemChanges)
         {
             MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
