@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     
                     if (log.Level <= LogLevel.Info)
                     {
-                        foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges)
+                        foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
                         {
                             if (Strings.IsNullOrEmpty(link))
                                 log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
