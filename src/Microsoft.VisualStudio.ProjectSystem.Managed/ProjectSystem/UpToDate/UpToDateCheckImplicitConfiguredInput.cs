@@ -126,7 +126,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private UpToDateCheckImplicitConfiguredInput()
         {
-            var emptyPathSet = ImmutableHashSet.Create<string>(StringComparers.Paths);
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableHashSet<string>>(BuildUpToDateCheck.SetNameComparer);
 
             LastItemsChangedAtUtc = DateTime.MinValue;
