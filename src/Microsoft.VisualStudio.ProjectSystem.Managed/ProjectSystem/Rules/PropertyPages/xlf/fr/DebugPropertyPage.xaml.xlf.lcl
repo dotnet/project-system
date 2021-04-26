@@ -10,60 +10,6 @@
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
       <Disp Icon="Str" Disp="true" LocTbl="false" />
-      <Item ItemId=";Category|CommandLine|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Command Line]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ligne de commande]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Category|CommandLine|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Command Line]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ligne de commande]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Category|General|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[General]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Général]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";Category|General|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[General]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Général]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|ActiveLaunchProfile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Profile]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Profil]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";DynamicEnumProperty|LaunchTarget|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Launch]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Lancer]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";Rule|DebugPropertyPage|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Debug]]></Val>
@@ -82,56 +28,29 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";StringProperty|CommandLineArguments|Description" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Command line arguments to pass to the executable.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Arguments de ligne de commande à passer à l'exécutable.]]></Val>
+            <Val><![CDATA[La gestion des profils de lancement a été déplacée vers une boîte de dialogue dédiée. Vous pouvez y accéder via le lien ci-dessous.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";StringProperty|CommandLineArguments|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Command line arguments]]></Val>
+          <Val><![CDATA[Ignored]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Arguments de ligne de commande]]></Val>
+            <Val><![CDATA[Ignoré]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";StringProperty|ExecutablePath|Description" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";StringProperty|OpenLaunchProfilesEditor|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Path to the executable to run.]]></Val>
+          <Val><![CDATA[Open debug launch profiles UI]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Chemin de l'exécutable à exécuter.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";StringProperty|ExecutablePath|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Executable]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Exécutable]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";StringProperty|WorkingDirectory|Description" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Path to the working directory where the process will be started.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Chemin du répertoire de travail où le processus va démarrer.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";StringProperty|WorkingDirectory|DisplayName" ItemType="0" PsrId="308" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Working directory]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Répertoire de travail]]></Val>
+            <Val><![CDATA[Profils de lancement de débogage]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

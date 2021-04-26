@@ -69,10 +69,13 @@
       </Item>
       <Item ItemId=";DynamicEnumProperty|AuthenticationMode|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          <Val><![CDATA[The authentication scheme to use when connecting to the remote machine.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Schema di autenticazione da usare per la connessione al computer remoto. Applicabile solo quando l'opzione 'Usa computer remoto' è abilitata.]]></Val>
+            <Val><![CDATA[Schema di autenticazione da usare per la connessione al computer remoto.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -141,10 +144,13 @@
       </Item>
       <Item ItemId=";StringProperty|RemoteDebugMachine|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          <Val><![CDATA[The name and port number of the remote machine in 'name:port' format.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nome e numero di porta del computer remoto nel formato 'nome:porta'. Applicabile solo quando l'opzione 'Usa computer remoto' è abilitata.]]></Val>
+            <Val><![CDATA[Nome e numero di porta del computer remoto nel formato 'nome:porta'.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

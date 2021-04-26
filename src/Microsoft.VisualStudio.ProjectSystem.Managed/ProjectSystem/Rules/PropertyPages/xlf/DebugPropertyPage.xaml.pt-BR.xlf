@@ -22,9 +22,19 @@
         <target state="new">Ignored</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables</source>
+        <target state="new">arguments;command line;working directory;environment variables</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
         <source>Open debug launch profiles UI</source>
         <target state="new">Open debug launch profiles UI</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables</source>
+        <target state="new">arguments;command line;working directory;environment variables</target>
         <note />
       </trans-unit>
     </body>
