@@ -315,7 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<string> CollectDefaultOutputs()
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
@@ -352,7 +352,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<(string Path, bool IsRequired)> CollectSetInputs(string setName)
             {
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -379,7 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<string> CollectSetOutputs(string setName)
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
 
@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
 
