@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType)> LastItemChanges { get; }
 
-        public ImmutableHashSet<string> ItemTypes { get; }
+        public ImmutableArray<string> ItemTypes { get; }
 
         public ImmutableDictionary<string, ImmutableHashSet<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>> ItemsByItemType { get; }
 
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var emptyItemBySetName = ImmutableDictionary.Create<string, ImmutableHashSet<string>>(BuildUpToDateCheck.SetNameComparer);
 
             LastItemsChangedAtUtc = DateTime.MinValue;
-            ItemTypes = ImmutableHashSet.Create<string>(StringComparers.ItemTypes);
+            ItemTypes = ImmutableArray<string>.Empty;
             ItemsByItemType = ImmutableDictionary.Create<string, ImmutableHashSet<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>>(StringComparers.ItemTypes);
             SetNames = ImmutableArray<string>.Empty;
             UpToDateCheckInputItemsBySetName = emptyItemBySetName;
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? newestImportInput,
             IComparable? lastVersionSeen,
             bool isDisabled,
-            ImmutableHashSet<string> itemTypes,
+            ImmutableArray<string> itemTypes,
             ImmutableDictionary<string, ImmutableHashSet<(string, string?, BuildUpToDateCheck.CopyType)>> itemsByItemType,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckInputItemsBySetName,
             ImmutableDictionary<string, ImmutableHashSet<string>> upToDateCheckOutputItemsBySetName,
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var itemTypes = projectItemSchema
                 .GetKnownItemTypes()
                 .Where(itemType => projectItemSchema.GetItemType(itemType).UpToDateCheckInput)
-                .ToImmutableHashSet(StringComparers.ItemTypes);
+                .ToHashSet(StringComparers.ItemTypes);
 
             var itemTypeDiff = new SetDiff<string>(ItemTypes, itemTypes, StringComparers.ItemTypes);
 
@@ -426,7 +426,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 newestImportInput,
                 lastVersionSeen: configuredProjectVersion,
                 isDisabled: isDisabled,
-                itemTypes: itemTypes,
+                itemTypes: itemTypes.ToImmutableArray(),
                 itemsByItemType: itemsByItemTypeBuilder.ToImmutable(),
                 upToDateCheckInputItemsBySetName: upToDateCheckInputItems,
                 upToDateCheckOutputItemsBySetName: upToDateCheckOutputItems,
