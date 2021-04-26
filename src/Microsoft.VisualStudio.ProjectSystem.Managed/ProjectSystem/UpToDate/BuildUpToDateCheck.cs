@@ -316,6 +316,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
                     foreach (string path in state.ResolvedCompilationReferencePaths)
                     {
+                        System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "ResolvedCompilationReference path should be rooted");
                         log.Verbose("    '{0}'", path);
                         yield return (Path: path, IsRequired: true);
                     }
@@ -339,6 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     log.Verbose("Adding " + nameof(state.AdditionalDependentFileTimes) + " inputs:");
                     foreach ((string path, DateTime _) in state.AdditionalDependentFileTimes)
                     {
+                        System.Diagnostics.Debug.Assert(Path.IsPathRooted(path), "AdditionalDependentFileTimes path should be rooted");
                         log.Verbose("    '{0}'", path);
                         yield return (Path: path, IsRequired: false);
                     }
