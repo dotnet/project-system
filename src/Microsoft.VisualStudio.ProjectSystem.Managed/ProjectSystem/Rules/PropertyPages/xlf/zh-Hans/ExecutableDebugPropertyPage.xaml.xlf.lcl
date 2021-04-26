@@ -69,10 +69,13 @@
       </Item>
       <Item ItemId=";DynamicEnumProperty|AuthenticationMode|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          <Val><![CDATA[The authentication scheme to use when connecting to the remote machine.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[连接到远程计算机时要使用的身份验证方案。仅在启用“使用远程计算机”时适用。]]></Val>
+            <Val><![CDATA[连接到远程计算机时要使用的身份验证方案。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -159,10 +162,13 @@
       </Item>
       <Item ItemId=";StringProperty|RemoteDebugMachine|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          <Val><![CDATA[The name and port number of the remote machine in 'name:port' format.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[采用 "name:port" 格式的远程计算机的名称和端口号。仅在启用“使用远程计算机”时适用。]]></Val>
+            <Val><![CDATA[采用 "name:port" 格式的远程计算机的名称和端口号。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -58,6 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.ConfigurationIndependent = !property.IsConfigurationDependent();
             }
 
+            if (requestedProperties.IsReadOnly)
+            {
+                newUIProperty.IsReadOnly = property.ReadOnly;
+            }
+
             if (requestedProperties.HelpUrl)
             {
                 newUIProperty.HelpUrl = property.HelpUrl;
