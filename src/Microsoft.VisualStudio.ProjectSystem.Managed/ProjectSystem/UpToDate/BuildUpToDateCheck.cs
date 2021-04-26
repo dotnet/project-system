@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
-                    bool fail = log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
+                    log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                     
                     if (log.Level <= LogLevel.Info)
                     {
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         }
                     }
 
-                    return fail;
+                    return false;
                 }
 
 #if FALSE // https://github.com/dotnet/project-system/issues/6227
