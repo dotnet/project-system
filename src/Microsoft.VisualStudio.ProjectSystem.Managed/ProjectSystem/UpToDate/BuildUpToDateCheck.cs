@@ -192,13 +192,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
                     bool fail = log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
-                    foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges)
+                    
+                    if (log.Level <= LogLevel.Info)
                     {
-                        if (Strings.IsNullOrEmpty(link))
-                            log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
-                        else
-                            log.Info("    {0} item {1} '{2}' (CopyType={3}, Link='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, link);
+                        foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges)
+                        {
+                            if (Strings.IsNullOrEmpty(link))
+                                log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
+                            else
+                                log.Info("    {0} item {1} '{2}' (CopyType={3}, Link='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, link);
+                        }
                     }
+
                     return fail;
                 }
 
@@ -241,17 +246,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     hasInput = true;
                 }
 
-                if (!hasInput)
+                if (log.Level <= LogLevel.Info)
                 {
-                    log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
-                }
-                else if (setName == DefaultSetName)
-                {
-                    log.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
-                }
-                else
-                {
-                    log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                    if (!hasInput)
+                    {
+                        log.Info(setName == DefaultSetName ? "No inputs defined." : "No inputs defined in set '{0}'.", setName);
+                    }
+                    else if (setName == DefaultSetName)
+                    {
+                        log.Info("No inputs are newer than earliest output '{0}' ({1}).", earliestOutputPath, earliestOutputTime);
+                    }
+                    else
+                    {
+                        log.Info("In set '{0}', no inputs are newer than earliest output '{1}' ({2}).", setName, earliestOutputPath, earliestOutputTime);
+                    }
                 }
 
                 return true;
@@ -411,15 +419,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             string markerFile = _configuredProject.UnconfiguredProject.MakeRooted(state.CopyUpToDateMarkerItem);
 
-            log.Verbose("Adding input reference copy markers:");
-
-            foreach (string referenceMarkerFile in state.CopyReferenceInputs)
+            if (log.Level <= LogLevel.Verbose)
             {
-                log.Verbose("    '{0}'", referenceMarkerFile);
-            }
+                log.Verbose("Adding input reference copy markers:");
 
-            log.Verbose("Adding output reference copy marker:");
-            log.Verbose("    '{0}'", markerFile);
+                foreach (string referenceMarkerFile in state.CopyReferenceInputs)
+                {
+                    log.Verbose("    '{0}'", referenceMarkerFile);
+                }
+
+                log.Verbose("Adding output reference copy marker:");
+                log.Verbose("    '{0}'", markerFile);
+            }
 
             if (timestampCache.TryGetLatestInput(state.CopyReferenceInputs, out string? latestInputMarkerPath, out DateTime latestInputMarkerTime))
             {
