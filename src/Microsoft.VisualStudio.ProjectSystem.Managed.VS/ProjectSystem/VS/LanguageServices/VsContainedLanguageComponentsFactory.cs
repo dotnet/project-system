@@ -83,14 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             // which would result in an RPC call from a background thread.
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            if(null != service)
-            {
-                return (IVsContainedLanguageFactory)service;
-            }
-            else
-            {
-                return null;
-            }
+            return service as IVsContainedLanguageFactory;
         }
 
         private async Task<Type> GetLanguageServiceType()
