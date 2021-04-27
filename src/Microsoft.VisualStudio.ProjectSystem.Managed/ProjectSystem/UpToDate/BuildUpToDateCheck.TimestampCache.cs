@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return time;
             }
 
-            public bool TryGetLatestInput(ImmutableHashSet<string> inputs, [NotNullWhen(returnValue: true)] out string? latestPath, out DateTime latestTime)
+            public bool TryGetLatestInput(ImmutableArray<string> inputs, [NotNullWhen(returnValue: true)] out string? latestPath, out DateTime latestTime)
             {
                 latestTime = DateTime.MinValue;
                 latestPath = null;
