@@ -12,6 +12,16 @@
         <target state="translated">Při sestavení generovat balíček NuGet</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>When publishing outside of Visual Studio, this allows commands such as "dotnet publish" to execute on this project.</source>
+        <target state="new">When publishing outside of Visual Studio, this allows commands such as "dotnet publish" to execute on this project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Allow project publishing (Publish target)</source>
+        <target state="new">Allow project publishing (Publish target)</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
         <target state="translated">Při instalaci tohoto balíčku požádat uživatele, aby přijal licenci</target>
