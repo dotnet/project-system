@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newLaunchProfile.Order = order;
             }
 
-            ((IEntityValueFromProvider)newLaunchProfile).ProviderState = new PropertyPageProviderState(cache, context, rule);
+            ((IEntityValueFromProvider)newLaunchProfile).ProviderState = new ContextAndRuleProviderState(cache, context, rule);
 
             return newLaunchProfile;
         }

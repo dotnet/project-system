@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <summary>
     /// Handles retrieving a set of <see cref="IUIProperty"/>s from an <see cref="IPropertyPage"/>.
     /// </summary>
-    internal class UIPropertyFromPropertyPageDataProducer : QueryDataFromProviderStateProducerBase<PropertyPageProviderState>
+    internal class UIPropertyFromPropertyPageDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
     {
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
 
@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyPageProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
         {
             (string versionKey, long versionNumber) = providerState.Cache.GetUnconfiguredProjectVersion();
             executionContext.ReportInputDataVersion(versionKey, versionNumber);
