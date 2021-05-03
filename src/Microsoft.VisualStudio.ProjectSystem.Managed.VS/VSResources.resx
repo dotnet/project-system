@@ -245,4 +245,8 @@ In order to debug this project, add an executable project to this solution which
   <data name="FrameworkAssemblyFileVersionDescription" xml:space="preserve">
     <value>The file version of the framework assembly.</value>
   </data>
+  <data name="StartupObjectNotSet" xml:space="preserve">
+    <value>(Not set)</value>
+    <comment>Text to display to the user in the property page UI when the "startup object" property is not set.</comment>
+  </data>
 </root>
