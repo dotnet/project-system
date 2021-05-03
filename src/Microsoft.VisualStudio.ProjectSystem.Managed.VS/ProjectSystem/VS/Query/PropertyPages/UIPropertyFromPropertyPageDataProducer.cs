@@ -9,13 +9,14 @@ using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="IUIProperty"/>s from an <see cref="IPropertyPage"/>.
+    /// Handles retrieving a set of <see cref="IUIProperty"/>s from an <see cref="IPropertyPage"/>
+    /// or <see cref="ILaunchProfile"/>.
     /// </summary>
-    internal class UIPropertyFromPropertyPageDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
+    internal class UIPropertyFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
     {
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
 
-        public UIPropertyFromPropertyPageDataProducer(IUIPropertyPropertiesAvailableStatus properties)
+        public UIPropertyFromRuleDataProducer(IUIPropertyPropertiesAvailableStatus properties)
         {
             _properties = properties;
         }
