@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     internal class LaunchProfileByIdDataProducer : QueryDataByIdProducerBase
     {
