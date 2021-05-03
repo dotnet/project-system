@@ -27,13 +27,6 @@
                 Description="Produce a package file during build operations."
                 Category="General" />
 
-  <!-- TODO add a fwlink for this help URL -->
-  <BoolProperty Name="IsPublishable"
-                DisplayName="Allow project publishing (Publish target)"
-                Description="When publishing outside of Visual Studio, this allows commands such as &quot;dotnet publish&quot; to execute on this project."
-                HelpUrl="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-targets"
-                Category="General" />
-
   <StringProperty Name="PackageId"
                   DisplayName="Package ID"
                   Description="The case-insensitive package identifier, which must be unique across nuget.org or whatever gallery the package resides in. IDs may not contain spaces or characters that are not valid for a URL, and generally follow .NET namespace rules."

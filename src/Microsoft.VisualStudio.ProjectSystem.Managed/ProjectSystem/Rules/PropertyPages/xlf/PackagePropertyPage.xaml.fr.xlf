@@ -12,16 +12,6 @@
         <target state="translated">Générer le package NuGet en même temps que la build</target>
         <note />
       </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|Description">
-        <source>When publishing outside of Visual Studio, this allows commands such as "dotnet publish" to execute on this project.</source>
-        <target state="new">When publishing outside of Visual Studio, this allows commands such as "dotnet publish" to execute on this project.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
-        <source>Allow project publishing (Publish target)</source>
-        <target state="new">Allow project publishing (Publish target)</target>
-        <note />
-      </trans-unit>
       <trans-unit id="BoolProperty|PackageRequireLicenseAcceptance|Description">
         <source>Prompt the user to accept the license when installing this package.</source>
         <target state="translated">Invite l'utilisateur à accepter la licence au moment de l'installation de ce package.</target>

@@ -209,4 +209,10 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO Documentation issue for this property: https://github.com/MicrosoftDocs/visualstudio-docs/issues/6643 -->
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                Category="Packaging" />
 </Rule>
