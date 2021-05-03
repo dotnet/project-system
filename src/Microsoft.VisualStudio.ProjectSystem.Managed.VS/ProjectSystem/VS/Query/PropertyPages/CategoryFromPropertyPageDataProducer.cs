@@ -9,13 +9,14 @@ using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPage"/>.
+    /// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPage"/>
+    /// or <see cref="ILaunchProfile"/>.
     /// </summary>
-    internal class CategoryFromPropertyPageDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
+    internal class CategoryFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
     {
         private readonly ICategoryPropertiesAvailableStatus _properties;
 
-        public CategoryFromPropertyPageDataProducer(ICategoryPropertiesAvailableStatus properties)
+        public CategoryFromRuleDataProducer(ICategoryPropertiesAvailableStatus properties)
         {
             Requires.NotNull(properties, nameof(properties));
             _properties = properties;
