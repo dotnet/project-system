@@ -83,5 +83,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
         Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Sets project build command line options to the underlying <see cref="IWorkspaceProjectContext"/>.
+        /// </summary>
+        /// <param name="arguments">List of command line arguments in the Build</param>
+        /// <remarks>
+        ///     Note: The compiler is sensitive to ordering of command-line arguments.
+        /// </remarks>
+        void SetCommandLineArgumentsToBuild(IEnumerable<string> arguments);
     }
 }

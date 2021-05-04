@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
+using Moq;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
@@ -252,6 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
+            IProjectBuildSnapshotService projectBuildSnapshotService = new Mock<IProjectBuildSnapshotService>().Object;
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -261,7 +264,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeEditorContextTracker,
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
-                                                           dataProgressTrackerService);
+                                                           dataProgressTrackerService,
+                                                           projectBuildSnapshotService);
         }
     }
 }
