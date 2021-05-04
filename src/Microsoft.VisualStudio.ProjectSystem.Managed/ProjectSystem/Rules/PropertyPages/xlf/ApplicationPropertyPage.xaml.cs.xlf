@@ -32,6 +32,16 @@
         <target state="translated">Obecné</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="new">Packaging settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="new">Packaging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resource settings for the application.</source>
         <target state="translated">Nastavení prostředků pro aplikaci</target>
