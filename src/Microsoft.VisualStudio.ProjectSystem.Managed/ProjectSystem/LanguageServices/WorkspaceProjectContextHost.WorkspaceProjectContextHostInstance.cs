@@ -1,12 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -29,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
+            private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
@@ -44,7 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
                                                        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
-                                                       IDataProgressTrackerService dataProgressTrackerService)
+                                                       IDataProgressTrackerService dataProgressTrackerService,
+                                                       IProjectBuildSnapshotService projectBuildSnapshotService)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
@@ -55,6 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
+                _projectBuildSnapshotService = projectBuildSnapshotService;
             }
 
             public Task InitializeAsync()
@@ -102,6 +107,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                 ProjectFaultSeverity.LimitedFunctionality),
                             linkOptions: DataflowOption.PropagateCompletion,
                             cancellationToken: cancellationToken),
+
+                    ProjectDataSources.SyncLinkTo(
+                        _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
+                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
+                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectBuildSnapshot>>>(e =>
+                                ApplyBuildSnapshotChanged(e),
+                            _project.UnconfiguredProject,
+                            ProjectFaultSeverity.LimitedFunctionality),
+                        linkOptions: DataflowOption.PropagateCompletion,
+                        cancellationToken: cancellationToken),
 
                 };
             }
@@ -160,6 +175,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     throw new ActiveProjectConfigurationChangedException();
                 }
+            }
+
+            private void ApplyBuildSnapshotChanged(IProjectVersionedValue<(ConfiguredProject project, IProjectBuildSnapshot buildSnapshot)> update)
+            {
+                List<string> commandLineArguments = new List<string>();
+
+                update.Value.buildSnapshot.TargetOutputs.TryGetValue("CompileDesignTime", out var keyValuePairsCommandLineOptions);
+
+                foreach (var kp in keyValuePairsCommandLineOptions)
+                {
+                    commandLineArguments.Add(kp.Key);
+                }
+
+                _applyChangesToWorkspaceContext!.Value.SetCommandLineArgumentsToBuild(commandLineArguments);
             }
 
             internal Task OnProjectChangedAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation)

@@ -69,7 +69,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessOptions(projectChange.After);
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
@@ -146,12 +145,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
         }
 
-        private void ProcessOptions(IProjectRuleSnapshot snapshot)
+        public void SetCommandLineArgumentsToBuild(IEnumerable<string> arguments)
         {
             Assumes.NotNull(_context);
 
             // We just pass all options to Roslyn
-            _context.SetOptions(snapshot.Items.Keys.ToImmutableArray());
+            _context.SetOptions(arguments.ToImmutableArray());
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)
