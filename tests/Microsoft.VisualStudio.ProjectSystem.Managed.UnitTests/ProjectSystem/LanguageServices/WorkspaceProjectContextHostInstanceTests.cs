@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(update, evaluation);
@@ -179,7 +179,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(update, evaluation);
@@ -202,8 +202,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
+            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
             var subscription = IProjectSubscriptionUpdateFactory.CreateEmpty();
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>((null!, subscription));
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((null!, subscription, buildSnapshot));
             await instance.OnProjectChangedAsync(update, evaluation);
 
             Assert.Same(subscriptionResult!.Value, subscription);
@@ -228,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await instance.OnProjectChangedAsync(update, evaluation);
 
             Assert.Equal(isActiveContext, isActiveContextResult);

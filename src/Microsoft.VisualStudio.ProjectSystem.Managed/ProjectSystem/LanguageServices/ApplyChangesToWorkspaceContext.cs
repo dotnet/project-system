@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     /// <remarks>
     ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
-    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/> and
+    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/> and
     ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
     /// </remarks>
     [Export(typeof(IApplyChangesToWorkspaceContext))]
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
 
         public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, 
-            IProjectVersionedValue<IProjectBuildSnapshot> buildSnapshot,
+            IProjectBuildSnapshot buildSnapshot,
             ContextState state, 
             CancellationToken cancellationToken)
         {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessOptions(buildSnapshot.Value);
+                ProcessOptions(buildSnapshot);
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
@@ -83,17 +83,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             Assumes.NotNull(_context);
 
-            List<string> commandLineArguments = new List<string>();
+            buildSnapshot.TargetOutputs.TryGetValue(
+                "CompileDesignTime",
+                out IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> targetOutputs);
 
-            buildSnapshot.TargetOutputs.TryGetValue("CompileDesignTime", out var keyValuePairsCommandLineOptions);
+            var options = ImmutableArray.CreateBuilder<string>(targetOutputs.Count);
 
-            foreach (var kp in keyValuePairsCommandLineOptions)
+            foreach ((string option, _) in targetOutputs)
             {
-                commandLineArguments.Add(kp.Key);
+                options.Add(option);
             }
 
             // We just need to pass all options to Roslyn
-            _context.SetOptions(commandLineArguments.ToImmutableArray());
+            _context.SetOptions(options .MoveToImmutable());
         }
 
         public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
@@ -165,14 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _logger.WriteLine(succeeded ? "Last design-time build succeeded, turning semantic errors back on." : "Last design-time build failed, turning semantic errors off.");
                 _context.LastDesignTimeBuildSucceeded = succeeded;
             }
-        }
-
-        public void SetCommandLineArgumentsToBuild(IEnumerable<string> arguments)
-        {
-            Assumes.NotNull(_context);
-
-            // We just pass all options to Roslyn
-            _context.SetOptions(arguments.ToImmutableArray());
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)

@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
@@ -180,7 +179,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
                 IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
-                IProjectVersionedValue<IProjectBuildSnapshot> buildSnapshot = update.Derive(u => u.buildSnapshot);
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = update.Value.project == _project;
 
@@ -196,7 +194,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     }
                     else
                     {
-                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, buildSnapshot, state, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, update.Value.buildSnapshot, state, cancellationToken);
                     }
                 }
                 finally
