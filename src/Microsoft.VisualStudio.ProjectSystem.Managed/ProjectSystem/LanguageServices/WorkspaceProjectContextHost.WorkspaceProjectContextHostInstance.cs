@@ -91,7 +91,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
+                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
                                 OnProjectChangedAsync(e, evaluation: true),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
@@ -101,23 +102,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
+                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
                                 OnProjectChangedAsync(e, evaluation: false),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
                             linkOptions: DataflowOption.PropagateCompletion,
                             cancellationToken: cancellationToken),
-
-                    ProjectDataSources.SyncLinkTo(
-                        _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
-                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                        target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectBuildSnapshot>>>(e =>
-                                ApplyBuildSnapshotChanged(e),
-                            _project.UnconfiguredProject,
-                            ProjectFaultSeverity.LimitedFunctionality),
-                        linkOptions: DataflowOption.PropagateCompletion,
-                        cancellationToken: cancellationToken),
-
                 };
             }
 
@@ -177,32 +168,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            private void ApplyBuildSnapshotChanged(IProjectVersionedValue<(ConfiguredProject project, IProjectBuildSnapshot buildSnapshot)> update)
-            {
-                List<string> commandLineArguments = new List<string>();
-
-                update.Value.buildSnapshot.TargetOutputs.TryGetValue("CompileDesignTime", out var keyValuePairsCommandLineOptions);
-
-                foreach (var kp in keyValuePairsCommandLineOptions)
-                {
-                    commandLineArguments.Add(kp.Key);
-                }
-
-                _applyChangesToWorkspaceContext!.Value.SetCommandLineArgumentsToBuild(commandLineArguments);
-            }
-
-            internal Task OnProjectChangedAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation)
+            internal Task OnProjectChangedAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, IProjectBuildSnapshot buildSnapshot)> update, bool evaluation)
             {
                 return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, evaluation, ct), _tasksService.UnloadCancellationToken);
             }
 
-            private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation, CancellationToken cancellationToken)
+            private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, IProjectBuildSnapshot buildSnapshot)> update, bool evaluation, CancellationToken cancellationToken)
             {
                 // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
                 Assumes.NotNull(_contextAccessor);
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
                 IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
+                IProjectVersionedValue<IProjectBuildSnapshot> buildSnapshot = update.Derive(u => u.buildSnapshot);
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
                 bool isActiveConfiguration = update.Value.project == _project;
 
@@ -218,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     }
                     else
                     {
-                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, state, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, buildSnapshot, state, cancellationToken);
                     }
                 }
                 finally

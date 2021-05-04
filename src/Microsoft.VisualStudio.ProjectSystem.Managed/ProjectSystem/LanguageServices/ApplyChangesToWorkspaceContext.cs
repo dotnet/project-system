@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -57,7 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             EnsureInitialized();
         }
 
-        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
+        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, 
+            IProjectVersionedValue<IProjectBuildSnapshot> buildSnapshot,
+            ContextState state, 
+            CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -69,9 +73,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
+                ProcessOptions(buildSnapshot.Value);
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
+        }
+
+        private void ProcessOptions(IProjectBuildSnapshot buildSnapshot)
+        {
+            Assumes.NotNull(_context);
+
+            List<string> commandLineArguments = new List<string>();
+
+            buildSnapshot.TargetOutputs.TryGetValue("CompileDesignTime", out var keyValuePairsCommandLineOptions);
+
+            foreach (var kp in keyValuePairsCommandLineOptions)
+            {
+                commandLineArguments.Add(kp.Key);
+            }
+
+            // We just need to pass all options to Roslyn
+            _context.SetOptions(commandLineArguments.ToImmutableArray());
         }
 
         public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
