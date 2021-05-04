@@ -53,17 +53,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
         private async Task<CodeModel?> GetCodeModelAsync(Project project)
         {
             await _threadingService.SwitchToUIThread();
-
             return await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 return Task.FromResult(_codeModelFactory.GetCodeModel(accessor.Context, project));
+
             });
         }
 
         private async Task<FileCodeModel?> GetFileCodeModelAsync(ProjectItem fileItem)
         {
             await _threadingService.SwitchToUIThread();
-
             return await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 try

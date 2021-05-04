@@ -326,7 +326,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' Formats a Win32 message into a friendly form for debugging/tracing purposes
         ''' </summary>
         ''' <param name="msg"></param>
-        Private Shared Function FormatWin32Message(msg As Windows.Forms.Message) As String
+        Private Shared Function FormatWin32Message(msg As System.Windows.Forms.Message) As String
             Dim str As New StringBuilder()
             Dim MsgType As String = Nothing
             Select Case msg.Msg
@@ -552,7 +552,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Sub
 
         <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerf(e As Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
+        Public Shared Sub TracePDPerf(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerf(Message, FormatArguments)
             TraceOnLayout(e)
@@ -560,7 +560,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Sub
 
 #If DEBUG Then
-        Private Shared Sub TraceOnLayout(e As Windows.Forms.LayoutEventArgs)
+        Private Shared Sub TraceOnLayout(e As System.Windows.Forms.LayoutEventArgs)
             If PDPerf.TraceInfo Then
                 Trace.WriteLine("  AffectedControl=" & DebugToString(e.AffectedControl))
                 Trace.WriteLine("  AffectedComponent=" & DebugToString(e.AffectedComponent))
@@ -591,7 +591,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="Message"></param>
         ''' <param name="msg"></param>
         <Conditional("DEBUG")>
-        Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String, msg As Windows.Forms.Message)
+        Public Shared Sub TracePDMessageRouting(TraceLevel As TraceLevel, Message As String, msg As System.Windows.Forms.Message)
 #If DEBUG Then
             If PDMessageRouting.Level >= TraceLevel Then
                 Dim FormattedMessage As String = FormatWin32Message(msg)
@@ -680,7 +680,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Sub
 
         <Conditional("DEBUG")>
-        Public Shared Sub TracePDPerfBegin(e As Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
+        Public Shared Sub TracePDPerfBegin(e As System.Windows.Forms.LayoutEventArgs, Message As String, ParamArray FormatArguments() As Object)
 #If DEBUG Then
             TracePDPerfBegin(Message, FormatArguments)
             TraceOnLayout(e)

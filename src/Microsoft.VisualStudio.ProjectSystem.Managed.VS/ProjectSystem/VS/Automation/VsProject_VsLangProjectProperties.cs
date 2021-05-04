@@ -177,5 +177,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
         public string DefaultNamespace { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public object get_Extender(string ExtenderName) => throw new NotImplementedException();
+
+        object VSLangProj.ProjectProperties.Extender => throw new NotImplementedException();
     }
 }

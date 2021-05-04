@@ -1,5 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+Option Strict Off
+
 Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports System.ComponentModel
@@ -519,7 +521,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If designerPrjItem IsNot Nothing Then
                 Dim applicationData As MyApplicationData = Nothing
-                Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.get_FileNames(1))
                     applicationData = GetApplicationData(dd)
                 End Using
                 If applicationData IsNot Nothing Then
@@ -572,7 +574,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Dim designerPrjItem As ProjectItem = GetDesignerProjectItem(phier, itemId)
             If designerPrjItem IsNot Nothing Then
                 Try
-                    Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.FileNames(1))
+                    Using dd As New Design.Serialization.DocData(Common.ServiceProviderFromHierarchy(phier), designerPrjItem.get_FileNames(1))
                         Dim data As MyApplicationData = GetApplicationData(dd)
                         If data IsNot Nothing Then
                             Dim oldSymbolName As String = GetSymbolNameNoRootNamespace(rglpszRQName(0), designerPrjItem.ContainingProject)

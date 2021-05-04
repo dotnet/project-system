@@ -1,6 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Strict On
+Option Strict Off
 Option Explicit On
 Imports System.IO
 Imports System.Windows.Forms
@@ -583,7 +583,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim itemPath As String = Nothing
             Try
-                itemPath = projectItem.FileNames(1)
+                itemPath = projectItem.get_FileNames(1)
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetProjectItemPath), NameOf(MyExtensibilityProjectSettings))
             End Try
             If itemPath IsNot Nothing Then

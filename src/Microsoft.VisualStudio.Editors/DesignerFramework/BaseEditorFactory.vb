@@ -24,7 +24,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' <remarks>
     '''     This file was copied from the frameworks: FX\src\VSDesigner\Designer\Microsoft\VisualStudio\Designer\Shell
     '''     We need our own version because the original version does not support logical views, and also because
-    '''     the one from Windows Forms does not support custom DocData types.
+    '''     the one from System.Windows.Forms does not support custom DocData types.
     '''
     '''     This is the base editor factory for all designers in this assembly.  The
     '''     editor factory provides a way for the shell to get an editor for a

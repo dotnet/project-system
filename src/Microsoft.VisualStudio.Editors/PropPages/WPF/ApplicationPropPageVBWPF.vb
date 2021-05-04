@@ -1,4 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
+Option Strict Off
 
 Imports System.ComponentModel
 Imports System.Runtime.InteropServices
@@ -772,7 +773,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             If _applicationXamlDocData Is Nothing Then
                 Dim applicationXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(createAppXamlIfDoesNotExist)
                 If applicationXamlProjectItem IsNot Nothing Then
-                    _applicationXamlDocData = New DocData(ServiceProvider, applicationXamlProjectItem.FileNames(1))
+                    _applicationXamlDocData = New DocData(ServiceProvider, applicationXamlProjectItem.get_FileNames(1))
                 End If
             End If
 
@@ -1255,14 +1256,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="list"></param>
         Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
             For Each projectItem As ProjectItem In projectItems
-                If IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+                If IO.Path.GetExtension(projectItem.get_FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     'We only want .xaml files with BuildAction="Page"
                     Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectItem)
                     If CurrentBuildAction IsNot Nothing AndAlso BUILDACTION_PAGE.Equals(CurrentBuildAction, StringComparison.OrdinalIgnoreCase) Then
                         'Build action is correct.
 
                         'Is the item inside the project folders (instead of, say, a link to an external file)?
-                        If IsFileRelativeToProjectPath(projectItem.FileNames(1)) Then
+                        If IsFileRelativeToProjectPath(projectItem.get_FileNames(1)) Then
                             'Okay, we want this one
                             list.Add(projectItem)
                         End If
@@ -1295,7 +1298,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     FindXamlPageFiles(DTEProject.ProjectItems, xamlFiles)
 
                     For Each projectItem As ProjectItem In xamlFiles
-                        startupObjects.Add(New StartupUri(GetProjectRelativeFilePath(projectItem.FileNames(1))))
+                        startupObjects.Add(New StartupUri(GetProjectRelativeFilePath(projectItem.get_FileNames(1))))
                     Next
                 End Using
             End If
@@ -1586,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="extension"></param>
         Private Shared Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
             For Each dependentItem As ProjectItem In projectItem.ProjectItems
-                If dependentItem.FileNames(1) IsNot Nothing _
+                If dependentItem.get_FileNames(1) IsNot Nothing _
                         AndAlso IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
                     Return dependentItem
                 End If
@@ -1717,7 +1720,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Try
                 Dim appXaml As ProjectItem = FindApplicationXamlProjectItem(False)
                 If appXaml IsNot Nothing Then
-                    Return appXaml.FileNames(1)
+                    Return appXaml.get_FileNames(1)
                 End If
             Catch ex As Exception
             End Try
