@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Build;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Moq;
 using Xunit;
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInstance();
 
             var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
 
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
             {
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await applyChangesToWorkspace.DisposeAsync();
 
             var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
 
             await Assert.ThrowsAsync<ObjectDisposedException>(() =>
             {
@@ -267,7 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -329,7 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(commandLineParser: parser, handlers: new[] { handler });
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(version: 2,
 @"{
    ""ProjectChanges"": {
@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -468,7 +468,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -495,7 +495,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
             context.LastDesignTimeBuildSucceeded = true;
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
+
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -520,7 +521,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
 
-            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {

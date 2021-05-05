@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Build;
-using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -134,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
-            IProjectBuildSnapshotService projectBuildSnapshotService = new Mock<IProjectBuildSnapshotService>().Object;
+            IProjectBuildSnapshotService projectBuildSnapshotService = IProjectBuildSnapshotServiceFactory.Create();
 
             return new WorkspaceProjectContextHost(project,
                                                    threadingService,

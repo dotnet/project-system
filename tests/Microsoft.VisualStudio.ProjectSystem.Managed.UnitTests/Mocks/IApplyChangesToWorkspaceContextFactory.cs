@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return Mock.Of<IApplyChangesToWorkspaceContext>();
         }
 
-        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuildAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, ContextState, CancellationToken> action)
+        public static IApplyChangesToWorkspaceContext ImplementApplyProjectBuildAsync(Action<IProjectVersionedValue<IProjectSubscriptionUpdate>, IProjectBuildSnapshot, ContextState, CancellationToken> action)
         {
             var mock = new Mock<IApplyChangesToWorkspaceContext>();
             mock.Setup(c => c.ApplyProjectBuildAsync(It.IsAny<IProjectVersionedValue<IProjectSubscriptionUpdate>>(), It.IsAny<IProjectBuildSnapshot>(), It.IsAny<ContextState>(), It.IsAny<CancellationToken>()))
