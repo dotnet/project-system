@@ -97,6 +97,11 @@
         <target state="new">Minimum OS version</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|MinimumOSVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
         <target state="translated">アプリケーションの読み込み時に呼び出されるエントリ ポイントを定義します。通常、これはアプリケーションのメイン フォームか、アプリケーションの起動時に実行する必要がある 'Main' プロシージャに設定されます。クラス ライブラリではエントリ ポイントが定義されていません。</target>
@@ -117,6 +122,11 @@
         <target state="new">Target OS version</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetOSVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetOS|Description">
         <source>Specifies the operating system that this project will target.</source>
         <target state="new">Specifies the operating system that this project will target.</target>
@@ -125,6 +135,11 @@
       <trans-unit id="DynamicEnumProperty|TargetOS|DisplayName">
         <source>Target OS</source>
         <target state="new">Target OS</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetOS|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

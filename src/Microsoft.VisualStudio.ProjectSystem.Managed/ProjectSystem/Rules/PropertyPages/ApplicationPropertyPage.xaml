@@ -113,6 +113,9 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+    </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
   <DynamicEnumProperty Name="TargetOSVersion"
@@ -124,6 +127,13 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetOS") "")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetOS" />
+    </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
   <DynamicEnumProperty Name="MinimumOSVersion"
@@ -135,6 +145,13 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetOSVersion") "")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetOS" />
+    </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
   <!-- TODO use fwlink for HelpUrl -->
