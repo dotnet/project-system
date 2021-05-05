@@ -436,10 +436,10 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
-    <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
-      <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
+    <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
+      <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
