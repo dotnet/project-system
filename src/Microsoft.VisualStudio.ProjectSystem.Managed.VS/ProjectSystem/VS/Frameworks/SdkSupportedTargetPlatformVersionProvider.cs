@@ -16,7 +16,7 @@ using EnumCollectionProjectValue = Microsoft.VisualStudio.ProjectSystem.IProject
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 {
     /// <summary>
-    ///     Responsible for producing valid values for the SdkSupportedTargetPlatformVersion property from a design-time build.
+    ///     Responsible for producing valid values for the SdkSupportedTargetPlatformVersion property from evaluation.
     /// </summary>
     [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformVersionEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
@@ -31,23 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             : base(project, synchronousDisposal: true, registerDataSource: false)
         {
             _subscriptionService = subscriptionService;
-
-            ReadyToBuild = new OrderPrecedenceImportCollection<IConfiguredProjectReadyToBuild>(projectCapabilityCheckProvider: project);
-        }
-
-        [ImportMany]
-        public OrderPrecedenceImportCollection<IConfiguredProjectReadyToBuild> ReadyToBuild
-        {
-            get;
         }
 
         [ConfiguredProjectAutoLoad]
         [AppliesTo(ProjectCapability.DotNet)]
         public void Load()
         {
-            // To avoid UI delays when opening the AppDesigner for the first time, 
-            // we auto-load so that we are included in the first design-time build
-            // for the project.
             EnsureInitialized();
         }
 
@@ -55,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             IProjectValueDataSource<IProjectSubscriptionUpdate> source = _subscriptionService.ProjectRuleSource;
 
-            // Transform the changes from design-time build -> supported target OS
+            // Transform the changes from evaluation -> supported target OS
             DisposableValue<ISourceBlock<EnumCollectionProjectValue>> transformBlock = source.SourceBlock.TransformWithNoDelta(
                 update => update.Derive(Transform),
                 suppressVersionOnlyUpdates: false,
@@ -97,25 +86,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
         public async Task<EnumCollection> GetListedValuesAsync()
         {
-            if (!IsReadyToBuild())
-                throw new InvalidOperationException("This configuration is not set to build");
-
-            // NOTE: This has a race, if called off the UI thread, the configuration could become 
-            // inactive underneath us and hence not ready for build, causing below to block forever.
-
             using (JoinableCollection.Join())
             {
                 EnumCollectionProjectValue snapshot = await SourceBlock.ReceiveAsync();
 
                 return snapshot.Value;
             }
-        }
-
-        private bool IsReadyToBuild()
-        {
-            IConfiguredProjectReadyToBuild? readyToBuild = ReadyToBuild.FirstOrDefault()?.Value;
-
-            return readyToBuild?.IsValidToBuild == true;
         }
 
         bool IDynamicEnumValuesGenerator.AllowCustomValues => false;
