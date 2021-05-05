@@ -67,8 +67,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             IProjectRuleSnapshot snapshot = input.CurrentState[SdkSupportedTargetPlatformIdentifier.SchemaName];
 
-            return snapshot.Items.Select(ToEnumValue)
-                                    .ToList();
+            var list = new List<IEnumValue>();
+
+            list.Add(new PageEnumValue(new EnumValue()
+            {
+                Name = string.Empty,
+                DisplayName = Resources.Property_NoneValue
+            }));
+
+            list.AddRange(snapshot.Items.Select(ToEnumValue));
+
+            return list;
         }
 
         private static IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
