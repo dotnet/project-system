@@ -53,13 +53,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
         protected override IDisposable? LinkExternalInput(ITargetBlock<EnumCollectionProjectValue> targetBlock)
         {
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _subscriptionService.ProjectBuildRuleSource;
+            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _subscriptionService.ProjectRuleSource;
 
             // Transform the changes from design-time build -> Supported target frameworks
             DisposableValue<ISourceBlock<EnumCollectionProjectValue>> transformBlock = source.SourceBlock.TransformWithNoDelta(
                 update => update.Derive(Transform),
                 suppressVersionOnlyUpdates: false,
-                ruleNames: SupportedTargetFrameworkAlias.SchemaName);
+                ruleNames: SupportedTargetFramework.SchemaName);
 
             // Set the link up so that we publish changes to target block
             transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
         private static EnumCollection Transform(IProjectSubscriptionUpdate input)
         {
-            IProjectRuleSnapshot snapshot = input.CurrentState[SupportedTargetFrameworkAlias.SchemaName];
+            IProjectRuleSnapshot snapshot = input.CurrentState[SupportedTargetFramework.SchemaName];
 
             return snapshot.Items.Select(ToEnumValue)
                                     .ToList();
@@ -83,11 +83,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             return new PageEnumValue(new EnumValue()
             {
-                // Example: <SupportedTargetFrameworkAlias  Include="net5.0-windows"
-                //                                          DisplayName=".NET 5.0" />
+                // Example: <SupportedTargetFramework  Include=".NETCoreApp,Version=v5.0"
+                //                                     DisplayName=".NET 5.0" />
 
                 Name = item.Key,
-                DisplayName = item.Value[SupportedTargetFrameworkAlias.DisplayNameProperty]
+                DisplayName = item.Value[SupportedTargetFramework.DisplayNameProperty],
             });
         }
 
