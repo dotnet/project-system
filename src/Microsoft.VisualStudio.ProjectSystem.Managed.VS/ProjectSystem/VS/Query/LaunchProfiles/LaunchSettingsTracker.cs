@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private static int s_nextTrackerId;
 
         private readonly UnconfiguredProject _project;
+        private readonly ILaunchSettingsProvider _launchSettingsProvider;
         private readonly LaunchSettingsQueryVersionProvider _versionProvider;
 
         private string? _versionKey;
@@ -35,18 +36,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         [ImportingConstructor]
         public LaunchSettingsTracker(
             UnconfiguredProject project,
+            ILaunchSettingsProvider launchSettingsProvider,
             LaunchSettingsQueryVersionProvider versionProvider)
         {
             _project = project;
+            _launchSettingsProvider = launchSettingsProvider;
             _versionProvider = versionProvider;
         }
 
         public Task LoadAsync()
         {
-            ILaunchSettingsProvider launchSettingsProvider = _project.Services.ExportProvider.GetExportedValue<ILaunchSettingsProvider>();
-            _launchSettingsProviderLink = launchSettingsProvider.SourceBlock.LinkToAction(OnLaunchSettingsChanged, _project);
+            _launchSettingsProviderLink = _launchSettingsProvider.SourceBlock.LinkToAction(OnLaunchSettingsChanged, _project);
 
-            ILaunchSettings? currentSnapshot = launchSettingsProvider.CurrentSnapshot;
+            ILaunchSettings? currentSnapshot = _launchSettingsProvider.CurrentSnapshot;
             if (currentSnapshot is IVersionedLaunchSettings versionedSettings)
             {
                 CurrentVersion = versionedSettings.Version;
