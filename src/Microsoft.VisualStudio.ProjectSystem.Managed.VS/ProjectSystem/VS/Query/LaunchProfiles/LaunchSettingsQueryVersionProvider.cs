@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly object _lock = new();
 
         private readonly Dictionary<string, LaunchSettingsTracker> _allLaunchSettingsTrackers = new(StringComparer.Ordinal);
-        private ImmutableDictionary<string, long> _versions = ImmutableDictionary<string, long>.Empty;
+        private ImmutableDictionary<string, long> _versions = ImmutableStringDictionary<long>.EmptyOrdinal;
 
         private ILaunchSettingsVersionPublisher? _versionPublisher;
 
