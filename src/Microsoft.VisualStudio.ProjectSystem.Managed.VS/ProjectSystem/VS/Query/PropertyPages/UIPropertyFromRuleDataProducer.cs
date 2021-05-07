@@ -9,24 +9,24 @@ using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Handles retrieving a set of <see cref="ICategory"/>s from an <see cref="IPropertyPage"/>.
+    /// Handles retrieving a set of <see cref="IUIProperty"/>s from an <see cref="IPropertyPage"/>
+    /// or <see cref="ILaunchProfile"/>.
     /// </summary>
-    internal class CategoryFromPropertyPageDataProducer : QueryDataFromProviderStateProducerBase<PropertyPageProviderState>
+    internal class UIPropertyFromRuleDataProducer : QueryDataFromProviderStateProducerBase<ContextAndRuleProviderState>
     {
-        private readonly ICategoryPropertiesAvailableStatus _properties;
+        private readonly IUIPropertyPropertiesAvailableStatus _properties;
 
-        public CategoryFromPropertyPageDataProducer(ICategoryPropertiesAvailableStatus properties)
+        public UIPropertyFromRuleDataProducer(IUIPropertyPropertiesAvailableStatus properties)
         {
-            Requires.NotNull(properties, nameof(properties));
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyPageProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
         {
             (string versionKey, long versionNumber) = providerState.Cache.GetUnconfiguredProjectVersion();
             executionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-            return Task.FromResult(CategoryDataProducer.CreateCategoryValues(executionContext, parent, providerState.Rule, _properties));
+            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(executionContext, parent, providerState.Cache, providerState.Context, providerState.Rule, _properties));
         }
     }
 }

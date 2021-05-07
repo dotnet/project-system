@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
         {
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
-            if (((IEntityValueFromProvider)result.Result).ProviderState is PropertyPageProviderState state)
+            if (((IEntityValueFromProvider)result.Result).ProviderState is ContextAndRuleProviderState state)
             {
                 var cache = state.Cache;
                 if (await cache.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration

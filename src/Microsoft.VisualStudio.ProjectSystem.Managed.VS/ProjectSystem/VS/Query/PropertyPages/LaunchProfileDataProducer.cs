@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     internal static class LaunchProfileDataProducer
     {
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 newLaunchProfile.Order = order;
             }
 
-            ((IEntityValueFromProvider)newLaunchProfile).ProviderState = new PropertyPageProviderState(cache, context, rule);
+            ((IEntityValueFromProvider)newLaunchProfile).ProviderState = new ContextAndRuleProviderState(cache, context, rule);
 
             return newLaunchProfile;
         }
