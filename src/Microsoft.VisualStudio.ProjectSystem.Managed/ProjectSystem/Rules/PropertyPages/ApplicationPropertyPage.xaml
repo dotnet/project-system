@@ -104,7 +104,7 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <DynamicEnumProperty Name="TargetOS"
+  <DynamicEnumProperty Name="TargetPlatform"
                 DisplayName="Target OS"
                 Description="Specifies the operating system that this project will target."
                 Category="General"
@@ -118,7 +118,7 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <DynamicEnumProperty Name="TargetOSVersion"
+  <DynamicEnumProperty Name="TargetPlatformVersion"
                 DisplayName="Target OS version"
                 Description="Specifies the version of the operating system this project will target."
                 Category="General"
@@ -129,14 +129,14 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetOS") "")</NameValuePair.Value>
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatform") "")</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
-      <NameValuePair Name="DependsOn" Value="Application::TargetOS" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatform" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <DynamicEnumProperty Name="MinimumOSVersion"
+  <DynamicEnumProperty Name="MinimumPlatformVersion"
                 DisplayName="Minimum OS version"
                 Description="Specifies the minimum runtime version of the selected operating system."
                 Category="General"
@@ -147,10 +147,10 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetOSVersion") "")</NameValuePair.Value>
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatform") "")</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
-      <NameValuePair Name="DependsOn" Value="Application::TargetOS" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatform" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 

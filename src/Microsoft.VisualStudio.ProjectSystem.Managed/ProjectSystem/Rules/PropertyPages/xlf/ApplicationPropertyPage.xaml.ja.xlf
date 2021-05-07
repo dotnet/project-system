@@ -87,17 +87,17 @@
         <target state="new">TFM</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumOSVersion|Description">
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Description">
         <source>Specifies the minimum runtime version of the selected operating system.</source>
         <target state="new">Specifies the minimum runtime version of the selected operating system.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumOSVersion|DisplayName">
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|DisplayName">
         <source>Minimum OS version</source>
         <target state="new">Minimum OS version</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumOSVersion|Metadata|SearchTerms">
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
         <target state="new">platform</target>
         <note />
@@ -112,32 +112,32 @@
         <target state="translated">スタートアップ オブジェクト</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOSVersion|Description">
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
         <target state="new">Specifies the version of the operating system this project will target.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOSVersion|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
         <target state="new">Target OS version</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOSVersion|Metadata|SearchTerms">
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
         <target state="new">platform</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOS|Description">
+      <trans-unit id="DynamicEnumProperty|TargetPlatform|Description">
         <source>Specifies the operating system that this project will target.</source>
         <target state="new">Specifies the operating system that this project will target.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOS|DisplayName">
+      <trans-unit id="DynamicEnumProperty|TargetPlatform|DisplayName">
         <source>Target OS</source>
         <target state="new">Target OS</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetOS|Metadata|SearchTerms">
+      <trans-unit id="DynamicEnumProperty|TargetPlatform|Metadata|SearchTerms">
         <source>platform</source>
         <target state="new">platform</target>
         <note />
