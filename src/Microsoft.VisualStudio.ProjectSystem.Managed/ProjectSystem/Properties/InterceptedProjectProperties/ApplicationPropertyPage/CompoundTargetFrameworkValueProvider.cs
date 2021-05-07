@@ -1,57 +1,76 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
-    /// The complex Target Framework property consists of three UI-exposed properties: target framework, target OS and target OS version.
-    /// Those combine and produce a single value like this: [target framework]-[target OS][target OS version].
-    /// This class intercepts those values from the UI to saved them into the TargetFramework property, as well as retrive those values from that same property.
+    /// The complex Target Framework property consists of three UI-exposed properties: target framework moniker, target platform and target platform version.
+    /// Those combine and produce a single value like this: [target framework alias]-[target platform][target platform version].
+    /// This class intercepts those properties from the UI to saved their values into the TargetFramework property.
+    /// In the case of retrieving the values of those properties, this class looks for the associated properties found in the project's configuration.
     /// </summary>
     [ExportInterceptingPropertyValueProvider(
         new[]
         {
-            TargetFrameworkProperty,
-            TargetOSProperty,
-            TargetOSVersionProperty
+            InterceptedTargetFrameworkProperty,
+            TargetPlatformProperty,
+            TargetPlatformVersionProperty
         },
         ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ComplexTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string TargetFrameworkProperty = "InterceptedTargetFramework";
-        private const string TargetOSProperty = "TargetOS";
-        private const string TargetOSVersionProperty = "TargetOSVersion";
-        private const string PropertyInProjectFile = "TargetFramework";
+        private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
+        private const string TargetPlatformProperty = "TargetPlatform";
+        private const string TargetPlatformVersionProperty = "TargetPlatformVersion";
+        private const string TargetFrameworkProperty = "TargetFramework";
+        private const string MinimumPlatformVersionProperty = "MinimumPlatformVersion";
+
+        private readonly ProjectProperties _properties;
+        private readonly ConfiguredProject _configuredProject;
 
         private struct ComplexTargetFramework
         {
-            public string TargetFramework;
-            public string? Platform;
-            public string? PlatformVersion;
+            public string? TargetFrameworkMoniker;
+            public string? TargetPlatformIdentifier;
+            public string? TargetPlatformVersion;
+            public string? TargetFramework;
+        }
+
+        [ImportingConstructor]
+        public ComplexTargetFrameworkValueProvider(ProjectProperties properties, ConfiguredProject configuredProject)
+        {
+            _properties = properties;
+            _configuredProject = configuredProject;
         }
 
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string? storedComplexValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(PropertyInProjectFile);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
 
-            ComplexTargetFramework deconstructedValues = BreakDownValue(storedComplexValue);
-
-            if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetOSProperty))
+            if (storedValues.TargetFrameworkMoniker != null)
             {
-                // Setting the target OS.
-                await defaultProperties.SetPropertyValueAsync(PropertyInProjectFile, ComputeValue(deconstructedValues.TargetFramework, unevaluatedPropertyValue, deconstructedValues.PlatformVersion));
-            }
-            else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetOSVersionProperty))
-            {
-                // Setting the OS version.
-                await defaultProperties.SetPropertyValueAsync(PropertyInProjectFile, ComputeValue(deconstructedValues.TargetFramework, deconstructedValues.Platform, unevaluatedPropertyValue));
-            }
-            else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetFrameworkProperty))
-            {
-                // Setting the target framework.
-                await defaultProperties.SetPropertyValueAsync(PropertyInProjectFile, ComputeValue(unevaluatedPropertyValue, deconstructedValues.Platform, deconstructedValues.PlatformVersion));
+                if (StringComparers.PropertyLiteralValues.Equals(propertyName, InterceptedTargetFrameworkProperty))
+                {
+                    storedValues.TargetFrameworkMoniker = unevaluatedPropertyValue;
+                }
+                else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformProperty))
+                {
+                    if (unevaluatedPropertyValue != storedValues.TargetPlatformIdentifier)
+                    {
+                        storedValues.TargetPlatformIdentifier = unevaluatedPropertyValue;
+                        await ResetPlatformPropertiesAsync(defaultProperties);
+                    }
+                }
+                else if (StringComparers.PropertyLiteralValues.Equals(propertyName, TargetPlatformVersionProperty))
+                {
+                    storedValues.TargetPlatformVersion = unevaluatedPropertyValue;
+                }
+                await defaultProperties.SetPropertyValueAsync(TargetFrameworkProperty, await ComputeValueAsync(storedValues));
             }
 
             return null;
@@ -59,24 +78,42 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string? storedComplexValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(PropertyInProjectFile);
-            ComplexTargetFramework values = BreakDownValue(storedComplexValue);
-            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, ExtractValue(values, propertyName) ?? "", defaultProperties);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
+
+            if (storedValues.TargetFrameworkMoniker != null && storedValues.TargetFrameworkMoniker.Contains("Unsupported"))
+            {
+                return await base.OnGetEvaluatedPropertyValueAsync(propertyName, "", defaultProperties);
+            }
+
+            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, ExtractValue(storedValues, propertyName) ?? "", defaultProperties);
         }
 
         public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string? storedComplexValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(PropertyInProjectFile);
-            ComplexTargetFramework values = BreakDownValue(storedComplexValue);
-            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, ExtractValue(values, propertyName) ?? "", defaultProperties);
+            ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
+            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
+
+            if (storedValues.TargetFrameworkMoniker != null && storedValues.TargetFrameworkMoniker.Contains("Unsupported"))
+            {
+                return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, "", defaultProperties);
+            }
+
+            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, ExtractValue(storedValues, propertyName) ?? "", defaultProperties);
         }
 
-        //private static string? CommonCode(string propertyName, IProjectProperties defaultProperties)
-        //{
-        //    string? storedComplexValue = defaultProperties.GetUnevaluatedPropertyValueAsync(PropertyToBeSavedOnProjectFile); // TODO: change to TargetFrameworkProperty
-        //    ComplexTargetFramework values = BreakDownValue(storedComplexValue);
-        //    return ExtractValue(values, propertyName);
-        //}
+        private static async Task<ComplexTargetFramework> GetStoredComplexTargetFramework(ConfigurationGeneral configuration)
+        {
+            ComplexTargetFramework storedValues = new ComplexTargetFramework
+            {
+                TargetFrameworkMoniker = (string?)await configuration.TargetFrameworkMoniker.GetValueAsync(),
+                TargetPlatformIdentifier = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync(),
+                TargetPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync(),
+                TargetFramework = (string?)await configuration.TargetFramework.GetValueAsync()
+            };
+
+            return storedValues;
+        }
 
         /// <summary>
         /// Extracts the specified value from the ComplexTargetFramework structure.
@@ -88,65 +125,112 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             return propertyName switch
             {
-                TargetFrameworkProperty => values.TargetFramework,
-                TargetOSProperty => values.Platform,
-                TargetOSVersionProperty => values.PlatformVersion,
+                InterceptedTargetFrameworkProperty => values.TargetFrameworkMoniker,
+                TargetPlatformProperty => values.TargetPlatformIdentifier,
+                TargetPlatformVersionProperty => values.TargetPlatformVersion,
                 _ => null,
             };
         }
 
         /// <summary>
         /// Combines the three values that make up the TargetFramework property.
-        /// I.e. net5.0, windows, 10.0 => net5.0-windows10.0
-        /// net5.0, null, null => net5.0
+        /// I.e. { net5.0, windows, 10.0 } => net5.0-windows10.0
+        /// { net5.0, null, null } => net5.0
+        /// { null, null, null } => String.Empty
         /// </summary>
-        /// <param name="targetFramework">The target framework value.</param>
-        /// <param name="targetPlatform">The target platform value.</param>
-        /// <param name="platformVersion">The platform version value.</param>
-        /// <returns></returns>
-        private static string ComputeValue(string targetFramework, string? targetPlatform, string? platformVersion)
+        /// <param name="complexTargetFramework">A struct with each property.</param>
+        /// <returns>A string with the combined values.</returns>
+        private async Task<string> ComputeValueAsync(ComplexTargetFramework complexTargetFramework)
         {
-            if (targetPlatform != null) // TODO: Ensure TargetFramework is not null.
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFrameworkMoniker))
             {
-                return targetFramework + "-" + targetPlatform + platformVersion;
+                string targetFrameworkAlias = await GetTargetFrameworkAlias(complexTargetFramework.TargetFrameworkMoniker);
+
+                if (string.IsNullOrEmpty(targetFrameworkAlias))
+                {
+                    return string.Empty;
+                }
+
+                if (targetFrameworkAlias.Contains("Unsupported") || string.IsNullOrEmpty(complexTargetFramework.TargetFramework))
+                {
+                    // The value on the TargetFramework is not on the supported list and we shouldn't try to parse it.
+                    // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
+                    return complexTargetFramework.TargetFramework;
+                }
+
+                if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
+                {
+                    string targetPlatformAlias = await GetTargetPlatformAlias(complexTargetFramework.TargetPlatformIdentifier);
+                        
+                    if (string.IsNullOrEmpty(targetPlatformAlias))
+                    {
+                        return targetFrameworkAlias;
+                    }
+                        
+                    return targetFrameworkAlias + "-" + targetPlatformAlias + complexTargetFramework.TargetPlatformVersion;
+                }
+
+                return targetFrameworkAlias;
             }
-            return targetFramework;
+
+            return string.Empty;
         }
 
         /// <summary>
-        /// Takes the combined string and separates the values into the ComplextTargetFramework structure.
-        /// TargetFramework must always be present, but Platform and PlatformVersion can be null.
-        /// <para>i.e. net5.0-windows10.0 => { net5.0, windows, 10.0 }; netcoreapp3.1 => { netcoreapp3.1, null, null }</para>
+        /// Retrieves the target framework alias (i.e. net5.0) from the project's subscription service.
         /// </summary>
-        /// <param name="storedComplexTargetFramework"></param>
         /// <returns></returns>
-        private static ComplexTargetFramework BreakDownValue(string? storedComplexTargetFramework)
+        private async Task<string> GetTargetFrameworkAlias(string targetFrameworkMoniker)
         {
-            ComplexTargetFramework result = new ComplexTargetFramework();
+            IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
+            Assumes.Present(subscriptionService);
 
-            if (storedComplexTargetFramework != null)
-            {
-                result.Platform = null;
-                result.PlatformVersion = null;
+            IImmutableDictionary<string, IProjectRuleSnapshot> supportedTargetFrameworks = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SupportedTargetFramework.SchemaName });
+            IProjectRuleSnapshot targetFrameworkRuleSnapshot = supportedTargetFrameworks[SupportedTargetFramework.SchemaName];
+
+            IImmutableDictionary<string, string>? targetFrameworkProperties = targetFrameworkRuleSnapshot.GetProjectItemProperties(targetFrameworkMoniker);
             
-                if (storedComplexTargetFramework.IndexOf('-') != -1)
-                {
-                    result.TargetFramework = storedComplexTargetFramework.Split('-')[0];
-                    string targetPlatformAndVersion = storedComplexTargetFramework.Split('-')[1];
-
-                    if (targetPlatformAndVersion != null)
-                    {
-                        result.PlatformVersion = System.Text.RegularExpressions.Regex.Match(targetPlatformAndVersion, @"[\d|\.]+").Value;
-                        result.Platform = System.Text.RegularExpressions.Regex.Match(targetPlatformAndVersion, @"^([a-zA-Z])+").Value;
-                    }
-                }
-                else
-                {
-                    // The stored value has only the TargetFramework property without platform values.
-                    result.TargetFramework = storedComplexTargetFramework;
-                }
+            if (targetFrameworkProperties != null &&
+                targetFrameworkProperties.TryGetValue(SupportedTargetFramework.AliasProperty, out string? targetFrameworkAlias))
+            {
+                return targetFrameworkAlias;
             }
-            return result;
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Retrieves the associated platform alias (i.e. windows) from the project's subscription service.
+        /// </summary>
+        /// <param name="targetPlatformIdentifier"></param>
+        /// <returns></returns>
+        private async Task<string> GetTargetPlatformAlias(string targetPlatformIdentifier)
+        {
+            IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
+            Assumes.Present(subscriptionService);
+
+            IImmutableDictionary<string, IProjectRuleSnapshot> sdkSupportedTargetPlatformIdentifiers = await subscriptionService.ProjectRuleSource.GetLatestVersionAsync(_configuredProject, new string[] { SdkSupportedTargetPlatformIdentifier.SchemaName });
+
+            IProjectRuleSnapshot sdkSupportedTargetPlatformIdentifierRuleSnapshot = sdkSupportedTargetPlatformIdentifiers[SdkSupportedTargetPlatformIdentifier.SchemaName];
+
+            // The SdkSupportedTargetPlatformIdentifier rule stores the alias in the key value.
+            if (sdkSupportedTargetPlatformIdentifierRuleSnapshot.Items.TryGetKey(targetPlatformIdentifier, out string targetPlatformAlias))
+            {
+                return targetPlatformAlias;
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Resets the values on the TargetPlatformProperty and MinimumPlatformVersionProperty.
+        /// </summary>
+        /// <param name="projectProperties"></param>
+        /// <returns></returns>
+        private static async Task ResetPlatformPropertiesAsync(IProjectProperties projectProperties)
+        {
+            await projectProperties.DeletePropertyAsync(TargetPlatformVersionProperty);
+            await projectProperties.DeletePropertyAsync(MinimumPlatformVersionProperty);
         }
     }
 }
