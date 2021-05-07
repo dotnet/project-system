@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return Task.CompletedTask;
         }
 
-        internal void OnLaunchSettingsChanged(ILaunchSettings newSettings)
+        private void OnLaunchSettingsChanged(ILaunchSettings newSettings)
         {
             if (newSettings is IVersionedLaunchSettings versionedSettings)
             {
@@ -78,9 +78,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
         }
 
-        internal long CurrentVersion { get; private set; }
+        public long CurrentVersion { get; private set; }
 
-        internal string VersionKey
+        public string VersionKey
         {
             get
             {
