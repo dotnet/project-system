@@ -104,11 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     bool observerRequiresNotification = false;
                     lock (SyncObject)
                     {
-                        if (_observers.Contains(observer)
-                            && processedNotificationCountAtTimeOfSubscription == _processedNotificationCount)
-                        {
-                            observerRequiresNotification = true;
-                        }
+                        observerRequiresNotification = _observers.Contains(observer) && processedNotificationCountAtTimeOfSubscription == _processedNotificationCount);
                     }
 
                     if (observerRequiresNotification
@@ -176,10 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         {
                             if (!newVersions.ContainsKey(versionKey))
                             {
-                                if (expiredSources is null)
-                                {
-                                    expiredSources = new List<string>();
-                                }
+                                expiredSources ??= new List<string>();
 
                                 expiredSources.Add(versionKey);
                             }
