@@ -59,6 +59,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             _provider = provider;
 #pragma warning disable RS0030 // Do not used banned APIs
+            // DataflowBlockFactory.CreateActionBlock(...) would be preferable, but it takes an
+            // UnconfiguredProject as a parameter. This type isn't associated with any
+            // particular project so we can't use it.
             _processingBlock = DataflowBlockSlim.CreateActionBlock<Action>(callback => callback(), nameFormat: nameof(LaunchSettingsQueryVersionProviderExport));
 #pragma warning restore RS0030 // Do not used banned APIs
 
