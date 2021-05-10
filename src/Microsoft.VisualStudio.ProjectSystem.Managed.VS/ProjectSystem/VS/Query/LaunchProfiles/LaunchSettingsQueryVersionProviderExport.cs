@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     bool observerRequiresNotification = false;
                     lock (SyncObject)
                     {
-                        observerRequiresNotification = _observers.Contains(observer) && processedNotificationCountAtTimeOfSubscription == _processedNotificationCount);
+                        observerRequiresNotification = _observers.Contains(observer) && processedNotificationCountAtTimeOfSubscription == _processedNotificationCount;
                     }
 
                     if (observerRequiresNotification
