@@ -17,6 +17,7 @@ This documentation details the updated Project Properties UI and associated back
 To customise or extend the properties displayed for a given project start with these HOW TO guides:
 
 - [HOW TO: Add a new property page](how-to-add-a-new-property-page.md)
+- [HOW TO: Add a new Launch Profile UI](how-to-add-a-launch-profile.md)
 
 And then check these documents for more details:
 
