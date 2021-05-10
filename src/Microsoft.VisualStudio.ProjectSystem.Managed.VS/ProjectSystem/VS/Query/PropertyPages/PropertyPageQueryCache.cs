@@ -105,5 +105,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _ruleCache.Add((projectConfiguration, schemaName, context), rule);
             return rule;
         }
+
+        public (string versionKey, long versionNumber) GetUnconfiguredProjectVersion()
+        {
+            _unconfiguredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
+            return (versionKey, versionNumber);
+        }
+
+        public async Task<(string versionKey, long versionNumber)> GetConfiguredProjectVersionAsync(ProjectConfiguration configuration)
+        {
+            ConfiguredProject configuredProject = await _unconfiguredProject.LoadConfiguredProjectAsync(configuration);
+            configuredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
+            return (versionKey, versionNumber);
+        }
     }
 }

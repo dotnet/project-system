@@ -23,6 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [QueryDataProvider(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.TypeName, ProjectModel.ModelName)]
     [QueryActionProvider(ProjectModelActionNames.SetEvaluatedUIPropertyValue, typeof(SetEvaluatedUIPropertyValue))]
     [QueryActionProvider(ProjectModelActionNames.SetUnevaluatedUIPropertyValue, typeof(SetUnevaluatedUIPropertyValue))]
+    [QueryActionProvider(ProjectModelActionNames.AddLaunchProfile, typeof(AddLaunchProfile))]
+    [QueryActionProvider(ProjectModelActionNames.RemoveLaunchProfile, typeof(RemoveLaunchProfile))]
+    [QueryActionProvider(ProjectModelActionNames.RenameLaunchProfile, typeof(RenameLaunchProfile))]
+    [QueryActionProvider(ProjectModelActionNames.DuplicateLaunchProfile, typeof(DuplicateLaunchProfile))]
     [QueryDataProviderZone(ProjectModelZones.Cps)]
     [Export(typeof(IQueryActionProvider))]
     internal sealed class ProjectActionProvider : IQueryActionProvider
@@ -43,6 +47,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction(_queryCacheProvider, (SetEvaluatedUIPropertyValue)executableStep),
                 ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction(_queryCacheProvider, (SetUnevaluatedUIPropertyValue)executableStep),
+
+                ProjectModelActionNames.AddLaunchProfile => new AddLaunchProfileAction((AddLaunchProfile)executableStep),
+                ProjectModelActionNames.RemoveLaunchProfile => new RemoveLaunchProfileAction((RemoveLaunchProfile)executableStep),
+                ProjectModelActionNames.RenameLaunchProfile => new RenameLaunchProfileAction((RenameLaunchProfile)executableStep),
+                ProjectModelActionNames.DuplicateLaunchProfile => new DuplicateLaunchProfileAction((DuplicateLaunchProfile)executableStep),
+
                 _ => throw new InvalidOperationException($"{nameof(ProjectActionProvider)} does not handle action '{executableStep.Action}'.")
             };
         }

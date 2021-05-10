@@ -186,12 +186,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         protected async Task DoLaunchAsync(IVsDebuggerLaunchCompletionCallback cb, params IDebugLaunchSettings[] launchSettings)
         {
-            VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
-            if (launchSettingsNative.Length == 0)
+            if (launchSettings.Length == 0)
             {
                 cb.OnComplete(0, 0, null);
                 return;
             }
+
+            VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
 
             try
             {
@@ -231,10 +232,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 guidLaunchDebugEngine = info.LaunchDebugEngineGuid
             };
 
-            var guids = new List<Guid>(1)
+            var guids = new List<Guid>(1 + info.AdditionalDebugEngines?.Count ?? 0)
             {
                 info.LaunchDebugEngineGuid
             };
+
             if (info.AdditionalDebugEngines != null)
             {
                 guids.AddRange(info.AdditionalDebugEngines);
@@ -330,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </remarks>
         private static byte[] GetGuidBytes(IList<Guid> guids)
         {
-            int sizeOfGuid = Guid.Empty.ToByteArray().Length;
+            const int sizeOfGuid = 16;
             byte[] bytes = new byte[guids.Count * sizeOfGuid];
             for (int i = 0; i < guids.Count; i++)
             {

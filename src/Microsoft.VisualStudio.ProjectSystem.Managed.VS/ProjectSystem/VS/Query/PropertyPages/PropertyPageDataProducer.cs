@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -17,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class PropertyPageDataProducer
     {
-        public static IEntityValue CreatePropertyPageValue(IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext executionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(rule, nameof(rule));
@@ -26,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 ((IEntityWithId)parent).Id,
                 createKeys());
 
-            return CreatePropertyPageValue(parent.EntityRuntime, identity, cache, context, rule, requestedProperties);
+            return CreatePropertyPageValue(executionContext, identity, cache, context, rule, requestedProperties);
 
             IEnumerable<KeyValuePair<string, string>> createKeys()
             {
@@ -44,10 +45,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
         }
 
-        public static IEntityValue CreatePropertyPageValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext executionContext, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(rule, nameof(rule));
-            var newPropertyPage = new PropertyPageValue(runtimeModel, id, new PropertyPagePropertiesAvailableStatus());
+            var newPropertyPage = new PropertyPageValue(executionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -69,13 +70,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newPropertyPage.Kind = rule.PageTemplate;
             }
 
-            ((IEntityValueFromProvider)newPropertyPage).ProviderState = new PropertyPageProviderState(cache, context, rule);
+            ((IEntityValueFromProvider)newPropertyPage).ProviderState = new ContextAndRuleProviderState(cache, context, rule);
 
             return newPropertyPage;
         }
 
         public static async Task<IEntityValue?> CreatePropertyPageValueAsync(
-            IEntityRuntimeModel runtimeModel,
+            IQueryExecutionContext executionContext,
             EntityIdentity id,
             IProjectService2 projectService,
             IPropertyPageQueryCacheProvider queryCacheProvider,
@@ -83,20 +84,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string propertyPageName,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                && !rule.PropertyPagesHidden)
+            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project)
             {
-                IPropertyPageQueryCache propertyPageQueryCache = queryCacheProvider.CreateCache(project);
-                IEntityValue propertyPageValue = CreatePropertyPageValue(runtimeModel, id, propertyPageQueryCache, context, rule, requestedProperties);
-                return propertyPageValue;
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
+                    && !rule.PropertyPagesHidden)
+                {
+                    IPropertyPageQueryCache propertyPageQueryCache = queryCacheProvider.CreateCache(project);
+                    IEntityValue propertyPageValue = CreatePropertyPageValue(executionContext, id, propertyPageQueryCache, context, rule, requestedProperties);
+                    return propertyPageValue;
+                }
             }
 
             return null;
         }
 
         public static async Task<IEnumerable<IEntityValue>> CreatePropertyPageValuesAsync(
+            IQueryExecutionContext executionContext,
             IEntityValue parent,
             UnconfiguredProject project,
             IPropertyPageQueryCacheProvider queryCacheProvider,
@@ -118,7 +125,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     if (projectCatalog.GetSchema(schemaName) is Rule rule
                         && !rule.PropertyPagesHidden)
                     {
-                        IEntityValue propertyPageValue = CreatePropertyPageValue(parent, propertyPageQueryCache, context, rule, requestedProperties: requestedProperties);
+                        IEntityValue propertyPageValue = CreatePropertyPageValue(executionContext, parent, propertyPageQueryCache, context, rule, requestedProperties: requestedProperties);
                         yield return propertyPageValue;
                     }
                 }

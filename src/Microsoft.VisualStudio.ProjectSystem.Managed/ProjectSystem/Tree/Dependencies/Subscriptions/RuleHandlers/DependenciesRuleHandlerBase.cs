@@ -10,10 +10,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 {
     internal abstract class DependenciesRuleHandlerBase
         : IDependenciesRuleHandler,
-          IProjectDependenciesSubTreeProvider
+          IProjectDependenciesSubTreeProvider2
     {
         public string EvaluatedRuleName { get; }
         public string ResolvedRuleName { get; }
+
+        public abstract ProjectTreeFlags GroupNodeFlag { get; }
 
         protected DependenciesRuleHandlerBase(
             string evaluatedRuleName,

@@ -10,21 +10,40 @@
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFile"
+    <DataSource Persistence="ProjectFileWithInterception"
                 SourceOfDefaultValue="AfterContext"
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The new Project Properties UI is under development, and the ability to edit launch profiles has not yet been completed. Please either edit the launchProfiles.json file manually, or revert to the previous Property Pages as described in the banner at the top of this page. We will be adding this feature very soon.">
-    <StringProperty.DataSource>
-      <DataSource PersistedName="DebugPagePlaceholderDescription"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
+                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+    </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="OpenLaunchProfilesEditor"
+                  DisplayName="Open debug launch profiles UI">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+    </StringProperty.Metadata>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="OpenLaunchProfilesEditor" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
     </StringProperty.ValueEditors>
   </StringProperty>
 

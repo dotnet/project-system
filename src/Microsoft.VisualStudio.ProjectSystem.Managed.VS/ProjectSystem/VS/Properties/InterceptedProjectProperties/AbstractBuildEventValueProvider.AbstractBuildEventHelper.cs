@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
             private string BuildEvent { get; }
             private string TargetName { get; }
 
-            public async Task<(bool success, string? property)> TryGetPropertyAsync(IProjectProperties defaultProperties)
+            public async Task<(bool success, string? value)> TryGetUnevaluatedPropertyValueAsync(IProjectProperties defaultProperties)
             {
                 // check if value already exists
                 string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
@@ -43,9 +43,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 return (false, null);
             }
 
-            public string? GetProperty(ProjectRootElement projectXml)
+            public async Task<(bool success, string value)> TryGetEvaluatedPropertyValueAsync(IProjectProperties defaultProperties)
             {
-                return GetFromTargets(projectXml);
+                string? unevaluatedPropertyValue = await defaultProperties.GetUnevaluatedPropertyValueAsync(BuildEvent);
+
+                if (unevaluatedPropertyValue is null)
+                {
+                    return (false, "");
+                }
+
+                string evaluatedPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(BuildEvent);
+                return (true, evaluatedPropertyValue);
+            }
+
+            public string? TryGetValueFromTarget(ProjectRootElement projectXml)
+            {
+                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
+
+                if (execTask == null)
+                {
+                    return null;
+                }
+
+                if (execTask.Parameters.TryGetValue(Command, out string commandText))
+                {
+                    return commandText.Replace("%25", "%");
+                }
+
+                return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
             public async Task<bool> TrySetPropertyAsync(string unevaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -80,23 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 }
 
                 SetParameter(projectXml, unevaluatedPropertyValue);
-            }
-
-            private string? GetFromTargets(ProjectRootElement projectXml)
-            {
-                ProjectTaskElement? execTask = FindExecTaskInTargets(projectXml);
-
-                if (execTask == null)
-                {
-                    return null;
-                }
-
-                if (execTask.Parameters.TryGetValue(Command, out string commandText))
-                {
-                    return commandText.Replace("%25", "%");
-                }
-
-                return null; // exec task as written in the project file is invalid, we should be resilient to this case.
             }
 
             private static bool OnlyWhitespaceCharacters(string unevaluatedPropertyValue)

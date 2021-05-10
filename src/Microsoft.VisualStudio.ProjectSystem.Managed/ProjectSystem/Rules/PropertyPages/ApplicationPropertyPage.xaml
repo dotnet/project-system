@@ -14,6 +14,9 @@
     <Category Name="Resources"
               DisplayName="Resources"
               Description="Resource settings for the application." />
+    <Category Name="Packaging"
+              DisplayName="Packaging"
+              Description="Packaging settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -43,6 +46,11 @@
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>false</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
   </BoolProperty>
 
   <DynamicEnumProperty Name="TargetFramework"
@@ -106,6 +114,11 @@
         <NameValuePair.Value>(ne (evaluated "Application" "OutputType") "Library")</NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
 
   <StringProperty Name="AssemblyName"
@@ -204,4 +217,10 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO Documentation issue for this property: https://github.com/MicrosoftDocs/visualstudio-docs/issues/6643 -->
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                Category="Packaging" />
 </Rule>

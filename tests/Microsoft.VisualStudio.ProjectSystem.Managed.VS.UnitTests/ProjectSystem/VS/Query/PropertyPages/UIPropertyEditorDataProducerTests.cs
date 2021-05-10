@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class UIPropertyEditorDataProducerTests
     {
@@ -16,10 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: false);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "parentId", value: "aaa");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(parentEntity, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, parentEntity, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Id[ProjectModelIdentityKeys.EditorName]);
         }
@@ -29,11 +30,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
 
-            var entityRuntime = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(entityRuntime, id, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: "My.Editor.Type", actual: result.Name);
         }
@@ -43,11 +44,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
 
-            var entityRuntime = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "EditorKey", value: "bbb");
             var editor = new ValueEditor { EditorType = "My.Editor.Type" };
 
-            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(entityRuntime, id, editor, properties);
+            var result = (UIPropertyEditorValue)UIPropertyEditorDataProducer.CreateEditorValue(context, id, editor, properties);
 
             Assert.Equal(expected: editor, actual: ((IEntityValueFromProvider)result).ProviderState);
         }
@@ -57,6 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "parentKey", value: "parentId");
             var rule = new Rule();
             rule.BeginInit();
@@ -73,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 });
             rule.EndInit();
 
-            var results = UIPropertyEditorDataProducer.CreateEditorValues(parentEntity, rule, "MyProperty", properties);
+            var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
             Assert.Collection(results, new Action<IEntityValue>[]
             {
@@ -94,6 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "parentKey", value: "parentId");
             var rule = new Rule();
             rule.BeginInit();
@@ -105,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 });
             rule.EndInit();
 
-            var results = UIPropertyEditorDataProducer.CreateEditorValues(parentEntity, rule, "MyProperty", properties);
+            var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
             Assert.Collection(results, entity => assertEqual(entity, expectedName: "FilePath"));
 
@@ -121,6 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyEditorPropertiesAvailableStatus(includeName: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "parentKey", value: "parentId");
             var rule = new Rule();
             rule.BeginInit();
@@ -132,7 +136,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 });
             rule.EndInit();
 
-            var results = UIPropertyEditorDataProducer.CreateEditorValues(parentEntity, rule, "MyProperty", properties);
+            var results = UIPropertyEditorDataProducer.CreateEditorValues(context, parentEntity, rule, "MyProperty", properties);
 
             Assert.Collection(results, entity => assertEqual(entity, expectedName: "DirectoryPath"));
 

@@ -34,7 +34,7 @@ variables:
   BuildPlatform: any cpu
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   EnableRichCodeNavigation: true
-  
+
 steps:
 - script: $(Build.SourcesDirectory)\build.cmd /build /ci /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln

@@ -778,7 +778,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.UpdateGlobalSettingAsync("iisSettings", existing => newSettings);
+            await provider.UpdateGlobalSettingsAsync(existing => {
+                var updates = ImmutableDictionary<string, object?>.Empty
+                    .Add("iisSettings", newSettings);
+                return updates;
+            });
 
             // Check disk file was written
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
@@ -847,7 +851,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             var newSettings = new IISSettingsData() { WindowsAuthentication = true, DoNotPersist = isInMemory };
 
-            await provider.UpdateGlobalSettingAsync("iisSettings", existing => newSettings);
+            await provider.UpdateGlobalSettingsAsync(existing => {
+                var updates = ImmutableDictionary<string, object?>.Empty
+                    .Add("iisSettings", newSettings);
+                return updates;
+            });
 
             // Check disk file was written
             Assert.Equal(!isInMemory || (isInMemory && !existingIsInMemory), moqFS.FileExists(provider.LaunchSettingsFile));

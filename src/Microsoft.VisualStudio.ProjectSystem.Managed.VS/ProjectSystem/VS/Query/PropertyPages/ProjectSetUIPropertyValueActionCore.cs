@@ -108,8 +108,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <see cref="UnconfiguredProject"/> targeted by the query.
         /// </summary>
         /// <param name="targetProject">The project to update.</param>
-        public async Task ExecuteAsync(UnconfiguredProject targetProject)
+        /// <returns>
+        /// <see langword="true"/> if at least one property was actually updated; <see langword="false"/>
+        /// otherwise.
+        /// </returns>
+        public async Task<bool> ExecuteAsync(UnconfiguredProject targetProject)
         {
+            bool valueSet = false;
             if (_rules.TryGetValue(targetProject.FullPath, out List<IRule> boundRules))
             {
                 foreach (IRule boundRule in boundRules)
@@ -117,9 +122,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     if (boundRule.GetProperty(_propertyName) is IProperty property)
                     {
                         await _setValueAsync(property);
+
+                        valueSet = true;
                     }
                 }
             }
+
+            return valueSet;
         }
 
         /// <summary>

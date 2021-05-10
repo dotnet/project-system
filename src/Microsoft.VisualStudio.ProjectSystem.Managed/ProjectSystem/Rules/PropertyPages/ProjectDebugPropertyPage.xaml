@@ -14,13 +14,14 @@
     <!-- KnownImageIds.ImageCatalogGuid -->
     <sys:Guid x:Key="ImageMonikerGuid">AE27A6B0-E345-4288-96DF-5EAF394EE369</sys:Guid>
 
-    <!-- KnownImageIds.SettingsGroup-->
-    <sys:Int32 x:Key="ImageMonikerId">2770</sys:Int32>
+    <!-- KnownImageIds.Application -->
+    <sys:Int32 x:Key="ImageMonikerId">165</sys:Int32>
   </Rule.Metadata>
 
   <Rule.DataSource>
     <DataSource Persistence="LaunchProfile"
-                HasConfigurationCondition="False" />
+                HasConfigurationCondition="False"
+                ItemType="LaunchProfile" />
   </Rule.DataSource>
 
   <StringProperty Name="CommandLineArguments"
@@ -34,16 +35,30 @@
 
   <BoolProperty Name="RemoteDebugEnabled"
                 DisplayName="Use remote machine"
-                Description="Indicates that the debugger should attach to a process on a remote machine."/>
+                Description="Indicates that the debugger should attach to a process on a remote machine." />
 
   <StringProperty Name="RemoteDebugMachine"
                   DisplayName="Remote machine name"
-                  Description="The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled."/>
+                  Description="The name and port number of the remote machine in 'name:port' format.">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <DynamicEnumProperty Name="AuthenticationMode"
                        DisplayName="Authentication mode"
-                       Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
-                       EnumProvider="AuthenticationModeEnumProvider" />
+                       Description="The authentication scheme to use when connecting to the remote machine."
+                       EnumProvider="AuthenticationModeEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
 
   <StringProperty Name="EnvironmentVariables"
                   DisplayName="Environment variables"

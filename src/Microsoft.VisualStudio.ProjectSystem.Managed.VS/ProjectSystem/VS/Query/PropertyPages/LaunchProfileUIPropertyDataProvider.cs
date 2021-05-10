@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new UIPropertyFromPropertyPageDataProducer((IUIPropertyPropertiesAvailableStatus)properties);
+            return new UIPropertyFromRuleDataProducer((IUIPropertyPropertiesAvailableStatus)properties);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class ProjectActionProviderTests
     {
@@ -69,9 +69,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 prop => prop.SetValueAsync("new value"));
 
             await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(project);
             coreActionExecutor.OnAfterExecutingBatch();
 
+            Assert.True(propertyUpdated);
             Assert.Equal(expected: 4, actual: affectedConfigs.Count);
             foreach (var configuration in projectConfigurations)
             {
@@ -138,9 +139,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 prop => prop.SetValueAsync("new value"));
 
             await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(project);
             coreActionExecutor.OnAfterExecutingBatch();
 
+            Assert.True(propertyUpdated);
             Assert.Single(affectedConfigs);
             Assert.Contains("Release|x86", affectedConfigs);
         }
@@ -148,7 +150,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         [Fact]
         public async Task WhenARuleContainsMultipleProperties_ThenOnlyTheSpecifiedPropertyIsSet()
         {
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\alpha\beta\MyProject.csproj");
+            var project = UnconfiguredProjectFactory.Create(
+                fullPath: @"C:\alpha\beta\MyProject.csproj",
+                configuredProject: ConfiguredProjectFactory.Create(
+                    services: ConfiguredProjectServicesFactory.Create(
+                        IPropertyPagesCatalogProviderFactory.Create(new()
+                        {
+                            {
+                                "Project",
+                                IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
+                                {
+                                    { "MyPage", IRuleFactory.Create(new Rule
+                                        {
+                                            Name = "MyPage",
+                                            Properties = new()
+                                            {
+                                                new TestProperty
+                                                {
+                                                    Name = "MyProperty",
+                                                    DataSource = new() { HasConfigurationCondition = true }
+                                                },
+                                                new TestProperty
+                                                {
+                                                    Name = "NotTheCorrectProperty",
+                                                    DataSource = new() { HasConfigurationCondition = true }
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        }))));
             var projectConfigurations = GetConfigurations();
 
             var unrelatedPropertySet = false;
@@ -177,9 +209,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                 prop => prop.SetValueAsync("new value"));
 
             await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(project);
             coreActionExecutor.OnAfterExecutingBatch();
 
+            Assert.True(propertyUpdated);
             Assert.False(unrelatedPropertySet);
         }
 

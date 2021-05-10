@@ -35,6 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
 
         public override string ProviderType => ProviderTypeString;
 
+        public override ProjectTreeFlags GroupNodeFlag => DependencyTreeFlags.AnalyzerDependencyGroup;
+
         protected override bool ResolvedItemRequiresEvaluatedItem => false;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;

@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
@@ -33,13 +34,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 requestedProperties: properties);
 
-            Assert.IsType<PropertyPageProviderState>(propertyPage.ProviderState);
+            Assert.IsType<ContextAndRuleProviderState>(propertyPage.ProviderState);
         }
 
         [Fact]
@@ -48,6 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var properties = PropertiesAvailableStatusFactory.CreatePropertyPagePropertiesAvailableStatus(includeAllProperties: true);
 
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
+                IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
                 IPropertyPageQueryCacheFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,

@@ -15,8 +15,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     [Export(typeof(IProjectSystemReferenceCleanupService))]
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService
     {
+        private static readonly ReferenceCleanUpInvoker s_commandInvoker = new ();
+
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
-            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>()
+            new ()
             {
                 { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
                 { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
@@ -34,6 +36,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 LazyThreadSafetyMode.PublicationOnly);
         }
 
+        /// <summary>
+        /// Return the set of direct Project and Package References for the given project. This
+        /// is used to get the initial state of the TreatAsUsed attribute for each reference.
+        /// </summary>
         public async Task<ImmutableArray<ProjectSystemReferenceInfo>> GetProjectReferencesAsync(string projectPath, CancellationToken cancellationToken)
         {
             List<ProjectSystemReferenceInfo> references;
@@ -87,6 +93,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return references;
         }
 
+        /// <summary>
+        /// Updates the project’s references by removing or marking references as
+        /// TreatAsUsed in the project file.
+        /// </summary>
+        /// <returns>True, if the reference was updated.</returns>
         public async Task<bool> TryUpdateReferenceAsync(string projectPath, ProjectSystemReferenceUpdate referenceUpdate, CancellationToken cancellationToken)
         {
             bool wasUpdated = false;
@@ -108,25 +119,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private static async Task<bool> ApplyActionAsync(ProjectSystemReferenceUpdate referenceUpdate, AbstractReferenceHandler referenceHandler, 
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken)
         {
-            bool wasUpdated = false;
+            bool wasUpdated = true;
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            if (referenceUpdate.Action == ProjectSystemUpdateAction.SetTreatAsUsed ||
-                referenceUpdate.Action == ProjectSystemUpdateAction.UnsetTreatAsUsed)
+            switch (referenceUpdate.Action)
             {
-                wasUpdated =
-                    await referenceHandler.UpdateReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken);
+                case ProjectSystemUpdateAction.SetTreatAsUsed:
+                case ProjectSystemUpdateAction.UnsetTreatAsUsed:
+                    await s_commandInvoker.ExecuteCommandAsync(referenceHandler.CreateUpdateReferenceCommand(selectedConfiguredProject, referenceUpdate));
+                    break;
+                case ProjectSystemUpdateAction.Remove:
+                    await s_commandInvoker.ExecuteCommandAsync(referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate));
+                    break;
+                case (ProjectSystemUpdateAction)3:
+                    await s_commandInvoker.UndoCommand();
+                    break;
+                case (ProjectSystemUpdateAction)4:
+                    await s_commandInvoker.RedoCommand();
+                    break;
+                default:
+                    wasUpdated = false;
+                    break;
             }
-            else
-            {
-                if (await referenceHandler.CanRemoveReferenceAsync(selectedConfiguredProject, referenceUpdate, cancellationToken))
-                {
-                    await referenceHandler.RemoveReferenceAsync(selectedConfiguredProject, referenceUpdate.ReferenceInfo);
-                    wasUpdated = true;
-                }
-            }
-
+            
             return wasUpdated;
         }
     }

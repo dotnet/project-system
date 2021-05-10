@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31104.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneLocBuildSetup", "OneLocBuildSetup.csproj", "{1873F295-2E39-4BB5-B6C2-A89F0FDCF6A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1873F295-2E39-4BB5-B6C2-A89F0FDCF6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1873F295-2E39-4BB5-B6C2-A89F0FDCF6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1873F295-2E39-4BB5-B6C2-A89F0FDCF6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1873F295-2E39-4BB5-B6C2-A89F0FDCF6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13B31232-D14E-4E26-86B1-E16E144258AB}
+	EndGlobalSection
+EndGlobal

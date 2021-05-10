@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
-        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">원격 머신에 연결할 때 사용할 인증 체계입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
+        <source>The authentication scheme to use when connecting to the remote machine.</source>
+        <target state="translated">원격 머신에 연결할 때 사용할 인증 체계입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -73,8 +73,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
-        <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
+        <source>The name and port number of the remote machine in 'name:port' format.</source>
+        <target state="translated">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

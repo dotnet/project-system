@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
+using Moq;
 using Xunit;
 using static Microsoft.VisualStudio.ProjectSystem.LanguageServices.WorkspaceProjectContextHost;
 
@@ -139,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var unloadSource = new CancellationTokenSource();
             var tasksService = IUnconfiguredProjectTasksServiceFactory.ImplementUnloadCancellationToken(unloadSource.Token);
 
-            void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
+            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> _, IProjectBuildSnapshot projectBuildSnapshot, ContextState __, CancellationToken cancellationToken)
             {
                 // Unload project
                 unloadSource.Cancel();
@@ -147,11 +149,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
+            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
+            {
+                // Unload project
+                unloadSource.Cancel();
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild);
 
             var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(update, evaluation);
@@ -165,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             WorkspaceProjectContextHostInstance? instance = null;
 
-            void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
+            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> _, IProjectBuildSnapshot buildSnapshot, ContextState __, CancellationToken cancellationToken)
             {
                 // Dispose the instance underneath us
                 instance!.Dispose();
@@ -173,11 +183,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
+            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
+            {
+                // Dispose the instance underneath us
+                instance!.Dispose();
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild);
 
             instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
                 return instance.OnProjectChangedAsync(update, evaluation);
@@ -191,17 +209,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             IProjectVersionedValue<IProjectSubscriptionUpdate>? subscriptionResult = null;
 
-            void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState _, CancellationToken __)
+            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> u, IProjectBuildSnapshot projectBuildSnapshot, ContextState _, CancellationToken __)
             {
                 subscriptionResult = u;
             }
 
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
+            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState _, CancellationToken __)
+            {
+                subscriptionResult = u;
+            }
+
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild);
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
+            var buildSnapshot = Mock.Of<IProjectBuildSnapshot>();
             var subscription = IProjectSubscriptionUpdateFactory.CreateEmpty();
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>((null!, subscription));
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((null!, subscription, buildSnapshot));
             await instance.OnProjectChangedAsync(update, evaluation);
 
             Assert.Same(subscriptionResult!.Value, subscription);
@@ -216,17 +240,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             bool? isActiveContextResult = null;
 
-            void applyChanges(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState iac, CancellationToken _)
+            void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> u, IProjectBuildSnapshot projectBuildSnapshot, ContextState iac, CancellationToken _)
+            {
+                isActiveContextResult = iac.IsActiveEditorContext;
+            }
+
+            void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> u, ContextState iac, CancellationToken _)
             {
                 isActiveContextResult = iac.IsActiveEditorContext;
             }
 
             var activeWorkspaceProjectContextTracker = IActiveEditorContextTrackerFactory.ImplementIsActiveEditorContext(context => isActiveContext);
-            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(applyChanges) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(applyChanges);
+            var applyChangesToWorkspaceContext = evaluation ? IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectEvaluationAsync(ApplyProjectEvaluation) : IApplyChangesToWorkspaceContextFactory.ImplementApplyProjectBuildAsync(ApplyProjectBuild);
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
             await instance.OnProjectChangedAsync(update, evaluation);
 
             Assert.Equal(isActiveContext, isActiveContextResult);
@@ -252,6 +281,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             applyChangesToWorkspaceContext ??= IApplyChangesToWorkspaceContextFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
+            IProjectBuildSnapshotService projectBuildSnapshotService = IProjectBuildSnapshotServiceFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -261,7 +291,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeEditorContextTracker,
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
-                                                           dataProgressTrackerService);
+                                                           dataProgressTrackerService,
+                                                           projectBuildSnapshotService);
         }
     }
 }

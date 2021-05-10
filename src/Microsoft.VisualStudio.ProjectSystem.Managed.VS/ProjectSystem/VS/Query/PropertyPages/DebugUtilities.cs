@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public static IEnumerable<Rule> GetDebugChildRules(IPropertyPagesCatalog projectCatalog)
         {
-            foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
+            foreach (string schemaName in projectCatalog.GetPropertyPagesSchemas(itemType: "LaunchProfile"))
             {
                 if (projectCatalog.GetSchema(schemaName) is Rule possibleChildRule
                     && !possibleChildRule.PropertyPagesHidden

@@ -19,6 +19,10 @@
               Description="Configures the output options for the build process."
               DisplayName="Output" />
 
+    <Category Name="Events"
+              Description="Configures custom events that run before and after build."
+              DisplayName="Events" />
+
     <Category Name="StrongNaming"
               Description="Configures strong name signing of build outputs."
               DisplayName="Strong naming" />
@@ -86,6 +90,34 @@
       <NameValuePair Name="SearchTerms" Value="optimise;optimisation" />
     </BoolProperty.Metadata>
   </BoolProperty>
+
+  <!-- TODO create fwlink for this HelpUrl, and find or create a better documentation source -->
+  <EnumProperty Name="DebugType"
+                DisplayName="Debug symbols"
+                Description="Specifies the kind of debug symbols produced during build."
+                HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
+                Category="General">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="debug type" />
+    </EnumProperty.Metadata>
+    <EnumValue Name="none"
+               DisplayName="No symbols are emitted" />
+    <!--
+    Note that 'pdbonly' is the same as 'full'.
+    <EnumValue Name="pdbonly"
+               DisplayName="PDB Only" />
+    -->
+    <EnumValue Name="full"
+               DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable"
+               DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded"
+               DisplayName="Embedded in DLL/EXE, portable across platforms" />
+  </EnumProperty>
 
   <StringProperty Name="LangVersion"
                   DisplayName="Language version"
@@ -180,49 +212,43 @@
   </EnumProperty>
 
   <StringProperty Name="NoWarn"
-                  DisplayName="Suppress warnings"
-                  Description="Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  DisplayName="Suppress specific warnings"
+                  Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
                   Category="ErrorsAndWarnings" />
 
-  <EnumProperty Name="TreatWarningsAsErrors"
+  <BoolProperty Name="TreatWarningsAsErrors"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
-                Description="Used to specify which warnings are treated as errors."
+                Description="Instruct the compiler to treat warnings as errors."
                 Category="ErrorsAndWarnings" >
-    
-    <EnumProperty.DataSource>
+    <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" />
-    </EnumProperty.DataSource>
-    
-    <EnumValue Name="false"
-               DisplayName="None" />
-    <EnumValue Name="true"
-               DisplayName="All" />
-  </EnumProperty>
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Treat specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "false")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" false)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
 
   <StringProperty Name="WarningsNotAsErrors"
-                  DisplayName="Exempt specific warnings from being treated as errors"
+                  DisplayName="Exclude specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "true")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -256,6 +282,11 @@
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "GenerateDocumentationFile")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
   </BoolProperty>
 
   <!-- TODO consider removing this property from the UI altogether -->
@@ -274,6 +305,63 @@
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <StringProperty Name="PreBuildEvent"
+                  DisplayName="Pre-build event"
+                  Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
+                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <StringProperty Name="PostBuildEvent"
+                  DisplayName="Post-build event"
+                  Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
+                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <!-- TODO create fwlink -->
+  <EnumProperty Name="RunPostBuildEvent"
+                DisplayName="When to run the post-build event"
+                Description="Specifies under which condition the post-build event will be executed."
+                HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                Category="Events">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunPostBuildEvent"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always" />
+    <EnumValue Name="OnBuildSuccess" IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated" />
+  </EnumProperty>
 
   <BoolProperty Name="SignAssembly"
                 Description="Sign the output assembly to give it a strong name."

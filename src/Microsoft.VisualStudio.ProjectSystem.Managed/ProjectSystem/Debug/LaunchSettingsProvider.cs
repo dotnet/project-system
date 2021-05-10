@@ -681,6 +681,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     _projectRuleSubscriptionLink.Dispose();
                     _projectRuleSubscriptionLink = null;
                 }
+
+                _firstSnapshotCompletionSource.TrySetCanceled();
             }
         }
 
@@ -722,7 +724,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         /// <summary>
         /// This function blocks until a snapshot is available. It will return null if the timeout occurs
-        /// prior to the snapshot is available
+        /// prior to the snapshot is available. The wait operation will be cancelled if this object is disposed.
         /// </summary>
         public async Task<ILaunchSettings?> WaitForFirstSnapshot(int timeout)
         {
@@ -906,30 +908,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         }
 
         /// <summary>
-        /// Retrieves and updates the global setting as a single operation and saves the
+        /// Retrieves and updates the global settings as a single operation and saves the
         /// settings to disk.
         /// </summary>
-        /// <returns></returns>
-        public Task UpdateGlobalSettingAsync(string settingName, Func<object?, object?> updateFunction)
+        public Task UpdateGlobalSettingsAsync(Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>> updateFunction)
         {
             return _sequentialTaskQueue.ExecuteTask(async () =>
             {
                 ILaunchSettings currentSettings = await GetSnapshotThrowIfErrorsAsync();
-                ImmutableDictionary<string, object> globalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
-                currentSettings.GlobalSettings.TryGetValue(settingName, out object? currentValue);
+                ImmutableDictionary<string, object> globalSettings = currentSettings.GlobalSettings;
 
-                bool originalValueWasSavedToDisk = currentValue?.IsInMemoryObject() == false;
+                ImmutableDictionary<string, object?> updatesToGlobalSettings = updateFunction(globalSettings);
 
-                object? newValue = updateFunction(currentValue);
+                bool saveToDisk = false;
 
-                globalSettings = currentSettings.GlobalSettings.Remove(settingName);
-                if (newValue is not null)
+                foreach ((string updatedSettingName, object? updatedSettingValue) in updatesToGlobalSettings)
                 {
-                    globalSettings = globalSettings.Add(settingName, newValue);
-                }
+                    globalSettings.TryGetValue(updatedSettingName, out object? currentValue);
 
-                bool saveToDisk = (newValue is not null && !newValue.IsInMemoryObject())
-                    || originalValueWasSavedToDisk;
+                    bool originalValueWasSavedToDisk = currentValue?.IsInMemoryObject() == false;
+
+                    globalSettings = globalSettings.Remove(updatedSettingName);
+                    if (updatedSettingValue is not null)
+                    {
+                        globalSettings = globalSettings.Add(updatedSettingName, updatedSettingValue);
+                    }
+
+                    bool saveThisSettingToDisk = (updatedSettingValue is not null && !updatedSettingValue.IsInMemoryObject())
+                        || originalValueWasSavedToDisk;
+
+                    saveToDisk = saveToDisk || saveThisSettingToDisk;
+                }
 
                 var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
