@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve launch profile information

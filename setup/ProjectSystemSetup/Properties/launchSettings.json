@@ -25,6 +25,19 @@
       },
       "nativeDebugging": true
     },
+    "Start (no NGEN images)": {
+      "commandName": "Executable",
+      "executablePath": "$(DevEnvDir)devenv.exe",
+      "commandLineArgs": "/rootsuffix $(VSSDKTargetPlatformRegRootSuffix) /log",
+      "environmentVariables": {
+        "VisualBasicDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.VisualBasic.DesignTime.targets",
+        "FSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.FSharp.DesignTime.targets",
+        "CSharpDesignTimeTargetsPath": "$(VisualStudioXamlRulesDir)Microsoft.CSharp.DesignTime.targets",
+        "CPS_DiagnosticRuntime": "1",
+        "CPS_MetricsCollection": "1",
+        "COMPlus_ZapDisable": "1"
+      }
+    },
     "Start (with native debugging & no NGEN images)": {
       "commandName": "Executable",
       "executablePath": "$(DevEnvDir)devenv.exe",

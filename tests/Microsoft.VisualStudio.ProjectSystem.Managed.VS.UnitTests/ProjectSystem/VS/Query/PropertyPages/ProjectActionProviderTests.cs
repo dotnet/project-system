@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class ProjectActionProviderTests
     {

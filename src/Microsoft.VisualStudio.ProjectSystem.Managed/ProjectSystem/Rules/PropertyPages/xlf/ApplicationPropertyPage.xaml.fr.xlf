@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="fr" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
+        <target state="new">Allow publishing outside of Visual Studio, such as via "dotnet publish".</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="new">Publishing</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
         <target state="translated">Générez ce projet pour plusieurs frameworks cibles.</target>
@@ -20,6 +30,16 @@
       <trans-unit id="Category|General|DisplayName">
         <source>General</source>
         <target state="translated">Général</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="new">Packaging settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="new">Packaging</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">

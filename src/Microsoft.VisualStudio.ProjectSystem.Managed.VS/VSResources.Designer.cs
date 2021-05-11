@@ -405,6 +405,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Not set).
+        /// </summary>
+        internal static string StartupObjectNotSet {
+            get {
+                return ResourceManager.GetString("StartupObjectNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Control (Windows Forms) Designer.
         /// </summary>
         internal static string UserControlEditor_DisplayName {

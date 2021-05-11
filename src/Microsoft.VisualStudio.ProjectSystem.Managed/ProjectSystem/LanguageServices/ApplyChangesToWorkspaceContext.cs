@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
@@ -19,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     /// </summary>
     /// <remarks>
     ///     This class is not thread-safe and it is up to callers to prevent overlapping of calls to
-    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/> and
+    ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/> and
     ///     <see cref="ApplyProjectEvaluationAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
     /// </remarks>
     [Export(typeof(IApplyChangesToWorkspaceContext))]
@@ -57,7 +58,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             EnsureInitialized();
         }
 
-        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
+        public async Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, 
+            IProjectBuildSnapshot buildSnapshot,
+            ContextState state, 
+            CancellationToken cancellationToken)
         {
             Requires.NotNull(update, nameof(update));
 
@@ -69,10 +73,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 IComparable version = GetConfiguredProjectVersion(update);
 
-                ProcessOptions(projectChange.After);
+                ProcessOptions(buildSnapshot);
                 await ProcessCommandLineAsync(version, projectChange.Difference, state, cancellationToken);
                 ProcessProjectBuildFailure(projectChange.After);
             }
+        }
+
+        private void ProcessOptions(IProjectBuildSnapshot buildSnapshot)
+        {
+            Assumes.NotNull(_context);
+
+            buildSnapshot.TargetOutputs.TryGetValue(
+                "CompileDesignTime",
+                out IImmutableList<KeyValuePair<string, IImmutableDictionary<string, string>>> targetOutputs);
+
+            var options = ImmutableArray.CreateBuilder<string>(targetOutputs.Count);
+
+            foreach ((string option, _) in targetOutputs)
+            {
+                options.Add(option);
+            }
+
+            // We just need to pass all options to Roslyn
+            _context.SetOptions(options .MoveToImmutable());
         }
 
         public Task ApplyProjectEvaluationAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken)
@@ -144,21 +167,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _logger.WriteLine(succeeded ? "Last design-time build succeeded, turning semantic errors back on." : "Last design-time build failed, turning semantic errors off.");
                 _context.LastDesignTimeBuildSucceeded = succeeded;
             }
-        }
-
-        private void ProcessOptions(IProjectRuleSnapshot snapshot)
-        {
-            Assumes.NotNull(_context);
-
-            // The order of options matters and we should use warnaserror- and then warnaserror+
-            // Depending which comes first, the compiler produces different diagnostics.
-            // We just need to move warnaserror+ to the end.
-            var warnaserrorPlus = snapshot.Items.FirstOrDefault(a => a.Key.Contains("/warnaserror+"));
-            IEnumerable<string> commandLineArguments = warnaserrorPlus.Key is null ? snapshot.Items.Keys :
-                    snapshot.Items.Remove(warnaserrorPlus.Key).Keys.Append(warnaserrorPlus.Key);
-
-            // We just pass all options to Roslyn
-            _context.SetOptions(commandLineArguments.ToImmutableArray());
         }
 
         private Task ProcessCommandLineAsync(IComparable version, IProjectChangeDiff differences, ContextState state, CancellationToken cancellationToken)

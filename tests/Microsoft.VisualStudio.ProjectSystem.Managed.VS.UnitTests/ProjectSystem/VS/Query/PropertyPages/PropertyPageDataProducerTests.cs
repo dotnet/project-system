@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 requestedProperties: properties);
 
-            Assert.IsType<PropertyPageProviderState>(propertyPage.ProviderState);
+            Assert.IsType<ContextAndRuleProviderState>(propertyPage.ProviderState);
         }
 
         [Fact]
