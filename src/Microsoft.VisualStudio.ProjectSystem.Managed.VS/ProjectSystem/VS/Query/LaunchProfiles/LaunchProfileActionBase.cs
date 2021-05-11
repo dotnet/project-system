@@ -24,9 +24,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
 
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project
-                && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider)
+                && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
+                && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker tracker)
             {
                 await ExecuteAsync(launchSettingsProvider, result.Request.QueryExecutionContext.CancellationToken);
+
+                if (launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
+                {
+                    result.Request.QueryExecutionContext.ReportUpdatedDataVersion(tracker.VersionKey, versionedLaunchSettings.Version);
+                }
             }
 
             await ResultReceiver.ReceiveResultAsync(result);

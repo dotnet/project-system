@@ -15,15 +15,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     { 
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IProjectStateProvider _projectStateProvider;
 
-        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider projectStateProvider)
+        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
             _properties = properties;
             _projectService = projectService;
-            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
@@ -36,7 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     queryExecutionContext,
                     id,
                     _projectService,
-                    _projectStateProvider,
                     propertiesContext,
                     propertyPageName,
                     propertyName,

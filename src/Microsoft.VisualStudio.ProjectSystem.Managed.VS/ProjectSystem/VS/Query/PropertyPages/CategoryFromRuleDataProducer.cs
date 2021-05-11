@@ -22,12 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
+        protected override async Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
         {
-            (string versionKey, long versionNumber) = providerState.ProjectState.GetUnconfiguredProjectVersion();
-            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+            if (await providerState.ProjectState.GetMetadataVersionAsync() is (string versionKey, long versionNumber))
+            {
+                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+            }
 
-            return Task.FromResult(CategoryDataProducer.CreateCategoryValues(queryExecutionContext, parent, providerState.Rule, _properties));
+            return CategoryDataProducer.CreateCategoryValues(queryExecutionContext, parent, providerState.Rule, _properties);
         }
     }
 }

@@ -79,13 +79,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             EntityIdentity id,
             IProjectService2 projectService,
-            IProjectStateProvider projectStateProvider,
             QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             if (projectService.GetLoadedProject(propertiesContext.File) is UnconfiguredProject project)
             {
+                // TODO: Go through the IProjectState to get this
                 project.GetQueryDataVersion(out string versionKey, out long versionNumber);
                 queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && projectCatalog.GetSchema(propertyPageName) is Rule rule
                     && !rule.PropertyPagesHidden)
                 {
-                    IProjectState projectState = projectStateProvider.CreateState(project);
+                    IProjectState projectState = new PropertyPageProjectState(project);
                     IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, id, projectState, propertiesContext, rule, requestedProperties);
                     return propertyPageValue;
                 }
@@ -106,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             IEntityValue parent,
             UnconfiguredProject project,
-            IProjectStateProvider projectStateProvider,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)
@@ -118,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createPropertyPageValuesAsync()
             {
-                IProjectState projectState = projectStateProvider.CreateState(project);
+                IProjectState projectState = new PropertyPageProjectState(project);
                 QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
                 foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
                 {
