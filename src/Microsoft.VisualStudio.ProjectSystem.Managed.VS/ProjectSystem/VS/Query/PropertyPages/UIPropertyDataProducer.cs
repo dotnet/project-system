@@ -58,10 +58,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.ConfigurationIndependent = !property.IsConfigurationDependent();
             }
 
-            if (requestedProperties.IsReadOnly)
-            {
-                newUIProperty.IsReadOnly = property.ReadOnly;
-            }
+            //TODO: Merged PIAs - this property needs to be merged in by CPS to dev17 packages 
+            //if (requestedProperties.IsReadOnly)
+            //{
+            //    newUIProperty.IsReadOnly = property.ReadOnly;
+            //}
 
             if (requestedProperties.HelpUrl)
             {
