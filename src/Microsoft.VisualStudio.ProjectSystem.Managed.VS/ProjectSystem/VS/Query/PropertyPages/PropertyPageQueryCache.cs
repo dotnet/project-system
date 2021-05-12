@@ -87,11 +87,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         /// <summary>
         /// Retrieves the <see cref="IRule"/> with name "<paramref name="schemaName"/>" within the given <paramref
-        /// name="projectConfiguration"/> and <paramref name="context"/>.
+        /// name="projectConfiguration"/> and <paramref name="propertiesContext"/>.
         /// </summary>
-        public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext context)
+        public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext propertiesContext)
         {
-            if (_ruleCache.TryGetValue((projectConfiguration, schemaName, context), out IRule? cachedRule))
+            if (_ruleCache.TryGetValue((projectConfiguration, schemaName, propertiesContext), out IRule? cachedRule))
             {
                 return cachedRule;
             }
@@ -99,10 +99,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IRule? rule = null;
             if (await GetProjectLevelPropertyPagesCatalogAsync(projectConfiguration) is IPropertyPagesCatalog catalog)
             {
-                rule = catalog.BindToContext(schemaName, context);
+                rule = catalog.BindToContext(schemaName, propertiesContext);
             }
 
-            _ruleCache.Add((projectConfiguration, schemaName, context), rule);
+            _ruleCache.Add((projectConfiguration, schemaName, propertiesContext), rule);
             return rule;
         }
 

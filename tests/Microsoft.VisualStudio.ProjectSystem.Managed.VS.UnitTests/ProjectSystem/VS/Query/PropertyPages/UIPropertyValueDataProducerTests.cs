@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 parent,
                 cache,
                 schema,
-                context: QueryProjectPropertiesContext.ProjectFile,
+                propertiesContext: QueryProjectPropertiesContext.ProjectFile,
                 propertyName,
                 requestedProperties);
 

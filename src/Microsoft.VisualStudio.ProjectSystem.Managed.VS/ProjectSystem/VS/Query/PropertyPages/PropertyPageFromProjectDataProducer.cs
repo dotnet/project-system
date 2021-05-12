@@ -22,11 +22,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
-            executionContext.ReportProjectVersion(providerState);
+            queryExecutionContext.ReportProjectVersion(providerState);
 
-            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(executionContext, parent, providerState, _queryCacheProvider, _properties);
+            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(queryExecutionContext, parent, providerState, _queryCacheProvider, _properties);
         }
     }
 }

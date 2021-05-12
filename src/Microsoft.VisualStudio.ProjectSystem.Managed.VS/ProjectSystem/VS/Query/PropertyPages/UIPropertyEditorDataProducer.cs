@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyEditorDataProducer
     {
-        public static IEntityValue CreateEditorValue(IQueryExecutionContext executionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(editor, nameof(editor));
@@ -30,13 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new(ProjectModelIdentityKeys.EditorName, editor.EditorType)
                 });
 
-            return CreateEditorValue(executionContext, identity, editor, requestedProperties);
+            return CreateEditorValue(queryExecutionContext, identity, editor, requestedProperties);
         }
 
-        public static IEntityValue CreateEditorValue(IQueryExecutionContext executionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateEditorValue(IQueryExecutionContext queryExecutionContext, EntityIdentity identity, ValueEditor editor, IUIPropertyEditorPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(editor, nameof(editor));
-            var newEditorValue = new UIPropertyEditorValue(executionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
+            var newEditorValue = new UIPropertyEditorValue(queryExecutionContext.EntityRuntime, identity, new UIPropertyEditorPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -48,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newEditorValue;
         }
 
-        public static IEnumerable<IEntityValue> CreateEditorValues(IQueryExecutionContext executionContext, IEntityValue parent, Rule schema, string propertyName, IUIPropertyEditorPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateEditorValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule schema, string propertyName, IUIPropertyEditorPropertiesAvailableStatus properties)
         {
             BaseProperty? property = schema.GetProperty(propertyName);
             if (property is not null)
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 foreach (ValueEditor editor in property.ValueEditors)
                 {
-                    IEntityValue editorValue = CreateEditorValue(executionContext, parent, editor, properties);
+                    IEntityValue editorValue = CreateEditorValue(queryExecutionContext, parent, editor, properties);
                     yield return editorValue;
                 }
 
@@ -70,18 +70,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     if (stringProperty.Subtype == "file")
                     {
-                        yield return CreateEditorValue(executionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
+                        yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
                     }
                     else if (stringProperty.Subtype == "directory")
                     {
-                        yield return CreateEditorValue(executionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
+                        yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
                     }
                 }
             }
         }
 
         public static async Task<IEntityValue?> CreateEditorValueAsync(
-            IQueryExecutionContext executionContext,
+            IQueryExecutionContext queryExecutionContext,
             EntityIdentity requestId,
             IProjectService2 projectService,
             string projectPath,
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && rule.GetProperty(propertyName) is BaseProperty property
                 && property.ValueEditors.FirstOrDefault(ed => string.Equals(ed.EditorType, editorName)) is ValueEditor editor)
             {
-                IEntityValue editorValue = CreateEditorValue(executionContext, requestId, editor, properties);
+                IEntityValue editorValue = CreateEditorValue(queryExecutionContext, requestId, editor, properties);
             }
 
             return null;
