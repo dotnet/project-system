@@ -7,8 +7,7 @@
     <DataSource HasConfigurationCondition="False"
                 ItemType="SupportedTargetFramework"
                 Persistence="ProjectFile"
-                SourceOfDefaultValue="AfterContext"
-                SourceType="TargetResults" />
+                SourceOfDefaultValue="AfterContext" />
   </Rule.DataSource>
   
   <StringProperty Name="DisplayName"

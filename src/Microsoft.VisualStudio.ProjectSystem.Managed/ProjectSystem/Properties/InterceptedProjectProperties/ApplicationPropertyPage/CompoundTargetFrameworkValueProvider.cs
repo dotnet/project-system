@@ -151,11 +151,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     return string.Empty;
                 }
 
-                if (targetFrameworkAlias.Contains("Unsupported") || string.IsNullOrEmpty(complexTargetFramework.TargetFramework))
+                if (targetFrameworkAlias.Contains("Unsupported"))
                 {
                     // The value on the TargetFramework is not on the supported list and we shouldn't try to parse it.
                     // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
-                    return complexTargetFramework.TargetFramework;
+                    if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFramework))
+                    {
+                        return complexTargetFramework.TargetFramework;
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)

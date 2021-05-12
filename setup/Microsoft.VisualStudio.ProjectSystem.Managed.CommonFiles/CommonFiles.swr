@@ -60,8 +60,6 @@ folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed"
   file source="$(VisualStudioXamlRulesDir)ResolvedProjectReference.xaml"
   file source="$(VisualStudioXamlRulesDir)ResolvedSdkReference.xaml"
   file source="$(VisualStudioXamlRulesDir)SdkReference.xaml"
-  file source="$(VisualStudioXamlRulesDir)SdkSupportedTargetPlatformIdentifier.xaml"
-  file source="$(VisualStudioXamlRulesDir)SdkSupportedTargetPlatformVersion.xaml"
   file source="$(VisualStudioXamlRulesDir)VisualBasic.NamespaceImport.xaml"
 
 folder "InstallDir:MSBuild\Microsoft\VisualStudio\Managed\cs"
