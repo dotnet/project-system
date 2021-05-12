@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
-    internal class PropertyPageQueryCache : IPropertyPageQueryCache
+    internal class PropertyPageQueryCache : IProjectState
     {
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Dictionary<ProjectConfiguration, IPropertyPagesCatalog?> _catalogCache;

@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public static async Task<IEnumerable<IEntityValue>> CreateUIPropertyValueValuesAsync(
             IQueryExecutionContext queryExecutionContext,
             IEntityValue parent,
-            IPropertyPageQueryCache cache,
+            IProjectState cache,
             Rule schema,
             QueryProjectPropertiesContext propertiesContext,
             string propertyName,

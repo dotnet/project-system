@@ -5,15 +5,15 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Creates instances of <see cref="IPropertyPageQueryCache"/>.
+    /// Creates instances of <see cref="IProjectState"/>.
     /// </summary>
     /// <remarks>
     /// This type exists largely to enable injected mock implementations of
-    /// <see cref="IPropertyPageQueryCache" /> for unit testing purposes.
+    /// <see cref="IProjectState" /> for unit testing purposes.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IPropertyPageQueryCacheProvider
     {
-        IPropertyPageQueryCache CreateCache(UnconfiguredProject project);
+        IProjectState CreateCache(UnconfiguredProject project);
     }
 }

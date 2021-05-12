@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// significantly reduce the amount of work we need to do.
     /// </para>
     /// </remarks>
-    internal interface IPropertyPageQueryCache
+    internal interface IProjectState
     {
         /// <summary>
         /// Binds the specified schema to a particular context within the given project configuration.

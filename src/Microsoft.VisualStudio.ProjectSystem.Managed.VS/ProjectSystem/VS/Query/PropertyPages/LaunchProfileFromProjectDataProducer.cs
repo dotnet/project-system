@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createLaunchProfileValues()
             {
-                IPropertyPageQueryCache propertyPageQueryCache = _queryCacheProvider.CreateCache(project);
+                IProjectState propertyPageQueryCache = _queryCacheProvider.CreateCache(project);
 
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
         }
 
-        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IPropertyPageQueryCache propertyPageQueryCache)
+        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState propertyPageQueryCache)
         {
             EntityIdentity identity = new(
                 ((IEntityWithId)parent).Id,

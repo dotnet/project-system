@@ -12,14 +12,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal sealed class ContextAndRuleProviderState
     {
-        public ContextAndRuleProviderState(IPropertyPageQueryCache cache, QueryProjectPropertiesContext propertiesContext, Rule rule)
+        public ContextAndRuleProviderState(IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule)
         {
             Cache = cache;
             PropertiesContext = propertiesContext;
             Rule = rule;
         }
 
-        public IPropertyPageQueryCache Cache { get; }
+        public IProjectState Cache { get; }
         public QueryProjectPropertiesContext PropertiesContext { get; }
         public Rule Rule { get; }
     }

@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 && commandNameObj is string commandName
                                 && StringComparers.LaunchProfileCommandNames.Equals(commandName, profile.CommandName))
                             {
-                                IPropertyPageQueryCache? queryCache = _queryCacheProvider.CreateCache(project);
+                                IProjectState? queryCache = _queryCacheProvider.CreateCache(project);
 
                                 IEntityValue launchProfileValue = LaunchProfileDataProducer.CreateLaunchProfileValue(
                                     queryExecutionContext,

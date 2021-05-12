@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     internal static class LaunchProfileDataProducer
     {
-        public static IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IPropertyPageQueryCache cache, ILaunchProfilePropertiesAvailableStatus properties)
+        public static IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState cache, ILaunchProfilePropertiesAvailableStatus properties)
         {
             LaunchProfileValue newLaunchProfile = new(queryExecutionContext.EntityRuntime, id, new LaunchProfilePropertiesAvailableStatus());
 

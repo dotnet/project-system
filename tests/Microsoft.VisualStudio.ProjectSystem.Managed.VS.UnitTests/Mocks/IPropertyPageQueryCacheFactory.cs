@@ -11,12 +11,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public static class IPropertyPageQueryCacheFactory
     {
-        internal static IPropertyPageQueryCache Create(
+        internal static IProjectState Create(
             IImmutableSet<ProjectConfiguration>? projectConfigurations = null,
             ProjectConfiguration? defaultConfiguration = null,
             Func<ProjectConfiguration, string, QueryProjectPropertiesContext, IRule>? bindToRule = null)
         {
-            var mock = new Mock<IPropertyPageQueryCache>();
+            var mock = new Mock<IProjectState>();
 
             if (projectConfigurations is not null)
             {
