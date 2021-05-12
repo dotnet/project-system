@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
@@ -9,7 +10,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     internal class PackageRestoreUnconfiguredInput
     {
-        public PackageRestoreUnconfiguredInput(ProjectRestoreInfo? restoreInfo, IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
+        public PackageRestoreUnconfiguredInput(ProjectRestoreInfo? restoreInfo,
+            IReadOnlyCollection<PackageRestoreConfiguredInput> configuredInputs)
         {
             RestoreInfo = restoreInfo;
             ConfiguredInputs = configuredInputs;

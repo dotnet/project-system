@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     [Export(typeof(IPackageRestoreDataSource))]
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal class PackageRestoreDataSource : ChainedProjectValueDataSourceBase<RestoreData>, IPackageRestoreDataSource, IProjectDynamicLoadComponent
+    internal class PackageRestoreDataSource : ChainedProjectValueDataSourceBase<RestoreData>, IPackageRestoreDataSource, IProjectDynamicLoadComponent, IVsProjectRestoreInfoSource
     {
         // This class represents the last data source in the package restore chain, which is made up of the following:
         //  _________________________________________      _________________________________________
@@ -205,6 +205,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             _enabled = false;
 
             return Task.CompletedTask;
+        }
+
+        // true means the project system plans to call NominateProjectAsync in the future.
+        public bool HasPendingNomination()
+        {
+            // means either it has never receive computed value from configured project yet, or the computed data is out of dated.
+
+            // PackageRestoreDataSource can compare the version number it gets and the ConfiguredProject.Version.
+            // If the version it gets is older than the current project state, it means it is getting out of dated data.
+            // HasPendingNomination will be true.
+            throw new NotImplementedException();
+        }
+
+        // NuGet calls this method to wait project to nominate restoring
+        // If the project has no pending restore data, it will return a completed task.
+        // Otherwise a task which will be completed once the project norminate the next restore
+        // the task will be cancelled, if the project system decide it no longer need restore (for example: the restore state has no change)
+        // the task will be failed, if the project system runs into a problem, so it cannot get correct data to norminate a restore (DT build failed)
+        public Task WhenRestoreNominated()
+        {
+            throw new NotImplementedException();
         }
     }
 }
