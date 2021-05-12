@@ -93,6 +93,10 @@ The format of the file is described in detail in [Property Specification](proper
   - The `ItemType` attribute indicates that this `Rule` only pertains to launch profiles, as opposed to other types of items that are typically found in a project (`Compile`, `Reference`, etc.).
   - The `Persistence` attribute indicates that values for the properties should be read and written through the launch profile persistence mechanism, as opposed to trying to read data from the MSBuild file.
 
+Further notes:
+- Properties are ordered in the UI as they are ordered in the .xaml file.
+- Properties can be placed in categories, just like the properties on property pages. However, the Launch Profiles UI currently ignores categories.
+
 You should now be able to build and see the MyLaunchProfile.xaml copied as-is to the output directory.
 
 And you're done. Projects that import the .targets file will now show this UI when editing the Launch Profiles.
