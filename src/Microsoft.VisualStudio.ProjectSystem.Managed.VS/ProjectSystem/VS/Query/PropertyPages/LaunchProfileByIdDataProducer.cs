@@ -27,25 +27,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
-            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? context)
-                && StringComparers.ItemTypes.Equals(context.ItemType, "LaunchProfile"))
+            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
+                && StringComparers.ItemTypes.Equals(propertiesContext.ItemType, "LaunchProfile"))
             {
-                return CreateLaunchProfileValueAsync(queryExecutionContext, id, context);
+                return CreateLaunchProfileValueAsync(queryExecutionContext, id, propertiesContext);
             }
 
             return NullEntityValue;
         }
 
-        private async Task<IEntityValue?> CreateLaunchProfileValueAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext context)
+        private async Task<IEntityValue?> CreateLaunchProfileValueAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext propertiesContext)
         {
-            if (_projectService.GetLoadedProject(context.File) is UnconfiguredProject project
+            if (_projectService.GetLoadedProject(propertiesContext.File) is UnconfiguredProject project
                 && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && await launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite) is ILaunchSettings launchSettings)
             {
                 foreach ((int index, ProjectSystem.Debug.ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
                 {
-                    if (StringComparers.LaunchProfileNames.Equals(profile.Name, context.ItemName)
+                    if (StringComparers.LaunchProfileNames.Equals(profile.Name, propertiesContext.ItemName)
                         && !Strings.IsNullOrEmpty(profile.CommandName))
                     {
                         foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 IEntityValue launchProfileValue = LaunchProfileDataProducer.CreateLaunchProfileValue(
                                     queryExecutionContext,
                                     id,
-                                    context,
+                                    propertiesContext,
                                     rule,
                                     index,
                                     queryCache,

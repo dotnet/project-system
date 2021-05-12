@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             (string versionKey, long versionNumber) = providerState.Cache.GetUnconfiguredProjectVersion();
             queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(queryExecutionContext, parent, providerState.Cache, providerState.Context, providerState.Rule, _properties));
+            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(queryExecutionContext, parent, providerState.Cache, providerState.PropertiesContext, providerState.Rule, _properties));
         }
     }
 }

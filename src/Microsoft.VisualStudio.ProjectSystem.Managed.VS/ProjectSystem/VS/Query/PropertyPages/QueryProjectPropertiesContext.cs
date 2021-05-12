@@ -85,17 +85,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Creates a <see cref="QueryProjectPropertiesContext"/> from a Project Query API
         /// <see cref="EntityIdentity"/>.
         /// </summary>
-        public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? context)
+        public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? propertiesContext)
         {
             if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
             {
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemType);
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemName, out string? itemName);
-                context = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
+                propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
                 return true;
             }
 
-            context = null;
+            propertiesContext = null;
             return false;
         }
     }

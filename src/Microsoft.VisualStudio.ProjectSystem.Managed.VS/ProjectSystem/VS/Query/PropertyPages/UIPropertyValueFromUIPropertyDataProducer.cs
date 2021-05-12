@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 parent,
                 providerState.Cache,
                 providerState.ContainingRule,
-                providerState.Context,
+                providerState.PropertiesContext,
                 providerState.PropertyName,
                 _properties);
         }

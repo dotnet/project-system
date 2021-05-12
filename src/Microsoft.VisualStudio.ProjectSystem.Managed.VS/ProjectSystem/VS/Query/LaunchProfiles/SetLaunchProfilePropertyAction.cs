@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 var cache = state.Cache;
                 if (await cache.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
-                    && await cache.BindToRule(configuration, state.Rule.Name, state.Context) is IRule boundRule
+                    && await cache.BindToRule(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
                     && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
                 {
                     await property.SetValueAsync(_executableStep.Value);

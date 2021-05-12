@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyDataProducer
     {
-        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
@@ -30,10 +30,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
                 });
 
-            return CreateUIPropertyValue(queryExecutionContext, identity, cache, context, property, order, requestedProperties);
+            return CreateUIPropertyValue(queryExecutionContext, identity, cache, propertiesContext, property, order, requestedProperties);
         }
 
-        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext propertiesContext, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property, nameof(property));
             var newUIProperty = new UIPropertyValue(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
@@ -109,18 +109,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
             }
 
-            ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, context, property.Name);
+            ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
 
             return newUIProperty;
         }
 
-        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
                 if (property.Visible)
                 {
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, context, property, index, properties);
+                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
                     yield return propertyValue;
                 }
             }
@@ -131,12 +131,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             EntityIdentity requestId,
             IProjectService2 projectService,
             IPropertyPageQueryCacheProvider queryCacheProvider,
-            QueryProjectPropertiesContext context,
+            QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             string propertyName,
             IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
-            if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project)
+            if (projectService.GetLoadedProject(propertiesContext.File) is UnconfiguredProject project)
             {
                 project.GetQueryDataVersion(out string versionKey, out long versionNumber);
                 queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && property.Visible)
                 {
                     IPropertyPageQueryCache cache = queryCacheProvider.CreateCache(project);
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, context, property, index, requestedProperties);
+                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, propertiesContext, property, index, requestedProperties);
                     return propertyValue;
                 }
             }

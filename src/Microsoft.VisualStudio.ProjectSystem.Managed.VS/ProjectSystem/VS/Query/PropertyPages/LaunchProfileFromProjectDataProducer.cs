@@ -62,30 +62,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         && !Strings.IsNullOrEmpty(profile.CommandName)
                         && debugRules.TryGetValue(profile.CommandName, out Rule rule))
                     {
-                        QueryProjectPropertiesContext context = new(
+                        QueryProjectPropertiesContext propertiesContext = new(
                             isProjectFile: true,
                             file: project.FullPath,
                             itemType: LaunchProfileProjectItemProvider.ItemType,
                             itemName: profile.Name);
 
-                        IEntityValue launchProfileValue = CreateLaunchProfileValue(queryExecutionContext, parent, context, rule, index, propertyPageQueryCache);
+                        IEntityValue launchProfileValue = CreateLaunchProfileValue(queryExecutionContext, parent, propertiesContext, rule, index, propertyPageQueryCache);
                         yield return launchProfileValue;
                     }
                 }
             }
         }
 
-        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext context, Rule rule, int order, IPropertyPageQueryCache propertyPageQueryCache)
+        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IPropertyPageQueryCache propertyPageQueryCache)
         {
             EntityIdentity identity = new(
                 ((IEntityWithId)parent).Id,
                 new Dictionary<string, string>
                 {
-                    { ProjectModelIdentityKeys.SourceItemType, context.ItemType! },
-                    { ProjectModelIdentityKeys.SourceItemName, context.ItemName! }
+                    { ProjectModelIdentityKeys.SourceItemType, propertiesContext.ItemType! },
+                    { ProjectModelIdentityKeys.SourceItemName, propertiesContext.ItemName! }
                 });
 
-            return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, context, rule, order, propertyPageQueryCache, _properties);
+            return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, propertiesContext, rule, order, propertyPageQueryCache, _properties);
         }
     }
 }

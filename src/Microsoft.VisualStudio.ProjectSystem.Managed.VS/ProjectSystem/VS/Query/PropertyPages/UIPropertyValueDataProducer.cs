@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IEntityValue parent,
             IPropertyPageQueryCache cache,
             Rule schema,
-            QueryProjectPropertiesContext context,
+            QueryProjectPropertiesContext propertiesContext,
             string propertyName,
             IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 (string versionKey, long versionNumber) = await cache.GetConfiguredProjectVersionAsync(configuration);
                 queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-                if (await cache.BindToRule(configuration, schema.Name, context) is IRule rule
+                if (await cache.BindToRule(configuration, schema.Name, propertiesContext) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);

@@ -11,17 +11,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal sealed class PropertyProviderState
     {
-        public PropertyProviderState(IPropertyPageQueryCache cache, Rule containingRule, QueryProjectPropertiesContext context, string propertyName)
+        public PropertyProviderState(IPropertyPageQueryCache cache, Rule containingRule, QueryProjectPropertiesContext propertiesContext, string propertyName)
         {
             Cache = cache;
             ContainingRule = containingRule;
-            Context = context;
+            PropertiesContext = propertiesContext;
             PropertyName = propertyName;
         }
 
         public IPropertyPageQueryCache Cache { get; }
         public Rule ContainingRule { get; }
-        public QueryProjectPropertiesContext Context { get; }
+        public QueryProjectPropertiesContext PropertiesContext { get; }
         public string PropertyName { get; }
     }
 }
