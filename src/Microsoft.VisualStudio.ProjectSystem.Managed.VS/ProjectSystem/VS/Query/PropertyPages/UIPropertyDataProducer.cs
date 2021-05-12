@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             EntityIdentity requestId,
             IProjectService2 projectService,
-            IProjectStateProvider queryCacheProvider,
+            IProjectStateProvider projectStateProvider,
             QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             string propertyName,
@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                     && property.Visible)
                 {
-                    IProjectState cache = queryCacheProvider.CreateState(project);
+                    IProjectState cache = projectStateProvider.CreateState(project);
                     IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, propertiesContext, property, index, requestedProperties);
                     return propertyValue;
                 }

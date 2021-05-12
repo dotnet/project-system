@@ -31,12 +31,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class ProjectActionProvider : IQueryActionProvider
     {
-        private readonly IProjectStateProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
         [ImportingConstructor]
-        public ProjectActionProvider(IProjectStateProvider queryCacheProvider)
+        public ProjectActionProvider(IProjectStateProvider projectStateProvider)
         {
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
@@ -45,8 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             return executableStep.Action switch
             {
-                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction(_queryCacheProvider, (SetEvaluatedUIPropertyValue)executableStep),
-                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction(_queryCacheProvider, (SetUnevaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction(_projectStateProvider, (SetEvaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction(_projectStateProvider, (SetUnevaluatedUIPropertyValue)executableStep),
 
                 ProjectModelActionNames.AddLaunchProfile => new AddLaunchProfileAction((AddLaunchProfile)executableStep),
                 ProjectModelActionNames.RemoveLaunchProfile => new RemoveLaunchProfileAction((RemoveLaunchProfile)executableStep),

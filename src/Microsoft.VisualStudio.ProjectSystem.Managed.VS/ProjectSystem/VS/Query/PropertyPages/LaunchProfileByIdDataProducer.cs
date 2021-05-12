@@ -16,13 +16,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IProjectStateProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
-        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider queryCacheProvider)
+        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider projectStateProvider)
         {
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 && commandNameObj is string commandName
                                 && StringComparers.LaunchProfileCommandNames.Equals(commandName, profile.CommandName))
                             {
-                                IProjectState? queryCache = _queryCacheProvider.CreateState(project);
+                                IProjectState projectState = _projectStateProvider.CreateState(project);
 
                                 IEntityValue launchProfileValue = LaunchProfileDataProducer.CreateLaunchProfileValue(
                                     queryExecutionContext,
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                     propertiesContext,
                                     rule,
                                     index,
-                                    queryCache,
+                                    projectState,
                                     _properties);
                                 return launchProfileValue;
                             }

@@ -25,25 +25,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryByRelationshipDataProvider))]
     internal class LaunchProfileDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
-        private readonly IProjectStateProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
         [ImportingConstructor]
         public LaunchProfileDataProvider(
             IProjectServiceAccessor projectServiceAccessor,
-            IProjectStateProvider queryCacheProvider)
+            IProjectStateProvider projectStateProvider)
             : base(projectServiceAccessor)
         {
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
         public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new LaunchProfileByIdDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, ProjectService, _queryCacheProvider);
+            return new LaunchProfileByIdDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, ProjectService, _projectStateProvider);
         }
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new LaunchProfileFromProjectDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, _queryCacheProvider);
+            return new LaunchProfileFromProjectDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, _projectStateProvider);
         }
     }
 }

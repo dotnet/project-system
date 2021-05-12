@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal class ProjectSetUIPropertyValueActionCore
     {
-        private readonly IProjectStateProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
         private readonly string _pageName;
         private readonly string _propertyName;
         private readonly IEnumerable<(string dimension, string value)> _dimensions;
@@ -31,19 +31,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <summary>
         /// Creates a <see cref="ProjectSetUIPropertyValueActionCore"/>.
         /// </summary>
-        /// <param name="queryCacheProvider">Provides access to a <see cref="UnconfiguredProject"/>'s known configurations and <see cref="IRule"/>s.</param>
+        /// <param name="projectStateProvider">Provides access to a <see cref="UnconfiguredProject"/>'s known configurations and <see cref="IRule"/>s.</param>
         /// <param name="pageName">The name of the page containing the property.</param>
         /// <param name="propertyName">The name of the property to update.</param>
         /// <param name="dimensions">The dimension names and values indicating which project configurations should be updated with the new value.</param>
         /// <param name="setValueAsync">A delegate that, given the <see cref="IProperty"/> to update, actually sets the value.</param>
         public ProjectSetUIPropertyValueActionCore(
-            IProjectStateProvider queryCacheProvider,
+            IProjectStateProvider projectStateProvider,
             string pageName,
             string propertyName,
             IEnumerable<(string dimension, string value)> dimensions,
             Func<IProperty, Task> setValueAsync)
         {
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
             _pageName = pageName;
             _propertyName = propertyName;
             _dimensions = dimensions;
@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     bool configurationDependent = property.IsConfigurationDependent();
                     projectRules = new List<IRule>();
-                    IProjectState propertyPageCache = _queryCacheProvider.CreateState(project);
+                    IProjectState propertyPageCache = _projectStateProvider.CreateState(project);
                     if (configurationDependent)
                     {
                         // The property is configuration-dependent; we need to collect the bound rules for

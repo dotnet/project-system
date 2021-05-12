@@ -18,12 +18,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
-        private readonly IProjectStateProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
-        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectStateProvider queryCacheProvider)
+        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectStateProvider projectStateProvider)
         {
             _properties = properties;
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createLaunchProfileValues()
             {
-                IProjectState propertyPageQueryCache = _queryCacheProvider.CreateState(project);
+                IProjectState projectState = _projectStateProvider.CreateState(project);
 
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
@@ -68,14 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             itemType: LaunchProfileProjectItemProvider.ItemType,
                             itemName: profile.Name);
 
-                        IEntityValue launchProfileValue = CreateLaunchProfileValue(queryExecutionContext, parent, propertiesContext, rule, index, propertyPageQueryCache);
+                        IEntityValue launchProfileValue = CreateLaunchProfileValue(queryExecutionContext, parent, propertiesContext, rule, index, projectState);
                         yield return launchProfileValue;
                     }
                 }
             }
         }
 
-        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState propertyPageQueryCache)
+        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState projectState)
         {
             EntityIdentity identity = new(
                 ((IEntityWithId)parent).Id,
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     { ProjectModelIdentityKeys.SourceItemName, propertiesContext.ItemName! }
                 });
 
-            return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, propertiesContext, rule, order, propertyPageQueryCache, _properties);
+            return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, propertiesContext, rule, order, projectState, _properties);
         }
     }
 }
