@@ -9,7 +9,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public static class IPropertyPageQueryCacheFactory
+    public static class IProjectStateFactory
     {
         internal static IProjectState Create(
             IImmutableSet<ProjectConfiguration>? projectConfigurations = null,

@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
-                IPropertyPageQueryCacheFactory.Create(),
+                IProjectStateFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 requestedProperties: properties);
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (IEntityValueFromProvider)PropertyPageDataProducer.CreatePropertyPageValue(
                 IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "A", value: "B"),
-                IPropertyPageQueryCacheFactory.Create(),
+                IProjectStateFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 requestedProperties: properties);
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyPage = (PropertyPageValue)PropertyPageDataProducer.CreatePropertyPageValue(
                 IQueryExecutionContextFactory.Create(),
                 IEntityWithIdFactory.Create(key: "ParentKey", value: "ParentValue"),
-                IPropertyPageQueryCacheFactory.Create(),
+                IProjectStateFactory.Create(),
                 QueryProjectPropertiesContext.ProjectFile,
                 new Rule { Name = "MyRule", DisplayName = "My Rule Display Name", Order = 42, PageTemplate = "generic" },
                 requestedProperties: properties);

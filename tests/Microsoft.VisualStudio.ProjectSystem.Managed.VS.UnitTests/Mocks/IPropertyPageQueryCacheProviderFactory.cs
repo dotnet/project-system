@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         internal static IProjectStateProvider Create()
         {
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             return Create(cache);
         }
 
