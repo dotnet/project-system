@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class UIPropertyDataProducer
     {
-        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext executionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(property, nameof(property));
@@ -30,13 +30,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     new(ProjectModelIdentityKeys.UIPropertyName, property.Name)
                 });
 
-            return CreateUIPropertyValue(executionContext, identity, cache, context, property, order, requestedProperties);
+            return CreateUIPropertyValue(queryExecutionContext, identity, cache, context, property, order, requestedProperties);
         }
 
-        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext executionContext, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateUIPropertyValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, BaseProperty property, int order, IUIPropertyPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(property, nameof(property));
-            var newUIProperty = new UIPropertyValue(executionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
+            var newUIProperty = new UIPropertyValue(queryExecutionContext.EntityRuntime, id, new UIPropertyPropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -114,20 +114,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newUIProperty;
         }
 
-        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IQueryExecutionContext executionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
+        public static IEnumerable<IEntityValue> CreateUIPropertyValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IPropertyPageQueryCache cache, QueryProjectPropertiesContext context, Rule rule, IUIPropertyPropertiesAvailableStatus properties)
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
                 if (property.Visible)
                 {
-                    IEntityValue propertyValue = CreateUIPropertyValue(executionContext, parent, cache, context, property, index, properties);
+                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, context, property, index, properties);
                     yield return propertyValue;
                 }
             }
         }
 
         public static async Task<IEntityValue?> CreateUIPropertyValueAsync(
-            IQueryExecutionContext executionContext,
+            IQueryExecutionContext queryExecutionContext,
             EntityIdentity requestId,
             IProjectService2 projectService,
             IPropertyPageQueryCacheProvider queryCacheProvider,
@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             if (projectService.GetLoadedProject(context.File) is UnconfiguredProject project)
             {
                 project.GetQueryDataVersion(out string versionKey, out long versionNumber);
-                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
                 if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                     && projectCatalog.GetSchema(propertyPageName) is Rule rule
@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && property.Visible)
                 {
                     IPropertyPageQueryCache cache = queryCacheProvider.CreateCache(project);
-                    IEntityValue propertyValue = CreateUIPropertyValue(executionContext, requestId, cache, context, property, index, requestedProperties);
+                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, context, property, index, requestedProperties);
                     return propertyValue;
                 }
             }

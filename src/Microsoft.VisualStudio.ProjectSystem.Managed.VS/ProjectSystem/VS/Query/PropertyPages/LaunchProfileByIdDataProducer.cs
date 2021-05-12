@@ -25,18 +25,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
             if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? context)
                 && StringComparers.ItemTypes.Equals(context.ItemType, "LaunchProfile"))
             {
-                return CreateLaunchProfileValueAsync(executionContext, id, context);
+                return CreateLaunchProfileValueAsync(queryExecutionContext, id, context);
             }
 
             return NullEntityValue;
         }
 
-        private async Task<IEntityValue?> CreateLaunchProfileValueAsync(IQueryExecutionContext executionContext, EntityIdentity id, QueryProjectPropertiesContext context)
+        private async Task<IEntityValue?> CreateLaunchProfileValueAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext context)
         {
             if (_projectService.GetLoadedProject(context.File) is UnconfiguredProject project
                 && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 IPropertyPageQueryCache? queryCache = _queryCacheProvider.CreateCache(project);
 
                                 IEntityValue launchProfileValue = LaunchProfileDataProducer.CreateLaunchProfileValue(
-                                    executionContext,
+                                    queryExecutionContext,
                                     id,
                                     context,
                                     rule,
