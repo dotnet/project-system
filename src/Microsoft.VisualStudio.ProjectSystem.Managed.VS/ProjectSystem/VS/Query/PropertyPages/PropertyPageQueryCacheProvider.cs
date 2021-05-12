@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     [Export(typeof(IProjectStateProvider))]
-    internal sealed class PropertyPageQueryCacheProvider : IProjectStateProvider
+    internal sealed class PropertyPageProjectStateProvider : IProjectStateProvider
     {
         public IProjectState CreateState(UnconfiguredProject project)
         {
