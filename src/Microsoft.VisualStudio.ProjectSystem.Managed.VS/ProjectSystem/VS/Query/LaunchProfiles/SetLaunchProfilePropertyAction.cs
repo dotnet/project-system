@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
             if (((IEntityValueFromProvider)result.Result).ProviderState is ContextAndRuleProviderState state)
             {
-                var cache = state.Cache;
+                var cache = state.ProjectState;
                 if (await cache.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
                     && await cache.BindToRule(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
                     && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
