@@ -49,13 +49,13 @@ Add the following item to your .props or .targets file:
 
 ### Step 4: Describe the property page
 
-Replace the contents of MYlaunchProfile.xaml with the following:
+Replace the contents of MyLaunchProfile.xaml with the following:
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <Rule Name="MyLaunchProfile"
       Description="Properties associated with launching and debugging a custom debug target."
-      DisplayName="MyCustomDebugTarget"
+      DisplayName="My Custom Debug Target"
       PageTemplate="commandNameBasedDebugger"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
