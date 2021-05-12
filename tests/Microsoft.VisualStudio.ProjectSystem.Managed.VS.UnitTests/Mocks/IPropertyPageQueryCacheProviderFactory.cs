@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         internal static IProjectStateProvider Create(IProjectState cache)
         {
             var mock = new Mock<IProjectStateProvider>();
-            mock.Setup(f => f.CreateCache(It.IsAny<UnconfiguredProject>())).Returns(cache);
+            mock.Setup(f => f.CreateState(It.IsAny<UnconfiguredProject>())).Returns(cache);
 
             return mock.Object;
         }

@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createLaunchProfileValues()
             {
-                IProjectState propertyPageQueryCache = _queryCacheProvider.CreateCache(project);
+                IProjectState propertyPageQueryCache = _queryCacheProvider.CreateState(project);
 
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))

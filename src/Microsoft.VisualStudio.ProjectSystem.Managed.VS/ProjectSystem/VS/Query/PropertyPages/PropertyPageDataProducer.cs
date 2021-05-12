@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && projectCatalog.GetSchema(propertyPageName) is Rule rule
                     && !rule.PropertyPagesHidden)
                 {
-                    IProjectState propertyPageQueryCache = queryCacheProvider.CreateCache(project);
+                    IProjectState propertyPageQueryCache = queryCacheProvider.CreateState(project);
                     IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, id, propertyPageQueryCache, propertiesContext, rule, requestedProperties);
                     return propertyPageValue;
                 }
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createPropertyPageValuesAsync()
             {
-                IProjectState propertyPageQueryCache = queryCacheProvider.CreateCache(project);
+                IProjectState propertyPageQueryCache = queryCacheProvider.CreateState(project);
                 QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
                 foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
                 {

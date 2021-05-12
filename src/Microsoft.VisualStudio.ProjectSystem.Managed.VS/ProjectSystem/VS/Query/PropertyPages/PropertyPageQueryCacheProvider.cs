@@ -7,7 +7,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IProjectStateProvider))]
     internal sealed class PropertyPageQueryCacheProvider : IProjectStateProvider
     {
-        public IProjectState CreateCache(UnconfiguredProject project)
+        public IProjectState CreateState(UnconfiguredProject project)
         {
             return new PropertyPageQueryCache(project);
         }

@@ -146,7 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                     && property.Visible)
                 {
-                    IProjectState cache = queryCacheProvider.CreateCache(project);
+                    IProjectState cache = queryCacheProvider.CreateState(project);
                     IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, propertiesContext, property, index, requestedProperties);
                     return propertyValue;
                 }

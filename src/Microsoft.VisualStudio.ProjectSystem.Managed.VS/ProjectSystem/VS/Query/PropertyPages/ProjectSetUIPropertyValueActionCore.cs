@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     bool configurationDependent = property.IsConfigurationDependent();
                     projectRules = new List<IRule>();
-                    IProjectState propertyPageCache = _queryCacheProvider.CreateCache(project);
+                    IProjectState propertyPageCache = _queryCacheProvider.CreateState(project);
                     if (configurationDependent)
                     {
                         // The property is configuration-dependent; we need to collect the bound rules for
