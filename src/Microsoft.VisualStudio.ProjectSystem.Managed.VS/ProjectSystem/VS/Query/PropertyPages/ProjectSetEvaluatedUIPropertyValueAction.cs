@@ -15,8 +15,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly SetEvaluatedUIPropertyValue _parameter;
 
-        public ProjectSetEvaluatedUIPropertyValueAction(IPropertyPageQueryCacheProvider queryCacheProvider, SetEvaluatedUIPropertyValue parameter)
-            : base(queryCacheProvider, parameter.Page, parameter.Name, parameter.Dimensions)
+        public ProjectSetEvaluatedUIPropertyValueAction(IProjectStateProvider projectStateProvider, SetEvaluatedUIPropertyValue parameter)
+            : base(projectStateProvider, parameter.Page, parameter.Name, parameter.Dimensions)
         {
             Requires.NotNull(parameter, nameof(parameter));
             Requires.NotNull(parameter.Dimensions, $"{nameof(parameter)}.{nameof(parameter.Dimensions)}");

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
-    internal class PropertyPageQueryCache : IPropertyPageQueryCache
+    internal class PropertyPageProjectState : IProjectState
     {
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly Dictionary<ProjectConfiguration, IPropertyPagesCatalog?> _catalogCache;
@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly AsyncLazy<IImmutableSet<ProjectConfiguration>?> _knownProjectConfigurations;
         private readonly AsyncLazy<ProjectConfiguration?> _defaultProjectConfiguration;
 
-        public PropertyPageQueryCache(UnconfiguredProject project)
+        public PropertyPageProjectState(UnconfiguredProject project)
         {
             _unconfiguredProject = project;
             JoinableTaskFactory joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;

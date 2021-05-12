@@ -15,17 +15,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
-        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider projectStateProvider)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
-            Requires.NotNull(queryCacheProvider, nameof(queryCacheProvider));
+            Requires.NotNull(projectStateProvider, nameof(projectStateProvider));
 
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     queryExecutionContext,
                     id,
                     _projectService,
-                    _queryCacheProvider,
+                    _projectStateProvider,
                     propertiesContext,
                     propertyPageName,
                     _properties);

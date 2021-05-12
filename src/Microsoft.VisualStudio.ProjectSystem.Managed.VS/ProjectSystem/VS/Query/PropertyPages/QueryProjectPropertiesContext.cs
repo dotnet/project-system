@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// The point here is to capture the context for a part of a query execution in a
     /// manner that can be passed from one provider to another and is also suitable as a
-    /// key into a cache (such as the <see cref="IPropertyPageQueryCache"/>).
+    /// key into a cache (such as the <see cref="IProjectState"/>).
     /// </remarks>
     internal sealed class QueryProjectPropertiesContext : IProjectPropertiesContext, IEquatable<QueryProjectPropertiesContext>
     {
