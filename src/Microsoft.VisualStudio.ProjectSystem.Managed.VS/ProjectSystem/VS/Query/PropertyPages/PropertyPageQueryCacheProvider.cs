@@ -9,7 +9,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         public IProjectState CreateState(UnconfiguredProject project)
         {
-            return new PropertyPageQueryCache(project);
+            return new PropertyPageProjectState(project);
         }
     }
 }
