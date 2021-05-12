@@ -9,16 +9,13 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
-    /// Caches data that we expect to access frequently while processing queries for property page information.
+    /// Holds information about the project that is generally needed by Project Query API data providers.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This interface exists in order to simplify unit tests of the data produers.
-    /// </para>
-    /// <para>
     /// The expectation is that at most one instance of this type will be created per query, and that instance will be
     /// passed from one provider to the next as part of <see cref="IEntityValueFromProvider.ProviderState"/>. This
-    /// allows us to maximize the use of the cache within a query, but we are also guaranteed that the cache will not be
+    /// allows us to maximize the use of cached data within a query, but we are also guaranteed that the cache will not be
     /// held past the end of the query.
     /// </para>
     /// <para>
