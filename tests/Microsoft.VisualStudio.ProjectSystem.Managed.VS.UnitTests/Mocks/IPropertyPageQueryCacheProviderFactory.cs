@@ -5,7 +5,7 @@ using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    public static class IPropertyPageQueryCacheProviderFactory
+    public static class IProjectStateProviderFactory
     {
         internal static IProjectStateProvider Create()
         {
