@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
+        <target state="translated">Derleyicinin uyarıları hata olarak değerlendirmesini sağlayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
@@ -144,17 +144,17 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">Derleme sırasında oluşturulan hata ayıklama sembollerinin türünü belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">Hata ayıklama sembolleri</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">hata ayıklama türü</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -219,22 +219,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">DLL/EXE içine gömülü, platformlar arasında taşınabilir</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">PDB dosyası, geçerli platform</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Sembol gösterilmiyor</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">PDB dosyası, platformlar arasında taşınabilir</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">

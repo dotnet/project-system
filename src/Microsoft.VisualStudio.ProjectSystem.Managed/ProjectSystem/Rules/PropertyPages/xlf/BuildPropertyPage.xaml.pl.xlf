@@ -144,17 +144,17 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">Określa rodzaj symboli debugowania utworzonych podczas kompilacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">Symbole debugowania</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">typ debugowania</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
@@ -219,22 +219,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">Osadzone w bibliotece DLL/EXE, przenośne na różne platformy</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">Plik PDB, aktualna platforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Żadne symbole nie są wyemitowane</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">Plik PDB, przenośny na różnych platformach</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
