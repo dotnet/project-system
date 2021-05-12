@@ -89,7 +89,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
+        <target state="translated">Indica al compilatore di considerare gli avvisi come errori.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="Category|StrongNaming|Description">
         <source>Configures strong name signing of build outputs.</source>
-        <target state="new">Configures strong name signing of build outputs.</target>
+        <target state="translated">Configura la firma con nome sicuro degli output di compilazione.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|StrongNaming|DisplayName">
         <source>Strong naming</source>
-        <target state="new">Strong naming</target>
+        <target state="translated">Assegnazione di nome sicuro</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
@@ -219,22 +219,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">Incorporato in DLL/EXE, portabile tra piattaforme</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">File PDB, piattaforma corrente</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Non è stato prodotto alcun simbolo</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">File PDB, portabile tra piattaforme</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
