@@ -7,15 +7,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     public static class IPropertyPageQueryCacheProviderFactory
     {
-        internal static IPropertyPageQueryCacheProvider Create()
+        internal static IProjectStateProvider Create()
         {
             var cache = IPropertyPageQueryCacheFactory.Create();
             return Create(cache);
         }
 
-        internal static IPropertyPageQueryCacheProvider Create(IProjectState cache)
+        internal static IProjectStateProvider Create(IProjectState cache)
         {
-            var mock = new Mock<IPropertyPageQueryCacheProvider>();
+            var mock = new Mock<IProjectStateProvider>();
             mock.Setup(f => f.CreateCache(It.IsAny<UnconfiguredProject>())).Returns(cache);
 
             return mock.Object;

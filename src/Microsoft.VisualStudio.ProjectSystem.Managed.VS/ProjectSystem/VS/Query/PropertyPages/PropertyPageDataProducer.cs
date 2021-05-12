@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             EntityIdentity id,
             IProjectService2 projectService,
-            IPropertyPageQueryCacheProvider queryCacheProvider,
+            IProjectStateProvider queryCacheProvider,
             QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             IEntityValue parent,
             UnconfiguredProject project,
-            IPropertyPageQueryCacheProvider queryCacheProvider,
+            IProjectStateProvider queryCacheProvider,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)

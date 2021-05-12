@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly ProjectSetUIPropertyValueActionCore _coreExecutor;
 
         public ProjectSetUIPropertyValueActionBase(
-            IPropertyPageQueryCacheProvider queryCacheProvider,
+            IProjectStateProvider queryCacheProvider,
             string pageName,
             string propertyName,
             ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> dimensions)

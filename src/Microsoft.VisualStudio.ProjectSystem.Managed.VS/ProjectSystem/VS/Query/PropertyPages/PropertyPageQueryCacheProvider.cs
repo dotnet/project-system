@@ -4,8 +4,8 @@ using System.ComponentModel.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
-    [Export(typeof(IPropertyPageQueryCacheProvider))]
-    internal sealed class PropertyPageQueryCacheProvider : IPropertyPageQueryCacheProvider
+    [Export(typeof(IProjectStateProvider))]
+    internal sealed class PropertyPageQueryCacheProvider : IProjectStateProvider
     {
         public IProjectState CreateCache(UnconfiguredProject project)
         {

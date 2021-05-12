@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <see cref="IProjectState" /> for unit testing purposes.
     /// </remarks>
     [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
-    internal interface IPropertyPageQueryCacheProvider
+    internal interface IProjectStateProvider
     {
         IProjectState CreateCache(UnconfiguredProject project);
     }

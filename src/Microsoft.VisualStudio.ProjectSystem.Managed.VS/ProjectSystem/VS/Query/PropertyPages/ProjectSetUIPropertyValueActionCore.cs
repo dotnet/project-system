@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal class ProjectSetUIPropertyValueActionCore
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
         private readonly string _pageName;
         private readonly string _propertyName;
         private readonly IEnumerable<(string dimension, string value)> _dimensions;
@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <param name="dimensions">The dimension names and values indicating which project configurations should be updated with the new value.</param>
         /// <param name="setValueAsync">A delegate that, given the <see cref="IProperty"/> to update, actually sets the value.</param>
         public ProjectSetUIPropertyValueActionCore(
-            IPropertyPageQueryCacheProvider queryCacheProvider,
+            IProjectStateProvider queryCacheProvider,
             string pageName,
             string propertyName,
             IEnumerable<(string dimension, string value)> dimensions,

@@ -18,9 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
 
-        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectStateProvider queryCacheProvider)
         {
             _properties = properties;
             _queryCacheProvider = queryCacheProvider;

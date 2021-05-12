@@ -26,10 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryByRelationshipDataProvider))]
     internal class PropertyPageDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
 
         [ImportingConstructor]
-        public PropertyPageDataProvider(IProjectServiceAccessor projectServiceAccessor, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageDataProvider(IProjectServiceAccessor projectServiceAccessor, IProjectStateProvider queryCacheProvider)
             : base(projectServiceAccessor)
         {
             _queryCacheProvider = queryCacheProvider;

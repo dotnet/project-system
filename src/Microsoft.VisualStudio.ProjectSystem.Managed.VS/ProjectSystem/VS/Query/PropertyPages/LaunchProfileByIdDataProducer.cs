@@ -16,9 +16,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
 
-        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider queryCacheProvider)
         {
             _properties = properties;
             _projectService = projectService;

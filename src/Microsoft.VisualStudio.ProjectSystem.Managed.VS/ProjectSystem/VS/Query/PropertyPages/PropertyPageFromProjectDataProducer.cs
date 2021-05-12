@@ -14,9 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class PropertyPageFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
 
-        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectStateProvider queryCacheProvider)
         {
             _properties = properties;
             _queryCacheProvider = queryCacheProvider;

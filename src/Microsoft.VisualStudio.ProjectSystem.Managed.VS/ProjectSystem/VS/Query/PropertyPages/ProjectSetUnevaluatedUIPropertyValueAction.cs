@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly SetUnevaluatedUIPropertyValue _parameter;
 
-        public ProjectSetUnevaluatedUIPropertyValueAction(IPropertyPageQueryCacheProvider queryCacheProvider, SetUnevaluatedUIPropertyValue parameter)
+        public ProjectSetUnevaluatedUIPropertyValueAction(IProjectStateProvider queryCacheProvider, SetUnevaluatedUIPropertyValue parameter)
             : base(queryCacheProvider, parameter.Page, parameter.Name, parameter.Dimensions)
         {
             Requires.NotNull(parameter, nameof(parameter));

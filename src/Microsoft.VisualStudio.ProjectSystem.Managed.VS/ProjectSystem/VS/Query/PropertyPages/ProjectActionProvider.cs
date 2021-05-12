@@ -31,10 +31,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class ProjectActionProvider : IQueryActionProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _queryCacheProvider;
 
         [ImportingConstructor]
-        public ProjectActionProvider(IPropertyPageQueryCacheProvider queryCacheProvider)
+        public ProjectActionProvider(IProjectStateProvider queryCacheProvider)
         {
             _queryCacheProvider = queryCacheProvider;
         }

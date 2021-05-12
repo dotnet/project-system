@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             EntityIdentity requestId,
             IProjectService2 projectService,
-            IPropertyPageQueryCacheProvider queryCacheProvider,
+            IProjectStateProvider queryCacheProvider,
             QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             string propertyName,
