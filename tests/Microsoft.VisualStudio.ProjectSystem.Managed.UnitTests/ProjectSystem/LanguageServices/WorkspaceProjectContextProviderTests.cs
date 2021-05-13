@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var snapshot = IProjectRuleSnapshotFactory.FromJson(json);
 
             int callCount = 0;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { callCount++; return null; });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _, _) => { callCount++; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectRuleSnapshot: snapshot);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var projectGuidService = ISafeProjectGuidServiceFactory.ImplementGetProjectGuidAsync(new Guid(guid));
 
             string? result = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, _, _, _, _) => { result = id; return null; });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, id, _, _, _, _, _) => { result = id; return null; });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory, projectGuidService: projectGuidService);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration(configuration);
@@ -128,13 +128,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             string? languageNameResult = null, projectFilePathResult = null, binOutputPathResult = null;
             Guid? projectGuidResult = null;
             object? hierarchyResult = null;
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath) =>
+            string? assemblyNameResult = null;
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((languageName, _, projectFilePath, guid, hierarchy, binOutputPath, assemblyName) =>
             {
                 languageNameResult = languageName;
                 projectFilePathResult = projectFilePath;
                 projectGuidResult = guid;
                 hierarchyResult = hierarchy;
                 binOutputPathResult = binOutputPath;
+                assemblyNameResult = assemblyName;
                 return null;
             });
 
@@ -146,6 +148,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.Equal("CSharp", languageNameResult);
             Assert.Equal("C:\\Project\\Project.csproj", projectFilePathResult);
             Assert.Equal("C:\\Target.dll", binOutputPathResult);
+            Assert.Equal("Project", assemblyNameResult);
             Assert.Equal(projectGuid, projectGuidResult!.Value);
             Assert.Equal(hostObject, hierarchyResult);
         }
@@ -154,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         public async Task CreateProjectContextAsync_ReturnsContextWithLastDesignTimeBuildSucceededSetToFalse()
         {
             var context = IWorkspaceProjectContextMockFactory.Create();
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => context);
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _, _) => context);
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -168,7 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task CreateProjectContextAsync_WhenCreateProjectContextThrows_ReturnsNull()
         {
-            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _) => { throw new Exception(); });
+            var workspaceProjectContextFactory = IWorkspaceProjectContextFactoryFactory.ImplementCreateProjectContext((_, _, _, _, _, _, _) => { throw new Exception(); });
             var provider = CreateInstance(workspaceProjectContextFactory: workspaceProjectContextFactory);
 
             var project = ConfiguredProjectFactory.ImplementProjectConfiguration("Debug|AnyCPU");
@@ -210,7 +213,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     ""Properties"": {
         ""MSBuildProjectFullPath"": ""C:\\Project\\Project.csproj"",
         ""LanguageServiceName"": ""CSharp"",
-        ""TargetPath"": ""C:\\Target.dll""
+        ""TargetPath"": ""C:\\Target.dll"",
+        ""AssemblyName"": ""Project""
     }
 }");
 
