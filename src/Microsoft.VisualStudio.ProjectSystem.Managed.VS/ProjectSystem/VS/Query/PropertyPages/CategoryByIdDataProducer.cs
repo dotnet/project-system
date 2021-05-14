@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _projectService = projectService;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
             if (id.KeysCount == 3
                 && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string categoryName))
             {
                 return CategoryDataProducer.CreateCategoryValueAsync(
-                    executionContext,
+                    queryExecutionContext,
                     id,
                     _projectService,
                     projectPath,

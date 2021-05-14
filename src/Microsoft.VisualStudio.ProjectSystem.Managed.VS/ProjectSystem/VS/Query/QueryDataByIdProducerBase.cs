@@ -37,6 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
         }
 
-        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id);
+        protected abstract Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id);
     }
 }

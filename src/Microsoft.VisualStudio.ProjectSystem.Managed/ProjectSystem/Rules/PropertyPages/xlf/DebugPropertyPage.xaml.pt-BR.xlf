@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
         <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</target>
+        <target state="translated">O gerenciamento dos perfis de inicialização passou para uma caixa de diálogo dedicada. Ele pode ser acessado através do link abaixo.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignorado</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
         <source>Open debug launch profiles UI</source>
-        <target state="new">Open debug launch profiles UI</target>
+        <target state="translated">Abrir depuração dos perfis de inicialização da IU</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">

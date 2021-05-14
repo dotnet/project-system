@@ -15,29 +15,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     { 
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
-        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider projectStateProvider)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
-            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? context)
+            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
                 && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
                 && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
             {
                 return UIPropertyDataProducer.CreateUIPropertyValueAsync(
-                    executionContext,
+                    queryExecutionContext,
                     id,
                     _projectService,
-                    _queryCacheProvider,
-                    context,
+                    _projectStateProvider,
+                    propertiesContext,
                     propertyPageName,
                     propertyName,
                     _properties);

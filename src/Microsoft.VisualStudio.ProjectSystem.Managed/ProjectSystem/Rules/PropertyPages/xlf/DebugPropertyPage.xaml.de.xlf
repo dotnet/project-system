@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
         <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</target>
+        <target state="translated">Die Verwaltung von Startprofilen ist in ein dediziertes Dialogfeld verschoben. Sie können über den nachstehenden Link auf sie zugreifen.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignoriert</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
         <source>Open debug launch profiles UI</source>
-        <target state="new">Open debug launch profiles UI</target>
+        <target state="translated">Öffnen der Benutzeroberfläche von Debugstartprofilen</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">

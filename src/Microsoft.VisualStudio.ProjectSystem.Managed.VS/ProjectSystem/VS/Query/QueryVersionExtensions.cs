@@ -6,16 +6,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     internal static class QueryVersionExtensions
     {
-        public static void ReportProjectVersion(this IQueryExecutionContext executionContext, UnconfiguredProject unconfiguredProject)
+        public static void ReportProjectVersion(this IQueryExecutionContext queryExecutionContext, UnconfiguredProject unconfiguredProject)
         {
             unconfiguredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
-            executionContext.ReportInputDataVersion(versionKey, versionNumber);
+            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
         }
 
-        public static void ReportProjectUpdate(this IQueryExecutionContext executionContext, UnconfiguredProject unconfiguredProject)
+        public static void ReportProjectUpdate(this IQueryExecutionContext queryExecutionContext, UnconfiguredProject unconfiguredProject)
         {
             unconfiguredProject.GetQueryDataVersion(out string versionKey, out long versionNumber);
-            executionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
+            queryExecutionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
         }
     }
 }

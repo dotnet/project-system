@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, PropertyProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, PropertyProviderState providerState)
         {
-            return Task.FromResult(UIPropertyEditorDataProducer.CreateEditorValues(executionContext, parent, providerState.ContainingRule, providerState.PropertyName, _properties));
+            return Task.FromResult(UIPropertyEditorDataProducer.CreateEditorValues(queryExecutionContext, parent, providerState.ContainingRule, providerState.PropertyName, _properties));
         }
     }
 }
