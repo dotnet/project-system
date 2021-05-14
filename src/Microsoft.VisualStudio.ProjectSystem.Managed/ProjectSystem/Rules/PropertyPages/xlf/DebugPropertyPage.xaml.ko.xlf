@@ -14,12 +14,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
         <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</target>
+        <target state="translated">시작 프로필 관리가 전용 대화 상자로 이동했습니다. 아래 링크를 통해 액세스할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">무시됨</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
         <source>Open debug launch profiles UI</source>
-        <target state="new">Open debug launch profiles UI</target>
+        <target state="translated">디버그 시작 프로필 UI 열기</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">

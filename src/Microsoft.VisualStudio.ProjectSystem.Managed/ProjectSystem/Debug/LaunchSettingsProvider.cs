@@ -56,6 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
         private ILaunchSettings? _currentSnapshot;
         private IDisposable? _projectRuleSubscriptionLink;
+        private long _nextVersion;
 
         [ImportingConstructor]
         public LaunchSettingsProvider(
@@ -79,6 +80,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
             _projectFaultHandler = projectFaultHandler;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+
+            _nextVersion = 1;
         }
 
         [ImportMany]
@@ -216,7 +219,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return;
             }
 
-            var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, updatedActiveProfileName);
+            var newSnapshot = new LaunchSettings(snapshot.Profiles, snapshot.GlobalSettings, updatedActiveProfileName, GetNextVersion());
             FinishUpdate(newSnapshot);
         }
 
@@ -260,7 +263,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     MergeExistingInMemoryGlobalSettings(launchSettingData, prevSnapshot);
                 }
 
-                var newSnapshot = new LaunchSettings(launchSettingData, updatedActiveProfileName);
+                var newSnapshot = new LaunchSettings(launchSettingData, updatedActiveProfileName, GetNextVersion());
 
                 FinishUpdate(newSnapshot);
             }
@@ -279,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                         DoNotPersist = true,
                         OtherSettings = ImmutableStringDictionary<object>.EmptyOrdinal.Add("ErrorString", ex.Message)
                     };
-                    var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name);
+                    var snapshot = new LaunchSettings(new[] { errorProfile }, null, errorProfile.Name, GetNextVersion());
                     FinishUpdate(snapshot);
                 }
             }
@@ -713,7 +716,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // Make sure the profiles are copied. We don't want them to mutate.
             string? activeProfileName = ActiveProfile?.Name;
 
-            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName);
+            ILaunchSettings newSnapshot = new LaunchSettings(newSettings.Profiles, newSettings.GlobalSettings, activeProfileName, GetNextVersion());
             if (persistToDisk)
             {
                 await SaveSettingsToDiskAsync(newSettings);
@@ -791,7 +794,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // profile
                 bool saveToDisk = !profile.IsInMemoryObject() || (existingProfile?.IsInMemoryObject() == false);
 
-                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name, GetNextVersion());
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
             });
         }
@@ -812,7 +815,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                     // If the new profile is in-memory only, we don't want to touch the disk
                     bool saveToDisk = !existingProfile.IsInMemoryObject();
-                    var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name);
+                    var newSnapshot = new LaunchSettings(profiles, currentSettings.GlobalSettings, currentSettings.ActiveProfile?.Name, GetNextVersion());
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
                 }
             });
@@ -854,7 +857,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // profile
                 bool saveToDisk = !updatedProfile.IsInMemoryObject() || (existingProfile?.IsInMemoryObject() == false);
 
-                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name);
+                var newSnapshot = new LaunchSettings(profiles, currentSettings?.GlobalSettings, currentSettings?.ActiveProfile?.Name, GetNextVersion());
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
 
                 return true;
@@ -883,7 +886,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
                 bool saveToDisk = !settingContent.IsInMemoryObject() || (currentValue?.IsInMemoryObject() == false);
 
-                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name);
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings.Add(settingName, settingContent), currentSettings.ActiveProfile?.Name, GetNextVersion());
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
             });
         }
@@ -901,7 +904,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 {
                     bool saveToDisk = !currentValue.IsInMemoryObject();
                     ImmutableDictionary<string, object> globalSettings = currentSettings.GlobalSettings.Remove(settingName);
-                    var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                    var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name, GetNextVersion());
                     await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
                 }
             });
@@ -940,7 +943,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     saveToDisk = saveToDisk || saveThisSettingToDisk;
                 }
 
-                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name);
+                var newSnapshot = new LaunchSettings(currentSettings.Profiles, globalSettings, currentSettings.ActiveProfile?.Name, GetNextVersion());
                 await UpdateAndSaveSettingsInternalAsync(newSnapshot, saveToDisk);
             });
         }
@@ -987,5 +990,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             return Path.Combine(folder, LaunchSettingsFilename);
         }
+
+        private long GetNextVersion() => _nextVersion++;
+
+        /// <summary>
+        /// Protected method for testing purposes.
+        /// </summary>
+        protected void SetNextVersion(long nextVersion) => _nextVersion = nextVersion;
     }
 }

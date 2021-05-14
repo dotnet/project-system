@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var defaultConfiguration = ProjectConfigurationFactory.Create("Alpha|Beta");
             var otherConfiguration = ProjectConfigurationFactory.Create("Delta|Gamma");
-            var cache = IPropertyPageQueryCacheFactory.Create(
+            var cache = IProjectStateFactory.Create(
                 projectConfigurations: ImmutableHashSet<ProjectConfiguration>.Empty.Add(defaultConfiguration).Add(otherConfiguration),
                 defaultConfiguration: defaultConfiguration,
                 bindToRule: (config, schemaName, context) => IRuleFactory.Create(
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 parent,
                 cache,
                 schema,
-                context: QueryProjectPropertiesContext.ProjectFile,
+                propertiesContext: QueryProjectPropertiesContext.ProjectFile,
                 propertyName,
                 requestedProperties);
 

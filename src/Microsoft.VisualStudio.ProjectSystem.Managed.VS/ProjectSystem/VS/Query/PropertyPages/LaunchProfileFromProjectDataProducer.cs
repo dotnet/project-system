@@ -18,20 +18,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
+        private readonly IProjectStateProvider _projectStateProvider;
 
-        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectStateProvider projectStateProvider)
         {
             _properties = properties;
-            _queryCacheProvider = queryCacheProvider;
+            _projectStateProvider = projectStateProvider;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
-            return CreateLaunchProfileValuesAsync(executionContext, parent, providerState);
+            return CreateLaunchProfileValuesAsync(queryExecutionContext, parent, providerState);
         }
 
-        private async Task<IEnumerable<IEntityValue>> CreateLaunchProfileValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject project)
+        private async Task<IEnumerable<IEntityValue>> CreateLaunchProfileValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject project)
         {
             if (project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createLaunchProfileValues()
             {
-                IPropertyPageQueryCache propertyPageQueryCache = _queryCacheProvider.CreateCache(project);
+                IProjectState projectState = _projectStateProvider.CreateState(project);
 
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
@@ -62,30 +62,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         && !Strings.IsNullOrEmpty(profile.CommandName)
                         && debugRules.TryGetValue(profile.CommandName, out Rule rule))
                     {
-                        QueryProjectPropertiesContext context = new(
+                        QueryProjectPropertiesContext propertiesContext = new(
                             isProjectFile: true,
                             file: project.FullPath,
                             itemType: LaunchProfileProjectItemProvider.ItemType,
                             itemName: profile.Name);
 
-                        IEntityValue launchProfileValue = CreateLaunchProfileValue(executionContext, parent, context, rule, index, propertyPageQueryCache);
+                        IEntityValue launchProfileValue = CreateLaunchProfileValue(queryExecutionContext, parent, propertiesContext, rule, index, projectState);
                         yield return launchProfileValue;
                     }
                 }
             }
         }
 
-        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext executionContext, IEntityValue parent, QueryProjectPropertiesContext context, Rule rule, int order, IPropertyPageQueryCache propertyPageQueryCache)
+        private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState projectState)
         {
             EntityIdentity identity = new(
                 ((IEntityWithId)parent).Id,
                 new Dictionary<string, string>
                 {
-                    { ProjectModelIdentityKeys.SourceItemType, context.ItemType! },
-                    { ProjectModelIdentityKeys.SourceItemName, context.ItemName! }
+                    { ProjectModelIdentityKeys.SourceItemType, propertiesContext.ItemType! },
+                    { ProjectModelIdentityKeys.SourceItemName, propertiesContext.ItemName! }
                 });
 
-            return LaunchProfileDataProducer.CreateLaunchProfileValue(executionContext, identity, context, rule, order, propertyPageQueryCache, _properties);
+            return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, propertiesContext, rule, order, projectState, _properties);
         }
     }
 }

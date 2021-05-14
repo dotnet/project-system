@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var affectedConfigs = new List<string>();
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",
@@ -113,8 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var affectedConfigs = new List<string>();
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",
@@ -185,8 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var unrelatedPropertySet = false;
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",

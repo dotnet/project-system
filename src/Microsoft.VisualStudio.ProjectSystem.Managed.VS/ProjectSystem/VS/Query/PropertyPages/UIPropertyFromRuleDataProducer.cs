@@ -21,12 +21,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _properties = properties;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ContextAndRuleProviderState providerState)
         {
-            (string versionKey, long versionNumber) = providerState.Cache.GetUnconfiguredProjectVersion();
-            executionContext.ReportInputDataVersion(versionKey, versionNumber);
+            (string versionKey, long versionNumber) = providerState.ProjectState.GetUnconfiguredProjectVersion();
+            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(executionContext, parent, providerState.Cache, providerState.Context, providerState.Rule, _properties));
+            return Task.FromResult(UIPropertyDataProducer.CreateUIPropertyValues(queryExecutionContext, parent, providerState.ProjectState, providerState.PropertiesContext, providerState.Rule, _properties));
         }
     }
 }
