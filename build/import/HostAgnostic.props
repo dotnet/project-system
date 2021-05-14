@@ -94,7 +94,6 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
-           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
@@ -115,6 +114,7 @@
            or '%(FileName)' == 'EnvDTE80'
            or '%(FileName)' == 'EnvDTE90'
            or '%(FileName)' == 'EnvDTE100'
+           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
            or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
         <EmbedInteropTypes>false</EmbedInteropTypes>
