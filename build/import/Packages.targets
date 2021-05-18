@@ -70,8 +70,8 @@
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
-    <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-preview-2-31223-026"/>
-    <PackageReference Include="Microsoft.Internal.VisualStudio.Interop"                               Version="17.0.0-preview-2-31223-026"/>
+    <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-previews-1-31317-048"/>
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Interop"                               Version="17.0.0-previews-1-31317-048"/>
     
 
     <!-- CPS -->
