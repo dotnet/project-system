@@ -1,7 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Explicit Off
-Option Strict Off
+Option Explicit On
+Option Strict On
 Option Compare Binary
 
 Imports System.IO
@@ -788,14 +788,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Look for a FileName with the expected extension.  It's unclear whether we can assume it will always be the
             '  first one.  (There can be multiple files for a ProjectItem for such cases as code behind, etc.)
             For i As Short = 1 To ProjectItem.FileCount 'this collection is 1-indexed
-                Dim FileName As String = ProjectItem.get_FileNames(i)
+                Dim FileName As String = ProjectItem.FileNames(i)
                 If Path.GetExtension(FileName).Equals(ExpectedExtension, StringComparison.OrdinalIgnoreCase) Then
                     Return FileName
                 End If
             Next
 
             Debug.Fail("Didn't find a ProjectItem.FileName with the expected extension")
-            Return ProjectItem.get_FileNames(1)
+            Return ProjectItem.FileNames(1)
         End Function
 
         ''' <summary>
@@ -808,7 +808,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 'The FileNames property represents the actual full path of the directory if the folder
                 '  is an actual physical folder on disk.
                 Debug.Assert(ProjectItem.FileCount = 1, "Didn't expect multiple filenames for a folder ProjectItem")
-                Return ProjectItem.get_FileNames(1) 'this collection is 1-indexed
+                Return ProjectItem.FileNames(1) 'this collection is 1-indexed
             Else
                 Debug.Fail("Trying to get filename of a non-physical folder in the project")
                 Return ""

@@ -1,7 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Strict Off
-
 Imports EnvDTE
 
 Namespace Microsoft.VisualStudio.Editors.Common
@@ -123,7 +121,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Try
                 'Ensure the document is activated
                 If Func.ProjectItem IsNot Nothing Then
-                    If Not Func.ProjectItem.get_IsOpen Then
+                    If Not Func.ProjectItem.IsOpen Then
                         Func.ProjectItem.Open()
                     End If
                     Func.ProjectItem.Document.Activate()
