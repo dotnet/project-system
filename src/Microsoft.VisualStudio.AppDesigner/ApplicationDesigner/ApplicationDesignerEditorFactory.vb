@@ -2,7 +2,6 @@
 
 Imports System.Runtime.InteropServices
 
-Imports Microsoft.Internal.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell
@@ -229,17 +228,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return hr
         End Function
 
-        Private Function UseNewEditor(vsHierarchy As IVsHierarchy) As Boolean
-            If Not vsHierarchy.IsCapabilityMatch("CPS & CSharp") Then
-                ' The new editor is only available for CPS-based C# projects
-                Return False
-            End If
-
-            Dim featureFlags = TryCast(_siteProvider.GetService(GetType(SVsFeatureFlags)), IVsFeatureFlags)
-
-            Return _
-                featureFlags IsNot Nothing AndAlso _
-                featureFlags.IsFeatureEnabled("CPS.UpdatedProjectPropertiesDesigner.Local", False)
+        Private Shared Function UseNewEditor(vsHierarchy As IVsHierarchy) As Boolean
+            ' The new editor is only available for CPS-based C# projects
+            Return vsHierarchy.IsCapabilityMatch("CPS & CSharp")
         End Function
 
         Private Function GetNewEditorFactory() As IVsEditorFactory
