@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             End If
 
             ' The ProjectItem.FileNames collection is 1 based...
-            Return ProjectItem.get_FileNames(1)
+            Return ProjectItem.FileNames(1)
         End Function
 
         ''' <summary>
@@ -248,7 +248,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
             Debug.Assert(ExtendingItem IsNot Nothing, "Couldn't find/create a class that extends the generated settings class")
 
             If ExtendingItem IsNot Nothing Then
-                If ExtendingItem.get_IsOpen AndAlso ExtendingItem.Document IsNot Nothing Then
+                If ExtendingItem.IsOpen AndAlso ExtendingItem.Document IsNot Nothing Then
                     ExtendingItem.Document.Activate()
                 Else
                     Dim Win As EnvDTE.Window = ExtendingItem.Open()

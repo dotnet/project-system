@@ -123,7 +123,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Try
                 'Ensure the document is activated
                 If Func.ProjectItem IsNot Nothing Then
-                    If Not Func.ProjectItem.get_IsOpen Then
+                    If Not Func.ProjectItem.IsOpen Then
                         Func.ProjectItem.Open()
                     End If
                     Func.ProjectItem.Document.Activate()

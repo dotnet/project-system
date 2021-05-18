@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _punkDocData = punkDocData
 
             'Get the WindowEvents object
-            m_WindowEvents = ProjectItem.DTE.Events.get_WindowEvents
+            m_WindowEvents = ProjectItem.DTE.Events.WindowEvents
             Debug.Assert(m_WindowEvents IsNot Nothing)
 
             ' If a random editor opens the file and locks it using an incompatible buffer, we need 

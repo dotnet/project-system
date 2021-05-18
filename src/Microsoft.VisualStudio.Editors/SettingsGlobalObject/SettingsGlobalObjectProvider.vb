@@ -307,7 +307,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Dim fileName As String
 
             If item.FileCount > 0 Then
-                fileName = item.get_FileNames(1) 'Index is 1-based
+                fileName = item.FileNames(1) 'Index is 1-based
             Else
                 fileName = item.Name
             End If

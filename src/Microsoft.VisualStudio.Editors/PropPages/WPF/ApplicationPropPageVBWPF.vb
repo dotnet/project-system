@@ -773,7 +773,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             If _applicationXamlDocData Is Nothing Then
                 Dim applicationXamlProjectItem As ProjectItem = FindApplicationXamlProjectItem(createAppXamlIfDoesNotExist)
                 If applicationXamlProjectItem IsNot Nothing Then
-                    _applicationXamlDocData = New DocData(ServiceProvider, applicationXamlProjectItem.get_FileNames(1))
+                    _applicationXamlDocData = New DocData(ServiceProvider, applicationXamlProjectItem.FileNames(1))
                 End If
             End If
 
@@ -1257,7 +1257,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
             For Each projectItem As ProjectItem In projectItems
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
-                If IO.Path.GetExtension(projectItem.get_FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
+                If IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     'We only want .xaml files with BuildAction="Page"
                     Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectItem)
@@ -1265,7 +1265,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                         'Build action is correct.
 
                         'Is the item inside the project folders (instead of, say, a link to an external file)?
-                        If IsFileRelativeToProjectPath(projectItem.get_FileNames(1)) Then
+                        If IsFileRelativeToProjectPath(projectItem.FileNames(1)) Then
                             'Okay, we want this one
                             list.Add(projectItem)
                         End If
@@ -1298,7 +1298,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
                     FindXamlPageFiles(DTEProject.ProjectItems, xamlFiles)
 
                     For Each projectItem As ProjectItem In xamlFiles
-                        startupObjects.Add(New StartupUri(GetProjectRelativeFilePath(projectItem.get_FileNames(1))))
+                        startupObjects.Add(New StartupUri(GetProjectRelativeFilePath(projectItem.FileNames(1))))
                     Next
                 End Using
             End If
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="extension"></param>
         Private Shared Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
             For Each dependentItem As ProjectItem In projectItem.ProjectItems
-                If dependentItem.get_FileNames(1) IsNot Nothing _
+                If dependentItem.FileNames(1) IsNot Nothing _
                         AndAlso IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
                     Return dependentItem
                 End If
@@ -1720,7 +1720,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
             Try
                 Dim appXaml As ProjectItem = FindApplicationXamlProjectItem(False)
                 If appXaml IsNot Nothing Then
-                    Return appXaml.get_FileNames(1)
+                    Return appXaml.FileNames(1)
                 End If
             Catch ex As Exception
             End Try

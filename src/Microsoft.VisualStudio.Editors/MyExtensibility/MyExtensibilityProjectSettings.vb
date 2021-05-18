@@ -583,7 +583,7 @@ Namespace Microsoft.VisualStudio.Editors.MyExtensibility
 
             Dim itemPath As String = Nothing
             Try
-                itemPath = projectItem.get_FileNames(1)
+                itemPath = projectItem.FileNames(1)
             Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetProjectItemPath), NameOf(MyExtensibilityProjectSettings))
             End Try
             If itemPath IsNot Nothing Then
