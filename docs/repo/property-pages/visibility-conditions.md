@@ -16,7 +16,7 @@ In a XAML rule file, a visibility condition is specified as metadata on the prop
 <StringProperty ...>
   <StringProperty.Metadata>
     <NameValuePair Name="VisibilityCondition">
-      <NameValuePair.Value>(has-evaluated-evalue "MyPage" "MyProperty" "Foo")</NameValuePair.Value>
+      <NameValuePair.Value>(has-evaluated-value "MyPage" "MyProperty" "Foo")</NameValuePair.Value>
     </NameValuePair>
   </StringProperty.Metadata>
 </StringProperty>
@@ -96,7 +96,7 @@ The following table details the default set of visibility expression functions:
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
-Note that there is no `evaluated` function. A propery may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead.
+Note that there is no `evaluated` function. A property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead.
 
 ## Adding Functions
 
