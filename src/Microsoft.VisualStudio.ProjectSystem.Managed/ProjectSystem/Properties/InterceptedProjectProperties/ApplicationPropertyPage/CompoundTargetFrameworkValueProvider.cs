@@ -153,7 +153,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 if (targetFrameworkAlias.Contains("Unsupported"))
                 {
-                    // The value on the TargetFramework is not on the supported list and we shouldn't try to parse it.
+                    // The value on the TargetFrameworkMoniker is not on the supported list and we shouldn't try to parse it.
                     // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
                     if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFramework))
                     {
