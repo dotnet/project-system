@@ -101,7 +101,7 @@ Here is a complex example of a string property that demonstrates the majority of
   <StringProperty.Metadata>
     <NameValuePair Name="DependsOn" Value="OtherPage::OtherProperty;OtherPage::AnotherProperty" />
     <NameValuePair Name="VisibilityCondition">
-      <NameValuePair.Value>(eq "SomeValue" (evaluated "OtherPage" "OtherProperty"))</NameValuePair.Value>
+      <NameValuePair.Value>(has-evaluated-value "OtherPage" "OtherProperty" "SomeValue")</NameValuePair.Value>
     </NameValuePair>
   </StringProperty.Metadata>
 </StringProperty>
