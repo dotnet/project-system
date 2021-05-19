@@ -103,7 +103,7 @@ In order to debug this project, add an executable project to this solution which
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
-        <target state="new">(Not set)</target>
+        <target state="translated">(未设置)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
