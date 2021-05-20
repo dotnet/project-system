@@ -97,6 +97,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile {0}.
+        /// </summary>
+        internal static string DefaultNewProfileName {
+            get {
+                return ResourceManager.GetString("DefaultNewProfileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The project doesn&apos;t know how to run the profile {0}..
         /// </summary>
         internal static string DontKnowHowToRunProfile {
