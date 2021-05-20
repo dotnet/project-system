@@ -676,8 +676,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
-            Private Const EditorCreationEventName As String = ProjectSystemEventNamePrefix + "propertiespages/createEditor"
-            Private Const EditorCreationPropertyNamePrefix As String = ProjectSystemPropertyNamePrefix + "propertiespages.createEditor."
+            Private Const EditorCreationEventName As String = ProjectSystemEventNamePrefix + "propertiespages/createeditor"
+            Private Const EditorCreationPropertyNamePrefix As String = ProjectSystemPropertyNamePrefix + "propertiespages.createeditor."
 
             Public Shared Sub LogEditorCreation(useNewEditor As Boolean, fileName As String, physicalView As String)
                 Dim telemetryEvent As TelemetryEvent = New TelemetryEvent(EditorCreationEventName)
