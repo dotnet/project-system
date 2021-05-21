@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 
             list.AddRange(snapshot.Items.Select(ToEnumValue));
 
-            return list;
+            return list.OrderBy(e => e.DisplayName).ToArray();
         }
 
         private static IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)

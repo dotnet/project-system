@@ -112,6 +112,21 @@
         <target state="translated">Objeto de inicio</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
+        <source>Specifies the operating system that this project will target.</source>
+        <target state="new">Specifies the operating system that this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
+        <source>Target OS</source>
+        <target state="new">Target OS</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
         <target state="new">Specifies the version of the operating system this project will target.</target>
@@ -123,21 +138,6 @@
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
-        <source>platform</source>
-        <target state="new">platform</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetPlatform|Description">
-        <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetPlatform|DisplayName">
-        <source>Target OS</source>
-        <target state="new">Target OS</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetPlatform|Metadata|SearchTerms">
         <source>platform</source>
         <target state="new">platform</target>
         <note />

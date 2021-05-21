@@ -24,9 +24,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal sealed class ComplexTargetFrameworkValueProvider : InterceptingPropertyValueProviderBase
     {
         private const string InterceptedTargetFrameworkProperty = "InterceptedTargetFramework";
-        private const string TargetPlatformProperty = "TargetPlatform";
-        private const string TargetPlatformVersionProperty = "TargetPlatformVersion";
-        private const string TargetFrameworkProperty = "TargetFramework";
+        private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
+        private const string TargetPlatformVersionProperty = ConfigurationGeneral.TargetPlatformVersionProperty;
+        private const string TargetFrameworkProperty = ConfigurationGeneral.TargetFrameworkProperty;
         private const string MinimumPlatformVersionProperty = "MinimumPlatformVersion";
 
         private readonly ProjectProperties _properties;
@@ -144,14 +144,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFrameworkMoniker))
             {
-                string targetFrameworkAlias = await GetTargetFrameworkAlias(complexTargetFramework.TargetFrameworkMoniker);
+                string targetFrameworkAlias = await GetTargetFrameworkAliasAsync(complexTargetFramework.TargetFrameworkMoniker);
 
                 if (string.IsNullOrEmpty(targetFrameworkAlias))
-                {
-                    return string.Empty;
-                }
-
-                if (targetFrameworkAlias.Contains("Unsupported"))
                 {
                     // The value on the TargetFrameworkMoniker is not on the supported list and we shouldn't try to parse it.
                     // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
@@ -183,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// Retrieves the target framework alias (i.e. net5.0) from the project's subscription service.
         /// </summary>
         /// <returns></returns>
-        private async Task<string> GetTargetFrameworkAlias(string targetFrameworkMoniker)
+        private async Task<string> GetTargetFrameworkAliasAsync(string targetFrameworkMoniker)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
             Assumes.Present(subscriptionService);
@@ -219,10 +214,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // The SdkSupportedTargetPlatformIdentifier rule stores the alias in the key value.
             if (sdkSupportedTargetPlatformIdentifierRuleSnapshot.Items.TryGetKey(targetPlatformIdentifier, out string targetPlatformAlias))
             {
-                return targetPlatformAlias;
+                return string.Empty;
             }
 
-            return string.Empty;
+            return targetPlatformAlias;
         }
 
         /// <summary>

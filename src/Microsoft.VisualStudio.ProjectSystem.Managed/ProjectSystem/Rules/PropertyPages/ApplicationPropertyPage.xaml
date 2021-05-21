@@ -104,7 +104,7 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <DynamicEnumProperty Name="TargetPlatform"
+  <DynamicEnumProperty Name="TargetPlatformIdentifier"
                 DisplayName="Target OS"
                 Description="Specifies the operating system that this project will target."
                 Category="General"
@@ -129,10 +129,10 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatform") "")</NameValuePair.Value>
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
-      <NameValuePair Name="DependsOn" Value="Application::TargetPlatform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
@@ -147,10 +147,10 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatform") "")</NameValuePair.Value>
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
-      <NameValuePair Name="DependsOn" Value="Application::TargetPlatform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
