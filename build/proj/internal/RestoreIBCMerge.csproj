@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.DotNet.IBCMerge" Condition="'$(UsingToolIbcOptimization)' == 'true'"/>
   </ItemGroup>
   <Import Project="..\..\import\Packages.targets" />
-  <!--TODO: Merged PIAs - evaluate the need of this once packages are in public feeds-->
+  <!--TODO: Merged PIAs - evaluate the need of this https://github.com/dotnet/project-system/issues/7191-->
   <PropertyGroup>
     <RestoreSources Condition="'$(UsingToolIbcOptimization)' == 'true'">
       $(RestoreSources);

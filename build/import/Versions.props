@@ -19,6 +19,7 @@
     <RoslynToolsModifyVsixManifestVersion>1.0.0-beta-62327-02</RoslynToolsModifyVsixManifestVersion>
     <RoslynToolsSignToolVersion>1.1.0-beta3.21260.1</RoslynToolsSignToolVersion>
     <RoslynDependenciesProjectSystemOptimizationDataVersion>2.6.0-beta1-62205-02</RoslynDependenciesProjectSystemOptimizationDataVersion>
+    <!--TODO: Merged PIAs - evaluate the need of this upgrade https://github.com/dotnet/project-system/issues/7191-->
     <MicrosoftDotNetIBCMergeVersion>5.0.7-beta.20159.1</MicrosoftDotNetIBCMergeVersion>
     <MicrosoftDiaSymReaderPdb2PdbVersion>1.1.0-beta1-62624-01</MicrosoftDiaSymReaderPdb2PdbVersion>
     <MicroBuildPluginsSwixBuildVersion>1.0.147</MicroBuildPluginsSwixBuildVersion>

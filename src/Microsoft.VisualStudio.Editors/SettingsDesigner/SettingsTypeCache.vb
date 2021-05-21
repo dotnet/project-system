@@ -50,6 +50,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("We really need a type resolution service or IVsHierarchy in order to do anything interesting!")
                 Throw New ArgumentNullException()
             End If
+
             _multiTargetService = New MultiTargetService(vsHierarchy, ItemId, False)
             _typeResolutionService = typeResolutionService
             _caseSensitive = caseSensitive

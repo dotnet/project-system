@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-
     <!-- Toolset -->
-    
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.6.81" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="5.0.1" />
     <PackageReference Update="RoslynTools.RepoToolset"                                                Version="$(RoslynToolsRepoToolsetVersion)" />
@@ -31,7 +29,6 @@
     <PackageReference Update="RoslynTools.SignTool"                                                   Version="$(RoslynToolsSignToolVersion)" />
     <PackageReference Update="XliffTasks"                                                             Version="1.0.0-beta.20574.1" />
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
-    <!--TODO: Merged PIAs - evaluate the need of this once packages are in public feeds-->
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.8.0-5.final" />

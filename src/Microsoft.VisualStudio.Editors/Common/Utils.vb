@@ -1346,6 +1346,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             ' AuthenticationService is present only in server frameworks. We want to test for presence of this type 
             ' before enabling server-specific functionality
             Return Not service.IsSupportedType(GetType(Web.ApplicationServices.AuthenticationService))
+
         End Function
 
 #Region "Wrapper that allows indirect calls into the static helpers in order to help unit test our code"
