@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.Mocks;
 using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Moq;
 using Xunit;
@@ -132,10 +133,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             var applyChangesToWorkspace = CreateInstance();
 
             var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
 
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
             {
-                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(), CancellationToken.None);
+                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot,new ContextState(), CancellationToken.None);
             });
         }
 
@@ -202,10 +204,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             await applyChangesToWorkspace.DisposeAsync();
 
             var update = Mock.Of<IProjectVersionedValue<IProjectSubscriptionUpdate>>();
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
 
             await Assert.ThrowsAsync<ObjectDisposedException>(() =>
             {
-                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(), CancellationToken.None);
+                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(), CancellationToken.None);
             });
         }
 
@@ -264,6 +267,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -275,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -325,6 +329,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(commandLineParser: parser, handlers: new[] { handler });
 
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(version: 2,
 @"{
    ""ProjectChanges"": {
@@ -337,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(2, result.version);
             Assert.True(result.state.IsActiveEditorContext);
@@ -407,6 +412,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler1, handler2 });
 
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -419,7 +425,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 }");
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
-                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
+                return applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), cancellationTokenSource.Token);
             });
 
             Assert.True(cancellationTokenSource.IsCancellationRequested);
@@ -462,6 +468,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var applyChangesToWorkspace = CreateInitializedInstance(handlers: new[] { handler });
 
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -477,7 +484,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         }
     }
 }");
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(isActiveEditorContext: true, isActiveConfiguration: false), CancellationToken.None);
 
             Assert.Equal(0, callCount);
         }
@@ -487,6 +494,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
             context.LastDesignTimeBuildSucceeded = true;
+
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
 
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
@@ -502,7 +511,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(), CancellationToken.None);
 
             Assert.False(context.LastDesignTimeBuildSucceeded);
         }
@@ -512,6 +521,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         {
             var applyChangesToWorkspace = CreateInitializedInstance(out var context);
 
+            var buildSnapshot = IProjectBuildSnapshotFactory.Create();
             var update = IProjectVersionedValueFactory.FromJson(
 @"{
    ""ProjectChanges"": {
@@ -526,7 +536,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     }
 }");
 
-            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, new ContextState(true, false), CancellationToken.None);
+            await applyChangesToWorkspace.ApplyProjectBuildAsync(update, buildSnapshot, new ContextState(true, false), CancellationToken.None);
 
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }

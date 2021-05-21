@@ -301,7 +301,7 @@
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Build" "GenerateDocumentationFile")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "GenerateDocumentationFile" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -381,7 +381,7 @@
                   Subtype="file">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Build" "SignAssembly")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "SignAssembly" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
     <StringProperty.DataSource>
@@ -398,7 +398,7 @@
                 Category="StrongNaming">
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Build" "SignAssembly")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "SignAssembly" true)</NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
     <BoolProperty.DataSource>

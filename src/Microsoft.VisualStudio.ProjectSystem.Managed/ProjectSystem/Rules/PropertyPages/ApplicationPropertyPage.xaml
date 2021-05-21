@@ -14,6 +14,9 @@
     <Category Name="Resources"
               DisplayName="Resources"
               Description="Resource settings for the application." />
+    <Category Name="Packaging"
+              DisplayName="Packaging"
+              Description="Packaging settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -59,7 +62,7 @@
                        MultipleValuesAllowed="False">
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>
+        <NameValuePair.Value>(not (has-evaluated-value "Application" "TargetMultipleFrameworks" true))</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
@@ -77,7 +80,7 @@
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Application" "TargetMultipleFrameworks")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "TargetMultipleFrameworks" true)</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
@@ -108,9 +111,14 @@
                        EnumProvider="StartupObjectsEnumProvider">
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (evaluated "Application" "OutputType") "Library")</NameValuePair.Value>
+        <NameValuePair.Value>(not (has-evaluated-value "Application" "OutputType" "Library"))</NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
 
   <StringProperty Name="AssemblyName"
@@ -146,7 +154,7 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -163,7 +171,7 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
     <EnumValue Name="DefaultManifest"
@@ -189,8 +197,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and 
-            (eq (evaluated "Application" "ApplicationManifestKind") "CustomManifest")
-            (eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest"))
+            (has-evaluated-value "Application" "ApplicationManifestKind" "CustomManifest")
+            (has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest"))
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
@@ -205,8 +213,14 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "ResourceFile")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "ResourceFile")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <!-- TODO Documentation issue for this property: https://github.com/MicrosoftDocs/visualstudio-docs/issues/6643 -->
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                Category="Packaging" />
 </Rule>

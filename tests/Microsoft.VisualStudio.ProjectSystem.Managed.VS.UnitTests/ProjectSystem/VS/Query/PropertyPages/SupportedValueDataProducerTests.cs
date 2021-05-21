@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class SupportedValueDataProducerTests
     {

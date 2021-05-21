@@ -682,8 +682,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal
                         .Add("Reference1", ImmutableStringDictionary<string>.EmptyOrdinal
                             .Add("CopyUpToDateMarker", "Reference1MarkerPath")
-                            .Add("ResolvedPath", "Reference1ResolvedPath")
-                            .Add("OriginalPath", "Reference1OriginalPath"))
+                            .Add("ResolvedPath", "C:\\Dev\\Solution\\Project\\Reference1ResolvedPath")
+                            .Add("OriginalPath", "..\\Project\\Reference1OriginalPath"))
                 }
             };
 
@@ -698,10 +698,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastItemsChangedAtUtc: itemChangeTime);
 
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\BuiltOutputPath1", outputTime);
-            _fileSystem.AddFile("Reference1ResolvedPath", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Reference1ResolvedPath", inputTime);
 
             await AssertNotUpToDateAsync(
-                $"Input 'Reference1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
+                $"Input 'C:\\Dev\\Solution\\Project\\Reference1ResolvedPath' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\BuiltOutputPath1' ({outputTime.ToLocalTime()}), not up to date.",
                 "Outputs");
         }
 

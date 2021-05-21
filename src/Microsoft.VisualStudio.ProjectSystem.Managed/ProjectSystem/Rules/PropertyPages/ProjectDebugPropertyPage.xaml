@@ -42,7 +42,7 @@
                   Description="The name and port number of the remote machine in 'name:port' format.">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Project" "RemoteDebugEnabled" true)</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
     </StringProperty.Metadata>
@@ -54,7 +54,7 @@
                        EnumProvider="AuthenticationModeEnumProvider">
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Project" "RemoteDebugEnabled")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Project" "RemoteDebugEnabled" true)</NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="DependsOn" Value="Project::RemoteDebugMachine" />
     </DynamicEnumProperty.Metadata>

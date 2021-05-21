@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class ProjectActionProviderTests
     {
@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             var affectedConfigs = new List<string>();
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",
@@ -113,8 +113,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             var affectedConfigs = new List<string>();
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",
@@ -185,8 +185,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
 
             var unrelatedPropertySet = false;
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
+            var queryCacheProvider = IProjectStateProviderFactory.Create(
+                IProjectStateFactory.Create(
                     projectConfigurations,
                     bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                         name: "MyPage",
