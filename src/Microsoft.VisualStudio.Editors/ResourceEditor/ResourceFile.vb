@@ -1130,7 +1130,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
 
-            Dim Task As Task = TaskSet.Tasks(TaskType)
+            Dim Task As TaskListItem = TaskSet.Tasks(TaskType)
             If Task Is Nothing Then
                 Return Nothing
             End If
@@ -1275,7 +1275,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Exit Sub 'Nothing to clear
             End If
 
-            Dim Task As Task = TaskSet.Tasks(TaskType)
+            Dim Task As TaskListItem = TaskSet.Tasks(TaskType)
             If Task IsNot Nothing Then
                 'Remove the task for this task type, if it exists.
                 If _errorListProvider IsNot Nothing Then
@@ -1318,7 +1318,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Remove all entries for this resource
                 For i As Integer = 0 To TaskSet.Tasks.Length - 1
-                    Dim Task As Task = TaskSet.Tasks(i)
+                    Dim Task As TaskListItem = TaskSet.Tasks(i)
                     If Task IsNot Nothing Then
                         If _errorListProvider IsNot Nothing Then
                             _errorListProvider.Tasks.Remove(Task)
