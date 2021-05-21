@@ -178,7 +178,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements IVsEditorFactory.CreateEditorInstance
 
             ' If we're using the new project properties editor, delegate to its editor factory
-            Dim shouldUseNewEditor As Boolean = UseNewEditor(Hierarchy)
+            Dim shouldUseNewEditor As Boolean = Hierarchy.IsCapabilityMatch("ProjectPropertiesEditor")
 
             Common.TelemetryLogger.LogEditorCreation(shouldUseNewEditor, FileName, PhysicalView)
 
@@ -226,11 +226,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End If
 
             Return hr
-        End Function
-
-        Private Shared Function UseNewEditor(vsHierarchy As IVsHierarchy) As Boolean
-            ' The new editor is only available for CPS-based C# projects
-            Return vsHierarchy.IsCapabilityMatch("CPS & CSharp")
         End Function
 
         Private Function GetNewEditorFactory() As IVsEditorFactory
