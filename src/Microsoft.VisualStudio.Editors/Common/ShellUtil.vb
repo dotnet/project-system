@@ -1,7 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Strict Off
-
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
@@ -165,7 +163,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Const ProjectsAndSolution As String = "ProjectsandSolution"
 
             Try
-                ProjAndSolutionProperties = DTE.get_Properties(EnvironmentCategory, ProjectsAndSolution)
+                ProjAndSolutionProperties = DTE.Properties(EnvironmentCategory, ProjectsAndSolution)
                 If ProjAndSolutionProperties IsNot Nothing Then
                     ShowValue = CBool(ProjAndSolutionProperties.Item("ShowAdvancedBuildConfigurations").Value)
                 Else

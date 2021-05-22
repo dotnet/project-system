@@ -5,16 +5,15 @@ using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Xunit;
-using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
+using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.COMAsyncServiceProvider.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
     public class VsContainedLanguageComponentsFactoryTests
     {
         private const string LanguageServiceId = "{517FA117-46EB-4402-A0D5-D4B7D89FCC33}";
-        private static readonly Type LanguageServiceType = typeof(LanguageService);
 
-        [Fact(Skip = "TODO: Merged PIAs  - uncomment this once IAsyncServiceProvider is updated")]
+        [Fact]
         public void GetContainedLanguageFactoryForFile_WhenIsDocumentInProjectFails_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(HResult.Fail);
@@ -26,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "TODO: Merged PIAs  - uncomment this once IAsyncServiceProvider is updated")]
+        [Fact]
         public void GetContainedLanguageFactoryForFile_WhenFilePathNotFound_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: false);
@@ -38,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Theory(Skip = "TODO: Merged PIAs  - uncomment this once IAsyncServiceProvider is updated")]
+        [Theory]
         [InlineData("")]
         [InlineData("ABC")]
         [InlineData("ABCD-ABC")]
@@ -54,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "TODO: Merged PIAs  - uncomment this once IAsyncServiceProvider is updated")]
+        [Fact]
         public void GetContainedLanguageFactoryForFile_WhenNoContainedLanguageFactory_ReturnE_FAIL()
         {
             var project = IVsProject_Factory.ImplementIsDocumentInProject(found: true);
@@ -67,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             AssertFailed(result, hierarchyResult, itemIdResult, containedLanguageFactoryResult);
         }
 
-        [Fact(Skip = "TODO: Merged PIAs  - uncomment this once IAsyncServiceProvider is updated")]
+        [Fact]
         public void GetContainedLanguageFactoryForFile_WhenReturnsResult_ReturnsS_OK()
         {
             var hierarchy = IVsHierarchyFactory.Create();
@@ -100,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             ProjectProperties? properties = null,
             IActiveWorkspaceProjectContextHost? projectContextHost = null)
         {
-            var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, LanguageServiceType);
+            var serviceProvider = IOleAsyncServiceProviderFactory.ImplementQueryServiceAsync(containedLanguageFactory, new Guid(LanguageServiceId));
 
             var projectVsServices = new IUnconfiguredProjectVsServicesMock();
             projectVsServices.ImplementVsHierarchy(hierarchy);
