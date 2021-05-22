@@ -91,7 +91,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 ' If we are right-clicking on a cell that isn't selected, then we should
                 ' clear the previous selection and select the new cell... (a'la Excel)
-                If e.Button = Windows.Forms.MouseButtons.Right Then
+                If e.Button = System.Windows.Forms.MouseButtons.Right Then
                     Try
                         If ht.Type = DataGridViewHitTestType.Cell Then
                             ' Select new cell 
@@ -124,7 +124,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 If IsCurrentCellInEditMode Then
                     Try
-                        If e.Button = Windows.Forms.MouseButtons.Left Then
+                        If e.Button = System.Windows.Forms.MouseButtons.Left Then
                             If ht.Type = DataGridViewHitTestType.None Then
                                 ' Clear the current cell so we make sure that we have validated it...
                                 CurrentCell = Nothing

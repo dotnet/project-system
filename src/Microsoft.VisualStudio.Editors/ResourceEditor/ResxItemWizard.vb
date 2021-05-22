@@ -1,6 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Strict On
+Option Strict Off
 Option Explicit On
 Option Compare Binary
 Imports System.Collections.Specialized
@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(projectItem IsNot Nothing, "Null projectItem?")
             If projectItem IsNot Nothing AndAlso _propertiesToSet IsNot Nothing Then
 
-                Dim fileName As String = projectItem.FileNames(1)
+                Dim fileName As String = projectItem.get_FileNames(1)
                 Debug.Assert(fileName IsNot Nothing AndAlso fileName.Length > 0, "bogus ProjectItem.FileNames(1) value?")
 
                 Dim isLocalizedResxFile As Boolean = ResourceEditorView.IsLocalizedResXFile(fileName)

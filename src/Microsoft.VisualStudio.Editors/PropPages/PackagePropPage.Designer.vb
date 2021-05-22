@@ -486,71 +486,71 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Friend WithEvents TableLayoutPanel As Windows.Forms.TableLayoutPanel
-        Friend WithEvents AssemblyVersionLabel As Windows.Forms.Label
-        Friend WithEvents AssemblyCompanyLabel As Windows.Forms.Label
-        Friend WithEvents CopyrightLabel As Windows.Forms.Label
-        Friend WithEvents Copyright As Windows.Forms.TextBox
-        Friend WithEvents DescriptionLabel As Windows.Forms.Label
-        Friend WithEvents Description As Windows.Forms.TextBox
-        Friend WithEvents PackageIcon As Windows.Forms.TextBox
-        Friend WithEvents PackageIconLabel As Windows.Forms.Label
-        Friend WithEvents PackageProjectUrl As Windows.Forms.TextBox
-        Friend WithEvents PackageId As Windows.Forms.TextBox
-        Friend WithEvents PackageIdLabel As Windows.Forms.Label
-        Friend WithEvents PackageVersion As Windows.Forms.TextBox
-        Friend WithEvents PackageVersionLabel As Windows.Forms.Label
+        Friend WithEvents TableLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents AssemblyVersionLabel As System.Windows.Forms.Label
+        Friend WithEvents AssemblyCompanyLabel As System.Windows.Forms.Label
+        Friend WithEvents CopyrightLabel As System.Windows.Forms.Label
+        Friend WithEvents Copyright As System.Windows.Forms.TextBox
+        Friend WithEvents DescriptionLabel As System.Windows.Forms.Label
+        Friend WithEvents Description As System.Windows.Forms.TextBox
+        Friend WithEvents PackageIcon As System.Windows.Forms.TextBox
+        Friend WithEvents PackageIconLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageProjectUrl As System.Windows.Forms.TextBox
+        Friend WithEvents PackageId As System.Windows.Forms.TextBox
+        Friend WithEvents PackageIdLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageVersion As System.Windows.Forms.TextBox
+        Friend WithEvents PackageVersionLabel As System.Windows.Forms.Label
 
-        Friend WithEvents AuthorsLabel As Windows.Forms.Label
-        Friend WithEvents PackageLicenseLabel As Windows.Forms.Label
-        Friend WithEvents RepositoryUrl As Windows.Forms.TextBox
-        Friend WithEvents RepositoryType As Windows.Forms.TextBox
-        Friend WithEvents PackageTagsLabel As Windows.Forms.Label
-        Friend WithEvents RepositoryUrlLabel As Windows.Forms.Label
-        Friend WithEvents PackageReleaseNotesLabel As Windows.Forms.Label
-        Friend WithEvents RepositoryTypeLabel As Windows.Forms.Label
-        Friend WithEvents PackageTags As Windows.Forms.TextBox
-        Friend WithEvents PackageReleaseNotes As Windows.Forms.TextBox
-        Friend WithEvents PackageProjectUrlLabel As Windows.Forms.Label
-        Friend WithEvents GeneratePackageOnBuild As Windows.Forms.CheckBox
-        Friend WithEvents Authors As Windows.Forms.TextBox
-        Friend WithEvents AssemblyCompany As Windows.Forms.TextBox
-        Friend WithEvents Product As Windows.Forms.TextBox
-        Friend WithEvents ProductLabel As Windows.Forms.Label
-        Friend WithEvents NeutralLanguageLabel As Windows.Forms.Label
-        Friend WithEvents AssemblyVersionLayoutPanel As Windows.Forms.TableLayoutPanel
-        Friend WithEvents AssemblyVersionRevisionTextBox As Windows.Forms.TextBox
-        Friend WithEvents AssemblyVersionBuildTextBox As Windows.Forms.TextBox
-        Friend WithEvents AssemblyVersionMinorTextBox As Windows.Forms.TextBox
-        Friend WithEvents AssemblyVersionMajorTextBox As Windows.Forms.TextBox
-        Friend WithEvents NeutralLanguageComboBox As Windows.Forms.ComboBox
-        Friend WithEvents PackageRequireLicenseAcceptance As Windows.Forms.CheckBox
-        Friend WithEvents FileVersionLayoutPanel As Windows.Forms.TableLayoutPanel
-        Friend WithEvents FileVersionRevisionTextBox As Windows.Forms.TextBox
-        Friend WithEvents FileVersionBuildTextBox As Windows.Forms.TextBox
-        Friend WithEvents FileVersionMinorTextBox As Windows.Forms.TextBox
-        Friend WithEvents FileVersionMajorTextBox As Windows.Forms.TextBox
-        Friend WithEvents AssemblyFileVersionLabel As Windows.Forms.Label
+        Friend WithEvents AuthorsLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageLicenseLabel As System.Windows.Forms.Label
+        Friend WithEvents RepositoryUrl As System.Windows.Forms.TextBox
+        Friend WithEvents RepositoryType As System.Windows.Forms.TextBox
+        Friend WithEvents PackageTagsLabel As System.Windows.Forms.Label
+        Friend WithEvents RepositoryUrlLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageReleaseNotesLabel As System.Windows.Forms.Label
+        Friend WithEvents RepositoryTypeLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageTags As System.Windows.Forms.TextBox
+        Friend WithEvents PackageReleaseNotes As System.Windows.Forms.TextBox
+        Friend WithEvents PackageProjectUrlLabel As System.Windows.Forms.Label
+        Friend WithEvents GeneratePackageOnBuild As System.Windows.Forms.CheckBox
+        Friend WithEvents Authors As System.Windows.Forms.TextBox
+        Friend WithEvents AssemblyCompany As System.Windows.Forms.TextBox
+        Friend WithEvents Product As System.Windows.Forms.TextBox
+        Friend WithEvents ProductLabel As System.Windows.Forms.Label
+        Friend WithEvents NeutralLanguageLabel As System.Windows.Forms.Label
+        Friend WithEvents AssemblyVersionLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents AssemblyVersionRevisionTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AssemblyVersionBuildTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AssemblyVersionMinorTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AssemblyVersionMajorTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents NeutralLanguageComboBox As System.Windows.Forms.ComboBox
+        Friend WithEvents PackageRequireLicenseAcceptance As System.Windows.Forms.CheckBox
+        Friend WithEvents FileVersionLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents FileVersionRevisionTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents FileVersionBuildTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents FileVersionMinorTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents FileVersionMajorTextBox As System.Windows.Forms.TextBox
+        Friend WithEvents AssemblyFileVersionLabel As System.Windows.Forms.Label
         Friend WithEvents LicenseLineLabel As System.Windows.Forms.Label
         Friend WithEvents LicenseUrlWarning As FixedWidthTextBox
 
-        Friend WithEvents LicenseLayoutPanel As Windows.Forms.TableLayoutPanel
-        Friend WithEvents ExpressionLayoutPanel As Windows.Forms.TableLayoutPanel
-        Friend WithEvents LicenseFileLayoutPanel As Windows.Forms.TableLayoutPanel
+        Friend WithEvents LicenseLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents ExpressionLayoutPanel As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents LicenseFileLayoutPanel As System.Windows.Forms.TableLayoutPanel
 
-        Friend WithEvents IconFileLayoutPanel As Windows.Forms.TableLayoutPanel
+        Friend WithEvents IconFileLayoutPanel As System.Windows.Forms.TableLayoutPanel
 
-        Friend WithEvents LicenseFileRadioButton As Windows.Forms.RadioButton
-        Friend WithEvents LicenseExpressionRadioButton As Windows.Forms.RadioButton
+        Friend WithEvents LicenseFileRadioButton As System.Windows.Forms.RadioButton
+        Friend WithEvents LicenseExpressionRadioButton As System.Windows.Forms.RadioButton
 
-        Friend WithEvents ExpressionLabel As Windows.Forms.Label
-        Friend WithEvents PackageLicenseExpression As Windows.Forms.TextBox
-        Friend WithEvents OrLabel As Windows.Forms.Label
-        Friend WithEvents FileLabel As Windows.Forms.Label
-        Friend WithEvents LicenseFileNameTextBox As Windows.Forms.TextBox
+        Friend WithEvents ExpressionLabel As System.Windows.Forms.Label
+        Friend WithEvents PackageLicenseExpression As System.Windows.Forms.TextBox
+        Friend WithEvents OrLabel As System.Windows.Forms.Label
+        Friend WithEvents FileLabel As System.Windows.Forms.Label
+        Friend WithEvents LicenseFileNameTextBox As System.Windows.Forms.TextBox
         Friend WithEvents LicenseBrowseButton As System.Windows.Forms.Button
-        Friend WithEvents IconFileBrowseButton As Windows.Forms.Button
-        Friend WithEvents PackageIconLineLabel As Windows.Forms.Label
+        Friend WithEvents IconFileBrowseButton As System.Windows.Forms.Button
+        Friend WithEvents PackageIconLineLabel As System.Windows.Forms.Label
         Friend WithEvents PackageIconUrlWarning As FixedWidthTextBox
     End Class
 

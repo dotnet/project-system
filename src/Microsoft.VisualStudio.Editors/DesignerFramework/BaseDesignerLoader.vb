@@ -1,6 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Option Strict On
+Option Strict Off
 Option Explicit On
 
 Imports System.ComponentModel.Design
@@ -448,7 +448,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             _punkDocData = punkDocData
 
             'Get the WindowEvents object
-            m_WindowEvents = ProjectItem.DTE.Events.WindowEvents
+            m_WindowEvents = ProjectItem.DTE.Events.get_WindowEvents
             Debug.Assert(m_WindowEvents IsNot Nothing)
 
             ' If a random editor opens the file and locks it using an incompatible buffer, we need 

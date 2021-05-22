@@ -1,7 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Option Explicit On
-Option Strict On
+Option Strict Off
 Option Compare Binary
 
 Imports System.ComponentModel
@@ -298,7 +298,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim ProjectItem As EnvDTE.ProjectItem = TryCast(GetService(GetType(EnvDTE.ProjectItem)), EnvDTE.ProjectItem)
                 If ProjectItem IsNot Nothing Then
                     'FileNames is 1-indexed
-                    Return ProjectItem.FileNames(1)
+                    Return ProjectItem.get_FileNames(1)
                 Else
                     Debug.Fail("Couldn't find ExtensibilityObject as service (should have been added by ResourceEditorDesignerLoader")
                 End If
@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 _view.CreateControl()
                             End If
 
-                            _view.BeginInvoke(New Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
+                            _view.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
                         End If
                     Else
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")

@@ -202,7 +202,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Friend WithEvents lnkLabel As Windows.Forms.LinkLabel
+        Friend WithEvents lnkLabel As System.Windows.Forms.LinkLabel
     End Class
 
 End Namespace

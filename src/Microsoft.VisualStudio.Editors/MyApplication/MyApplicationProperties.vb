@@ -1,5 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+Option Strict Off
+
 Imports System.ComponentModel
 Imports System.IO
 Imports System.Runtime.InteropServices
@@ -259,7 +261,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             'BEGIN Beta 1 Backwards compatibility
             If Not File.Exists(MyAppFileNameWithPath) Then
-                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.FileNames(1), Const_MyApplicationFileName_B1Compat)
+                Dim FileNameCompat As String = Path.Combine(ProjectDesignerProjectItem.get_FileNames(1), Const_MyApplicationFileName_B1Compat)
                 If File.Exists(FileNameCompat) Then
                     'The new version of the filename does not exist, but the old one does - use it instead
                     _myAppFileName = Const_MyApplicationFileName_B1Compat
@@ -648,7 +650,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             'Create the DocData for the file
             If _myAppDocData Is Nothing Then
                 Debug.Assert(_docDataService Is Nothing)
-                _myAppDocData = New DocData(ServiceProvider, Item.FileNames(1))
+                _myAppDocData = New DocData(ServiceProvider, Item.get_FileNames(1))
 
                 Dim ItemId As UInteger = ItemIdOfProjectItem(_projectHierarchy, Item)
                 _docDataService = New DesignerDocDataService(ServiceProvider, _projectHierarchy, ItemId, MyAppDocData)
@@ -659,7 +661,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' Returns the full path/filename of the .myapp file
         ''' </summary>
         Private Function MyAppFileNameWithPath() As String
-            Return Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
+            Return Path.Combine(ProjectDesignerProjectItem.get_FileNames(1), _myAppFileName)
         End Function
 
         ''' <summary>
@@ -669,7 +671,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 'First see if it is already in the project
                 For Each ProjectItem As ProjectItem In ProjectDesignerProjectItem.ProjectItems
-                    If ProjectItem.FileNames(1).Equals(MyAppFileNameWithPath, StringComparison.OrdinalIgnoreCase) Then
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+                    If ProjectItem.get_FileNames(1).Equals(MyAppFileNameWithPath, StringComparison.OrdinalIgnoreCase) Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         Return ProjectItem
                     End If
                 Next
@@ -915,7 +919,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             'Add or navigate to the default event handler
             Dim DefaultEventHandler As CodeFunction
-            If MyEventsProjectItem.IsOpen AndAlso MyEventsProjectItem.Document IsNot Nothing Then
+            If MyEventsProjectItem.get_IsOpen AndAlso MyEventsProjectItem.Document IsNot Nothing Then
                 'Document is already open.  Don't change anything and don't do any navigation.  Just activate it.
                 Debug.Assert(Not FileIsNew)
                 MyEventsProjectItem.Document.Activate()
