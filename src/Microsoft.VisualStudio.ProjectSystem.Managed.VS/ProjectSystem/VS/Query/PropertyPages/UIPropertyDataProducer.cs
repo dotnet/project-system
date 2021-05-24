@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
@@ -130,7 +131,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             IQueryExecutionContext queryExecutionContext,
             EntityIdentity requestId,
             IProjectService2 projectService,
-            IProjectStateProvider projectStateProvider,
             QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             string propertyName,
@@ -146,9 +146,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
                     && property.Visible)
                 {
-                    IProjectState cache = projectStateProvider.CreateState(project);
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, cache, propertiesContext, property, index, requestedProperties);
-                    return propertyValue;
+                    IProjectState? projectState = null;
+                    if (StringComparers.ItemTypes.Equals(propertiesContext.ItemType, "LaunchProfile"))
+                    {
+                        if (project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
+                            && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker launchSettingsTracker)
+                        {
+                            projectState = new LaunchProfileProjectState(project, launchSettingsProvider, launchSettingsTracker);
+                        }
+                    }
+                    else if (propertiesContext.IsProjectFile)
+                    {
+                        projectState = new PropertyPageProjectState(project);
+                    }
+
+                    if (projectState is not null)
+                    {
+                        IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, requestId, projectState, propertiesContext, property, index, requestedProperties);
+                        return propertyValue;
+                    }
                 }
             }
 
