@@ -23,6 +23,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task<ILaunchProfile?> AddLaunchProfileAsync(string commandName, string? newProfileName, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             newProfileName ??= await GetNewProfileNameAsync(cancellationToken);
 
             await _launchSettingsProvider.AddOrUpdateProfileAsync(
@@ -38,6 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task<ILaunchProfile?> DuplicateLaunchProfileAsync(string currentProfileName, string? newProfileName, string? newProfileCommandName, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
             Assumes.NotNull(launchSettings);
 
@@ -61,11 +65,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public Task RemoveLaunchProfileAsync(string profileName, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             return _launchSettingsProvider.RemoveProfileAsync(profileName);
         }
 
         public async Task<ILaunchProfile?> RenameLaunchProfileAsync(string currentProfileName, string newProfileName, CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
             Assumes.NotNull(launchSettings);
 
