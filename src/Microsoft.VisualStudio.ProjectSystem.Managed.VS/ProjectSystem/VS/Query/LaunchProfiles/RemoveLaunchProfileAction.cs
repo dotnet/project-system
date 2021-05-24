@@ -20,9 +20,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _executableStep = executableStep;
         }
 
-        protected override Task ExecuteAsync(ILaunchSettingsActionService launchSettingsActionService, CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(IEntityValue projectEntity, ILaunchSettingsActionService launchSettingsActionService, CancellationToken cancellationToken)
         {
-            return launchSettingsActionService.RemoveLaunchProfileAsync(_executableStep.ProfileName, cancellationToken);
+            await launchSettingsActionService.RemoveLaunchProfileAsync(_executableStep.ProfileName, cancellationToken);
+
+            RemovedLaunchProfiles.Add((projectEntity, _executableStep.ProfileName));
         }
     }
 }
