@@ -77,6 +77,16 @@
         <target state="translated">optimiser;optimisation</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="new">Produce a reference assembly containing the public API of the project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="new">Reference assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
         <target state="translated">Signe l'assembly de sortie pour lui donner un nom fort.</target>
