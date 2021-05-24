@@ -24,10 +24,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
 
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project
+                && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsActionService>() is ILaunchSettingsActionService launchSettingsActionService
                 && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
                 && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker tracker)
             {
-                await ExecuteAsync(launchSettingsProvider, result.Request.QueryExecutionContext.CancellationToken);
+                await ExecuteAsync(launchSettingsActionService, result.Request.QueryExecutionContext.CancellationToken);
 
                 if (launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
                 {
@@ -38,6 +39,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             await ResultReceiver.ReceiveResultAsync(result);
         }
 
-        protected abstract Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider, CancellationToken cancellationToken);
+        protected abstract Task ExecuteAsync(ILaunchSettingsActionService launchSettingsProvider, CancellationToken cancellationToken);
     }
 }

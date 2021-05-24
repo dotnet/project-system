@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     [Export(typeof(ILaunchSettingsActionService))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]

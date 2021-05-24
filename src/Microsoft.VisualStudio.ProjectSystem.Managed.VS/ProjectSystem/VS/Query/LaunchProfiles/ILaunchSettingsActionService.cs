@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.LaunchProfiles
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Interface to separate the "business logic" of query actions related to launch
