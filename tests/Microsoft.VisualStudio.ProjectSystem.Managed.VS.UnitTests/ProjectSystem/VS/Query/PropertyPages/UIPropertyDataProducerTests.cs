@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 new TestProperty { Name = "Alpha" },
                 new TestProperty { Name = "Beta" },
-                new TestProperty { Name = "Gamma" },
+                new TestProperty { Name = "Gamma", Visible = false }, // We create properties even if they will be invisible
             });
             rule.EndInit();
 
@@ -280,6 +280,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "true or false", actual: result.VisibilityCondition);
+        }
+
+        [Fact]
+        public void WhenAPropertyIsInvisible_TheVisibilityConditionIsIgnored()
+        {
+            var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeVisibilityCondition: true);
+
+            var context = IQueryExecutionContextFactory.Create();
+            var id = new EntityIdentity(key: "PropertyName", value: "A");
+            var cache = IProjectStateFactory.Create();
+            var property = new TestProperty
+            {
+                Visible = false,
+                Metadata = new()
+                {
+                    new() { Name = "VisibilityCondition", Value = "true" }
+                }
+            };
+            InitializeFakeRuleForProperty(property);
+
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
+
+            Assert.Equal(expected: "false", actual: result.VisibilityCondition);
         }
 
         /// <remarks>

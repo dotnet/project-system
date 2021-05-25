@@ -106,8 +106,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.VisibilityCondition)
             {
-                string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
-                newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
+                if (!property.Visible)
+                {
+                    newUIProperty.VisibilityCondition = "false";
+                }
+                else
+                {
+                    string? visibilityCondition = property.GetMetadataValueOrNull("VisibilityCondition");
+                    newUIProperty.VisibilityCondition = visibilityCondition ?? string.Empty;
+                }
             }
 
             ((IEntityValueFromProvider)newUIProperty).ProviderState = new PropertyProviderState(cache, property.ContainingRule, propertiesContext, property.Name);
@@ -119,11 +126,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
-                if (property.Visible)
-                {
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
-                    yield return propertyValue;
-                }
+                IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
+                yield return propertyValue;
             }
         }
 
@@ -143,8 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
                 if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                     && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                    && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index)
-                    && property.Visible)
+                    && rule.TryGetPropertyAndIndex(propertyName, out BaseProperty? property, out int index))
                 {
                     IProjectState? projectState = null;
                     if (StringComparers.ItemTypes.Equals(propertiesContext.ItemType, "LaunchProfile"))
