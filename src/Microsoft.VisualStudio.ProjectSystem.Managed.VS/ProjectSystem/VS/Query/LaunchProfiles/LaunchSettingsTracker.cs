@@ -17,6 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// and <see cref="UnloadAsync"/> may be called multiple times as the project is
     /// loaded, unloaded, and as the capabilities change.
     /// </remarks>
+    [Export(typeof(LaunchSettingsTracker))]
     [Export(ExportContractNames.Scopes.UnconfiguredProject, typeof(IProjectDynamicLoadComponent))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     internal class LaunchSettingsTracker : IProjectDynamicLoadComponent

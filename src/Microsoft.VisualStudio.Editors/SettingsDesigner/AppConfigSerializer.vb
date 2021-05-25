@@ -151,9 +151,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' CONSIDER: Include the name of the settings that were added...
             If ((objectDirty And DirtyState.ValueAdded) = DirtyState.ValueAdded) AndAlso mergeMode = MergeValueMode.Prompt Then
                 If UIService IsNot Nothing Then
-                    UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
+                    UIService.ShowMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.OK)
                 Else
-                    Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), Windows.Forms.MessageBoxButtons.OK)
+                    System.Windows.Forms.MessageBox.Show(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_NewValuesAdded, DesignerFramework.DesignUtil.GetDefaultCaption(VBPackage.Instance), System.Windows.Forms.MessageBoxButtons.OK)
                 End If
             End If
 

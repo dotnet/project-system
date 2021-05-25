@@ -669,7 +669,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Get
                 'First see if it is already in the project
                 For Each ProjectItem As ProjectItem In ProjectDesignerProjectItem.ProjectItems
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     If ProjectItem.FileNames(1).Equals(MyAppFileNameWithPath, StringComparison.OrdinalIgnoreCase) Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                         Return ProjectItem
                     End If
                 Next

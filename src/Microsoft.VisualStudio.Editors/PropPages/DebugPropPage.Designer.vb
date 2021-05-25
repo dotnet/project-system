@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Friend WithEvents startOptionsTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents enableDebuggersTableLayoutPanel As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents StartOptionsLabelLine As System.Windows.Forms.Label
-        Friend WithEvents EnableSQLServerDebugging As Windows.Forms.CheckBox
+        Friend WithEvents EnableSQLServerDebugging As System.Windows.Forms.CheckBox
         Private _components As System.ComponentModel.IContainer
 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)

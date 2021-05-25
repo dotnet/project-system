@@ -274,6 +274,17 @@
   </StringProperty>
 
   <!-- TODO create fwlink for this HelpUrl -->
+  <BoolProperty Name="ProduceReferenceAssembly"
+                DisplayName="Reference assembly"
+                Description="Produce a reference assembly containing the public API of the project."
+                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies"
+                Category="Output">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <!-- TODO create fwlink for this HelpUrl -->
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Documentation file"
                 Description="Generate a file containing API documentation."

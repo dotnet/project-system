@@ -251,7 +251,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.guidPortSupplier = info.PortSupplierGuid;
             debugInfo.bstrPortName = info.PortName;
             debugInfo.bstrOptions = info.Options;
-            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? 1 : 0;
+            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? true : false;
             debugInfo.dwProcessId = unchecked((uint)info.ProcessId);
             debugInfo.pUnknown = info.Unknown;
             debugInfo.guidProcessLanguage = info.ProcessLanguageGuid;
@@ -262,9 +262,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 var processStartupInfo = new VsDebugStartupInfo
                 {
-                    hStdInput = unchecked((uint)info.StandardInputHandle.ToInt32()),
-                    hStdOutput = unchecked((uint)info.StandardOutputHandle.ToInt32()),
-                    hStdError = unchecked((uint)info.StandardErrorHandle.ToInt32()),
+                    hStdInput = unchecked(info.StandardInputHandle),
+                    hStdOutput = unchecked(info.StandardOutputHandle),
+                    hStdError = unchecked(info.StandardErrorHandle),
                     flags = (uint)__DSI_FLAGS.DSI_USESTDHANDLES,
                 };
                 debugInfo.pStartupInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(processStartupInfo));

@@ -16,13 +16,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IProjectStateProvider _projectStateProvider;
 
-        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService, IProjectStateProvider projectStateProvider)
+        public LaunchProfileByIdDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectService2 projectService)
         {
             _properties = properties;
             _projectService = projectService;
-            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
@@ -40,9 +38,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             if (_projectService.GetLoadedProject(propertiesContext.File) is UnconfiguredProject project
                 && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
+                && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker launchSettingsTracker
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && await launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite) is ILaunchSettings launchSettings)
             {
+                if (launchSettings is IVersionedLaunchSettings versionedLaunchSettings)
+                {
+                    queryExecutionContext.ReportInputDataVersion(launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+                }
+
+                IProjectState projectState = new LaunchProfileProjectState(project, launchSettingsProvider, launchSettingsTracker);
+
                 foreach ((int index, ProjectSystem.Debug.ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
                 {
                     if (StringComparers.LaunchProfileNames.Equals(profile.Name, propertiesContext.ItemName)
@@ -54,8 +60,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 && commandNameObj is string commandName
                                 && StringComparers.LaunchProfileCommandNames.Equals(commandName, profile.CommandName))
                             {
-                                IProjectState projectState = _projectStateProvider.CreateState(project);
-
                                 IEntityValue launchProfileValue = LaunchProfileDataProducer.CreateLaunchProfileValue(
                                     queryExecutionContext,
                                     id,

@@ -80,7 +80,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project)
             {
-                queryExecutionContext.ReportProjectVersion(project);
+                // TODO: Update this to match what we do in IProjectState.GetMetadataVersionAsync
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
                 if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                     && projectCatalog.GetSchema(propertyPageName) is Rule rule)

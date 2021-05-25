@@ -18,12 +18,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class LaunchProfileFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly ILaunchProfilePropertiesAvailableStatus _properties;
-        private readonly IProjectStateProvider _projectStateProvider;
 
-        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties, IProjectStateProvider projectStateProvider)
+        public LaunchProfileFromProjectDataProducer(ILaunchProfilePropertiesAvailableStatus properties)
         {
             _properties = properties;
-            _projectStateProvider = projectStateProvider;
         }
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
@@ -34,6 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private async Task<IEnumerable<IEntityValue>> CreateLaunchProfileValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject project)
         {
             if (project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
+                && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker launchSettingsTracker
                 && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
                 && await launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite) is ILaunchSettings launchSettings)
             {
@@ -44,8 +43,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createLaunchProfileValues()
             {
-                IProjectState projectState = _projectStateProvider.CreateState(project);
-
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
                 {
@@ -55,6 +52,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         debugRules[commandName] = rule;
                     }
                 }
+
+                if (launchSettings is IVersionedLaunchSettings versionedLaunchSettings)
+                {
+                    queryExecutionContext.ReportInputDataVersion(launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+                }
+
+                IProjectState projectState = new LaunchProfileProjectState(project, launchSettingsProvider, launchSettingsTracker);
 
                 foreach ((int index, ProjectSystem.Debug.ILaunchProfile profile) in launchSettings.Profiles.WithIndices())
                 {

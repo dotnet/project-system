@@ -26,14 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class LaunchProfileActionProvider : IQueryActionProvider
     {
-        private readonly IProjectStateProvider _projectStateProvider;
-
-        [ImportingConstructor]
-        public LaunchProfileActionProvider(IProjectStateProvider projectStateProvider)
-        {
-            _projectStateProvider = projectStateProvider;
-        }
-
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
         {
             Requires.NotNull(executableStep, nameof(executableStep));

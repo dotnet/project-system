@@ -2833,7 +2833,9 @@ NextControl:
 
             'First see if it is already in the project
             For Each ProjectItem As EnvDTE.ProjectItem In ProjectItems
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                 If ProjectItem.FileNames(1).Equals(FileName, StringComparison.OrdinalIgnoreCase) Then
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     Return ProjectItem
                 End If
             Next

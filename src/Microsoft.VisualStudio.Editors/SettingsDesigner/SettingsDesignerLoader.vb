@@ -479,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                     cfgHelper.GetSectionName(ProjectUtils.FullyQualifiedClassName(GeneratedClassNamespace(True), GeneratedClassName), String.Empty),
                                                     _appConfigDocData,
                                                     AppConfigSerializer.MergeValueMode.Prompt,
-                                                    CType(GetService(GetType(Windows.Forms.Design.IUIService)), Windows.Forms.Design.IUIService))
+                                                    CType(GetService(GetType(System.Windows.Forms.Design.IUIService)), System.Windows.Forms.Design.IUIService))
                 If objectDirty <> AppConfigSerializer.DirtyState.NoChange Then
                     ' Set flag if we make changes to the settings object during load that should
                     ' set the docdata to dirty immediately after we have loaded.
