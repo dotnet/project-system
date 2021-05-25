@@ -264,8 +264,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Function
 
             ''' <summary>
-            ''' This method does the actual deserialization work, based on the given
-            '''   arguments.
+            ''' This method does the actual deserialization work, based on the given arguments.
             ''' </summary>
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
             Private Function DeserializeHelper(Container As IContainer) As ICollection

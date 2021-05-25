@@ -706,21 +706,21 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         End Class
 #End Region
 
-        Public Class SerializationProvider
+        'Public Class SerializationProvider
 
-            Public Shared Sub Serialize(Of T)(stream As Stream, value As T)
-                Dim writer As New StreamWriter(stream)
-                writer.Write(JsonSerializer.Serialize(value))
-                writer.Flush()
-                stream.Position = 0
-            End Sub
+        '    Public Shared Sub Serialize(Of T)(stream As Stream, value As T)
+        '        Dim writer As New StreamWriter(stream)
+        '        writer.Write(JsonSerializer.Serialize(value))
+        '        writer.Flush()
+        '        stream.Position = 0
+        '    End Sub
 
-            Public Shared Function Deserialize(Of T)(stream As Stream) As T
-                Dim streamAsString = New StreamReader(stream).ReadToEnd()
-                Return JsonSerializer.Deserialize(Of T)(streamAsString)
-            End Function
+        '    Public Shared Function Deserialize(Of T)(stream As Stream) As T
+        '        Dim streamAsString = New StreamReader(stream).ReadToEnd()
+        '        Return JsonSerializer.Deserialize(Of T)(streamAsString)
+        '    End Function
 
-        End Class
+        'End Class
 
     End Module
 End Namespace
