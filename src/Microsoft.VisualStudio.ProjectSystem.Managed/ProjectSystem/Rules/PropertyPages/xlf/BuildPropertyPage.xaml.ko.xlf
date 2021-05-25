@@ -77,6 +77,16 @@
         <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="new">Produce a reference assembly containing the public API of the project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="new">Reference assembly</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
         <source>Sign the output assembly to give it a strong name.</source>
         <target state="translated">출력 어셈블리에 서명하여 강력한 이름을 지정합니다.</target>
