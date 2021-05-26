@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
                 {
                     _nuGetPackageFoldersString = value;
-                    _nuGetPackageFolders = value.Split(Delimiter.Semicolon);
+                    _nuGetPackageFolders = value.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
                 }
             }
         }
