@@ -20,13 +20,5 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         {
             return Environment.ExpandEnvironmentVariables(name);
         }
-
-        public bool Is64BitOperatingSystem
-        {
-            get
-            {
-                return Environment.Is64BitOperatingSystem;
-            }
-        }
     }
 }
