@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return false;
             }
 
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, _setValue, null);
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, _setValue);
 
             return true;
         }
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return false;
             }
 
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, _unsetValue, null);
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, _unsetValue);
 
             return true;
         }
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             var projectItems = await _referenceHandler.GetUnresolvedReferencesAsync(_selectedConfiguredProject);
 
             var item = projectItems
-                .FirstOrDefault(c => c.EvaluatedInclude == _itemSpecification);
+                .FirstOrDefault(c => string.CompareOrdinal(c.EvaluatedInclude, _itemSpecification) == 0);
             return item;
         }
     }
