@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         internal IProjectSystemUpdateReferenceOperation CreateUnSetAttributeCommand(ConfiguredProject selectedConfiguredProject,
             ProjectSystemReferenceUpdate referenceUpdate)
         {
-            return new UnSetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
+            return new UnsetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
         }
 
         internal IProjectSystemUpdateReferenceOperation? CreateRemoveReferenceCommand(ConfiguredProject selectedConfiguredProject,
