@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     [Export(typeof(IEnvironmentHelper))]
     internal class EnvironmentHelper : IEnvironmentHelper
     {
-        public string GetEnvironmentVariable(string name)
+        public string? GetEnvironmentVariable(string name)
         {
             return Environment.GetEnvironmentVariable(name);
         }

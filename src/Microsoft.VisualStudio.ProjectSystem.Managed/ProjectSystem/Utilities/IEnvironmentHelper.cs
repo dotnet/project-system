@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IEnvironmentHelper
     {
-        string GetEnvironmentVariable(string name);
+        string? GetEnvironmentVariable(string name);
 
         string ExpandEnvironmentVariables(string name);
 
