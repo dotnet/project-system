@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
     [Export(typeof(IEnvironmentHelper))]
     internal class EnvironmentHelper : IEnvironmentHelper
     {
-        public string GetEnvironmentVariable(string name)
+        public string? GetEnvironmentVariable(string name)
         {
             return Environment.GetEnvironmentVariable(name);
         }
@@ -19,14 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
         public string ExpandEnvironmentVariables(string name)
         {
             return Environment.ExpandEnvironmentVariables(name);
-        }
-
-        public bool Is64BitOperatingSystem
-        {
-            get
-            {
-                return Environment.Is64BitOperatingSystem;
-            }
         }
     }
 }

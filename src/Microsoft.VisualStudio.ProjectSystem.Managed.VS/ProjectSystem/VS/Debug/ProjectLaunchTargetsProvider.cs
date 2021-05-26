@@ -521,9 +521,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         private string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
         {
-            string pathEnv = _environment.GetEnvironmentVariable("Path");
+            string? pathEnv = _environment.GetEnvironmentVariable("Path");
 
-            if (string.IsNullOrEmpty(pathEnv))
+            if (Strings.IsNullOrEmpty(pathEnv))
             {
                 return null;
             }
