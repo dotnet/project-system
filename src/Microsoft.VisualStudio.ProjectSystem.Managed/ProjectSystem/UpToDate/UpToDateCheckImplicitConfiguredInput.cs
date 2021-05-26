@@ -212,7 +212,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
+            string? projectExtensionsPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, null);
+            string? nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, null);
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
+
+            // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
+            // and exclude them from the set of inputs we scan when an up-to-date query is made.
+            //
+            // For a .NET 5 xUnit project, this cuts the number of file timestamps checked from 187 to 17. Most of those are
+            // reference assemblies for the framework, which clearly aren't expected to change over time.
+            var projectFileClassifier = new ProjectFileClassifier
+            {
+                NuGetPackageFolders = nuGetPackageFolders ?? "",
+                ProjectExtensionsPath = projectExtensionsPath
+            };
 
             // The first item in this semicolon-separated list of project files will always be the one
             // with the newest timestamp. As we are only interested in timestamps on these files, we can
@@ -222,7 +235,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ImmutableArray<string> resolvedAnalyzerReferencePaths;
             if (jointRuleUpdate.ProjectChanges.TryGetValue(ResolvedAnalyzerReference.SchemaName, out IProjectChangeDescription change) && change.Difference.AnyChanges)
             {
-                resolvedAnalyzerReferencePaths = change.After.Items.Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty]).Distinct(StringComparers.Paths).ToImmutableArray();
+                resolvedAnalyzerReferencePaths = change.After.Items
+                    .Select(item => item.Value[ResolvedAnalyzerReference.ResolvedPathProperty])
+                    .Where(path => !projectFileClassifier.IsNonModifiable(path))
+                    .Distinct(StringComparers.Paths)
+                    .ToImmutableArray();
             }
             else
             {
@@ -276,7 +293,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     string resolvedPath = itemMetadata[ResolvedCompilationReference.ResolvedPathProperty];
                     string copyReferenceInput = itemMetadata[CopyUpToDateMarker.SchemaName];
 
-                    resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
+                    if (!projectFileClassifier.IsNonModifiable(resolvedPath))
+                    {
+                        resolvedCompilationReferencePathsBuilder.Add(resolvedPath);
+                    }
 
                     if (!string.IsNullOrWhiteSpace(originalPath))
                     {
