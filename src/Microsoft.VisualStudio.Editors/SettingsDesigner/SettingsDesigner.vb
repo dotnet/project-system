@@ -224,7 +224,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 Debug.Fail("Can't get a class name from an empty path!")
                 Return ""
             End If
-            Return IO.Path.GetFileNameWithoutExtension(PathName)
+            Return System.IO.Path.GetFileNameWithoutExtension(PathName)
         End Function
 
         ''' <summary>
@@ -276,8 +276,8 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim hr As Integer = SpecialProjectItems.GetFile(__PSFFILEID2.PSFFILEID_AppSettings, CUInt(__PSFFLAGS.PSFF_FullPath), DefaultSettingsItemId, DefaultSettingsFilePath)
             If NativeMethods.Succeeded(hr) Then
                 If DefaultSettingsItemId <> VSITEMID.NIL Then
-                    Dim NormalizedDefaultSettingFilePath As String = IO.Path.GetFullPath(DefaultSettingsFilePath)
-                    Dim NormalizedSettingFilePath As String = IO.Path.GetFullPath(FilePath)
+                    Dim NormalizedDefaultSettingFilePath As String = System.IO.Path.GetFullPath(DefaultSettingsFilePath)
+                    Dim NormalizedSettingFilePath As String = System.IO.Path.GetFullPath(FilePath)
                     Return String.Equals(NormalizedDefaultSettingFilePath, NormalizedSettingFilePath, StringComparison.OrdinalIgnoreCase)
                 End If
             Else
@@ -333,7 +333,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Dim path As String
                     path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoaming, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
-                        path = IO.Path.GetDirectoryName(path)
+                        path = System.IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...
                         If Not result.Contains(path) Then
                             result.Add(path)
@@ -342,7 +342,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
                     path = ConfigHelper.GetUserConfigurationPath(hierSp, project, Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal, underHostingProcess:=False, buildConfiguration:=BuildConfiguration)
                     If path IsNot Nothing Then
-                        path = IO.Path.GetDirectoryName(path)
+                        path = System.IO.Path.GetDirectoryName(path)
                         ' Make sure we only add the path once...
                         If Not result.Contains(path) Then
                             result.Add(path)
@@ -368,19 +368,19 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
 
             ' The path passed in to us is the path to the current active user.config file..
-            Dim currentApplicationVersionDirectoryInfo As New IO.DirectoryInfo(path)
+            Dim currentApplicationVersionDirectoryInfo As New System.IO.DirectoryInfo(path)
 
             ' The application may have scribbled user.config files in sibling directories to the current version's
             ' directory, so we'll start off from there...
-            Dim applicationRootDirectoryInfo As IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
+            Dim applicationRootDirectoryInfo As System.IO.DirectoryInfo = currentApplicationVersionDirectoryInfo.Parent()
 
             ' If the parent directory doesn't exist, we are fine...
             If Not applicationRootDirectoryInfo.Exists Then
                 Return
             End If
 
-            For Each directory As IO.DirectoryInfo In applicationRootDirectoryInfo.EnumerateDirectories()
-                For Each file As IO.FileInfo In directory.EnumerateFiles("user.config")
+            For Each directory As System.IO.DirectoryInfo In applicationRootDirectoryInfo.EnumerateDirectories()
+                For Each file As System.IO.FileInfo In directory.EnumerateFiles("user.config")
                     files.Add(file.FullName)
                 Next
             Next
@@ -396,7 +396,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If files IsNot Nothing Then
                 For Each file As String In files
                     Try
-                        IO.File.Delete(file)
+                        System.IO.File.Delete(file)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try
@@ -406,7 +406,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If directories IsNot Nothing Then
                 For Each directory As String In directories
                     Try
-                        IO.Directory.Delete(directory, False)
+                        System.IO.Directory.Delete(directory, False)
                     Catch ex As Exception When Common.ReportWithoutCrash(ex, NameOf(DeleteFilesAndDirectories), NameOf(SettingsDesigner))
                         completeSuccess = False
                     End Try

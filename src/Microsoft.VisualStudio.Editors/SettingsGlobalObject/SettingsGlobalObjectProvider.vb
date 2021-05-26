@@ -1078,7 +1078,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             If fileName.EndsWith(SettingsDesigner.SettingsDesigner.SETTINGS_FILE_EXTENSION, StringComparison.OrdinalIgnoreCase) Then
                 Try
                     Try
-                        If Not IO.File.Exists(fileName) Then
+                        If Not System.IO.File.Exists(fileName) Then
                             Return
                         End If
                     Catch ex As ArgumentException

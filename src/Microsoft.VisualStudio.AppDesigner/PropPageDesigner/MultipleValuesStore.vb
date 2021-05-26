@@ -1,5 +1,6 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+Imports System.Runtime.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -13,14 +14,77 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' </summary>
     <Serializable>
     Public Class MultipleValuesStore
+        'Implements ISerializable
 
         'Note: the sizes of these arrays are all the same
-        Public ConfigNames As String()   'The config name applicable to each stored value
-        Public PlatformNames As String() 'The platform name applicable to each stored value
-        Public Values As Object()        'The stored values themselves
+        'Public ConfigNames As String()   'The config name applicable to each stored value
+        Private _configNames As String()
+        Public Property ConfigNames() As String()   'The config name applicable to each stored value
+            Get
+                Return _configNames
+            End Get
+            Set(Value As String())
+                _configNames = Value
+            End Set
+        End Property
 
-        Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
-        Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
+        'Public PlatformNames As String() 'The platform name applicable to each stored value
+        Private _platformNames As String()
+        Public Property PlatformNames() As String() 'The platform name applicable to each stored value
+            Get
+                Return _platformNames
+            End Get
+            Set(Value As String())
+                _platformNames = Value
+            End Set
+        End Property
+
+        'Public Values As Object()        'The stored values themselves
+        Private _values As Object()
+        Public Property Values() As Object()        'The stored values themselves
+            Get
+                Return _values
+            End Get
+            Set(Value As Object())
+                _values = Value
+            End Set
+        End Property
+
+        'Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
+        Private _selectedConfigName As String
+        Public Property SelectedConfigName() As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
+            Get
+                Return _selectedConfigName
+            End Get
+            Set(Value As String)
+                _selectedConfigName = Value
+            End Set
+        End Property
+
+        'Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
+        Private _selectedPlatformName As String
+        Public Property SelectedPlatformName() As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
+            Get
+                Return _selectedPlatformName
+            End Get
+            Set(Value As String)
+                _selectedPlatformName = Value
+            End Set
+        End Property
+
+        '''' <summary>
+        '''' Deserialization constructor.
+        '''' </summary>
+        '''' <param name="Info"></param>
+        '''' <param name="Context"></param>
+        '''' <remarks>
+        ''''See .NET Framework Developer's Guide, "Custom Serialization" for more information
+        '''' </remarks>
+        'Private Sub New(Info As SerializationInfo, Context As StreamingContext)
+        '    ConfigNames = DirectCast(Info.GetValue(NameOf(ConfigNames), GetType(String())), String())
+        '    '_savedFileName = Info.GetString(SERIALIZATIONKEY_SAVEDFILENAME)
+        '    '_originalFileTimeStamp = Info.GetDateTime(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
+        'End Sub
 
         ''' <summary>
         ''' Constructor.
@@ -61,6 +125,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     ConfigNames(i) = ConfigName
                     PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
+                    System.IO.File.AppendAllLines("C:\Workspace\MVS-Types.txt", New String() {Values(i).GetType().FullName})
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
                     Throw Common.CreateArgumentException(NameOf(Values))
@@ -106,6 +171,11 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Trace.Unindent()
         End Sub
 
+        'Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
+        '    Info.AddValue(NameOf(ConfigNames), ConfigNames)
+        '    'Info.AddValue(SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
+        '    'Info.AddValue(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
+        'End Sub
     End Class
 
 End Namespace

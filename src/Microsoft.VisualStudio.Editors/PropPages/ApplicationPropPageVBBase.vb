@@ -246,7 +246,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Exit Sub
                 End If
 
-                Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(ServiceProvider, Project, GetType(Serialization.CodeDomSerializer))
+                Dim objectService As Shell.Design.GlobalObjectService = New Shell.Design.GlobalObjectService(ServiceProvider, Project, GetType(System.ComponentModel.Design.Serialization.CodeDomSerializer))
                 If objectService IsNot Nothing Then
                     Dim objectCollection As Shell.Design.GlobalObjectCollection = objectService.GetGlobalObjects(GetType(Configuration.ApplicationSettingsBase))
                     If objectCollection IsNot Nothing Then
@@ -578,7 +578,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                         ' It is ported from wizard\vsdesigner\designer\microsoft\vsdesigner\ProjectWizard\AppManifestTemplateWizard.cs
                         Dim appManifestPath As String = Nothing
 
-                        If (Not String.IsNullOrEmpty(MkDocument)) AndAlso IO.Path.IsPathRooted(MkDocument) Then
+                        If (Not String.IsNullOrEmpty(MkDocument)) AndAlso System.IO.Path.IsPathRooted(MkDocument) Then
 
                             Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                             If fullPathProperty IsNot Nothing AndAlso fullPathProperty.Value IsNot Nothing Then
@@ -640,17 +640,17 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     Dim OleServiceProvider As OLE.Interop.IServiceProvider = CType(GetServiceFromPropertyPageSite(GetType(OLE.Interop.IServiceProvider)), OLE.Interop.IServiceProvider)
                     Debug.Assert(VsUIShellOpenDocument IsNot Nothing, "Unable to get IVsUIShellOpenDocument")
 
-                    If Not IO.Path.IsPathRooted(MkDocument) Then
+                    If Not System.IO.Path.IsPathRooted(MkDocument) Then
                         Dim fullPathProperty As EnvDTE.Property = DTEProject.Properties.Item("FullPath")
                         Dim projectFullPath As String = CType(fullPathProperty.Value, String)
                         If Not String.IsNullOrEmpty(projectFullPath) Then
-                            MkDocument = IO.Path.Combine(projectFullPath, MkDocument)
+                            MkDocument = System.IO.Path.Combine(projectFullPath, MkDocument)
                         End If
                     End If
 
                     'the file may not exist on disk if it was deleted out from under the project system
                     'in that case, opening the file would fail. If this happens we recreate the file from the template.
-                    Dim docFileInfo As New IO.FileInfo(MkDocument)
+                    Dim docFileInfo As New System.IO.FileInfo(MkDocument)
 
                     If Not docFileInfo.Exists Then
                         AddApplicationManifestToProjectFromTemplate(SpecialProjectItems, ItemId, MkDocument)

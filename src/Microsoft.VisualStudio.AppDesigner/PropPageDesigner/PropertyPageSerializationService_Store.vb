@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''</remarks>
         <Serializable>
         Private NotInheritable Class PropertyPageSerializationStore
-            Inherits Serialization.SerializationStore
+            Inherits Design.Serialization.SerializationStore
             Implements ISerializable
 
             'The set of properties that we wish to
@@ -136,7 +136,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 'Return New PropertyPageSerializationStore
                 'Dim streamAsString = New StreamReader(Stream).ReadToEnd()
                 'Return JsonSerializer.Deserialize(Of PropertyPageSerializationStore)(streamAsString)
-                Return SerializationProvider.Deserialize(Of PropertyPageSerializationStore)(Stream)
+                'Dim result As Object = SerializationProvider.Deserialize(Stream)
+                Return DirectCast(SerializationProvider.Deserialize(Stream), PropertyPageSerializationStore)
             End Function
 
             ''' <summary>
@@ -542,7 +543,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), PropPageDesignerRootComponent)
                     'Return New PropPageDesignerRootComponent
-                    Return SerializationProvider.Deserialize(Of PropPageDesignerRootComponent)(MemoryStream)
+                    Return DirectCast(SerializationProvider.Deserialize(MemoryStream), PropPageDesignerRootComponent)
                 End Function
 
                 ''' <summary>
@@ -563,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return (New BinaryFormatter).Deserialize(MemoryStream)
                     'Return New MemoryStream
-                    Return SerializationProvider.Deserialize(Of T)(MemoryStream)
+                    Return DirectCast(SerializationProvider.Deserialize(MemoryStream), T)
                 End Function
 
             End Class 'SerializedProperty

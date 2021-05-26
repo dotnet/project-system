@@ -336,7 +336,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                                             ExistingDocDataPtr,
                                             OleServiceProvider,
                                             WindowFrame))
-                                ElseIf IsPropertyPage() OrElse IO.File.Exists(MkDocument) Then
+                                ElseIf IsPropertyPage() OrElse System.IO.File.Exists(MkDocument) Then
                                     VSErrorHandler.ThrowOnFailure(VsUIShellOpenDocument.OpenSpecificEditor(EditFlags,
                                             MkDocument,
                                             (EditorGuid),

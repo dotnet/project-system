@@ -157,8 +157,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 sFileName = ""
                 sInitialDirectory = ""
             Else
-                sFileName = IO.Path.GetFileName(sInitialDirectory)
-                sInitialDirectory = IO.Path.GetDirectoryName(sInitialDirectory)
+                sFileName = System.IO.Path.GetFileName(sInitialDirectory)
+                sInitialDirectory = System.IO.Path.GetDirectoryName(sInitialDirectory)
             End If
 
             Dim fileNames As ArrayList = GetFilesViaBrowse(ServiceProvider, Handle, sInitialDirectory, My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_AddExistingFilesTitle,
@@ -168,7 +168,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If fileNames IsNot Nothing AndAlso fileNames.Count = 1 Then
                 sFileName = CStr(fileNames(0))
 
-                If IO.File.Exists(sFileName) Then
+                If System.IO.File.Exists(sFileName) Then
                     'Verify it's actually a usable .ico before adding it to the project
                     Dim ValidIcon As Boolean = False
                     Try
@@ -277,16 +277,16 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
 
             ' Verify all the characters in the path are valid 
-            If path.IndexOfAny(IO.Path.GetInvalidPathChars()) >= 0 Then
+            If path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0 Then
                 ShowErrorMessage(My.Resources.Microsoft_VisualStudio_Editors_Designer.PPG_Application_CantAddIcon)
                 Return False
             End If
 
-            If Not IO.Path.IsPathRooted(path) Then
-                path = IO.Path.Combine(GetProjectPath(), path)
+            If Not System.IO.Path.IsPathRooted(path) Then
+                path = System.IO.Path.Combine(GetProjectPath(), path)
             End If
 
-            If IO.File.Exists(path) Then
+            If System.IO.File.Exists(path) Then
                 'System.Drawing.Image will hold on to any file that we give it, so that it can
                 '  be lazy about getting the bits out of it.  This means the file will be locked, 
                 '  which we don't want.  Make a copy of the file as a memory stream and use that to
@@ -393,7 +393,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub AddIconsFromProjectItem(ProjectItem As ProjectItem, ApplicationIconCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
-                Dim ext As String = IO.Path.GetExtension(FileName)
+                Dim ext As String = System.IO.Path.GetExtension(FileName)
                 If ext.Equals(".ico", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationIconCombobox.Items.Add(GetProjectRelativeFilePath(FileName))
                 End If
@@ -498,7 +498,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Protected Sub AddManifestsFromProjectItem(ProjectItem As ProjectItem, ApplicationManifestCombobox As ComboBox)
             For Index As Short = 1 To ProjectItem.FileCount
                 Dim FileName As String = ProjectItem.FileNames(Index)
-                Dim ext As String = IO.Path.GetExtension(FileName)
+                Dim ext As String = System.IO.Path.GetExtension(FileName)
                 If ext.Equals(".manifest", StringComparison.OrdinalIgnoreCase) Then
                     ApplicationManifestCombobox.Items.Add(GetProjectRelativeFilePath(FileName))
                 End If

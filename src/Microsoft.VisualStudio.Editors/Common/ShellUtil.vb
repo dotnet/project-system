@@ -420,8 +420,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
                             ' Make sure that the filename matches what we expect.
                             If String.Equals(
-                                IO.Path.GetFileNameWithoutExtension(childItemName),
-                                IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix,
+                                System.IO.Path.GetFileNameWithoutExtension(childItemName),
+                                System.IO.Path.GetFileNameWithoutExtension(DTEUtils.FileNameFromProjectItem(projectitem)) & suffix,
                                 StringComparison.OrdinalIgnoreCase) _
                             Then
                                 ' If we've got a filter predicate, we remove anything that we've been

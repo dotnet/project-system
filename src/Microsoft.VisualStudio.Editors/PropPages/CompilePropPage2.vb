@@ -1278,7 +1278,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Dim zone As Security.SecurityZone = Common.GetSecurityZoneOfFile(path, ServiceProvider)
 
             Dim folderEvidence As Security.Policy.Evidence = New Security.Policy.Evidence()
-            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & IO.Path.GetFullPath(path)))
+            folderEvidence.AddHostEvidence(New Security.Policy.Url("file:///" & System.IO.Path.GetFullPath(path)))
             folderEvidence.AddHostEvidence(New Security.Policy.Zone(zone))
             Dim folderPSet As Security.PermissionSet = Security.SecurityManager.GetStandardSandbox(folderEvidence)
 

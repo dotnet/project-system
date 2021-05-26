@@ -603,7 +603,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Dim FullPath As String = MyAppFileNameWithPath()
 
                 'Make sure the directory exists
-                Dim Path As String = IO.Path.GetDirectoryName(FullPath)
+                Dim Path As String = System.IO.Path.GetDirectoryName(FullPath)
                 If Not Directory.Exists(Path) Then
                     Directory.CreateDirectory(Path)
                 End If
