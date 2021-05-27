@@ -64,6 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.IsReadOnly = property.ReadOnly;
             }
 
+            if (requestedProperties.IsVisible)
+            {
+                newUIProperty.IsVisible = property.Visible;
+            }
+
             if (requestedProperties.HelpUrl)
             {
                 newUIProperty.HelpUrl = property.HelpUrl;
