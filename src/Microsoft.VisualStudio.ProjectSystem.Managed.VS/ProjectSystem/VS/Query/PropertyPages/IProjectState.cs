@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <summary>
         /// Binds the specified schema to a particular context within the given project configuration.
         /// </summary>
-        Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext propertiesContext);
+        Task<IRule?> BindToRuleAsync(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext propertiesContext);
         Task<IImmutableSet<ProjectConfiguration>?> GetKnownConfigurationsAsync();
         Task<ProjectConfiguration?> GetSuggestedConfigurationAsync();
         Task<(string versionKey, long versionNumber)?> GetMetadataVersionAsync();

@@ -132,10 +132,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                     await s_commandInvoker.ExecuteCommandAsync(referenceHandler.CreateRemoveReferenceCommand(selectedConfiguredProject, referenceUpdate));
                     break;
                 case (ProjectSystemUpdateAction)3:
-                    await s_commandInvoker.UndoCommand();
+                    await s_commandInvoker.UndoCommandAsync();
                     break;
                 case (ProjectSystemUpdateAction)4:
-                    await s_commandInvoker.RedoCommand();
+                    await s_commandInvoker.RedoCommandAsync();
                     break;
                 default:
                     wasUpdated = false;

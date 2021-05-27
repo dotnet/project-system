@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Retrieves the <see cref="IRule"/> with name "<paramref name="schemaName"/>" within the given <paramref
         /// name="projectConfiguration"/> and <paramref name="propertiesContext"/>.
         /// </summary>
-        public async Task<IRule?> BindToRule(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext propertiesContext)
+        public async Task<IRule?> BindToRuleAsync(ProjectConfiguration projectConfiguration, string schemaName, QueryProjectPropertiesContext propertiesContext)
         {
             if (_ruleCache.TryGetValue((projectConfiguration, schemaName, propertiesContext), out IRule? cachedRule))
             {

@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
             // We use a hint receiver that listens for when a file gets added.
             // The reason is so we can modify the MSBuild project inside the same write lock of when a file gets added internally in CPS.
             // This ensures that we only perform actions on the items that were added as result of a e.g. a add new/existing item dialog.
-            await _orderAddItemHintReceiver.Capture(Action, node, () => OnAddingNodesAsync(nodeToAddTo));
+            await _orderAddItemHintReceiver.CaptureAsync(Action, node, () => OnAddingNodesAsync(nodeToAddTo));
 
             return true;
         }

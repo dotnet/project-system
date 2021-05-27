@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             foreach (ProjectConfiguration knownConfiguration in knownConfigurations)
                             {
                                 if (knownConfiguration.MatchesDimensions(_dimensions)
-                                    && await projectState.BindToRule(knownConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
+                                    && await projectState.BindToRuleAsync(knownConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                                 {
                                     projectRules.Add(boundRule);
                                 }
@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         // The property is configuration-independent; we only need the bound rule for a single
                         // configuration.
                         if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration suggestedConfiguration
-                            && await projectState.BindToRule(suggestedConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
+                            && await projectState.BindToRuleAsync(suggestedConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                         {
                             projectRules.Add(boundRule);
                         }

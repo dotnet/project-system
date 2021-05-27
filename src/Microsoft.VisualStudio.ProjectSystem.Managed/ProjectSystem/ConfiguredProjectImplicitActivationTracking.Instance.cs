@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 _project = project;
                 _activeConfigurationGroupService = activeConfigurationGroupService;
-                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnChange, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+                _targetBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)>>(OnChangeAsync, project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
                 _components = components;
             }
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return DeactivateAsync(_activeComponents);
             }
 
-            private async Task OnChange(IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)> e)
+            private async Task OnChangeAsync(IProjectVersionedValue<(IProjectCapabilitiesSnapshot, IConfigurationGroup<ProjectConfiguration>)> e)
             {
                 // We'll get called back in main two situations (notwithstanding version-only updates):
                 //
