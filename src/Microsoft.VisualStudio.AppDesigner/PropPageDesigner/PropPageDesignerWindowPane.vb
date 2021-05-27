@@ -51,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Dim DesignerView As PropPageDesignerView = GetPropPageDesignerView()
             If DesignerView IsNot Nothing Then
-                Dim KeyCode As Keys = DirectCast(m.WParam.ToInt32(), Keys) And Keys.KeyCode
+                Dim KeyCode As Keys = DirectCast(CInt(m.WParam.ToInt64() And Keys.KeyCode), Keys)
                 'Is the message intended for a window or control in the property page?
                 If DesignerView.IsNativeHostedPropertyPageActivated AndAlso NativeMethods.IsChild(View.Handle, m.HWnd) Then
                     Common.Switches.TracePDMessageRouting(TraceLevel.Info, "  ... Message is for a child of the property page.  Calling MyBase.PreProcessMessage", m)
