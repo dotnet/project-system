@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// Handles retrieving an <see cref="IUIProperty"/> based on an ID.
     /// </summary>
     internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
-    { 
+    {
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
 
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     _properties);
             }
 
-            return NullEntityValue;   
+            return NullEntityValue;
         }
     }
 }
