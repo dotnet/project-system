@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -67,7 +68,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
+            Project? project = _workspace.CurrentSolution.Projects.FirstOrDefault(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
+
+            if (project is null)
+            {
+                System.Diagnostics.Debug.Assert(false, "Project was not found in Roslyn workspace. The Startup Object property will have no values.");
+                return Array.Empty<IEnumValue>();
+            }
+
             Compilation? compilation = await project.GetCompilationAsync();
 
             List<IEnumValue> enumValues = new();
