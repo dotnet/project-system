@@ -18,19 +18,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task SendRequestAsync(QueryProcessRequest<IReadOnlyCollection<EntityIdentity>> request)
         {
-            foreach (EntityIdentity requestId in request.RequestData)
+            if (request.RequestData is not null)
             {
-                try
+                foreach (EntityIdentity requestId in request.RequestData)
                 {
-                    IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext, requestId);
-                    if (entityValue is not null)
+                    try
                     {
-                        await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(entityValue, request, ProjectModelZones.Cps));
+                        IEntityValue? entityValue = await TryCreateEntityOrNullAsync(request.QueryExecutionContext, requestId);
+                        if (entityValue is not null)
+                        {
+                            await ResultReceiver.ReceiveResultAsync(new QueryProcessResult<IEntityValue>(entityValue, request, ProjectModelZones.Cps));
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    request.QueryExecutionContext.ReportError(ex);
+                    catch (Exception ex)
+                    {
+                        request.QueryExecutionContext.ReportError(ex);
+                    }
                 }
             }
 
