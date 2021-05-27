@@ -119,11 +119,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
-                if (property.Visible)
-                {
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
-                    yield return propertyValue;
-                }
+                IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
+                yield return propertyValue;
             }
         }
 
