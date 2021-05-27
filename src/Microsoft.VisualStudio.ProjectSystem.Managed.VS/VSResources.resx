@@ -249,4 +249,8 @@ In order to debug this project, add an executable project to this solution which
     <value>(Not set)</value>
     <comment>Text to display to the user in the property page UI when the "startup object" property is not set.</comment>
   </data>
+  <data name="DefaultNewProfileName" xml:space="preserve">
+    <value>Profile {0}</value>
+    <comment>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</comment>
+  </data>
 </root>

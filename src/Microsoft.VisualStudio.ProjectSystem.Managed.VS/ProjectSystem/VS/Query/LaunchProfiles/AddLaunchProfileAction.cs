@@ -21,15 +21,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _executableStep = executableStep;
         }
 
-        protected override Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider, CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(IEntityValue projectEntity, ILaunchSettingsActionService launchSettingsActionService, CancellationToken cancellationToken)
         {
-            return launchSettingsProvider.AddOrUpdateProfileAsync(
-                new WritableLaunchProfile
-                {
-                    Name = _executableStep.NewProfileName,
-                    CommandName = _executableStep.CommandName
-                }.ToLaunchProfile(),
-                addToFront: false);
+            ILaunchProfile? newLaunchProfile = await launchSettingsActionService.AddLaunchProfileAsync(_executableStep.CommandName, _executableStep.NewProfileName, cancellationToken);
+
+            if (newLaunchProfile is not null)
+            {
+                AddedLaunchProfiles.Add((projectEntity, newLaunchProfile));
+            }
         }
     }
 }
