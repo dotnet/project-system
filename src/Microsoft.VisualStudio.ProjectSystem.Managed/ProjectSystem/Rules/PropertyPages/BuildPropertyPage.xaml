@@ -61,6 +61,11 @@
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-csharp-lang-version-or-greater "8.0")</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="disable"
                DisplayName="Disable" />
     <EnumValue Name="enable"
