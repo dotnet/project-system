@@ -71,13 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         private static async Task<bool> GetAttributeTreatAsUsedAsync(IProjectProperties metadata)
         {
-            var propertyNames = await metadata.GetPropertyNamesAsync();
             string? value = await metadata.GetEvaluatedPropertyValueAsync(ProjectReference.TreatAsUsedProperty);
 
             return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
         }
 
-        private async Task<IProjectItem> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject, string itemSpecification)
+        private async Task<IProjectItem?> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject, string itemSpecification)
         {
             var projectItems = await GetUnresolvedReferencesAsync(selectedConfiguredProject);
 
@@ -107,7 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             Dictionary<string, string> propertyValues = new ();
 
-            IProjectItem items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+            IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+
+            if (items is null)
+            {
+                return propertyValues;
+            }
 
             var propertyNames = await items.Metadata.GetPropertyNamesAsync();
 
@@ -127,7 +131,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return;
             }
 
-            IProjectItem items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+            IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
 
             if (items != null)
             {
