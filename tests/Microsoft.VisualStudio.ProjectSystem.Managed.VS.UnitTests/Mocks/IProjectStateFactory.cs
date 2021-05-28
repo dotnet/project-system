@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             if (bindToRule is not null)
             {
                 mock.Setup(cache => cache
-                    .BindToRule(It.IsAny<ProjectConfiguration>(), It.IsAny<string>(), It.IsAny<QueryProjectPropertiesContext>()))
+                    .BindToRuleAsync(It.IsAny<ProjectConfiguration>(), It.IsAny<string>(), It.IsAny<QueryProjectPropertiesContext>()))
                     .Returns((ProjectConfiguration config, string schema, QueryProjectPropertiesContext context) => Task.FromResult<IRule?>(bindToRule(config, schema, context)));
             }
 

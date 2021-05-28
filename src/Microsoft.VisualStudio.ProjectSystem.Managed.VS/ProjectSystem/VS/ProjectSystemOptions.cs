@@ -33,17 +33,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefault(FastUpToDateEnabledSettingKey, true, cancellationToken);
+            return GetSettingValueOrDefaultAsync(FastUpToDateEnabledSettingKey, true, cancellationToken);
         }
 
         public Task<LogLevel> GetFastUpToDateLoggingLevelAsync(CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefault(FastUpToDateLogLevelSettingKey, LogLevel.None, cancellationToken);
+            return GetSettingValueOrDefaultAsync(FastUpToDateLogLevelSettingKey, LogLevel.None, cancellationToken);
         }
 
         public Task<bool> GetUseDesignerByDefaultAsync(string designerCategory, bool defaultValue, CancellationToken cancellationToken = default)
         {
-            return GetSettingValueOrDefault(UseDesignerByDefaultSettingKey + "\\" + designerCategory, defaultValue, cancellationToken);
+            return GetSettingValueOrDefaultAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, defaultValue, cancellationToken);
         }
 
         public Task SetUseDesignerByDefaultAsync(string designerCategory, bool value, CancellationToken cancellationToken = default)
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return SetSettingValueAsync(UseDesignerByDefaultSettingKey + "\\" + designerCategory, value, cancellationToken);
         }
 
-        private async Task<T> GetSettingValueOrDefault<T>(string name, T defaultValue, CancellationToken cancellationToken)
+        private async Task<T> GetSettingValueOrDefaultAsync<T>(string name, T defaultValue, CancellationToken cancellationToken)
         {
             await _joinableTaskContext.Factory.SwitchToMainThreadAsync(cancellationToken);
 

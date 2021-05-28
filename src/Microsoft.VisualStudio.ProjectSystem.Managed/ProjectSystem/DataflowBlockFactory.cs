@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             IProjectFaultHandlerService faultHandlerService = project.Services.FaultHandler;
 
-            Task faultTask = faultHandlerService.RegisterFaultHandler(block, project, severity);
+            Task faultTask = faultHandlerService.RegisterFaultHandlerAsync(block, project, severity);
 
             // We don't actually care about the result of reporting the fault if one occurs
             faultHandlerService.Forget(faultTask, project);

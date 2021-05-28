@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         public async Task UndoAsync()
         {
             await _referenceHandler.AddReferenceAsync(_selectedConfiguredProject, _itemSpecification);
-            await _referenceHandler.SetAttributes(_selectedConfiguredProject, _itemSpecification,
+            await _referenceHandler.SetAttributesAsync(_selectedConfiguredProject, _itemSpecification,
                 _projectPropertiesValues);
         }
 

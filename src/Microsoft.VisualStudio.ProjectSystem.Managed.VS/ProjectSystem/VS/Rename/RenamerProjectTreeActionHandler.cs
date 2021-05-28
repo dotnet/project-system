@@ -97,12 +97,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             }
 
             string newName = Path.GetFileNameWithoutExtension(newFileWithExtension);
-            if (!await CanRenameType(project, oldName, newName))
+            if (!await CanRenameTypeAsync(project, oldName, newName))
             {
                 return;
             }
 
-            (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActions(project, oldFilePath, newFileWithExtension);
+            (bool result, Renamer.RenameDocumentActionSet? documentRenameResult) = await GetRenameSymbolsActionsAsync(project, oldFilePath, newFileWithExtension);
             if (!result || documentRenameResult == null)
             {
                 return;
@@ -159,7 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return _workspace.CurrentSolution;
         }
 
-        private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActions(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
+        private static async Task<(bool, Renamer.RenameDocumentActionSet?)> GetRenameSymbolsActionsAsync(CodeAnalysis.Project project, string? oldFilePath, string newFileWithExtension)
         {
             CodeAnalysis.Document? oldDocument = GetDocument(project, oldFilePath);
             if (oldDocument is null)
@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             return (true, documentRenameResult);
         }
 
-        private async Task<bool> CanRenameType(CodeAnalysis.Project? project, string oldName, string newName)
+        private async Task<bool> CanRenameTypeAsync(CodeAnalysis.Project? project, string oldName, string newName)
         {
             // see if the current project contains a compilation
             (bool success, bool isCaseSensitive) = await TryDetermineIfCompilationIsCaseSensitiveAsync(project);

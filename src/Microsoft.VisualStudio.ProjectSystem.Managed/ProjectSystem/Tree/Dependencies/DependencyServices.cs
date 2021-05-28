@@ -17,21 +17,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(node, nameof(node));
 
-            string? path = await GetMaybeRelativeBrowsePath(project, node);
+            string? path = await GetMaybeRelativeBrowsePathAsync(project, node);
             if (path == null)
                 return null;
 
             return project.MakeRooted(path);
         }
 
-        private static async Task<string?> GetMaybeRelativeBrowsePath(UnconfiguredProject project, IProjectTree node)
+        private static async Task<string?> GetMaybeRelativeBrowsePathAsync(UnconfiguredProject project, IProjectTree node)
         {
             Assumes.True(node.Flags.Contains(DependencyTreeFlags.Dependency));
 
             // Shared Projects are special, the file path points directly to the import
             if (node.Flags.Contains(DependencyTreeFlags.SharedProjectDependency))
             {
-                return await GetSharedAssetsProject(project, node);
+                return await GetSharedAssetsProjectAsync(project, node);
             }
 
             if (node.BrowseObjectProperties == null)
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             return path.Length == 0 ? null : path;
         }
 
-        private static async Task<string?> GetSharedAssetsProject(UnconfiguredProject project, IProjectTree node)
+        private static async Task<string?> GetSharedAssetsProjectAsync(UnconfiguredProject project, IProjectTree node)
         {
             Assumes.NotNull(node.FilePath);
 

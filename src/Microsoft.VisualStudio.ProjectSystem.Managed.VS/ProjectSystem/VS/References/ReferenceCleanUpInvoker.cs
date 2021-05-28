@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _undoStack.Push(command);
         }
 
-        public async Task UndoCommand()
+        public async Task UndoCommandAsync()
         {
             if (_undoStack.Count <= 0)
             {
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             _undoStack.Pop();
         }
 
-        public async Task RedoCommand()
+        public async Task RedoCommandAsync()
         {
             if (_redoStack.Count <= 0)
             {

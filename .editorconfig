@@ -385,7 +385,7 @@ dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
 
 # Microsoft.VisualStudio.Threading.Analyzers
-dotnet_diagnostic.VSTHRD200.severity = none     # Naming styles                                 Task Open()                                         Task OpenAsync()
+dotnet_diagnostic.VSTHRD200.severity = error    # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
 dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an async method.
 dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.

@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 throw thrownException;
             });
 
-            var faultTask = FaultExtensions.RegisterFaultHandler(faultHandler, block, null);
+            var faultTask = FaultExtensions.RegisterFaultHandlerAsync(faultHandler, block, null);
 
             await block.SendAsync("Hello");
 

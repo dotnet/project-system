@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
                 EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
-                _ => GetPropertyValueFromExtendersAsync(propertyName, profile, snapshot.GlobalSettings)
+                _ => GetPropertyValueFromExtenders(propertyName, profile, snapshot.GlobalSettings)
             };
         }
 
@@ -254,7 +254,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
-        private string? GetPropertyValueFromExtendersAsync(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
+        private string? GetPropertyValueFromExtenders(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
         {
             if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
             {
