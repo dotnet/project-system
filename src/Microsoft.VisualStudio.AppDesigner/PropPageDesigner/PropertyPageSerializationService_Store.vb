@@ -301,7 +301,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                             Debug.Assert(ComponentToSerializeTo IsNot Nothing, "Should never occur for PropertyPages")
 
                             'Deserialize the property value and apply it to the Component instance
-                            SetProperty(ComponentToSerializeTo, SerializedObject.PropertyName, SerializedObject.GetPropertyValue(Of Component))
+                            SetProperty(ComponentToSerializeTo, SerializedObject.PropertyName, SerializedObject.GetPropertyValue())
 
                             '... and add the Component to our list
                             If Not NewObjects.Contains(ComponentToSerializeTo) Then
@@ -550,7 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 ''' Deserializes a property value which has been serialized.
                 ''' </summary>
                 ''' <remarks>Can only be called if IsEntireComponentObject = False</remarks>
-                Public Function GetPropertyValue(Of T)() As T
+                Public Function GetPropertyValue() As Object
                     If IsEntireComponentObject() Then
                         Throw New Package.InternalException
                     End If
@@ -564,7 +564,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return (New BinaryFormatter).Deserialize(MemoryStream)
                     'Return New MemoryStream
-                    Return DirectCast(SerializationProvider.Deserialize(MemoryStream), T)
+                    Return SerializationProvider.Deserialize(MemoryStream)
                 End Function
 
             End Class 'SerializedProperty

@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Microsoft.VisualStudio.Serialization
@@ -16,11 +17,13 @@ namespace Microsoft.VisualStudio.Serialization
             }
             // Utf8JsonReader/Writer are more efficient
             var writer = new StreamWriter(stream);
-            var container = new BasicSerializationContainer
-            {
-                FullTypeName = value.GetType().FullName,
-                Value = value
-            };
+            //var type = value.GetType();
+            //var container = new BasicSerializationContainer
+            //{
+            //    AssemblyQualifiedName = type.AssemblyQualifiedName,
+            //    Value = value
+            //};
+            var container = ContainerizeObjectHierarchy(value);
             var jsonString = JsonSerializer.Serialize(container);
             File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
             writer.Write(jsonString);
@@ -28,21 +31,124 @@ namespace Microsoft.VisualStudio.Serialization
             stream.Position = 0;
         }
 
+        private static readonly Type ObjectType = typeof(object);
+        private static readonly Type ObjectArrayType = typeof(object[]);
+        private static readonly Type StringType = typeof(string);
+
+        private static SerializationContainer ContainerizeObjectHierarchy(object value)
+        {
+            var type = value.GetType();
+            if(!type.IsPrimitive && type != StringType)
+            {
+                var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                foreach (var property in properties)
+                {
+                    if (property.PropertyType == ObjectType && property.GetValue(value) is object propValue)
+                    {
+                        property.SetValue(value, ContainerizeObjectHierarchy(propValue));
+                        continue;
+                    }
+
+                    if (property.PropertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    {
+                        //var propValue = property.GetValue(value) as object?[];
+                        for (var i = 0; i < propArray.Length; ++i)
+                        {
+                            if (propArray[i] is not null)
+                            {
+                                propArray[i] = ContainerizeObjectHierarchy(propArray[i]!);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new SerializationContainer
+            {
+                AssemblyQualifiedName = type.AssemblyQualifiedName,
+                Value = value
+            };
+        }
+
         //private static Type[] AllowedTypes = { typeof(int), typeof(bool), typeof(string), };
 
-        public static object Deserialize(Stream stream)
+        public static object? Deserialize(Stream stream)
         {
             var streamAsString = new StreamReader(stream).ReadToEnd();
             File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { streamAsString });
-            var container = JsonSerializer.Deserialize<BasicSerializationContainer>(streamAsString);
-            var type = Type.GetType(container.FullTypeName);
-            return JsonSerializer.Deserialize(((JsonElement)container.Value).ToString(), type);
+            return DecontainerizeObjectHierarchy(streamAsString);
+            //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(streamAsString);
+            //if (container is null)
+            //{
+            //    return null;
+            //}
+            //Type? type = Type.GetType(container.AssemblyQualifiedName);
+            //// Type filtering will use FullName from the type
+            //if(type is null)
+            //{
+            //    throw new TypeLoadException();
+            //}
+            //if(container.Value is not JsonElement)
+            //{
+            //    throw new InvalidDataException();
+            //}
+            //return JsonSerializer.Deserialize(((JsonElement)container.Value).ToString(), type);
+            //return DecontainerizeObjectHierarchy(container);
+        }
+
+        private static object? DecontainerizeObjectHierarchy(string jsonString)
+        {
+            //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(jsonString);
+            if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
+            {
+                return null;
+            }
+
+            //Type? type = Type.GetType(container.AssemblyQualifiedName);
+            // Type filtering will use FullName from the type
+            if (Type.GetType(container.AssemblyQualifiedName) is not Type type || container.Value is not JsonElement element)
+            {
+                throw new InvalidDataException();
+            }
+
+            var value = JsonSerializer.Deserialize(element.GetRawText(), type);
+            if (!type.IsPrimitive && type != StringType)
+            {
+                var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+                foreach (var property in properties)
+                {
+                    if (property.PropertyType == ObjectType && property.GetValue(value) is JsonElement propElement)
+                    {
+                        property.SetValue(value, DecontainerizeObjectHierarchy(propElement.GetRawText()));
+                        continue;
+                    }
+
+                    if (property.PropertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    {
+                        //var propValue = property.GetValue(value) as object?[];
+                        //if (propValue is null)
+                        //{
+                        //    throw new InvalidDataException();
+                        //}
+                        //var objectArray = JsonSerializer.Deserialize<object?[]>(propValue.ToString());
+                        for (var i = 0; i < propArray.Length; ++i)
+                        {
+                            if (propArray[i] is JsonElement propArrayElement)
+                            {
+                                propArray[i] = DecontainerizeObjectHierarchy(propArrayElement.GetRawText());
+                            }
+                        }
+                    }
+                }
+            }
+
+            return value;
         }
     }
 
-    public class BasicSerializationContainer
+    public class SerializationContainer
     {
-        public string FullTypeName { get; set; }
+        public string AssemblyQualifiedName { get; set; }
         public object Value { get; set; }
     }
 }

@@ -72,6 +72,12 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Set
         End Property
 
+        ''' <summary>
+        ''' Used for deserialization.
+        ''' </summary>
+        Public Sub New()
+        End Sub
+
         '''' <summary>
         '''' Deserialization constructor.
         '''' </summary>
