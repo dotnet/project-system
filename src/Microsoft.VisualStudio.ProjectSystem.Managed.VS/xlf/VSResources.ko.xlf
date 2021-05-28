@@ -197,8 +197,8 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="translated">Xproj 프로젝트 파일은 더 이상 지원되지 않습니다. csproj로 마이그레이션에 대한 자세한 내용은 https://docs.microsoft.com/en-us/dotnet/core/migration/을 참조하세요.</target>
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
+        <target state="translated">Xproj 프로젝트 파일은 더 이상 지원되지 않습니다. csproj로 마이그레이션에 대한 자세한 내용은 https://docs.microsoft.com/dotnet/core/migration/을 참조하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">

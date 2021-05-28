@@ -141,7 +141,7 @@
   <BoolProperty Name="CheckForOverflowUnderflow"
                 DisplayName="Check for arithmetic overflow"
                 Description="Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/checked-compiler-option"
+                HelpUrl="https://docs.microsoft.com/dotnet/csharp/language-reference/compiler-options/checked-compiler-option"
                 Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
@@ -152,14 +152,14 @@
   <BoolProperty Name="Deterministic"
                 DisplayName="Deterministic"
                 Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
+                HelpUrl="https://docs.microsoft.com/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
                 Category="General" />
   
   <!-- TODO create fwlink for this HelpUrl -->
   <EnumProperty Name="ErrorReport"
                 DisplayName="Internal compiler error reporting"
                 Description="Controls when internal compiler error (ICE) reports are sent to Microsoft."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errorreport-compiler-option"
+                HelpUrl="https://docs.microsoft.com/dotnet/csharp/language-reference/compiler-options/errorreport-compiler-option"
                 Category="General">
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
@@ -178,7 +178,7 @@
   <EnumProperty Name="FileAlignment"
                 DisplayName="File alignment"
                 Description="Specifies, in bytes, where to align the sections of the output file."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/filealign-compiler-option"
+                HelpUrl="https://docs.microsoft.com/dotnet/csharp/language-reference/compiler-options/filealign-compiler-option"
                 Category="General">
     <EnumValue Name="512"
                DisplayName="512" />
@@ -277,7 +277,7 @@
   <BoolProperty Name="ProduceReferenceAssembly"
                 DisplayName="Reference assembly"
                 Description="Produce a reference assembly containing the public API of the project."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/standard/assembly/reference-assemblies"
+                HelpUrl="https://docs.microsoft.com/dotnet/standard/assembly/reference-assemblies"
                 Category="Output">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
@@ -288,7 +288,7 @@
   <BoolProperty Name="GenerateDocumentationFile"
                 DisplayName="Documentation file"
                 Description="Generate a file containing API documentation."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/codedoc"
+                HelpUrl="https://docs.microsoft.com/dotnet/csharp/codedoc"
                 Category="Output">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
@@ -321,7 +321,7 @@
   <StringProperty Name="PreBuildEvent"
                   DisplayName="Pre-build event"
                   Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
-                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
                   Category="Events">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -341,7 +341,7 @@
   <StringProperty Name="PostBuildEvent"
                   DisplayName="Post-build event"
                   Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
-                  HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                  HelpUrl="https://docs.microsoft.com/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
                   Category="Events">
     <StringProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
@@ -361,7 +361,7 @@
   <EnumProperty Name="RunPostBuildEvent"
                 DisplayName="When to run the post-build event"
                 Description="Specifies under which condition the post-build event will be executed."
-                HelpUrl="https://docs.microsoft.com/en-us/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/how-to-specify-build-events-csharp?view=vs-2019"
                 Category="Events">
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"

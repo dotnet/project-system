@@ -197,7 +197,7 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
         <target state="translated">Xproj プロジェクト ファイルはサポートされなくなりました。csproj への移行の詳細は、https://docs.microsoft.com/ja-jp/dotnet/core/migration/ を参照してください。</target>
         <note />
       </trans-unit>

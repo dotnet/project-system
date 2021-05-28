@@ -201,7 +201,7 @@ In order to debug this project, add an executable project to this solution which
     <value>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</value>
   </data>
   <data name="XprojNotSupported" xml:space="preserve">
-    <value>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</value>
+    <value>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</value>
   </data>
   <data name="WindowsFormEditor_DisplayName" xml:space="preserve">
     <value>Form (Windows Forms) Designer</value>
