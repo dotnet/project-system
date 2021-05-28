@@ -93,10 +93,17 @@ The following table details the default set of visibility expression functions:
 | `has-evaluated-value`    | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
 | `is-codespaces-client`   | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
 | `has-project-capability` | 1        | Returns true if the project has the specified capability.                                       |
+| `has-net-framework`                    | 0 | Returns true if the project targets .NET Framework in at least one configuration. |
+| `has-net-core-app`                     | 0 | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration. |
+| `has-net-framework-version-or-greater` | 1 | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration. |
+| `has-net-core-app-version-or-greater`  | 1 | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration. |
+| `has-csharp-lang-version-or-greater`   | 1 | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version. |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
 
 Note that there is no `evaluated` function. A property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead.
+
+Functions that take a version number should be passed strings containing decimal values. Any leading `v` character is omitted. For example `"v5.0""` and `"1.2.3"` are both valid values.
 
 ## Adding Functions
 
