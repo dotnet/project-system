@@ -197,8 +197,8 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="translated">Soubory projektu xproj už nejsou podporované. Podrobnosti o migraci na csproj najdete na adrese https://docs.microsoft.com/en-us/dotnet/core/migration/.</target>
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
+        <target state="translated">Soubory projektu xproj už nejsou podporované. Podrobnosti o migraci na csproj najdete na adrese https://docs.microsoft.com/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">

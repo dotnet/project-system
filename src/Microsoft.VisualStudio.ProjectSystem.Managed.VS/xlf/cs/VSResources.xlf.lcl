@@ -393,9 +393,9 @@
       </Item>
       <Item ItemId=";XprojNotSupported" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.]]></Val>
+          <Val><![CDATA[Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Soubory projektu xproj už nejsou podporované. Podrobnosti o migraci na csproj najdete na adrese https://docs.microsoft.com/en-us/dotnet/core/migration/.]]></Val>
+            <Val><![CDATA[Soubory projektu xproj už nejsou podporované. Podrobnosti o migraci na csproj najdete na adrese https://docs.microsoft.com/dotnet/core/migration/.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
