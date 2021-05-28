@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly AsyncLazy<IImmutableSet<ProjectConfiguration>?> _knownProjectConfigurations;
         private readonly AsyncLazy<ProjectConfiguration?> _defaultProjectConfiguration;
 
-        public AbstractProjectState(UnconfiguredProject project)
+        protected AbstractProjectState(UnconfiguredProject project)
         {
             Project = project;
             JoinableTaskFactory joinableTaskFactory = project.Services.ThreadingPolicy.JoinableTaskFactory;

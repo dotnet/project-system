@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// </summary>
         public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? propertiesContext)
         {
-            if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
+            if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath))
             {
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemType);
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemName, out string? itemName);

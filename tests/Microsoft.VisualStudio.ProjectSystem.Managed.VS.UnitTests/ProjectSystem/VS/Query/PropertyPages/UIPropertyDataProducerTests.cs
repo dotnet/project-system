@@ -44,6 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 Description = "This is the description for Page A",
                 HelpUrl = "https://mypage",
                 Category = "general",
+                Visible = false,
                 DataSource = new DataSource { HasConfigurationCondition = false }
             };
             InitializeFakeRuleForProperty(property);
@@ -55,6 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assert.Equal(expected: "This is the description for Page A", actual: result.Description);
             Assert.True(result.ConfigurationIndependent);
             Assert.Equal(expected: "general", actual: result.CategoryName);
+            Assert.False(result.IsVisible);
             Assert.Equal(expected: 42, actual: result.Order);
             Assert.Equal(expected: "string", actual: result.Type);
         }

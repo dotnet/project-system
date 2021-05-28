@@ -12,7 +12,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// Handles retrieving an <see cref="IUIProperty"/> based on an ID.
     /// </summary>
     internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
-    { 
+    {
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
 
@@ -27,8 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
             if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string? propertyName))
             {
                 return UIPropertyDataProducer.CreateUIPropertyValueAsync(
                     queryExecutionContext,
@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     _properties);
             }
 
-            return NullEntityValue;   
+            return NullEntityValue;
         }
     }
 }

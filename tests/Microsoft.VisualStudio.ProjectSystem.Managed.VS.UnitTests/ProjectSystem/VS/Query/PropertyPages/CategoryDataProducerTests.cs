@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var result = (CategoryValue)CategoryDataProducer.CreateCategoryValue(context, parentEntity, rule, category, order, properties);
 
-            Assert.True(result.Id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string name));
+            Assert.True(result.Id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string? name));
             Assert.Equal(expected: "MyCategoryName", actual: name);
         }
 

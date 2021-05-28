@@ -64,6 +64,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 newUIProperty.IsReadOnly = property.ReadOnly;
             }
 
+            if (requestedProperties.IsVisible)
+            {
+                newUIProperty.IsVisible = property.Visible;
+            }
+
             if (requestedProperties.HelpUrl)
             {
                 newUIProperty.HelpUrl = property.HelpUrl;
@@ -119,11 +124,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             foreach ((int index, BaseProperty property) in rule.Properties.WithIndices())
             {
-                if (property.Visible)
-                {
-                    IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
-                    yield return propertyValue;
-                }
+                IEntityValue propertyValue = CreateUIPropertyValue(queryExecutionContext, parent, cache, propertiesContext, property, index, properties);
+                yield return propertyValue;
             }
         }
 
