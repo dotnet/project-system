@@ -41,16 +41,12 @@
                 DisplayName="Target multiple frameworks"
                 Description="Build this project for multiple target frameworks."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
-                Category="General">
+                Category="General"
+                Visible="False">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
-    <BoolProperty.Metadata>
-      <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>false</NameValuePair.Value>
-      </NameValuePair>
-    </BoolProperty.Metadata>
   </BoolProperty>
 
   <DynamicEnumProperty Name="TargetFramework"
