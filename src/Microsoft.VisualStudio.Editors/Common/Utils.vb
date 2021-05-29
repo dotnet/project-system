@@ -14,6 +14,7 @@ Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
+Imports Microsoft.VisualStudio.Serialization
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry
@@ -1669,16 +1670,24 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Class SerializationProvider
 
-            Public Shared Sub Serialize(Of T)(stream As Stream, value As T)
-                Dim writer As New StreamWriter(stream)
-                writer.Write(JsonSerializer.Serialize(value))
-                writer.Flush()
-                stream.Position = 0
+            'Public Shared Sub Serialize(Of T)(stream As Stream, value As T)
+            '    Dim writer As New StreamWriter(stream)
+            '    writer.Write(JsonSerializer.Serialize(value))
+            '    writer.Flush()
+            '    stream.Position = 0
+            'End Sub
+
+            'Public Shared Function Deserialize(Of T)(stream As Stream) As T
+            '    Dim streamAsString = New StreamReader(stream).ReadToEnd()
+            '    Return JsonSerializer.Deserialize(Of T)(streamAsString)
+            'End Function
+
+            Public Shared Sub Serialize(stream As Stream, value As Object)
+                SerializationTest.Serialize(stream, value)
             End Sub
 
-            Public Shared Function Deserialize(Of T)(stream As Stream) As T
-                Dim streamAsString = New StreamReader(stream).ReadToEnd()
-                Return JsonSerializer.Deserialize(Of T)(streamAsString)
+            Public Shared Function Deserialize(stream As Stream) As Object
+                Return SerializationTest.Deserialize(stream)
             End Function
 
         End Class

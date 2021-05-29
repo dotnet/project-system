@@ -2997,7 +2997,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim RawBytes() As Byte = DirectCast(Data.GetData(_CF_RESOURCES), Byte())
             Dim MemoryStream As New MemoryStream(RawBytes)
             'Dim ResourcesData As ResourcesDataFormat = DirectCast((New BinaryFormatter).Deserialize(MemoryStream), ResourcesDataFormat)
-            Dim ResourcesData As ResourcesDataFormat = SerializationProvider.Deserialize(Of ResourcesDataFormat)(MemoryStream)
+            Dim ResourcesData As ResourcesDataFormat = DirectCast(SerializationProvider.Deserialize(MemoryStream), ResourcesDataFormat)
 
             'Okay, we have our copied resources, let's add them
             AddResources(ResourcesData.Resources, CopyFileIfExists, AddToProject:=True)

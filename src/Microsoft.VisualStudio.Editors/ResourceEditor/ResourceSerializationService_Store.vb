@@ -170,7 +170,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 'Return DirectCast((New BinaryFormatter).Deserialize(Stream), ResourceSerializationStore)
                 'Return New ResourceSerializationStore
-                Return SerializationProvider.Deserialize(Of ResourceSerializationStore)(Stream)
+                Return DirectCast(SerializationProvider.Deserialize(Stream), ResourceSerializationStore)
             End Function
 
             ''' <summary>
@@ -367,7 +367,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         'Trace
                         Dim StringValue As String
                         Try
-                            Dim PropertyValue As Object = SerializedObject.GetPropertyValue(Of Resource)
+                            Dim PropertyValue As Object = SerializedObject.GetPropertyValue()
                             If PropertyValue Is Nothing Then
                                 StringValue = ""
                             Else
@@ -380,7 +380,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End If
 
                         'Deserialize the property value and apply it to the Resource instance
-                        ResourceToSerializeTo.SetPropertyValue(SerializedObject.PropertyName, SerializedObject.GetPropertyValue(Of Resource))
+                        ResourceToSerializeTo.SetPropertyValue(SerializedObject.PropertyName, SerializedObject.GetPropertyValue())
 
                         '... and add the Resource to our list
                         If Not NewObjects.Contains(ResourceToSerializeTo) Then
@@ -607,14 +607,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), Resource)
                     'Return Nothing
-                    Return SerializationProvider.Deserialize(Of Resource)(MemoryStream)
+                    Return DirectCast(SerializationProvider.Deserialize(MemoryStream), Resource)
                 End Function
 
                 ''' <summary>
                 ''' Deserializes a property value which has been serialized.
                 ''' </summary>
                 ''' <remarks>Can only be called if IsEntireResourceObject = False</remarks>
-                Public Function GetPropertyValue(Of T)() As T
+                Public Function GetPropertyValue() As Object
                     If IsEntireResourceObject() Then
                         Throw New Package.InternalException
                     End If
@@ -628,7 +628,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return (New BinaryFormatter).Deserialize(MemoryStream)
                     'Return Nothing
-                    Return SerializationProvider.Deserialize(Of T)(MemoryStream)
+                    Return SerializationProvider.Deserialize(MemoryStream)
                 End Function
 
             End Class 'SerializedResourceOrProperty

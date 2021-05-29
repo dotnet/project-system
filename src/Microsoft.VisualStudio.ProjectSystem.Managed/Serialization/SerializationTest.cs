@@ -1,15 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Microsoft.VisualStudio.Serialization
 {
     public static class SerializationTest
     {
-        public static void Serialize(Stream stream, object value)
+        public static void Serialize(Stream stream, object? value)
         {
             if(value is null)
             {
@@ -23,7 +27,7 @@ namespace Microsoft.VisualStudio.Serialization
             //    AssemblyQualifiedName = type.AssemblyQualifiedName,
             //    Value = value
             //};
-            var container = ContainerizeObjectHierarchy(value);
+            var container = ContainerizeObjectHierarchy(value.GetType(), value);
             var jsonString = JsonSerializer.Serialize(container);
             File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
             writer.Write(jsonString);
@@ -35,30 +39,90 @@ namespace Microsoft.VisualStudio.Serialization
         private static readonly Type ObjectArrayType = typeof(object[]);
         private static readonly Type StringType = typeof(string);
 
-        private static SerializationContainer ContainerizeObjectHierarchy(object value)
+        private static PropertyInfo[] GetProperties(Type type) => type
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy)
+            .Where(pi => pi.CanRead && pi.CanWrite && pi.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+            .ToArray();
+
+        // TODO: IsInterface doesn't work since we cannot assign SerializationContainer to an interface property
+        private static bool IsContainerizable(Type type) =>
+            type == ObjectType; //|| type.IsInterface;
+
+        // https://github.com/Azure/autorest.powershell/blob/67d99227e4cb8b03ca3168731bcbe23ae14d35e5/powershell/resources/psruntime/BuildTime/PsExtensions.cs#L37-L45
+        private static bool IsSimple(this Type type) =>
+            type.IsPrimitive
+            || type.IsEnum
+            || type == typeof(string)
+            || type == typeof(decimal);
+
+        // https://github.com/Azure/autorest.powershell/blob/67d99227e4cb8b03ca3168731bcbe23ae14d35e5/powershell/resources/psruntime/BuildTime/PsExtensions.cs#L16-L35
+        public static bool TryUnwrap(ref Type type)
         {
-            var type = value.GetType();
-            if(!type.IsPrimitive && type != StringType)
+            if (type.IsArray)
             {
-                var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                foreach (var property in properties)
+                type = type.GetElementType();
+                return true;
+            }
+
+            if (type.IsGenericType
+                && (type.GetGenericTypeDefinition() == typeof(Nullable<>) || typeof(IEnumerable<>).IsAssignableFrom(type)))
+            {
+                type = type.GetGenericArguments().First();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static SerializationContainer ContainerizeObjectHierarchy(Type type, object value)
+        {
+            //var type = value.GetType();
+            if(!type.IsSimple())
+            {
+                foreach (var property in GetProperties(type))
                 {
-                    if (property.PropertyType == ObjectType && property.GetValue(value) is object propValue)
+                    var propertyType = property.PropertyType;
+                    if (IsContainerizable(propertyType) && property.GetValue(value) is object propValue)
                     {
-                        property.SetValue(value, ContainerizeObjectHierarchy(propValue));
+                        property.SetValue(value, ContainerizeObjectHierarchy(propValue.GetType(), propValue));
                         continue;
                     }
 
-                    if (property.PropertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
                     {
                         //var propValue = property.GetValue(value) as object?[];
                         for (var i = 0; i < propArray.Length; ++i)
                         {
-                            if (propArray[i] is not null)
+                            if (propArray[i] is object propArrayElement)
                             {
-                                propArray[i] = ContainerizeObjectHierarchy(propArray[i]!);
+                                propArray[i] = ContainerizeObjectHierarchy(propArrayElement.GetType(), propArrayElement);
                             }
                         }
+                        continue;
+                    }
+
+                    if (TryUnwrap(ref propertyType) && !propertyType.IsSimple() && property.GetValue(value) is IList propCollection)
+                    {
+                        for (var i = 0; i < propCollection.Count; ++i)
+                        {
+                            if (propCollection[i] is object propCollectionElement)
+                            {
+                                propCollection[i] = ContainerizeObjectHierarchy(propCollectionElement.GetType(), propCollectionElement).Value;
+                            }
+                        }
+                        //foreach(var propItem in propCollection)
+                        //{
+                        //    if(propItem is not null)
+                        //    {
+                        //        ContainerizeObjectHierarchy(propItem.GetType(), propItem);
+                        //    }
+                        //}
+                        continue;
+                    }
+
+                    if (!propertyType.IsSimple() && property.GetValue(value) is object propComplex)
+                    {
+                        property.SetValue(value, ContainerizeObjectHierarchy(propComplex.GetType(), propComplex).Value);
                     }
                 }
             }
@@ -76,7 +140,8 @@ namespace Microsoft.VisualStudio.Serialization
         {
             var streamAsString = new StreamReader(stream).ReadToEnd();
             File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { streamAsString });
-            return DecontainerizeObjectHierarchy(streamAsString);
+            (Type type, object? value) = ConvertContainerJsonString(streamAsString);
+            return DecontainerizeObjectHierarchy(type, value);
             //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(streamAsString);
             //if (container is null)
             //{
@@ -96,34 +161,52 @@ namespace Microsoft.VisualStudio.Serialization
             //return DecontainerizeObjectHierarchy(container);
         }
 
-        private static object? DecontainerizeObjectHierarchy(string jsonString)
+        private static (Type Type, object? Value) ConvertContainerJsonString(string jsonString)
         {
-            //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(jsonString);
-            if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
-            {
-                return null;
-            }
+            //if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
+            //{
+            //    return (null, null);
+            //}
 
-            //Type? type = Type.GetType(container.AssemblyQualifiedName);
-            // Type filtering will use FullName from the type
-            if (Type.GetType(container.AssemblyQualifiedName) is not Type type || container.Value is not JsonElement element)
+            if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container
+                || Type.GetType(container.AssemblyQualifiedName) is not Type type
+                || container.Value is not JsonElement element)
             {
                 throw new InvalidDataException();
             }
 
-            var value = JsonSerializer.Deserialize(element.GetRawText(), type);
-            if (!type.IsPrimitive && type != StringType)
+            return (type, JsonSerializer.Deserialize(element.GetRawText(), type));
+        }
+
+        private static object? DecontainerizeObjectHierarchy(Type type, object? value)
+        {
+            ////SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(jsonString);
+            //if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
+            //{
+            //    return null;
+            //}
+
+            ////Type? type = Type.GetType(container.AssemblyQualifiedName);
+            //// Type filtering will use FullName from the type
+            //if (Type.GetType(container.AssemblyQualifiedName) is not Type type || container.Value is not JsonElement element)
+            //{
+            //    throw new InvalidDataException();
+            //}
+
+            //var value = JsonSerializer.Deserialize(element.GetRawText(), type);
+            if (value is not null && !type.IsSimple())
             {
-                var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-                foreach (var property in properties)
+                foreach (var property in GetProperties(type))
                 {
-                    if (property.PropertyType == ObjectType && property.GetValue(value) is JsonElement propElement)
+                    var propertyType = property.PropertyType;
+                    if (IsContainerizable(propertyType) && property.GetValue(value) is JsonElement propElement)
                     {
-                        property.SetValue(value, DecontainerizeObjectHierarchy(propElement.GetRawText()));
+                        (Type elementType, object? elementValue) = ConvertContainerJsonString(propElement.GetRawText());
+                        property.SetValue(value, DecontainerizeObjectHierarchy(elementType, elementValue));
                         continue;
                     }
 
-                    if (property.PropertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
                     {
                         //var propValue = property.GetValue(value) as object?[];
                         //if (propValue is null)
@@ -135,9 +218,35 @@ namespace Microsoft.VisualStudio.Serialization
                         {
                             if (propArray[i] is JsonElement propArrayElement)
                             {
-                                propArray[i] = DecontainerizeObjectHierarchy(propArrayElement.GetRawText());
+                                (Type elementType, object? elementValue) = ConvertContainerJsonString(propArrayElement.GetRawText());
+                                propArray[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
                             }
                         }
+                    }
+
+                    if (TryUnwrap(ref propertyType) && !propertyType.IsSimple() && property.GetValue(value) is IList propCollection)
+                    {
+                        for (var i = 0; i < propCollection.Count; ++i)
+                        {
+                            if (propCollection[i] is JsonElement propCollectionElement)
+                            {
+                                (Type elementType, object? elementValue) = ConvertContainerJsonString(propCollectionElement.GetRawText());
+                                propCollection[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
+                            }
+                        }
+                        //foreach (var propItem in propCollection)
+                        //{
+                        //    if (propItem is not null)
+                        //    {
+                        //        DecontainerizeObjectHierarchy(propertyType, propItem);
+                        //    }
+                        //}
+                        continue;
+                    }
+
+                    if (!propertyType.IsSimple() && property.GetValue(value) is object propComplex)
+                    {
+                        property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propComplex));
                     }
                 }
             }

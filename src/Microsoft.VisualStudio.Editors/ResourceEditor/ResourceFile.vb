@@ -154,6 +154,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
+        '''' <summary>
+        '''' Used for deserialization.
+        '''' </summary>
+        'Public Sub New()
+        'End Sub
+
         ''' <summary>
         ''' IDisposable.Dispose()
         ''' </summary>

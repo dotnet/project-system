@@ -114,7 +114,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             'Return DirectCast((New BinaryFormatter).Deserialize(Stream), GenericComponentSerializationStore)
             'Return New GenericComponentSerializationStore
-            Return SerializationProvider.Deserialize(Of GenericComponentSerializationStore)(Stream)
+            Return DirectCast(SerializationProvider.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
 
         ''' <summary>
@@ -491,7 +491,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     'Return (New BinaryFormatter).Deserialize(MemoryStream)
                     'Return New MemoryStream
-                    Return SerializationProvider.Deserialize(Of Object)(MemoryStream)
+                    Return SerializationProvider.Deserialize(MemoryStream)
                 End If
             End Function
 

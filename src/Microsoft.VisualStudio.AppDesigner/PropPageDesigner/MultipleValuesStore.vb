@@ -131,7 +131,10 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     ConfigNames(i) = ConfigName
                     PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
-                    System.IO.File.AppendAllLines("C:\Workspace\MVS-Types.txt", New String() {Values(i).GetType().FullName})
+                    Dim typeName = Values(i).GetType().FullName
+                    If (typeName <> "System.String" And typeName <> "System.Boolean") Then
+                        System.IO.File.AppendAllLines("C:\Workspace\MVS-Types.txt", New String() {typeName})
+                    End If
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
                     Throw Common.CreateArgumentException(NameOf(Values))
