@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
                 {
-                    string targetPlatformAlias = await GetTargetPlatformAlias(complexTargetFramework.TargetPlatformIdentifier);
+                    string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
                         
                     if (string.IsNullOrEmpty(targetPlatformAlias))
                     {
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </summary>
         /// <param name="targetPlatformIdentifier"></param>
         /// <returns></returns>
-        private async Task<string> GetTargetPlatformAlias(string targetPlatformIdentifier)
+        private async Task<string> GetTargetPlatformAliasAsync(string targetPlatformIdentifier)
         {
             IProjectSubscriptionService? subscriptionService = _configuredProject.Services.ProjectSubscription;
             Assumes.Present(subscriptionService);
