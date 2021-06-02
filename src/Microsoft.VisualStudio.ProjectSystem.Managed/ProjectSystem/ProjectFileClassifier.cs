@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // unlikely and should be easy to work around if ever needed.
                 const string DevEnvExeRelativePath = "Common7\\IDE\\";
 
-                if (dir?.EndsWith(DevEnvExeRelativePath) == true)
+                if (dir?.EndsWith(DevEnvExeRelativePath, StringComparisons.Paths) == true)
                 {
                     dir = dir.Substring(0, dir.Length - DevEnvExeRelativePath.Length);
                 }
