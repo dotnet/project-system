@@ -44,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             set
             {
+                Requires.NotNull(value, nameof(value));
+
                 if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
                 {
                     _nuGetPackageFoldersString = value;
