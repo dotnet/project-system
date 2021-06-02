@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
@@ -13,6 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private string[] _nuGetPackageFolders = Array.Empty<string>();
         private string? _nuGetPackageFoldersString;
+        private string? _projectExtensionsPath;
 
         /// <summary>
         /// Gets and sets the <c>MSBuildProjectExtensionsPath</c> property value for this project.
@@ -21,7 +23,15 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <remarks>
         /// Example value: <c>"C:\repos\MySolution\MyProject\obj\"</c>
         /// </remarks>
-        public string? ProjectExtensionsPath { get; set; }
+        public string? ProjectExtensionsPath
+        {
+            get => _projectExtensionsPath;
+            set
+            {
+                _projectExtensionsPath = value;
+                EnsureTrailingSlash(ref _projectExtensionsPath);
+            }
+        }
 
         /// <summary>
         /// Gets and sets the paths found in the <c>NuGetPackageFolders</c> property value for this project.
@@ -53,6 +63,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             _vsInstallationDirectory = GetVSInstallationDirectory();
 
+            EnsureTrailingSlash(ref _windows);
+            EnsureTrailingSlash(ref _programFiles86);
+            EnsureTrailingSlash(ref _programFiles64);
+            EnsureTrailingSlash(ref _vsInstallationDirectory);
+
             return;
 
             static string? GetVSInstallationDirectory()
@@ -72,6 +87,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
 
                 return dir;
+            }
+        }
+
+        private static void EnsureTrailingSlash([AllowNull] ref string path)
+        {
+            if (path is not null)
+            {
+                path = PathHelper.EnsureTrailingSlash(path);
             }
         }
 
