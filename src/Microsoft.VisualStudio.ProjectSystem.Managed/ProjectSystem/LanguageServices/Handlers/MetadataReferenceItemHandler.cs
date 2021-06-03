@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using Microsoft.CodeAnalysis;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
+        private void AddToContextIfNotPresent(string fullPath, MetadataReferenceProperties properties, IProjectDiagnosticOutputService logger)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _addedPathsWithMetadata[fullPath] = properties;
         }
 
-        private void RemoveFromContextIfPresent(string fullPath, MetadataReferenceProperties properties, IProjectLogger logger)
+        private void RemoveFromContextIfPresent(string fullPath, MetadataReferenceProperties properties, IProjectDiagnosticOutputService logger)
         {
             if (_addedPathsWithMetadata.TryGetValue(fullPath, out MetadataReferenceProperties existingProperties))
             {
