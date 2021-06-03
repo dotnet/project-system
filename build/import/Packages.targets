@@ -100,7 +100,7 @@
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0" />
