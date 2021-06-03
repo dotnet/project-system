@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Build;
 using Microsoft.VisualStudio.Telemetry;
+using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
@@ -19,14 +20,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     [Export(typeof(IBuildUpToDateCheckProvider))]
     [Export(typeof(IActiveConfigurationComponent))]
     [ExportMetadata("BeforeDrainCriticalTasks", true)]
-    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider, IActiveConfigurationComponent, IDisposable
+    internal sealed partial class BuildUpToDateCheck : IBuildUpToDateCheckProvider2, IActiveConfigurationComponent, IDisposable
     {
         internal const string AppliesToExpression = ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject;
 
+        internal const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
+
         internal const string Link = "Link";
         internal const string DefaultSetName = "";
+        internal const string DefaultKindName = "";
 
         internal static readonly StringComparer SetNameComparer = StringComparers.ItemNames;
+        internal static readonly StringComparer KindNameComparer = StringComparers.ItemNames;
 
         private static ImmutableHashSet<string> NonCompilationItemTypes => ImmutableHashSet<string>.Empty
             .WithComparer(StringComparers.ItemTypes)
@@ -129,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        private bool CheckInputsAndOutputs(Log log, DateTime lastCheckedAtUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, CancellationToken token)
+        private bool CheckInputsAndOutputs(Log log, DateTime lastCheckedAtUtc, in TimestampCache timestampCache, UpToDateCheckImplicitConfiguredInput state, HashSet<string>? ignoreKinds, CancellationToken token)
         {
             // UpToDateCheckInput/Output/Built items have optional 'Set' metadata that determine whether they
             // are treated separately or not. If omitted, such inputs/outputs are included in the default set,
@@ -196,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 if (earliestOutputTime < state.LastItemsChangedAtUtc)
                 {
                     log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
-                    
+
                     if (log.Level <= LogLevel.Info)
                     {
                         foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
@@ -322,14 +327,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
-                    foreach (string path in upToDateCheckInputItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return (Path: absolutePath, IsRequired: true);
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return (Path: absolutePath, IsRequired: true);
+                        }
                     }
                 }
 
@@ -350,70 +363,129 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<string> CollectDefaultOutputs()
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
-                    foreach (string path in upToDateCheckOutputItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return absolutePath;
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return absolutePath;
+                        }
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableArray<string> upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(DefaultSetName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
-                    foreach (string path in upToDateCheckBuiltItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return absolutePath;
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return absolutePath;
+                        }
                     }
                 }
             }
 
             IEnumerable<(string Path, bool IsRequired)> CollectSetInputs(string setName)
             {
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
-                    foreach (string path in upToDateCheckInputItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckInputItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return (Path: absolutePath, IsRequired: true);
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return (Path: absolutePath, IsRequired: true);
+                        }
                     }
                 }
             }
 
             IEnumerable<string> CollectSetOutputs(string setName)
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
 
-                    foreach (string path in upToDateCheckOutputItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckOutputItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return absolutePath;
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return absolutePath;
+                        }
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableArray<string> upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsByKindBySetName.TryGetValue(setName, out ImmutableDictionary<string, ImmutableArray<string>>? upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
 
-                    foreach (string path in upToDateCheckBuiltItems)
+                    foreach ((string kind, ImmutableArray<string> items) in upToDateCheckBuiltItems)
                     {
-                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                        log.Verbose("    '{0}'", absolutePath);
-                        yield return absolutePath;
+                        if (ShouldIgnoreItems(kind, items))
+                        {
+                            continue;
+                        }
+
+                        foreach (string path in items)
+                        {
+                            string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                            log.Verbose("    '{0}'", absolutePath);
+                            yield return absolutePath;
+                        }
                     }
                 }
+            }
+
+            bool ShouldIgnoreItems(string kind, ImmutableArray<string> items)
+            {
+                if (ignoreKinds?.Contains(kind) != true)
+                {
+                    return false;
+                }
+
+                if (log.Level == LogLevel.Verbose)
+                {
+                    foreach (string path in items)
+                    {
+                        string absolutePath = _configuredProject.UnconfiguredProject.MakeRooted(path);
+                        log.Verbose("    Skipping '{0}' with ignored kind '{1}'", absolutePath, kind);
+                    }
+                }
+
+                return true;
             }
         }
 
@@ -579,7 +651,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             return true;
         }
 
-        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken = default)
+        Task<bool> IBuildUpToDateCheckProvider.IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, CancellationToken cancellationToken)
+        {
+            return IsUpToDateAsync(buildAction, logWriter, ImmutableDictionary<string, string>.Empty, cancellationToken);
+        }
+
+        public async Task<bool> IsUpToDateAsync(BuildAction buildAction, TextWriter logWriter, IImmutableDictionary<string, string> globalProperties, CancellationToken cancellationToken = default)
         {
             if (Volatile.Read(ref _isDisposed) != 0)
             {
@@ -612,10 +689,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 try
                 {
+                    HashSet<string>? ignoreKinds = null;
+                    if (globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString))
+                    {
+                        ignoreKinds = new HashSet<string>(new LazyStringSplit(ignoreKindsString, ';'), StringComparer.OrdinalIgnoreCase);
+                    }
+
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)
                     {
                         if (!CheckGlobalConditions(logger, lastCheckedAtUtc, implicitState) ||
-                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, token) ||
+                            !CheckInputsAndOutputs(logger, lastCheckedAtUtc, timestampCache, implicitState, ignoreKinds, token) ||
                             !CheckMarkers(logger, timestampCache, implicitState) ||
                             !CheckCopyToOutputDirectoryFiles(logger, timestampCache, implicitState, token) ||
                             !CheckCopiedOutputFiles(logger, timestampCache, implicitState, token))
