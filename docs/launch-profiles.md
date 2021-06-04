@@ -46,6 +46,14 @@ The important point is that launch profiles can contain arbitrary settings, and 
 
 New launch commands can be defined by implementing the [`IDebugProfileLaunchTargetsProvider`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Debug/IDebugProfileLaunchTargetsProvider.cs) interface (and optionally `IDebugProfileLaunchTargetsProvider2`, and `IDebugProfileLaunchTargetsProvider3`). The "Project" and "Executable" commands are both handled by the [`ProjectLaunchTargetsProvider`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Debug/ProjectLaunchTargetsProvider.cs), for example.
 
+## Representation in VS
+
+Generally, the .NET Project System does not interact with the JSON directly. Instead, the launch profiles are managed as a set of [`ILaunchProfile`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/ILaunchProfile.cs) instances collected into an [`ILaunchSettings`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/ILaunchSettings.cs). The settings are in turn managed by the [`ILaunchSettingsProvider`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/ILaunchSettingsProvider.cs).
+
+Certain commonly-used settings (such as the environment variables and command line arguments) are represented as individual properties on the `ILaunchProfile`; this encourages a certain level of consistency between profiles with different launch commands as the `ILaunchSettingsProvider` will take responsibility for serializing these to the JSON. Other settings can go in the dictionary accessed through the `OtherSettings` property.
+
+Code wishing to add a profile MEF-imports the `ILaunchSettingsProvider` and calls `ILaunchSettingsProvider.AddOrUpdateProfileAsync`, passing in its own implementation of the `ILaunchProfile` interface. Similar methods exist for removing a profile.
+
 ## Features
 
 ### MSBuild property/environment variable substitution
@@ -60,6 +68,6 @@ Each launch command can have its own associated UI for updating properties; see 
 
 ### In-memory profiles and settings
 
-VS supports in-memory profiles that are not committed to the launchSettings.json. For example, if no launchSettings.json is present the .NET Project System will automatically create an in-memory profile with the project's name and the "Project" launch command; this allows running a project without cluttering your project with a trivial launchSettings.json file. Only when the profile is edited through the UI do we create the file and commit the profile.
+VS supports in-memory profiles that are not committed to the launchSettings.json. For example, if no launchSettings.json is present the .NET Project System will automatically create an in-memory profile with the project's name and the "Project" launch command; this allows running a project without cluttering your project with a trivial launchSettings.json file. Only when the profile is edited through the UI do we create the file and commit the profile. Individual settings within a profile may also be in-memory only.
 
-Individual settings within a profile may also be in-memory only. 
+This is achieved by having your `ILaunchProfile` (or an individual setting's value) implement the optional [`IPersistOption`](https://github.com/dotnet/project-system/blob/main/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/Debug/IPersistOption.cs) interface.
