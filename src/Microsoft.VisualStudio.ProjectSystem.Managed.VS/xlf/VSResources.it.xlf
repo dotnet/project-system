@@ -108,7 +108,7 @@ Per eseguire il debug del progetto, aggiungere a questa soluzione un progetto es
       </trans-unit>
       <trans-unit id="StartupObjectNotSet">
         <source>(Not set)</source>
-        <target state="new">(Not set)</target>
+        <target state="translated">(Non impostato)</target>
         <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
