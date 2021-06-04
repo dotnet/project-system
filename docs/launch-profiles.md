@@ -34,6 +34,8 @@ This file contains a single launch profile named "Start (with native debugging)"
 - `environmentVariables`: A collection of name/value pairs, each specifying an environment variable and value to set. A setting in a profile can contain any arbitrary data so long as it can be represented in JSON (and even that isn't always a requirement; see "In-memory settings and profiles", below).
 - `nativeDebugging`: Specifies that the native code debugging engine should be used in addition to the managed code debugging engine.
 
+This is not an exhaustive list of settings, as we will discuss below.
+
 ## Launch Commands
 
 The most important setting in the launch profile is the `commandName` which specifies the _launch command_ associated with that profile.
