@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {

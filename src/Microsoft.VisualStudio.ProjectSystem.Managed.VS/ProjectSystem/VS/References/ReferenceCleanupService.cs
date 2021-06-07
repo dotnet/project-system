@@ -112,16 +112,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
             var referenceHandler = s_mapReferenceTypeToHandler[referenceUpdate.ReferenceInfo.ReferenceType];
 
-            IProjectSystemUpdateReferenceOperation command = s_nullCommand;
+            IProjectSystemUpdateReferenceOperation? command = null;
             if (referenceHandler != null)
             {
                 command = CreateCommand(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }
 
-            return command;
+            return command ?? s_nullCommand;
         }
 
-        private IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
+        private static IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
             AbstractReferenceHandler referenceHandler,
             ConfiguredProject selectedConfiguredProject, CancellationToken cancellationToken) =>
             referenceUpdate.Action switch
@@ -131,7 +131,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 ProjectSystemUpdateAction.UnsetTreatAsUsed => referenceHandler.CreateUnSetAttributeCommand(
                     selectedConfiguredProject, referenceUpdate),
                 ProjectSystemUpdateAction.Remove => referenceHandler.CreateRemoveReferenceCommand(
-                    selectedConfiguredProject, referenceUpdate)
+                    selectedConfiguredProject, referenceUpdate),
+                _ => throw new NotImplementedException()
             };
     }
 }
