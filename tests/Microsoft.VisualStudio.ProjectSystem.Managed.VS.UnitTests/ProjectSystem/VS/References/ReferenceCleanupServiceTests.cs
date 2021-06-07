@@ -19,9 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private const string _projectPath1 = "C:\\Dev\\Solution\\Project\\Project1.csproj";
         private const string _projectPath2 = "C:\\Dev\\Solution\\Project\\Project2.csproj";
         private const string _projectPath3 = "C:\\Dev\\Solution\\Project\\Project3.csproj";
-
-        private const string _package1 = "package1";
-        private const string _package2 = "package2";
         private const string _package3 = "package3";
 
         private const string _assembly1 = "assembly1";
@@ -73,57 +70,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         }
 
         [Fact]
-        public async Task UpdateReferencesAsync_RemovePackages_RemovedPackageMarkedAsUnused()
+        public async Task UpdateReferenceAsync_TryUpdateReferenceAsync_ShouldThrowException()
         {
             var referenceCleanupService = Setup();
             var referenceUpdate1 =
                 new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
 
-            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
-
-            _packageServicesMock1!.Verify(c => c.RemoveAsync(_package3), Times.Once);
-            Assert.True(wasUpdated);
+            await Assert.ThrowsAsync<NotImplementedException>(() =>
+                referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None)
+                );
         }
 
-        [Fact(Skip = "Pending")]
-        public async Task UpdateReferencesAsync_RemovePackages_CannotRemovePackageThatDoesntExist()
+        [Fact]
+        public async Task UpdateReferencesAsync_GetUpdateReferenceOperationAsync_CreateOperation()
         {
             var referenceCleanupService = Setup();
             var referenceUpdate1 =
                 new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.Remove, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, "UnknownPackage", true));
 
-            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+            var operation = await referenceCleanupService.GetUpdateReferenceOperationAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
 
-            _packageServicesMock1!.Verify(c => c.RemoveAsync(It.IsAny<string>()), Times.Never);
-            Assert.False(wasUpdated);
+            Assert.NotNull(operation);
         }
 
         [Fact]
-        public async Task UpdateReferenceAsync_TreatAsUsed_ReferencesChangedToTreatAsUsed()
+        public async Task UpdateReferencesAsync_GetUpdateReferenceOperationAsync_FailedToCreateOperation()
         {
-            s_item = null;
             var referenceCleanupService = Setup();
             var referenceUpdate1 =
-                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.SetTreatAsUsed, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
+                new ProjectSystemReferenceUpdate((ProjectSystemUpdateAction)3, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, "UnknownPackage", true));
 
-            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
+            var operation = await referenceCleanupService.GetUpdateReferenceOperationAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
 
-            s_item!.As<IProjectItem>().Verify(c => c.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(true), null), Times.Once);
-            Assert.True(wasUpdated);
-        }
-
-        [Fact]
-        public async Task UpdateReferenceAsync_TreatAsUsed_ReferencesChangedToTreatAsUnused()
-        {
-            s_item = null;
-            var referenceCleanupService = Setup();
-            var referenceUpdate1 =
-                new ProjectSystemReferenceUpdate(ProjectSystemUpdateAction.UnsetTreatAsUsed, new ProjectSystemReferenceInfo(ProjectSystemReferenceType.Package, _package3, true));
-
-            bool wasUpdated = await referenceCleanupService.TryUpdateReferenceAsync(_projectPath1, referenceUpdate1, CancellationToken.None);
-
-            s_item!.As<IProjectItem>().Verify(c => c.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, PropertySerializer.SimpleTypes.ToString(false), null), Times.Once);
-            Assert.True(wasUpdated);
+            Assert.Equal(ReferenceCleanupService.NullCommand, operation);
         }
 
         private ReferenceCleanupService Setup()
