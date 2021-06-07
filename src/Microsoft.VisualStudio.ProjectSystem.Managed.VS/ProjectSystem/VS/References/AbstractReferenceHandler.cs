@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return value != null && PropertySerializer.SimpleTypes.ToValue<bool>(value);
         }
 
-        private async Task<IProjectItem> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject,
+        private async Task<IProjectItem?> GetProjectItemsAsync(ConfiguredProject selectedConfiguredProject,
             string itemSpecification)
         {
             var projectItems = await GetUnresolvedReferencesAsync(selectedConfiguredProject);
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             return new SetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
         }
 
-        internal IProjectSystemUpdateReferenceOperation CreateUnSetAttributeCommand(ConfiguredProject selectedConfiguredProject,
+        internal IProjectSystemUpdateReferenceOperation CreateUnsetAttributeCommand(ConfiguredProject selectedConfiguredProject,
             ProjectSystemReferenceUpdate referenceUpdate)
         {
             return new UnsetAttributeCommand(this, selectedConfiguredProject, referenceUpdate.ReferenceInfo.ItemSpecification);
@@ -109,7 +109,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         {
             Dictionary<string, string> propertyValues = new ();
 
-            IProjectItem items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+            IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+
+            if (items is null)
+            {
+                return propertyValues;
+            }
 
             var propertyNames = await items.Metadata.GetPropertyNamesAsync();
 
@@ -124,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 
         public async Task SetAttributesAsync(ConfiguredProject selectedConfiguredProject, string itemSpecification, Dictionary<string, string> projectPropertiesValues)
         {
-            IProjectItem items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
+            IProjectItem? items = await GetProjectItemsAsync(selectedConfiguredProject, itemSpecification);
 
             if (items != null)
             {

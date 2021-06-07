@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             {
                 ProjectSystemUpdateAction.SetTreatAsUsed => referenceHandler.CreateSetAttributeCommand(
                     selectedConfiguredProject, referenceUpdate),
-                ProjectSystemUpdateAction.UnsetTreatAsUsed => referenceHandler.CreateUnSetAttributeCommand(
+                ProjectSystemUpdateAction.UnsetTreatAsUsed => referenceHandler.CreateUnsetAttributeCommand(
                     selectedConfiguredProject, referenceUpdate),
                 ProjectSystemUpdateAction.Remove => referenceHandler.CreateRemoveReferenceCommand(
                     selectedConfiguredProject, referenceUpdate),

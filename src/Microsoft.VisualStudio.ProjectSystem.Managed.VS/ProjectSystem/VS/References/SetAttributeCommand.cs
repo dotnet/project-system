@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
-    internal class SetAttributeCommand : BaseSetAttributeCommand
+    internal class SetAttributeCommand : SetTreatAsUsedAttributeCommand
     {
         public SetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
         : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification)

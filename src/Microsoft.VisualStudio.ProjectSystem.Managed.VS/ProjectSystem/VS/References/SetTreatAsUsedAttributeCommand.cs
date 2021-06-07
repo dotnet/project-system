@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
-    internal abstract class BaseSetAttributeCommand : IProjectSystemUpdateReferenceOperation
+    internal abstract class SetTreatAsUsedAttributeCommand : IProjectSystemUpdateReferenceOperation
     {
         private readonly ConfiguredProject _selectedConfiguredProject;
         private readonly string _itemSpecification;
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         protected string SetValue = PropertySerializer.SimpleTypes.ToString(true);
         protected string UnsetValue = PropertySerializer.SimpleTypes.ToString(false);
 
-        public BaseSetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
+        public SetTreatAsUsedAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
         {
             _referenceHandler = abstractReferenceHandler;
             _selectedConfiguredProject = selectedConfiguredProject;
