@@ -21,12 +21,6 @@ namespace Microsoft.VisualStudio.Serialization
             }
             // Utf8JsonReader/Writer are more efficient
             var writer = new StreamWriter(stream);
-            //var type = value.GetType();
-            //var container = new BasicSerializationContainer
-            //{
-            //    AssemblyQualifiedName = type.AssemblyQualifiedName,
-            //    Value = value
-            //};
             var container = ContainerizeObjectHierarchy(value.GetType(), value);
             var jsonString = JsonSerializer.Serialize(container);
             File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
@@ -37,16 +31,16 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static readonly Type ObjectType = typeof(object);
         private static readonly Type ObjectArrayType = typeof(object[]);
-        private static readonly Type StringType = typeof(string);
+        //private static readonly Type StringType = typeof(string);
 
         private static PropertyInfo[] GetProperties(Type type) => type
             .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy)
             .Where(pi => pi.CanRead && pi.CanWrite && pi.GetCustomAttribute<JsonIgnoreAttribute>() is null)
             .ToArray();
 
-        // TODO: IsInterface doesn't work since we cannot assign SerializationContainer to an interface property
-        private static bool IsContainerizable(Type type) =>
-            type == ObjectType; //|| type.IsInterface;
+        //// TODO: IsInterface doesn't work since we cannot assign SerializationContainer to an interface property
+        //private static bool IsContainerizable(Type type) =>
+        //    type == ObjectType; //|| type.IsInterface;
 
         // https://github.com/Azure/autorest.powershell/blob/67d99227e4cb8b03ca3168731bcbe23ae14d35e5/powershell/resources/psruntime/BuildTime/PsExtensions.cs#L37-L45
         private static bool IsSimple(this Type type) =>
@@ -56,74 +50,84 @@ namespace Microsoft.VisualStudio.Serialization
             || type == typeof(decimal);
 
         // https://github.com/Azure/autorest.powershell/blob/67d99227e4cb8b03ca3168731bcbe23ae14d35e5/powershell/resources/psruntime/BuildTime/PsExtensions.cs#L16-L35
-        public static bool TryUnwrap(ref Type type)
+        public static Type? GetElementType(Type type)
         {
             if (type.IsArray)
             {
-                type = type.GetElementType();
-                return true;
+                return type.GetElementType();
             }
 
-            if (type.IsGenericType
-                && (type.GetGenericTypeDefinition() == typeof(Nullable<>) || typeof(IEnumerable<>).IsAssignableFrom(type)))
+            if (type.IsGenericType && typeof(IEnumerable<>).IsAssignableFrom(type))
             {
-                type = type.GetGenericArguments().First();
-                return true;
+                return type.GetGenericArguments().First();
             }
 
-            return false;
+            return null;
         }
 
         private static SerializationContainer ContainerizeObjectHierarchy(Type type, object value)
         {
-            //var type = value.GetType();
             if(!type.IsSimple())
             {
                 foreach (var property in GetProperties(type))
                 {
+                    var propertyValue = property.GetValue(value);
+                    if(propertyValue is null)
+                    {
+                        continue;
+                    }
+
                     var propertyType = property.PropertyType;
-                    if (IsContainerizable(propertyType) && property.GetValue(value) is object propValue)
+                    if ((propertyType == ObjectArrayType || (GetElementType(propertyType) is Type elementType && !elementType.IsSimple()))
+                        && propertyValue is IList propertyCollection)
                     {
-                        property.SetValue(value, ContainerizeObjectHierarchy(propValue.GetType(), propValue));
-                        continue;
-                    }
-
-                    if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
-                    {
-                        //var propValue = property.GetValue(value) as object?[];
-                        for (var i = 0; i < propArray.Length; ++i)
+                        for (var i = 0; i < propertyCollection.Count; ++i)
                         {
-                            if (propArray[i] is object propArrayElement)
+                            if (propertyCollection[i] is not null)
                             {
-                                propArray[i] = ContainerizeObjectHierarchy(propArrayElement.GetType(), propArrayElement);
+                                var container = ContainerizeObjectHierarchy(propertyCollection[i].GetType(), propertyCollection[i]);
+                                // Only assign the container itself if the property is defined as an object array.
+                                propertyCollection[i] = propertyType == ObjectArrayType ? container : container.Value;
                             }
                         }
                         continue;
                     }
 
-                    if (TryUnwrap(ref propertyType) && !propertyType.IsSimple() && property.GetValue(value) is IList propCollection)
+                    //if (propertyType == ObjectArrayType && propertyValue is object?[] propertyArray)
+                    //{
+                    //    for (var i = 0; i < propertyArray.Length; ++i)
+                    //    {
+                    //        if (propertyArray[i] is object propertyElement)
+                    //        {
+                    //            propertyArray[i] = ContainerizeObjectHierarchy(propertyElement.GetType(), propertyElement);
+                    //        }
+                    //    }
+                    //    continue;
+                    //}
+
+                    //if (GetElementType(propertyType) is Type elementType && !elementType.IsSimple() && propertyValue is IList propertyList)
+                    //{
+                    //    for (var i = 0; i < propertyList.Count; ++i)
+                    //    {
+                    //        if (propertyList[i] is object propertyElement)
+                    //        {
+                    //            propertyList[i] = ContainerizeObjectHierarchy(propertyElement.GetType(), propertyElement).Value;
+                    //        }
+                    //    }
+                    //    continue;
+                    //}
+
+                    if (propertyType == ObjectType || !propertyType.IsSimple())
                     {
-                        for (var i = 0; i < propCollection.Count; ++i)
-                        {
-                            if (propCollection[i] is object propCollectionElement)
-                            {
-                                propCollection[i] = ContainerizeObjectHierarchy(propCollectionElement.GetType(), propCollectionElement).Value;
-                            }
-                        }
-                        //foreach(var propItem in propCollection)
-                        //{
-                        //    if(propItem is not null)
-                        //    {
-                        //        ContainerizeObjectHierarchy(propItem.GetType(), propItem);
-                        //    }
-                        //}
-                        continue;
+                        var container = ContainerizeObjectHierarchy(propertyValue.GetType(), propertyValue);
+                        // Only assign the container itself if the property is defined as an object.
+                        property.SetValue(value, propertyType == ObjectType ? container : container.Value);
                     }
 
-                    if (!propertyType.IsSimple() && property.GetValue(value) is object propComplex)
-                    {
-                        property.SetValue(value, ContainerizeObjectHierarchy(propComplex.GetType(), propComplex).Value);
-                    }
+                    //if (!propertyType.IsSimple())
+                    //{
+                    //    property.SetValue(value, ContainerizeObjectHierarchy(propertyValue.GetType(), propertyValue).Value);
+                    //}
                 }
             }
 
@@ -140,6 +144,7 @@ namespace Microsoft.VisualStudio.Serialization
         {
             var streamAsString = new StreamReader(stream).ReadToEnd();
             File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { streamAsString });
+            // Type filtering will use FullName from the type
             (Type type, object? value) = ConvertContainerJsonString(streamAsString);
             return DecontainerizeObjectHierarchy(type, value);
             //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(streamAsString);
@@ -163,11 +168,6 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static (Type Type, object? Value) ConvertContainerJsonString(string jsonString)
         {
-            //if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
-            //{
-            //    return (null, null);
-            //}
-
             if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container
                 || Type.GetType(container.AssemblyQualifiedName) is not Type type
                 || container.Value is not JsonElement element)
@@ -180,74 +180,80 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static object? DecontainerizeObjectHierarchy(Type type, object? value)
         {
-            ////SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(jsonString);
-            //if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container)
-            //{
-            //    return null;
-            //}
-
-            ////Type? type = Type.GetType(container.AssemblyQualifiedName);
-            //// Type filtering will use FullName from the type
-            //if (Type.GetType(container.AssemblyQualifiedName) is not Type type || container.Value is not JsonElement element)
-            //{
-            //    throw new InvalidDataException();
-            //}
-
-            //var value = JsonSerializer.Deserialize(element.GetRawText(), type);
             if (value is not null && !type.IsSimple())
             {
                 foreach (var property in GetProperties(type))
                 {
+                    var propertyValue = property.GetValue(value);
+                    if (propertyValue is null)
+                    {
+                        continue;
+                    }
+
                     var propertyType = property.PropertyType;
-                    if (IsContainerizable(propertyType) && property.GetValue(value) is JsonElement propElement)
+                    if ((propertyType == ObjectArrayType || (GetElementType(propertyType) is Type testElementType && !testElementType.IsSimple()))
+                        && propertyValue is IList propertyCollection)
                     {
-                        (Type elementType, object? elementValue) = ConvertContainerJsonString(propElement.GetRawText());
-                        property.SetValue(value, DecontainerizeObjectHierarchy(elementType, elementValue));
+                        for (var i = 0; i < propertyCollection.Count; ++i)
+                        {
+                            if (propertyCollection[i] is not null)
+                            {
+                                Type elementType = propertyCollection[i].GetType();
+                                object? elementValue = propertyCollection[i];
+                                if (propertyCollection[i] is JsonElement jsonElement)
+                                {
+                                    (elementType, elementValue) = ConvertContainerJsonString(jsonElement.GetRawText());
+                                }
+                                propertyCollection[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
+                            }
+                        }
                         continue;
                     }
 
-                    if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    //if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
+                    //{
+                    //    for (var i = 0; i < propArray.Length; ++i)
+                    //    {
+                    //        if (propArray[i] is JsonElement propArrayElement)
+                    //        {
+                    //            (Type elementType, object? elementValue) = ConvertContainerJsonString(propArrayElement.GetRawText());
+                    //            propArray[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
+                    //        }
+                    //    }
+                    //}
+
+                    //if (GetElementType(propertyType) is Type collectionElementType && !collectionElementType.IsSimple() && property.GetValue(value) is IList propCollection)
+                    //{
+                    //    for (var i = 0; i < propCollection.Count; ++i)
+                    //    {
+                    //        if (propCollection[i] is object propCollectionElement)
+                    //        {
+                    //            propCollection[i] = DecontainerizeObjectHierarchy(propCollectionElement.GetType(), propCollectionElement);
+                    //        }
+                    //    }
+                    //    continue;
+                    //}
+
+                    if (propertyType == ObjectType || !propertyType.IsSimple())
                     {
-                        //var propValue = property.GetValue(value) as object?[];
-                        //if (propValue is null)
-                        //{
-                        //    throw new InvalidDataException();
-                        //}
-                        //var objectArray = JsonSerializer.Deserialize<object?[]>(propValue.ToString());
-                        for (var i = 0; i < propArray.Length; ++i)
+                        if(propertyValue is JsonElement jsonElement)
                         {
-                            if (propArray[i] is JsonElement propArrayElement)
-                            {
-                                (Type elementType, object? elementValue) = ConvertContainerJsonString(propArrayElement.GetRawText());
-                                propArray[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
-                            }
+                            (propertyType, propertyValue) = ConvertContainerJsonString(jsonElement.GetRawText());
                         }
+                        property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propertyValue));
                     }
 
-                    if (TryUnwrap(ref propertyType) && !propertyType.IsSimple() && property.GetValue(value) is IList propCollection)
-                    {
-                        for (var i = 0; i < propCollection.Count; ++i)
-                        {
-                            if (propCollection[i] is JsonElement propCollectionElement)
-                            {
-                                (Type elementType, object? elementValue) = ConvertContainerJsonString(propCollectionElement.GetRawText());
-                                propCollection[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
-                            }
-                        }
-                        //foreach (var propItem in propCollection)
-                        //{
-                        //    if (propItem is not null)
-                        //    {
-                        //        DecontainerizeObjectHierarchy(propertyType, propItem);
-                        //    }
-                        //}
-                        continue;
-                    }
+                    //if (propertyType == ObjectType && property.GetValue(value) is JsonElement propElement)
+                    //{
+                    //    (Type elementType, object? elementValue) = ConvertContainerJsonString(propElement.GetRawText());
+                    //    property.SetValue(value, DecontainerizeObjectHierarchy(elementType, elementValue));
+                    //    continue;
+                    //}
 
-                    if (!propertyType.IsSimple() && property.GetValue(value) is object propComplex)
-                    {
-                        property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propComplex));
-                    }
+                    //if (!propertyType.IsSimple())
+                    //{
+                    //    property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propertyValue));
+                    //}
                 }
             }
 
