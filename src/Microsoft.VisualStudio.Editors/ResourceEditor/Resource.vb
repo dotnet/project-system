@@ -2338,11 +2338,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Set
                     _value = Value
                     If (_resource IsNot Nothing And TypeOf _value IsNot JsonElement) Then
-                        _resource._resXDataNode = DirectCast(
-                            VB.IIf(FileName Is Nothing,
-                                _resource.NewResXDataNode(Name, Comment, Value),
-                                _resource.NewResXDataNode(Name, Comment, FileName, TypeName, Encoding.GetEncoding(TextFileEncodingWebName))),
-                            ResXDataNode)
+                        _resource._resXDataNode = If(FileName Is Nothing,
+                            _resource.NewResXDataNode(Name, Comment, Value),
+                            _resource.NewResXDataNode(Name, Comment, FileName, TypeName, Encoding.GetEncoding(TextFileEncodingWebName)))
                     End If
                 End Set
             End Property
@@ -2417,7 +2415,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Public Property ResXDataNodeSerialization As ResXDataNodeSerializable
             Get
-                If (_resXDataNode Is Nothing And _resXDataNodeSerialization IsNot Nothing) Then
+                If (_resXDataNodeSerialization IsNot Nothing) Then
                     Return _resXDataNodeSerialization
                 End If
 
@@ -2426,7 +2424,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     .Comment = _resXDataNode.Comment,
                     .Value = TryGetValue()
                 }
-                    If (_resXDataNode.FileRef IsNot Nothing) Then
+
+                If (_resXDataNode.FileRef IsNot Nothing) Then
                     serializable.FileName = _resXDataNode.FileRef.FileName
                     serializable.TypeName = _resXDataNode.FileRef.TypeName
                     serializable.TextFileEncodingWebName = _resXDataNode.FileRef.TextFileEncoding.WebName
