@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="DefaultNewProfileName">
         <source>Profile {0}</source>
-        <target state="new">Profile {0}</target>
+        <target state="translated">Profil {0}</target>
         <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
       </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
@@ -198,7 +198,7 @@ Pokud chcete projekt ladit, přidejte do řešení spustitelný projekt, který 
       </trans-unit>
       <trans-unit id="XprojNotSupported">
         <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
-        <target state="translated">Soubory projektu xproj už nejsou podporované. Podrobnosti o migraci na csproj najdete na adrese https://docs.microsoft.com/dotnet/core/migration/.</target>
+        <target state="translated">Soubory projektů xproj už nejsou podporovány. Podrobnosti o migraci na csproj viz https://docs.microsoft.com/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">
