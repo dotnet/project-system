@@ -100,6 +100,42 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
+  <!-- TODO use fwlink for HelpUrl -->
+  <BoolProperty Name="UseWindowsForms"
+                DisplayName="Windows Forms"
+                Description="Enable Windows Forms for this project."
+                HelpUrl="https://docs.microsoft.com/dotnet/core/project-sdk/msbuild-props-desktop"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "OutputType" "WinExe")
+            (has-net-core-app-version-or-greater "3.0"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- TODO use fwlink for HelpUrl -->
+  <BoolProperty Name="UseWPF"
+                DisplayName="Windows Presentation Foundation"
+                Description="Enable WPF for this project."
+                HelpUrl="https://docs.microsoft.com/dotnet/core/project-sdk/msbuild-props-desktop"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "OutputType" "WinExe")
+            (has-net-core-app-version-or-greater "3.0"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."
