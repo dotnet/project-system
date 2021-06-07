@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 { ProjectSystemReferenceType.Assembly, new AssemblyReferenceHandler() }
             };
 
-        private static readonly IProjectSystemUpdateReferenceOperation s_nullCommand = new NullCommand();
+        public static readonly IProjectSystemUpdateReferenceOperation NullCommand = new NullCommand();
 
         private readonly Lazy<IProjectService2> _projectService;
         protected IProjectService2 ProjectService => _projectService.Value;
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 command = CreateCommand(referenceUpdate, referenceHandler, activeConfiguredProject, cancellationToken);
             }
 
-            return command ?? s_nullCommand;
+            return command ?? NullCommand;
         }
 
         private static IProjectSystemUpdateReferenceOperation? CreateCommand(ProjectSystemReferenceUpdate referenceUpdate,
@@ -132,7 +132,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                     selectedConfiguredProject, referenceUpdate),
                 ProjectSystemUpdateAction.Remove => referenceHandler.CreateRemoveReferenceCommand(
                     selectedConfiguredProject, referenceUpdate),
-                _ => throw new NotImplementedException()
+                _ => null
             };
     }
 }
