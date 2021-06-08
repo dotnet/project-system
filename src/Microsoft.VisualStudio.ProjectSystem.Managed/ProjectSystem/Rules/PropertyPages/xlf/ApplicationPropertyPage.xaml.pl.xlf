@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="new">Allow publishing outside of Visual Studio, such as via "dotnet publish".</target>
+        <target state="translated">Zezwalaj na publikowanie poza programem Visual Studio, na przykład za pomocą polecenia „dotnet publish”.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">Publikowanie</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
@@ -54,12 +54,12 @@
       </trans-unit>
       <trans-unit id="Category|Packaging|Description">
         <source>Packaging settings for the application.</source>
-        <target state="new">Packaging settings for the application.</target>
+        <target state="translated">Ustawienia pakietu dla aplikacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Packaging|DisplayName">
         <source>Packaging</source>
-        <target state="new">Packaging</target>
+        <target state="translated">Pakowanie</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
