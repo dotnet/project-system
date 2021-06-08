@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Moq;
 using Xunit;
 
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\ProjectFolder\Myproject.csproj");
             var context = IWorkspaceProjectContextMockFactory.CreateForMetadataReferences(project, onReferenceAdded, onReferenceRemoved);
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             var handler = CreateInstance(project, context);
             var projectDir = Path.GetDirectoryName(project.FullPath);

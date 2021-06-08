@@ -3,16 +3,16 @@
 using System;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Logging
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     public class ProjectLoggingExtensionsTests
     {
         [Fact]
         public void BeginBatch_NullAsLogger_ThrowsArgumentNull()
         {
-            Assert.Throws<ArgumentNullException>("logger", () =>
+            Assert.Throws<ArgumentNullException>("outputService", () =>
             {
-                ProjectLoggerExtensions.BeginBatch(null!);
+                new BatchLogger(null!);
             });
         }
 
@@ -22,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [InlineData(-1)]
         public void BeginBatch_SetIndentLevelToLessThanZero_ThrowsArgumentOutOfRange(int indentLevel)
         {
-            var logger = new ProjectLogger();
-            var batch = ProjectLoggerExtensions.BeginBatch(logger);
+            var logger = new MockOutputService();
+            var batch = new BatchLogger(logger);
 
             Assert.Throws<ArgumentOutOfRangeException>("value", () =>
             {
@@ -38,9 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [InlineData(4, "                ")]
         public void BeginBatch_IndentLevel_AppendsIndentToWriteLine(int indentLevel, string expected)
         {
-            var logger = new ProjectLogger();
+            var logger = new MockOutputService();
 
-            using (var batch = ProjectLoggerExtensions.BeginBatch(logger))
+            using (var batch = new BatchLogger(logger))
             {
                 batch.IndentLevel = indentLevel;
                 batch.WriteLine(string.Empty);
@@ -54,9 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [InlineData(false)]
         public void BeginBatch_IsEnabled_ReturnsLoggerIsEnabled(bool isEnabled)
         {
-            var logger = new ProjectLogger() { IsEnabled = isEnabled };
+            var logger = new MockOutputService() { IsEnabled = isEnabled };
 
-            var batch = ProjectLoggerExtensions.BeginBatch(logger);
+            var batch = new BatchLogger(logger);
 
             Assert.Equal(batch.IsEnabled, logger.IsEnabled);
         }
@@ -64,9 +64,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [Fact]
         public void BeginBatch_WhenUnderlyingLoggerIsNotEnabled_DoesNotLog()
         {
-            var logger = new ProjectLogger() { IsEnabled = false };
+            var logger = new MockOutputService() { IsEnabled = false };
 
-            using (var batch = ProjectLoggerExtensions.BeginBatch(logger))
+            using (var batch = new BatchLogger(logger))
             {
                 batch.WriteLine("Hello World!");
             }
@@ -77,9 +77,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [Fact]
         public void BeginBatch_WhenUnderlyingLoggerIsEnabled_Logs()
         {
-            var logger = new ProjectLogger() { IsEnabled = true };
+            var logger = new MockOutputService() { IsEnabled = true };
 
-            using (var batch = ProjectLoggerExtensions.BeginBatch(logger))
+            using (var batch = new BatchLogger(logger))
             {
                 batch.WriteLine("Hello World!");
             }
@@ -90,9 +90,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         [Fact]
         public void BeginBatch_CanLogMultipleWriteLines()
         {
-            var logger = new ProjectLogger() { IsEnabled = true };
+            var logger = new MockOutputService() { IsEnabled = true };
 
-            using (var batch = ProjectLoggerExtensions.BeginBatch(logger))
+            using (var batch = new BatchLogger(logger))
             {
                 batch.WriteLine("Line1");
                 batch.IndentLevel = 1;
@@ -105,20 +105,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
             Assert.Equal("Line1\r\n    Line2\r\nLine3", logger.Text, ignoreLineEndingDifferences: true);
         }
 
-        private class ProjectLogger : IProjectLogger
+        private class MockOutputService : IProjectDiagnosticOutputService
         {
-            public ProjectLogger()
-            {
-                IsEnabled = true;
-            }
-
-            public bool IsEnabled { get; set; }
+            public bool IsEnabled { get; set; } = true;
 
             public string? Text { get; set; }
 
-            public void WriteLine(in StringFormat format)
+            public void WriteLine(string outputMessage)
             {
-                Text = format.Text;
+                Text = outputMessage;
             }
         }
     }

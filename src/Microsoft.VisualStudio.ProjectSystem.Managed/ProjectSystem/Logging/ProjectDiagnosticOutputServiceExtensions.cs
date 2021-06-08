@@ -2,58 +2,15 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Logging
+namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
-    ///     Provides extension methods for <see cref="IProjectLogger"/> instances.
+    ///     Provides extension methods for <see cref="IProjectDiagnosticOutputService"/> instances.
     /// </summary>
-    internal static partial class ProjectLoggerExtensions
+    internal static partial class ProjectDiagnosticOutputServiceExtensions
     {
         /// <summary>
-        ///     Begins a logging batch that batches up logging writes
-        ///     and writes them all at once on <see cref="IDisposable.Dispose"/>.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="logger"/> is <see langword="null"/>
-        /// </exception>
-        public static IProjectLoggerBatch BeginBatch(this IProjectLogger logger)
-        {
-            Requires.NotNull(logger, nameof(logger));
-
-            return new ProjectLoggerBatch(logger);
-        }
-
-        /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the current line terminator to the log.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="logger"/> is <see langword="null"/>
-        /// </exception>
-        public static void WriteLine(this IProjectLogger logger)
-        {
-            Requires.NotNull(logger, nameof(logger));
-
-            logger.WriteLine(new StringFormat(string.Empty));
-        }
-
-        /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
-        ///     writes the specified text, followed by the current line terminator,
-        ///     to the log.
-        /// </summary>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="logger"/> is <see langword="null"/>
-        /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string text)
-        {
-            Requires.NotNull(logger, nameof(logger));
-
-            logger.WriteLine(new StringFormat(text));
-        }
-
-        /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     If <see cref="IProjectDiagnosticOutputService.IsEnabled"/> is <see langword="true"/>,
         ///     writes the text representation of the specified object, followed
         ///     by the current line terminator, to the log using the specified
         ///     format information.
@@ -68,15 +25,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object? argument)
+        public static void WriteLine(this IProjectDiagnosticOutputService logger, string format, object? argument)
         {
             Requires.NotNull(logger, nameof(logger));
 
-            logger.WriteLine(new StringFormat(format, argument));
+            if (logger.IsEnabled)
+            {
+                logger.WriteLine(string.Format(format, argument));
+            }
         }
 
         /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     If <see cref="IProjectDiagnosticOutputService.IsEnabled"/> is <see langword="true"/>,
         ///     writes the text representation of the specified objects, followed
         ///     by the current line terminator, to the log using the specified format
         ///     information.
@@ -91,15 +51,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object? argument1, object? argument2)
+        public static void WriteLine(this IProjectDiagnosticOutputService logger, string format, object? argument1, object? argument2)
         {
             Requires.NotNull(logger, nameof(logger));
 
-            logger.WriteLine(new StringFormat(format, argument1, argument2));
+            if (logger.IsEnabled)
+            {
+                logger.WriteLine(string.Format(format, argument1, argument2));
+            }
         }
 
         /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     If <see cref="IProjectDiagnosticOutputService.IsEnabled"/> is <see langword="true"/>,
         ///     writes the text representation of the specified objects, followed
         ///     by the current line terminator, to the log using the specified
         ///     format information.
@@ -114,15 +77,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, object? argument1, object? argument2, object? argument3)
+        public static void WriteLine(this IProjectDiagnosticOutputService logger, string format, object? argument1, object? argument2, object? argument3)
         {
             Requires.NotNull(logger, nameof(logger));
 
-            logger.WriteLine(new StringFormat(format, argument1, argument2, argument3));
+            if (logger.IsEnabled)
+            {
+                logger.WriteLine(string.Format(format, argument1, argument2, argument3));
+            }
         }
 
         /// <summary>
-        ///     If <see cref="IProjectLogger.IsEnabled"/> is <see langword="true"/>,
+        ///     If <see cref="IProjectDiagnosticOutputService.IsEnabled"/> is <see langword="true"/>,
         ///     writes the  text representation of the specified array of objects,
         ///     followed  by the current line terminator, to the log using the
         ///     specified format information.
@@ -137,11 +103,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Logging
         /// <exception cref="FormatException">
         ///     The format specification in <paramref name="format"/> is invalid.
         /// </exception>
-        public static void WriteLine(this IProjectLogger logger, string format, params object?[] arguments)
+        public static void WriteLine(this IProjectDiagnosticOutputService logger, string format, params object?[] arguments)
         {
             Requires.NotNull(logger, nameof(logger));
 
-            logger.WriteLine(new StringFormat(format, arguments));
+            if (logger.IsEnabled)
+            {
+                logger.WriteLine(string.Format(format, arguments));
+            }
         }
     }
 }

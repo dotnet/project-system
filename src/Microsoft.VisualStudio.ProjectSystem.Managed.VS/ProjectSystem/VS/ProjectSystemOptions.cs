@@ -1,6 +1,5 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,21 +14,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string FastUpToDateEnabledSettingKey = @"ManagedProjectSystem\FastUpToDateCheckEnabled";
         private const string FastUpToDateLogLevelSettingKey = @"ManagedProjectSystem\FastUpToDateLogLevel";
         private const string UseDesignerByDefaultSettingKey = @"ManagedProjectSystem\UseDesignerByDefault";
-        private readonly IProjectService _projectService;
         private readonly IVsUIService<ISettingsManager> _settingsManager;
         private readonly JoinableTaskContext _joinableTaskContext;
-        private readonly Lazy<bool> _isProjectOutputPaneEnabled;
 
         [ImportingConstructor]
-        public ProjectSystemOptions(IProjectService projectService, IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
+        public ProjectSystemOptions(IVsUIService<SVsSettingsPersistenceManager, ISettingsManager> settingsManager, JoinableTaskContext joinableTaskContext)
         {
-            _projectService = projectService;
             _settingsManager = settingsManager;
             _joinableTaskContext = joinableTaskContext;
-            _isProjectOutputPaneEnabled = new Lazy<bool>(() => _projectService.Capabilities.Contains(ServiceCapability.DiagnosticRuntimeServiceCapability));
         }
-
-        public bool IsProjectOutputPaneEnabled => _isProjectOutputPaneEnabled.Value;
 
         public Task<bool> GetIsFastUpToDateCheckEnabledAsync(CancellationToken cancellationToken = default)
         {
