@@ -14,15 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             return Mock.Of<IProjectSystemOptions>();
         }
 
-        public static IProjectSystemOptions ImplementIsProjectOutputPaneEnabled(Func<bool> action)
-        {
-            var mock = new Mock<IProjectSystemOptions>();
-            mock.SetupGet(o => o.IsProjectOutputPaneEnabled)
-                .Returns(action);
-
-            return mock.Object;
-        }
-
         public static IProjectSystemOptions ImplementGetUseDesignerByDefaultAsync(Func<string, bool, CancellationToken, bool> result)
         {
             var mock = new Mock<IProjectSystemOptions>();

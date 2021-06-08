@@ -22,6 +22,26 @@
         <target state="translated">複数のフレームワークをターゲットにする</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|Description">
+        <source>Enable WPF for this project.</source>
+        <target state="new">Enable WPF for this project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|DisplayName">
+        <source>Windows Presentation Foundation</source>
+        <target state="new">Windows Presentation Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|Description">
+        <source>Enable Windows Forms for this project.</source>
+        <target state="new">Enable Windows Forms for this project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|DisplayName">
+        <source>Windows Forms</source>
+        <target state="new">Windows Forms</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|General|Description">
         <source>General settings for the application.</source>
         <target state="translated">アプリケーションの全般設定です。</target>

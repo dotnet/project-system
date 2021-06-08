@@ -79,12 +79,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
         <source>Produce a reference assembly containing the public API of the project.</source>
-        <target state="new">Produce a reference assembly containing the public API of the project.</target>
+        <target state="translated">Genera un ensamblado de referencia que contiene la API pública del proyecto.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
         <source>Reference assembly</source>
-        <target state="new">Reference assembly</target>
+        <target state="translated">Ensamblado de referencia</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">

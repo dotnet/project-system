@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.IO;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return Content.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, string> metadata, IProjectLogger logger)
+        private void AddToContextIfNotPresent(string includePath, IImmutableDictionary<string, string> metadata, IProjectDiagnosticOutputService logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void RemoveFromContextIfPresent(string includePath, IProjectLogger logger)
+        private void RemoveFromContextIfPresent(string includePath, IProjectDiagnosticOutputService logger)
         {
             string fullPath = _project.MakeRooted(includePath);
 

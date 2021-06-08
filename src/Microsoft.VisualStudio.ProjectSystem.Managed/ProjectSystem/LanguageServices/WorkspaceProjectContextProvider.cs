@@ -82,7 +82,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                                                     data.ProjectFilePath,
                                                                                     data.ProjectGuid,
                                                                                     hostObject,
-                                                                                    data.BinOutputPath);
+                                                                                    data.BinOutputPath,
+                                                                                    data.AssemblyName);
 #pragma warning restore 612,618
 
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.

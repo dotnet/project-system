@@ -2,7 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Moq;
 using Xunit;
 
@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
             var projectChange = IProjectChangeDescriptionFactory.Create();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         public void Handle_NullAsProjectChange_ThrowsArgumentNull()
         {
             var handler = CreateInstance();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<ArgumentNullException>("projectChange", () =>
             {
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
             var projectChange = IProjectChangeDescriptionFactory.Create();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         internal static void Handle(IProjectEvaluationHandler handler, IProjectChangeDescription projectChange)
         {
-            handler.Handle(1, projectChange, new ContextState(), IProjectLoggerFactory.Create());
+            handler.Handle(1, projectChange, new ContextState(), IProjectDiagnosticOutputServiceFactory.Create());
         }
 
         internal abstract IProjectEvaluationHandler CreateInstance();

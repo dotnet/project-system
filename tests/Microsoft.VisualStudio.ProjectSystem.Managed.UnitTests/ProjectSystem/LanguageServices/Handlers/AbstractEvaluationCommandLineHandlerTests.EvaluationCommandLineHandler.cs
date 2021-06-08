@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -23,17 +23,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             public Dictionary<string, IImmutableDictionary<string, string>> Files { get; }
 
-            protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectLogger logger)
+            protected override void AddToContext(string fullPath, IImmutableDictionary<string, string> metadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
             {
                 Files.Add(fullPath, metadata);
             }
 
-            protected override void RemoveFromContext(string fullPath, IProjectLogger logger)
+            protected override void RemoveFromContext(string fullPath, IProjectDiagnosticOutputService logger)
             {
                 Files.Remove(fullPath);
             }
 
-            protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectLogger logger)
+            protected override void UpdateInContext(string fullPath, IImmutableDictionary<string, string> previousMetadata, IImmutableDictionary<string, string> currentMetadata, bool isActiveContext, IProjectDiagnosticOutputService logger)
             {
                 RemoveFromContext(fullPath, logger);
                 AddToContext(fullPath, currentMetadata, isActiveContext, logger);
