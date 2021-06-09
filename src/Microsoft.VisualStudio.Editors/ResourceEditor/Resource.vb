@@ -2428,7 +2428,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If (_resXDataNode.FileRef IsNot Nothing) Then
                     serializable.FileName = _resXDataNode.FileRef.FileName
                     serializable.TypeName = _resXDataNode.FileRef.TypeName
-                    serializable.TextFileEncodingWebName = _resXDataNode.FileRef.TextFileEncoding.WebName
+                    If (_resXDataNode.FileRef.TextFileEncoding IsNot Nothing) Then
+                        serializable.TextFileEncodingWebName = _resXDataNode.FileRef.TextFileEncoding.WebName
+                    End If
                 End If
 
                 Return serializable

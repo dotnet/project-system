@@ -3,6 +3,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,7 +38,8 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static PropertyInfo[] GetProperties(Type type) => type
             .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy)
-            .Where(pi => pi.CanRead && pi.CanWrite && pi.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+            .Where(pi => pi.CanRead && pi.CanWrite && pi.GetCustomAttribute<JsonIgnoreAttribute>() is null
+                && (pi.GetCustomAttribute<BrowsableAttribute>() is null || pi.GetCustomAttribute<BrowsableAttribute>().Browsable))
             .ToArray();
 
         //// TODO: IsInterface doesn't work since we cannot assign SerializationContainer to an interface property
@@ -265,5 +269,49 @@ namespace Microsoft.VisualStudio.Serialization
     {
         public string AssemblyQualifiedName { get; set; }
         public object Value { get; set; }
+    }
+
+    ////https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-5-0#deserialize-inferred-types-to-object-properties
+    //public class ObjectToInferredTypesConverter : JsonConverter<object>
+    //{
+    //    public override object Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => reader.TokenType switch
+    //    {
+    //        JsonTokenType.True => true,
+    //        JsonTokenType.False => false,
+    //        JsonTokenType.Number when reader.TryGetInt64(out long l) => l,
+    //        JsonTokenType.Number => reader.GetDouble(),
+    //        JsonTokenType.String when reader.TryGetDateTime(out DateTime datetime) => datetime,
+    //        JsonTokenType.String => reader.GetString(),
+    //        _ => JsonDocument.ParseValue(ref reader).RootElement.Clone()
+    //    };
+
+    //    public override void Write(Utf8JsonWriter writer, object objectToWrite, JsonSerializerOptions options) =>
+    //        JsonSerializer.Serialize(writer, objectToWrite, objectToWrite.GetType(), options);
+    //}
+
+    //public class BitmapConverter : JsonConverter<Bitmap>
+    //{
+    //    public override Bitmap Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    //    {
+    //        if(reader.TokenType != JsonTokenType.StartArray)
+    //        {
+    //            throw new InvalidDataException();
+    //        }
+
+    //        reader.
+    //    }
+    //            //Temperature.Parse(reader.GetString());
+
+    //    public override void Write(Utf8JsonWriter writer, Bitmap bitmap, JsonSerializerOptions options)
+    //    {
+    //        using var stream = new MemoryStream();
+    //        bitmap.Save(stream, bitmap.RawFormat);
+    //        writer.WriteStartArray();
+    //        foreach(var byteElement in stream.ToArray())
+    //        {
+    //            writer.WriteNumberValue(byteElement);
+    //        }
+    //        writer.WriteEndArray();
+    //    }
     }
 }
