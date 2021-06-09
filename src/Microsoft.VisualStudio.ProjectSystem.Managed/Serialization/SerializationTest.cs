@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +36,6 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static readonly Type ObjectType = typeof(object);
         private static readonly Type ObjectArrayType = typeof(object[]);
-        //private static readonly Type StringType = typeof(string);
         private static readonly Type ISerializableType = typeof(ISerializable);
 
         private static PropertyInfo[] GetProperties(Type type) => type
@@ -46,10 +43,6 @@ namespace Microsoft.VisualStudio.Serialization
             .Where(pi => pi.CanRead && pi.CanWrite && pi.GetCustomAttribute<JsonIgnoreAttribute>() is null
                 && (pi.GetCustomAttribute<BrowsableAttribute>() is null || pi.GetCustomAttribute<BrowsableAttribute>().Browsable))
             .ToArray();
-
-        //// TODO: IsInterface doesn't work since we cannot assign SerializationContainer to an interface property
-        //private static bool IsContainerizable(Type type) =>
-        //    type == ObjectType; //|| type.IsInterface;
 
         // https://github.com/Azure/autorest.powershell/blob/67d99227e4cb8b03ca3168731bcbe23ae14d35e5/powershell/resources/psruntime/BuildTime/PsExtensions.cs#L37-L45
         private static bool IsSimple(this Type type) =>
@@ -76,23 +69,8 @@ namespace Microsoft.VisualStudio.Serialization
 
         private static SerializationContainer ContainerizeObjectHierarchy(Type type, object value)
         {
-            if (ISerializableType.IsAssignableFrom(type))
-            {
-                //using var stream = new MemoryStream();
-                //new DataContractJsonSerializer(type).WriteObject(stream, value);
-                //value = JsonDocument.Parse(stream).RootElement;
-
-                return new SerializationContainer
-                {
-                    //AssemblyQualifiedName = type.AssemblyQualifiedName,
-                    Type = type,
-                    Value = value,
-                    IsISerializable = true
-                };
-            }
-
-
-            if (!type.IsSimple())
+            var isISerializable = ISerializableType.IsAssignableFrom(type);
+            if (!isISerializable && !type.IsSimple())
             {
                 foreach (var property in GetProperties(type))
                 {
@@ -118,58 +96,20 @@ namespace Microsoft.VisualStudio.Serialization
                         continue;
                     }
 
-                    //if (propertyType == ObjectArrayType && propertyValue is object?[] propertyArray)
-                    //{
-                    //    for (var i = 0; i < propertyArray.Length; ++i)
-                    //    {
-                    //        if (propertyArray[i] is object propertyElement)
-                    //        {
-                    //            propertyArray[i] = ContainerizeObjectHierarchy(propertyElement.GetType(), propertyElement);
-                    //        }
-                    //    }
-                    //    continue;
-                    //}
-
-                    //if (GetElementType(propertyType) is Type elementType && !elementType.IsSimple() && propertyValue is IList propertyList)
-                    //{
-                    //    for (var i = 0; i < propertyList.Count; ++i)
-                    //    {
-                    //        if (propertyList[i] is object propertyElement)
-                    //        {
-                    //            propertyList[i] = ContainerizeObjectHierarchy(propertyElement.GetType(), propertyElement).Value;
-                    //        }
-                    //    }
-                    //    continue;
-                    //}
-
                     if (propertyType == ObjectType || !propertyType.IsSimple())
                     {
                         var container = ContainerizeObjectHierarchy(propertyValue.GetType(), propertyValue);
                         // Only assign the container itself if the property is defined as an object.
                         property.SetValue(value, propertyType == ObjectType ? container : container.Value);
                     }
-
-                    //if (!propertyType.IsSimple())
-                    //{
-                    //    property.SetValue(value, ContainerizeObjectHierarchy(propertyValue.GetType(), propertyValue).Value);
-                    //}
                 }
             }
 
-            //type.GetInterfaces().Contains(ISerializableType)
-
-            //if (ISerializableType.IsAssignableFrom(type))
-            //{
-            //    using var stream = new MemoryStream();
-            //    new DataContractJsonSerializer(type).WriteObject(stream, value);
-            //    value = JsonDocument.Parse(stream).RootElement;
-            //}
-
             return new SerializationContainer
             {
-                //AssemblyQualifiedName = type.AssemblyQualifiedName,
                 Type = type,
-                Value = value
+                Value = value,
+                IsISerializable = isISerializable
             };
         }
 
@@ -180,28 +120,11 @@ namespace Microsoft.VisualStudio.Serialization
             var streamAsString = new StreamReader(stream).ReadToEnd();
             File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { streamAsString });
             // Type filtering will use FullName from the type
-            (Type type, object? value, bool isISerializable) = ConvertContainerJsonString(streamAsString);
-            return DecontainerizeObjectHierarchy(type, value, isISerializable);
-            //SerializationContainer? container = JsonSerializer.Deserialize<SerializationContainer>(streamAsString);
-            //if (container is null)
-            //{
-            //    return null;
-            //}
-            //Type? type = Type.GetType(container.AssemblyQualifiedName);
-            //// Type filtering will use FullName from the type
-            //if(type is null)
-            //{
-            //    throw new TypeLoadException();
-            //}
-            //if(container.Value is not JsonElement)
-            //{
-            //    throw new InvalidDataException();
-            //}
-            //return JsonSerializer.Deserialize(((JsonElement)container.Value).ToString(), type);
-            //return DecontainerizeObjectHierarchy(container);
+            var container = ConvertContainerJsonString(streamAsString);
+            return DecontainerizeObjectHierarchy(container);
         }
 
-        private static (Type Type, object? Value, bool IsISerializable) ConvertContainerJsonString(string jsonString)
+        private static SerializationContainer ConvertContainerJsonString(string jsonString)
         {
             var options = new JsonSerializerOptions { Converters = { new SerializationContainerConverter() } };
             if (JsonSerializer.Deserialize<SerializationContainer>(jsonString, options) is not SerializationContainer container
@@ -214,18 +137,26 @@ namespace Microsoft.VisualStudio.Serialization
             if (container.IsISerializable)
             {
                 using var stream = new MemoryStream(new UTF8Encoding().GetBytes(element.GetRawText()));
-                //new DataContractJsonSerializer(container.Type).WriteObject(stream, container.Value);
                 var value = new DataContractJsonSerializer(container.Type).ReadObject(stream);
-                //value = JsonDocument.Parse(stream).RootElement;
-                //JsonDocument.Parse(stream).WriteTo(writer);
-                return (type, value, true);
+                return new SerializationContainer
+                {
+                    Type = type,
+                    Value = value,
+                    IsISerializable = true
+                };
             }
 
-            return (type, JsonSerializer.Deserialize(element.GetRawText(), type, options), false);
+            return new SerializationContainer
+            {
+                Type = type,
+                Value = JsonSerializer.Deserialize(element.GetRawText(), type, options),
+                IsISerializable = false
+            };
         }
 
-        private static object? DecontainerizeObjectHierarchy(Type type, object? value, bool isISerializable)
+        private static object? DecontainerizeObjectHierarchy(SerializationContainer container)
         {
+            (Type type, object? value, bool isISerializable) = (container.Type, container.Value, container.IsISerializable);
             if (!isISerializable && value is not null && !type.IsSimple())
             {
                 foreach (var property in GetProperties(type))
@@ -244,64 +175,36 @@ namespace Microsoft.VisualStudio.Serialization
                         {
                             if (propertyCollection[i] is not null)
                             {
-                                Type elementType = propertyCollection[i].GetType();
-                                object? elementValue = propertyCollection[i];
-                                var elementIsISerializable = false;
+                                var elementContainer = new SerializationContainer
+                                {
+                                    Type = propertyCollection[i].GetType(),
+                                    Value = propertyCollection[i],
+                                    IsISerializable = false
+                                };
                                 if (propertyCollection[i] is JsonElement jsonElement)
                                 {
-                                    (elementType, elementValue, elementIsISerializable) = ConvertContainerJsonString(jsonElement.GetRawText());
+                                    elementContainer = ConvertContainerJsonString(jsonElement.GetRawText());
                                 }
-                                propertyCollection[i] = DecontainerizeObjectHierarchy(elementType, elementValue, elementIsISerializable);
+                                propertyCollection[i] = DecontainerizeObjectHierarchy(elementContainer);
                             }
                         }
                         continue;
                     }
 
-                    //if (propertyType == ObjectArrayType && property.GetValue(value) is object?[] propArray)
-                    //{
-                    //    for (var i = 0; i < propArray.Length; ++i)
-                    //    {
-                    //        if (propArray[i] is JsonElement propArrayElement)
-                    //        {
-                    //            (Type elementType, object? elementValue) = ConvertContainerJsonString(propArrayElement.GetRawText());
-                    //            propArray[i] = DecontainerizeObjectHierarchy(elementType, elementValue);
-                    //        }
-                    //    }
-                    //}
-
-                    //if (GetElementType(propertyType) is Type collectionElementType && !collectionElementType.IsSimple() && property.GetValue(value) is IList propCollection)
-                    //{
-                    //    for (var i = 0; i < propCollection.Count; ++i)
-                    //    {
-                    //        if (propCollection[i] is object propCollectionElement)
-                    //        {
-                    //            propCollection[i] = DecontainerizeObjectHierarchy(propCollectionElement.GetType(), propCollectionElement);
-                    //        }
-                    //    }
-                    //    continue;
-                    //}
-
                     if (propertyType == ObjectType || !propertyType.IsSimple())
                     {
-                        var propertyIsISerializable = false;
+                        var propertyContainer = new SerializationContainer
+                        {
+                            Type = propertyType,
+                            Value = propertyValue,
+                            IsISerializable = false
+                        };
                         if (propertyValue is JsonElement jsonElement)
                         {
-                            (propertyType, propertyValue, propertyIsISerializable) = ConvertContainerJsonString(jsonElement.GetRawText());
+                            propertyContainer = ConvertContainerJsonString(jsonElement.GetRawText());
                         }
-                        property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propertyValue, propertyIsISerializable));
+                        property.SetValue(value, DecontainerizeObjectHierarchy(propertyContainer));
                     }
-
-                    //if (propertyType == ObjectType && property.GetValue(value) is JsonElement propElement)
-                    //{
-                    //    (Type elementType, object? elementValue) = ConvertContainerJsonString(propElement.GetRawText());
-                    //    property.SetValue(value, DecontainerizeObjectHierarchy(elementType, elementValue));
-                    //    continue;
-                    //}
-
-                    //if (!propertyType.IsSimple())
-                    //{
-                    //    property.SetValue(value, DecontainerizeObjectHierarchy(propertyType, propertyValue));
-                    //}
                 }
             }
 
@@ -309,34 +212,17 @@ namespace Microsoft.VisualStudio.Serialization
         }
     }
 
-    //[JsonConverter(typeof(SerializationContainerConverter))]
     public class SerializationContainer
     {
         [JsonIgnore]
         public Type Type { get; set; }
-        //public string AssemblyQualifiedName { get; set; }
-        public string AssemblyQualifiedName {
+        public string AssemblyQualifiedName
+        {
             get => Type.AssemblyQualifiedName;
             set => Type = Type.GetType(value);
         }
-        public object Value { get; set; }
+        public object? Value { get; set; }
         public bool IsISerializable { get; set; }
-        //public object Value
-        //{
-        //    get
-        //    {
-
-        //    }
-        //    set
-        //    {
-        //        if (ISerializableType.IsAssignableFrom(type))
-        //        {
-        //            using var stream = new MemoryStream();
-        //            new DataContractJsonSerializer(type).WriteObject(stream, value);
-        //            value = new UTF8Encoding().GetString(stream.ToArray());
-        //        }
-        //    }
-        //}
     }
 
     ////https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-5-0#deserialize-inferred-types-to-object-properties
@@ -357,71 +243,14 @@ namespace Microsoft.VisualStudio.Serialization
     //        JsonSerializer.Serialize(writer, objectToWrite, objectToWrite.GetType(), options);
     //}
 
-    //public class BitmapConverter : JsonConverter<Bitmap>
-    //{
-    //    public override Bitmap Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    //    {
-    //        if(reader.TokenType != JsonTokenType.StartArray)
-    //        {
-    //            throw new InvalidDataException();
-    //        }
-
-    //        reader.
-    //    }
-    //            //Temperature.Parse(reader.GetString());
-
-    //    public override void Write(Utf8JsonWriter writer, Bitmap bitmap, JsonSerializerOptions options)
-    //    {
-    //        using var stream = new MemoryStream();
-    //        bitmap.Save(stream, bitmap.RawFormat);
-    //        writer.WriteStartArray();
-    //        foreach(var byteElement in stream.ToArray())
-    //        {
-    //            writer.WriteNumberValue(byteElement);
-    //        }
-    //        writer.WriteEndArray();
-    //    }
-    //}
-
     //https://github.com/dotnet/runtime/issues/1784
     public class SerializationContainerConverter : JsonConverter<SerializationContainer>
     {
-        public override SerializationContainer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            //if (reader.TokenType != JsonTokenType.StartArray)
-            //{
-            //    throw new InvalidDataException();
-            //}
-
-            //reader.
-            //var container = JsonSerializer.Deserialize<SerializationContainer>(JsonDocument.ParseValue(ref reader).RootElement.GetRawText());
-            //if (container.IsISerializable)
-            //{
-            //    using var stream = new MemoryStream();
-            //    //new DataContractJsonSerializer(container.Type).WriteObject(stream, container.Value);
-            //    new DataContractJsonSerializer(container.Type).ReadObject()
-            //    //value = JsonDocument.Parse(stream).RootElement;
-            //    JsonDocument.Parse(stream).WriteTo(writer);
-            //}
-
-            //return container;
-            var document = JsonDocument.ParseValue(ref reader);
-            var container = JsonSerializer.Deserialize<SerializationContainer>(document.RootElement.GetRawText());
-            return container;
-        }
-        //Temperature.Parse(reader.GetString());
+        public override SerializationContainer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+            JsonSerializer.Deserialize<SerializationContainer>(JsonDocument.ParseValue(ref reader).RootElement.GetRawText());
 
         public override void Write(Utf8JsonWriter writer, SerializationContainer container, JsonSerializerOptions options)
         {
-            //using var stream = new MemoryStream();
-            //bitmap.Save(stream, bitmap.RawFormat);
-            //writer.WriteStartArray();
-            //foreach (var byteElement in stream.ToArray())
-            //{
-            //    writer.WriteNumberValue(byteElement);
-            //}
-            //writer.WriteEndArray();
-
             if (container.IsISerializable)
             {
                 //https://davidsekar.com/javascript/converting-json-date-string-date-to-date-object
@@ -429,16 +258,9 @@ namespace Microsoft.VisualStudio.Serialization
                 var settings = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("o") };
                 using var stream = new MemoryStream();
                 new DataContractJsonSerializer(container.Type, settings).WriteObject(stream, container.Value);
-                //value = JsonDocument.Parse(stream).RootElement;
-                //var value = new UTF8Encoding().GetString(stream.ToArray());
-                //JsonDocument.Parse(value).WriteTo(writer);
                 stream.Position = 0;
 
-                //JsonDocument.Parse(stream).WriteTo(writer);
-
-                //https://github.com/dotnet/runtime/issues/30632#issuecomment-523104461
-                //var dictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(File.OpenRead(m_fullName));
-
+                // Manually serialize the container using the DataContract's serialization of Value.
                 writer.WriteStartObject();
                 writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
                 writer.WritePropertyName(nameof(SerializationContainer.Value));
