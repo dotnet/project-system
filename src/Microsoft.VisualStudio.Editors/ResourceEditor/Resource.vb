@@ -31,6 +31,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' </remarks>
     <Serializable>
     <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))>
+    <KnownType(GetType(ResXDataNode))>
     Friend NotInheritable Class Resource
         Implements IComponent
         Implements ISerializable 'This allows us to fully control the serialization process
