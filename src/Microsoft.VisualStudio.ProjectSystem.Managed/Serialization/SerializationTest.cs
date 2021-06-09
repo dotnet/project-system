@@ -424,6 +424,8 @@ namespace Microsoft.VisualStudio.Serialization
 
             if (container.IsISerializable)
             {
+                //https://davidsekar.com/javascript/converting-json-date-string-date-to-date-object
+                //https://stackoverflow.com/a/115034/294804
                 var settings = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("o") };
                 using var stream = new MemoryStream();
                 new DataContractJsonSerializer(container.Type, settings).WriteObject(stream, container.Value);

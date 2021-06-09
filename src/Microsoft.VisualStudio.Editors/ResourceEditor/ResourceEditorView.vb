@@ -27,6 +27,7 @@ Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.Win32
 
 Imports VB = Microsoft.VisualBasic
+Imports System.Runtime.Serialization
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
@@ -2452,7 +2453,10 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   serialized Resources.
         ''' </summary>
         <Serializable>
+        <KnownType(GetType(Resource()))>
         Private NotInheritable Class ResourcesDataFormat
+            Implements ISerializable
+
             'List of resources
             Private ReadOnly _resources() As Resource
 
@@ -2472,6 +2476,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return _resources
                 End Get
             End Property
+
+            Private Sub New(Info As SerializationInfo, Context As StreamingContext)
+                '_resources = DirectCast(Info.GetValue(NameOf(Resources), GetType(Resource())), Resource())
+                _resources = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(Resources), GetType(Object())), Object()), Function(t) DirectCast(t, Resource))
+            End Sub
+
+            Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
+                Info.AddValue(NameOf(Resources), _resources)
+            End Sub
 
         End Class
 
