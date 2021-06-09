@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
+            ComplexTargetFramework storedValues = await GetStoredComplexTargetFrameworkAsync(configuration);
 
             if (storedValues.TargetFrameworkMoniker != null)
             {
@@ -79,30 +79,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
+            string? storedValue = await GetStoredValueAsync(configuration, propertyName);
 
-            if (storedValues.TargetFrameworkMoniker != null && storedValues.TargetFrameworkMoniker.Contains("Unsupported"))
+            if (storedValue is null)
             {
-                return await base.OnGetEvaluatedPropertyValueAsync(propertyName, "", defaultProperties);
+                return string.Empty;
             }
 
-            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, ExtractValue(storedValues, propertyName) ?? "", defaultProperties);
+            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, storedValue, defaultProperties);
         }
 
         public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             ConfigurationGeneral configuration = await _properties.GetConfigurationGeneralPropertiesAsync();
-            ComplexTargetFramework storedValues = await GetStoredComplexTargetFramework(configuration);
+            string? storedValue = await GetStoredValueAsync(configuration, propertyName);
 
-            if (storedValues.TargetFrameworkMoniker != null && storedValues.TargetFrameworkMoniker.Contains("Unsupported"))
+            if (storedValue is null)
             {
-                return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, "", defaultProperties);
+                return string.Empty;
             }
 
-            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, ExtractValue(storedValues, propertyName) ?? "", defaultProperties);
+            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, storedValue, defaultProperties);
         }
 
-        private static async Task<ComplexTargetFramework> GetStoredComplexTargetFramework(ConfigurationGeneral configuration)
+        private static async Task<ComplexTargetFramework> GetStoredComplexTargetFrameworkAsync(ConfigurationGeneral configuration)
         {
             ComplexTargetFramework storedValues = new ComplexTargetFramework
             {
@@ -115,20 +115,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return storedValues;
         }
 
-        /// <summary>
-        /// Extracts the specified value from the ComplexTargetFramework structure.
-        /// </summary>
-        /// <param name="values">The strucutre were all the values are.</param>
-        /// <param name="propertyName">The property's value we want to return.</param>
-        /// <returns></returns>
-        private static string? ExtractValue(ComplexTargetFramework values, string propertyName)
+        private static async Task<string?> GetStoredValueAsync(ConfigurationGeneral configuration, string propertyName)
         {
             return propertyName switch
             {
-                InterceptedTargetFrameworkProperty => values.TargetFrameworkMoniker,
-                TargetPlatformProperty => values.TargetPlatformIdentifier,
-                TargetPlatformVersionProperty => values.TargetPlatformVersion,
-                _ => null,
+                InterceptedTargetFrameworkProperty => (string?)await configuration.TargetFrameworkMoniker.GetValueAsync(),
+                TargetPlatformProperty => (string?)await configuration.TargetPlatformIdentifier.GetValueAsync(),
+                TargetPlatformVersionProperty => (string?)await configuration.TargetPlatformVersion.GetValueAsync(),
+                TargetFrameworkProperty => (string?)await configuration.TargetFramework.GetValueAsync(),
+                _ => string.Empty,
             };
         }
 
@@ -159,12 +154,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
                 {
                     string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
-                        
+
                     if (string.IsNullOrEmpty(targetPlatformAlias))
                     {
                         return targetFrameworkAlias;
                     }
-                        
+
                     return targetFrameworkAlias + "-" + targetPlatformAlias + complexTargetFramework.TargetPlatformVersion;
                 }
 
@@ -187,7 +182,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectRuleSnapshot targetFrameworkRuleSnapshot = supportedTargetFrameworks[SupportedTargetFramework.SchemaName];
 
             IImmutableDictionary<string, string>? targetFrameworkProperties = targetFrameworkRuleSnapshot.GetProjectItemProperties(targetFrameworkMoniker);
-            
+
             if (targetFrameworkProperties != null &&
                 targetFrameworkProperties.TryGetValue(SupportedTargetFramework.AliasProperty, out string? targetFrameworkAlias))
             {
@@ -214,10 +209,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // The SdkSupportedTargetPlatformIdentifier rule stores the alias in the key value.
             if (sdkSupportedTargetPlatformIdentifierRuleSnapshot.Items.TryGetKey(targetPlatformIdentifier, out string targetPlatformAlias))
             {
-                return string.Empty;
+                return targetPlatformAlias;
             }
 
-            return targetPlatformAlias;
+            return string.Empty;
         }
 
         /// <summary>

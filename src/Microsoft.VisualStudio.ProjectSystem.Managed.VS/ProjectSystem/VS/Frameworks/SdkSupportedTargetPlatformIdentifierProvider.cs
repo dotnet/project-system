@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         {
             IProjectRuleSnapshot snapshot = input.CurrentState[SdkSupportedTargetPlatformIdentifier.SchemaName];
 
-            var list = new List<IEnumValue>();
+            var list = new List<IEnumValue>(capacity: 1 + snapshot.Items.Count);
 
             list.Add(new PageEnumValue(new EnumValue()
             {
