@@ -168,8 +168,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public Shared Function Load(Stream As Stream) As ResourceSerializationStore
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
-                'Return DirectCast((New BinaryFormatter).Deserialize(Stream), ResourceSerializationStore)
-                'Return New ResourceSerializationStore
                 Return DirectCast(SerializationProvider.Deserialize(Stream), ResourceSerializationStore)
             End Function
 
@@ -185,7 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
-                'Call (New BinaryFormatter).Serialize(Stream, Me)
                 SerializationProvider.Serialize(Stream, Me)
 
                 Trace("Saved store")
@@ -605,8 +602,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    'Return DirectCast((New BinaryFormatter).Deserialize(MemoryStream), Resource)
-                    'Return Nothing
                     Return DirectCast(SerializationProvider.Deserialize(MemoryStream), Resource)
                 End Function
 
@@ -626,8 +621,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    'Return (New BinaryFormatter).Deserialize(MemoryStream)
-                    'Return Nothing
                     Return SerializationProvider.Deserialize(MemoryStream)
                 End Function
 

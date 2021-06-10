@@ -112,8 +112,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
             TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
-            'Return DirectCast((New BinaryFormatter).Deserialize(Stream), GenericComponentSerializationStore)
-            'Return New GenericComponentSerializationStore
             Return DirectCast(SerializationProvider.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
 
@@ -129,7 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
-            'Call (New BinaryFormatter).Serialize(Stream, Me)
             SerializationProvider.Serialize(Stream, Me)
         End Sub
 
@@ -476,7 +473,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
                     Dim MemoryStream As New MemoryStream
-                    'Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     SerializationProvider.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End If
@@ -489,8 +485,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    'Return (New BinaryFormatter).Deserialize(MemoryStream)
-                    'Return New MemoryStream
                     Return SerializationProvider.Deserialize(MemoryStream)
                 End If
             End Function

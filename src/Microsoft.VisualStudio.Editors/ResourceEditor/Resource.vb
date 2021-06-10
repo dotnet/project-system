@@ -518,7 +518,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' The parent resource file in which this Resource is contained.  Will be Nothing until the resource is
         '''  actually added to a ResourceFile.
         ''' </summary>
-        <JsonIgnore>
         Public Property ParentResourceFile As ResourceFile
             Get
                 Return _parentResourceFile
@@ -565,7 +564,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   used normally (including changing the Name in response to user manipulation), since it
         '''   enables the undo engine to undo this change.
         ''' </summary>
-        <JsonIgnore>
         Public Property Name As String
             Get
                 Return _resXDataNode.Name
@@ -632,7 +630,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         ''' <remarks>Can't be private because ResourceFile needs access to it.</remarks>
         <EditorBrowsable(EditorBrowsableState.Never)>
-        <JsonIgnore>
         Friend Property NameRawWithoutUndo As String
             Get
                 Return _resXDataNode.Name
@@ -652,7 +649,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   used normally (including changing the property in response to user manipulation), since it
         '''   enables the undo engine to undo this change.
         ''' </summary>
-        <JsonIgnore>
         Public Property Comment As String
             Get
                 Return _resXDataNode.Comment
@@ -678,7 +674,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' <summary>
         '''  Returns the ResourcePersistenceMode property.  (This property is shown in the properties window.)
         ''' </summary>
-        <JsonIgnore>
         Public Property PersistenceMode As ResourcePersistenceMode
             Get
                 If IsLink Then
@@ -815,7 +810,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   property and not lose the original filename that the link was pointing to when changing
         '''   to a non-linked resource.
         ''' </summary>
-        <JsonIgnore>
         Public Property FileName As String
             Get
                 If IsLink Then
@@ -885,7 +879,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   This is the member which should be used normally (including changing the property 
         '''   in response to user manipulation), since it enables the undo engine to undo this change.
         ''' </remarks>
-        <JsonIgnore>
         Public Property Encoding As Encoding
             Get
                 If IsLink Then
@@ -898,21 +891,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 s_propertyDescriptor_Encoding.SetValue(Me, New SerializableEncoding(Value))
             End Set
         End Property
-
-        '''' <summary>
-        '''' Gets or retrieves the Encoding used for text file resources via WebName.
-        '''' </summary>
-        '''' <remarks>
-        '''' https://stackoverflow.com/a/57610836/294804
-        '''' </remarks>
-        'Public Property EncodingWebName As String
-        '    Get
-        '        Return Encoding.WebName
-        '    End Get
-        '    Set
-        '        Encoding = Encoding.GetEncoding(Value)
-        '    End Set
-        'End Property
 
         ''' <summary>
         ''' Sets/Gets the Encoding used for text file resources, without undo support, and without causing the 
@@ -942,7 +920,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   This is the member which should be used normally (including changing the property 
         '''   in response to user manipulation), since it enables the undo engine to undo this change.
         ''' </summary>
-        <JsonIgnore>
         Public Property FileType As FileTypes
             Get
                 If TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase Then
@@ -1207,7 +1184,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '''   sited.  Thus, we need to keep these two versions of the name separate but
         '''   in sync.
         ''' </remarks>
-        <JsonIgnore>
         Friend Property IComponent_Site As ISite Implements IComponent.Site
             Get
                 Return _site
@@ -2283,12 +2259,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
         ''' <summary>
-        ''' Used for deserialization.
-        ''' </summary>
-        Public Sub New()
-        End Sub
-
-        ''' <summary>
         ''' Sets the SerializationInfo with information serialization information for this class.
         ''' </summary>
         ''' <param name="Info">The SerializationInfo to which to add serialized object data.</param>
@@ -2301,180 +2271,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Info.AddValue(SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
             Info.AddValue(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
         End Sub
-
-        Public Class ResXDataNodeSerializable
-
-            Private _resource As Resource
-            Public WriteOnly Property Resource As Resource
-                Set
-                    _resource = Value
-                End Set
-            End Property
-
-            Private _name As String
-            Public Property Name As String
-                Get
-                    Return _name
-                End Get
-                Set
-                    _name = Value
-                End Set
-            End Property
-
-            Private _comment As String
-            Public Property Comment As String
-                Get
-                    Return _comment
-                End Get
-                Set
-                    _comment = Value
-                End Set
-            End Property
-
-            Private _value As Object
-            Public Property Value As Object
-                Get
-                    Return _value
-                End Get
-                Set
-                    _value = Value
-                    If (_resource IsNot Nothing And TypeOf _value IsNot JsonElement) Then
-                        _resource._resXDataNode = If(FileName Is Nothing,
-                            _resource.NewResXDataNode(Name, Comment, Value),
-                            _resource.NewResXDataNode(Name, Comment, FileName, TypeName, Encoding.GetEncoding(TextFileEncodingWebName)))
-                    End If
-                End Set
-            End Property
-
-            Private _fileName As String
-            Public Property FileName As String
-                Get
-                    Return _fileName
-                End Get
-                Set
-                    _fileName = Value
-                End Set
-            End Property
-
-            Private _typeName As String
-            Public Property TypeName As String
-                Get
-                    Return _typeName
-                End Get
-                Set
-                    _typeName = Value
-                End Set
-            End Property
-
-            ''' <remarks>
-            ''' https://stackoverflow.com/a/57610836/294804
-            ''' </remarks>
-            Private _textFileEncodingWebName As String
-            Public Property TextFileEncodingWebName As String
-                Get
-                    Return _textFileEncodingWebName
-                End Get
-                Set
-                    _textFileEncodingWebName = Value
-                End Set
-            End Property
-
-        End Class
-
-        '''' <summary>
-        '''' Used for de/serialization.
-        '''' </summary>
-        'Public Property ResXDataNode2 As ResXDataNode
-        '    Get
-        '        Return _resXDataNode
-        '    End Get
-        '    Set
-        '        _resXDataNode = Value
-        '    End Set
-        'End Property
-
-        '''' <summary>
-        '''' Used for de/serialization.
-        '''' </summary>
-        'Public Property ResXDataNodeSerialization As ResXDataNodeSerializable
-        '    Get
-        '        Return New ResXDataNodeSerializable With {
-        '            .Name = _resXDataNode.Name,
-        '            .FileName = DirectCast(VB.IIf(_resXDataNode.FileRef Is Nothing, String.Empty, _resXDataNode.FileRef.FileName), String),
-        '            .TypeName = DirectCast(VB.IIf(_resXDataNode.FileRef Is Nothing, String.Empty, _resXDataNode.FileRef.TypeName), String),
-        '            .TextFileEncodingWebName = DirectCast(VB.IIf(_resXDataNode.FileRef Is Nothing, String.Empty, _resXDataNode.FileRef.TextFileEncoding.WebName), String)
-        '        }
-        '    End Get
-        '    Set
-        '        _resXDataNode = New ResXDataNode(Value.Name, New ResXFileRef(Value.Name, Value.TypeName, Encoding.GetEncoding(Value.TextFileEncodingWebName)))
-        '    End Set
-        'End Property
-
-        Private _resXDataNodeSerialization As ResXDataNodeSerializable
-        ''' <summary>
-        ''' Used for de/serialization.
-        ''' </summary>
-        Public Property ResXDataNodeSerialization As ResXDataNodeSerializable
-            Get
-                If (_resXDataNodeSerialization IsNot Nothing) Then
-                    Return _resXDataNodeSerialization
-                End If
-
-                Dim serializable = New ResXDataNodeSerializable With {
-                    .Name = _resXDataNode.Name,
-                    .Comment = _resXDataNode.Comment,
-                    .Value = TryGetValue()
-                }
-
-                If (_resXDataNode.FileRef IsNot Nothing) Then
-                    serializable.FileName = _resXDataNode.FileRef.FileName
-                    serializable.TypeName = _resXDataNode.FileRef.TypeName
-                    If (_resXDataNode.FileRef.TextFileEncoding IsNot Nothing) Then
-                        serializable.TextFileEncodingWebName = _resXDataNode.FileRef.TextFileEncoding.WebName
-                    End If
-                End If
-
-                Return serializable
-            End Get
-            Set
-                _resXDataNodeSerialization = Value
-                _resXDataNodeSerialization.Resource = Me
-
-                '_resXDataNodeTempValue = VB.IIf()
-
-                ''NewResXDataNode
-                '_resXDataNode = DirectCast(
-                '    VB.IIf(Value.FileName Is Nothing,
-                '        New ResXDataNode(Value.Name, Value.Value),
-                '        New ResXDataNode(Value.Name, New ResXFileRef(Value.FileName, Value.TypeName, Encoding.GetEncoding(Value.TextFileEncodingWebName)))),
-                '    ResXDataNode)
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Used for de/serialization.
-        ''' </summary>
-        Public Property SavedFileName As String
-            Get
-                'Return DirectCast(VB.IIf(_savedFileName Is Nothing, "", _savedFileName), String)
-                Return _savedFileName
-            End Get
-            Set
-                _savedFileName = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Used for de/serialization.
-        ''' </summary>
-        Public Property OriginalFileTimeStamp As Date
-            Get
-                Return _originalFileTimeStamp
-            End Get
-            Set
-                _originalFileTimeStamp = Value
-            End Set
-        End Property
 
 #End Region
 
