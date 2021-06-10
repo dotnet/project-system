@@ -584,10 +584,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
                     Dim MemoryStream As New MemoryStream
-                    'Call (New BinaryFormatter).Serialize(MemoryStream, [Object])
                     SerializationProvider.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
-
                 End Function
 
                 ''' <summary>

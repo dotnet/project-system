@@ -255,7 +255,8 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Function
 
             ''' <summary>
-            ''' This method does the actual deserialization work, based on the given arguments.
+            ''' This method does the actual deserialization work, based on the given
+            '''   arguments.
             ''' </summary>
             ''' <param name="Container">The container to add deserialized objects to (or Nothing if none)</param>
             Private Function DeserializeHelper(Container As IContainer) As ICollection
@@ -512,7 +513,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                     Dim MemoryStream As New MemoryStream
                     SerializationProvider.Serialize(MemoryStream, [Object])
-                    Return memoryStream.ToArray()
+                    Return MemoryStream.ToArray()
                 End Function
 
                 ''' <summary>
