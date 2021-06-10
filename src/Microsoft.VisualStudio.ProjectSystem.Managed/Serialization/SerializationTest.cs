@@ -457,6 +457,60 @@ namespace Microsoft.VisualStudio.Serialization
             //JsonSerializer.Serialize(writer, objectToWrite, objectToWrite.GetType(), options);
     }
 
+    public class ObjectArrayToContainerConverter : JsonConverter<object[]>
+    {
+        public override object?[]? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var jsonString = JsonDocument.ParseValue(ref reader).RootElement.GetRawText();
+            var newOptions = new JsonSerializerOptions { Converters = { new SerializationContainerConverter() } };
+            //return JsonSerializer.Deserialize<SerializationContainer>(jsonString, newOptions).Value;
+            var value = JsonSerializer.Deserialize<object?[]?>(jsonString);
+            if(value is not null)
+            {
+                for (var i = 0; i < value.Length; ++i)
+                {
+                    if (value[i] is JsonElement jsonElement)
+                    {
+                        value[i] = JsonSerializer.Deserialize<SerializationContainer>(jsonElement.GetRawText(), newOptions).Value;
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        private static readonly Type ISerializableType = typeof(ISerializable);
+
+        public override void Write(Utf8JsonWriter writer, object?[]? value, JsonSerializerOptions options)
+        {
+            if (value is null)
+            {
+                writer.WriteNullValue();
+                return;
+            }
+
+            writer.WriteStartArray();
+            for (var i = 0; i < value.Length; ++i)
+            {
+                if (value[i] is not null)
+                {
+                    var type = value[i]!.GetType();
+                    var isISerializable = ISerializableType.IsAssignableFrom(type);
+                    var container = new SerializationContainer
+                    {
+                        Type = type,
+                        Value = value[i],
+                        IsISerializable = isISerializable
+                    };
+
+                    var newOptions = new JsonSerializerOptions { Converters = { new SerializationContainerConverter() } };
+                    JsonSerializer.Serialize(writer, container, newOptions);
+                }
+            }
+            writer.WriteEndArray();
+        }
+    }
+
     //https://github.com/dotnet/runtime/issues/1784
     public class SerializationContainerConverter : JsonConverter<SerializationContainer>
     {
@@ -487,7 +541,7 @@ namespace Microsoft.VisualStudio.Serialization
                 };
             }
 
-            var newOptions = new JsonSerializerOptions { Converters = { new ObjectToContainerConverter() } };
+            var newOptions = new JsonSerializerOptions { Converters = { new ObjectArrayToContainerConverter(), new ObjectToContainerConverter() } };
             return new SerializationContainer
             {
                 Type = type,
@@ -533,7 +587,7 @@ namespace Microsoft.VisualStudio.Serialization
             writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
             writer.WritePropertyName(nameof(SerializationContainer.Value));
             //JsonDocument.Parse(stream).WriteTo(writer);
-            var newOptions = new JsonSerializerOptions { Converters = { new ObjectToContainerConverter() } };
+            var newOptions = new JsonSerializerOptions { Converters = { new ObjectArrayToContainerConverter(), new ObjectToContainerConverter() } };
             //https://github.com/dotnet/runtime/issues/1784
             JsonDocument.Parse(JsonSerializer.Serialize(container.Value, container.Type, newOptions)).WriteTo(writer);
             writer.WriteBoolean(nameof(SerializationContainer.IsISerializable), container.IsISerializable);
