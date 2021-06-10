@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
                 }
 
-                if (await cache.BindToRule(configuration, schema.Name, propertiesContext) is IRule rule
+                if (await cache.BindToRuleAsync(configuration, schema.Name, propertiesContext) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);

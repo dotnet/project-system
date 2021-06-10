@@ -81,14 +81,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<string[]>>(nameFormat: nameof(DesignTimeInputsFileWatcher) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
-            _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputs, _project);
+            _actionBlock = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<DesignTimeInputs>>(ProcessDesignTimeInputsAsync, _project);
 
             _dataSourceLink = _designTimeInputsDataSource.SourceBlock.LinkTo(_actionBlock, DataflowOption.PropagateCompletion);
 
             JoinUpstreamDataSources(_designTimeInputsDataSource);
         }
 
-        private async Task ProcessDesignTimeInputs(IProjectVersionedValue<DesignTimeInputs> input)
+        private async Task ProcessDesignTimeInputsAsync(IProjectVersionedValue<DesignTimeInputs> input)
         {
             DesignTimeInputs designTimeInputs = input.Value;
 

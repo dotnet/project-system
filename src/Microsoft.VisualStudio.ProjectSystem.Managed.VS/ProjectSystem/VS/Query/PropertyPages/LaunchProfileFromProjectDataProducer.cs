@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
-using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
@@ -81,13 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         private IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState projectState)
         {
-            EntityIdentity identity = new(
-                ((IEntityWithId)parent).Id,
-                new Dictionary<string, string>
-                {
-                    { ProjectModelIdentityKeys.SourceItemType, propertiesContext.ItemType! },
-                    { ProjectModelIdentityKeys.SourceItemName, propertiesContext.ItemName! }
-                });
+            EntityIdentity identity = LaunchProfileDataProducer.CreateLaunchProfileId(parent, propertiesContext.ItemType!, propertiesContext.ItemName!);
 
             return LaunchProfileDataProducer.CreateLaunchProfileValue(queryExecutionContext, identity, propertiesContext, rule, order, projectState, _properties);
         }

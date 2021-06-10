@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<IVsContainedLanguageFactory?> GetContainedLanguageFactoryAsync()
         {
-            Guid languageServiceId = await GetLanguageServiceId();
+            Guid languageServiceId = await GetLanguageServiceIdAsync();
             if (languageServiceId == Guid.Empty)
                 return null;
 
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             return service as IVsContainedLanguageFactory;
         }
 
-        private async Task<Guid> GetLanguageServiceId()
+        private async Task<Guid> GetLanguageServiceIdAsync()
         {
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 

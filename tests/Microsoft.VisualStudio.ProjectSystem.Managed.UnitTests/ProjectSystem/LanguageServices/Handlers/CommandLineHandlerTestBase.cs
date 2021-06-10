@@ -2,7 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Moq;
 using Xunit;
 
@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance();
             var added = BuildOptionsFactory.CreateEmpty();
             var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<ArgumentNullException>("version", () =>
             {
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
             var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<ArgumentNullException>("added", () =>
             {
@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         {
             var handler = CreateInstance();
             var added = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<ArgumentNullException>("removed", () =>
             {
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var handler = CreateInstance();
             var added = BuildOptionsFactory.CreateEmpty();
             var removed = BuildOptionsFactory.CreateEmpty();
-            var logger = Mock.Of<IProjectLogger>();
+            var logger = Mock.Of<IProjectDiagnosticOutputService>();
 
             Assert.Throws<InvalidOperationException>(() =>
             {

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.Internal.Performance;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
 using Microsoft.VisualStudio.Threading;
 using NuGet.SolutionRestoreManager;
 
@@ -61,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly IVsSolutionRestoreService3 _solutionRestoreService;
         private readonly IFileSystem _fileSystem;
-        private readonly IProjectLogger _logger;
+        private readonly IProjectDiagnosticOutputService _logger;
         private readonly IProjectDependentFileChangeNotificationService _projectDependentFileChangeNotificationService;
 
         private byte[]? _latestHash;
@@ -74,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             [Import(ExportContractNames.Scopes.UnconfiguredProject)]IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IVsSolutionRestoreService3 solutionRestoreService,
             IFileSystem fileSystem,
-            IProjectLogger logger,
+            IProjectDiagnosticOutputService logger,
             IProjectDependentFileChangeNotificationService projectDependentFileChangeNotificationService)
             : base(project, synchronousDisposal : true, registerDataSource : false)
         {

@@ -25,9 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
             if (id.KeysCount == 3
-                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string categoryName))
+                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.CategoryName, out string? categoryName))
             {
                 return CategoryDataProducer.CreateCategoryValueAsync(
                     queryExecutionContext,

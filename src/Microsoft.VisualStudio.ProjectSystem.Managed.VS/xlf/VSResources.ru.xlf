@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../VSResources.resx">
     <body>
+      <trans-unit id="DefaultNewProfileName">
+        <source>Profile {0}</source>
+        <target state="translated">Профиль {0}</target>
+        <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
+      </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
         <target state="translated">Имя сборки платформы.</target>
@@ -192,8 +197,8 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="translated">Файлы проектов Xproj больше не поддерживаются. Дополнительные сведения о переходе на csproj см. на странице https://docs.microsoft.com/ru-ru/dotnet/core/migration/.</target>
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
+        <target state="translated">Файлы проектов Xproj больше не поддерживаются. Дополнительные сведения о переходе на csproj см. на странице https://docs.microsoft.com/dotnet/core/migration/.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">

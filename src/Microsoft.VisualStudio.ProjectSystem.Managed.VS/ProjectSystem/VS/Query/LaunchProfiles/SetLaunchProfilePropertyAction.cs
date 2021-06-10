@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 IProjectState projectState = state.ProjectState;
                 if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
-                    && await projectState.BindToRule(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
+                    && await projectState.BindToRuleAsync(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
                     && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
                 {
                     await property.SetValueAsync(_executableStep.Value);

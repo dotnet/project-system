@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
             if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName))
             {
                 return PropertyPageDataProducer.CreatePropertyPageValueAsync(
                     queryExecutionContext,

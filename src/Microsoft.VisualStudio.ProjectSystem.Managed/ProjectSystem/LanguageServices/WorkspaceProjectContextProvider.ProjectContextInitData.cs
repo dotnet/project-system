@@ -16,6 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             public string LanguageName;
             public string BinOutputPath;
             public string ProjectFilePath;
+            public string AssemblyName;
             public Guid ProjectGuid;
             public string WorkspaceProjectContextId;
 
@@ -38,6 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.LanguageServiceNameProperty, out data.LanguageName);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.TargetPathProperty, out data.BinOutputPath);
                 snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectFullPathProperty, out data.ProjectFilePath);
+                snapshot.Properties.TryGetValue(ConfigurationGeneral.AssemblyNameProperty, out data.AssemblyName);
 
                 data.ProjectGuid = projectGuid;
                 data.WorkspaceProjectContextId = GetWorkspaceProjectContextId(data.ProjectFilePath, projectGuid, configuration);

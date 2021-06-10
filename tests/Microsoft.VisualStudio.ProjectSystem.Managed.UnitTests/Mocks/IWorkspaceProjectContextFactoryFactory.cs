@@ -12,12 +12,12 @@ namespace Microsoft.VisualStudio.LanguageServices.ProjectSystem
             return Mock.Of<IWorkspaceProjectContextFactory>();
         }
 
-        public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<string, string, string, Guid, object, string, IWorkspaceProjectContext?> action)
+        public static IWorkspaceProjectContextFactory ImplementCreateProjectContext(Func<string, string, string, Guid, object, string, string, IWorkspaceProjectContext?> action)
         {
             var mock = new Mock<IWorkspaceProjectContextFactory>();
 
 #pragma warning disable 612,618
-            mock.Setup(c => c.CreateProjectContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<object>(), It.IsAny<string>()))
+            mock.Setup(c => c.CreateProjectContext(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(action!);
 #pragma warning restore 612,618
 

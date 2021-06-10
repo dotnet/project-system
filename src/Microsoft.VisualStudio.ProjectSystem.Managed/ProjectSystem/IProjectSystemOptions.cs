@@ -13,14 +13,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal interface IProjectSystemOptions
     {
         /// <summary>
-        ///     Gets a value indicating if the project output pane is enabled.
-        /// </summary>
-        /// <value>
-        ///     <see langword="true"/> if the project output pane is enabled; otherwise, <see langword="false"/>.
-        /// </value>
-        bool IsProjectOutputPaneEnabled { get; }
-
-        /// <summary>
         ///     Gets a value indicating if the project fast up to date check is enabled.
         /// </summary>
         /// <param name="cancellationToken">

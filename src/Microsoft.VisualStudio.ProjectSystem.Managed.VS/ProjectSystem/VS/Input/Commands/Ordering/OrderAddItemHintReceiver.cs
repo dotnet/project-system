@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 Assumes.Present(hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 Assumes.NotNull(configuredProject);
-                await OrderingHelper.Move(configuredProject, _accessor, _previousIncludes, _target!, _action);
+                await OrderingHelper.MoveAsync(configuredProject, _accessor, _previousIncludes, _target!, _action);
             }
 
             // Reset everything because we are done.
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
                 Assumes.Present(hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? configuredProject = hint.UnconfiguredProject.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
                 Assumes.NotNull(configuredProject);
-                _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(configuredProject, _accessor);
+                _previousIncludes = await OrderingHelper.GetAllEvaluatedIncludesAsync(configuredProject, _accessor);
 
                 _isHinting = true;
             }
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// When the task runs, if the receiver picks up that we will be adding an item, it will capture the MSBuild project's includes.
         /// If any items were added as a result of the task running, the hint receiver will perform the specified action on those items.
         /// </summary>
-        public async Task Capture(OrderingMoveAction action, IProjectTree target, Func<Task> task)
+        public async Task CaptureAsync(OrderingMoveAction action, IProjectTree target, Func<Task> task)
         {
             Requires.NotNull(target, nameof(target));
             Requires.NotNull(task, nameof(task));

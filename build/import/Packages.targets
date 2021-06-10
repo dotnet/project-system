@@ -70,16 +70,18 @@
     <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-previews-1-31321-016"/>
     <PackageReference Include="Microsoft.Internal.VisualStudio.Interop"                               Version="17.0.0-previews-1-31321-016"/>
     
+    <!-- https://github.com/dotnet/roslyn/issues/53877 -->
+    <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.21" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.89-pre-geec7dc0def" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.10.127-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.89-pre-geec7dc0def" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="16.10.127-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.610-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.0.610-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.610-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.610-pre" />
     
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-1.21181.18" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.0.0-1.21181.18" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-2.21302.13" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.0.0-2.21302.13" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 

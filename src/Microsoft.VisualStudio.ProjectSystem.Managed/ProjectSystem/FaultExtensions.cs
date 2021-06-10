@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// <param name="severity">
         ///     The severity of the failure.
         /// </param>
-        public static Task RegisterFaultHandler(
+        public static Task RegisterFaultHandlerAsync(
             this IProjectFaultHandlerService faultHandlerService,
             IDataflowBlock block,
             UnconfiguredProject? project,

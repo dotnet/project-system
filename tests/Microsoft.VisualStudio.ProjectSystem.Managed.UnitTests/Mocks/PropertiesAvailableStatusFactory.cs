@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             bool? includeConfigurationIndependent = null,
             bool? includeHelpUrl = null,
             bool? includeCategoryName = null,
+            bool? includeIsVisible = null,
             bool? includeOrder = null,
             bool? includeType = null,
             bool? includeSearchTerms = null,
@@ -42,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             mock.SetupGet(m => m.ConfigurationIndependent).Returns(includeConfigurationIndependent ?? includeAllProperties);
             mock.SetupGet(m => m.HelpUrl).Returns(includeHelpUrl ?? includeAllProperties);
             mock.SetupGet(m => m.CategoryName).Returns(includeCategoryName ?? includeAllProperties);
+            mock.SetupGet(m => m.IsVisible).Returns(includeIsVisible ?? includeAllProperties);
             mock.SetupGet(m => m.Order).Returns(includeOrder ?? includeAllProperties);
             mock.SetupGet(m => m.Type).Returns(includeType ?? includeAllProperties);
             mock.SetupGet(m => m.SearchTerms).Returns(includeSearchTerms ?? includeAllProperties);

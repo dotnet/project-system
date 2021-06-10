@@ -1831,7 +1831,7 @@ Deseja atualizar o valor no arquivo .settings?</target>
       </trans-unit>
       <trans-unit id="PPG_WindowsFormsApp">
         <source>Windows Forms Application</source>
-        <target state="translated">Aplicativo do System.Windows.Forms</target>
+        <target state="translated">Aplicativo do Windows Forms</target>
         <note>The "Windows Forms" distinguishes it from a WPF application</note>
       </trans-unit>
       <trans-unit id="PPG_ServiceReferenceTypeName">

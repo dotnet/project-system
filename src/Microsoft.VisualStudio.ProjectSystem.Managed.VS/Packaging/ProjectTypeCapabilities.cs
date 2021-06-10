@@ -44,8 +44,8 @@ namespace Microsoft.VisualStudio.Packaging
         /// </remarks>
         public const string CSharp = Default + "; " +
                                      ProjectCapability.CSharp + "; " +
-                                     ProjectCapabilities.SharedImports;
-
+                                     ProjectCapabilities.SharedImports + "; " +
+                                     ProjectCapability.UseProjectEvaluationCache;
         /// <summary>
         ///     Represents Visual Basic's (vbproj) set of capabilities that are always present ("fixed").
         /// </summary>
@@ -55,6 +55,7 @@ namespace Microsoft.VisualStudio.Packaging
         /// </remarks>
         public const string VisualBasic = Default + "; " +
                                           ProjectCapability.VisualBasic + "; " +
-                                          ProjectCapabilities.SharedImports;
+                                          ProjectCapabilities.SharedImports + "; " +
+                                          ProjectCapability.UseProjectEvaluationCache;
     }
 }
