@@ -69,13 +69,13 @@ namespace Microsoft.VisualStudio.Serialization
     //https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?pivots=dotnet-5-0#deserialize-inferred-types-to-object-properties
     public class ObjectToContainerConverter : JsonConverter<object>
     {
-        public override object? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override object? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions __)
         {
             var jsonString = JsonDocument.ParseValue(ref reader).RootElement.GetRawText();
             return JsonSerializer.Deserialize<SerializationContainer>(jsonString, SerializationContainer.Options).Value;
         }
 
-        public override void Write(Utf8JsonWriter writer, object? value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, object? value, JsonSerializerOptions _)
         {
             if(value is null)
             {
@@ -90,9 +90,10 @@ namespace Microsoft.VisualStudio.Serialization
 
     public class ObjectArrayToContainerConverter : JsonConverter<object[]>
     {
-        public override object?[]? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override object?[]? Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions __)
         {
             var jsonString = JsonDocument.ParseValue(ref reader).RootElement.GetRawText();
+            // We use default deserialization (no converters) so that each array element remains as a JsonElement
             var value = JsonSerializer.Deserialize<object?[]?>(jsonString);
             if(value is not null)
             {
@@ -108,7 +109,7 @@ namespace Microsoft.VisualStudio.Serialization
             return value;
         }
 
-        public override void Write(Utf8JsonWriter writer, object?[]? value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, object?[]? value, JsonSerializerOptions _)
         {
             if (value is null)
             {
@@ -121,19 +122,9 @@ namespace Microsoft.VisualStudio.Serialization
             {
                 if(element is not null)
                 {
-                    var container = new SerializationContainer(element);
-                    JsonSerializer.Serialize(writer, container, SerializationContainer.Options);
+                    JsonSerializer.Serialize(writer, new SerializationContainer(element), SerializationContainer.Options);
                 }
             }
-            //for (var i = 0; i < value.Length; ++i)
-            //{
-            //    if (value[i] is not null)
-            //    {
-            //        var container = new SerializationContainer(value[i]!);
-            //        var newOptions = new JsonSerializerOptions { Converters = { new SerializationContainerConverter() } };
-            //        JsonSerializer.Serialize(writer, container, newOptions);
-            //    }
-            //}
             writer.WriteEndArray();
         }
     }
@@ -142,69 +133,106 @@ namespace Microsoft.VisualStudio.Serialization
     public class SerializationContainerConverter : JsonConverter<SerializationContainer>
     {
         private static readonly JsonSerializerOptions ObjectOptions =
-            new JsonSerializerOptions { Converters = { new ObjectArrayToContainerConverter(), new ObjectToContainerConverter() } };
+            new() { Converters = { new ObjectArrayToContainerConverter(), new ObjectToContainerConverter() } };
 
-        public override SerializationContainer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override SerializationContainer Read(ref Utf8JsonReader reader, Type _, JsonSerializerOptions __)
         {
-            //https://github.com/dotnet/runtime/issues/1784
-            var jsonString = JsonDocument.ParseValue(ref reader).RootElement.GetRawText();
-            if (JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container
-                || Type.GetType(container.AssemblyQualifiedName) is not Type type
+            // We use default deserialization (no converters) so that the container's value remains as a JsonElement
+            if (JsonDocument.ParseValue(ref reader).RootElement.GetRawText() is not string jsonString
+                || JsonSerializer.Deserialize<SerializationContainer>(jsonString) is not SerializationContainer container
                 || container.Value is not JsonElement element
                 || element.GetRawText() is not string elementString)
             {
                 throw new InvalidDataException();
             }
 
-            if (container.IsISerializable)
-            {
-                using var stream = new MemoryStream(new UTF8Encoding().GetBytes(elementString));
-                var value = new DataContractJsonSerializer(container.Type).ReadObject(stream);
-                return new SerializationContainer
-                {
-                    Type = type,
-                    Value = value,
-                    IsISerializable = container.IsISerializable
-                };
-            }
-
+            object? value = container.IsISerializable
+                ? DeserializeISerializable(elementString, container.Type)
+                : JsonSerializer.Deserialize(elementString, container.Type, ObjectOptions);
             return new SerializationContainer
             {
-                Type = type,
-                Value = JsonSerializer.Deserialize(elementString, type, ObjectOptions),
+                Type = container.Type,
+                Value = value,
                 IsISerializable = container.IsISerializable
             };
-        }
 
-        public override void Write(Utf8JsonWriter writer, SerializationContainer container, JsonSerializerOptions options)
-        {
-            if (container.IsISerializable)
+            static object? DeserializeISerializable(string valueJson, Type valueType)
             {
-                //https://davidsekar.com/javascript/converting-json-date-string-date-to-date-object
-                //https://stackoverflow.com/a/115034/294804
-                var settings = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("o") };
-                using var stream = new MemoryStream();
-                new DataContractJsonSerializer(container.Type, settings).WriteObject(stream, container.Value);
-                stream.Position = 0;
-
-                // Manually serialize the container using the DataContract's serialization of Value.
-                writer.WriteStartObject();
-                writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
-                writer.WritePropertyName(nameof(SerializationContainer.Value));
-                JsonDocument.Parse(stream).WriteTo(writer);
-                writer.WriteBoolean(nameof(SerializationContainer.IsISerializable), container.IsISerializable);
-                writer.WriteEndObject();
-
-                return;
+                using var stream = new MemoryStream(new UTF8Encoding().GetBytes(valueJson));
+                return new DataContractJsonSerializer(valueType).ReadObject(stream);
             }
 
+            //if (container.IsISerializable)
+            //{
+            //    using var stream = new MemoryStream(new UTF8Encoding().GetBytes(elementString));
+            //    var value = new DataContractJsonSerializer(container.Type).ReadObject(stream);
+            //    return new SerializationContainer
+            //    {
+            //        Type = type,
+            //        Value = value,
+            //        IsISerializable = container.IsISerializable
+            //    };
+            //}
+
+            //return new SerializationContainer
+            //{
+            //    Type = type,
+            //    Value = JsonSerializer.Deserialize(elementString, type, ObjectOptions),
+            //    IsISerializable = container.IsISerializable
+            //};
+        }
+
+        //https://davidsekar.com/javascript/converting-json-date-string-date-to-date-object
+        //https://stackoverflow.com/a/115034/294804
+        private static readonly DataContractJsonSerializerSettings DateTimeSettings = new() { DateTimeFormat = new DateTimeFormat("o") };
+
+        public override void Write(Utf8JsonWriter writer, SerializationContainer container, JsonSerializerOptions _)
+        {
+            // Manually serialize the container using a different ways to serialize Value.
             writer.WriteStartObject();
             writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
             writer.WritePropertyName(nameof(SerializationContainer.Value));
-            //https://github.com/dotnet/runtime/issues/1784
-            JsonDocument.Parse(JsonSerializer.Serialize(container.Value, container.Type, ObjectOptions)).WriteTo(writer);
+
+            JsonDocument document = container.IsISerializable
+                ? SerializeISerializable(container.Value, container.Type)
+                : JsonDocument.Parse(JsonSerializer.Serialize(container.Value, container.Type, ObjectOptions));
+            document.WriteTo(writer);
+
             writer.WriteBoolean(nameof(SerializationContainer.IsISerializable), container.IsISerializable);
             writer.WriteEndObject();
+
+            //if (container.IsISerializable)
+            //{
+            //    using var stream = new MemoryStream();
+            //    new DataContractJsonSerializer(container.Type, DateTimeSettings).WriteObject(stream, container.Value);
+            //    stream.Position = 0;
+
+            //    // Manually serialize the container using the DataContract's serialization of Value.
+            //    writer.WriteStartObject();
+            //    writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
+            //    writer.WritePropertyName(nameof(SerializationContainer.Value));
+            //    JsonDocument.Parse(stream).WriteTo(writer);
+            //    writer.WriteBoolean(nameof(SerializationContainer.IsISerializable), container.IsISerializable);
+            //    writer.WriteEndObject();
+
+            //    return;
+            //}
+
+            //writer.WriteStartObject();
+            //writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
+            //writer.WritePropertyName(nameof(SerializationContainer.Value));
+            ////https://github.com/dotnet/runtime/issues/1784
+            //JsonDocument.Parse(JsonSerializer.Serialize(container.Value, container.Type, ObjectOptions)).WriteTo(writer);
+            //writer.WriteBoolean(nameof(SerializationContainer.IsISerializable), container.IsISerializable);
+            //writer.WriteEndObject();
+
+            static JsonDocument SerializeISerializable(object? value, Type type)
+            {
+                using var stream = new MemoryStream();
+                new DataContractJsonSerializer(type, DateTimeSettings).WriteObject(stream, value);
+                stream.Position = 0;
+                return JsonDocument.Parse(stream);
+            }
         }
     }
 }
