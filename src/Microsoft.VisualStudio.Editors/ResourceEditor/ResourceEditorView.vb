@@ -2478,7 +2478,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Property
 
             Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-                '_resources = DirectCast(Info.GetValue(NameOf(Resources), GetType(Resource())), Resource())
                 _resources = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(Resources), GetType(Object())), Object()), Function(t) DirectCast(t, Resource))
             End Sub
 

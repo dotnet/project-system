@@ -13,84 +13,33 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' "All Platforms" modes.
     ''' </summary>
     <Serializable>
+    <KnownType(GetType(String()))>
     Public Class MultipleValuesStore
-        'Implements ISerializable
+        Implements ISerializable
 
         'Note: the sizes of these arrays are all the same
-        'Public ConfigNames As String()   'The config name applicable to each stored value
-        Private _configNames As String()
-        Public Property ConfigNames() As String()   'The config name applicable to each stored value
-            Get
-                Return _configNames
-            End Get
-            Set(Value As String())
-                _configNames = Value
-            End Set
-        End Property
+        Public ConfigNames As String()   'The config name applicable to each stored value
+        Public PlatformNames As String() 'The platform name applicable to each stored value
+        Public Values As Object()        'The stored values themselves
 
-        'Public PlatformNames As String() 'The platform name applicable to each stored value
-        Private _platformNames As String()
-        Public Property PlatformNames() As String() 'The platform name applicable to each stored value
-            Get
-                Return _platformNames
-            End Get
-            Set(Value As String())
-                _platformNames = Value
-            End Set
-        End Property
+        Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
+        Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
 
-        'Public Values As Object()        'The stored values themselves
-        Private _values As Object()
-        Public Property Values() As Object()        'The stored values themselves
-            Get
-                Return _values
-            End Get
-            Set(Value As Object())
-                _values = Value
-            End Set
-        End Property
-
-        'Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
-        Private _selectedConfigName As String
-        Public Property SelectedConfigName() As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
-            Get
-                Return _selectedConfigName
-            End Get
-            Set(Value As String)
-                _selectedConfigName = Value
-            End Set
-        End Property
-
-        'Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
-        Private _selectedPlatformName As String
-        Public Property SelectedPlatformName() As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
-            Get
-                Return _selectedPlatformName
-            End Get
-            Set(Value As String)
-                _selectedPlatformName = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' Used for deserialization.
-        ''' </summary>
-        Public Sub New()
+        Private Sub New(Info As SerializationInfo, Context As StreamingContext)
+            ConfigNames = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(ConfigNames), GetType(Object())), Object()), Function(t) DirectCast(t, String))
+            PlatformNames = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(PlatformNames), GetType(Object())), Object()), Function(t) DirectCast(t, String))
+            Values = DirectCast(Info.GetValue(NameOf(Values), GetType(Object())), Object())
+            SelectedConfigName = Info.GetString(NameOf(SelectedConfigName))
+            SelectedPlatformName = Info.GetString(NameOf(SelectedPlatformName))
         End Sub
 
-        '''' <summary>
-        '''' Deserialization constructor.
-        '''' </summary>
-        '''' <param name="Info"></param>
-        '''' <param name="Context"></param>
-        '''' <remarks>
-        ''''See .NET Framework Developer's Guide, "Custom Serialization" for more information
-        '''' </remarks>
-        'Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-        '    ConfigNames = DirectCast(Info.GetValue(NameOf(ConfigNames), GetType(String())), String())
-        '    '_savedFileName = Info.GetString(SERIALIZATIONKEY_SAVEDFILENAME)
-        '    '_originalFileTimeStamp = Info.GetDateTime(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP)
-        'End Sub
+        Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
+            Info.AddValue(NameOf(ConfigNames), ConfigNames)
+            Info.AddValue(NameOf(PlatformNames), PlatformNames)
+            Info.AddValue(NameOf(Values), Values)
+            Info.AddValue(NameOf(SelectedConfigName), SelectedConfigName)
+            Info.AddValue(NameOf(SelectedPlatformName), SelectedPlatformName)
+        End Sub
 
         ''' <summary>
         ''' Constructor.
@@ -180,11 +129,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Trace.Unindent()
         End Sub
 
-        'Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
-        '    Info.AddValue(NameOf(ConfigNames), ConfigNames)
-        '    'Info.AddValue(SERIALIZATIONKEY_SAVEDFILENAME, VB.IIf(_savedFileName Is Nothing, "", _savedFileName))
-        '    'Info.AddValue(SERIALIZATIONKEY_ORIGINALFILETIMESTAMP, _originalFileTimeStamp)
-        'End Sub
     End Class
 
 End Namespace

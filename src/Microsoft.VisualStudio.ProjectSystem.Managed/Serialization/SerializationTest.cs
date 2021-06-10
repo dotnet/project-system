@@ -20,18 +20,19 @@ namespace Microsoft.VisualStudio.Serialization
             }
             var writer = new StreamWriter(stream);
             var jsonString = JsonSerializer.Serialize(new SerializationContainer(value), SerializationContainer.Options);
-            File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
+            //File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
             writer.Write(jsonString);
             writer.Flush();
             stream.Position = 0;
         }
 
+        // TODO: Determine type filtering mechanic
         //private static Type[] AllowedTypes = { typeof(int), typeof(bool), typeof(string), };
 
         public static object? Deserialize(Stream stream)
         {
             var jsonString = new StreamReader(stream).ReadToEnd();
-            File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { jsonString });
+            //File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { jsonString });
             return JsonSerializer.Deserialize<SerializationContainer>(jsonString, SerializationContainer.Options).Value;
         }
     }
@@ -166,7 +167,7 @@ namespace Microsoft.VisualStudio.Serialization
 
         public override void Write(Utf8JsonWriter writer, SerializationContainer container, JsonSerializerOptions _)
         {
-            // Manually serialize the container using a different ways to serialize Value.
+            // Manually serialize the container using different means to serialize Value.
             writer.WriteStartObject();
             writer.WriteString(nameof(SerializationContainer.AssemblyQualifiedName), container.AssemblyQualifiedName);
             writer.WritePropertyName(nameof(SerializationContainer.Value));
