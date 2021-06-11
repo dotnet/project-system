@@ -9,13 +9,11 @@ Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization
 Imports System.Runtime.Versioning
 Imports System.Text
-Imports System.Text.Json
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Imaging.Interop
-Imports Microsoft.VisualStudio.Serialization
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VisualStudio.Telemetry

@@ -8,10 +8,8 @@ Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization
 Imports System.Text
-Imports System.Text.Json
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports Microsoft.VisualStudio.Serialization
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
 
