@@ -336,14 +336,14 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' <param name="hr">error code</param>
         ''' <param name="errorMessage">error message</param>
         Public Sub SetErrorInfo(sp As ServiceProvider, hr As Integer, errorMessage As String)
-            Dim vsUIShell As Shell.Interop.IVsUIShell = Nothing
+            Dim vsUIShell As Interop.IVsUIShell = Nothing
 
             If sp IsNot Nothing Then
-                vsUIShell = CType(sp.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
+                vsUIShell = CType(sp.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
             End If
 
             If vsUIShell Is Nothing AndAlso Not VBPackageInstance IsNot Nothing Then
-                vsUIShell = CType(VBPackageInstance.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
+                vsUIShell = CType(VBPackageInstance.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
             End If
 
             If vsUIShell IsNot Nothing Then
@@ -409,8 +409,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         ''' </summary>
         ''' <param name="Path">The path to add a backslash to.</param>
         Public Function AppendBackslash(Path As String) As String
-            If Path <> "" AndAlso Right(Path, 1) <> System.IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> System.IO.Path.AltDirectorySeparatorChar Then
-                Return Path & System.IO.Path.DirectorySeparatorChar
+            If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
+                Return Path & IO.Path.DirectorySeparatorChar
             Else
                 Return Path
             End If
@@ -434,8 +434,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 Optional DefaultFileName As String = Nothing,
                 Optional NeedThrowError As Boolean = False) As ArrayList
 
-            Dim uishell As Shell.Interop.IVsUIShell =
-                CType(ServiceProvider.GetService(GetType(Shell.Interop.IVsUIShell)), Shell.Interop.IVsUIShell)
+            Dim uishell As Interop.IVsUIShell =
+                CType(ServiceProvider.GetService(GetType(Interop.IVsUIShell)), Interop.IVsUIShell)
 
             Dim fileNames As New ArrayList()
 
@@ -451,7 +451,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                 MaxPathName = (AppDesInterop.Win32Constant.MAX_PATH + 1) * VSDPLMAXFILES
             End If
 
-            Dim vsOpenFileName As Shell.Interop.VSOPENFILENAMEW()
+            Dim vsOpenFileName As Interop.VSOPENFILENAMEW()
 
             Dim defaultName(MaxPathName) As Char
             If DefaultFileName IsNot Nothing Then
@@ -462,7 +462,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
             Marshal.Copy(defaultName, 0, stringMemPtr, defaultName.Length)
 
             Try
-                vsOpenFileName = New Shell.Interop.VSOPENFILENAMEW(0) {}
+                vsOpenFileName = New Interop.VSOPENFILENAMEW(0) {}
                 vsOpenFileName(0).lStructSize = CUInt(Marshal.SizeOf(vsOpenFileName(0)))
                 vsOpenFileName(0).hwndOwner = ParentWindow
                 vsOpenFileName(0).pwzDlgTitle = DialogTitle
@@ -495,7 +495,7 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                             If i = 0 Then
                                 path = New String(buffer, 0, j)
                             Else
-                                fileNames.Add(path & System.IO.Path.DirectorySeparatorChar & New String(buffer, i, j - i))
+                                fileNames.Add(path & IO.Path.DirectorySeparatorChar & New String(buffer, i, j - i))
                             End If
                             i = j + 1
                         End If

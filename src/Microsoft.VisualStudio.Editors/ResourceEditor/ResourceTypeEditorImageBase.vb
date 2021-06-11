@@ -59,7 +59,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ValidateResourceValue(Resource)
             Dim Image As Image = CType(Resource.GetValue(), Image)
             Image.Save(FilePath, Image.RawFormat)
-            Debug.Assert(New System.IO.FileInfo(FilePath).Length > 0, "Saved file has zero length")
+            Debug.Assert(New IO.FileInfo(FilePath).Length > 0, "Saved file has zero length")
         End Sub
 
         ''' <summary>
@@ -181,7 +181,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Dim Extension As String
 
                 If NewResource.IsLink() Then
-                    Extension = System.IO.Path.GetExtension(NewResource.LinkedFilePath)
+                    Extension = IO.Path.GetExtension(NewResource.LinkedFilePath)
                 Else
                     Extension = GetResourceFileExtension(NewResource)
                 End If

@@ -375,7 +375,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                         UnusedRefsList.Add(RefsList(CInt(refObj)))
                                         ' remove the one we matched, so we don't scan it and waste time to GetAssemblyName again...
                                         pathHash.Remove(formattedPath)
-                                    ElseIf System.IO.File.Exists(UnusedRefPath) Then
+                                    ElseIf IO.File.Exists(UnusedRefPath) Then
                                         ' If we haven't matched any path, we need collect the assembly name and use it to do match...
                                         Dim UnusedRefName As String = GetAssemblyName(UnusedRefPath).FullName
                                         If UnusedRefName <> "" Then
@@ -394,7 +394,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                                 For Each pathItem As DictionaryEntry In pathHash
                                     Dim RefPath As String = CStr(pathItem.Key)
                                     Dim iRef As Integer = CInt(pathItem.Value)
-                                    If System.IO.File.Exists(RefPath) Then
+                                    If IO.File.Exists(RefPath) Then
                                         Dim assemblyName As System.Reflection.AssemblyName = GetAssemblyName(RefPath)
                                         If assemblyName IsNot Nothing Then
                                             Dim RefName As String = assemblyName.FullName.ToUpper(Globalization.CultureInfo.InvariantCulture)

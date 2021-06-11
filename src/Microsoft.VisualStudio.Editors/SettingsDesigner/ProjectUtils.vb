@@ -221,11 +221,11 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 Else
                     ParentId = ItemId(Hierarchy, ProjectItem)
                     CollectionToAddTo = ProjectItem.Collection
-                    NewFilePath = System.IO.Path.GetDirectoryName(FileName(ProjectItem))
+                    NewFilePath = IO.Path.GetDirectoryName(FileName(ProjectItem))
                 End If
 
-                If Not (NewFilePath.EndsWith(System.IO.Path.DirectorySeparatorChar) OrElse NewFilePath.EndsWith(System.IO.Path.AltDirectorySeparatorChar)) Then
-                    NewFilePath &= System.IO.Path.DirectorySeparatorChar
+                If Not (NewFilePath.EndsWith(IO.Path.DirectorySeparatorChar) OrElse NewFilePath.EndsWith(IO.Path.AltDirectorySeparatorChar)) Then
+                    NewFilePath &= IO.Path.DirectorySeparatorChar
                 End If
 
                 Dim NewItemName As String
@@ -236,7 +236,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner.ProjectUtils
                 End If
 
                 If IsFileInProject(vsproj, NewFilePath & NewItemName) Then
-                    VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, System.IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
+                    VSErrorHandler.ThrowOnFailure(vsproj.GenerateUniqueItemName(ParentId, "." & CodeProvider.FileExtension, IO.Path.GetFileNameWithoutExtension(NewItemName), NewItemName))
                 End If
                 ' CONSIDER: Using different mechanism to figure out if this is VB than checking the file extension...
                 Dim supportsDeclarativeEventHandlers As Boolean = CodeProvider.FileExtension.Equals("vb", StringComparison.OrdinalIgnoreCase)

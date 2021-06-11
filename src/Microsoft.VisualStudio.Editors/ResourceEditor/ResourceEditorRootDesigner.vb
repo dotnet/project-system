@@ -315,7 +315,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                             Dim vt As Object = Nothing
                             VSErrorHandler.ThrowOnFailure(vsUserData.GetData(Guid, vt))
                             If TypeOf vt Is String Then
-                                Return System.IO.Path.GetFileName(CStr(vt))
+                                Return IO.Path.GetFileName(CStr(vt))
                             End If
                         End If
                     End If

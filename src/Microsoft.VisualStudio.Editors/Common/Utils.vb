@@ -383,7 +383,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' <param name="Path">The path to get the full path from.</param>
         Public Function GetFullPathTolerant(Path As String) As String
             Try
-                Return System.IO.Path.GetFullPath(Path)
+                Return IO.Path.GetFullPath(Path)
             Catch ex As ArgumentException
             Catch ex As NotSupportedException
             End Try
@@ -620,8 +620,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         ''' <param name="Path">The path to add a backslash to.</param>
         Friend Function AppendBackslash(Path As String) As String
-            If Path <> "" AndAlso Right(Path, 1) <> System.IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> System.IO.Path.AltDirectorySeparatorChar Then
-                Return Path & System.IO.Path.DirectorySeparatorChar
+            If Path <> "" AndAlso Right(Path, 1) <> IO.Path.DirectorySeparatorChar AndAlso Right(Path, 1) <> IO.Path.AltDirectorySeparatorChar Then
+                Return Path & IO.Path.DirectorySeparatorChar
             Else
                 Return Path
             End If
@@ -706,7 +706,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                             If i = 0 Then
                                 path = New String(buffer, 0, j)
                             Else
-                                fileNames.Add(path & System.IO.Path.DirectorySeparatorChar & New String(buffer, i, j - i))
+                                fileNames.Add(path & IO.Path.DirectorySeparatorChar & New String(buffer, i, j - i))
                             End If
                             i = j + 1
                         End If
@@ -877,7 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ' If the 2 paths have different root paths, return Path. 
             ' It's harder to deal with UNC root path in the algorithm.
-            If Not String.Equals(System.IO.Path.GetPathRoot(BaseDirectory), System.IO.Path.GetPathRoot(Path),
+            If Not String.Equals(IO.Path.GetPathRoot(BaseDirectory), System.IO.Path.GetPathRoot(Path),
                     StringComparison.OrdinalIgnoreCase) Then
                 Return RemoveEndingSeparator(Path)
             End If
@@ -891,7 +891,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Exit While
                 Else
                     ' Update CommonSeparatorPosition if both paths have a separator at an index.
-                    If BaseDirectory.Chars(Index) = System.IO.Path.DirectorySeparatorChar Then
+                    If BaseDirectory.Chars(Index) = IO.Path.DirectorySeparatorChar Then
                         CommonSeparatorPosition = Index
                     End If
                 End If
@@ -908,8 +908,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ' Calculate how many directories to go up to common directory from base path.
             While Index < BaseDirectory.Length
-                If BaseDirectory.Chars(Index) = System.IO.Path.DirectorySeparatorChar Then
-                    RelativePath.Append(".." & System.IO.Path.DirectorySeparatorChar)
+                If BaseDirectory.Chars(Index) = IO.Path.DirectorySeparatorChar Then
+                    RelativePath.Append(".." & IO.Path.DirectorySeparatorChar)
                 End If
                 Index += 1
             End While
@@ -927,10 +927,10 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Private Function NormalizePath(Path As String) As String
             ' Get the full path.
-            Path = System.IO.Path.GetFullPath(Path)
+            Path = IO.Path.GetFullPath(Path)
 
             ' Now we have the long-format path, remove all ending separators, then add one for GetRelativePath to work correctly.
-            Return Path.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar) & System.IO.Path.DirectorySeparatorChar
+            Return Path.TrimEnd(IO.Path.DirectorySeparatorChar, IO.Path.AltDirectorySeparatorChar) & IO.Path.DirectorySeparatorChar
         End Function
 
         ''' <summary>
@@ -941,9 +941,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' IO.Path.GetPathRoot() will trim the ending separator, so trim the input as well.
         ''' </remarks>
         Private Function IsRootPath(Path As String) As Boolean
-            If System.IO.Path.IsPathRooted(Path) Then
-                Dim TrimmedPath As String = Path.TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar)
-                Return String.Equals(TrimmedPath, System.IO.Path.GetPathRoot(Path), StringComparison.OrdinalIgnoreCase)
+            If IO.Path.IsPathRooted(Path) Then
+                Dim TrimmedPath As String = Path.TrimEnd(IO.Path.DirectorySeparatorChar, IO.Path.AltDirectorySeparatorChar)
+                Return String.Equals(TrimmedPath, IO.Path.GetPathRoot(Path), StringComparison.OrdinalIgnoreCase)
             End If
             Return False
         End Function
@@ -953,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Private Function RemoveEndingSeparator(Path As String) As String
             If Not IsRootPath(Path) Then
-                Return Path.TrimEnd(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
+                Return Path.TrimEnd(IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
             Else
                 Return Path
             End If
@@ -1568,12 +1568,12 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Friend Function GetSecurityZoneOfFile(path As String, serviceProvider As ServiceProvider) As Security.SecurityZone
             Requires.NotNull(path, NameOf(path))
 
-            If Not System.IO.Path.IsPathRooted(path) Then
+            If Not IO.Path.IsPathRooted(path) Then
                 Throw CreateArgumentException(NameOf(path))
             End If
 
             ' Some additional verification is done by Path.GetFullPath...
-            Dim absPath As String = System.IO.Path.GetFullPath(path)
+            Dim absPath As String = IO.Path.GetFullPath(path)
 
             Dim internetSecurityManager As IInternetSecurityManager = Nothing
 

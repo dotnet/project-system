@@ -130,7 +130,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Sub
 
         Private Shared Function IsValidFolderPath(ByRef Dir As String) As Boolean
-            Return System.IO.Directory.Exists(Dir)
+            Return IO.Directory.Exists(Dir)
         End Function
 
         Private Sub AddFolder_Click(sender As Object, e As EventArgs) Handles AddFolder.Click
@@ -334,7 +334,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             If FolderText.Length > 0 Then
                 Try
                     'Interpret as relative to the project path, and make it absolute
-                    FolderText = System.IO.Path.Combine(GetProjectPath(), FolderText)
+                    FolderText = IO.Path.Combine(GetProjectPath(), FolderText)
                     FolderText = AppendBackslash(FolderText)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(GetCurrentFolderPathAbsolute), NameOf(ReferencePathsPropPage))
                 End Try

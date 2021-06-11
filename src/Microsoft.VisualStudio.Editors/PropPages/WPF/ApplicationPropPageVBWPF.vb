@@ -1245,7 +1245,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="fullPath"></param>
         Private Function IsFileRelativeToProjectPath(fullPath As String) As Boolean
             Dim relativePath As String = GetProjectRelativeFilePath(fullPath)
-            Return Not System.IO.Path.IsPathRooted(relativePath)
+            Return Not IO.Path.IsPathRooted(relativePath)
         End Function
 
         ''' <summary>
@@ -1256,7 +1256,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
             For Each projectItem As ProjectItem In projectItems
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
-                If System.IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
+                If IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     'We only want .xaml files with BuildAction="Page"
                     Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectItem)
@@ -1589,7 +1589,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         Private Shared Function FindDependentFile(projectItem As ProjectItem, extension As String) As ProjectItem
             For Each dependentItem As ProjectItem In projectItem.ProjectItems
                 If dependentItem.FileNames(1) IsNot Nothing _
-                        AndAlso System.IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
+                        AndAlso IO.Path.GetExtension(dependentItem.Name).Equals(extension, StringComparison.OrdinalIgnoreCase) Then
                     Return dependentItem
                 End If
             Next

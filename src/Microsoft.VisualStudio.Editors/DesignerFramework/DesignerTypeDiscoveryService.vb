@@ -138,7 +138,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             If typeResolutionService IsNot Nothing Then
                 Try
-                    If System.IO.File.Exists(projectOutput) Then
+                    If IO.File.Exists(projectOutput) Then
                         Dim an As System.Reflection.AssemblyName = System.Reflection.AssemblyName.GetAssemblyName(projectOutput)
                         Dim a As System.Reflection.Assembly = typeResolutionService.GetAssembly(an)
                         Return a

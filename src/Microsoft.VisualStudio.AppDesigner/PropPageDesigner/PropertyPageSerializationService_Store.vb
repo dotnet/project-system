@@ -30,7 +30,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '''</remarks>
         <Serializable>
         Private NotInheritable Class PropertyPageSerializationStore
-            Inherits Design.Serialization.SerializationStore
+            Inherits Serialization.SerializationStore
             Implements ISerializable
 
             'The set of properties that we wish to
