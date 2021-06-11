@@ -4,14 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.Threading;
-using EnumCollection = System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>;
-using EnumCollectionProjectValue = Microsoft.VisualStudio.ProjectSystem.IProjectVersionedValue<System.Collections.Generic.ICollection<Microsoft.VisualStudio.ProjectSystem.Properties.IEnumValue>>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 {
@@ -20,67 +14,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformIdentifierEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SdkSupportedTargetPlatformIdentifierProvider : ChainedProjectValueDataSourceBase<EnumCollection>, IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
+    internal class SdkSupportedTargetPlatformIdentifierProvider : SupportedValuesProvider
     {
-        private readonly IProjectSubscriptionService _subscriptionService;
+        protected override string RuleName => SdkSupportedTargetPlatformIdentifier.SchemaName;
 
         [ImportingConstructor]
         public SdkSupportedTargetPlatformIdentifierProvider(
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService)
-            : base(project, synchronousDisposal: true, registerDataSource: false)
-        {
-            _subscriptionService = subscriptionService;
-        }
+            : base(project, subscriptionService, useNoneValue: true) { }
 
-        [ConfiguredProjectAutoLoad]
-        [AppliesTo(ProjectCapability.DotNet)]
-        public void Load()
-        {
-            // To avoid UI delays when opening the AppDesigner for the first time, 
-            // we auto-load so that we are included in the first design-time build
-            // for the project.
-            EnsureInitialized();
-        }
-
-        protected override IDisposable? LinkExternalInput(ITargetBlock<EnumCollectionProjectValue> targetBlock)
-        {
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _subscriptionService.ProjectRuleSource;
-
-            // Transform the changes from evaluation -> supported target OS
-            DisposableValue<ISourceBlock<EnumCollectionProjectValue>> transformBlock = source.SourceBlock.TransformWithNoDelta(
-                update => update.Derive(Transform),
-                suppressVersionOnlyUpdates: false,
-                ruleNames: SdkSupportedTargetPlatformIdentifier.SchemaName);
-
-            // Set the link up so that we publish changes to target block
-            transformBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
-
-            // Join the source blocks, so if they need to switch to UI thread to complete 
-            // and someone is blocked on us on the same thread, the call proceeds
-            JoinUpstreamDataSources(source);
-
-            return transformBlock;
-        }
-
-        private static EnumCollection Transform(IProjectSubscriptionUpdate input)
-        {
-            IProjectRuleSnapshot snapshot = input.CurrentState[SdkSupportedTargetPlatformIdentifier.SchemaName];
-
-            var list = new List<IEnumValue>(capacity: 1 + snapshot.Items.Count);
-
-            list.Add(new PageEnumValue(new EnumValue()
-            {
-                Name = string.Empty,
-                DisplayName = Resources.Property_NoneValue
-            }));
-
-            list.AddRange(snapshot.Items.Select(ToEnumValue));
-
-            return list.OrderBy(e => e.DisplayName).ToArray();
-        }
-
-        private static IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
+        protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
             return new PageEnumValue(new EnumValue()
             {
@@ -92,23 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             });
         }
 
-        public Task<IDynamicEnumValuesGenerator> GetProviderAsync(IList<NameValuePair>? options)
+        protected override int SortValues(IEnumValue a, IEnumValue b)
         {
-            return Task.FromResult<IDynamicEnumValuesGenerator>(this);
+            return StringComparer.OrdinalIgnoreCase.Compare(a.DisplayName, b.DisplayName);
         }
-
-        public async Task<EnumCollection> GetListedValuesAsync()
-        {
-            using (JoinableCollection.Join())
-            {
-                EnumCollectionProjectValue snapshot = await SourceBlock.ReceiveAsync();
-
-                return snapshot.Value;
-            }
-        }
-
-        bool IDynamicEnumValuesGenerator.AllowCustomValues => false;
-
-        Task<IEnumValue?> IDynamicEnumValuesGenerator.TryCreateEnumValueAsync(string userSuppliedValue) => TaskResult.Null<IEnumValue>();
     }
 }
