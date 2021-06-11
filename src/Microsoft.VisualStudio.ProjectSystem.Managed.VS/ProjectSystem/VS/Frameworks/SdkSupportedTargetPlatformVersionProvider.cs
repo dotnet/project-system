@@ -9,35 +9,34 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
 {
     /// <summary>
-    ///     Responsible for producing valid values for the TargetFramework property from evaluation.
+    ///     Responsible for producing valid values for the SdkSupportedTargetPlatformVersion property from evaluation.
     /// </summary>
-    [ExportDynamicEnumValuesProvider("SupportedTargetFrameworksEnumProvider")]
+    [ExportDynamicEnumValuesProvider("SdkSupportedTargetPlatformVersionEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SupportedTargetFrameworksProvider : SupportedValuesProvider
+    internal class SdkSupportedTargetPlatformVersionProvider : SupportedValuesProvider
     {
-        protected override string RuleName => SupportedTargetFramework.SchemaName;
+        protected override string RuleName => SdkSupportedTargetPlatformVersion.SchemaName;
 
         [ImportingConstructor]
-        public SupportedTargetFrameworksProvider(
-            ConfiguredProject project,
-            IProjectSubscriptionService subscriptionService)
+        public SdkSupportedTargetPlatformVersionProvider(
+            ConfiguredProject project, 
+            IProjectSubscriptionService subscriptionService) 
             : base(project, subscriptionService) {}
 
         protected override IEnumValue ToEnumValue(KeyValuePair<string, IImmutableDictionary<string, string>> item)
         {
             return new PageEnumValue(new EnumValue()
             {
-                // Example: <SupportedTargetFramework  Include=".NETCoreApp,Version=v5.0"
-                //                                     DisplayName=".NET 5.0" />
+                // Example: <SdkSupportedTargetPlatformVersion Include="7.0"/>
+                //          <SdkSupportedTargetPlatformVersion Include="8.0"/>
 
-                Name = item.Key,
-                DisplayName = item.Value[SupportedTargetFramework.DisplayNameProperty],
+                Name = item.Key
             });
         }
 
         protected override int SortValues(IEnumValue a, IEnumValue b)
         {
-            return NaturalStringComparer.Instance.Compare(a.DisplayName, b.DisplayName);
+            return NaturalStringComparer.Instance.Compare(a.Name, b.Name);
         }
     }
 }

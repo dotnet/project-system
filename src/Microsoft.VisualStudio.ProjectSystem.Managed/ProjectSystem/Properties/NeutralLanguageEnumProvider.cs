@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             public Task<ICollection<IEnumValue>> GetListedValuesAsync()
             {
                 var values = Enumerable.Empty<IEnumValue>()
-                    .Append(new PageEnumValue(new EnumValue() { Name = NeutralLanguageValueProvider.NoneValue, DisplayName = Resources.NeutralLanguage_NoneValue }))
+                    .Append(new PageEnumValue(new EnumValue() { Name = NeutralLanguageValueProvider.NoneValue, DisplayName = Resources.Property_NoneValue }))
                     .Concat(CultureInfo.GetCultures(CultureTypes.NeutralCultures | CultureTypes.SpecificCultures | CultureTypes.InstalledWin32Cultures)
                         .Where(info => info.Name.Length != 0)
                         .OrderBy(info => info.Name, StringComparer.OrdinalIgnoreCase)

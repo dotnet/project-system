@@ -49,13 +49,17 @@
     </BoolProperty.DataSource>
   </BoolProperty>
 
-  <DynamicEnumProperty Name="TargetFramework"
+  <DynamicEnumProperty Name="InterceptedTargetFramework"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(not (has-evaluated-value "Application" "TargetMultipleFrameworks" true))</NameValuePair.Value>
@@ -99,6 +103,56 @@
       </ValueEditor>
     </StringProperty.ValueEditors>
   </StringProperty>
+
+  <DynamicEnumProperty Name="TargetPlatformIdentifier"
+                DisplayName="Target OS"
+                Description="Specifies the operating system that this project will target."
+                Category="General"
+                EnumProvider="SdkSupportedTargetPlatformIdentifierEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <DynamicEnumProperty Name="TargetPlatformVersion"
+                DisplayName="Target OS version"
+                Description="Specifies the version of the operating system this project will target."
+                Category="General"
+                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <DynamicEnumProperty Name="MinimumPlatformVersion"
+                DisplayName="Minimum OS version"
+                Description="Specifies the minimum runtime version of the selected operating system."
+                Category="General"
+                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
 
   <!-- TODO use fwlink for HelpUrl -->
   <BoolProperty Name="UseWindowsForms"

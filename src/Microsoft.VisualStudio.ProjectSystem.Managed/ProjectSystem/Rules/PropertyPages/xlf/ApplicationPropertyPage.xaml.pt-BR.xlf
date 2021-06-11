@@ -72,6 +72,36 @@
         <target state="translated">Recursos</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|DisplayName">
+        <source>Target framework</source>
+        <target state="new">Target framework</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="new">TFM</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Description">
+        <source>Specifies the minimum runtime version of the selected operating system.</source>
+        <target state="new">Specifies the minimum runtime version of the selected operating system.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|DisplayName">
+        <source>Minimum OS version</source>
+        <target state="new">Minimum OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
         <target state="translated">Define o ponto de entrada a ser chamado quando o aplicativo é carregado. Geralmente, essa opção é definida como o formulário principal no aplicativo ou como o procedimento 'Main' que deve ser executado quando o aplicativo é iniciado. As bibliotecas de classe não definem um ponto de entrada.</target>
@@ -82,19 +112,34 @@
         <target state="translated">Objeto de inicialização</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
-        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">Especifica a versão do .NET à qual o aplicativo será direcionado. Essa opção pode ter valores diferentes dependendo de quais versões do .NET estão instaladas no computador.</target>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
+        <source>Specifies the operating system that this project will target.</source>
+        <target state="new">Specifies the operating system that this project will target.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
-        <source>Target framework</source>
-        <target state="translated">Estrutura de destino</target>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
+        <source>Target OS</source>
+        <target state="new">Target OS</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
-        <source>TFM</source>
-        <target state="translated">TFM</target>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
+        <source>Specifies the version of the operating system this project will target.</source>
+        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
+        <source>Target OS version</source>
+        <target state="new">Target OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
@@ -234,7 +279,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="translated">TFM</target>
+        <target state="new">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">
