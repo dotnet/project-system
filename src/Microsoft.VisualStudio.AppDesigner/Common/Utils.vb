@@ -6,6 +6,8 @@ Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
+Imports System.Runtime.Serialization
+Imports System.Text
 Imports System.Text.Json
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
@@ -709,11 +711,22 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
         Public Class SerializationProvider
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
-                SerializationTest.Serialize(stream, value)
+                If value Is Nothing Then
+                    Return
+                End If
+                Using writer As New BinaryWriter(stream, Encoding.UTF8, True)
+                    Dim valueType = value.GetType()
+                    writer.Write(valueType.AssemblyQualifiedName)
+                    writer.Flush()
+                    Call New DataContractSerializer(valueType).WriteObject(stream, value)
+                End Using
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
-                Return SerializationTest.Deserialize(stream)
+                Using reader As New BinaryReader(stream, Encoding.UTF8, True)
+                    Dim valueType = Type.GetType(reader.ReadString())
+                    Return New DataContractSerializer(valueType).ReadObject(stream)
+                End Using
             End Function
 
         End Class
