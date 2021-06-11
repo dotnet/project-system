@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [ExportRule(nameof(SupportedTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
-            public static int SupportedTargetFrameworkAliasRule;
+            public static int SupportedTargetFrameworkRule;
 
             /// <summary>
             ///     Represents the design-time build items containing the supported (possible) target platforms

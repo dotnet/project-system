@@ -137,36 +137,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// <returns>A string with the combined values.</returns>
         private async Task<string> ComputeValueAsync(ComplexTargetFramework complexTargetFramework)
         {
-            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFrameworkMoniker))
+            if (Strings.IsNullOrEmpty(complexTargetFramework.TargetFrameworkMoniker))
             {
-                string targetFrameworkAlias = await GetTargetFrameworkAliasAsync(complexTargetFramework.TargetFrameworkMoniker);
-
-                if (string.IsNullOrEmpty(targetFrameworkAlias))
-                {
-                    // The value on the TargetFrameworkMoniker is not on the supported list and we shouldn't try to parse it.
-                    // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
-                    if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFramework))
-                    {
-                        return complexTargetFramework.TargetFramework;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
-                {
-                    string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
-
-                    if (string.IsNullOrEmpty(targetPlatformAlias))
-                    {
-                        return targetFrameworkAlias;
-                    }
-
-                    return targetFrameworkAlias + "-" + targetPlatformAlias + complexTargetFramework.TargetPlatformVersion;
-                }
-
-                return targetFrameworkAlias;
+                return string.Empty;
             }
 
-            return string.Empty;
+            string targetFrameworkAlias = await GetTargetFrameworkAliasAsync(complexTargetFramework.TargetFrameworkMoniker);
+
+            if (string.IsNullOrEmpty(targetFrameworkAlias))
+            {
+                // The value on the TargetFrameworkMoniker is not on the supported list and we shouldn't try to parse it.
+                // Therefore, we return the user value as it is. I.e. <TargetFramework>foo</TargetFramework>
+                if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetFramework))
+                {
+                    return complexTargetFramework.TargetFramework;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
+            {
+                string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
+
+                if (string.IsNullOrEmpty(targetPlatformAlias))
+                {
+                    return targetFrameworkAlias;
+                }
+
+                return targetFrameworkAlias + "-" + targetPlatformAlias + complexTargetFramework.TargetPlatformVersion;
+            }
+
+            return targetFrameworkAlias;
         }
 
         /// <summary>
