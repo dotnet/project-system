@@ -2453,7 +2453,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         <Serializable>
         Private NotInheritable Class ResourcesDataFormat
-
             'List of resources
             Private ReadOnly _resources() As Resource
 

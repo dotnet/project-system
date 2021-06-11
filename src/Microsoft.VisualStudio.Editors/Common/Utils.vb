@@ -877,7 +877,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             ' If the 2 paths have different root paths, return Path. 
             ' It's harder to deal with UNC root path in the algorithm.
-            If Not String.Equals(IO.Path.GetPathRoot(BaseDirectory), System.IO.Path.GetPathRoot(Path),
+            If Not String.Equals(IO.Path.GetPathRoot(BaseDirectory), IO.Path.GetPathRoot(Path),
                     StringComparison.OrdinalIgnoreCase) Then
                 Return RemoveEndingSeparator(Path)
             End If
@@ -953,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         ''' </summary>
         Private Function RemoveEndingSeparator(Path As String) As String
             If Not IsRootPath(Path) Then
-                Return Path.TrimEnd(IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
+                Return Path.TrimEnd(IO.Path.AltDirectorySeparatorChar, IO.Path.DirectorySeparatorChar)
             Else
                 Return Path
             End If

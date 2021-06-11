@@ -10,6 +10,7 @@ Imports System.Runtime.Serialization
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+
 Imports Microsoft.VisualStudio.Shell
 Imports Microsoft.VisualStudio.Telemetry
 
