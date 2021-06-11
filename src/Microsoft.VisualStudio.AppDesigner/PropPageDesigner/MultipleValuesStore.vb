@@ -1,6 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.Runtime.Serialization
 Imports Microsoft.VisualStudio.Shell.Interop
 
 Imports Common = Microsoft.VisualStudio.Editors.AppDesCommon
@@ -13,10 +12,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' "All Platforms" modes.
     ''' </summary>
     <Serializable>
-    <KnownType(GetType(String()))>
-    <KnownType(GetType(Object()))>
     Public Class MultipleValuesStore
-        Implements ISerializable
 
         'Note: the sizes of these arrays are all the same
         Public ConfigNames As String()   'The config name applicable to each stored value
@@ -25,22 +21,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
         Public SelectedConfigName As String 'The currently-selected configuration in the comboboxes.  Empty value indicates "All Configurations".
         Public SelectedPlatformName As String 'The currently-selected platform in the comboboxes.  Empty value indicates "All Platforms".
-
-        Private Sub New(Info As SerializationInfo, Context As StreamingContext)
-            ConfigNames = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(ConfigNames), GetType(Object())), Object()), Function(t) DirectCast(t, String))
-            PlatformNames = Array.ConvertAll(DirectCast(Info.GetValue(NameOf(PlatformNames), GetType(Object())), Object()), Function(t) DirectCast(t, String))
-            Values = DirectCast(Info.GetValue(NameOf(Values), GetType(Object())), Object())
-            SelectedConfigName = Info.GetString(NameOf(SelectedConfigName))
-            SelectedPlatformName = Info.GetString(NameOf(SelectedPlatformName))
-        End Sub
-
-        Private Sub GetObjectData(Info As SerializationInfo, Context As StreamingContext) Implements ISerializable.GetObjectData
-            Info.AddValue(NameOf(ConfigNames), ConfigNames)
-            Info.AddValue(NameOf(PlatformNames), PlatformNames)
-            Info.AddValue(NameOf(Values), Values)
-            Info.AddValue(NameOf(SelectedConfigName), SelectedConfigName)
-            Info.AddValue(NameOf(SelectedPlatformName), SelectedPlatformName)
-        End Sub
 
         ''' <summary>
         ''' Constructor.
@@ -81,10 +61,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     ConfigNames(i) = ConfigName
                     PlatformNames(i) = PlatformName
                     Me.Values(i) = Values(i)
-                    'Dim typeName = Values(i).GetType().FullName
-                    'If (typeName <> "System.String" And typeName <> "System.Boolean") Then
-                    '    System.IO.File.AppendAllLines("C:\Workspace\MVS-Types.txt", New String() {typeName})
-                    'End If
                 Else
                     Debug.Fail("Unexpected type passed in to MultipleValues.  Currently only IVsCfg supported.  If it's a common (non-config) property, why are we creating MultipleValues for it?")
                     Throw Common.CreateArgumentException(NameOf(Values))

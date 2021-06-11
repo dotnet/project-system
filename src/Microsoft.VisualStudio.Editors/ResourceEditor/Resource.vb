@@ -12,8 +12,7 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Runtime.Serialization
 Imports System.Text
-Imports System.Text.Json
-Imports System.Text.Json.Serialization
+
 Imports Microsoft.VisualStudio.Editors.Common.Utils
 Imports Microsoft.VisualStudio.Shell
 
