@@ -12,28 +12,48 @@ namespace Microsoft.VisualStudio.Serialization
 {
     public static class SerializationTest
     {
+        //public static void Serialize(Stream stream, object? value)
+        //{
+        //    if(value is null)
+        //    {
+        //        return;
+        //    }
+        //    var writer = new StreamWriter(stream);
+        //    var jsonString = JsonSerializer.Serialize(new SerializationContainer(value), SerializationContainer.Options);
+        //    //File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
+        //    writer.Write(jsonString);
+        //    writer.Flush();
+        //    stream.Position = 0;
+        //}
+
+        //// TODO: Determine type filtering mechanic
+        ////private static Type[] AllowedTypes = { typeof(int), typeof(bool), typeof(string), };
+
+        //public static object? Deserialize(Stream stream)
+        //{
+        //    var jsonString = new StreamReader(stream).ReadToEnd();
+        //    //File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { jsonString });
+        //    return JsonSerializer.Deserialize<SerializationContainer>(jsonString, SerializationContainer.Options).Value;
+        //}
+
         public static void Serialize(Stream stream, object? value)
         {
-            if(value is null)
+            if (value is null)
             {
                 return;
             }
-            var writer = new StreamWriter(stream);
-            var jsonString = JsonSerializer.Serialize(new SerializationContainer(value), SerializationContainer.Options);
-            //File.AppendAllLines(@"C:\Workspace\JsonTest-Serialize.txt", new[] { jsonString });
-            writer.Write(jsonString);
+            using var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: true);
+            var type = value.GetType();
+            writer.Write(type.AssemblyQualifiedName);
             writer.Flush();
-            stream.Position = 0;
+            new DataContractSerializer(type).WriteObject(stream, value);
         }
-
-        // TODO: Determine type filtering mechanic
-        //private static Type[] AllowedTypes = { typeof(int), typeof(bool), typeof(string), };
 
         public static object? Deserialize(Stream stream)
         {
-            var jsonString = new StreamReader(stream).ReadToEnd();
-            //File.AppendAllLines(@"C:\Workspace\JsonTest-Deserialize.txt", new[] { jsonString });
-            return JsonSerializer.Deserialize<SerializationContainer>(jsonString, SerializationContainer.Options).Value;
+            using var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true);
+            var type = Type.GetType(reader.ReadString());
+            return new DataContractSerializer(type).ReadObject(stream);
         }
     }
 

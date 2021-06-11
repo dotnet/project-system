@@ -14,6 +14,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
     ''' </summary>
     <Serializable>
     <KnownType(GetType(String()))>
+    <KnownType(GetType(Object()))>
     Public Class MultipleValuesStore
         Implements ISerializable
 
