@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int SourceControlRule;
 
             /// <summary>
-            ///     Represents the design-time build items containing the supported (possible) target frameworks
+            ///     Represents the evaluation items containing the supported (possible) target frameworks
             ///     for a project.
             /// </summary>
             [ExportRule(nameof(SupportedTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int SupportedTargetFrameworkRule;
 
             /// <summary>
-            ///     Represents the design-time build items containing the supported (possible) target platforms
+            ///     Represents the evaluation items containing the supported (possible) target platforms
             ///     for a project.
             /// </summary>
             [ExportRule(nameof(SdkSupportedTargetPlatformIdentifier), PropertyPageContexts.ProjectSubscriptionService)]
@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int SdkSupportedTargetPlatformIdentifierRule;
 
             /// <summary>
-            ///     Represents the design-time build items containing the supported (possible) target platforms
+            ///     Represents the evaluation items containing the supported (possible) target platforms
             ///     versions for a project.
             /// </summary>
             [ExportRule(nameof(SdkSupportedTargetPlatformVersion), PropertyPageContexts.ProjectSubscriptionService)]
