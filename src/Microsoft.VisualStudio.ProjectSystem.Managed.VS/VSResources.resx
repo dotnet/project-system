@@ -253,4 +253,8 @@ In order to debug this project, add an executable project to this solution which
     <value>Profile {0}</value>
     <comment>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</comment>
   </data>
+  <data name="HotReloadOutputWindowPaneName" xml:space="preserve">
+    <value>Hot Reload</value>
+    <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
+  </data>
 </root>

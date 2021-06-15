@@ -232,6 +232,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hot Reload.
+        /// </summary>
+        internal static string HotReloadOutputWindowPaneName {
+            get {
+                return ResourceManager.GetString("HotReloadOutputWindowPaneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Import comes fom target file. This import cannot be removed..
         /// </summary>
         internal static string ImportsFromTargetCannotBeDeleted {

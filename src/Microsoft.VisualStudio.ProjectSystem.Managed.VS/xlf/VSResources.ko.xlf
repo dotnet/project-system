@@ -52,6 +52,11 @@
         <target state="translated">경로</target>
         <note />
       </trans-unit>
+      <trans-unit id="HotReloadOutputWindowPaneName">
+        <source>Hot Reload</source>
+        <target state="new">Hot Reload</target>
+        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
+      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0} - 대상 파일에서 가져옵니다. 이 가져오기는 제거할 수 없습니다.</target>

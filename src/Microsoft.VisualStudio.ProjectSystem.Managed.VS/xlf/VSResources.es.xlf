@@ -52,6 +52,11 @@
         <target state="translated">Ruta de acceso</target>
         <note />
       </trans-unit>
+      <trans-unit id="HotReloadOutputWindowPaneName">
+        <source>Hot Reload</source>
+        <target state="new">Hot Reload</target>
+        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
+      </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>
         <target state="translated">{0}: la importación procede del archivo de destino. Esta importación no se puede quitar.</target>
