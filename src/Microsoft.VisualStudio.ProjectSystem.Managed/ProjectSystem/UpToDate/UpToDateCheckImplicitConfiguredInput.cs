@@ -212,7 +212,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
-            string? projectExtensionsPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, null);
             string? nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, null);
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
@@ -224,7 +223,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             var projectFileClassifier = new ProjectFileClassifier
             {
                 NuGetPackageFolders = nuGetPackageFolders ?? "",
-                ProjectExtensionsPath = projectExtensionsPath
             };
 
             // The first item in this semicolon-separated list of project files will always be the one
