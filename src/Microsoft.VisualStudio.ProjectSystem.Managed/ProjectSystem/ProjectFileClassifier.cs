@@ -100,14 +100,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
         }
 
-        public bool IsNonModifiable(string importPath)
+        public bool IsNonUserEditable(string filePath)
         {
-            return (_programFiles64 != null && importPath.StartsWith(_programFiles64, StringComparisons.Paths))
-                   || importPath.StartsWith(_programFiles86, StringComparisons.Paths)
-                   || importPath.StartsWith(_windows, StringComparisons.Paths)
-                   || (ProjectExtensionsPath != null && importPath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths))
-                   || _nuGetPackageFolders.Any(nugetFolder => importPath.StartsWith(nugetFolder, StringComparisons.Paths))
-                   || (_vsInstallationDirectory != null && importPath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
+            return IsNonModifiable(filePath)
+                   || (ProjectExtensionsPath != null && filePath.StartsWith(ProjectExtensionsPath, StringComparisons.Paths));
+        }
+
+        public bool IsNonModifiable(string filePath)
+        {
+            return (_programFiles64 != null && filePath.StartsWith(_programFiles64, StringComparisons.Paths))
+                   || filePath.StartsWith(_programFiles86, StringComparisons.Paths)
+                   || filePath.StartsWith(_windows, StringComparisons.Paths)
+                   || _nuGetPackageFolders.Any(nugetFolder => filePath.StartsWith(nugetFolder, StringComparisons.Paths))
+                   || (_vsInstallationDirectory != null && filePath.StartsWith(_vsInstallationDirectory, StringComparisons.Paths));
         }
     }
 }

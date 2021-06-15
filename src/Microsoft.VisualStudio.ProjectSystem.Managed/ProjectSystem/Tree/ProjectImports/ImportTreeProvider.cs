@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree2 child))
                                     {
                                         // No child exists for this import, so add it
-                                        bool isImplicit = _projectFileClassifier.IsNonModifiable(import.ProjectPath);
+                                        bool isImplicit = _projectFileClassifier.IsNonUserEditable(import.ProjectPath);
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
                                         string caption = Path.GetFileName(import.ProjectPath);
