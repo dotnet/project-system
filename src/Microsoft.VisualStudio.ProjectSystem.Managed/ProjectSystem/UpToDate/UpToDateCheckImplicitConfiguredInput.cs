@@ -212,7 +212,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? msBuildProjectDirectory = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildProjectDirectoryProperty, MSBuildProjectDirectory);
             string? msBuildProjectOutputPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutputPathProperty, OutputRelativeOrFullPath);
             string? outputRelativeOrFullPath = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.OutDirProperty, msBuildProjectOutputPath);
-            string? nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, null);
+            string nuGetPackageFolders = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.NuGetPackageFoldersProperty, "");
             string msBuildAllProjects = jointRuleUpdate.CurrentState.GetPropertyOrDefault(ConfigurationGeneral.SchemaName, ConfigurationGeneral.MSBuildAllProjectsProperty, "");
 
             // We identify non-modifiable inputs (i.e. anything in Program Files, the VS install dir, or NuGet cache folders)
@@ -222,7 +222,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // reference assemblies for the framework, which clearly aren't expected to change over time.
             var projectFileClassifier = new ProjectFileClassifier
             {
-                NuGetPackageFolders = nuGetPackageFolders ?? "",
+                NuGetPackageFolders = nuGetPackageFolders
             };
 
             // The first item in this semicolon-separated list of project files will always be the one
