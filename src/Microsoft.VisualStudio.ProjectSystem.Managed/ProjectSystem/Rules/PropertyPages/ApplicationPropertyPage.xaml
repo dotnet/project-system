@@ -190,6 +190,20 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <BoolProperty Name="AutoGenerateBindingRedirects"
+                DisplayName="Auto-generate binding redirects"
+                Description="Enables binding redirection to be added automatically to the app configuration file to override assembly unification."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2164379"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+        (has-net-framework)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
                        Description="Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point."

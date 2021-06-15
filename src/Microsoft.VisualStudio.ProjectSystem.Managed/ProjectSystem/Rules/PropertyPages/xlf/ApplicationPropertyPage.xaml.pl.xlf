@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
+        <source>Enables binding redirection to be added automatically to the app configuration file to override assembly unification.</source>
+        <target state="new">Enables binding redirection to be added automatically to the app configuration file to override assembly unification.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-generate binding redirects</source>
+        <target state="new">Auto-generate binding redirects</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
         <target state="translated">Zezwalaj na publikowanie poza programem Visual Studio, na przykład za pomocą polecenia „dotnet publish”.</target>
