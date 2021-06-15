@@ -199,5 +199,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             Assert.True((bool)profile.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty]);
         }
+
+        [Fact]
+        public void HotReloadEnabled_OnGetPropertyValueAsync_GetsDefaultValueWhenNotDefined()
+        {
+            var profile = new WritableLaunchProfile().ToLaunchProfile();
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            var actualValue = provider.OnGetPropertyValue(ProjectLaunchProfileExtensionValueProvider.HotReloadEnabledPropertyName, profile, EmptyGlobalSettings, rule: null);
+
+            Assert.Equal(expected: "true", actual: actualValue);
+        }
+
+        [Fact]
+        public void HotReloadEnabled_OnGetPropertyValueAsync_GetsValueInProfileWhenDefined()
+        {
+            bool hotReloadEnabled = false;
+            var profile = new WritableLaunchProfile
+            {
+                OtherSettings =
+                {
+                    { LaunchProfileExtensions.HotReloadEnabledProperty, hotReloadEnabled }
+                }
+            }.ToLaunchProfile();
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            var actualValue = provider.OnGetPropertyValue(ProjectLaunchProfileExtensionValueProvider.HotReloadEnabledPropertyName, profile, EmptyGlobalSettings, rule: null);
+
+            Assert.Equal(expected: "false", actual: actualValue);
+        }
+
+        [Fact]
+        public void HotReloadEnabled_OnSetPropertyValueAsync_SetsHotReloadToSpecifiedValue()
+        {
+            bool hotReloadEnabled = true;
+            var profile = new WritableLaunchProfile
+            {
+                OtherSettings =
+                {
+                    { LaunchProfileExtensions.SqlDebuggingProperty, hotReloadEnabled }
+                }
+            };
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            provider.OnSetPropertyValue(ProjectLaunchProfileExtensionValueProvider.HotReloadEnabledPropertyName, "false", profile, EmptyGlobalSettings, rule: null);
+
+            Assert.False((bool)profile.OtherSettings[LaunchProfileExtensions.HotReloadEnabledProperty]);
+        }
     }
 }
