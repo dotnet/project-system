@@ -47,6 +47,7 @@
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21023" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21278.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.0.0-previews-1-31321-016" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
