@@ -183,7 +183,7 @@
       <ValueEditor EditorType="LinkAction">
         <ValueEditor.Metadata>
           <NameValuePair Name="Action" Value="URL" />
-          <NameValuePair Name="URL" Value="https://spdx.org/licenses/" />
+          <NameValuePair Name="URL" Value="https://go.microsoft.com/fwlink/?linkid=2166116" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
