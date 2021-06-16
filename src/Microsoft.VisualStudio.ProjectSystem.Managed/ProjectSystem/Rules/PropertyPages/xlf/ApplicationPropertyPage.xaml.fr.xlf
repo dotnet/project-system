@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="fr" original="../ApplicationPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
-        <source>Enables binding redirection to be added automatically to the app configuration file to override assembly unification.</source>
-        <target state="new">Enables binding redirection to be added automatically to the app configuration file to override assembly unification.</target>
+        <source>Add binding redirects automatically to App.config.</source>
+        <target state="new">Add binding redirects automatically to App.config.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
