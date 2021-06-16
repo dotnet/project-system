@@ -115,6 +115,9 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-net-core-app-version-or-greater "5.0")</NameValuePair.Value>
+      </NameValuePair>
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
@@ -129,7 +132,11 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "5.0")
+            (ne (unevaluated "Application" "TargetPlatformIdentifier") ""))
+        </NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
       <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
@@ -147,7 +154,11 @@
     </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (unevaluated "Application" "TargetPlatformIdentifier") "")</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "5.0")
+            (ne (unevaluated "Application" "TargetPlatformIdentifier") ""))
+        </NameValuePair.Value>
       </NameValuePair>
       <NameValuePair Name="SearchTerms" Value="platform" />
       <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
