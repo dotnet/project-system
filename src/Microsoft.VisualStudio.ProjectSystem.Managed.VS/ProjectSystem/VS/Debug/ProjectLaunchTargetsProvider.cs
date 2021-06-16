@@ -5,14 +5,17 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Task = System.Threading.Tasks.Task;
@@ -31,7 +34,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         IDebugProfileLaunchTargetsProvider,
         IDebugProfileLaunchTargetsProvider2,
         IDebugProfileLaunchTargetsProvider3,
-        IDebugProfileLaunchTargetsProvider4
+        IDebugProfileLaunchTargetsProvider4,
+        IProjectHotReloadSessionCallback
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -44,6 +48,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
+        private readonly IProjectHotReloadAgent _projectHotReloadAgent;
+
+        private IProjectHotReloadSession? _pendingHotReloadSession;
+        private IProjectHotReloadSession? _activeHotReloadSession;
 
         [ImportingConstructor]
         public ProjectLaunchTargetsProvider(
@@ -56,7 +64,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties properties,
             IProjectThreadingService threadingService,
             IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
-            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService)
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
+            IProjectHotReloadAgent projectHotReloadAgent)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -68,6 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _threadingService = threadingService;
             _debugger = debugger;
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
+            _projectHotReloadAgent = projectHotReloadAgent;
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -87,7 +97,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             throw new InvalidOperationException($"Wrong overload of {nameof(OnBeforeLaunchAsync)} called.");
         }
 
-        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings) => Task.CompletedTask;
+        public async Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
+        {
+            if (_activeHotReloadSession is not null)
+            {
+                await _activeHotReloadSession.StopSessionAsync(default);
+                _activeHotReloadSession = null;
+                // TODO: Stop the process?
+            }
+        }
 
         /// <summary>
         /// Called just after the launch to do additional work (put up ui, do special configuration etc).
@@ -97,7 +115,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
         }
 
-        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos) => Task.CompletedTask;
+        public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
+        {
+            await TaskScheduler.Default;
+
+            if (_pendingHotReloadSession is not null)
+            {
+                var _ = _pendingHotReloadSession.StartSessionAsync(default);
+                _activeHotReloadSession = _pendingHotReloadSession;
+                _pendingHotReloadSession = null;
+            }
+        }
 
         private Task<bool> IsClassLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
 
@@ -410,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // WebView2 debugging is only supported for Project and Executable commands
-            if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile))) 
+            if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile)))
             {
                 // If JS Debugger is selected, we would need to change the launch debugger to that one
                 settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
@@ -425,6 +453,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                     );
 
                 settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
+            }
+
+            if (IsRunProjectCommand(resolvedProfile)
+                && await DebugFrameworkSupportsHotReloadAsync()
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
+            {
+                string id = Path.GetFileNameWithoutExtension(_unconfiguredProjectVsServices.Project.FullPath);
+                _pendingHotReloadSession = _projectHotReloadAgent.CreateHotReloadSession(id, frameworkVersion, this);
+                if (_pendingHotReloadSession is not null)
+                {
+                    await _pendingHotReloadSession.ApplyLaunchVariablesAsync(settings.Environment, default);
+                }
             }
 
             return settings;
@@ -686,6 +726,62 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             const string NetCorePrefix = ".NetCore";
             return targetFramework.StartsWith(NetCorePrefix, StringComparisons.FrameworkIdentifiers) ||
                    targetFramework.StartsWith(NetStandardPrefix, StringComparisons.FrameworkIdentifiers);
+        }
+
+        private async Task<string?> GetDebugFrameworkVersionAsync()
+        {
+            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+            if (configuredProjectForDebug is null)
+            {
+                return null;
+            }
+
+            Assumes.Present(configuredProjectForDebug.Services.ProjectPropertiesProvider);
+            IProjectProperties commonProperties = configuredProjectForDebug.Services.ProjectPropertiesProvider.GetCommonProperties();
+            string targetFrameworkVersion = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkVersionProperty);
+
+            if (targetFrameworkVersion.StartsWith("v", StringComparison.OrdinalIgnoreCase))
+            {
+                targetFrameworkVersion = targetFrameworkVersion.Substring(startIndex: 1);
+            }
+
+            return targetFrameworkVersion;
+        }
+
+        private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
+        {
+            ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
+            if (configuredProjectForDebug is null)
+            {
+                return false;
+            }
+
+            return configuredProjectForDebug.Capabilities.AppliesTo("SupportsHotReload");
+        }
+
+        // TODO: Support restarting the session.
+        public bool SupportsRestart => false;
+
+        public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task<bool> StopProjectAsync(CancellationToken cancellationToken)
+        {
+            // TODO: do we need to stop the session, or has someone already done that for us?
+            return TaskResult.False;
+        }
+
+        public Task<bool> RestartProjectAsync(CancellationToken cancellationToken)
+        {
+            // TODO: do we need to stop the session, or has someone already done that for us?
+            return TaskResult.False;
+        }
+
+        public object? GetDeltaApplier()
+        {
+            return null;
         }
 
         private enum StringState

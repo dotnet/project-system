@@ -11,7 +11,7 @@ Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.Apply
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.StartSessionAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSession.StopSessionAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback
-Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.GetDeltaApplier() -> object!
+Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.GetDeltaApplier() -> object?
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.OnAfterChangesAppliedAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.RestartProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.VS.HotReload.IProjectHotReloadSessionCallback.StopProjectAsync(System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<bool>!

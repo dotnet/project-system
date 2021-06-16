@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             if (!_sessionActive)
             {
-                await WriteToOutputWindowAsync(VSResources.HotReloadStartSession);
                 await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, cancellationToken);
+                await WriteToOutputWindowAsync(VSResources.HotReloadStartSession);
                 _sessionActive = true;
                 EnsureDeltaApplierforSession();
             }
@@ -73,10 +73,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         {
             if (_sessionActive)
             {
-                await WriteToOutputWindowAsync(VSResources.HotReloadStopSession);
                 _sessionActive = false;
 
                 await _hotReloadAgentManagerClient.Value.AgentTerminatedAsync(this, cancellationToken);
+                await WriteToOutputWindowAsync(VSResources.HotReloadStopSession);
             }
         }
 
@@ -84,6 +84,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async ValueTask ApplyUpdatesAsync(ImmutableArray<ManagedHotReloadUpdate> updates, CancellationToken cancellationToken)
         {
+            if (!_sessionActive)
+            {
+                await WriteToOutputWindowAsync($"ApplyUpdatesAsync called but the session is not active.");
+                return;
+            }
+
+            if (_deltaApplier is null)
+            {
+                await WriteToOutputWindowAsync($"ApplyUpdatesAsync called but we have no delta applier.");
+            }
+
             if (!_sessionActive || _deltaApplier is null)
             {
                 return;
