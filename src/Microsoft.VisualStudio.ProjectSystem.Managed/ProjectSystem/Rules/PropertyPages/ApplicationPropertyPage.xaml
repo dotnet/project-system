@@ -174,7 +174,7 @@
   <BoolProperty Name="UseWPF"
                 DisplayName="Windows Presentation Foundation"
                 Description="Enable WPF for this project."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165974"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166131"
                 Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::OutputType" />
