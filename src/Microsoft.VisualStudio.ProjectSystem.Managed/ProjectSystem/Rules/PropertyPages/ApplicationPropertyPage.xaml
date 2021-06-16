@@ -192,7 +192,7 @@
 
   <BoolProperty Name="AutoGenerateBindingRedirects"
                 DisplayName="Auto-generate binding redirects"
-                Description="Enables binding redirection to be added automatically to the app configuration file to override assembly unification."
+                Description="Add binding redirects automatically to App.config."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2164379"
                 Category="General">
     <BoolProperty.Metadata>
