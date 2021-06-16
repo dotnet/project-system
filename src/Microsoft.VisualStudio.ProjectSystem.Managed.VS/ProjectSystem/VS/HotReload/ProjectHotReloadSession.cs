@@ -37,8 +37,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _callback = callback;
         }
 
-        public bool IsSupported => throw new NotImplementedException();
-
         // IProjectHotReloadSession
 
         public async Task ApplyChangesAsync(CancellationToken cancellationToken)
@@ -49,15 +47,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
         }
 
-        public async Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, string configuration, CancellationToken cancellationToken)
+        public async Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, CancellationToken cancellationToken)
         {
-            if (string.Equals(configuration, "Debug", StringComparison.OrdinalIgnoreCase) && IsSupported)
+            EnsureDeltaApplierforSession();
+            if (_deltaApplier is not null)
             {
-                EnsureDeltaApplierforSession();
-                if (_deltaApplier is not null)
-                {
-                    return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
-                }
+                return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
             }
 
             return false;

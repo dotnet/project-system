@@ -7,8 +7,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     public interface IProjectHotReloadSessionCallback
     {
-        bool IsSupported { get; }
-
         bool SupportsRestart { get; }
 
         Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken);

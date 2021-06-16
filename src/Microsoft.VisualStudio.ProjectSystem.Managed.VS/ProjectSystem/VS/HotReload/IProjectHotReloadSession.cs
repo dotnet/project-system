@@ -8,15 +8,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     public interface IProjectHotReloadSession
     {
-        bool IsSupported { get; }
-
         Task StartSessionAsync(CancellationToken cancellationToken);
 
         Task StopSessionAsync(CancellationToken cancellationToken);
 
         Task ApplyChangesAsync(CancellationToken cancellationToken);
 
-        Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, string configuration, CancellationToken cancellationToken);
-
+        Task<bool> ApplyLaunchVariablesAsync(IDictionary<string, string> envVars, CancellationToken cancellationToken);
     }
 }
