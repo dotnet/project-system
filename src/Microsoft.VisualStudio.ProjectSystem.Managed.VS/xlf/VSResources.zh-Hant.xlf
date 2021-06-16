@@ -52,10 +52,50 @@
         <target state="translated">路徑</target>
         <note />
       </trans-unit>
+      <trans-unit id="HotReloadApplyUpdatesFailure">
+        <source>Applying updates failed: {0}</source>
+        <target state="new">Applying updates failed: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadApplyUpdatesSuccessful">
+        <source>Updates applied successfully</source>
+        <target state="new">Updates applied successfully</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadErrorsInApplication">
+        <source>Errors found in application: </source>
+        <target state="new">Errors found in application: </target>
+        <note />
+      </trans-unit>
       <trans-unit id="HotReloadOutputWindowPaneName">
         <source>Hot Reload</source>
         <target state="new">Hot Reload</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
+      </trans-unit>
+      <trans-unit id="HotReloadRestartInProgress">
+        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
+        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadSendingUpdates">
+        <source>Sending updates to running application</source>
+        <target state="new">Sending updates to running application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStartSession">
+        <source>Hot Reload session started</source>
+        <target state="new">Hot Reload session started</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStopSession">
+        <source>Hot Reload session complete</source>
+        <target state="new">Hot Reload session complete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStoppingApplication">
+        <source>Stopping application</source>
+        <target state="new">Stopping application</target>
+        <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
         <source>{0} - Import comes fom target file. This import cannot be removed.</source>

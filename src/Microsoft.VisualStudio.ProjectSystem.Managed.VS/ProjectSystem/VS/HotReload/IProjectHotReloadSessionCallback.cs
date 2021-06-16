@@ -19,6 +19,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         // TODO: IDeltaApplier will be defined elsewhere. Add this back in once we
         // can reference it in the final location.
-        // IDeltaApplier GetDeltaApplier();
+        object GetDeltaApplier();
     }
 }

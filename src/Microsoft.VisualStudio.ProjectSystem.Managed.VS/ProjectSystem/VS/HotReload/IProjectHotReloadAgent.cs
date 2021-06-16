@@ -2,8 +2,9 @@
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
+    [ProjectSystemContract(ProjectSystemContractScope.ProjectService, ProjectSystemContractProvider.System, Cardinality = Composition.ImportCardinality.ExactlyOne)]
     public interface IProjectHotReloadAgent
     {
-        IProjectHotReloadSession? CreateHotReloadSession(string runtimeVersion, IProjectHotReloadSessionCallback callback);
+        IProjectHotReloadSession? CreateHotReloadSession(string id, string runtimeVersion, IProjectHotReloadSessionCallback callback);
     }
 }
