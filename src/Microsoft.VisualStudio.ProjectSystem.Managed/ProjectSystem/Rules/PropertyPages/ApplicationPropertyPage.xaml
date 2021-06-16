@@ -165,11 +165,10 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <!-- TODO use fwlink for HelpUrl -->
   <BoolProperty Name="UseWindowsForms"
                 DisplayName="Windows Forms"
                 Description="Enable Windows Forms for this project."
-                HelpUrl="https://docs.microsoft.com/dotnet/core/project-sdk/msbuild-props-desktop"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165974"
                 Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::OutputType" />
@@ -183,11 +182,10 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO use fwlink for HelpUrl -->
   <BoolProperty Name="UseWPF"
                 DisplayName="Windows Presentation Foundation"
                 Description="Enable WPF for this project."
-                HelpUrl="https://docs.microsoft.com/dotnet/core/project-sdk/msbuild-props-desktop"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166131"
                 Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::OutputType" />
@@ -329,9 +327,9 @@
     </StringProperty.Metadata>
   </StringProperty>
 
-  <!-- TODO Documentation issue for this property: https://github.com/MicrosoftDocs/visualstudio-docs/issues/6643 -->
   <BoolProperty Name="IsPublishable"
                 DisplayName="Publishing"
                 Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
                 Category="Packaging" />
 </Rule>
