@@ -1669,6 +1669,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Class SerializationProvider
 
+            Private Shared ReadOnly KnownTypes As Type() = {GetType(Size)}
+
             Public Shared Sub Serialize(stream As Stream, value As Object)
                 If value Is Nothing Then
                     Return
@@ -1677,14 +1679,14 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
                     writer.Flush()
-                    Call New DataContractSerializer(valueType).WriteObject(stream, value)
+                    Call New DataContractSerializer(valueType, KnownTypes).WriteObject(stream, value)
                 End Using
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
                 Using reader As New BinaryReader(stream, Encoding.UTF8, True)
                     Dim valueType = Type.GetType(reader.ReadString())
-                    Return New DataContractSerializer(valueType).ReadObject(stream)
+                    Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
                 End Using
             End Function
 
