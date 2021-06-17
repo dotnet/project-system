@@ -5,6 +5,11 @@
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="My Project\**" />
+    <EmbeddedResource Remove="My Project\**" />
+    <None Remove="My Project\**" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Remove="Resource1.resx" />
   </ItemGroup>
   <ItemGroup>
@@ -24,9 +29,6 @@
     <ProjectReference Include="..\DeployTestDependencies\DeployTestDependencies.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.Editors\Microsoft.VisualStudio.Editors.vbproj" />
     <ProjectReference Include="..\..\src\Microsoft.VisualStudio.AppDesigner\Microsoft.VisualStudio.AppDesigner.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="My Project\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resource1.Designer.vb">

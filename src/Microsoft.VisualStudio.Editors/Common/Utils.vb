@@ -1685,6 +1685,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Public Shared Function Deserialize(stream As Stream) As Object
                 Using reader As New BinaryReader(stream, Encoding.UTF8, True)
+                    reader.BaseStream.Position = 0
                     Dim valueType = Type.GetType(reader.ReadString())
                     Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
                 End Using
