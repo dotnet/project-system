@@ -77,8 +77,8 @@
   </EnumProperty>
 
   <BoolProperty Name="AllowUnsafeBlocks"
-                DisplayName="Allow unsafe code"
-                Description="Allows code that uses the 'unsafe' keyword to compile."
+                DisplayName="Unsafe code"
+                Description="Allow code that uses the 'unsafe' keyword to compile."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146797"
                 Category="General">
     <BoolProperty.Metadata>
@@ -88,7 +88,7 @@
 
   <BoolProperty Name="Optimize"
                 DisplayName="Optimize code"
-                Description="Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient."
+                Description="Enable compiler optimizations for smaller, faster, and more efficient output."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147080"
                 Category="General">
     <BoolProperty.Metadata>
@@ -144,7 +144,7 @@
 
   <BoolProperty Name="CheckForOverflowUnderflow"
                 DisplayName="Check for arithmetic overflow"
-                Description="Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception."
+                Description="Throw exceptions when integer arithmetic produces out of range values."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166113"
                 Category="General">
     <BoolProperty.Metadata>
@@ -154,13 +154,13 @@
 
   <BoolProperty Name="Deterministic"
                 DisplayName="Deterministic"
-                Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
+                Description="Produce identical compilation output for identical inputs."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165770"
                 Category="General" />
  
   <EnumProperty Name="ErrorReport"
                 DisplayName="Internal compiler error reporting"
-                Description="Controls when internal compiler error (ICE) reports are sent to Microsoft."
+                Description="Send internal compiler error (ICE) reports to Microsoft."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165771"
                 Category="General">
     <EnumProperty.DataSource>

@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">Permite que o código que usa a palavra-chave 'unsafe' seja compilado.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="needs-review-translation">Permite que o código que usa a palavra-chave 'unsafe' seja compilado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Permitir código não seguro</target>
+        <source>Unsafe code</source>
+        <target state="needs-review-translation">Permitir código não seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">Especifica se a aritmética de inteiro que resulta em um valor fora do intervalo do tipo de dados e que não está no escopo de uma palavra-chave marcada ou desmarcada, causa uma exceção de tempo de execução.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="needs-review-translation">Especifica se a aritmética de inteiro que resulta em um valor fora do intervalo do tipo de dados e que não está no escopo de uma palavra-chave marcada ou desmarcada, causa uma exceção de tempo de execução.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">Indica se o compilador deve produzir assemblies idênticos para entradas idênticas.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="needs-review-translation">Indica se o compilador deve produzir assemblies idênticos para entradas idênticas.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">Habilita ou desabilita otimizações executadas pelo compilador para tornar o arquivo de saída menor, mais rápido e mais eficiente.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="needs-review-translation">Habilita ou desabilita otimizações executadas pelo compilador para tornar o arquivo de saída menor, mais rápido e mais eficiente.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -168,8 +168,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">Controla quando os relatórios de ICE (erro interno do compilador) são enviados à Microsoft.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="needs-review-translation">Controla quando os relatórios de ICE (erro interno do compilador) são enviados à Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">

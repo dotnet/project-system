@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="tr" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">'unsafe' anahtar sözcüğünü kullanan kodun derlenmesine izin verir.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="needs-review-translation">'unsafe' anahtar sözcüğünü kullanan kodun derlenmesine izin verir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Güvenli olmayan koda izin ver</target>
+        <source>Unsafe code</source>
+        <target state="needs-review-translation">Güvenli olmayan koda izin ver</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">Veri türünün aralığı dışında bir değerle sonuçlanan ve checked veya unchecked anahtar sözcüğünün kapsamında olmayan tamsayı aritmetiğinin bir çalışma zamanı özel durumuna neden olup olmadığını belirtir.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="needs-review-translation">Veri türünün aralığı dışında bir değerle sonuçlanan ve checked veya unchecked anahtar sözcüğünün kapsamında olmayan tamsayı aritmetiğinin bir çalışma zamanı özel durumuna neden olup olmadığını belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">Derleyicinin aynı girişler için aynı bütünleştirilmiş kodları üretmesi gerekip gerekmediğini gösterir.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="needs-review-translation">Derleyicinin aynı girişler için aynı bütünleştirilmiş kodları üretmesi gerekip gerekmediğini gösterir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="needs-review-translation">Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -168,8 +168,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">Derleyici iç hatası (ICE) raporlarının Microsoft'a ne zaman gönderildiğini denetler.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="needs-review-translation">Derleyici iç hatası (ICE) raporlarının Microsoft'a ne zaman gönderildiğini denetler.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">

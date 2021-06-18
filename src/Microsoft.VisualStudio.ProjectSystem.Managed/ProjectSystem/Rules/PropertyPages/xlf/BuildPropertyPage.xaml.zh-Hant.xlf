@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">允許使用 'unsafe' 關鍵字編譯的程式碼。</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="needs-review-translation">允許使用 'unsafe' 關鍵字編譯的程式碼。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">允許不安全的程式碼</target>
+        <source>Unsafe code</source>
+        <target state="needs-review-translation">允許不安全的程式碼</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">指定當整數算術求得的值落在資料類型範圍之外，也不在核取或取消核取的關鍵字範圍內時，是否要發出執行階段例外狀況。</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="needs-review-translation">指定當整數算術求得的值落在資料類型範圍之外，也不在核取或取消核取的關鍵字範圍內時，是否要發出執行階段例外狀況。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">指定編譯器是否應為相同的輸入產生相同的元件。</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="needs-review-translation">指定編譯器是否應為相同的輸入產生相同的元件。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">啟用或停用由編譯器執行的最佳化，讓您的輸出檔更小、更快、更有效率。</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="needs-review-translation">啟用或停用由編譯器執行的最佳化，讓您的輸出檔更小、更快、更有效率。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -168,8 +168,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">控制是否要將內部編譯器錯誤 (ICE) 報告送給 Microsoft。</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="needs-review-translation">控制是否要將內部編譯器錯誤 (ICE) 報告送給 Microsoft。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
