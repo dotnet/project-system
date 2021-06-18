@@ -1,3 +1,5 @@
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider
+Microsoft.VisualStudio.ProjectSystem.Debug.IDefaultLaunchProfileProvider.CreateDefaultProfile() -> Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile?
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.TryUpdateProfileAsync(string! profileName, System.Action<Microsoft.VisualStudio.ProjectSystem.Debug.IWritableLaunchProfile!>! updateAction) -> System.Threading.Tasks.Task<bool>!
 Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchSettingsProvider3.UpdateGlobalSettingsAsync(System.Func<System.Collections.Immutable.ImmutableDictionary<string!, object!>!, System.Collections.Immutable.ImmutableDictionary<string!, object?>!>! updateFunction) -> System.Threading.Tasks.Task!
