@@ -709,22 +709,28 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
         Public Class SerializationProvider
 
+            Private Shared ReadOnly KnownTypes As Type() = {GetType(Size)}
+
             Public Shared Sub Serialize(stream As Stream, value As Object)
-                If value Is Nothing Then
+                If stream Is Nothing Or value Is Nothing Then
                     Return
                 End If
                 Using writer As New BinaryWriter(stream, Encoding.UTF8, True)
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
                     writer.Flush()
-                    Call New DataContractSerializer(valueType).WriteObject(stream, value)
+                    Call New DataContractSerializer(valueType, KnownTypes).WriteObject(stream, value)
                 End Using
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
+                If stream Is Nothing OrElse stream.Length = 0 Then
+                    Return Nothing
+                End If
                 Using reader As New BinaryReader(stream, Encoding.UTF8, True)
+                    reader.BaseStream.Position = 0
                     Dim valueType = Type.GetType(reader.ReadString())
-                    Return New DataContractSerializer(valueType).ReadObject(stream)
+                    Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
                 End Using
             End Function
 

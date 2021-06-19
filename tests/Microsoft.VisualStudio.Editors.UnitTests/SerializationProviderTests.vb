@@ -4,16 +4,33 @@ Imports Xunit
 Imports Microsoft.VisualStudio.Editors.Common
 Imports System.IO
 Imports System.Drawing
-Imports System.Runtime.Serialization
 Imports System.Drawing.Imaging
 
 Namespace Microsoft.VisualStudio.Editors.UnitTests
-    <KnownType(GetType(Size))>
     Public Class SerializationProviderTests
+        <Fact>
+        Public Sub Serialize_Nothing_ResultNoThrow()
+            SerializationProvider.Serialize(Nothing, Nothing)
+            SerializationProvider.Serialize(Nothing, 12345)
+            Using stream As New MemoryStream()
+                SerializationProvider.Serialize(stream, Nothing)
+                Assert.True(stream.Length = 0)
+            End Using
+        End Sub
+
+        <Fact>
+        Public Sub Deserialize_Nothing_ResultNoThrow()
+            Assert.Null(SerializationProvider.Deserialize(Nothing))
+            Using stream As New MemoryStream()
+                Dim actual = SerializationProvider.Deserialize(stream)
+                Assert.Null(actual)
+            End Using
+        End Sub
+
         <Theory>
         <MemberData(NameOf(BasicTypesData))>
         <MemberData(NameOf(ComplexTypesData))>
-        Public Sub Serialize_ResultSuccess(value As Object, expected As String)
+        Public Sub Serialize_Types_ResultSuccess(value As Object, expected As String)
             Using stream As New MemoryStream()
                 SerializationProvider.Serialize(stream, value)
                 Dim actual = Convert.ToBase64String(stream.ToArray())
@@ -21,11 +38,10 @@ Namespace Microsoft.VisualStudio.Editors.UnitTests
             End Using
         End Sub
 
-
         <Theory>
         <MemberData(NameOf(BasicTypesData))>
         <MemberData(NameOf(ComplexTypesData))>
-        Public Sub Deserialize_ResultSuccess(expected As Object, value As String)
+        Public Sub Deserialize_Types_ResultSuccess(expected As Object, value As String)
             Dim bytes = Convert.FromBase64String(value)
             Using stream As New MemoryStream(bytes)
                 Dim actual = SerializationProvider.Deserialize(stream)
