@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     {
                         yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
                     }
-                    else if (stringProperty.Subtype == "directory")
+                    else if (stringProperty.Subtype == "folder" || stringProperty.Subtype == "directory")
                     {
                         yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
                     }
