@@ -23,8 +23,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="translated">引數;命令列;工作目錄;環境變數</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="needs-review-translation">引數;命令列;工作目錄;環境變數</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="translated">引數;命令列;工作目錄;環境變數</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="needs-review-translation">引數;命令列;工作目錄;環境變數</target>
         <note />
       </trans-unit>
     </body>
