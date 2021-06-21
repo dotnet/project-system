@@ -27,6 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         new[]
         {
             AuthenticationModePropertyName,
+            HotReloadEnabledPropertyName,
             NativeDebuggingPropertyName,
             RemoteDebugEnabledPropertyName,
             RemoteDebugMachinePropertyName,
@@ -36,6 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     internal class ProjectLaunchProfileExtensionValueProvider : ILaunchProfileExtensionValueProvider
     {
         internal const string AuthenticationModePropertyName = "AuthenticationMode";
+        internal const string HotReloadEnabledPropertyName = "HotReloadEnabled";
         internal const string NativeDebuggingPropertyName = "NativeDebugging";
         internal const string RemoteDebugEnabledPropertyName = "RemoteDebugEnabled";
         internal const string RemoteDebugMachinePropertyName = "RemoteDebugMachine";
@@ -52,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string propertyValue = propertyName switch
             {
                 AuthenticationModePropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, string.Empty),
+                HotReloadEnabledPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, true) ? True : False,
                 NativeDebuggingPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.NativeDebuggingProperty, false) ? True : False,
                 RemoteDebugEnabledPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, false) ? True : False,
                 RemoteDebugMachinePropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, string.Empty),
@@ -69,6 +72,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 case AuthenticationModePropertyName:
                     TrySetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteAuthenticationModeProperty, propertyValue, string.Empty);
+                    break;
+
+                case HotReloadEnabledPropertyName:
+                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.HotReloadEnabledProperty, bool.Parse(propertyValue), true);
                     break;
 
                 case NativeDebuggingPropertyName:

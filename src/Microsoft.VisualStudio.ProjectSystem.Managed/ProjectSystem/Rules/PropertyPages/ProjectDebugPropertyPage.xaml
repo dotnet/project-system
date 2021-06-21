@@ -71,4 +71,8 @@
   <BoolProperty Name="SqlDebugging"
                 DisplayName="Enable SQL Server debugging"
                 Description="Enable debugging of SQL scripts and stored procedures." />
+
+  <BoolProperty Name="HotReloadEnabled"
+                DisplayName="Enable Hot Reload"
+                Description="Apply code changes to the running application." />
 </Rule>
