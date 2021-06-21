@@ -1,4 +1,7 @@
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider3
 Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider3.CanBeStartupProjectAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile) -> System.Threading.Tasks.Task<bool>!
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.Shell.Interop.VsDebugTargetProcessInfo>! processInfos) -> System.Threading.Tasks.Task!
+Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugProfileLaunchTargetsProvider4.OnBeforeLaunchAsync(Microsoft.VisualStudio.ProjectSystem.Debug.DebugLaunchOptions launchOptions, Microsoft.VisualStudio.ProjectSystem.Debug.ILaunchProfile! profile, System.Collections.Generic.IReadOnlyList<Microsoft.VisualStudio.ProjectSystem.VS.Debug.IDebugLaunchSettings!>! debugLaunchSettings) -> System.Threading.Tasks.Task!
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.JSWebView2DebuggingAdditionalText.get -> string
 ~static Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages.PropertyPageResources.chkJSWebView2DebuggingText.get -> string

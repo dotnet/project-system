@@ -154,6 +154,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
             {
+                if (_targetProfile is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
+                {
+                    _threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(_launchOptions, _activeProfile, processInfoArray));
+                }
                 if (_targetProfile != null)
                 {
                     _threadingService.ExecuteSynchronously(() => _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile));
@@ -172,13 +176,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.NotNull(activeProfile);
 
-            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
-            if (targetProfile != null)
+            IDebugProfileLaunchTargetsProvider? targetProvider = GetLaunchTargetsProvider(activeProfile);
+            if (targetProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
-                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
+                await targetsProvider4.OnBeforeLaunchAsync(launchOptions, activeProfile, targets);
+            }
+            else if (targetProvider is not null)
+            {
+                await targetProvider.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
-            await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProfile, activeProfile), targets.ToArray());
+            await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, activeProfile), targets.ToArray());
         }
 
         /// <summary>
