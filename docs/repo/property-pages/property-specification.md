@@ -350,7 +350,7 @@ internal sealed class MyCommandActionHandler : ILinkActionHandler
 
 ## File and Directory Properties
 
-When a property's value represents a file or directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file` or `directory` respectively.
+When a property's value represents a file or directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file` or `directory` respectively. `folder` is an equivalent alternative to `directory`.
 
 ```xml
 <StringProperty Subtype="file"
