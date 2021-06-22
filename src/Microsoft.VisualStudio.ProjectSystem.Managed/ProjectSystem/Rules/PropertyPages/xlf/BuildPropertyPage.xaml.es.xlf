@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="needs-review-translation">Permite que el código que usa la palabra clave "unsafe" se compile.</target>
+        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="needs-review-translation">Permitir código no seguro</target>
+        <target state="new">Unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="needs-review-translation">Especifica si la aritmética de enteros que genera un valor fuera del intervalo del tipo de datos y que no está en el ámbito de las palabra clave checked o unchecked provocará una excepción en tiempo de ejecución.</target>
+        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="needs-review-translation">Indica si el compilador debe producir ensamblados idénticos para entradas idénticas.</target>
+        <target state="new">Produce identical compilation output for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="needs-review-translation">Habilita o deshabilita las optimizaciones realizadas por el compilador para que el archivo de salida tenga un menor tamaño, y sea más rápido y eficaz.</target>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="needs-review-translation">Controla cuándo se envían a Microsoft los informes de errores internos del compilador (ICE).</target>
+        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">

@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="needs-review-translation">引數;命令列;工作目錄;環境變數</target>
+        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
@@ -34,7 +34,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
         <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
-        <target state="needs-review-translation">引數;命令列;工作目錄;環境變數</target>
+        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
         <note />
       </trans-unit>
     </body>
