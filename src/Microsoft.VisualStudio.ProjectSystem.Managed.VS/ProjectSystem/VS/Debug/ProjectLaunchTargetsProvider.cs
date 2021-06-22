@@ -27,7 +27,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2, IDebugProfileLaunchTargetsProvider3
+    internal class ProjectLaunchTargetsProvider :
+        IDebugProfileLaunchTargetsProvider,
+        IDebugProfileLaunchTargetsProvider2,
+        IDebugProfileLaunchTargetsProvider3,
+        IDebugProfileLaunchTargetsProvider4
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -78,12 +82,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
-        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile) => Task.CompletedTask;
+        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+        {
+            throw new InvalidOperationException($"Wrong overload of {nameof(OnBeforeLaunchAsync)} called.");
+        }
+
+        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings) => Task.CompletedTask;
 
         /// <summary>
         /// Called just after the launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
-        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile) => Task.CompletedTask;
+        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+        {
+            throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
+        }
+
+        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos) => Task.CompletedTask;
 
         private Task<bool> IsClassLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
 
