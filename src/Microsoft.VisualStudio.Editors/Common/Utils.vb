@@ -1675,7 +1675,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If stream Is Nothing Or value Is Nothing Then
                     Return
                 End If
-                Using writer As New BinaryWriter(stream, Encoding.UTF8, True)
+                Using writer As New BinaryWriter(stream, Encoding.UTF8, leaveOpen:=True)
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
                     writer.Flush()
@@ -1687,7 +1687,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 If stream Is Nothing OrElse stream.Length = 0 Then
                     Return Nothing
                 End If
-                Using reader As New BinaryReader(stream, Encoding.UTF8, True)
+                Using reader As New BinaryReader(stream, Encoding.UTF8, leaveOpen:=True)
                     reader.BaseStream.Position = 0
                     Dim valueType = Type.GetType(reader.ReadString())
                     Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
