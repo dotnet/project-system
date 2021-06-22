@@ -112,7 +112,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
             TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
-            Return DirectCast(SerializationProvider.Deserialize(Stream), GenericComponentSerializationStore)
+            Return DirectCast(ObjectSerializer.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
 
         ''' <summary>
@@ -127,7 +127,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
-            SerializationProvider.Serialize(Stream, Me)
+            ObjectSerializer.Serialize(Stream, Me)
         End Sub
 
 #End Region
@@ -473,7 +473,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
                     Dim MemoryStream As New MemoryStream
-                    SerializationProvider.Serialize(MemoryStream, [Object])
+                    ObjectSerializer.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End If
             End Function
@@ -485,7 +485,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return SerializationProvider.Deserialize(MemoryStream)
+                    Return ObjectSerializer.Deserialize(MemoryStream)
                 End If
             End Function
 

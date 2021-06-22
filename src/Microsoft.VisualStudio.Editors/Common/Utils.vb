@@ -1667,7 +1667,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Class
 #End Region
 
-        Public Class SerializationProvider
+        Public Class ObjectSerializer
 
             Private Shared ReadOnly KnownTypes As Type() = {GetType(Size)}
 

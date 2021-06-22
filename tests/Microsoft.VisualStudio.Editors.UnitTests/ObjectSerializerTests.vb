@@ -7,22 +7,22 @@ Imports System.Drawing
 Imports System.Drawing.Imaging
 
 Namespace Microsoft.VisualStudio.Editors.UnitTests
-    Public Class SerializationProviderTests
+    Public Class ObjectSerializerTests
         <Fact>
         Public Sub Serialize_Nothing_ResultNoThrow()
-            SerializationProvider.Serialize(Nothing, Nothing)
-            SerializationProvider.Serialize(Nothing, 12345)
+            ObjectSerializer.Serialize(Nothing, Nothing)
+            ObjectSerializer.Serialize(Nothing, 12345)
             Using stream As New MemoryStream()
-                SerializationProvider.Serialize(stream, Nothing)
+                ObjectSerializer.Serialize(stream, Nothing)
                 Assert.True(stream.Length = 0)
             End Using
         End Sub
 
         <Fact>
         Public Sub Deserialize_Nothing_ResultNoThrow()
-            Assert.Null(SerializationProvider.Deserialize(Nothing))
+            Assert.Null(ObjectSerializer.Deserialize(Nothing))
             Using stream As New MemoryStream()
-                Dim actual = SerializationProvider.Deserialize(stream)
+                Dim actual = ObjectSerializer.Deserialize(stream)
                 Assert.Null(actual)
             End Using
         End Sub
@@ -32,7 +32,7 @@ Namespace Microsoft.VisualStudio.Editors.UnitTests
         <MemberData(NameOf(ComplexTypesData))>
         Public Sub Serialize_Types_ResultSuccess(value As Object, expected As String)
             Using stream As New MemoryStream()
-                SerializationProvider.Serialize(stream, value)
+                ObjectSerializer.Serialize(stream, value)
                 Dim actual = Convert.ToBase64String(stream.ToArray())
                 Assert.Equal(expected, actual)
             End Using
@@ -44,7 +44,7 @@ Namespace Microsoft.VisualStudio.Editors.UnitTests
         Public Sub Deserialize_Types_ResultSuccess(expected As Object, value As String)
             Dim bytes = Convert.FromBase64String(value)
             Using stream As New MemoryStream(bytes)
-                Dim actual = SerializationProvider.Deserialize(stream)
+                Dim actual = ObjectSerializer.Deserialize(stream)
                 If expected.GetType() = GetType(Bitmap) Then
                     Dim bitmapExpected = DirectCast(expected, Bitmap)
                     Dim bitmapActual = DirectCast(actual, Bitmap)

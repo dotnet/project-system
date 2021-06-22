@@ -132,7 +132,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Public Shared Function Load(Stream As Stream) As PropertyPageSerializationStore
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(PropertyPageSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
-                Return DirectCast(SerializationProvider.Deserialize(Stream), PropertyPageSerializationStore)
+                Return DirectCast(ObjectSerializer.Deserialize(Stream), PropertyPageSerializationStore)
             End Function
 
             ''' <summary>
@@ -147,7 +147,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
                 TelemetryLogger.LogBinaryFormatterEvent(NameOf(PropertyPageSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
-                SerializationProvider.Serialize(Stream, Me)
+                ObjectSerializer.Serialize(Stream, Me)
             End Sub
 
 #End Region
@@ -512,7 +512,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Serialize)
 
                     Dim MemoryStream As New MemoryStream
-                    SerializationProvider.Serialize(MemoryStream, [Object])
+                    ObjectSerializer.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
                 End Function
 
@@ -528,7 +528,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return DirectCast(SerializationProvider.Deserialize(MemoryStream), PropPageDesignerRootComponent)
+                    Return DirectCast(ObjectSerializer.Deserialize(MemoryStream), PropPageDesignerRootComponent)
                 End Function
 
                 ''' <summary>
@@ -547,7 +547,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                     TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
-                    Return SerializationProvider.Deserialize(MemoryStream)
+                    Return ObjectSerializer.Deserialize(MemoryStream)
                 End Function
 
             End Class 'SerializedProperty

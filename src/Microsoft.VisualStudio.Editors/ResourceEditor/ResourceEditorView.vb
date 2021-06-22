@@ -2495,7 +2495,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             '... then package it into a serialized blob
             Dim Stream As New MemoryStream
-            SerializationProvider.Serialize(Stream, ResourcesData)
+            ObjectSerializer.Serialize(Stream, ResourcesData)
 
             '... and stuff into a DataObject
             Stream.Seek(0, SeekOrigin.Begin)
@@ -2995,7 +2995,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Decode the data format
             Dim RawBytes() As Byte = DirectCast(Data.GetData(_CF_RESOURCES), Byte())
             Dim MemoryStream As New MemoryStream(RawBytes)
-            Dim ResourcesData As ResourcesDataFormat = DirectCast(SerializationProvider.Deserialize(MemoryStream), ResourcesDataFormat)
+            Dim ResourcesData As ResourcesDataFormat = DirectCast(ObjectSerializer.Deserialize(MemoryStream), ResourcesDataFormat)
 
             'Okay, we have our copied resources, let's add them
             AddResources(ResourcesData.Resources, CopyFileIfExists, AddToProject:=True)
