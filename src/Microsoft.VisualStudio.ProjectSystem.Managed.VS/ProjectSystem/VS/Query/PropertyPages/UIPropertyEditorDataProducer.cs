@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,11 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
                 if (property is StringProperty stringProperty)
                 {
-                    if (stringProperty.Subtype == "file")
+                    if (string.Equals(stringProperty.Subtype, "file", StringComparison.OrdinalIgnoreCase))
                     {
                         yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "FilePath" }, properties);
                     }
-                    else if (stringProperty.Subtype == "folder" || stringProperty.Subtype == "directory")
+                    else if (
+                        string.Equals(stringProperty.Subtype, "folder", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(stringProperty.Subtype, "directory", StringComparison.OrdinalIgnoreCase))
                     {
                         yield return CreateEditorValue(queryExecutionContext, parent, new ValueEditor { EditorType = "DirectoryPath" }, properties);
                     }
