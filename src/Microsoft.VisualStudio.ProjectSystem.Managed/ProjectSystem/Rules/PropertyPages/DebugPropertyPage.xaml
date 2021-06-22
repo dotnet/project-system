@@ -5,8 +5,6 @@
       DisplayName="Debug"
       PageTemplate="generic"
       Order="500"
-      xmlns:sys="clr-namespace:System;assembly=mscorlib"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
@@ -22,7 +20,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
-      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
@@ -35,7 +33,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
-      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="LinkAction">
