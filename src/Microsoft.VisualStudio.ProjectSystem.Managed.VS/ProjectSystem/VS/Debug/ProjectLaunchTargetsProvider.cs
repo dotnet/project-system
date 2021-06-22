@@ -104,8 +104,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
-            IReadOnlyList<IDebugLaunchSettings>? launchSettings = await QueryDebugTargetsAsync(launchOptions, profile, validateSettings: false);
-            return launchSettings != null;
+            if (IsRunProjectCommand(profile))
+            {
+                // If the profile uses the "Project" command, check that the project specifies
+                // something we can run.
+
+                ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
+                Assumes.NotNull(configuredProject);
+                Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+
+                IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+
+                string? runCommand = await GetTargetCommandAsync(properties, validateSettings: false);
+                if (string.IsNullOrWhiteSpace(runCommand))
+                {
+                    return false;
+                }
+            }
+
+            // Otherwise, the profile must be using the "Executable" command in which case it
+            // can always be a start-up project.
+            return true;
         }
 
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile) =>

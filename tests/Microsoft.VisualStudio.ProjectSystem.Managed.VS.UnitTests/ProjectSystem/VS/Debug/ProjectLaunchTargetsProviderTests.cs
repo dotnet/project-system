@@ -628,6 +628,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NETFramework"));
         }
 
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingExecutableCommand_AlwaysTrue()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_TrueIfRunCommandPropertySpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                properties: new Dictionary<string, string?>() { { "RunCommand", @"C:\alpha\beta\gamma.exe" } });
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_TrueIfTargetPathPropertySpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                properties: new Dictionary<string, string?>() { { "TargetPath", @"C:\alpha\beta\gamma.exe" } });
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_FalseIfRunCommandAndTargetPathNotSpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.False(canBeStartupProject);
+        }
+
         private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
