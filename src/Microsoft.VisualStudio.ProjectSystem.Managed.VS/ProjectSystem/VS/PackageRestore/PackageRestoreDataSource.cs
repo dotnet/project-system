@@ -70,20 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
         private readonly AsyncManualResetEvent _nominateNextRestore = new(false);
 
         public string Name => _project.FullPath;
-
-        public bool FirstNominationOcurred
-        {
-            get
-            {
-                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider);
-                Assumes.Present(_project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
-
-                ConfiguredProject? activeConfiguredProject = _project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
-
-                // Nuget should wait until the project at least nominates once.
-                return _savedNominatedVersion.ContainsKey(activeConfiguredProject.ProjectConfiguration.Name);
-            }
-        }
+        private TaskCompletionSource<Task>? _whenNominatedTask;
 
         [ImportingConstructor]
         public PackageRestoreDataSource(
@@ -182,7 +169,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             Assumes.Present(_project.Services.ActiveConfiguredProjectProvider);
             Assumes.Present(_project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject);
 
-            _nominateNextRestore.Set();
+            _whenNominatedTask ??= new TaskCompletionSource<Task>(TaskCreationOptions.RunContinuationsAsynchronously);
+            _whenNominatedTask.SetResult(Task.CompletedTask);
 
             ConfiguredProject activeConfiguredProject = _project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
 
@@ -288,22 +276,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 return Task.CompletedTask;
             }
 
-            TaskCompletionSource<Task> taskCompletionSource = new TaskCompletionSource<Task>(TaskCreationOptions.RunContinuationsAsynchronously);
-            Task<Task> tcs1 = taskCompletionSource.Task;
+            _whenNominatedTask ??= new TaskCompletionSource<Task>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            // Start a background task that will complete tcs1.Task
-            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            _ = Task.Factory.StartNew((Action)(async () =>
-                    {
-                        await _nominateNextRestore.WaitAsync();
-                        taskCompletionSource.SetResult(Task.CompletedTask);
-                    }),
-                cancellationToken,
-                TaskCreationOptions.None,
-                uiScheduler);
-
-            // Prevent overlap until Restore completes
-            return joinableTask.Task;
+            return _whenNominatedTask.Task;
         }
 
         // True means the project system plans to call NominateProjectAsync in the future.
