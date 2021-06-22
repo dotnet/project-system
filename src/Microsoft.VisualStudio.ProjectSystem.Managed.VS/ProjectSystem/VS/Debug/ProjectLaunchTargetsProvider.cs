@@ -457,6 +457,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (IsRunProjectCommand(resolvedProfile)
                 && resolvedProfile.IsHotReloadEnabled()
+                && (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
                 && await DebugFrameworkSupportsHotReloadAsync()
                 && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
             {
