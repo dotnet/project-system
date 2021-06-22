@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     [Export(typeof(IDefaultLaunchProfileProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
-    [ExportOrder(int.MinValue)] 
+    [ExportOrder(Order.Default)] 
     internal class DefaultLaunchProfileProvider : IDefaultLaunchProfileProvider
     {
         private readonly UnconfiguredProject _project;

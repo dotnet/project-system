@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly IFileSystem _fileSystem;
         private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new();
+        private readonly Lazy<ILaunchProfile?> _defaultLaunchProfile;
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
         private ILaunchSettings? _currentSnapshot;
@@ -84,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
 
             _defaultLaunchProfile = new Lazy<ILaunchProfile?> (() => {
-                    return DefaultLaunchProfileProviders?.First()?.Value?.CreateDefaultProfile();
+                    return DefaultLaunchProfileProviders?.FirstOrDefault()?.Value?.CreateDefaultProfile();
                 }
             );
 
@@ -99,8 +100,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [ImportMany]
         protected OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider> DefaultLaunchProfileProviders { get; set; }
-
-        private readonly Lazy<ILaunchProfile?> _defaultLaunchProfile;
 
         protected SimpleFileWatcher? FileWatcher { get; set; }
 
@@ -264,9 +263,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
                 {
-                    var defaultLaunchProfile = _defaultLaunchProfile.Value;
-                    if (defaultLaunchProfile != null)
-                        launchSettingData.Profiles.Add(new LaunchProfileData() { Name = defaultLaunchProfile.Name, CommandName = defaultLaunchProfile.CommandName});
+                    ILaunchProfile? defaultLaunchProfile = _defaultLaunchProfile.Value;
+                    if (defaultLaunchProfile is not null)
+                        launchSettingData.Profiles.Add(LaunchProfileData.FromILaunchProfile(defaultLaunchProfile));
                 }
 
                 // If we have a previous snapshot merge in in-memory profiles

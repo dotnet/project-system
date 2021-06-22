@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
             var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService);
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project));
             return provider;
         }
 
@@ -1028,7 +1028,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
             IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
-            IProjectFaultHandlerService projectFaultHandler)
+            IProjectFaultHandlerService projectFaultHandler,
+            IDefaultLaunchProfileProvider defaultLaunchProfileProvider)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
@@ -1037,6 +1038,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             FileChangeProcessingDelay = TimeSpan.FromMilliseconds(50);
             FileChangeScheduler = new TaskDelayScheduler(FileChangeProcessingDelay, commonProjectServices.ThreadingService,
                     CancellationToken.None);
+            DefaultLaunchProfileProviders.Add(defaultLaunchProfileProvider);
         }
 
         // Wrappers to call protected members
