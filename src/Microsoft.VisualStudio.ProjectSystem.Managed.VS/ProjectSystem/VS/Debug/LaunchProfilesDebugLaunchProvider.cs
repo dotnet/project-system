@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {
                     _threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(_launchOptions, _activeProfile, processInfoArray));
                 }
-                if (_targetProfile != null)
+                else if (_targetProfile is not null)
                 {
                     _threadingService.ExecuteSynchronously(() => _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile));
                 }
