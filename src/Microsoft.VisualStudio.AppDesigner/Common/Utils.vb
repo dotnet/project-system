@@ -728,7 +728,6 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
                     Throw New SerializationException("The stream contains no content.")
                 End If
                 Using reader As New BinaryReader(stream, Encoding.UTF8, leaveOpen:=True)
-                    reader.BaseStream.Position = 0
                     Dim valueType = Type.GetType(reader.ReadString())
                     Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
                 End Using
