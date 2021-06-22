@@ -64,6 +64,10 @@
                   DisplayName="Environment variables"
                   Description="The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/)."/>
 
+  <BoolProperty Name="HotReloadEnabled"
+                DisplayName="Enable Hot Reload"
+                Description="Apply code changes to the running application." />
+  
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging"
                 Description="Enable debugging for managed and native code together, also known as mixed-mode debugging." />
@@ -72,7 +76,7 @@
                 DisplayName="Enable SQL Server debugging"
                 Description="Enable debugging of SQL scripts and stored procedures." />
 
-  <BoolProperty Name="HotReloadEnabled"
-                DisplayName="Enable Hot Reload"
-                Description="Apply code changes to the running application." />
+  <BoolProperty Name="WebView2Debugging"
+                DisplayName="Enable WebView2 debugging"
+                Description="Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component." />
 </Rule>
