@@ -10,6 +10,24 @@
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
       <Disp Icon="Str" Disp="true" LocTbl="false" />
+      <Item ItemId=";BoolProperty|AutoGenerateBindingRedirects|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Add binding redirects automatically to App.config.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[App.config에 바인딩 리디렉션을 자동으로 추가합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|AutoGenerateBindingRedirects|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Auto-generate binding redirects]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[바인딩 리디렉션 자동 생성]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|IsPublishable|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Allow publishing outside of Visual Studio, such as via "dotnet publish".]]></Val>
@@ -142,6 +160,60 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DynamicEnumProperty|InterceptedTargetFramework|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[애플리케이션이 대상으로 지정할 .NET 버전을 지정합니다. 이 옵션은 컴퓨터에 설치된 .NET 버전에 따라 다른 값을 가질 수 있습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|InterceptedTargetFramework|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Target framework]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[대상 프레임워크]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[TFM]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[TFM]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|MinimumPlatformVersion|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the minimum runtime version of the selected operating system.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[선택한 운영 체제의 최소 런타임 버전을 지정합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|MinimumPlatformVersion|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Minimum OS version]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[최소 OS 버전]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[platform]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[플랫폼]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";DynamicEnumProperty|StartupObject|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.]]></Val>
@@ -160,29 +232,56 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|TargetFramework|Description" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformIdentifier|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.]]></Val>
+          <Val><![CDATA[Specifies the operating system that this project will target.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[애플리케이션이 대상으로 지정할 .NET 버전을 지정합니다. 이 옵션은 컴퓨터에 설치된 .NET 버전에 따라 다른 값을 가질 수 있습니다.]]></Val>
+            <Val><![CDATA[이 프로젝트에서 대상으로 하는 운영 체제를 지정합니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|TargetFramework|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformIdentifier|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Target framework]]></Val>
+          <Val><![CDATA[Target OS]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[대상 프레임워크]]></Val>
+            <Val><![CDATA[대상 OS]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";DynamicEnumProperty|TargetFramework|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[TFM]]></Val>
+          <Val><![CDATA[platform]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[TFM]]></Val>
+            <Val><![CDATA[플랫폼]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformVersion|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the version of the operating system this project will target.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[이 프로젝트에서 대상으로 하는 운영 체제의 버전을 지정합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformVersion|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Target OS version]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[대상 OS 버전]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[platform]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[플랫폼]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
