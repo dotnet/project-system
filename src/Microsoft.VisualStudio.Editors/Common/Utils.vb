@@ -1669,7 +1669,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Public Class ObjectSerializer
 
-            Private Shared ReadOnly KnownTypes As Type() = {GetType(Size)}
+            Private Shared ReadOnly s_knownTypes As Type() = {GetType(Size)}
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
                 Requires.NotNull(stream, NameOf(stream))
@@ -1678,7 +1678,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
                     writer.Flush()
-                    Call New DataContractSerializer(valueType, KnownTypes).WriteObject(stream, value)
+                    Call New DataContractSerializer(valueType, s_knownTypes).WriteObject(stream, value)
                 End Using
             End Sub
 
@@ -1689,7 +1689,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 End If
                 Using reader As New BinaryReader(stream, Encoding.UTF8, leaveOpen:=True)
                     Dim valueType = Type.GetType(reader.ReadString())
-                    Return New DataContractSerializer(valueType, KnownTypes).ReadObject(stream)
+                    Return New DataContractSerializer(valueType, s_knownTypes).ReadObject(stream)
                 End Using
             End Function
 
