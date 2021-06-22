@@ -1672,9 +1672,8 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Private Shared ReadOnly KnownTypes As Type() = {GetType(Size)}
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
-                If stream Is Nothing Or value Is Nothing Then
-                    Return
-                End If
+                Requires.NotNull(stream, NameOf(stream))
+                Requires.NotNull(value, NameOf(value))
                 Using writer As New BinaryWriter(stream, Encoding.UTF8, leaveOpen:=True)
                     Dim valueType = value.GetType()
                     writer.Write(valueType.AssemblyQualifiedName)
@@ -1684,8 +1683,9 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Sub
 
             Public Shared Function Deserialize(stream As Stream) As Object
-                If stream Is Nothing OrElse stream.Length = 0 Then
-                    Return Nothing
+                Requires.NotNull(stream, NameOf(stream))
+                If stream.Length = 0 Then
+                    Throw New SerializationException("The stream contains no content.")
                 End If
                 Using reader As New BinaryReader(stream, Encoding.UTF8, leaveOpen:=True)
                     reader.BaseStream.Position = 0

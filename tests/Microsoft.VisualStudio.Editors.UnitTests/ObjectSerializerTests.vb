@@ -5,25 +5,24 @@ Imports Microsoft.VisualStudio.Editors.Common
 Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Imaging
+Imports System.Runtime.Serialization
 
 Namespace Microsoft.VisualStudio.Editors.UnitTests
     Public Class ObjectSerializerTests
         <Fact>
         Public Sub Serialize_Nothing_ResultNoThrow()
-            ObjectSerializer.Serialize(Nothing, Nothing)
-            ObjectSerializer.Serialize(Nothing, 12345)
+            Assert.Throws(Of ArgumentNullException)(Sub() ObjectSerializer.Serialize(Nothing, Nothing))
+            Assert.Throws(Of ArgumentNullException)(Sub() ObjectSerializer.Serialize(Nothing, 12345))
             Using stream As New MemoryStream()
-                ObjectSerializer.Serialize(stream, Nothing)
-                Assert.True(stream.Length = 0)
+                Assert.Throws(Of ArgumentNullException)(Sub() ObjectSerializer.Serialize(stream, Nothing))
             End Using
         End Sub
 
         <Fact>
         Public Sub Deserialize_Nothing_ResultNoThrow()
-            Assert.Null(ObjectSerializer.Deserialize(Nothing))
+            Assert.Throws(Of ArgumentNullException)(Sub() ObjectSerializer.Deserialize(Nothing))
             Using stream As New MemoryStream()
-                Dim actual = ObjectSerializer.Deserialize(stream)
-                Assert.Null(actual)
+                Assert.Throws(Of SerializationException)(Sub() ObjectSerializer.Deserialize(stream))
             End Using
         End Sub
 
