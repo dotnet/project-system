@@ -3,7 +3,7 @@
   <Import Project="..\..\build\import\VisualStudio.props" />
   <PropertyGroup>
     <RootNamespace>Microsoft.VisualStudio</RootNamespace>
-    <Version>42.42.42.42</Version>
+    <AssemblyVersion>42.42.42.42</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="explorer.ico">
