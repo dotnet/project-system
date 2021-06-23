@@ -709,6 +709,8 @@ Namespace Microsoft.VisualStudio.Editors.AppDesCommon
 
         Public Class ObjectSerializer
 
+            ' KnownType information is used by DataContractSerializer for serialization of types that it may not know of currently.
+            ' Size is used in Bitmap and has issues being recognized in DataContractSerializer for the unit tests of this class.
             Private Shared ReadOnly s_knownTypes As Type() = {GetType(Size)}
 
             Public Shared Sub Serialize(stream As Stream, value As Object)
