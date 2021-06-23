@@ -23,13 +23,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     '''  Represents a resource in the .resx file.
     ''' </summary>
-    ''' <remarks> 
-    '''  - TypeDescriptionProvider points the shell to ask our ResourceTypeDescriptionProvider for the properties we want to expose. 
-    '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource 
+    ''' <remarks>
+    '''  - TypeDescriptionProvider points the shell to ask our ResourceTypeDescriptionProvider for the properties we want to expose.
+    '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource
     '''      appears on the Property Window's drop down list.
+    '''  - KnownType of ResXDataNode is needed for DataContractSerializer to export this type information during serialization.
     ''' </remarks>
     <Serializable>
     <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))>
+    <KnownType(GetType(ResXDataNode))>
     Friend NotInheritable Class Resource
         Implements IComponent
         Implements ISerializable 'This allows us to fully control the serialization process
