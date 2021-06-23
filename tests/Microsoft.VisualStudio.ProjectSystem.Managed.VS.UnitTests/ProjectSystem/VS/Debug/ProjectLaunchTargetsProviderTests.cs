@@ -732,7 +732,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
             IVsDebugger10? debugger = null,
-            IProjectHotReloadAgent? projectHotReloadAgent = null)
+            IProjectHotReloadAgent? projectHotReloadAgent = null,
+            IHotReloadDiagnosticOutputService? hotReloadDiagnosticOutputService = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
@@ -740,12 +741,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
             projectHotReloadAgent ??= IProjectHotReloadAgentFactory.Create();
+            hotReloadDiagnosticOutputService ??= IHotReloadDiagnosticOutputServiceFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
-            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject!, tokenReplacer, fileSystem!, environment, activeDebugFramework, properties!, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService, projectHotReloadAgent);
+            return new ProjectLaunchTargetsProvider(
+                unconfiguredProjectVsServices,
+                configuredProject!,
+                tokenReplacer,
+                fileSystem!,
+                environment,
+                activeDebugFramework,
+                properties!,
+                threadingService,
+                IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
+                remoteDebuggerAuthenticationService,
+                projectHotReloadAgent,
+                new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadDiagnosticOutputService));
         }
     }
 }
