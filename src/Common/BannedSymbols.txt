@@ -94,3 +94,5 @@ M:System.Diagnostics.Debugger.Break(); This should not be used in production cod
 M:System.Diagnostics.Debugger.Launch(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
 
 T:Microsoft.VisualStudio.ProjectSystem.ActiveConfiguredProject`1; Use IActiveConfiguredValue<T>, and handle when Value returns null.
+
+T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter;Use a preferred alternative: https://docs.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide#preferred-alternatives
