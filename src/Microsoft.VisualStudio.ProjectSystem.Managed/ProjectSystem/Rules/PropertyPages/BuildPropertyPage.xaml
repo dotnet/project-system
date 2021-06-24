@@ -76,6 +76,18 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
+  <BoolProperty Name="Prefer32Bit"
+                DisplayName="Prefer 32-bit"
+                Description="Set the 32-bit preferred flag for the application. Only applies to executables."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166468"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-net-framework)</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <BoolProperty Name="AllowUnsafeBlocks"
                 DisplayName="Unsafe code"
                 Description="Allow code that uses the 'unsafe' keyword to compile."

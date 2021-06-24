@@ -77,6 +77,16 @@
         <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Set the 32-bit preferred flag for the application. Only applies to executables.</source>
+        <target state="new">Set the 32-bit preferred flag for the application. Only applies to executables.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
         <source>Produce a reference assembly containing the public API of the project.</source>
         <target state="translated">프로젝트의 공용 API를 포함하는 참조 어셈블리를 생성합니다.</target>
