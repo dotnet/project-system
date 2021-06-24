@@ -23,6 +23,11 @@
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" Key="$(MoqPublicKey)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Needed to break assembly conflict on StreamJsonRpc between microsoft.visualstudio.projectsystem.query and microsoft.visualstudio.languageservices -->
+    <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
+  </ItemGroup>
+
   <!-- Dependencies -->
   <ItemGroup>
     <!-- Analyzer Reference -->
