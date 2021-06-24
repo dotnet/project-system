@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="needs-review-translation">'unsafe' キーワードを使用するコードをコンパイルできるようにします。</target>
+        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="needs-review-translation">アンセーフ コードの許可</target>
+        <target state="new">Unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="needs-review-translation">データ型の範囲外にあり、選択済みまたは選択解除済みのキーワードの範囲にない値を生成する整数演算で、実行時の例外が発生するかどうかを指定します。</target>
+        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="needs-review-translation">コンパイラが同一の入力に対して同一のアセンブリを生成する必要があるかどうかを示します。</target>
+        <target state="new">Produce identical compilation output for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="needs-review-translation">コンパイラによって最適化を行うか行わないかを切り替えます。最適化が行われると、出力ファイルのサイズは小さくなり、より高速かつ効果的に処理を行えるようになります。</target>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="needs-review-translation">内部コンパイラ エラー (ICE) レポートが Microsoft に送信されるタイミングを制御します。</target>
+        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">

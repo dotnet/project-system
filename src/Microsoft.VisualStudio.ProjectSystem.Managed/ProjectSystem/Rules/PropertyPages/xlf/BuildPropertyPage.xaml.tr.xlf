@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="needs-review-translation">'unsafe' anahtar sözcüğünü kullanan kodun derlenmesine izin verir.</target>
+        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="needs-review-translation">Güvenli olmayan koda izin ver</target>
+        <target state="new">Unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="needs-review-translation">Veri türünün aralığı dışında bir değerle sonuçlanan ve checked veya unchecked anahtar sözcüğünün kapsamında olmayan tamsayı aritmetiğinin bir çalışma zamanı özel durumuna neden olup olmadığını belirtir.</target>
+        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="needs-review-translation">Derleyicinin aynı girişler için aynı bütünleştirilmiş kodları üretmesi gerekip gerekmediğini gösterir.</target>
+        <target state="new">Produce identical compilation output for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="needs-review-translation">Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.</target>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -169,7 +169,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="needs-review-translation">Derleyici iç hatası (ICE) raporlarının Microsoft'a ne zaman gönderildiğini denetler.</target>
+        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
