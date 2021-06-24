@@ -47,7 +47,7 @@
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="1.1.4323" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="16.9.30701-preview-2-30710-200" />
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
-    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.9.67" />
+    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.10.23" />
     <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.3.104" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="16.8.30406.155-pre" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="2.3.2262-g94fae01e" />
@@ -88,19 +88,22 @@
     <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
     <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
 
+    <!-- https://github.com/dotnet/roslyn/issues/53877 -->
+    <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.21" />
+
     <!-- CPS -->
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.10.137-pre" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.10.137-pre" />
     <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="16.10.337-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.10.0-2.21121.14" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.10.0-2.21121.14" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.11.0-2.21310.17" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.11.0-2.21310.17" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0" />
