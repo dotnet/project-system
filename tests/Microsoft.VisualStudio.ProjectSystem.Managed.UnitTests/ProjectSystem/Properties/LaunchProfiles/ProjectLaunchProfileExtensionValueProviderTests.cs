@@ -239,7 +239,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 OtherSettings =
                 {
-                    { LaunchProfileExtensions.SqlDebuggingProperty, hotReloadEnabled }
+                    { LaunchProfileExtensions.HotReloadEnabledProperty, hotReloadEnabled }
                 }
             };
 
@@ -248,6 +248,56 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             provider.OnSetPropertyValue(ProjectLaunchProfileExtensionValueProvider.HotReloadEnabledPropertyName, "false", profile, EmptyGlobalSettings, rule: null);
 
             Assert.False((bool)profile.OtherSettings[LaunchProfileExtensions.HotReloadEnabledProperty]);
+        }
+
+        [Fact]
+        public void WebView2Debugging_OnGetPropertyValueAsync_GetsDefaultValueWhenNotDefined()
+        {
+            var profile = new WritableLaunchProfile().ToLaunchProfile();
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            var actualValue = provider.OnGetPropertyValue(ProjectLaunchProfileExtensionValueProvider.WebView2DebuggingPropertyName, profile, EmptyGlobalSettings, rule: null);
+
+            Assert.Equal(expected: "false", actual: actualValue);
+        }
+
+        [Fact]
+        public void WebView2Debugging_OnGetPropertyValueAsync_GetsValueInProfileWhenDefined()
+        {
+            bool webView2Debugging = true;
+            var profile = new WritableLaunchProfile
+            {
+                OtherSettings =
+                {
+                    { LaunchProfileExtensions.JSWebView2DebuggingProperty, webView2Debugging }
+                }
+            }.ToLaunchProfile();
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            var actualValue = provider.OnGetPropertyValue(ProjectLaunchProfileExtensionValueProvider.WebView2DebuggingPropertyName, profile, EmptyGlobalSettings, rule: null);
+
+            Assert.Equal(expected: "true", actual: actualValue);
+        }
+
+        [Fact]
+        public void WebView2Debugging_OnSetPropertyValueAsync_SetsWebView2DebuggingToSpecifiedValue()
+        {
+            bool webView2Debugging = false;
+            var profile = new WritableLaunchProfile
+            {
+                OtherSettings =
+                {
+                    { LaunchProfileExtensions.JSWebView2DebuggingProperty, webView2Debugging }
+                }
+            };
+
+            var provider = new ProjectLaunchProfileExtensionValueProvider();
+
+            provider.OnSetPropertyValue(ProjectLaunchProfileExtensionValueProvider.WebView2DebuggingPropertyName, "true", profile, EmptyGlobalSettings, rule: null);
+
+            Assert.True((bool)profile.OtherSettings[LaunchProfileExtensions.JSWebView2DebuggingProperty]);
         }
     }
 }

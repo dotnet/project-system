@@ -31,7 +31,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             NativeDebuggingPropertyName,
             RemoteDebugEnabledPropertyName,
             RemoteDebugMachinePropertyName,
-            SqlDebuggingPropertyName
+            SqlDebuggingPropertyName,
+            WebView2DebuggingPropertyName
         },
         ExportLaunchProfileExtensionValueProviderScope.LaunchProfile)]
     internal class ProjectLaunchProfileExtensionValueProvider : ILaunchProfileExtensionValueProvider
@@ -42,6 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         internal const string RemoteDebugEnabledPropertyName = "RemoteDebugEnabled";
         internal const string RemoteDebugMachinePropertyName = "RemoteDebugMachine";
         internal const string SqlDebuggingPropertyName = "SqlDebugging";
+        internal const string WebView2DebuggingPropertyName = "WebView2Debugging";
 
         // The CPS property system will map "true" and "false" to the localized versions of
         // "Yes" and "No" for display purposes, but not other casings like "True" and
@@ -59,6 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 RemoteDebugEnabledPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugEnabledProperty, false) ? True : False,
                 RemoteDebugMachinePropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.RemoteDebugMachineProperty, string.Empty),
                 SqlDebuggingPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, false) ? True : False,
+                WebView2DebuggingPropertyName => GetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, false) ? True : False,
 
                 _ => throw new InvalidOperationException($"{nameof(ProjectLaunchProfileExtensionValueProvider)} does not handle property '{propertyName}'.")
             };
@@ -92,6 +95,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 case SqlDebuggingPropertyName:
                     TrySetOtherProperty(launchProfile, LaunchProfileExtensions.SqlDebuggingProperty, bool.Parse(propertyValue), false);
+                    break;
+
+                case WebView2DebuggingPropertyName:
+                    TrySetOtherProperty(launchProfile, LaunchProfileExtensions.JSWebView2DebuggingProperty, bool.Parse(propertyValue), false);
                     break;
 
                 default:
