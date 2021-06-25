@@ -85,6 +85,7 @@
       <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
       <NameValuePair Name="DependsOn" Value="Application::OutputType" />
       <NameValuePair Name="VisibilityCondition">
+        <!-- Visibility based on: https://github.com/dotnet/msbuild/blob/9bcc06cbe19ae2482ab18eab90a82fd079b26897/src/Tasks/Microsoft.NETFramework.CurrentVersion.props#L87 -->
         <NameValuePair.Value>
           (and
             (has-net-framework)
