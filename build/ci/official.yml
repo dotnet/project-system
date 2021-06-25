@@ -29,13 +29,7 @@ steps:
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
   
-- task: NuGetRestore@1
-  displayName: Restore 'Microsoft.DotNet.IBCMerge' package
-  inputs:
-    solution: 'build\proj\internal\RestoreIBCMerge.csproj'
-    feed: '8f470c7e-ac49-4afe-a6ee-cf784e438b93'
-
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
 - task: Ref12.ref12-analyze-task.ref12-analyze-task.Ref12Analyze@0
