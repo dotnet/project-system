@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
-        <source>Set the 32-bit preferred flag for the application. Only applies to executables.</source>
-        <target state="new">Set the 32-bit preferred flag for the application. Only applies to executables.</target>
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
