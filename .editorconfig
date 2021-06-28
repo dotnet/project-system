@@ -274,6 +274,7 @@ dotnet_diagnostic.CA1720.severity = none
 dotnet_diagnostic.CA1721.severity = none
 dotnet_diagnostic.CA1724.severity = none
 dotnet_diagnostic.CA1815.severity = none
+dotnet_diagnostic.CA1819.severity = warning
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA2211.severity = none
 dotnet_diagnostic.CA2213.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/1796
