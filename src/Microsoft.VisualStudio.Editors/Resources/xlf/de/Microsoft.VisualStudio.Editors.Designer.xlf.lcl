@@ -1598,7 +1598,7 @@
         <Str Cat="Text">
           <Val><![CDATA[The URL is invalid. Please enter a valid URL like "http://www.microsoft.com/"]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Die URL ist ungültig. Geben Sie eine gültige URL (beispielsweise "http://www.microsoft.com/de/de/default.aspx") ein.]]></Val>
+            <Val><![CDATA[Die URL ist ungültig. Geben Sie eine gültige URL (beispielsweise "http://www.microsoft.com/") ein.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

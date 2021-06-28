@@ -419,7 +419,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Add]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[До&бавить]]></Val>
+            <Val><![CDATA[Д&обавить]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

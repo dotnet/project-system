@@ -23,7 +23,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Assembly version:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[&Версия сборки:]]></Val>
+            <Val><![CDATA[Версия сб&орки:]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
