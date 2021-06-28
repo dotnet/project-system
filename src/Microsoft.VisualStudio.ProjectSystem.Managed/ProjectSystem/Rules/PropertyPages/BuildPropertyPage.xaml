@@ -76,6 +76,31 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
+  <BoolProperty Name="Prefer32Bit"
+                DisplayName="Prefer 32-bit"
+                Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166468"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <!-- Visibility based on: https://github.com/dotnet/msbuild/blob/9bcc06cbe19ae2482ab18eab90a82fd079b26897/src/Tasks/Microsoft.NETFramework.CurrentVersion.props#L87 -->
+        <NameValuePair.Value>
+          (and
+            (has-net-framework)
+            (has-evaluated-value "Build" "PlatformTarget" "AnyCPU")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")
+              (has-evaluated-value "Application" "OutputType" "AppContainerExe")
+            )
+          )
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <BoolProperty Name="AllowUnsafeBlocks"
                 DisplayName="Unsafe code"
                 Description="Allow code that uses the 'unsafe' keyword to compile."

@@ -77,6 +77,16 @@
         <target state="translated">最佳化;最佳化</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
         <source>Produce a reference assembly containing the public API of the project.</source>
         <target state="translated">產生包含專案公用 API 的參考組件。</target>
