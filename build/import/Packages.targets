@@ -44,9 +44,9 @@
     <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.0.1056-Dev17PIAs-g9dffd635" />
     <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.0.154-preview"/>
     <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.9.20"/>
-    <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="9.0.21023" />
+    <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
-    <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21023" />
+    <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21278.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-2-31223-026" />
@@ -69,8 +69,8 @@
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
-    <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-previews-2-31421-281"/>
-    <PackageReference Include="Microsoft.Internal.VisualStudio.Interop"                               Version="17.0.0-previews-1-31321-016"/>
+    <PackageReference Include="Microsoft.VisualStudio.Interop"                                        Version="17.0.0-previews-2-31423-289"/>
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Interop"                               Version="17.0.0-previews-2-31423-289"/>
     
     <!-- https://github.com/dotnet/roslyn/issues/53877 -->
     <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.21" />
