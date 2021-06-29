@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
+using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
@@ -52,7 +53,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             EnsureDeltaApplierforSession();
             if (_deltaApplier is not null)
             {
-                return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVars, cancellationToken);
+                // TODO: Simplify this once ApplyProcessEnvironmentVariablesAsync takes an IDictionary instead of a Dictionary.
+                if (envVars is Dictionary<string, string> envVarsAsDictionary)
+                {
+                    return await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVarsAsDictionary, cancellationToken);
+                }
+                else
+                {
+                    envVarsAsDictionary = new Dictionary<string, string>(envVars);
+                    bool result = await _deltaApplier.ApplyProcessEnvironmentVariablesAsync(envVarsAsDictionary, cancellationToken);
+                    foreach ((string name, string value) in envVarsAsDictionary)
+                    {
+                        envVars[name] = value;
+                    }
+
+                    return result;
+                }
             }
 
             return false;

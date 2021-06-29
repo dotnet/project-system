@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
+using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
