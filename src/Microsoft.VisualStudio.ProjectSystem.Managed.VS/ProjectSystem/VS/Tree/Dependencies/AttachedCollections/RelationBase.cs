@@ -13,13 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </remarks>
     /// <typeparam name="TParent">The type of <see cref="IRelatableItem"/> parents in the relation.</typeparam>
     /// <typeparam name="TChild">The type of <see cref="IRelatableItem"/> children in the relation.</typeparam>
-#pragma warning disable RS0041 // Public members should not use oblivious types
-#pragma warning disable RS0036 // Annotate nullability of public types and members in the declared API
-    // Suppressions due to https://github.com/dotnet/roslyn-analyzers/issues/4040
-    public abstract class RelationBase<TParent, TChild> : IRelation
-#pragma warning restore RS0036 // Annotate nullability of public types and members in the declared API
-#pragma warning restore RS0041 // Public members should not use oblivious types
-        where TParent : class, IRelatableItem
+    public abstract class RelationBase<TParent, TChild> : IRelation where TParent : class, IRelatableItem
         where TChild : class, IRelatableItem
     {
         void IRelation.UpdateContainsCollection(IRelatableItem parent, AggregateContainsRelationCollectionSpan span)
