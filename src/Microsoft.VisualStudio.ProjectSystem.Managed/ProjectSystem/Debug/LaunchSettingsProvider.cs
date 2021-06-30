@@ -52,6 +52,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly IFileSystem _fileSystem;
         private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
         private readonly SequentialTaskExecutor _sequentialTaskQueue = new();
+        private readonly Lazy<ILaunchProfile?> _defaultLaunchProfile;
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
         private ILaunchSettings? _currentSnapshot;
@@ -76,10 +77,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                                                                                                                     project);
             SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);
 
+            DefaultLaunchProfileProviders = new OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst, project);
+
             _projectSubscriptionService = projectSubscriptionService;
             _appDesignerSpecialFileProvider = appDesignerSpecialFileProvider;
             _projectFaultHandler = projectFaultHandler;
             _launchSettingsFilePath = new AsyncLazy<string>(GetLaunchSettingsFilePathNoCacheAsync, commonProjectServices.ThreadingService.JoinableTaskFactory);
+
+            _defaultLaunchProfile = new Lazy<ILaunchProfile?> (() => {
+                    return DefaultLaunchProfileProviders?.FirstOrDefault()?.Value?.CreateDefaultProfile();
+                }
+            );
 
             _nextVersion = 1;
         }
@@ -89,6 +97,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [ImportMany]
         protected OrderPrecedenceImportCollection<ISourceCodeControlIntegration> SourceControlIntegrations { get; set; }
+
+        [ImportMany]
+        protected OrderPrecedenceImportCollection<IDefaultLaunchProfileProvider> DefaultLaunchProfileProviders { get; set; }
 
         protected SimpleFileWatcher? FileWatcher { get; set; }
 
@@ -252,7 +263,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 // won't be called on F5 and the user will see a poor error message
                 if (launchSettingData.Profiles.Count == 0)
                 {
-                    launchSettingData.Profiles.Add(new LaunchProfileData() { Name = Path.GetFileNameWithoutExtension(_commonProjectServices.Project.FullPath), CommandName = RunProjectCommandName });
+                    ILaunchProfile? defaultLaunchProfile = _defaultLaunchProfile.Value;
+                    if (defaultLaunchProfile is not null)
+                        launchSettingData.Profiles.Add(LaunchProfileData.FromILaunchProfile(defaultLaunchProfile));
                 }
 
                 // If we have a previous snapshot merge in in-memory profiles
