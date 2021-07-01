@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
+using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -791,7 +792,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return TaskResult.False;
         }
 
-        public object? GetDeltaApplier()
+        public IDeltaApplier? GetDeltaApplier()
         {
             return null;
         }

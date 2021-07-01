@@ -2,6 +2,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.HotReload.Components.DeltaApplier;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
@@ -15,8 +16,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         Task<bool> RestartProjectAsync(CancellationToken cancellationToken);
 
-        // TODO: IDeltaApplier will be defined elsewhere. Add this back in once we
-        // can reference it in the final location.
-        object? GetDeltaApplier();
+        IDeltaApplier? GetDeltaApplier();
     }
 }
