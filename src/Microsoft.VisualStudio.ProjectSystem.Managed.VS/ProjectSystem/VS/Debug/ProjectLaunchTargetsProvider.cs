@@ -405,11 +405,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
             }
 
-            if (settings.Environment.Count > 0)
-            {
-                settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
-            }
-
             bool useCmdShell = false;
             if (await IsConsoleAppAsync())
             {
@@ -478,6 +473,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             else
             {
                 _pendingHotReloadSession = null;
+            }
+
+            if (settings.Environment.Count > 0)
+            {
+                settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
             }
 
             return settings;
