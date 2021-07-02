@@ -65,7 +65,7 @@ Replace the contents of MyExtendedApplicationPage.xaml with the following:
 
 The format of the file is described in detail in [Property Specification](property-specification.md), but the most important points are:
 - The `Name` attribute must match the name of the page you are extending.
-- The `OverrideMode` attribute must have the value "Extend", otherwise the base page will be replace entirely instead of extended.
+- The `OverrideMode` attribute must have the value "Extend", otherwise the base page will be replaced entirely instead of extended.
 - None of the other attributes on `Rule` are required, but any present will replace the original attribute on the base page.
 - When a property has the same name as a property on the base page, it will replace that property completely. Otherwise, it will be treated as a new property.
 - The same applies to categories.
