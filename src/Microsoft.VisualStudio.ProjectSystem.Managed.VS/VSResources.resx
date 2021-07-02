@@ -253,4 +253,32 @@ In order to debug this project, add an executable project to this solution which
     <value>Profile {0}</value>
     <comment>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</comment>
   </data>
+  <data name="HotReloadOutputWindowPaneName" xml:space="preserve">
+    <value>Hot Reload</value>
+    <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
+  </data>
+  <data name="HotReloadApplyUpdatesSuccessful" xml:space="preserve">
+    <value>Updates applied successfully</value>
+  </data>
+  <data name="HotReloadApplyUpdatesFailure" xml:space="preserve">
+    <value>Applying updates failed: {0}</value>
+  </data>
+  <data name="HotReloadErrorsInApplication" xml:space="preserve">
+    <value>Errors found in application: </value>
+  </data>
+  <data name="HotReloadRestartInProgress" xml:space="preserve">
+    <value>Rebuilding and restarting the application since the edits can't be applied dynamically.</value>
+  </data>
+  <data name="HotReloadStoppingApplication" xml:space="preserve">
+    <value>Stopping application</value>
+  </data>
+  <data name="HotReloadStartSession" xml:space="preserve">
+    <value>Hot Reload session started</value>
+  </data>
+  <data name="HotReloadStopSession" xml:space="preserve">
+    <value>Hot Reload session complete</value>
+  </data>
+  <data name="HotReloadSendingUpdates" xml:space="preserve">
+    <value>Sending updates to running application</value>
+  </data>
 </root>

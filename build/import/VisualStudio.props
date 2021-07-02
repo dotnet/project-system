@@ -18,6 +18,7 @@
 
     <!-- VS SDK -->
     <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" />
+    <PackageReference Include="Microsoft.VisualStudio.Debugger.Contracts" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />    
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" />

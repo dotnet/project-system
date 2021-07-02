@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -730,19 +731,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveDebugFrameworkServices? activeDebugFramework = null,
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
-            IVsDebugger10? debugger = null)
+            IVsDebugger10? debugger = null,
+            IProjectHotReloadAgent? projectHotReloadAgent = null,
+            IHotReloadDiagnosticOutputService? hotReloadDiagnosticOutputService = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
+            projectHotReloadAgent ??= IProjectHotReloadAgentFactory.Create();
+            hotReloadDiagnosticOutputService ??= IHotReloadDiagnosticOutputServiceFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
-            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject!, tokenReplacer, fileSystem!, environment, activeDebugFramework, properties!, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
+            return new ProjectLaunchTargetsProvider(
+                unconfiguredProjectVsServices,
+                configuredProject!,
+                tokenReplacer,
+                fileSystem!,
+                environment,
+                activeDebugFramework,
+                properties!,
+                threadingService,
+                IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
+                remoteDebuggerAuthenticationService,
+                projectHotReloadAgent,
+                new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadDiagnosticOutputService));
         }
     }
 }

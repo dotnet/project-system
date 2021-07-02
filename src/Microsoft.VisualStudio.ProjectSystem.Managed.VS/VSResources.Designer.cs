@@ -232,6 +232,87 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applying updates failed: {0}.
+        /// </summary>
+        internal static string HotReloadApplyUpdatesFailure {
+            get {
+                return ResourceManager.GetString("HotReloadApplyUpdatesFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates applied successfully.
+        /// </summary>
+        internal static string HotReloadApplyUpdatesSuccessful {
+            get {
+                return ResourceManager.GetString("HotReloadApplyUpdatesSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors found in application: .
+        /// </summary>
+        internal static string HotReloadErrorsInApplication {
+            get {
+                return ResourceManager.GetString("HotReloadErrorsInApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload.
+        /// </summary>
+        internal static string HotReloadOutputWindowPaneName {
+            get {
+                return ResourceManager.GetString("HotReloadOutputWindowPaneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebuilding and restarting the application since the edits can&apos;t be applied dynamically..
+        /// </summary>
+        internal static string HotReloadRestartInProgress {
+            get {
+                return ResourceManager.GetString("HotReloadRestartInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending updates to running application.
+        /// </summary>
+        internal static string HotReloadSendingUpdates {
+            get {
+                return ResourceManager.GetString("HotReloadSendingUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload session started.
+        /// </summary>
+        internal static string HotReloadStartSession {
+            get {
+                return ResourceManager.GetString("HotReloadStartSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping application.
+        /// </summary>
+        internal static string HotReloadStoppingApplication {
+            get {
+                return ResourceManager.GetString("HotReloadStoppingApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload session complete.
+        /// </summary>
+        internal static string HotReloadStopSession {
+            get {
+                return ResourceManager.GetString("HotReloadStopSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Import comes fom target file. This import cannot be removed..
         /// </summary>
         internal static string ImportsFromTargetCannotBeDeleted {
