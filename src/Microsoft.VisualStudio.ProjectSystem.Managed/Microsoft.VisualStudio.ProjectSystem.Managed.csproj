@@ -173,6 +173,9 @@
     <!-- Property Pages -->
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ApplicationPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\BuildPropertyPage.xaml" />
+    <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ConfigurationGeneralPage.xaml">
+      <XlfInput>false</XlfInput>
+    </XamlPropertyRuleNoCodeBehind>
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\DebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\ExecutableDebugPropertyPage.xaml" />
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\PropertyPages\PackagePropertyPage.xaml" />
@@ -432,11 +435,11 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-
-    <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
-      <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
+    
+    <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
+      <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFramework.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
@@ -445,6 +448,28 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
+    <Compile Update="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.cs">
+      <DependentUpon>SdkSupportedTargetPlatformIdentifier.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformIdentifier.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+
+    <Compile Update="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.cs">
+      <DependentUpon>SdkSupportedTargetPlatformVersion.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SdkSupportedTargetPlatformVersion.xaml">
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    
     <Compile Update="ProjectSystem\Rules\UpToDateCheckBuilt.cs">
       <DependentUpon>UpToDateCheckBuilt.xaml</DependentUpon>
     </Compile>
@@ -520,7 +545,6 @@
   <ItemGroup>
     <DesignTimeTargetsFile Include="ProjectSystem\DesignTimeTargets\*.targets" />
   </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />

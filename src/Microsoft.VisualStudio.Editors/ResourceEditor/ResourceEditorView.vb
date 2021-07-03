@@ -10,7 +10,6 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Reflection
 Imports System.Runtime.InteropServices
-Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Text
 Imports System.Windows.Forms
 Imports System.Windows.Forms.Design
@@ -2496,7 +2495,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             '... then package it into a serialized blob
             Dim Stream As New MemoryStream
-            Call (New BinaryFormatter).Serialize(Stream, ResourcesData)
+            ObjectSerializer.Serialize(Stream, ResourcesData)
 
             '... and stuff into a DataObject
             Stream.Seek(0, SeekOrigin.Begin)
@@ -2996,7 +2995,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Decode the data format
             Dim RawBytes() As Byte = DirectCast(Data.GetData(_CF_RESOURCES), Byte())
             Dim MemoryStream As New MemoryStream(RawBytes)
-            Dim ResourcesData As ResourcesDataFormat = DirectCast((New BinaryFormatter).Deserialize(MemoryStream), ResourcesDataFormat)
+            Dim ResourcesData As ResourcesDataFormat = DirectCast(ObjectSerializer.Deserialize(MemoryStream), ResourcesDataFormat)
 
             'Okay, we have our copied resources, let's add them
             AddResources(ResourcesData.Resources, CopyFileIfExists, AddToProject:=True)

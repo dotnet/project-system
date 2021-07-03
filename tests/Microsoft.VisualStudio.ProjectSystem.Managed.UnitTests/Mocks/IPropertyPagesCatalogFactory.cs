@@ -25,6 +25,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
             catalog.Setup(o => o.GetSchema(It.IsAny<string>()))
                 .Returns((string name) => rulesBySchemaName.TryGetValue(name, out IRule rule) ? rule.Schema : null);
 
+            catalog.Setup(o => o.BindToContext(It.IsAny<string>(), It.IsAny<IProjectPropertiesContext>()))
+                .Returns((string name, IProjectPropertiesContext context) => rulesBySchemaName.TryGetValue(name, out IRule rule) ? rule : null);
+
             return catalog.Object;
         }
 

@@ -32,9 +32,19 @@
         <target state="translated">Abilita debug SQL Server</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="new">Enable WebView2 debugging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
+        <target state="translated">Schema di autenticazione da usare per la connessione al computer remoto.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -84,7 +94,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
+        <target state="translated">Nome e numero di porta del computer remoto nel formato 'nome:porta'.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

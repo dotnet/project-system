@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
@@ -628,6 +629,60 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Equal(DebuggerEngines.ManagedOnlyEngine, ProjectLaunchTargetsProvider.GetManagedDebugEngineForFramework(".NETFramework"));
         }
 
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingExecutableCommand_AlwaysTrue()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Executable" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_TrueIfRunCommandPropertySpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                properties: new Dictionary<string, string?>() { { "RunCommand", @"C:\alpha\beta\gamma.exe" } });
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_TrueIfTargetPathPropertySpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                properties: new Dictionary<string, string?>() { { "TargetPath", @"C:\alpha\beta\gamma.exe" } });
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.True(canBeStartupProject);
+        }
+
+        [Fact]
+        public async Task CanBeStartupProject_WhenUsingProjectCommand_FalseIfRunCommandAndTargetPathNotSpecified()
+        {
+            var provider = GetDebugTargetsProvider(
+                outputType: "dll",
+                properties: new Dictionary<string, string?>(),
+                debugger: null,
+                scope: null);
+
+            var activeProfile = new LaunchProfile { Name = "Name", CommandName = "Project" };
+            bool canBeStartupProject = await provider.CanBeStartupProjectAsync(DebugLaunchOptions.NoDebug, activeProfile);
+
+            Assert.False(canBeStartupProject);
+        }
+
         private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
             _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
@@ -676,19 +731,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveDebugFrameworkServices? activeDebugFramework = null,
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
-            IVsDebugger10? debugger = null)
+            IVsDebugger10? debugger = null,
+            IProjectHotReloadAgent? projectHotReloadAgent = null,
+            IHotReloadDiagnosticOutputService? hotReloadDiagnosticOutputService = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
+            projectHotReloadAgent ??= IProjectHotReloadAgentFactory.Create();
+            hotReloadDiagnosticOutputService ??= IHotReloadDiagnosticOutputServiceFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
-            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject!, tokenReplacer, fileSystem!, environment, activeDebugFramework, properties!, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
+            return new ProjectLaunchTargetsProvider(
+                unconfiguredProjectVsServices,
+                configuredProject!,
+                tokenReplacer,
+                fileSystem!,
+                environment,
+                activeDebugFramework,
+                properties!,
+                threadingService,
+                IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
+                remoteDebuggerAuthenticationService,
+                projectHotReloadAgent,
+                new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadDiagnosticOutputService));
         }
     }
 }

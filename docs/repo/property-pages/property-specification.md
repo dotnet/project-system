@@ -101,7 +101,7 @@ Here is a complex example of a string property that demonstrates the majority of
   <StringProperty.Metadata>
     <NameValuePair Name="DependsOn" Value="OtherPage::OtherProperty;OtherPage::AnotherProperty" />
     <NameValuePair Name="VisibilityCondition">
-      <NameValuePair.Value>(eq "SomeValue" (evaluated "OtherPage" "OtherProperty"))</NameValuePair.Value>
+      <NameValuePair.Value>(has-evaluated-value "OtherPage" "OtherProperty" "SomeValue")</NameValuePair.Value>
     </NameValuePair>
   </StringProperty.Metadata>
 </StringProperty>
@@ -350,7 +350,7 @@ internal sealed class MyCommandActionHandler : ILinkActionHandler
 
 ## File and Directory Properties
 
-When a property's value represents a file or directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file` or `directory` respectively.
+When a property's value represents a file or directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file` or `directory` respectively. `folder` is an equivalent alternative to `directory`.
 
 ```xml
 <StringProperty Subtype="file"

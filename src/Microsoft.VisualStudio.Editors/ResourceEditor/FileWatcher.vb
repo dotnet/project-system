@@ -33,14 +33,14 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Private ReadOnly _directoryWatchers As New Dictionary(Of String, DirectoryWatcher)(StringComparers.Paths)
 
-        'Any Windows Forms control on the primary thread.  This is used for invoking 
+        'Any System.Windows.Forms control on the primary thread.  This is used for invoking 
         '  the system filewatch events (called on a secondary thread) back to the main thread.
         Private ReadOnly _controlForSynchronizingThreads As Control
 
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <param name="ControlForSynchronizingThreads">Any Windows Forms control on the primary thread.  This is used for invoking the system filewatch events (called on a secondary thread) back to the main thread.</param>
+        ''' <param name="ControlForSynchronizingThreads">Any System.Windows.Forms control on the primary thread.  This is used for invoking the system filewatch events (called on a secondary thread) back to the main thread.</param>
         Public Sub New(ControlForSynchronizingThreads As Control)
             Debug.Assert(ControlForSynchronizingThreads IsNot Nothing)
             _controlForSynchronizingThreads = ControlForSynchronizingThreads
@@ -417,7 +417,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'The parent DirectoryWatcher for this file.
             Private ReadOnly _directoryWatcher As DirectoryWatcher
 
-            'A Windows Forms timer used to delay processing of the file changed
+            'A System.Windows.Forms timer used to delay processing of the file changed
             '  event until it's likely that no more changes to the file are
             '  imminent.
             Private WithEvents _timer As Timer
@@ -551,7 +551,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="sender"></param>
             ''' <param name="e"></param>
             ''' <remarks>
-            ''' Note that we're using a Windows Forms timer, which always fires its events
+            ''' Note that we're using a System.Windows.Forms timer, which always fires its events
             '''   in the thread from which it was created.  So no synchronization issues.
             ''' </remarks>
             Private Sub Timer_Elapsed(sender As Object, e As EventArgs) Handles _timer.Tick

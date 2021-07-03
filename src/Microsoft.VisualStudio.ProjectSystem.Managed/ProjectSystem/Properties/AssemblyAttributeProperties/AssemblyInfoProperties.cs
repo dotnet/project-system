@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
+                !await IsAssemblyInfoPropertyGeneratedByBuildAsync(propertyName))
             {
                 return await GetPropertyValueFromSourceAttributeAsync(propertyName);
             }
@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task<string> GetEvaluatedPropertyValueAsync(string propertyName)
         {
             if (_attributeValueProviderMap.ContainsKey(propertyName) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
+                !await IsAssemblyInfoPropertyGeneratedByBuildAsync(propertyName))
             {
                 return (await GetPropertyValueFromSourceAttributeAsync(propertyName)) ?? "";
             }
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public override async Task SetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             if (_attributeValueProviderMap.TryGetValue(propertyName, out SourceAssemblyAttributePropertyValueProvider? provider) &&
-                !await IsAssemblyInfoPropertyGeneratedByBuild(propertyName))
+                !await IsAssemblyInfoPropertyGeneratedByBuildAsync(propertyName))
             {
                 await provider.SetPropertyValueAsync(unevaluatedPropertyValue);
             }
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
-        private async Task<bool> IsAssemblyInfoPropertyGeneratedByBuild(string propertyName)
+        private async Task<bool> IsAssemblyInfoPropertyGeneratedByBuildAsync(string propertyName)
         {
             (_, string generatePropertyInProjectFileName) = AssemblyPropertyInfoMap[propertyName];
 

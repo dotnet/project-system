@@ -12,19 +12,25 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Povoluje kód, který ke kompilaci používá klíčové slovo unsafe.]]></Val>
+            <Val><![CDATA[Povolte kód, který ke kompilaci používá klíčové slovo unsafe.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allow unsafe code]]></Val>
+          <Val><![CDATA[Unsafe code]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Povolit nebezpečný kód]]></Val>
+            <Val><![CDATA[Nebezpečný kód]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allow unsafe code]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -39,10 +45,13 @@
       </Item>
       <Item ItemId=";BoolProperty|CheckForOverflowUnderflow|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          <Val><![CDATA[Throw exceptions when integer arithmetic produces out of range values.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Určuje, jestli celočíselná aritmetika, jejímž výsledkem je hodnota mimo rozsah datového typu a která není v rozsahu kontrolovaného nebo nekontrolovaného klíčového slova, způsobí výjimku za běhu.]]></Val>
+            <Val><![CDATA[Vyvolávat výjimky, když celočíselná aritmetika vytvoří hodnoty mimo rozsah]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -84,10 +93,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Deterministic|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          <Val><![CDATA[Produce identical compilation output for identical inputs.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Označuje, jestli by kompilátor měl pro identické vstupy vytvořit identická sestavení.]]></Val>
+            <Val><![CDATA[Vytvoří identický výstup kompilace pro identické vstupy.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -120,10 +132,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Optimize|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          <Val><![CDATA[Enable compiler optimizations for smaller, faster, and more efficient output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Povolí nebo zakáže optimalizace provedené kompilátorem za účelem zmenšení, zrychlení a zefektivnění souboru výstupu.]]></Val>
+            <Val><![CDATA[Povolte optimalizace kompilátoru pro menší, rychlejší a efektivnější výstup.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -141,6 +156,24 @@
           <Val><![CDATA[optimise;optimisation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[optimalizovat;optimalizace]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Produce a reference assembly containing the public API of the project.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Vytvořte referenční sestavení, které bude obsahovat veřejné rozhraní API projektu.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Reference assembly]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Referenční sestavení]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -291,10 +324,13 @@
       </Item>
       <Item ItemId=";EnumProperty|ErrorReport|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          <Val><![CDATA[Send internal compiler error (ICE) reports to Microsoft.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Určuje, kdy se budou Microsoftu posílat zprávy o vnitřních chybách kompilátoru (ICE).]]></Val>
+            <Val><![CDATA[Odeslat Microsoftu zprávy o interních chybách kompilátoru (ICE)]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -47,7 +47,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Public Sub Activate(h As IntPtr)
             ' It seems that designers don't set the active secondary toolbar when activated -
             ' this should take care of that!
-            _toolbarHost.ProcessMouseActivation(h, Win32Constant.WM_SETFOCUS, 0, 0)
+            _toolbarHost.ProcessMouseActivation(h, Win32Constant.WM_SETFOCUS, CType(0, IntPtr), CType(0, IntPtr))
         End Sub
 
         ''' <summary>

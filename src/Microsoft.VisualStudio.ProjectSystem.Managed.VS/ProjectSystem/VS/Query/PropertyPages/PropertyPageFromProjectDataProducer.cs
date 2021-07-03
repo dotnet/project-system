@@ -14,19 +14,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     internal class PropertyPageFromProjectDataProducer : QueryDataFromProviderStateProducerBase<UnconfiguredProject>
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageFromProjectDataProducer(IPropertyPagePropertiesAvailableStatus properties)
         {
             _properties = properties;
-            _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext executionContext, IEntityValue parent, UnconfiguredProject providerState)
+        protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, UnconfiguredProject providerState)
         {
-            executionContext.ReportProjectVersion(providerState);
+            providerState.GetQueryDataVersion(out string versionKey, out long versionNumber);
+            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(executionContext, parent, providerState, _queryCacheProvider, _properties);
+            return PropertyPageDataProducer.CreatePropertyPageValuesAsync(queryExecutionContext, parent, providerState, _properties);
         }
     }
 }

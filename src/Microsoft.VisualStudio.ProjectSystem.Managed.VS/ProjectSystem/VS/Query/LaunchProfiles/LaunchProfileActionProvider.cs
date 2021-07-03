@@ -26,14 +26,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class LaunchProfileActionProvider : IQueryActionProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
-
-        [ImportingConstructor]
-        public LaunchProfileActionProvider(IPropertyPageQueryCacheProvider queryCacheProvider)
-        {
-            _queryCacheProvider = queryCacheProvider;
-        }
-
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
         {
             Requires.NotNull(executableStep, nameof(executableStep));

@@ -1,10 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
+using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
+using Moq;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
@@ -330,16 +333,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             Assert.Equal(expectedFileName, fileNameResult);
         }
 
+        [Fact]
+        public async Task AddMessageAsync_WithLspPullDiagnosticsEnabled_ReturnsNotHandled()
+        {
+            var reporter = IVsLanguageServiceBuildErrorReporter2Factory.ImplementReportError((string bstrErrorMessage, string bstrErrorId, VSTASKPRIORITY nPriority, int iLine, int iColumn, int iEndLine, int iEndColumn, string bstrFileName) => { });
+            var host = IActiveWorkspaceProjectContextHostFactory.ImplementHostSpecificErrorReporter(() => reporter);
+            var provider = CreateInstance(host, lspPullDiagnosticsFeatureFlag: true);
+            var task = CreateDefaultTask();
+
+            var result = await provider.AddMessageAsync(task);
+
+            Assert.Equal(AddMessageResult.NotHandled, result);
+        }
+
         private static TargetGeneratedError CreateDefaultTask()
         {
             return new TargetGeneratedError("Test", new BuildErrorEventArgs(null, "Code", "File", 1, 1, 1, 1, "Message", "HelpKeyword", "Sender"));
         }
 
-        private static LanguageServiceErrorListProvider CreateInstance(IActiveWorkspaceProjectContextHost? projectContextHost = null)
+        private static LanguageServiceErrorListProvider CreateInstance(
+            IActiveWorkspaceProjectContextHost? projectContextHost = null,
+            bool lspPullDiagnosticsFeatureFlag = false)
         {
             projectContextHost ??= IActiveWorkspaceProjectContextHostFactory.Create();
 
-            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), projectContextHost);
+            var featureFlagServiceMock = new Mock<IVsFeatureFlags>();
+            featureFlagServiceMock.Setup(m => m.IsFeatureEnabled(LanguageServiceErrorListProvider.LspPullDiagnosticsFeatureFlagName, false)).Returns(lspPullDiagnosticsFeatureFlag);
+            var vsFeatureFlagsServiceService = new Mock<IVsService<SVsFeatureFlags, IVsFeatureFlags>>();
+            vsFeatureFlagsServiceService.Setup(m => m.GetValueAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(featureFlagServiceMock.Object));
+            var joinableTaskContext = IProjectThreadingServiceFactory.Create().JoinableTaskContext.Context;
+
+            var provider = new LanguageServiceErrorListProvider(UnconfiguredProjectFactory.Create(), projectContextHost, vsFeatureFlagsServiceService.Object, joinableTaskContext);
 
             return provider;
         }

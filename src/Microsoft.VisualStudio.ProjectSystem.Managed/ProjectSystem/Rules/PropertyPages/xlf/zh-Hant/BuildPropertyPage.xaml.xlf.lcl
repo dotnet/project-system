@@ -12,19 +12,25 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[允許使用 'unsafe' 關鍵字編譯的程式碼。]]></Val>
+            <Val><![CDATA[允許使用「不安全」關鍵字編譯的程式碼。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allow unsafe code]]></Val>
+          <Val><![CDATA[Unsafe code]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[允許不安全的程式碼]]></Val>
+            <Val><![CDATA[不安全的程式碼]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allow unsafe code]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -39,10 +45,13 @@
       </Item>
       <Item ItemId=";BoolProperty|CheckForOverflowUnderflow|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          <Val><![CDATA[Throw exceptions when integer arithmetic produces out of range values.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定當整數算術求得的值落在資料類型範圍之外，也不在核取或取消核取的關鍵字範圍內時，是否要發出執行階段例外狀況。]]></Val>
+            <Val><![CDATA[當整數算術產生超出範圍值時擲出例外狀況。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -84,10 +93,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Deterministic|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          <Val><![CDATA[Produce identical compilation output for identical inputs.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定編譯器是否應為相同的輸入產生相同的元件。]]></Val>
+            <Val><![CDATA[針對相同的輸入產生同樣的編譯輸出。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -120,10 +132,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Optimize|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          <Val><![CDATA[Enable compiler optimizations for smaller, faster, and more efficient output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[啟用或停用由編譯器執行的最佳化，讓您的輸出檔更小、更快、更有效率。]]></Val>
+            <Val><![CDATA[啟用編譯器最佳化以取得較小、更快速且較富效率的輸出。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -141,6 +156,24 @@
           <Val><![CDATA[optimise;optimisation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[最佳化;最佳化]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Produce a reference assembly containing the public API of the project.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[產生包含專案公用 API 的參考組件。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Reference assembly]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[參考組件]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -291,10 +324,13 @@
       </Item>
       <Item ItemId=";EnumProperty|ErrorReport|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          <Val><![CDATA[Send internal compiler error (ICE) reports to Microsoft.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[控制是否要將內部編譯器錯誤 (ICE) 報告送給 Microsoft。]]></Val>
+            <Val><![CDATA[將內部編譯器錯誤 (ICE) 報告送給 Microsoft。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

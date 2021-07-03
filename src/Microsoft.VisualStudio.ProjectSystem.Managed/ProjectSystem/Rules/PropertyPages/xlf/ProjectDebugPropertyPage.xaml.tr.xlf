@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|HotReloadEnabled|Description">
+        <source>Apply code changes to the running application.</source>
+        <target state="new">Apply code changes to the running application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
+        <source>Enable Hot Reload</source>
+        <target state="new">Enable Hot Reload</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
         <target state="translated">Yönetilen ve yerel kod için birlikte hata ayıklamayı (karma mod hata ayıklama olarak da bilinir) etkinleştirin.</target>
@@ -32,9 +42,19 @@
         <target state="translated">SQL Server hata ayıklamasını etkinleştir</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="new">Enable WebView2 debugging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine.</target>
+        <target state="translated">Uzak makineye bağlanırken kullanılacak kimlik doğrulaması düzeni.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -74,7 +94,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format.</target>
+        <target state="translated">Uzak makinenin 'ad:bağlantı noktası' biçimindeki adı ve bağlantı noktası numarası.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

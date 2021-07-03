@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             return TestUtil.RunStaTestAsync(() =>
             {
                 var ppvm = new Mock<PropertyPageViewModel>();
-                ppvm.Setup(m => m.Save()).ReturnsAsync(VSConstants.S_OK);
+                ppvm.Setup(m => m.SaveAsync()).ReturnsAsync(VSConstants.S_OK);
                 ppvm.Setup(m => m.InitializeAsync()).Returns(new Task(() => { }));
                 ppvm.CallBase = true;
 
@@ -28,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
                 ppc.Object.InitializePropertyPage(ppvm.Object);
                 ppc.Object.IsDirty = true;
-                int result = ppc.Object.Apply().Result;
+                int result = ppc.Object.ApplyAsync().Result;
 
                 Assert.Equal(VSConstants.S_OK, result);
                 Assert.Equal(ppvm.Object, ppc.Object.ViewModel);
                 Assert.Equal(ppvm.Object, ppc.Object.DataContext);
-                ppc.Protected().Verify("OnApply", Times.Once());
+                ppc.Protected().Verify("OnApplyAsync", Times.Once());
                 ppc.Protected().Verify("OnStatusChanged", Times.Exactly(2), ItExpr.IsAny<EventArgs>());
-                ppvm.Verify(m => m.Save(), Times.Once());
+                ppvm.Verify(m => m.SaveAsync(), Times.Once());
             });
         }
     }

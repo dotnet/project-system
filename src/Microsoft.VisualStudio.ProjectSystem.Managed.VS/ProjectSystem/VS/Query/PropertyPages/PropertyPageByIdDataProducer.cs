@@ -15,30 +15,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
-            Requires.NotNull(queryCacheProvider, nameof(queryCacheProvider));
 
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
-            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? context)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
+            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName))
             {
                 return PropertyPageDataProducer.CreatePropertyPageValueAsync(
-                    executionContext,
+                    queryExecutionContext,
                     id,
                     _projectService,
-                    _queryCacheProvider,
-                    context,
+                    propertiesContext,
                     propertyPageName,
                     _properties);
             }

@@ -433,7 +433,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                                 _view.CreateControl()
                             End If
 
-                            _view.BeginInvoke(New Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
+                            _view.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf RegisterViewHelper))
                         End If
                     Else
                         Debug.Fail("View not set in RegisterViewHelper() - can't delay-register view helper")

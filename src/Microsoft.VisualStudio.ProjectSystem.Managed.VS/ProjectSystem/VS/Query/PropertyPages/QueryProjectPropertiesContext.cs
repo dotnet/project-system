@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// The point here is to capture the context for a part of a query execution in a
     /// manner that can be passed from one provider to another and is also suitable as a
-    /// key into a cache (such as the <see cref="IPropertyPageQueryCache"/>).
+    /// key into a cache (such as the <see cref="IProjectState"/>).
     /// </remarks>
     internal sealed class QueryProjectPropertiesContext : IProjectPropertiesContext, IEquatable<QueryProjectPropertiesContext>
     {
@@ -85,17 +85,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// Creates a <see cref="QueryProjectPropertiesContext"/> from a Project Query API
         /// <see cref="EntityIdentity"/>.
         /// </summary>
-        public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? context)
+        public static bool TryCreateFromEntityId(EntityIdentity id, [NotNullWhen(true)] out QueryProjectPropertiesContext? propertiesContext)
         {
-            if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath))
+            if (id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string? projectPath))
             {
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemType, out string? itemType);
                 id.TryGetValue(ProjectModelIdentityKeys.SourceItemName, out string? itemName);
-                context = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
+                propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, projectPath, itemType, itemName);
                 return true;
             }
 
-            context = null;
+            propertiesContext = null;
             return false;
         }
     }

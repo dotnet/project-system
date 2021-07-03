@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
 using NuGet.SolutionRestoreManager;
 using Xunit;
 
@@ -91,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
-            IProjectLogger logger = IProjectLoggerFactory.Create();
+            IProjectDiagnosticOutputService logger = IProjectDiagnosticOutputServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
             var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
 

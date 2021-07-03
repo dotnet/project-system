@@ -165,7 +165,7 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Package" "PackageLicenseKind" "Expression")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -183,13 +183,13 @@
       <ValueEditor EditorType="LinkAction">
         <ValueEditor.Metadata>
           <NameValuePair Name="Action" Value="URL" />
-          <NameValuePair Name="URL" Value="https://spdx.org/licenses/" />
+          <NameValuePair Name="URL" Value="https://go.microsoft.com/fwlink/?linkid=2166116" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq "Expression" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Package" "PackageLicenseKind" "Expression")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -202,7 +202,7 @@
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq "File" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Package" "PackageLicenseKind" "File")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -214,7 +214,7 @@
     <BoolProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Package::PackageLicenseKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne "None" (evaluated "Package" "PackageLicenseKind"))</NameValuePair.Value>
+        <NameValuePair.Value>(not (has-evaluated-value "Package" "PackageLicenseKind" "None"))</NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>

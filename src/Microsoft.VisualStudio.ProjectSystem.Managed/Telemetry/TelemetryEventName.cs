@@ -15,51 +15,46 @@ namespace Microsoft.VisualStudio.Telemetry
         /// <summary>
         ///     Indicates that a project's last build is considered up-to-date.
         /// </summary>
-        public static readonly string UpToDateCheckSuccess = BuildEventName("UpToDateCheck/Success");
+        public const string UpToDateCheckSuccess = Prefix + "/uptodatecheck/success";
 
         /// <summary>
         ///     Indicates that a project's last build is considered out-of-date.
         /// </summary>
-        public static readonly string UpToDateCheckFail = BuildEventName("UpToDateCheck/Fail");
+        public const string UpToDateCheckFail = Prefix + "/uptodatecheck/fail";
 
         /// <summary>
         ///     Indicates that the dependency tree was updated with unresolved dependencies.
         /// </summary>
-        public static readonly string TreeUpdatedUnresolved = BuildEventName("TreeUpdated/Unresolved");
+        public const string TreeUpdatedUnresolved = Prefix + "/treeupdated/unresolved";
 
         /// <summary>
         ///     Indicates that the dependency tree was updated with all resolved dependencies.
         /// </summary>
-        public static readonly string TreeUpdatedResolved = BuildEventName("TreeUpdated/Resolved");
+        public const string TreeUpdatedResolved = Prefix + "/treeupdated/resolved";
 
         /// <summary>
         ///     Indicates that a design-time build has completed.
         /// </summary>
-        public static readonly string DesignTimeBuildComplete = BuildEventName("DesignTimeBuildComplete");
+        public const string DesignTimeBuildComplete = Prefix + "/designtimebuildcomplete";
 
         /// <summary>
         ///     Indicates the .NET Core SDK version.
         /// </summary>
-        public static readonly string SDKVersion = BuildEventName("SDKVersion");
+        public const string SDKVersion = Prefix + "/sdkversion";
 
         /// <summary>
         ///     Indicates that the TempPE compilation queue has been processed.
         /// </summary>
-        public static readonly string TempPEProcessQueue = BuildEventName("TempPE/ProcessCompileQueue");
+        public const string TempPEProcessQueue = Prefix + "/temppe/processcompilequeue";
 
         /// <summary>
         ///     Indicates that the TempPE compilation has occurred on demand from a designer.
         /// </summary>
-        public static readonly string TempPECompileOnDemand = BuildEventName("TempPE/CompileOnDemand");
+        public const string TempPECompileOnDemand = Prefix + "/temppe/compileondemand";
 
         /// <summary>
         ///     Indicates that the summary of a project's dependencies is being reported during project unload.
         /// </summary>
-        public static readonly string ProjectUnloadDependencies = BuildEventName("ProjectUnload/Dependencies");
-
-        private static string BuildEventName(string eventName)
-        {
-            return Prefix + "/" + eventName.ToLowerInvariant();
-        }
+        public const string ProjectUnloadDependencies = Prefix + "/projectunload/dependencies";
     }
 }

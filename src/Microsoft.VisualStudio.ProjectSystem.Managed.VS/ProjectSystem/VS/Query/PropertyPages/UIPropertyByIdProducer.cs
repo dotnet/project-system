@@ -12,38 +12,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// Handles retrieving an <see cref="IUIProperty"/> based on an ID.
     /// </summary>
     internal class UIPropertyByIdProducer : QueryDataByIdProducerBase
-    { 
+    {
         private readonly IUIPropertyPropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public UIPropertyByIdProducer(IUIPropertyPropertiesAvailableStatus properties, IProjectService2 projectService)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext executionContext, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
-            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? context)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName)
-                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string propertyName))
+            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName)
+                && id.TryGetValue(ProjectModelIdentityKeys.UIPropertyName, out string? propertyName))
             {
                 return UIPropertyDataProducer.CreateUIPropertyValueAsync(
-                    executionContext,
+                    queryExecutionContext,
                     id,
                     _projectService,
-                    _queryCacheProvider,
-                    context,
+                    propertiesContext,
                     propertyPageName,
                     propertyName,
                     _properties);
             }
 
-            return NullEntityValue;   
+            return NullEntityValue;
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     /// <summary>
     /// Creates <see cref="IQueryDataProducer{TRequest, TResult}"/> instances that retrieve launch profile information
@@ -25,25 +25,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
     [Export(typeof(IQueryByRelationshipDataProvider))]
     internal class LaunchProfileDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
         [ImportingConstructor]
         public LaunchProfileDataProvider(
-            IProjectServiceAccessor projectServiceAccessor,
-            IPropertyPageQueryCacheProvider queryCacheProvider)
+            IProjectServiceAccessor projectServiceAccessor)
             : base(projectServiceAccessor)
         {
-            _queryCacheProvider = queryCacheProvider;
         }
 
         public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new LaunchProfileByIdDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, ProjectService, _queryCacheProvider);
+            return new LaunchProfileByIdDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, ProjectService);
         }
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new LaunchProfileFromProjectDataProducer((ILaunchProfilePropertiesAvailableStatus)properties, _queryCacheProvider);
+            return new LaunchProfileFromProjectDataProducer((ILaunchProfilePropertiesAvailableStatus)properties);
         }
     }
 }

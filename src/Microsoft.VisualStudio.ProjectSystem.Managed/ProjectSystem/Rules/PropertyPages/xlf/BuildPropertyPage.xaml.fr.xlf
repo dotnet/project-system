@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="fr" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">Autorise la compilation du code qui utilise le mot clé 'unsafe'.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Autoriser le code unsafe</target>
+        <source>Unsafe code</source>
+        <target state="new">Unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">Spécifie si l'arithmétique d'entiers qui produit une valeur en dehors de la plage du type de données, et qui ne se trouve pas dans l'étendue d'un mot clé checked ou unchecked, lève une exception au moment de l'exécution.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">Indique si le compilateur doit produire des assemblys identiques pour des entrées identiques.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="new">Produce identical compilation output for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">Active ou désactive les optimisations effectuées par le compilateur afin que votre fichier de sortie soit plus petit, plus rapide et plus efficace.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -75,6 +75,26 @@
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
         <target state="translated">optimiser;optimisation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="translated">Produisez un assembly de référence contenant l’API publique du projet.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="translated">Assembly de référence</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -89,7 +109,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
+        <target state="translated">Indiquez au compilateur de traiter les avertissements en tant qu'erreurs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
@@ -144,22 +164,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">Spécifie le genre de symboles de débogage produits lors de la génération.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">Symboles de débogage</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">type de débogage</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">Détermine le moment auquel les rapports ICE (erreur interne du compilateur) sont envoyés à Microsoft.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -219,22 +239,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">Incorporé dans DLL/EXE, portable sur toutes les plateformes</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">Fichier PDB, plateforme actuelle</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Aucun symbole n’est émis</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">Fichier PDB, portable sur toutes les plateformes</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">

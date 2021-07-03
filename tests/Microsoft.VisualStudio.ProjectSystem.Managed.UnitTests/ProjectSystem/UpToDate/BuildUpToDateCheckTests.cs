@@ -238,6 +238,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             };
         }
 
+        private static IProjectRuleSnapshotModel ItemsWithMetadata(params (string itemSpec, string metadataName, string metadataValue)[] items)
+        {
+            return new IProjectRuleSnapshotModel
+            {
+                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.AddRange(
+                    items.Select(
+                        item => new KeyValuePair<string, IImmutableDictionary<string, string>>(
+                            item.itemSpec,
+                            ImmutableStringDictionary<string>.EmptyOrdinal.Add(item.metadataName, item.metadataValue))))
+            };
+        }
+
         private static IProjectRuleSnapshotModel Union(params IProjectRuleSnapshotModel[] models)
         {
             var items = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
@@ -927,6 +939,135 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         [Fact]
+        public async Task IsUpToDateAsync_False_Kinds_InputNewerThanOutput_WithIgnoredKind()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = ItemsWithMetadata(("Built", "Kind", ""), ("IgnoredBuilt", "Kind", "Ignored")),
+                [UpToDateCheckInput.SchemaName] = ItemsWithMetadata(("Input", "Kind", ""), ("IgnoredInput", "Kind", "Ignored")),
+                [UpToDateCheckOutput.SchemaName] = ItemsWithMetadata(("Output", "Kind", ""), ("IgnoredOutput", "Kind", "Ignored"))
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-3);
+            var outputTime     = DateTime.UtcNow.AddMinutes(-2);
+            var inputTime      = DateTime.UtcNow.AddMinutes(-1);
+
+            await SetupAsync(
+                projectSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built", outputTime);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}), not up to date.",
+                "Outputs",
+                ignoreKinds: "Ignored");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_False_Kinds_InputNewerThanOutput_NoKindIgnored()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = ItemsWithMetadata(("Built", "Kind", ""), ("TaggedBuilt", "Kind", "Tagged")),
+                [UpToDateCheckInput.SchemaName] = ItemsWithMetadata(("Input", "Kind", ""), ("TaggedInput", "Kind", "Tagged")),
+                [UpToDateCheckOutput.SchemaName] = ItemsWithMetadata(("Output", "Kind", ""), ("TaggedOutput", "Kind", "Tagged"))
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-6);
+            var input2Time     = DateTime.UtcNow.AddMinutes(-5);
+            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-4);
+            var output1Time    = DateTime.UtcNow.AddMinutes(-3);
+            var output2Time    = DateTime.UtcNow.AddMinutes(-2);
+            var input1Time     = DateTime.UtcNow.AddMinutes(-1);
+
+            await SetupAsync(
+                projectSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input",        input1Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedInput",  input2Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output",       output1Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedOutput", output2Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built",        output1Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedBuilt",  output2Time);
+
+            await AssertNotUpToDateAsync(
+                $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({input1Time.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({output1Time.ToLocalTime()}), not up to date.",
+                "Outputs",
+                ignoreKinds: "");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_True_Kinds_InputNewerThanOutput_WithIgnoredKind()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = ItemsWithMetadata(("Built", "Kind", ""), ("IgnoredBuilt", "Kind", "Ignored")),
+                [UpToDateCheckInput.SchemaName] = ItemsWithMetadata(("Input", "Kind", ""), ("IgnoredInput", "Kind", "Ignored")),
+                [UpToDateCheckOutput.SchemaName] = ItemsWithMetadata(("Output", "Kind", ""), ("IgnoredOutput", "Kind", "Ignored"))
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
+            var inputTime      = DateTime.UtcNow.AddMinutes(-3);
+            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-2);
+            var outputTime     = DateTime.UtcNow.AddMinutes(-1);
+
+            await SetupAsync(
+                projectSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input", inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output", outputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built", outputTime);
+
+            await AssertUpToDateAsync(
+                new[] { $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()})." },
+                ignoreKinds: "Ignored");
+        }
+
+        [Fact]
+        public async Task IsUpToDateAsync_True_Kinds_InputNewerThanOutput_NoKindIgnored()
+        {
+            var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
+            {
+                [UpToDateCheckBuilt.SchemaName] = ItemsWithMetadata(("Built", "Kind", ""), ("TaggedBuilt", "Kind", "Tagged")),
+                [UpToDateCheckInput.SchemaName] = ItemsWithMetadata(("Input", "Kind", ""), ("TaggedInput", "Kind", "Tagged")),
+                [UpToDateCheckOutput.SchemaName] = ItemsWithMetadata(("Output", "Kind", ""), ("TaggedOutput", "Kind", "Tagged"))
+            };
+
+            var itemChangeTime = DateTime.UtcNow.AddMinutes(-7);
+            var inputTime      = DateTime.UtcNow.AddMinutes(-6);
+            var lastCheckTime  = DateTime.UtcNow.AddMinutes(-5);
+            var output4Time    = DateTime.UtcNow.AddMinutes(-4);
+            var output3Time    = DateTime.UtcNow.AddMinutes(-3);
+            var output2Time    = DateTime.UtcNow.AddMinutes(-2);
+            var output1Time    = DateTime.UtcNow.AddMinutes(-1);
+
+            await SetupAsync(
+                projectSnapshot,
+                lastCheckTimeAtUtc: lastCheckTime,
+                lastItemsChangedAtUtc: itemChangeTime);
+
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Input",        inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedInput",  inputTime);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Output",       output4Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedOutput", output3Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built",        output2Time);
+            _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\TaggedBuilt",  output1Time);
+
+            await AssertUpToDateAsync(
+                new[] { $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({output4Time.ToLocalTime()})." },
+                ignoreKinds: "");
+        }
+
+        [Fact]
         public async Task IsUpToDateAsync_False_CopiedOutputFileSourceIsNewerThanDestination()
         {
             var projectSnapshot = new Dictionary<string, IProjectRuleSnapshotModel>
@@ -1363,12 +1504,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         #region Test helpers
 
-        private Task AssertNotUpToDateAsync(string? logMessage = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        private Task AssertNotUpToDateAsync(string? logMessage = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "")
         {
-            return AssertNotUpToDateAsync(logMessage == null ? null : new[] { logMessage }, telemetryReason, buildAction);
+            return AssertNotUpToDateAsync(logMessage == null ? null : new[] { logMessage }, telemetryReason, buildAction, ignoreKinds);
         }
 
-        private async Task AssertNotUpToDateAsync(IReadOnlyList<string>? logMessages, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build)
+        private async Task AssertNotUpToDateAsync(IReadOnlyList<string>? logMessages, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "")
         {
             var writer = new AssertWriter(_output);
 
@@ -1380,7 +1521,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 }
             }
 
-            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer));
+            Assert.False(await _buildUpToDateCheck.IsUpToDateAsync(buildAction, writer, CreateGlobalProperties(ignoreKinds)));
 
             if (telemetryReason != null)
                 AssertTelemetryFailureEvent(telemetryReason);
@@ -1390,7 +1531,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             writer.Assert();
         }
 
-        private async Task AssertUpToDateAsync(params string[] logMessages)
+        private Task AssertUpToDateAsync(params string[] logMessages)
+        {
+            return AssertUpToDateAsync(logMessages, "");
+        }
+
+        private async Task AssertUpToDateAsync(IEnumerable<string> logMessages, string ignoreKinds = "")
         {
             var writer = new AssertWriter(_output);
 
@@ -1401,7 +1547,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             writer.Add("Project is up to date.");
 
-            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer));
+            Assert.True(await _buildUpToDateCheck.IsUpToDateAsync(BuildAction.Build, writer, CreateGlobalProperties(ignoreKinds)));
             AssertTelemetrySuccessEvent();
             writer.Assert();
         }
@@ -1454,6 +1600,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             Assert.True(configurationCount == 1);
 
             _telemetryEvents.Clear();
+        }
+
+        private static ImmutableDictionary<string, string> CreateGlobalProperties(string ignoreKinds)
+        {
+            var globalProperties = ImmutableDictionary<string, string>.Empty;
+
+            if (ignoreKinds.Length != 0)
+            {
+                globalProperties = globalProperties.SetItem(BuildUpToDateCheck.FastUpToDateCheckIgnoresKindsGlobalPropertyName, ignoreKinds);
+            }
+
+            return globalProperties;
         }
 
         private sealed class AssertWriter : TextWriter, IEnumerable

@@ -46,6 +46,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";DefaultNewProfileName" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Profile {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Profil {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";DontKnowHowToRunProfile" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The project doesn't know how to run the profile {0}.]]></Val>
@@ -355,6 +364,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";StartupObjectNotSet" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[(Not set)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[(Nie ustawiono)]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";UserControlEditor_DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[User Control (Windows Forms) Designer]]></Val>
@@ -384,10 +402,13 @@
       </Item>
       <Item ItemId=";XprojNotSupported" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.]]></Val>
+          <Val><![CDATA[Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Pliki projektu xproj nie są już obsługiwane. Szczegółowe informacje na temat migrowania do plików csproj można znaleźć na stronie https://docs.microsoft.com/pl-pl/dotnet/core/migration/.]]></Val>
+            <Val><![CDATA[Pliki projektu xproj nie są już obsługiwane. Szczegółowe informacje na temat migrowania do plików csproj można znaleźć na stronie https://docs.microsoft.com/dotnet/core/migration/.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -14,4 +14,7 @@
   <StringProperty Name="Set"
                   Visible="False" />
 
+  <StringListProperty Name="Kind"
+                      Visible="False" />
+
 </Rule>

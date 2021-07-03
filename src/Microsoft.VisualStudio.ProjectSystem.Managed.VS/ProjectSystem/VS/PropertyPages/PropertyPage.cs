@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assumes.NotNull(_threadHandling);
 
-            return _threadHandling.ExecuteSynchronously(OnApply);
+            return _threadHandling.ExecuteSynchronously(OnApplyAsync);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 Assumes.NotNull(_threadHandling);
 
-                _threadHandling.ExecuteSynchronously(OnDeactivate);
+                _threadHandling.ExecuteSynchronously(OnDeactivateAsync);
                 UnadviseDebugger();
             }
 
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         {
             Assumes.NotNull(_threadHandling);
 
-            _threadHandling.ExecuteSynchronously(() => OnSetObjects(isClosing));
+            _threadHandling.ExecuteSynchronously(() => OnSetObjectsAsync(isClosing));
         }
 
         /// <summary>
@@ -274,9 +274,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _debuggerCookie = 0;
         }
 
-        protected abstract Task<int> OnApply();
-        protected abstract Task OnDeactivate();
-        protected abstract Task OnSetObjects(bool isClosing);
+        protected abstract Task<int> OnApplyAsync();
+        protected abstract Task OnDeactivateAsync();
+        protected abstract Task OnSetObjectsAsync(bool isClosing);
 
         public void SetObjects(uint cObjects, object[] ppunk)
         {
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
                 }
             }
 
-            _ = OnSetObjects(isClosing: false);
+            _ = OnSetObjectsAsync(isClosing: false);
         }
     }
 }

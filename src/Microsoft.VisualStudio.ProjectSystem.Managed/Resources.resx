@@ -190,8 +190,8 @@ This project was loaded using the wrong project type, likely as a result of rena
     <value>{0} - {1}</value>
     <comment>{0} is a culture name such as "English (British)" or "Portugeuse (Brazil)", and {1} is the corresponding culture code such as "en-GB" or "pt-BR". </comment>
   </data>
-  <data name="NeutralLanguage_NoneValue" xml:space="preserve">
+  <data name="Property_NoneValue" xml:space="preserve">
     <value>(None)</value>
-    <comment>Special value to show in the project property pages when the NeutralLanguage property has no value.</comment>
+    <comment>Special value to show in the project property pages when a property has no value.</comment>
   </data>
 </root>

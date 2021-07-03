@@ -26,7 +26,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ' If the resource editor decides to support a pluggable architecture, new resource type editors can be 
         '   written and registered for use with new serializable types intended for use inside a .resx file.  
         '   The pluggable editor author would subclass ResourceTypeEditor.  This is similar in concept to 
-        '   UITypeEditor which Windows Forms uses to allow class authors to create custom editors for use 
+        '   UITypeEditor which System.Windows.Forms uses to allow class authors to create custom editors for use 
         '   in the property grid.  
         '   
         '   BrianPe suggests that if we make it public, ResourceTypeEditor should be placed in a separate DLL 

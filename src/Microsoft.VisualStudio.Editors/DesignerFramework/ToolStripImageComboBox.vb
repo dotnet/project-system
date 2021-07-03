@@ -229,7 +229,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             With UnderlyingComboBox
                 .FlatStyle = FlatStyle.Popup
                 .DropDownStyle = ComboBoxStyle.DropDownList
-                .DrawMode = Windows.Forms.DrawMode.OwnerDrawVariable 'sets up owner drawing
+                .DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable 'sets up owner drawing
             End With
 
             m_ImageComboItems = New ObjectCollection(UnderlyingComboBox)

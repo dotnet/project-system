@@ -116,7 +116,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
-        Public Overloads Sub ShowContextMenu(sender As Object, e As Windows.Forms.MouseEventArgs)
+        Public Overloads Sub ShowContextMenu(sender As Object, e As System.Windows.Forms.MouseEventArgs)
             ShowContextMenu(Constants.MenuConstants.SettingsDesignerContextMenuID, e.X, e.Y)
         End Sub
 

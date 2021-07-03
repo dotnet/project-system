@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="ConfigurationGeneralPage"
+      PageTemplate="generic"
+      Order="9999"
+      xmlns="http://schemas.microsoft.com/build/2009/properties" >
+
+  <!--
+  This "page" is not intended for display, and all properties contained within should be hidden.
+  
+  The properties below are used by visibility conditions defined in CPS and are expected, by convention,
+  to be present.
+  -->
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="True" />
+  </Rule.DataSource>
+
+  <!-- eg: ".NETCoreApp" -->
+  <StringProperty Name="TargetFrameworkIdentifier" Visible="False" ReadOnly="True" />
+
+  <!-- eg: "v5.0" -->
+  <StringProperty Name="TargetFrameworkVersion" Visible="False" ReadOnly="True" />
+
+  <!-- eg: ".NETCoreApp,Version=v5.0" -->
+  <StringProperty Name="TargetFrameworkMoniker" Visible="False" ReadOnly="True" />
+  
+  <!-- eg: "C#" -->
+  <StringProperty Name="Language" Visible="False" ReadOnly="True" />
+  
+  <!-- eg: "7.3" -->
+  <StringProperty Name="LangVersion" Visible="False" ReadOnly="True" />
+
+</Rule>

@@ -201,7 +201,7 @@ In order to debug this project, add an executable project to this solution which
     <value>The value of the 'TargetFrameworkMoniker' and 'NuGetTargetMoniker' properties in the '{0}' configuration are both empty. This configuration will not contribute to NuGet restore, which may result in restore and build errors.</value>
   </data>
   <data name="XprojNotSupported" xml:space="preserve">
-    <value>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</value>
+    <value>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</value>
   </data>
   <data name="WindowsFormEditor_DisplayName" xml:space="preserve">
     <value>Form (Windows Forms) Designer</value>
@@ -244,5 +244,41 @@ In order to debug this project, add an executable project to this solution which
   </data>
   <data name="FrameworkAssemblyFileVersionDescription" xml:space="preserve">
     <value>The file version of the framework assembly.</value>
+  </data>
+  <data name="StartupObjectNotSet" xml:space="preserve">
+    <value>(Not set)</value>
+    <comment>Text to display to the user in the property page UI when the "startup object" property is not set.</comment>
+  </data>
+  <data name="DefaultNewProfileName" xml:space="preserve">
+    <value>Profile {0}</value>
+    <comment>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</comment>
+  </data>
+  <data name="HotReloadOutputWindowPaneName" xml:space="preserve">
+    <value>Hot Reload</value>
+    <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
+  </data>
+  <data name="HotReloadApplyUpdatesSuccessful" xml:space="preserve">
+    <value>Updates applied successfully</value>
+  </data>
+  <data name="HotReloadApplyUpdatesFailure" xml:space="preserve">
+    <value>Applying updates failed: {0}</value>
+  </data>
+  <data name="HotReloadErrorsInApplication" xml:space="preserve">
+    <value>Errors found in application: </value>
+  </data>
+  <data name="HotReloadRestartInProgress" xml:space="preserve">
+    <value>Rebuilding and restarting the application since the edits can't be applied dynamically.</value>
+  </data>
+  <data name="HotReloadStoppingApplication" xml:space="preserve">
+    <value>Stopping application</value>
+  </data>
+  <data name="HotReloadStartSession" xml:space="preserve">
+    <value>Hot Reload session started</value>
+  </data>
+  <data name="HotReloadStopSession" xml:space="preserve">
+    <value>Hot Reload session complete</value>
+  </data>
+  <data name="HotReloadSendingUpdates" xml:space="preserve">
+    <value>Sending updates to running application</value>
   </data>
 </root>

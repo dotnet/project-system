@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 if (!_instanceTaskSource.Task.IsCompleted)
                 {
-                    (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstanceAsync();
+                    (T instance, JoinableTask initializeAsyncTask) result = CreateInitializedInstance();
                     _instanceTaskSource.SetResult(result);
                 }
 
@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </summary>
         protected abstract T CreateInstance();
 
-        private (T instance, JoinableTask initializeAsyncTask) CreateInitializedInstanceAsync()
+        private (T instance, JoinableTask initializeAsyncTask) CreateInitializedInstance()
         {
             T instance = CreateInstance();
 

@@ -8,14 +8,14 @@ using Newtonsoft.Json;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
-    internal class LaunchSettings : ILaunchSettings
+    internal class LaunchSettings : ILaunchSettings, IVersionedLaunchSettings
     {
         private readonly string? _activeProfileName;
 
         /// <summary>
         /// Represents the current set of launch settings. Creation from an existing set of profiles.
         /// </summary>
-        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null)
+        public LaunchSettings(IEnumerable<ILaunchProfile> profiles, IDictionary<string, object>? globalSettings, string? activeProfile = null, long version = 0)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (ILaunchProfile profile in profiles)
@@ -25,9 +25,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             GlobalSettings = globalSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : globalSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
+            Version = version;
         }
 
-        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null)
+        public LaunchSettings(LaunchSettingsData settingsData, string? activeProfile = null, long version = 0)
         {
             Requires.NotNull(settingsData.Profiles!, nameof(settingsData.Profiles));
 
@@ -39,9 +40,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             GlobalSettings = settingsData.OtherSettings == null ? ImmutableStringDictionary<object>.EmptyOrdinal : settingsData.OtherSettings.ToImmutableDictionary();
             _activeProfileName = activeProfile;
+            Version = version;
         }
 
-        public LaunchSettings(IWritableLaunchSettings settings)
+        public LaunchSettings(IWritableLaunchSettings settings, long version = 0)
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             foreach (IWritableLaunchProfile profile in settings.Profiles)
@@ -69,12 +71,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             _activeProfileName = settings.ActiveProfile?.Name;
+            Version = version;
         }
 
         public LaunchSettings()
         {
             Profiles = ImmutableList<ILaunchProfile>.Empty;
             GlobalSettings = ImmutableStringDictionary<object>.EmptyOrdinal;
+            Version = 0;
         }
 
         public ImmutableList<ILaunchProfile> Profiles { get; }
@@ -106,6 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 return _activeProfile;
             }
         }
+
+        public long Version { get; }
     }
 
     internal static class LaunchSettingsExtension

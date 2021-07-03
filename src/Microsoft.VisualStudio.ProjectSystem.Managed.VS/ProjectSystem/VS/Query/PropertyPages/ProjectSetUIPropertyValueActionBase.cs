@@ -31,13 +31,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private readonly ProjectSetUIPropertyValueActionCore _coreExecutor;
 
         public ProjectSetUIPropertyValueActionBase(
-            IPropertyPageQueryCacheProvider queryCacheProvider,
             string pageName,
             string propertyName,
             ReadOnlyCollection<ProjectSystem.Query.ProjectModelMethods.Actions.ConfigurationDimensionValue> dimensions)
         {
             _coreExecutor = new ProjectSetUIPropertyValueActionCore(
-                queryCacheProvider,
                 pageName,
                 propertyName,
                 dimensions.Select(d => (d.Dimension, d.Value)),
@@ -63,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             {
                 if (await _coreExecutor.ExecuteAsync(project))
                 {
-                    result.Request.QueryExecutionContext.ReportProjectUpdate(project);
+                    project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                    result.Request.QueryExecutionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
                 }
             }
 

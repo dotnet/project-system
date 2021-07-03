@@ -14,8 +14,6 @@
     <PackageReference Include="Microsoft.VisualStudio.DataDesign.Common" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Design" />
     <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
-    <PackageReference Include="Microsoft.VisualStudio.VSHelp" />
-    <PackageReference Include="Microsoft.VisualStudio.WCFReference.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.XmlEditor" />
     <PackageReference Include="Microsoft.VSDesigner" />
     <PackageReference Include="VsWebSite.Interop" />

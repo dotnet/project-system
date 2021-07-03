@@ -31,22 +31,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryActionProvider))]
     internal sealed class ProjectActionProvider : IQueryActionProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
-
-        [ImportingConstructor]
-        public ProjectActionProvider(IPropertyPageQueryCacheProvider queryCacheProvider)
-        {
-            _queryCacheProvider = queryCacheProvider;
-        }
-
         public IQueryActionExecutor CreateQueryActionDataTransformer(ExecutableStep executableStep)
         {
             Requires.NotNull(executableStep, nameof(executableStep));
 
             return executableStep.Action switch
             {
-                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction(_queryCacheProvider, (SetEvaluatedUIPropertyValue)executableStep),
-                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction(_queryCacheProvider, (SetUnevaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetEvaluatedUIPropertyValue => new ProjectSetEvaluatedUIPropertyValueAction((SetEvaluatedUIPropertyValue)executableStep),
+                ProjectModelActionNames.SetUnevaluatedUIPropertyValue => new ProjectSetUnevaluatedUIPropertyValueAction((SetUnevaluatedUIPropertyValue)executableStep),
 
                 ProjectModelActionNames.AddLaunchProfile => new AddLaunchProfileAction((AddLaunchProfile)executableStep),
                 ProjectModelActionNames.RemoveLaunchProfile => new RemoveLaunchProfileAction((RemoveLaunchProfile)executableStep),

@@ -169,15 +169,6 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (None).
-        /// </summary>
-        internal static string NeutralLanguage_NoneValue {
-            get {
-                return ResourceManager.GetString("NeutralLanguage_NoneValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string NoActionProfileName {
@@ -239,6 +230,15 @@ namespace Microsoft.VisualStudio {
         internal static string ProjectsNodeName {
             get {
                 return ResourceManager.GetString("ProjectsNodeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (None).
+        /// </summary>
+        internal static string Property_NoneValue {
+            get {
+                return ResourceManager.GetString("Property_NoneValue", resourceCulture);
             }
         }
         

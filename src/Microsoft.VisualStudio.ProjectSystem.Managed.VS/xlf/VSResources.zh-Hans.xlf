@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../VSResources.resx">
     <body>
+      <trans-unit id="DefaultNewProfileName">
+        <source>Profile {0}</source>
+        <target state="translated">配置文件 {0}</target>
+        <note>Default name for new launch profiles. The {0} is a decimal number chosen to guarantee the name is unique.</note>
+      </trans-unit>
       <trans-unit id="FrameworkAssemblyAssemblyNameDescription">
         <source>The name of the framework assembly.</source>
         <target state="translated">框架程序集的名称。</target>
@@ -45,6 +50,51 @@
       <trans-unit id="FrameworkAssemblyPathDisplayName">
         <source>Path</source>
         <target state="translated">路径</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadApplyUpdatesFailure">
+        <source>Applying updates failed: {0}</source>
+        <target state="new">Applying updates failed: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadApplyUpdatesSuccessful">
+        <source>Updates applied successfully</source>
+        <target state="new">Updates applied successfully</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadErrorsInApplication">
+        <source>Errors found in application: </source>
+        <target state="new">Errors found in application: </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadOutputWindowPaneName">
+        <source>Hot Reload</source>
+        <target state="new">Hot Reload</target>
+        <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
+      </trans-unit>
+      <trans-unit id="HotReloadRestartInProgress">
+        <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
+        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadSendingUpdates">
+        <source>Sending updates to running application</source>
+        <target state="new">Sending updates to running application</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStartSession">
+        <source>Hot Reload session started</source>
+        <target state="new">Hot Reload session started</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStopSession">
+        <source>Hot Reload session complete</source>
+        <target state="new">Hot Reload session complete</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HotReloadStoppingApplication">
+        <source>Stopping application</source>
+        <target state="new">Stopping application</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
@@ -100,6 +150,11 @@ In order to debug this project, add an executable project to this solution which
         <source>The debug executable '{0}' specified in the '{1}' debug profile does not exist.</source>
         <target state="translated">“{1}”调试配置文件中指定的调试可执行文件“{0}”不存在。</target>
         <note />
+      </trans-unit>
+      <trans-unit id="StartupObjectNotSet">
+        <source>(Not set)</source>
+        <target state="translated">(未设置)</target>
+        <note>Text to display to the user in the property page UI when the "startup object" property is not set.</note>
       </trans-unit>
       <trans-unit id="WorkingDirecotryInvalid">
         <source>The working directory '{0}' specified in the '{1}' debug profile does not exist.</source>
@@ -187,8 +242,8 @@ In order to debug this project, add an executable project to this solution which
         <note />
       </trans-unit>
       <trans-unit id="XprojNotSupported">
-        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/.</source>
-        <target state="translated">不再支持 Xproj 项目文件。要详细了解如何迁移到 csproj，请参阅 https://docs.microsoft.com/zh-cn/dotnet/core/migration/。</target>
+        <source>Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/.</source>
+        <target state="translated">不再支持 Xproj 项目文件。有关迁移到 csproj 的详细信息，请参阅 https://docs.microsoft.com/dotnet/core/migration/。</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsFormEditor_DisplayName">

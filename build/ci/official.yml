@@ -28,7 +28,16 @@ steps:
     
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
-  
+
+- task: NuGetCommand@2
+  displayName: Restore 'Microsoft.DotNet.IBCMerge' package
+  inputs:
+    command: restore
+    feedsToUse: config
+    restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
+    nugetConfigPath: 'NuGet.config'
+
+# TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
 - script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 

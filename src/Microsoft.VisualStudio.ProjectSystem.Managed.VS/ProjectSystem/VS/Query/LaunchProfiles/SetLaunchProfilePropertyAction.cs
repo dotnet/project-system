@@ -26,14 +26,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
         {
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
-            if (((IEntityValueFromProvider)result.Result).ProviderState is PropertyPageProviderState state)
+            if (((IEntityValueFromProvider)result.Result).ProviderState is ContextAndRuleProviderState state)
             {
-                var cache = state.Cache;
-                if (await cache.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
-                    && await cache.BindToRule(configuration, state.Rule.Name, state.Context) is IRule boundRule
+                IProjectState projectState = state.ProjectState;
+                if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration configuration
+                    && await projectState.BindToRuleAsync(configuration, state.Rule.Name, state.PropertiesContext) is IRule boundRule
                     && boundRule.GetProperty(_executableStep.PropertyName) is IProperty property)
                 {
                     await property.SetValueAsync(_executableStep.Value);
+
+                    if (await projectState.GetDataVersionAsync(configuration) is (string versionKey, long versionNumber))
+                    {
+                        result.Request.QueryExecutionContext.ReportUpdatedDataVersion(versionKey, versionNumber);
+                    }
                 }
             }
 

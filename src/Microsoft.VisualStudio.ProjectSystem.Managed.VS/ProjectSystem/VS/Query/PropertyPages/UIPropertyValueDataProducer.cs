@@ -69,11 +69,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         }
 
         public static async Task<IEnumerable<IEntityValue>> CreateUIPropertyValueValuesAsync(
-            IQueryExecutionContext executionContext,
+            IQueryExecutionContext queryExecutionContext,
             IEntityValue parent,
-            IPropertyPageQueryCache cache,
+            IProjectState cache,
             Rule schema,
-            QueryProjectPropertiesContext context,
+            QueryProjectPropertiesContext propertiesContext,
             string propertyName,
             IUIPropertyValuePropertiesAvailableStatus requestedProperties)
         {
@@ -106,10 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             foreach (ProjectConfiguration configuration in configurations)
             {
-                (string versionKey, long versionNumber) = await cache.GetConfiguredProjectVersionAsync(configuration);
-                executionContext.ReportInputDataVersion(versionKey, versionNumber);
+                if (await cache.GetDataVersionAsync(configuration) is (string versionKey, long versionNumber))
+                {
+                    queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+                }
 
-                if (await cache.BindToRule(configuration, schema.Name, context) is IRule rule
+                if (await cache.BindToRuleAsync(configuration, schema.Name, propertiesContext) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);

@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="de" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|HotReloadEnabled|Description">
+        <source>Apply code changes to the running application.</source>
+        <target state="new">Apply code changes to the running application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
+        <source>Enable Hot Reload</source>
+        <target state="new">Enable Hot Reload</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
         <target state="translated">Hiermit wird das gemeinsame Debuggen für verwalteten und nativen Code aktiviert. Dies wird auch als Debuggen im gemischten Modus bezeichnet.</target>
@@ -30,6 +40,16 @@
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
         <target state="translated">SQL Server-Debuggen aktivieren</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="new">Enable WebView2 debugging</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">

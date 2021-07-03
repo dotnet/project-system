@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">'unsafe' 키워드를 사용하는 코드를 컴파일할 수 있도록 허용합니다.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">안전하지 않은 코드 허용</target>
+        <source>Unsafe code</source>
+        <target state="new">Unsafe code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">데이터 형식의 범위를 벗어나고 checked 또는 unchecked 키워드의 범위 내에 없는 값을 생성하는 정수 산술이 런타임 예외를 발생시키는지 여부를 지정합니다.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">컴파일러가 동일한 입력에 대해 동일한 어셈블리를 생성해야 하는지 여부를 나타냅니다.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="new">Produce identical compilation output for identical inputs.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -63,8 +63,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">출력 파일을 더 작고, 더 빠르며, 더 효율적으로 만들기 위해 컴파일러에서 수행한 최적화를 활성화하거나 비활성화합니다.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -75,6 +75,26 @@
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
         <target state="translated">최적화하다;최적화</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="translated">프로젝트의 공용 API를 포함하는 참조 어셈블리를 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="translated">참조 어셈블리</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -89,7 +109,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
         <source>Instruct the compiler to treat warnings as errors.</source>
-        <target state="new">Instruct the compiler to treat warnings as errors.</target>
+        <target state="translated">컴파일러에서 경고를 오류로 처리하도록 지시합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
@@ -144,22 +164,22 @@
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">빌드하는 동안 생성된 디버그 기호의 종류를 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">디버그 기호</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">디버그 형식</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">ICE(내부 컴파일러 오류) 보고서가 Microsoft로 전송되는 경우를 제어합니다.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -219,22 +239,22 @@
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">DLL/EXE에 포함됨, 플랫폼 간에 이동 가능</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">PDB 파일, 현재 플랫폼</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">내보낸 기호 없음</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">PDB 파일, 플랫폼 간에 이동 가능</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">

@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Utilities
 {
     internal static class IEnvironmentHelperFactory
     {
-        public static IEnvironmentHelper ImplementGetEnvironmentVariable(string result)
+        public static IEnvironmentHelper ImplementGetEnvironmentVariable(string? result)
         {
             var mock = new Mock<IEnvironmentHelper>();
 

@@ -398,8 +398,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Sub
 
-        Friend WithEvents lblNullable As Windows.Forms.Label
-        Friend WithEvents cboNullable As Windows.Forms.ComboBox
+        Friend WithEvents lblNullable As System.Windows.Forms.Label
+        Friend WithEvents cboNullable As System.Windows.Forms.ComboBox
     End Class
 
 End Namespace

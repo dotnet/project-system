@@ -63,6 +63,33 @@ which is distinct from the other compilation target `MyProject.dll`. This could 
 Items that do not specify a `Set` are included in the default set. Items may be added to multiple sets by separating
 their names with a semicolon (e.g. `Set="Set1;Set2"`).
 
+### Filtering inputs and outputs
+
+It may be desirable for a component within Visual Studio to schedule a build for which only a subset of the up-to-date
+check inputs and outputs should be considered. This can be achieved by adding `Kind` metadata to the relevant items and
+passing the `FastUpToDateCheckIgnoresKinds` global property.
+
+For example:
+
+```xml
+<ItemGroup>
+  <UpToDateCheckInput Include="Source1.cs" Kind="Alpha" />
+  <UpToDateCheckInput Include="Source2.cs" />
+  <UpToDateCheckOutput Include="MyProject1.dll" Kind="Alpha" />
+  <UpToDateCheckOutput Include="MyProject2.dll" />
+</ItemGroup>
+
+<PropertyGroup>
+  <FastUpToDateCheckIgnoresKinds>Alpha</FastUpToDateCheckIgnoresKinds>
+<PropertyGroup>
+```
+
+If the `FastUpToDateCheckIgnoresKinds` property has a value of `Alpha`, then the fast up-to-date check will only
+consider `Source2.cs` and `MyProject2.dll`. If the `FastUpToDateCheckIgnoresKinds` property has a different
+value, or is empty, all four items are considered.
+
+Multiple values may be passed for `FastUpToDateCheckIgnoresKinds`, separated by semicolons (`;`).
+
 ### Copied files
 
 Builds may copy files from a source location to a destination location. Information about these locations should be

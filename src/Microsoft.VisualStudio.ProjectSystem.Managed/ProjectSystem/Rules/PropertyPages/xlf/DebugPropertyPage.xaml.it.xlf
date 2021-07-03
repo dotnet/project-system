@@ -14,27 +14,27 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
         <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</target>
+        <target state="translated">La gestione dei profili di avvio è stata spostata in una finestra di dialogo dedicata. È possibile accedervi tramite il collegamento sottostante.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignorato</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="new">arguments;command line;working directory;environment variables</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
         <source>Open debug launch profiles UI</source>
-        <target state="new">Open debug launch profiles UI</target>
+        <target state="translated">Aprire interfaccia utente profili di avvio debug</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="new">arguments;command line;working directory;environment variables</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="new">arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</target>
         <note />
       </trans-unit>
     </body>

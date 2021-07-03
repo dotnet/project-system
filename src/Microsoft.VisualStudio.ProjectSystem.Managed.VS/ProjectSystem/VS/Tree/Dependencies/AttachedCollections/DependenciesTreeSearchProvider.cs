@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Utilities;
 using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
@@ -43,6 +44,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// </para>
     /// </remarks>
     [Export(typeof(ISearchProvider))]
+    [Name("DependenciesTreeSearchProvider")]
+    [VisualStudio.Utilities.Order(Before = "GraphSearchProvider")]
     internal sealed class DependenciesTreeSearchProvider : ISearchProvider
     {
         private readonly ImmutableArray<IDependenciesTreeSearchProvider> _providers;

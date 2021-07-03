@@ -190,6 +190,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ConfigurationGeneralPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebugPropertyPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
@@ -215,6 +219,18 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ProjectDebugger.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SdkSupportedTargetPlatformIdentifier.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SdkSupportedTargetPlatformVersion.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SupportedTargetFrameworkAlias.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
