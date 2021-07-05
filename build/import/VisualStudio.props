@@ -4,7 +4,6 @@
 
   <ItemGroup>
     <!-- Framework -->
-    
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
@@ -17,8 +16,10 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" PrivateAssets="All" />
 
     <!-- VS SDK -->
+    <PackageReference Include="Microsoft.Internal.VisualStudio.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost" />
     <PackageReference Include="Microsoft.VisualStudio.Debugger.Contracts" />
+    <PackageReference Include="Microsoft.VisualStudio.Interop" />
     <PackageReference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <PackageReference Include="Microsoft.VisualStudio.RpcContracts" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" />    
@@ -27,7 +28,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
     <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
-    <PackageReference Include="NuGet.VisualStudio" />    
+    <PackageReference Include="NuGet.VisualStudio" />
+
+    <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
+    <PackageReference Include="EnvDTE" Pack="false" ExcludeAssets="compile" PrivateAssets="all" />
   </ItemGroup>
  
 </Project>
