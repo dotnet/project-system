@@ -140,7 +140,7 @@
         <Str Cat="Text">
           <Val><![CDATA[&Prefer 32-bit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[&Предпочитать 32-разрядн.]]></Val>
+            <Val><![CDATA[&Предпочтительна 32-разрядная версия]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
