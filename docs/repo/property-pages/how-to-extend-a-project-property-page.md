@@ -2,7 +2,7 @@
 
 It is possible to extend an existing property page (even one you do not control) to add new properties. This is useful in scenarios where you have a project-specific property that logically belongs on one of the standard property pages (Application, Build, etc.), or if multiple project types share some common properties but also have their own specific needs.
 
-Extensions are defined using the same XAML files (describing an instance of the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) class) that are used to create new property pages. This HOW TO describes the steps needed for adding a property to the "Application" property page. At the end your property page will look something like this:
+Extensions are defined using the same XAML files (describing an instance of the [Rule](https://docs.microsoft.com/dotnet/api/microsoft.build.framework.xamltypes.rule) class) that are used to create new property pages. This HOW TO describes the steps needed for adding a property to the "Application" property page. At the end your property page will look something like this:
 
 ![Extended Property Page](extended-property-page.png)
 
