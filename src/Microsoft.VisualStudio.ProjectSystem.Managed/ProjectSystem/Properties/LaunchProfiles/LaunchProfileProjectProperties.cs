@@ -6,18 +6,19 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
+using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
-using LaunchProfileValueProviderAndMetadata = System.Lazy<
-    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider,
-    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
 using GlobalSettingValueProviderAndMetadata = System.Lazy<
     Microsoft.VisualStudio.ProjectSystem.Properties.IGlobalSettingExtensionValueProvider,
     Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
+using LaunchProfileValueProviderAndMetadata = System.Lazy<
+    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProvider,
+    Microsoft.VisualStudio.ProjectSystem.Properties.ILaunchProfileExtensionValueProviderMetadata>;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
-    internal class LaunchProfileProjectProperties : IProjectProperties
+    internal class LaunchProfileProjectProperties : IProjectProperties, IRuleAwareProjectProperties
     {
         private const string CommandNamePropertyName = "CommandName";
         private const string ExecutablePathPropertyName = "ExecutablePath";
@@ -26,6 +27,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string LaunchBrowserPropertyName = "LaunchBrowser";
         private const string LaunchUrlPropertyName = "LaunchUrl";
         private const string EnvironmentVariablesPropertyName = "EnvironmentVariables";
+
+        private Rule? _rule;
 
         /// <remarks>
         /// These correspond to the properties explicitly declared on <see cref="ILaunchProfile"/>
@@ -143,8 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             foreach ((string propertyName, LaunchProfileValueProviderAndMetadata provider) in _launchProfileValueProviders)
             {
-                // TODO: Pass the Rule
-                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: null);
+                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, _rule);
                 if (!Strings.IsNullOrEmpty(propertyValue))
                 {
                     builder.Add(propertyName);
@@ -153,8 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             foreach ((string propertyName, GlobalSettingValueProviderAndMetadata provider) in _globalSettingValueProviders)
             {
-                // TODO: Pass the Rule
-                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: null);
+                string propertyValue = provider.Value.OnGetPropertyValue(propertyName, globalSettings, _rule);
                 if (!Strings.IsNullOrEmpty(propertyValue))
                 {
                     builder.Add(propertyName);
@@ -254,18 +255,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             }
         }
 
+        public void SetRuleContext(Rule rule)
+        {
+            _rule = rule;
+        }
+
         private string? GetPropertyValueFromExtenders(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
         {
             if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
             {
-                // TODO: Pass the Rule
-                return launchProfileValueProvider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: null);
+                return launchProfileValueProvider.Value.OnGetPropertyValue(propertyName, profile, globalSettings, rule: _rule);
             }
 
             if (_globalSettingValueProviders.TryGetValue(propertyName, out GlobalSettingValueProviderAndMetadata? globalSettingValueProvider))
             {
-                // TODO: Pass the Rule
-                return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: null);
+                return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: _rule);
             }
 
             return null;
@@ -282,8 +286,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
                 return profile =>
                 {
-                    // TODO: Pass the Rule
-                    launchProfileValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, profile, globalSettings, rule: null);
+                    launchProfileValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, profile, globalSettings, _rule);
                 };
             }
 
@@ -296,8 +299,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 return globalSettings =>
                 {
-                    // TODO: Pass the Rule
-                    return globalSettingValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, globalSettings, rule: null);
+                    return globalSettingValueProvider.Value.OnSetPropertyValue(propertyName, unevaluatedValue, globalSettings, _rule);
                 };
             }
 
