@@ -54,6 +54,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         public ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> LastItemChanges { get; }
 
+        public int? ItemHash { get; }
+
+        public bool WasStateRestored { get; }
+
         public ImmutableArray<string> ItemTypes { get; }
 
         public ImmutableDictionary<string, ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>> ItemsByItemType { get; }
@@ -135,6 +139,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             CopyReferenceInputs = ImmutableArray<string>.Empty;
             AdditionalDependentFileTimes = ImmutableDictionary.Create<string, DateTime>(StringComparers.Paths);
             LastAdditionalDependentFileTimesChangedAtUtc = DateTime.MinValue;
+            WasStateRestored = false;
         }
 
         private UpToDateCheckImplicitConfiguredInput(
@@ -156,7 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IImmutableDictionary<string, DateTime> additionalDependentFileTimes,
             DateTime lastAdditionalDependentFileTimesChangedAtUtc,
             DateTime lastItemsChangedAtUtc,
-            ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> lastItemChanges)
+            ImmutableArray<(bool IsAdd, string ItemType, string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)> lastItemChanges,
+            int? itemHash,
+            bool wasStateRestored)
         {
             MSBuildProjectFullPath = msBuildProjectFullPath;
             MSBuildProjectDirectory = msBuildProjectDirectory;
@@ -177,6 +184,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             AdditionalDependentFileTimes = additionalDependentFileTimes;
             LastAdditionalDependentFileTimesChangedAtUtc = lastAdditionalDependentFileTimesChangedAtUtc;
             LastItemChanges = lastItemChanges;
+            ItemHash = itemHash;
+            WasStateRestored = wasStateRestored;
 
             var setNames = new HashSet<string>(BuildUpToDateCheck.SetNameComparer);
             AddKeys(upToDateCheckInputItemsByKindBySetName);
@@ -431,10 +440,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 itemsChanged = true;
             }
 
-            // NOTE when we previously had zero item types, we can surmise that the project has just been loaded. In such
-            // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
-            // See https://github.com/dotnet/project-system/issues/5386
-            DateTime lastItemsChangedAtUtc = itemsChanged && !ItemTypes.IsEmpty ? DateTime.UtcNow : LastItemsChangedAtUtc;
+            ImmutableDictionary<string, ImmutableArray<(string Path, string? Link, BuildUpToDateCheck.CopyType CopyType)>> itemsByItemType = itemsByItemTypeBuilder.ToImmutable();
+
+            int itemHash = BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
+
+            DateTime lastItemsChangedAtUtc = LastItemsChangedAtUtc;
+
+            if (itemHash != ItemHash && ItemHash != null)
+            {
+                // The set of items has changed.
+                // For the case that the project loaded and no hash was available, do not touch lastItemsChangedAtUtc.
+                // Doing so when the project is actually up-to-date would cause builds to be scheduled until something
+                // actually changes.
+                lastItemsChangedAtUtc = DateTime.UtcNow;
+            }
+            else if (itemsChanged && !ItemTypes.IsEmpty)
+            {
+                // When we previously had zero item types, we can surmise that the project has just been loaded. In such
+                // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
+                // If we did, and the project was up-to-date when loaded, it would remain out-of-date until something changed,
+                // causing redundant builds until that time. See https://github.com/dotnet/project-system/issues/5386.
+                lastItemsChangedAtUtc = DateTime.UtcNow;
+            }
 
             DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
 
@@ -446,7 +473,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 newestImportInput,
                 isDisabled: isDisabled,
                 itemTypes: itemTypes.ToImmutableArray(),
-                itemsByItemType: itemsByItemTypeBuilder.ToImmutable(),
+                itemsByItemType: itemsByItemType,
                 upToDateCheckInputItemsByKindBySetName: upToDateCheckInputItemsByKindBySetName,
                 upToDateCheckOutputItemsByKindBySetName: upToDateCheckOutputItemsByKindBySetName,
                 upToDateCheckBuiltItemsByKindBySetName: upToDateCheckBuiltItemsByKindBySetName,
@@ -457,7 +484,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 additionalDependentFileTimes: projectSnapshot.AdditionalDependentFileTimes,
                 lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc: lastItemsChangedAtUtc,
-                changes.ToImmutableArray());
+                changes.ToImmutableArray(),
+                itemHash,
+                WasStateRestored);
 
             DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
             {
@@ -567,7 +596,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 AdditionalDependentFileTimes,
                 LastAdditionalDependentFileTimesChangedAtUtc,
                 lastItemsChangedAtUtc,
-                LastItemChanges);
+                LastItemChanges,
+                ItemHash,
+                WasStateRestored);
         }
 
         /// <summary>
@@ -594,7 +625,35 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 AdditionalDependentFileTimes,
                 lastAdditionalDependentFileTimesChangedAtUtc,
                 LastItemsChangedAtUtc,
-                LastItemChanges);
+                LastItemChanges,
+                ItemHash,
+                WasStateRestored);
+        }
+
+        public UpToDateCheckImplicitConfiguredInput WithRestoredState(int itemHash, DateTime lastInputsChangedAtUtc)
+        {
+            return new(
+                MSBuildProjectFullPath,
+                MSBuildProjectDirectory,
+                CopyUpToDateMarkerItem,
+                OutputRelativeOrFullPath,
+                NewestImportInput,
+                IsDisabled,
+                ItemTypes,
+                ItemsByItemType,
+                UpToDateCheckInputItemsByKindBySetName,
+                UpToDateCheckOutputItemsByKindBySetName,
+                UpToDateCheckBuiltItemsByKindBySetName,
+                CopiedOutputFiles,
+                ResolvedAnalyzerReferencePaths,
+                ResolvedCompilationReferencePaths,
+                CopyReferenceInputs,
+                AdditionalDependentFileTimes,
+                LastAdditionalDependentFileTimesChangedAtUtc,
+                lastInputsChangedAtUtc,
+                LastItemChanges,
+                itemHash,
+                wasStateRestored: true);
         }
     }
 }
