@@ -34,8 +34,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties.InterceptedProjectP
                 ProjectProperties projectProperties = configuredProject.Services.ExportProvider.GetExportedValue<ProjectProperties>();
                 ConfigurationGeneral configuration = await projectProperties.GetConfigurationGeneralPropertiesAsync();
                 string? currentPlatformMoniker = (string?)await configuration.TargetPlatformIdentifier.GetValueAsync();
+                string? currentPlatformVersion = (string?)await configuration.TargetPlatformVersion.GetValueAsync();
+
                 Assumes.NotNull(currentPlatformMoniker);
-                builder.Add(currentPlatformMoniker);
+                builder.Add(currentPlatformMoniker + currentPlatformVersion);
             }
 
             return string.Join(";", builder.ToArrayAndFree());
