@@ -27,7 +27,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" />
     <PackageReference Include="Microsoft.VisualStudio.Telemetry" />
     <PackageReference Include="Microsoft.VisualStudio.Utilities" />
-    <PackageReference Include="NuGet.SolutionRestoreManager.Interop" />
     <PackageReference Include="NuGet.VisualStudio" />
 
     <!-- Explicitly referenced to prevent upstream packages from bringing in old PIAs -->
