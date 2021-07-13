@@ -23,13 +23,20 @@
   <ItemGroup>
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.FSharp.xaml;"/>
 
-    <ProjectCapability Include="FSharp;Managed"/>
+    <ProjectCapability Include="
+                       FSharp;
+                       Managed;
+                       ProjectPropertiesEditor;" />
   </ItemGroup>
 
   <!-- Override rules from Microsoft.Managed.DesignTime.targets to add FullPath for TreeItemOrderPropertyProvider. -->
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.FSharp.xaml;">
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.FSharp.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)Compile.FSharp.xaml">
       <Context>File</Context>
     </PropertyPageSchema>
 
@@ -57,7 +64,7 @@
           >
 
     <ItemGroup>
-      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs, ';');"/> 
+      <_CompilerCommandLineArgs Include="@(FscCommandLineArgs, ';');"/>
     </ItemGroup>
 
   </Target>

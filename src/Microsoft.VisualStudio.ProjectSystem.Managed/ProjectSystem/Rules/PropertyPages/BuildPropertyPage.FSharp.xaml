@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Rule Name="Build"
+      OverrideMode="Extend"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <EnumProperty Name="Nullable" Category="General" Visible="False" />
+  <BoolProperty Name="AllowUnsafeBlocks" Category="General" Visible="False" />
+
+  <BoolProperty Name="Optimize"
+                DisplayName="Optimize code"
+                Description="Enable compiler optimizations for smaller, faster, and more efficient output."
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="optimise;optimisation" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <EnumProperty Name="DebugType" Category="General" Visible="False" />
+  <StringProperty Name="LangVersion" Category="General" Visible="False" />
+
+  <BoolProperty Name="CheckForOverflowUnderflow" Category="General" Visible="False" />
+  <BoolProperty Name="Deterministic" Category="General" Visible="False" />
+
+  <EnumProperty Name="ErrorReport" Category="General" Visible="False" />
+  <EnumProperty Name="FileAlignment" Category="General" Visible="False" />
+
+  <BoolProperty Name="ProduceReferenceAssembly" Category="General" Visible="False" />
+
+
+</Rule>
