@@ -436,6 +436,18 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
     
+    <Compile Update="ProjectSystem\Rules\SupportedTargetFrameworkAlias.cs">
+      <DependentUpon>SupportedTargetFrameworkAlias.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\SupportedTargetFrameworkAlias.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+      <DataAccess>None</DataAccess>
+      <RuleInjection>None</RuleInjection>
+    </XamlPropertyRule>
+    
     <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
       <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
