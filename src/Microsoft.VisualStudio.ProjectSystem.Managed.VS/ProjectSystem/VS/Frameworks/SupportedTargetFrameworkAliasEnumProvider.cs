@@ -20,12 +20,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
     /// </summary>
     [ExportDynamicEnumValuesProvider("SupportedTargetFrameworkAliasEnumProvider")]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal class SupportedTargetFrameworkAliasProvider : ChainedProjectValueDataSourceBase<EnumCollection>, IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
+    internal class SupportedTargetFrameworkAliasEnumProvider : ChainedProjectValueDataSourceBase<EnumCollection>, IDynamicEnumValuesProvider, IDynamicEnumValuesGenerator
     {
         private readonly IProjectSubscriptionService _subscriptionService;
 
         [ImportingConstructor]
-        public SupportedTargetFrameworkAliasProvider(
+        public SupportedTargetFrameworkAliasEnumProvider(
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService)
             : base(project, synchronousDisposal: true, registerDataSource: false)
