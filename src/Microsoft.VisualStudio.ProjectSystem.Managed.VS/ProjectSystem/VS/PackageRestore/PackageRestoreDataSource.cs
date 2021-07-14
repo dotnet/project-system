@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             // Restore service always does work regardless of whether the value we pass 
             // them to actually contains changes, only nominate if there are any.
-            byte[] hash = RestoreHasher.CalculateHash(restoreInfo);
+            byte[] hash = RestoreHasher.CalculateHash(restoreInfo!);
 
             if (_latestHash != null && Enumerable.SequenceEqual(hash, _latestHash))
             {
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
             {
-                return NominateForRestoreAsync(restoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
+                return NominateForRestoreAsync(restoreInfo!, _projectAsynchronousTasksService.UnloadCancellationToken);
             });
 
             SaveNominatedConfiguredVersions(value.ConfiguredInputs);
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Prevent overlap until Restore completes
             bool success = await joinableTask;
 
-            HintProjectDependentFile(restoreInfo);
+            HintProjectDependentFile(restoreInfo!);
 
             return success;
         }
