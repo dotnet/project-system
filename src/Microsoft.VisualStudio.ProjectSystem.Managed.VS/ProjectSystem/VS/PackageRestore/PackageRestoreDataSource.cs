@@ -308,7 +308,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _whenNominatedTask ??= new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             }
 
-            return _whenNominatedTask.Task.WithCancellation(cancellationToken);
+            var continuationTask = _whenNominatedTask.Task.ContinueWith(t =>
+            {
+                lock (SyncObject)
+                {
+                    if (t.IsFaulted)
+                    {
+                        _whenNominatedTask.SetException(t.Exception);
+                    }
+                    else
+                    {
+                        _whenNominatedTask.TrySetCanceled();
+                    }
+                }
+            }, cancellationToken,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
+
+            return continuationTask;
         }
 
         // True means the project system plans to call NominateProjectAsync in the future.
