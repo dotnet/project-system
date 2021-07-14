@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Register before this project receives any data flows containing possible nominations.
             // This is needed because we need to register before any nuget restore or before the solution load.
             _project.Services.FaultHandler.Forget(
-                _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, CancellationToken.None), 
+                _solutionRestoreService4.RegisterRestoreInfoSourceAsync(this, _projectAsynchronousTasksService.UnloadCancellationToken), 
                 _project, 
                 ProjectFaultSeverity.LimitedFunctionality);
 
