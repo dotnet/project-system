@@ -16,12 +16,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return Task.FromResult(evaluatedPropertyValue);
         }
 
+        public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider)
+        {
+            return Task.FromResult(evaluatedPropertyValue);
+        }
+
         public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
             return Task.FromResult(unevaluatedPropertyValue);
         }
 
+        public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider)
+        {
+            return Task.FromResult(unevaluatedPropertyValue);
+        }
+
         public virtual Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        {
+            return Task.FromResult<string?>(unevaluatedPropertyValue);
+        }
+
+        public virtual Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             return Task.FromResult<string?>(unevaluatedPropertyValue);
         }

@@ -17,13 +17,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties);
 
         /// <summary>
+        /// Validate and/or transform the given evaluated property value.
+        /// </summary>
+        Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider);
+
+        /// <summary>
         /// Validate and/or transform the given unevaluated property value, i.e. "raw" value read from the project file.
         /// </summary>
         Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties);
 
         /// <summary>
+        /// Validate and/or transform the given unevaluated property value, i.e. "raw" value read from the project file.
+        /// </summary>
+        Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider);
+
+        /// <summary>
         /// Validate and/or transform the given unevaluated property value to be written back to the project file.
         /// </summary>
         Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
+
+        /// <summary>
+        /// Validate and/or transform the given unevaluated property value to be written back to the project file.
+        /// </summary>
+        Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
     }
 }

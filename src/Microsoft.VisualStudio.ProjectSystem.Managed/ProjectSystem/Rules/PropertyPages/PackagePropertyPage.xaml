@@ -95,7 +95,12 @@
                   DisplayName="Icon file"
                   Description="The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134"
-                  Category="General" />
+                  Category="General">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="RepositoryUrl"
                   DisplayName="Repository URL"

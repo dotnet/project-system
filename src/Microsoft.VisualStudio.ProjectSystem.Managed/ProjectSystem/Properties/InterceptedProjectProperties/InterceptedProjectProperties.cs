@@ -15,13 +15,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal sealed class InterceptedProjectProperties : DelegatedProjectPropertiesBase, IRuleAwareProjectProperties
     {
+        // TODO: This is what is needed to be used below... somehow.
+        private readonly IProjectItemProvider _sourceItemsProvider;
+
         private readonly ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _valueProviders;
 
-        public InterceptedProjectProperties(ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders, IProjectProperties defaultProperties)
+        public InterceptedProjectProperties(
+            ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders,
+            IProjectItemProvider sourceItemsProvider,
+            IProjectProperties defaultProperties)
             : base(defaultProperties)
         {
+            Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
             Requires.NotNullOrEmpty(valueProviders, nameof(valueProviders));
 
+            _sourceItemsProvider = sourceItemsProvider;
             ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>.Builder builder = ImmutableDictionary.CreateBuilder<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>>(StringComparers.PropertyNames);
             foreach (Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata> valueProvider in valueProviders)
             {
