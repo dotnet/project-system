@@ -54,7 +54,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string evaluatedProperty = await base.GetEvaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
-                evaluatedProperty = await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
+                evaluatedProperty = valueProvider.Value is IInterceptingPropertyValueWithSourceItemsProvider valueWithSourceItemsProvider
+                    ? await valueWithSourceItemsProvider.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties, _sourceItemsProvider)
+                    : await valueProvider.Value.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedProperty, DelegatedProperties);
             }
 
             return evaluatedProperty;
@@ -65,7 +67,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? unevaluatedProperty = await base.GetUnevaluatedPropertyValueAsync(propertyName);
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
-                unevaluatedProperty = await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty ?? "", DelegatedProperties);
+                unevaluatedProperty ??= "";
+                unevaluatedProperty = valueProvider.Value is IInterceptingPropertyValueWithSourceItemsProvider valueWithSourceItemsProvider
+                    ? await valueWithSourceItemsProvider.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty, DelegatedProperties, _sourceItemsProvider)
+                    : await valueProvider.Value.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedProperty, DelegatedProperties);
             }
 
             return unevaluatedProperty;
@@ -76,7 +81,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? valueToSet;
             if (_valueProviders.TryGetValue(propertyName, out Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>? valueProvider))
             {
-                valueToSet = await valueProvider.Value.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
+                valueToSet = valueProvider.Value is IInterceptingPropertyValueWithSourceItemsProvider valueWithSourceItemsProvider
+                    ? await valueWithSourceItemsProvider.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, _sourceItemsProvider, dimensionalConditions)
+                    : await valueProvider.Value.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, DelegatedProperties, dimensionalConditions);
             }
             else
             {

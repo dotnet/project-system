@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
     [ExportInterceptingPropertyValueProvider(PackageIconPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class PackageIconValueProvider : InterceptingPropertyValueProviderBase
+    internal sealed class PackageIconValueProvider : InterceptingPropertyValueWithSourceItemsProviderBase
     {
         internal const string PackageIconPropertyName = "PackageIcon";
         //internal const string NoneValue = "(none)";

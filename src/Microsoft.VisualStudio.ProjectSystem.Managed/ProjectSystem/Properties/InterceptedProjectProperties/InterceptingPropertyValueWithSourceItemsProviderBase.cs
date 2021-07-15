@@ -9,19 +9,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// Base intercepting project property provider that intercepts all the callbacks for a specific property name
     /// on the default <see cref="IProjectPropertiesProvider"/> for validation and/or transformation of the property value.
     /// </summary>
-    public abstract class InterceptingPropertyValueProviderBase : IInterceptingPropertyValueProvider
+    public abstract class InterceptingPropertyValueWithSourceItemsProviderBase : InterceptingPropertyValueProviderBase, IInterceptingPropertyValueWithSourceItemsProvider
     {
-        public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public virtual Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider)
         {
             return Task.FromResult(evaluatedPropertyValue);
         }
 
-        public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public virtual Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider)
         {
             return Task.FromResult(unevaluatedPropertyValue);
         }
 
-        public virtual Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public virtual Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             return Task.FromResult<string?>(unevaluatedPropertyValue);
         }

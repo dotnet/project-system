@@ -8,22 +8,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// <summary>
     /// A project property provider that intercepts all the callbacks for a specific property name
     /// on the default <see cref="IProjectPropertiesProvider"/> for validation and/or transformation of the property value.
+    /// This includes access to source items, aka, those that are part of an <c>&lt;ItemGroup&gt;</c>.
     /// </summary>
-    public interface IInterceptingPropertyValueProvider
+    public interface IInterceptingPropertyValueWithSourceItemsProvider : IInterceptingPropertyValueProvider
     {
         /// <summary>
         /// Validate and/or transform the given evaluated property value.
         /// </summary>
-        Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties);
+        Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider);
 
         /// <summary>
         /// Validate and/or transform the given unevaluated property value, i.e. "raw" value read from the project file.
         /// </summary>
-        Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties);
+        Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider);
 
         /// <summary>
         /// Validate and/or transform the given unevaluated property value to be written back to the project file.
         /// </summary>
-        Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
+        Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IProjectItemProvider sourceItemsProvider, IReadOnlyDictionary<string, string>? dimensionalConditions = null);
     }
 }

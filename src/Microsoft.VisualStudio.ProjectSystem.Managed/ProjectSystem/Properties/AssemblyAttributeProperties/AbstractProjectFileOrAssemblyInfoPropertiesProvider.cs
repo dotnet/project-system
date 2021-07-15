@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :
-                new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties);
+                new InterceptedProjectProperties(_interceptingValueProviders, _sourceItemsProvider, assemblyInfoProperties);
         }
     }
 }
