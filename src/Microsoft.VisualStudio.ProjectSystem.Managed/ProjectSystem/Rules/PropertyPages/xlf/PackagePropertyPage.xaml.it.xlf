@@ -133,8 +133,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
-        <source>Icon file</source>
-        <target state="translated">File icona</target>
+        <source>Icon</source>
+        <target state="needs-review-translation">File icona</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">

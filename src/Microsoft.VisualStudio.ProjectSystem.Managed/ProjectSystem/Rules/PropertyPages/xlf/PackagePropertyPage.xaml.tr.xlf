@@ -133,8 +133,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
-        <source>Icon file</source>
-        <target state="translated">Simge dosyası</target>
+        <source>Icon</source>
+        <target state="needs-review-translation">Simge dosyası</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
