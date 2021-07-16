@@ -32,9 +32,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
             var project = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
-            var sourceItemProvider = IProjectItemProviderFactory.Create();
 
-            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, sourceItemProvider, project, new[] { mockPropertyProvider });
+            var interceptedProvider = new ProjectFileInterceptedProjectPropertiesProvider(delegateProvider, instanceProvider, project, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetProperties("path/to/project.testproj", null, null);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
@@ -72,9 +71,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 onSetPropertyValue: (v, p, d) => { setValueInvoked = true; return v; });
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var instanceProvider = IProjectInstancePropertiesProviderFactory.Create();
-            var sourceItemProvider = IProjectItemProviderFactory.Create();
 
-            var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, sourceItemProvider, unconfiguredProject, new[] { mockPropertyProvider });
+            var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, unconfiguredProject, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetCommonProperties();
 
             // Verify interception for GetEvaluatedPropertyValueAsync.
@@ -113,9 +111,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var unconfiguredProject = UnconfiguredProjectFactory.Create();
             var provider = IProjectPropertiesProviderFactory.Create();
-            var sourceItemProvider = IProjectItemProviderFactory.Create();
 
-            var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(provider, delegateInstanceProvider, sourceItemProvider, unconfiguredProject, new[] { mockPropertyProvider });
+            var interceptedProvider = new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(provider, delegateInstanceProvider, unconfiguredProject, new[] { mockPropertyProvider });
             var properties = interceptedProvider.GetCommonProperties(projectInstance: null!);
 
             // Verify interception for GetEvaluatedPropertyValueAsync.

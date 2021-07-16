@@ -25,13 +25,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.ProjectPropertiesProviders
 
             var instanceProperties = instancePropertiesMock.Object;
             var instanceProvider = IProjectInstancePropertiesProviderFactory.ImplementsGetCommonProperties(instanceProperties);
-            var sourceItemProvider = IProjectItemProviderFactory.Create();
 
             var targetFrameworkProvider = new TargetFrameworkValueProvider(properties);
             var providerMetadata = IInterceptingPropertyValueProviderMetadataFactory.Create(TargetFrameworkPropertyName);
             var lazyArray = new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                 () => targetFrameworkProvider, providerMetadata) };
-            return new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, sourceItemProvider, project, lazyArray);
+            return new ProjectFileInterceptedViaSnapshotProjectPropertiesProvider(delegateProvider, instanceProvider, project, lazyArray);
         }
 
         [Fact]

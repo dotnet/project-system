@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService? threadingService = null,
             IProjectProperties? defaultProperties = null,
             IProjectInstancePropertiesProvider? instanceProvider = null,
-            IProjectItemProvider? sourceItemsProvider = null,
             Func<ProjectId>? getActiveProjectId = null)
             : this(workspace ?? WorkspaceFactory.Create(""),
                   project: project ?? UnconfiguredProjectFactory.Create(),
@@ -28,7 +27,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                   threadingService: threadingService,
                   defaultProperties: defaultProperties,
                   instanceProvider: instanceProvider,
-                  sourceItemsProvider: sourceItemsProvider,
                   getActiveProjectId: getActiveProjectId)
         {
         }
@@ -40,11 +38,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectThreadingService? threadingService = null,
             IProjectProperties? defaultProperties = null,
             IProjectInstancePropertiesProvider? instanceProvider = null,
-            IProjectItemProvider? sourceItemsProvider = null,
             Func<ProjectId>? getActiveProjectId = null)
             : base(delegatedProvider: IProjectPropertiesProviderFactory.Create(defaultProperties ?? IProjectPropertiesFactory.MockWithProperty("").Object),
                   instanceProvider: instanceProvider ?? IProjectInstancePropertiesProviderFactory.Create(),
-                  sourceItemsProvider: sourceItemsProvider ?? IProjectItemProviderFactory.Create(),
                   interceptingValueProviders: interceptingProvider == null ?
                     new[] { new Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>(
                         () => IInterceptingPropertyValueProviderFactory.Create(),

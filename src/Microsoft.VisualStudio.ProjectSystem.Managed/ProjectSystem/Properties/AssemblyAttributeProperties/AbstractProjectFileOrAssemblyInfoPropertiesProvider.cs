@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     internal abstract class AbstractProjectFileOrAssemblyInfoPropertiesProvider : DelegatedProjectPropertiesProviderBase
     {
-        private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _interceptingValueProviders;
         private readonly Func<ProjectId?> _getActiveProjectId;
         private readonly Workspace _workspace;
@@ -21,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         protected AbstractProjectFileOrAssemblyInfoPropertiesProvider(
             IProjectPropertiesProvider delegatedProvider,
             IProjectInstancePropertiesProvider instanceProvider,
-            IProjectItemProvider sourceItemsProvider,
             IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders,
             UnconfiguredProject project,
             Func<ProjectId?> getActiveProjectId,
@@ -30,12 +28,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             : base(delegatedProvider, instanceProvider, project)
         {
             Requires.NotNull(interceptingValueProviders, nameof(interceptingValueProviders));
-            Requires.NotNull(sourceItemsProvider, nameof(sourceItemsProvider));
             Requires.NotNull(getActiveProjectId, nameof(getActiveProjectId));
             Requires.NotNull(workspace, nameof(workspace));
             Requires.NotNull(threadingService, nameof(threadingService));
 
-            _sourceItemsProvider = sourceItemsProvider;
             _interceptingValueProviders = interceptingValueProviders.ToImmutableArray();
             _getActiveProjectId = getActiveProjectId;
             _workspace = workspace;
@@ -51,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             IProjectProperties assemblyInfoProperties = new AssemblyInfoProperties(delegatedProperties, _getActiveProjectId, _workspace, _threadingService);
             return _interceptingValueProviders.IsDefaultOrEmpty ?
                 assemblyInfoProperties :
-                new InterceptedProjectProperties(_interceptingValueProviders, _sourceItemsProvider, assemblyInfoProperties);
+                new InterceptedProjectProperties(_interceptingValueProviders, assemblyInfoProperties);
         }
     }
 }

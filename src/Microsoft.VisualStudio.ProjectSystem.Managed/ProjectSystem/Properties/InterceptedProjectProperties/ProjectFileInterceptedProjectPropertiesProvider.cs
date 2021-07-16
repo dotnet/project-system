@@ -18,10 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public ProjectFileInterceptedProjectPropertiesProvider(
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectPropertiesProvider provider,
             [Import(ContractNames.ProjectPropertyProviders.ProjectFile)] IProjectInstancePropertiesProvider instanceProvider,
-            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
             UnconfiguredProject project,
             [ImportMany(ContractNames.ProjectPropertyProviders.ProjectFile)]IEnumerable<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> interceptingValueProviders)
-            : base(provider, instanceProvider, sourceItemsProvider, project, interceptingValueProviders)
+            : base(provider, instanceProvider, project, interceptingValueProviders)
         {
         }
     }
