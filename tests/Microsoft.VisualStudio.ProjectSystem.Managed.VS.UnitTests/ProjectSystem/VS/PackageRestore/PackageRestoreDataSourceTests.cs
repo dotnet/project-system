@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private static PackageRestoreDataSource CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
-            project ??= UnconfiguredProjectFactory.Create(IProjectThreadingServiceFactory.Create());
+            project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
