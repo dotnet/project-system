@@ -535,6 +535,53 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.DoesNotContain("BetaProperty", names);
         }
 
+        [Fact]
+        public async Task WhenRetrievingPropertyNames_PropertiesInOtherSettingsAreIncluded()
+        {
+            var profile1 = new WritableLaunchProfile
+            {
+                Name = "Profile1",
+                OtherSettings = { { "alpha", 1 } }
+            };
+            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+                launchProfiles: new[] { profile1.ToLaunchProfile() });
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
+
+            var names = await properties.GetPropertyNamesAsync();
+
+            Assert.Contains("alpha", names);
+        }
+
+        [Fact]
+        public async Task WhenRetrievingPropertyNames_PropertiesInGlobalSettingsAreNotIncluded()
+        {
+            var profile1 = new WritableLaunchProfile
+            {
+                Name = "Profile1",
+                OtherSettings = { { "alpha", 1 } }
+            };
+            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+                launchProfiles: new[] { profile1.ToLaunchProfile() },
+                globalSettings: ImmutableDictionary<string, object>.Empty.Add("beta", "value"));
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
+
+            var names = await properties.GetPropertyNamesAsync();
+
+            Assert.DoesNotContain("beta", names);
+        }
+
         /// <summary>
         /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
         /// "Profile1" and "Profile2".

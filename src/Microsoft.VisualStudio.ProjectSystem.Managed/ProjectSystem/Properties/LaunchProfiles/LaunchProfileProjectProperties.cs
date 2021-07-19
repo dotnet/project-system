@@ -162,6 +162,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 }
             }
 
+            if (profile.OtherSettings is not null)
+            {
+                foreach ((string propertyName, _) in profile.OtherSettings)
+                {
+                    builder.Add(propertyName);
+                }
+            }
+
             return builder.ToImmutable();
         }
 
