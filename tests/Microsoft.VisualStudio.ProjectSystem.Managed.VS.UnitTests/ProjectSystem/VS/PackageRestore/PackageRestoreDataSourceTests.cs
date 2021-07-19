@@ -86,13 +86,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private static PackageRestoreDataSource CreateInstance(UnconfiguredProject? project = null, IPackageRestoreUnconfiguredInputDataSource? dataSource = null, IVsSolutionRestoreService3? solutionRestoreService = null)
         {
-            project ??= UnconfiguredProjectFactory.Create(IProjectThreadingServiceFactory.Create());
+            project ??= UnconfiguredProjectFactory.CreateWithActiveConfiguredProjectProvider(IProjectThreadingServiceFactory.Create());
             dataSource ??= IPackageRestoreUnconfiguredInputDataSourceFactory.Create();
             IProjectAsynchronousTasksService projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             solutionRestoreService ??= IVsSolutionRestoreServiceFactory.Create();
             IProjectDiagnosticOutputService logger = IProjectDiagnosticOutputServiceFactory.Create();
             IFileSystem fileSystem = IFileSystemFactory.Create();
             var projectDependentFileChangeNotificationService = IProjectDependentFileChangeNotificationServiceFactory.Create();
+            var vsSolutionRestoreService4 = IVsSolutionRestoreService4Factory.ImplementRegisterRestoreInfoSourceAsync();
 
             return new PackageRestoreDataSource(
                 project,
@@ -101,7 +102,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 solutionRestoreService,
                 fileSystem,
                 logger,
-                projectDependentFileChangeNotificationService);
+                projectDependentFileChangeNotificationService,
+                vsSolutionRestoreService4);
         }
     }
 }
