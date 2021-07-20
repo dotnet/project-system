@@ -637,6 +637,55 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.Equal(expected: "Hi, friends!", actual: anotherStringValue);
         }
 
+        [Fact]
+        public async Task WhenSettingValuesNotHandledByExtenders_ValuesOfTheExpectedTypesAreStoredInOtherSettings()
+        {
+            var writableProfile = new WritableLaunchProfile
+            {
+                Name = "Profile1",
+            };
+            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+                launchProfiles: new[] { writableProfile.ToLaunchProfile() },
+                tryUpdateProfileCallback: (profile, action) =>
+                {
+                    // Update writableProfile since we're hanging on to it rather than the profile given us by the mock. 
+                    action(writableProfile);
+                });
+
+            var rule = new Rule
+            {
+                Properties =
+                {
+                    new IntProperty { Name = "anInteger" },
+                    new BoolProperty { Name = "aBoolean" },
+                    new StringProperty { Name = "aString" },
+                    new EnumProperty { Name = "anEnumStoredAsAString" }
+                    // anotherString intentionally not represented
+                }
+            };
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
+
+            properties.SetRuleContext(rule);
+
+            await properties.SetPropertyValueAsync("anInteger", "2");
+            await properties.SetPropertyValueAsync("aBoolean", "false");
+            await properties.SetPropertyValueAsync("aString", "Hello, world!");
+            await properties.SetPropertyValueAsync("anEnumStoredAsAString", "valueTwo");
+            await properties.SetPropertyValueAsync("anotherString", "Hello, friends!");
+
+            Assert.Equal(expected: 2, actual: writableProfile.OtherSettings["anInteger"]);
+            Assert.Equal(expected: false, actual: writableProfile.OtherSettings["aBoolean"]);
+            Assert.Equal(expected: "Hello, world!", actual: writableProfile.OtherSettings["aString"]);
+            Assert.Equal(expected: "valueTwo", actual: writableProfile.OtherSettings["anEnumStoredAsAString"]);
+            Assert.Equal(expected: "Hello, friends!", actual: writableProfile.OtherSettings["anotherString"]);
+        }
+
         /// <summary>
         /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
         /// "Profile1" and "Profile2".

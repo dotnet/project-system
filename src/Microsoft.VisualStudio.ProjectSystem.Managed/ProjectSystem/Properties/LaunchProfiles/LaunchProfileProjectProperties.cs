@@ -240,13 +240,39 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return;
             }
 
-            // Finally, check if a global setting extender can handle it.
+            // Then, check if a global setting extender can handle it.
 
             Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? globalSettingsUpdateFunction = GetPropertyValueSetterFromGlobalExtenders(propertyName, unevaluatedPropertyValue);
             if (globalSettingsUpdateFunction is not null)
             {
                 await _launchSettingsProvider.UpdateGlobalSettingsAsync(globalSettingsUpdateFunction);
                 return;
+            }
+
+            // Finally, store it in ILaunchProfile.OtherSettings.
+
+            object? valueObject = null;
+            if (_rule?.GetProperty(propertyName) is BaseProperty property)
+            {
+                valueObject = property switch
+                {
+                    BoolProperty => bool.TryParse(unevaluatedPropertyValue, out bool result) ? result : null,
+                    IntProperty => int.TryParse(unevaluatedPropertyValue, out int result) ? result : null,
+                    StringProperty => unevaluatedPropertyValue,
+                    EnumProperty => unevaluatedPropertyValue,
+                    DynamicEnumProperty => unevaluatedPropertyValue,
+                    _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert strings to `{property.GetType()}`.")
+                };
+            }
+            else
+            {
+                valueObject = unevaluatedPropertyValue;
+            }
+
+            if (valueObject is not null)
+            {
+                profileUpdateAction = p => p.OtherSettings[propertyName] = valueObject;
+                await _launchSettingsProvider.TryUpdateProfileAsync(_context.ItemName, profileUpdateAction);
             }
 
             void setLaunchBrowserProperty(IWritableLaunchProfile profile)
