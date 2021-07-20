@@ -198,7 +198,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 LaunchBrowserPropertyName => profile.LaunchBrowser ? "true" : "false",
                 LaunchUrlPropertyName => profile.LaunchUrl ?? string.Empty,
                 EnvironmentVariablesPropertyName => ConvertDictionaryToString(profile.EnvironmentVariables) ?? string.Empty,
-                _ => GetPropertyValueFromExtenders(propertyName, profile, snapshot.GlobalSettings)
+                _ => GetExtensionPropertyValue(propertyName, profile, snapshot.GlobalSettings)
             };
         }
 
@@ -268,7 +268,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             _rule = rule;
         }
 
-        private string? GetPropertyValueFromExtenders(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
+        private string? GetExtensionPropertyValue(string propertyName, ILaunchProfile profile, ImmutableDictionary<string, object> globalSettings)
         {
             if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
             {
@@ -280,7 +280,54 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return globalSettingValueProvider.Value.OnGetPropertyValue(propertyName, globalSettings, rule: _rule);
             }
 
+            return GetOtherSettingsPropertyValue(propertyName, profile);
+        }
+
+        private string? GetOtherSettingsPropertyValue(string propertyName, ILaunchProfile profile)
+        {
+            if (profile.OtherSettings is not null
+                && profile.OtherSettings.TryGetValue(propertyName, out object? valueObject))
+            {
+                if (_rule?.GetProperty(propertyName) is BaseProperty property)
+                {
+                    string? valueString = null;
+                    valueString = property switch
+                    {
+                        BoolProperty => boolToString(valueObject),
+                        IntProperty => intToString(valueObject),
+                        StringProperty => valueObject as string,
+                        EnumProperty => valueObject as string,
+                        DynamicEnumProperty => valueObject as string,
+                        _ => throw new InvalidOperationException($"{nameof(LaunchProfileProjectProperties)} does not know how to convert `{property.GetType()}` to a string.")
+                    };
+
+                    return valueString;
+                }
+
+                return valueObject as string;
+            }
+
             return null;
+
+            string? boolToString(object valueObject)
+            {
+                if (valueObject is bool value)
+                {
+                    return value ? "true" : "false";
+                }
+
+                return null;
+            }
+
+            string? intToString(object valueObject)
+            {
+                if (valueObject is int value)
+                {
+                    return value.ToString();
+                }
+
+                return null;
+            }
         }
 
         private async Task<Action<IWritableLaunchProfile>?> GetPropertyValueSetterFromLaunchProfileExtendersAsync(string propertyName, string unevaluatedValue)

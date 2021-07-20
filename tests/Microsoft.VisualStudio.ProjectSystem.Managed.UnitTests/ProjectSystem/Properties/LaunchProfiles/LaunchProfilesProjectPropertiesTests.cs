@@ -582,6 +582,61 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             Assert.DoesNotContain("beta", names);
         }
 
+        [Fact]
+        public async Task WhenRetrievingValuesFromOtherSettings_ValuesArePropertyConvertedToStrings()
+        {
+            var profile1 = new WritableLaunchProfile
+            {
+                Name = "Profile1",
+                OtherSettings =
+                {
+                    { "anInteger", 1 },
+                    { "aBoolean", true },
+                    { "aString", "Hello, world" },
+                    { "anEnumStoredAsAsAString", "valueOne" },
+                    { "anotherString", "Hi, friends!" }
+                }
+            };
+            var launchSettingsProvider = ILaunchSettingsProviderFactory.Create(
+                launchProfiles: new[] { profile1.ToLaunchProfile() });
+
+            var rule = new Rule
+            {
+                Properties =
+                {
+                    new IntProperty { Name = "anInteger" },
+                    new BoolProperty { Name = "aBoolean" },
+                    new StringProperty { Name = "aString" },
+                    new EnumProperty { Name = "anEnumStoredAsAString" }
+                    // anotherString intentionally not represented
+                }
+            };
+
+            var properties = new LaunchProfileProjectProperties(
+                DefaultTestProjectPath,
+                "Profile1",
+                launchSettingsProvider,
+                EmptyLaunchProfileExtensionValueProviders,
+                EmptyGlobalSettingExtensionValueProviders);
+
+            properties.SetRuleContext(rule);
+
+            var anIntegerValue = await properties.GetEvaluatedPropertyValueAsync("anInteger");
+            Assert.Equal(expected: "1", actual: anIntegerValue);
+
+            var aBooleanValue = await properties.GetEvaluatedPropertyValueAsync("aBoolean");
+            Assert.Equal(expected: "true", actual: aBooleanValue);
+
+            var aStringValue = await properties.GetEvaluatedPropertyValueAsync("aString");
+            Assert.Equal(expected: "Hello, world", actual: aStringValue);
+
+            var anEnumStoredAsAsAStringValue = await properties.GetEvaluatedPropertyValueAsync("anEnumStoredAsAsAString");
+            Assert.Equal(expected: "valueOne", actual: anEnumStoredAsAsAStringValue);
+
+            var anotherStringValue = await properties.GetEvaluatedPropertyValueAsync("anotherString");
+            Assert.Equal(expected: "Hi, friends!", actual: anotherStringValue);
+        }
+
         /// <summary>
         /// Creates an <see cref="ILaunchSettingsProvider"/> with two empty profiles named
         /// "Profile1" and "Profile2".
