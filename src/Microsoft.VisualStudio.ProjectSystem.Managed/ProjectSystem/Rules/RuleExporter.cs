@@ -154,6 +154,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNetLanguageService)]
             [Order(Order.Default)]
             public static int LanguageServiceRule;
+
+            /// <summary>
+            ///     Represents the Razor files that are passed to Roslyn.
+            /// </summary>
+            [ExportRule(nameof(RazorSourceFile), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNetLanguageService)]
+            [Order(Order.Default)]
+            public static int RazorSourceFileRule;
         }
 
         /// <summary>
