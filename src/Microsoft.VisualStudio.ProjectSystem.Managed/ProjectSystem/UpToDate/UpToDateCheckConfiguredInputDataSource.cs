@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckConfiguredInputDataSource(
             ConfiguredProject containingProject,
             IActiveConfigurationGroupService activeConfigurationGroupService)
-            : base(containingProject, synchronousDisposal: true, registerDataSource: false)
+            : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
             _activeConfigurationGroupService = activeConfigurationGroupService;

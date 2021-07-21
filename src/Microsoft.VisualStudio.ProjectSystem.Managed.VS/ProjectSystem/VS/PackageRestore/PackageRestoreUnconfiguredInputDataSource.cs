@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         [ImportingConstructor]
         public PackageRestoreUnconfiguredInputDataSource(UnconfiguredProject project, IActiveConfigurationGroupService activeConfigurationGroupService)
-            : base(project, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             _project = project;
             _activeConfigurationGroupService = activeConfigurationGroupService;

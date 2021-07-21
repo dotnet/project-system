@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                                              IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
                                              IDesignTimeInputsDataSource inputsDataSource,
                                              IDesignTimeInputsFileWatcher fileWatcher)
-            : base(unconfiguredProjectServices, synchronousDisposal: true, registerDataSource: false)
+            : base(unconfiguredProjectServices, synchronousDisposal: false, registerDataSource: false)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;
