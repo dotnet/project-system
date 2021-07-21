@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
         public string ProjectEvaluationRule
         {
-            get { return Content.SchemaName; }
+            get { return RazorSourceFile.SchemaName; }
         }
 
         public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
