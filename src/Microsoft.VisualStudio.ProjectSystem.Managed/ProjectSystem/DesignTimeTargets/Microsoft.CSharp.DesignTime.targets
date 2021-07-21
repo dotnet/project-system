@@ -49,6 +49,15 @@
     
   </ItemGroup>
   
+  <!--
+    For the Razor language service to work we need to tell Roslyn about all of the Razor files in the project
+    which we do via an IProjectEvaluationHandler that reports items in the RazorSourceFile item type
+  -->
+  <ItemGroup>
+    <RazorSourceFile Include="**\*.cshtml" />
+    <RazorSourceFile Include="**\*.razor" />
+  </ItemGroup>
+  
   <!-- Targets -->
 
   <!-- Returns Csc command-line arguments for the language service -->
