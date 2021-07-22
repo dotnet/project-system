@@ -84,12 +84,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public void Dispose_WhenNotInitialized_DoesNotThrow()
+        public async Task Dispose_WhenNotInitialized_DoesNotThrow()
         {
             var project = UnconfiguredProjectFactory.Create();
 
             var loader = CreateInstance(project, out _);
-            loader.Dispose();
+
+            await loader.DisposeAsync();
 
             Assert.True(loader.IsDisposed);
         }
@@ -108,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var loader = CreateInstance(project, out ProjectValueDataSource<IConfigurationGroup<ProjectConfiguration>> source);
             await loader.InitializeAsync();
-            loader.Dispose();
+            await loader.DisposeAsync();
 
             var configurationGroups = IConfigurationGroupFactory.CreateFromConfigurationNames("Debug|AnyCPU");
 
