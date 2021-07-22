@@ -17,9 +17,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         private readonly ImmutableDictionary<string, Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> _valueProviders;
 
-        public InterceptedProjectProperties(
-            ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders,
-            IProjectProperties defaultProperties)
+        public InterceptedProjectProperties(ImmutableArray<Lazy<IInterceptingPropertyValueProvider, IInterceptingPropertyValueProviderMetadata>> valueProviders, IProjectProperties defaultProperties)
             : base(defaultProperties)
         {
             Requires.NotNullOrEmpty(valueProviders, nameof(valueProviders));
