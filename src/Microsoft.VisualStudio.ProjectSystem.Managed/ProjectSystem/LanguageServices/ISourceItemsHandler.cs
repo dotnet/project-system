@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
     /// <summary>
-    ///     Handles changes to project evaluation rule and applies them to a
+    ///     Handles changes to source items and applies them to a
     ///     <see cref="IWorkspaceProjectContext"/> instance.
     /// </summary>
     internal interface ISourceItemsHandler : IWorkspaceContextHandler

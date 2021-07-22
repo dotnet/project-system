@@ -234,9 +234,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (handler.Value is ISourceItemsHandler evaluationHandler)
+                if (handler.Value is ISourceItemsHandler sourceItemsHandler)
                 {
-                    evaluationHandler.Handle(version, update.Value.ProjectChanges, state, _logger);
+                    sourceItemsHandler.Handle(version, update.Value.ProjectChanges, state, _logger);
                 }
             }
 
