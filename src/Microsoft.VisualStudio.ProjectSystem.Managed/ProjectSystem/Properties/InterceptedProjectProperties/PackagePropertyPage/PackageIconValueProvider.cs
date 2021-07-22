@@ -20,8 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
 
-        //private string? _currentRelativePath;
-
         [ImportingConstructor]
         public PackageIconValueProvider(
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
@@ -41,127 +39,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return Path.Combine(packagePath, filename);
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        private async Task<(IProjectItem NoneItem, string ItemPackagePath, string ItemPackageIcon)?> GetExistingNoneItemAsync(string existingPackageIcon)
         {
-            //string filename = PathHelper.TryMakeRelativeToProjectDirectory()
-            //if (string.Equals(unevaluatedPropertyValue, NoneValue))
-            //{
-            //    await defaultProperties.DeletePropertyAsync(NeutralLanguagePropertyName);
-            //    return null;
-            //}
-            //await _projectAccessor.EnterWriteLockAsync((pc, ct) => Task.CompletedTask);
-            //await Task.CompletedTask;
-
-            string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
-            //string filename = Path.GetFileName(unevaluatedPropertyValue);
-
-            // TODO: Need to use evaluated value of PackagePath... need to check this.
-            // TODO: Need to calculate the PackageIcon based on PackagePath and file name... for matching.
-
-            string? existingPackageIcon = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageIconPropertyName);
-            IProjectItem? existingItem = null;
-            string packagePath = string.Empty;
             foreach (IProjectItem noneItem in await _sourceItemsProvider.GetItemsAsync(NoneItem))
             {
-                string? pack = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackPropertyName);
+                string existingIconFilename = Path.GetFileName(existingPackageIcon);
+                string pack = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackPropertyName);
                 if (TrueValue.Equals(pack, StringComparison.OrdinalIgnoreCase))
                 {
-                    string? itemPackagePath = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackagePathPropertyName);
+                    string itemPackagePath = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackagePathPropertyName);
                     string itemPackageIcon = CreatePackageIcon(noneItem.EvaluatedInclude, itemPackagePath);
 
-                    // If this is true, this item is the None item related to the PackageIcon.
-                    if (itemPackageIcon.Equals(existingPackageIcon, StringComparison.Ordinal))
+                    string itemIconFilename = Path.GetFileName(itemPackageIcon);
+                    // Instead of doing pure equality between itemPackageIcon and existingPackageIcon, a user may update the PackagePath
+                    // of the item and forget to update the PackageIcon to reflect those changes, or vice versa. Instead, if the filename
+                    // of this packed None item and the filename of the PackageIcon match, consider those to be related to one another.
+                    if (itemIconFilename.Equals(existingIconFilename, StringComparison.Ordinal))
                     {
-                        // The new filepath is the same as the current. No item changes are required.
-                        if (relativePath.Equals(noneItem.EvaluatedInclude, StringComparison.Ordinal))
-                        {
-                            return itemPackageIcon;
-                        }
-
-                        existingItem = noneItem;
-                        packagePath = itemPackagePath;
-                        break;
+                        return (noneItem, itemPackagePath, itemPackageIcon);
                     }
                 }
             }
 
-            //if (relativePath.Equals(_currentRelativePath, StringComparison.Ordinal))
-            //{
-            //    return filename;
-            //}
+            return null;
+        }
 
-            //if (_currentRelativePath != null)
-            //{
-            //    var currentItem = await _sourceItemsProvider.FindItemByNameAsync(_currentRelativePath);
-            //    if(currentItem != null && NoneItem.Equals(currentItem?.ItemType, StringComparison.Ordinal))
-            //    {
-            //        await _sourceItemsProvider.RemoveAsync(currentItem!);
-            //    }
-            //}
-
-            if (existingItem != null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        {
+            string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
+            string existingPackageIcon = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageIconPropertyName);
+            (IProjectItem, string, string)? existingGroup = await GetExistingNoneItemAsync(existingPackageIcon);
+            string packagePath = string.Empty;
+            if (existingGroup != null)
             {
-                await existingItem.SetUnevaluatedIncludeAsync(relativePath);
+                (IProjectItem noneItem, string itemPackagePath, string itemPackageIcon) = existingGroup.Value;
+                // The new filepath is the same as the current. No item changes are required.
+                if (relativePath.Equals(noneItem.EvaluatedInclude, StringComparison.Ordinal))
+                {
+                    return itemPackageIcon;
+                }
+
+                await noneItem.SetUnevaluatedIncludeAsync(relativePath);
+                packagePath = itemPackagePath;
             }
             else
             {
                 await _sourceItemsProvider.AddAsync(NoneItem, relativePath, new Dictionary<string, string> { { PackPropertyName, "True" }, { PackagePathPropertyName, packagePath } });
             }
 
-
-            //if(PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, unevaluatedPropertyValue, out var relativePath))
-            //{
-            
-            //}
-
-            //await defaultProperties.SetPropertyValueAsync("PackageIconUrl")
             return CreatePackageIcon(relativePath, packagePath);
-            //return null;
         }
 
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        private async Task<string> GetItemIncludeValueAsync(string propertyValue)
         {
-            //if (string.IsNullOrEmpty(evaluatedPropertyValue))
-            //{
-            //    return Task.FromResult(NoneValue);
-            //}
-
-            //if (PathHelper.TryMakeRelativeToProjectDirectory(_unconfiguredProject, evaluatedPropertyValue, out var relativePath))
-            //{
-            //    return Task.FromResult(relativePath);
-            //}
-
-            //return Task.FromResult(string.Empty);
-            //return Task.FromResult(evaluatedPropertyValue);
-            //return null;
-
-            //foreach (var noneItem in await _sourceItemsProvider.GetItemsAsync(NoneItem))
-            //{
-            //    if (noneItem.EvaluatedInclude.EndsWith(evaluatedPropertyValue))
-            //    {
-            //        return noneItem.EvaluatedInclude;
-            //    }
-            //}
-
-            foreach (IProjectItem noneItem in await _sourceItemsProvider.GetItemsAsync(NoneItem))
-            {
-                string? pack = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackPropertyName);
-                if (TrueValue.Equals(pack, StringComparison.OrdinalIgnoreCase))
-                {
-                    string? itemPackagePath = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackagePathPropertyName);
-                    string itemPackageIcon = CreatePackageIcon(noneItem.EvaluatedInclude, itemPackagePath);
-
-                    // If this is true, this item is the None item related to the PackageIcon.
-                    if (itemPackageIcon.Equals(evaluatedPropertyValue, StringComparison.Ordinal))
-                    {
-                        return noneItem.EvaluatedInclude;
-                        //return itemPackageIcon;
-                    }
-                }
-            }
-
-            //string filename = Path.GetFileName(evaluatedPropertyValue);
-            return evaluatedPropertyValue;
+            (IProjectItem noneItem, string, string)? existingGroup = await GetExistingNoneItemAsync(propertyValue);
+            return existingGroup?.noneItem.EvaluatedInclude ?? propertyValue;
         }
+
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties) =>
+            GetItemIncludeValueAsync(unevaluatedPropertyValue);
+
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties) =>
+            GetItemIncludeValueAsync(evaluatedPropertyValue);
     }
 }
