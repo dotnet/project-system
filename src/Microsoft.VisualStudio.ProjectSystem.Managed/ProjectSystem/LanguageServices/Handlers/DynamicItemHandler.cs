@@ -36,6 +36,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             foreach (var (_, projectChange) in projectChanges)
             {
+                if (!projectChange.Difference.AnyChanges)
+                    continue;
+
                 IProjectChangeDiff difference = HandlerServices.NormalizeRenames(projectChange.Difference);
 
                 foreach (string includePath in difference.RemovedItems)
