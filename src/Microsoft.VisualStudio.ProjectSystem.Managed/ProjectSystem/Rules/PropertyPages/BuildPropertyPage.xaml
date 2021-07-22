@@ -387,7 +387,7 @@
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="RunPostBuildEvent"
-                  Persistence="ProjectFile"
+                  Persistence="ProjectFileWithInterception"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
     <EnumValue Name="Always"
