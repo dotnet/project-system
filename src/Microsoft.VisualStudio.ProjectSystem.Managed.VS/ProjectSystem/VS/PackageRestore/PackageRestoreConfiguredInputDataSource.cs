@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         [ImportingConstructor]
         public PackageRestoreConfiguredInputDataSource(ConfiguredProject project, IProjectSubscriptionService projectSubscriptionService)
-            : base(project, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             _containingProject = project.UnconfiguredProject;
             _projectSubscriptionService = projectSubscriptionService;

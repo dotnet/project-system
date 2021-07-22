@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public UpToDateCheckImplicitConfiguredInputDataSource(
             ConfiguredProject containingProject,
             IProjectItemSchemaService projectItemSchemaService)
-            : base(containingProject, synchronousDisposal: true, registerDataSource: false)
+            : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
             _projectItemSchemaService = projectItemSchemaService;
