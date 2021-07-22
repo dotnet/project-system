@@ -387,12 +387,16 @@
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
                   PersistedName="RunPostBuildEvent"
-                  Persistence="ProjectFile"
+                  Persistence="ProjectFileWithInterception"
                   SourceOfDefaultValue="AfterContext" />
     </EnumProperty.DataSource>
-    <EnumValue Name="Always" />
-    <EnumValue Name="OnBuildSuccess" IsDefault="True" />
-    <EnumValue Name="OnOutputUpdated" />
+    <EnumValue Name="Always"
+               DisplayName="Always" />
+    <EnumValue Name="OnBuildSuccess"
+               DisplayName="When the build succeeds"
+               IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated"
+               DisplayName="When the output is updated" />
   </EnumProperty>
 
   <BoolProperty Name="SignAssembly"
