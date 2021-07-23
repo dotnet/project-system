@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
-        internal class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
+        internal partial class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
         {
             private readonly ConfiguredProject _project;
             private readonly IProjectSubscriptionService _projectSubscriptionService;
@@ -95,7 +95,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
                             target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
-                                OnProjectChangedAsync(e, WorkspaceContextHandlerType.Evaluation),
+                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
                             linkOptions: DataflowOption.PropagateCompletion,
@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
                             target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
-                                OnProjectChangedAsync(e, WorkspaceContextHandlerType.ProjectBuild),
+                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.ProjectBuild),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
                             linkOptions: DataflowOption.PropagateCompletion,
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                         _projectSubscriptionService.SourceItemsRuleSource.SourceBlock.SyncLinkOptions(),
                         _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
                             target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
-                                OnProjectChangedAsync(e, WorkspaceContextHandlerType.SourceItems),
+                                OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.SourceItems),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
                             linkOptions: DataflowOption.PropagateCompletion,
@@ -181,20 +181,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            internal Task OnProjectChangedAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, IProjectBuildSnapshot buildSnapshot)> update, WorkspaceContextHandlerType handlerType)
+            internal Task OnProjectChangedAsync(ProjectChange change, WorkspaceContextHandlerType handlerType)
             {
-                return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, handlerType, ct), _tasksService.UnloadCancellationToken);
+                return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(change, handlerType, ct), _tasksService.UnloadCancellationToken);
             }
 
-            private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription, IProjectBuildSnapshot buildSnapshot)> update, WorkspaceContextHandlerType handlerType, CancellationToken cancellationToken)
+            private async Task ApplyProjectChangesUnderLockAsync(ProjectChange change, WorkspaceContextHandlerType handlerType, CancellationToken cancellationToken)
             {
                 // NOTE we cannot call CheckForInitialized here, as this method may be invoked during initialization
                 Assumes.NotNull(_contextAccessor);
 
                 IWorkspaceProjectContext context = _contextAccessor.Context;
-                IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
                 bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-                bool isActiveConfiguration = update.Value.project == _project;
+                bool isActiveConfiguration = change.Project == _project;
 
                 var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
 
@@ -205,15 +204,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     switch (handlerType)
                     {
                         case WorkspaceContextHandlerType.Evaluation:
-                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(subscription, state, cancellationToken);
+                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(change.Subscription, state, cancellationToken);
                             break;
 
                         case WorkspaceContextHandlerType.ProjectBuild:
-                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, update.Value.buildSnapshot, state, cancellationToken);
+                            Assumes.NotNull(change.BuildSnapshot);
+                            await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(change.Subscription, change.BuildSnapshot, state, cancellationToken);
                             break;
 
                         case WorkspaceContextHandlerType.SourceItems:
-                            await _applyChangesToWorkspaceContext!.Value.ApplySourceItemsAsync(subscription, state, cancellationToken);
+                            await _applyChangesToWorkspaceContext!.Value.ApplySourceItemsAsync(change.Subscription, state, cancellationToken);
                             break;
                     }
                 }
@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 {
                     context.EndBatch();
 
-                    NotifyOutputDataCalculated(update.DataSourceVersions, handlerType);
+                    NotifyOutputDataCalculated(change.DataSourceVersions, handlerType);
                 }
             }
 
