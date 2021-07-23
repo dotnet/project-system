@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Task = System.Threading.Tasks.Task;
@@ -104,6 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
         {
+            await TaskScheduler.Default;
+
             await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId);
         }
 

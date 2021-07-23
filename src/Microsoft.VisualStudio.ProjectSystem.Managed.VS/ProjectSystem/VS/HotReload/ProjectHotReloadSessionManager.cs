@@ -19,6 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
     internal class ProjectHotReloadSessionManager : IProjectHotReloadSessionManager
     {
         private readonly UnconfiguredProject _project;
+        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
         private readonly IActiveDebugFrameworkServices _activeDebugFrameworkServices;
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
@@ -32,11 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
             UnconfiguredProject project,
+            IProjectFaultHandlerService projectFaultHandlerService,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService)
         {
             _project = project;
+            _projectFaultHandlerService = projectFaultHandlerService;
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
@@ -142,7 +145,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return targetFrameworkVersion;
         }
 
-        private async Task ProcessExitedAsync(HotReloadState hotReloadState)
+        private void OnProcessExited(HotReloadState hotReloadState)
+        {
+            _projectFaultHandlerService.Forget(OnProcessExitedAsync(hotReloadState), _project);
+        }
+
+        private async Task OnProcessExitedAsync(HotReloadState hotReloadState)
         {
             Assumes.NotNull(hotReloadState.Session);
             Assumes.NotNull(hotReloadState.Process);
@@ -202,11 +210,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 _sessionManager = sessionManager;
             }
 
-#pragma warning disable VSTHRD100 // Avoid async void methods
-            internal async void OnProcessExited(object sender, EventArgs e)
-#pragma warning restore VSTHRD100 // Avoid async void methods
+            internal void OnProcessExited(object sender, EventArgs e)
             {
-                await _sessionManager.ProcessExitedAsync(this);
+                _sessionManager.OnProcessExited(this);
             }
 
             public Task OnAfterChangesAppliedAsync(CancellationToken cancellationToken)
