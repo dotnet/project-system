@@ -27,6 +27,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     BuildSnapshot = update.Value.buildSnapshot;
                     DataSourceVersions = update.DataSourceVersions;
                 }
+
+                public ProjectChange(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update)
+                {
+                    Project = update.Value.project;
+                    Subscription = update.Derive(u => u.subscription);
+                    DataSourceVersions = update.DataSourceVersions;
+                }
             }
         }
     }
