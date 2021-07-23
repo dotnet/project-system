@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.LanguageServices.ExternalAccess.ProjectSystem.Api;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.References
 {
     [Export(typeof(IProjectSystemReferenceCleanupService))]
+    [Export(typeof(IProjectSystemReferenceCleanupService2))]
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService2
     {
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
