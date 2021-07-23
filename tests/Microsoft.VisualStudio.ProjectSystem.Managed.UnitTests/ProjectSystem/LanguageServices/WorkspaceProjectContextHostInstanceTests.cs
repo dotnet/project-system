@@ -168,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(tasksService: tasksService, applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
             var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
             var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
             await Assert.ThrowsAsync<OperationCanceledException>(() =>
             {
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             var instance = await CreateInitializedInstanceAsync(applyChangesToWorkspaceContext: applyChangesToWorkspaceContext, activeWorkspaceProjectContextTracker: activeWorkspaceProjectContextTracker);
 
-            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>(default);
+            var update = IProjectVersionedValueFactory.Create<(ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot)>((default!, default!, Mock.Of<IProjectBuildSnapshot>()));
             var change = new WorkspaceProjectContextHostInstance.ProjectChange(update);
             await instance.OnProjectChangedAsync(change, handlerType);
 
