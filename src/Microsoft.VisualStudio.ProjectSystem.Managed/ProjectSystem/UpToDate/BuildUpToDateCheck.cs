@@ -44,8 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly IProjectAsynchronousTasksService _tasksService;
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
+        private readonly IUpToDateCheckHost _upToDateCheckHost;
 
-        private Subscription _subscription;
+        private ISubscription _subscription;
 
         private int _isDisposed;
 
@@ -56,7 +57,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             ConfiguredProject configuredProject,
             [Import(ExportContractNames.Scopes.ConfiguredProject)] IProjectAsynchronousTasksService tasksService,
             ITelemetryService telemetryService,
-            IFileSystem fileSystem)
+            IFileSystem fileSystem,
+            IUpToDateCheckHost upToDateCheckHost)
         {
             _inputDataSource = inputDataSource;
             _projectSystemOptions = projectSystemOptions;
@@ -64,7 +66,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _tasksService = tasksService;
             _telemetryService = telemetryService;
             _fileSystem = fileSystem;
-            _subscription = new(inputDataSource, configuredProject);
+            _upToDateCheckHost = upToDateCheckHost;
+            _subscription = new Subscription(inputDataSource, configuredProject, upToDateCheckHost);
         }
 
         public Task ActivateAsync()
@@ -93,7 +96,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         private void RecycleSubscription()
         {
-            Subscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_inputDataSource, _configuredProject));
+            ISubscription subscription = Interlocked.Exchange(ref _subscription, new Subscription(_inputDataSource, _configuredProject, _upToDateCheckHost));
 
             subscription.Dispose();
         }
@@ -103,11 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             if (!_tasksService.IsTaskQueueEmpty(ProjectCriticalOperation.Build))
             {
                 return log.Fail("CriticalTasks", "Critical build tasks are running, not up to date.");
-            }
-
-            if (state.LastVersionSeen == null || _configuredProject.ProjectVersion.CompareTo(state.LastVersionSeen) > 0)
-            {
-                return log.Fail("ProjectInfoOutOfDate", "Project information is older than current project version, not up to date.");
             }
 
             if (state.IsDisabled)
@@ -673,7 +671,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // Start the stopwatch now, so we include any lock acquisition in the timing
             var sw = Stopwatch.StartNew();
 
-            Subscription subscription = Volatile.Read(ref _subscription);
+            ISubscription subscription = Volatile.Read(ref _subscription);
 
             return await subscription.RunAsync(IsUpToDateInternalAsync, cancellationToken);
 
@@ -728,16 +726,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             public TestAccessor(BuildUpToDateCheck check) => _check = check;
 
-            public UpToDateCheckConfiguredInput? State => _check._subscription.State;
-
-            public void SetLastCheckedAtUtc(DateTime value) => _check._subscription.LastCheckedAtUtc = value;
-
-            public DateTime GetLastCheckedAtUtc() => _check._subscription.LastCheckedAtUtc;
-
-            public void OnChanged(IProjectVersionedValue<UpToDateCheckConfiguredInput> value)
-            {
-                _check._subscription.OnChanged(value);
-            }
+            public void SetSubscription(ISubscription subscription) => _check._subscription = subscription;
         }
 
         /// <summary>For unit testing only.</summary>

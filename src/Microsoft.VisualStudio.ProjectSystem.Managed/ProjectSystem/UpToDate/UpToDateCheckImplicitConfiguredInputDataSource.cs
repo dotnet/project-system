@@ -90,8 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     sourceItemsUpdate: e.Value.Item2,
                     projectSnapshot: snapshot,
                     projectItemSchema: e.Value.Item4,
-                    projectCatalogSnapshot: e.Value.Item5,
-                    configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+                    projectCatalogSnapshot: e.Value.Item5);
 
                 return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);
             }
