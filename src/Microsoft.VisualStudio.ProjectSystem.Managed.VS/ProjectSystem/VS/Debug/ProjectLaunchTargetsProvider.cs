@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
                 IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
 
-                string? runCommand = await GetTargetCommandAsync(properties, validateSettings: false);
+                string? runCommand = await GetTargetCommandAsync(properties, validateSettings: true);
                 if (string.IsNullOrWhiteSpace(runCommand))
                 {
                     return false;
