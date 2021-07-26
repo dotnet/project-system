@@ -40,17 +40,11 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="debug type" />
     </EnumProperty.Metadata>
-    <EnumValue Name="none"
-             DisplayName="No symbols are emitted" />
-
-    <EnumValue Name="pdbonly"
-             DisplayName="PDB Only" />
-    <EnumValue Name="full"
-             DisplayName="PDB file, current platform" />
-    <EnumValue Name="portable"
-             DisplayName="PDB file, portable across platforms" />
-    <EnumValue Name="embedded"
-             DisplayName="Embedded in DLL/EXE, portable across platforms" />
+    <EnumValue Name="none" DisplayName="No symbols are emitted" />
+    <EnumValue Name="pdbonly" DisplayName="PDB Only" />
+    <EnumValue Name="full" DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable" DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded" DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
   <StringProperty Name="LangVersion" Category="General" Visible="False" />
