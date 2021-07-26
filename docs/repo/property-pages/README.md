@@ -18,6 +18,7 @@ To customise or extend the properties displayed for a given project start with t
 
 - [HOW TO: Add a new project property page](how-to-add-a-new-project-property-page.md)
 - [HOW TO: Add a new Launch Profile kind](how-to-add-a-new-launch-profile-kind.md)
+- [HOW TO: Extend an existing project property page](how-to-extend-a-project-property-page.md)
 
 And then check these documents for more details:
 

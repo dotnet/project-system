@@ -28,6 +28,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             ///     Represents the evaluation items containing the supported (possible) target frameworks
             ///     for a project.
             /// </summary>
+            [ExportRule(nameof(SupportedTargetFrameworkAlias), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedTargetFrameworkAliasRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) target frameworks
+            ///     for a project.
+            /// </summary>
             [ExportRule(nameof(SupportedTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]

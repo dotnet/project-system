@@ -337,6 +337,21 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="new">When the build succeeds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="new">When the output is updated</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
         <target state="translated">0</target>
