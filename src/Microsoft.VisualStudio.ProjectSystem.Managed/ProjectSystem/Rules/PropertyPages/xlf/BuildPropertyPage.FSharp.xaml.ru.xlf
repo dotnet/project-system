@@ -17,6 +17,31 @@
         <target state="new">optimise;optimisation</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|Description">
+        <source>Enable tail calls generation.</source>
+        <target state="new">Enable tail calls generation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|DisplayName">
+        <source>Generate tail calls</source>
+        <target state="new">Generate tail calls</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|Metadata|SearchTerms">
+        <source>tailcall;tail;tail calls</source>
+        <target state="new">tailcall;tail;tail calls</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OtherFlags|Description">
+        <source>Additional compiler flags.</source>
+        <target state="new">Additional compiler flags.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OtherFlags|DisplayName">
+        <source>Other flags</source>
+        <target state="new">Other flags</target>
+        <note />
+      </trans-unit>
     </body>
   </file>
 </xliff>

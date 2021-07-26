@@ -15,6 +15,20 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <BoolProperty Name="Tailcalls"
+              DisplayName="Generate tail calls"
+              Description="Enable tail calls generation."
+              Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="tailcall;tail;tail calls" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <StringProperty Name="OtherFlags"
+                DisplayName="Other flags"
+                Description="Additional compiler flags."
+                Category="General" />
+
   <EnumProperty Name="DebugType" Category="General" Visible="False" />
   <StringProperty Name="LangVersion" Category="General" Visible="False" />
 
