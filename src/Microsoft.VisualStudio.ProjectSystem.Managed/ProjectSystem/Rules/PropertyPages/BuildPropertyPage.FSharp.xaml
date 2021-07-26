@@ -29,11 +29,9 @@
                 Description="Additional compiler flags."
                 Category="General" />
 
-  <EnumProperty Name="DebugType" Category="General" Visible="False" />
   <StringProperty Name="LangVersion" Category="General" Visible="False" />
 
   <BoolProperty Name="CheckForOverflowUnderflow" Category="General" Visible="False" />
-  <BoolProperty Name="Deterministic" Category="General" Visible="False" />
 
   <EnumProperty Name="ErrorReport" Category="General" Visible="False" />
   <EnumProperty Name="FileAlignment" Category="General" Visible="False" />
