@@ -58,18 +58,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             return Path.Combine(packagePath, filename);
         }
 
-        private async Task<IProjectItem?> GetExistingNoneItemAsync(string existingPackageIcon)
+        private async Task<IProjectItem?> GetExistingNoneItemAsync(string existingPackageIcon, bool includeOutsideOfProject)
         {
             foreach (IProjectItem noneItem in await _sourceItemsProvider.GetItemsAsync(None.SchemaName))
             {
-                string pack = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackMetadataName);
-                // Instead of doing pure equality between itemPackageIcon and existingPackageIcon, a user may update the PackagePath
-                // of the item and forget to update the PackageIcon to reflect those changes, or vice versa. Instead, if the filename
-                // of this packed None item and the filename of the PackageIcon match, consider those to be related to one another.
-                if (bool.TryParse(pack, out bool packValue) && packValue &&
-                    Path.GetFileName(noneItem.EvaluatedInclude).Equals(Path.GetFileName(existingPackageIcon), StringComparisons.PropertyLiteralValues))
+                // None items outside of the project file cannot be updated. Consider those None items only for reading.
+                if (includeOutsideOfProject || noneItem.PropertiesContext.IsProjectFile)
                 {
-                    return noneItem;
+                    string pack = await noneItem.Metadata.GetEvaluatedPropertyValueAsync(PackMetadataName);
+                    // Instead of doing pure equality between itemPackageIcon and existingPackageIcon, a user may update the PackagePath
+                    // of the item and forget to update the PackageIcon to reflect those changes, or vice versa. Instead, if the filename
+                    // of this packed None item and the filename of the PackageIcon match, consider those to be related to one another.
+                    if (bool.TryParse(pack, out bool packValue) && packValue &&
+                        Path.GetFileName(noneItem.EvaluatedInclude).Equals(Path.GetFileName(existingPackageIcon), StringComparisons.PropertyLiteralValues))
+                    {
+                        return noneItem;
+                    }
                 }
             }
 
@@ -80,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         {
             string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
             string existingPackageIcon = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageIconPropertyName);
-            IProjectItem? existingItem = await GetExistingNoneItemAsync(existingPackageIcon);
+            IProjectItem? existingItem = await GetExistingNoneItemAsync(existingPackageIcon, includeOutsideOfProject: false);
             string packagePath = string.Empty;
             if (existingItem != null)
             {
@@ -104,7 +108,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 
         private async Task<string> GetItemIncludeValueAsync(string propertyValue)
         {
-            IProjectItem? existingItem = await GetExistingNoneItemAsync(propertyValue);
+            IProjectItem? existingItem = await GetExistingNoneItemAsync(propertyValue, includeOutsideOfProject: true);
             return existingItem?.EvaluatedInclude ?? propertyValue;
         }
 
