@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Description">
-        <source>Enable tail calls generation.</source>
-        <target state="new">Enable tail calls generation.</target>
+        <source>Enable tail call generation.</source>
+        <target state="new">Enable tail call generation.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|DisplayName">
@@ -28,8 +28,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Metadata|SearchTerms">
-        <source>tailcall;tail;tail calls</source>
-        <target state="new">tailcall;tail;tail calls</target>
+        <source>tailcall</source>
+        <target state="new">tailcall</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
@@ -62,19 +62,14 @@
         <target state="new">No symbols are emitted</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|DebugType.pdbonly|DisplayName">
-        <source>PDB Only</source>
-        <target state="new">PDB Only</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
         <target state="new">PDB file, portable across platforms</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|Description">
-        <source>Additional compiler flags.</source>
-        <target state="new">Additional compiler flags.</target>
+        <source>Additional compiler flags. Separate flags with whitespace.</source>
+        <target state="new">Additional compiler flags. Separate flags with whitespace.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|DisplayName">
