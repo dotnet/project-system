@@ -34,8 +34,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// </summary>
         public string? NewestImportInput { get; }
 
-        public IComparable? LastVersionSeen { get; }
-
         public bool IsDisabled { get; }
 
         /// <summary>
@@ -145,7 +143,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             string? copyUpToDateMarkerItem,
             string? outputRelativeOrFullPath,
             string? newestImportInput,
-            IComparable? lastVersionSeen,
             bool isDisabled,
             ImmutableArray<string> itemTypes,
             ImmutableDictionary<string, ImmutableArray<(string, string?, BuildUpToDateCheck.CopyType)>> itemsByItemType,
@@ -166,7 +163,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             CopyUpToDateMarkerItem = copyUpToDateMarkerItem;
             OutputRelativeOrFullPath = outputRelativeOrFullPath;
             NewestImportInput = newestImportInput;
-            LastVersionSeen = lastVersionSeen;
             IsDisabled = isDisabled;
             ItemTypes = itemTypes;
             ItemsByItemType = itemsByItemType;
@@ -203,8 +199,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             IProjectSubscriptionUpdate sourceItemsUpdate,
             IProjectSnapshot2 projectSnapshot,
             IProjectItemSchema projectItemSchema,
-            IProjectCatalogSnapshot projectCatalogSnapshot,
-            IComparable configuredProjectVersion)
+            IProjectCatalogSnapshot projectCatalogSnapshot)
         {
             bool isDisabled = jointRuleUpdate.CurrentState.IsPropertyTrue(ConfigurationGeneral.SchemaName, ConfigurationGeneral.DisableFastUpToDateCheckProperty, defaultValue: false);
 
@@ -449,7 +444,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 copyUpToDateMarkerItem,
                 outputRelativeOrFullPath,
                 newestImportInput,
-                lastVersionSeen: configuredProjectVersion,
                 isDisabled: isDisabled,
                 itemTypes: itemTypes.ToImmutableArray(),
                 itemsByItemType: itemsByItemTypeBuilder.ToImmutable(),
@@ -560,7 +554,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
-                LastVersionSeen,
                 IsDisabled,
                 ItemTypes,
                 ItemsByItemType,
@@ -588,7 +581,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 CopyUpToDateMarkerItem,
                 OutputRelativeOrFullPath,
                 NewestImportInput,
-                LastVersionSeen,
                 IsDisabled,
                 ItemTypes,
                 ItemsByItemType,
