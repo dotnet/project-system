@@ -27,7 +27,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
         Friend Const EditorGuidString = "04b8ab82-a572-4fef-95ce-5222444b6b64"
 
-        'The all important GUIDs
+        'The all important GUIDs 
         Private Shared ReadOnly s_editorGuid As New Guid(EditorGuidString)
         Private Shared ReadOnly s_commandUIGuid As New Guid("{d06cd5e3-d961-44dc-9d80-c89a1a8d9d56}")
 
@@ -129,7 +129,7 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     DocView = Designer.View 'Gets the object that can support IVsWindowPane
 
                     'An empty caption allows the projectname to be used as the caption
-                    'The OpenSpecificEditor call takes a "%1" for the user caption.  We currently use the
+                    'The OpenSpecificEditor call takes a "%1" for the user caption.  We currently use the 
                     ' project name
                     Caption = ""
 
