@@ -448,7 +448,7 @@
       <DataAccess>None</DataAccess>
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
-
+    
     <Compile Update="ProjectSystem\Rules\SupportedTargetFramework.cs">
       <DependentUpon>SupportedTargetFramework.xaml</DependentUpon>
     </Compile>
@@ -562,4 +562,5 @@
     <AdditionalFiles Include="PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
   </ItemGroup>
+
 </Project>
