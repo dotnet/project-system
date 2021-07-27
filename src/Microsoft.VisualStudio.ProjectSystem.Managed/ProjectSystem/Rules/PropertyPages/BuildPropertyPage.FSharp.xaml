@@ -17,10 +17,10 @@
 
   <BoolProperty Name="Tailcalls"
               DisplayName="Generate tail calls"
-              Description="Enable tail calls generation."
+              Description="Enable tail call generation."
               Category="General">
     <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="tailcall;tail;tail calls" />
+      <NameValuePair Name="SearchTerms" Value="tailcall" />
     </BoolProperty.Metadata>
   </BoolProperty>
 
