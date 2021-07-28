@@ -44,16 +44,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             _unconfiguredProject = unconfiguredProject;
         }
 
-        private static bool IsForwardslashOrBackslash(string? path) =>
-            "\\".Equals(path, StringComparisons.Paths) || "/".Equals(path, StringComparisons.Paths);
-
         // https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#packageicon
         private static string CreatePackageIcon(string filePath, string? packagePath)
         {
             string filename = Path.GetFileName(filePath);
             // Make a slash-only value into empty string, so it won't get prepended onto the path.
             // Also, make sure that the packagePath is non-null, so Path.Combine doesn't throw an ArgumentNullException.
-            packagePath = IsForwardslashOrBackslash(packagePath) ? string.Empty : (packagePath ?? string.Empty);
+            if (packagePath is null || "\\".Equals(packagePath, StringComparisons.Paths) || "/".Equals(packagePath, StringComparisons.Paths))
+            {
+                packagePath = string.Empty;
+            }
             // The assumption is that packagePath does not contain a path to a file; only a directory path.
             return Path.Combine(packagePath, filename);
         }
