@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 {
     [ExcludeFromCodeCoverage]
     [SuppressMessage("Style", "IDE0016:Use 'throw' expression")]
-    internal partial class WindowsFormsProjectSchema
+    internal partial class WindowsFormsConfiguration
     {
     }
 }

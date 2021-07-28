@@ -205,12 +205,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
         /// <summary>
         ///     Contains rules for the Windows Forms designer component.
         /// </summary>
-        private static class RulesExporter
+        private static class WindowsFormsConfigurationRules
         {
-            [ExportRule(nameof(WindowsFormsProjectSchema), PropertyPageContexts.Project)]
+            [ExportRule(nameof(WindowsFormsConfiguration), PropertyPageContexts.Project)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
-            public static int WindowsFormsProjectSchemaRule;
+            public static int WindowsFormsConfigurationSchemaRule;
         }
     }
 }
