@@ -506,10 +506,10 @@
       <RuleInjection>None</RuleInjection>
     </XamlPropertyRule>
 
-    <Compile Update="ProjectSystem\Rules\PropertyPages\WindowsFormsProjectSchema.cs">
+    <Compile Update="ProjectSystem\Rules\WindowsFormsProjectSchema.cs">
       <DependentUpon>WindowsFormsProjectSchema.xaml</DependentUpon>
     </Compile>
-    <XamlPropertyRule Include="ProjectSystem\Rules\PropertyPages\WindowsFormsProjectSchema.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\WindowsFormsProjectSchema.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <XlfInput>false</XlfInput>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
