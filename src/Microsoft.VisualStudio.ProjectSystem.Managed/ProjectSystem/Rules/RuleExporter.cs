@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [ExportRule(nameof(WindowsFormsConfiguration), PropertyPageContexts.Project)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
-            public static int WindowsFormsConfigurationSchemaRule;
+            public static int WindowsFormsConfigurationRule;
         }
     }
 }
