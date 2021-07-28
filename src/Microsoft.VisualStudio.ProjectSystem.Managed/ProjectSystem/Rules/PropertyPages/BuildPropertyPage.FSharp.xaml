@@ -10,7 +10,7 @@
   <BoolProperty Name="Optimize"
                 DisplayName="Optimize code"
                 Description="Enable compiler optimizations for smaller, faster, and more efficient output."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options"
+                HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
                 Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="optimise;optimisation" />
@@ -20,7 +20,7 @@
   <BoolProperty Name="Tailcalls"
               DisplayName="Generate tail calls"
               Description="Enable tail call generation."
-              HelpUrl="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options"
+              HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
               Category="General">
     <BoolProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="tailcall" />
@@ -30,13 +30,13 @@
   <StringProperty Name="OtherFlags"
                 DisplayName="Other flags"
                 Description="Additional compiler flags. Separate flags with whitespace."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options"
+                HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
                 Category="General" />
 
   <EnumProperty Name="DebugType"
               DisplayName="Debug symbols"
               Description="Specifies the kind of debug symbols produced during build."
-              HelpUrl="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-options"
+              HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
               Category="General">
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
