@@ -63,19 +63,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     {
                         lock (SyncObject)
                         {
-                            if (_whenNominatedTask is not null)
+                            if (t.IsFaulted)
                             {
-                                if (t.IsFaulted)
-                                {
-                                    _whenNominatedTask.SetException(t.Exception);
-                                }
-                                else
-                                {
-                                    _whenNominatedTask.TrySetCanceled();
-                                }
+                                _whenNominatedTask?.SetException(t.Exception);
+                            }
+                            else
+                            {
+                                _whenNominatedTask?.TrySetCanceled();
                             }
                         }
-                    }, CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Default);
+                    }, TaskScheduler.Default);
                 }
             }
 
