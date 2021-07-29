@@ -260,6 +260,13 @@
                   Category="Resources"
                   Description="Sets the .ico file that you want to use as your program icon."
                   Subtype="file">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Icon files (*.ico)|*.ico|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">

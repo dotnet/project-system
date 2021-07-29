@@ -97,6 +97,13 @@
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134"
                   Category="General"
                   Subtype="file">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Image files (*.png,*.jpg,*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -105,10 +112,17 @@
 
   <StringProperty Name="PackageReadmeFile"
                   DisplayName="README"
-                  Description="The readme document for the package. Supported file formats include only Markdown (.md)."
+                  Description="The README document for the package. Must be a Markdown (.md) file."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
                   Category="General"
                   Subtype="file">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Markdown files (*.md)|*.md|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
