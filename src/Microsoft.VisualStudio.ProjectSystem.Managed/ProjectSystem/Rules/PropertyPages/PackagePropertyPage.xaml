@@ -103,6 +103,18 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="PackageReadmeFile"
+                  DisplayName="README"
+                  Description="The readme document for the package. Supported file formats include only Markdown (.md)."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
+                  Category="General"
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="RepositoryUrl"
                   DisplayName="Repository URL"
                   Description="Specifies the URL for the repository where the source code for the package resides and/or from which it's being built. For linking to the project page, use the 'Project URL' field, instead."
@@ -219,17 +231,5 @@
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
-
-  <StringProperty Name="PackageReadmeFile"
-                  DisplayName="README"
-                  Description="The readme document for the package. Supported file formats include only Markdown (.md)."
-                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
-                  Category="General"
-                  Subtype="file">
-    <StringProperty.DataSource>
-      <DataSource Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
-  </StringProperty>
 
 </Rule>
