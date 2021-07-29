@@ -111,10 +111,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                 token.ThrowIfCancellationRequested();
 
-                // Wait for our state to be up to date with that of the project
-                IProjectVersionedValue<UpToDateCheckConfiguredInput> state = await _inputDataSource.SourceBlock.GetLatestVersionAsync(
-                    _configuredProject,
-                    cancellationToken: token);
+                IProjectVersionedValue<UpToDateCheckConfiguredInput> state;
+
+                using (_inputDataSource.Join())
+                {
+                    // Wait for our state to be up to date with that of the project
+                    state = await _inputDataSource.SourceBlock.GetLatestVersionAsync(
+                        _configuredProject,
+                        cancellationToken: token);
+                }
 
                 bool result = await func(state.Value, _lastCheckedAtUtc, token);
 
