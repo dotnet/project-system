@@ -97,6 +97,13 @@
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147134"
                   Category="General"
                   Subtype="file">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Image files (*.png,*.jpg,*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
@@ -109,6 +116,13 @@
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
                   Category="General"
                   Subtype="file">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Markdown files (*.md)|*.md|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
