@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
 {
-    // Sets the PackageIcon property to the path from the root of the package, and creates the
+    // Sets the PackageReadmeFile property to the path from the root of the package, and creates the
     // None item associated with the file on disk. The Include metadata of the None item is a relative
     // path to the file on disk from the project's directory. The None item includes 2 metadata elements
     // as Pack (set to True to be included in the package) and PackagePath (directory structure in the package
-    // for the file to be placed). The PackageIcon property will use the directory indicated in PackagePath,
+    // for the file to be placed). The PackageReadmeFile property will use the directory indicated in PackagePath,
     // and the filename of the file in the Include filepath.
     //
     // Example:
     // <PropertyGroup>
-    //   <PackageIcon>content\shell32_192.png</PackageIcon>
+    //   <PackageReadmeFile>docs\readme.md</PackageReadmeFile>
     // </PropertyGroup>
     //
     // <ItemGroup>
-    //   <None Include="..\..\..\shell32_192.png">
+    //   <None Include="..\..\..\readme.md">
     //     <Pack>True</Pack>
-    //     <PackagePath>content</PackagePath>
+    //     <PackagePath>docs</PackagePath>
     //   </None>
     // </ItemGroup>
-    [ExportInterceptingPropertyValueProvider(PackageIconPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
-    internal sealed class PackageIconValueProvider : InterceptingPropertyValueProviderBase
+    [ExportInterceptingPropertyValueProvider(PackageReadmeFilePropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    internal sealed class PackageReadmeFileValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string PackageIconPropertyName = "PackageIcon";
+        private const string PackageReadmeFilePropertyName = "PackageReadmeFile";
         private const string PackMetadataName = "Pack";
         private const string PackagePathMetadataName = "PackagePath";
 
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         private readonly UnconfiguredProject _unconfiguredProject;
 
         [ImportingConstructor]
-        public PackageIconValueProvider(
+        public PackageReadmeFileValueProvider(
             [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
             UnconfiguredProject unconfiguredProject)
         {
@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         }
 
         // https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#packageicon
-        private static string CreatePackageIcon(string filePath, string packagePath)
+        private static string CreatePackageReadmeFile(string filePath, string packagePath)
         {
             string filename = Path.GetFileName(filePath);
             // Make a slash-only value into empty string, so it won't get prepended onto the path.
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
         public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
             string relativePath = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
-            string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageIconPropertyName);
+            string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(PackageReadmeFilePropertyName);
             IProjectItem? existingItem = await GetExistingNoneItemAsync(existingPropertyValue);
             string packagePath = string.Empty;
             if (existingItem != null)
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 // The new filepath is the same as the current. No item changes are required.
                 if (relativePath.Equals(existingItem.EvaluatedInclude, StringComparisons.Paths))
                 {
-                    return CreatePackageIcon(existingItem.EvaluatedInclude, packagePath);
+                    return CreatePackageReadmeFile(existingItem.EvaluatedInclude, packagePath);
                 }
             }
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 await _sourceItemsProvider.AddAsync(None.SchemaName, relativePath, new Dictionary<string, string> { { PackMetadataName, bool.TrueString }, { PackagePathMetadataName, packagePath } });
             }
 
-            return CreatePackageIcon(relativePath, packagePath);
+            return CreatePackageReadmeFile(relativePath, packagePath);
         }
 
         private async Task<string> GetItemIncludeValueAsync(string propertyValue)

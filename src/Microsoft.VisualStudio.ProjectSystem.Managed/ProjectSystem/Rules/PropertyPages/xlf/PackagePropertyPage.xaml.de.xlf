@@ -172,6 +172,16 @@
         <target state="translated">Projekt-URL</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PackageReadmeFile|Description">
+        <source>The readme document for the package. Supported file formats include only Markdown (.md).</source>
+        <target state="new">The readme document for the package. Supported file formats include only Markdown (.md).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
+        <source>README</source>
+        <target state="new">README</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
         <source>A description of the changes made in this release of the package, often used in UI like the Updates tab of the Visual Studio Package Manager in place of the package description.</source>
         <target state="translated">Eine Beschreibung der Änderungen, die an dieser Version des Pakets vorgenommen wurden. Wird häufig anstelle der Paketbeschreibung in der Benutzeroberfläche verwendet, beispielsweise auf der Registerkarte "Updates" im Visual Studio-Paket-Manager.</target>
