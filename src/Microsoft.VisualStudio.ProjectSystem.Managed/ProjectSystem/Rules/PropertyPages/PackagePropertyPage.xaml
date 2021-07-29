@@ -105,7 +105,7 @@
 
   <StringProperty Name="PackageReadmeFile"
                   DisplayName="README"
-                  Description="The readme document for the package. Supported file formats include only Markdown (.md)."
+                  Description="The README document for the package. Must be a Markdown (.md) file."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
                   Category="General"
                   Subtype="file">

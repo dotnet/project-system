@@ -173,8 +173,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|Description">
-        <source>The readme document for the package. Supported file formats include only Markdown (.md).</source>
-        <target state="new">The readme document for the package. Supported file formats include only Markdown (.md).</target>
+        <source>The README document for the package. Must be a Markdown (.md) file.</source>
+        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
