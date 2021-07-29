@@ -220,4 +220,16 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <StringProperty Name="PackageReadmeFile"
+                  DisplayName="README"
+                  Description="The readme document for the package. Supported file formats include only Markdown (.md)."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2168540"
+                  Category="General"
+                  Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
 </Rule>
