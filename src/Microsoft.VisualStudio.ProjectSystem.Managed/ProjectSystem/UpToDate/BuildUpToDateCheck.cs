@@ -113,8 +113,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("Disabled", "The 'DisableFastUpToDateCheck' property is true, not up to date.");
             }
 
-            if (lastCheckedAtUtc == DateTime.MinValue)
+            if (!state.WasStateRestored && lastCheckedAtUtc == DateTime.MinValue)
             {
+                // We had no persisted state, and this is the first run. We cannot know if the project is up-to-date
+                // or not, so schedule a build.
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
@@ -245,8 +247,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         return log.Fail("Outputs", "Input '{0}' is newer ({1}) than earliest output '{2}' ({3}), not up to date.", input, inputTime.Value, earliestOutputPath, earliestOutputTime);
                     }
 
-                    if (inputTime > lastCheckedAtUtc)
+                    if (inputTime > lastCheckedAtUtc && lastCheckedAtUtc != DateTime.MinValue)
                     {
+                        // Bypass this test if no check has yet been performed. We handle that in CheckGlobalConditions.
                         return log.Fail("Outputs", "Input '{0}' ({1}) has been modified since the last up-to-date check ({2}), not up to date.", input, inputTime.Value, lastCheckedAtUtc);
                     }
 

@@ -1311,6 +1311,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 $"No inputs are newer than earliest output '{outputPath}' ({outputTime.ToLocalTime()}).");
         }
 
+        [Fact]
+        public void ComputeItemHash()
+        {
+            Assert.Equal(
+                HashItems(("Compile", new[] { "Path1" })),
+                HashItems(("Compile", new[] { "Path1" })));
+
+            // Order independent
+            Assert.Equal(
+                HashItems(("Compile", new[] { "Path1", "Path2" })),
+                HashItems(("Compile", new[] { "Path2", "Path1" })));
+
+            // Item type dependent
+            Assert.NotEqual(
+                HashItems(("Compile", new[] { "Path1" })),
+                HashItems(("None",    new[] { "Path1" })));
+
+            // Adding an item causes a difference
+            Assert.NotEqual(
+                HashItems(("Compile", new[] { "Path1" })),
+                HashItems(("Compile", new[] { "Path1", "Path2" })));
+
+            static int HashItems(params (string itemType, string[] paths)[] items)
+            {
+                var itemsByItemType = items.ToImmutableDictionary(
+                    i => i.itemType,
+                    i => i.paths.Select(p => (p, (string?)null, BuildUpToDateCheck.CopyType.CopyNever)).ToImmutableArray());
+
+                return BuildUpToDateCheck.ComputeItemHash(itemsByItemType);
+            }
+        }
+
         #region Test helpers
 
         private Task AssertNotUpToDateAsync(string? logMessage = null, string? telemetryReason = null, BuildAction buildAction = BuildAction.Build, string ignoreKinds = "")
