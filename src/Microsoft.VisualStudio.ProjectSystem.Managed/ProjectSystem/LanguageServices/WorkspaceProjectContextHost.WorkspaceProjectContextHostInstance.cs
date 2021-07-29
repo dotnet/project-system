@@ -93,8 +93,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     ProjectDataSources.SyncLinkTo(
                         _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
                         _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
-                        _projectBuildSnapshotService.SourceBlock.SyncLinkOptions(),
-                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate, IProjectBuildSnapshot>>>(e =>
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
                                 OnProjectChangedAsync(new ProjectChange(e), WorkspaceContextHandlerType.Evaluation),
                                 _project.UnconfiguredProject,
                                 ProjectFaultSeverity.LimitedFunctionality),
