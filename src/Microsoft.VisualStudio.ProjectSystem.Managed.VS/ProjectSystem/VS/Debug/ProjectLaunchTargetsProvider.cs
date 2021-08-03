@@ -438,9 +438,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 && (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
-                // TODO:
-                // We want Hot Reload and the session manager successfully created a pending session.
-                // Perform any other work related to setting up Hot Reload.
+                // Enable XAML Hot Reload
+                settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
             }
 
             if (settings.Environment.Count > 0)
