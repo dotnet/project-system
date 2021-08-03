@@ -9,8 +9,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         public UnsetAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
         : base(abstractReferenceHandler, selectedConfiguredProject, itemSpecification) {
 
-            UnsetValue = PropertySerializer.SimpleTypes.ToString(true);
-            SetValue = PropertySerializer.SimpleTypes.ToString(false);
+            UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
+            SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
         }
     }
 }
