@@ -73,13 +73,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
 
             return false;
+}
+
+        // TODO: remove when Web Tools is no longer calling this method.
+        public Task StartSessionAsync(CancellationToken cancellationToken)
+        {
+            return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
         }
 
-        public async Task StartSessionAsync(CancellationToken cancellationToken)
+        public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
         {
             if (!_sessionActive)
             {
-                await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, cancellationToken);
+                HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
+                await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
                 await WriteToOutputWindowAsync(VSResources.HotReloadStartSession);
                 _sessionActive = true;
                 EnsureDeltaApplierforSession();

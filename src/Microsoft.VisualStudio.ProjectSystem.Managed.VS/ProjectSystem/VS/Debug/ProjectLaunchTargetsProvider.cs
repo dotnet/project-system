@@ -107,7 +107,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             await TaskScheduler.Default;
 
-            await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId);
+            bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+
+            await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger);
         }
 
         private Task<bool> IsClassLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
@@ -435,7 +437,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (IsRunProjectCommand(resolvedProfile)
                 && resolvedProfile.IsHotReloadEnabled()
-                && (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
                 && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
