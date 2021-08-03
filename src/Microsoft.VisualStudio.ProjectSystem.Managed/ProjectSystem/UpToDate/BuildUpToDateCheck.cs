@@ -694,6 +694,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     if (globalProperties.TryGetValue(FastUpToDateCheckIgnoresKindsGlobalPropertyName, out string? ignoreKindsString))
                     {
                         ignoreKinds = new HashSet<string>(new LazyStringSplit(ignoreKindsString, ';'), StringComparer.OrdinalIgnoreCase);
+
+                        if (requestedLogLevel >= LogLevel.Info && ignoreKinds.Count != 0)
+                        {
+                            logger.Info("Ignoring up-to-date check items with kinds: {0}", ignoreKindsString);
+                        }
                     }
 
                     foreach (UpToDateCheckImplicitConfiguredInput implicitState in state.ImplicitInputs)

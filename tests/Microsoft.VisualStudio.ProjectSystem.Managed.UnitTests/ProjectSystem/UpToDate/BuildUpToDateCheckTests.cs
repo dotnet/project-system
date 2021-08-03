@@ -798,7 +798,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built", outputTime);
 
             await AssertNotUpToDateAsync(
-                $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}), not up to date.",
+                new[]
+                {
+                    "Ignoring up-to-date check items with kinds: Ignored",
+                    $"Input 'C:\\Dev\\Solution\\Project\\Input' is newer ({inputTime.ToLocalTime()}) than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()}), not up to date.",
+                },
                 "Outputs",
                 ignoreKinds: "Ignored");
         }
@@ -863,7 +867,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             _fileSystem.AddFile("C:\\Dev\\Solution\\Project\\Built", outputTime);
 
             await AssertUpToDateAsync(
-                new[] { $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()})." },
+                new[]
+                {
+                    "Ignoring up-to-date check items with kinds: Ignored",
+                    $"No inputs are newer than earliest output 'C:\\Dev\\Solution\\Project\\Output' ({outputTime.ToLocalTime()})."
+                },
                 ignoreKinds: "Ignored");
         }
 
