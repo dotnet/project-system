@@ -151,6 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 });
 
                 SaveNominatedConfiguredVersions(value.ConfiguredInputs);
+                CompleteTaskWhenNominated();
 
                 _projectAsynchronousTasksService.RegisterAsyncTask(joinableTask,
                                                                    ProjectCriticalOperation.Build | ProjectCriticalOperation.Unload | ProjectCriticalOperation.Rename,

@@ -144,13 +144,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 {
                     _savedNominatedConfiguredVersion[configuredInput.ProjectConfiguration] = configuredInput.ConfiguredProjectVersion;
                 }
+            }
+        }
 
-                if (_whenNominatedTask is not null)
+        private void CompleteTaskWhenNominated()
+        {
+            if (_whenNominatedTask is not null)
+            {
+                if (_whenNominatedTask.TrySetResult(true))
                 {
-                    if (_whenNominatedTask.TrySetResult(true))
-                    {
-                        _whenNominatedTask = null;
-                    }
+                    _whenNominatedTask = null;
                 }
             }
         }
