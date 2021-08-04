@@ -436,6 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             if (IsRunProjectCommand(resolvedProfile)
                 && resolvedProfile.IsHotReloadEnabled()
                 && (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
+                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
                 // Enable XAML Hot Reload
