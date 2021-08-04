@@ -149,11 +149,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
         private void CompleteTaskWhenNominated()
         {
-            if (_whenNominatedTask is not null)
+            lock (SyncObject)
             {
-                if (_whenNominatedTask.TrySetResult(true))
+                if (_whenNominatedTask is not null)
                 {
-                    _whenNominatedTask = null;
+                    if (_whenNominatedTask.TrySetResult(true))
+                    {
+                        _whenNominatedTask = null;
+                    }
                 }
             }
         }
