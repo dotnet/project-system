@@ -94,7 +94,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (_persistentState is not null)
                     {
-                        (int ItemHash, DateTime InputsChangedAtUtc)? restoredState = await _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions);
+                        // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
+                        // thread is shared between related work and prevent deadlocks.
+                        (int ItemHash, DateTime InputsChangedAtUtc)? restoredState =
+                            await JoinableFactory.RunAsync(() => _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions));
 
                         if (restoredState is not null)
                         {
