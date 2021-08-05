@@ -45,7 +45,7 @@
     <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
     <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21278.1" />
+    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21378.1" />
     <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.0.0-previews-2-31421-281" />
     <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.0.0-previews-2-31423-289"/>
@@ -96,7 +96,7 @@
     <PackageReference Update="Microsoft.IO.Redist"                                                    Version="4.7.1" />
 
     <!-- Hot Reload -->
-    <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21330.17" />
+    <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
 
     <!-- 3rd party -->
     <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>

@@ -25,6 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         /// Activates the pending Hot Reload session and associates it with the specified
         /// process.
         /// </summary>
-        Task ActivateSessionAsync(int processId);
+        Task ActivateSessionAsync(int processId, bool runningUnderDebugger);
     }
 }

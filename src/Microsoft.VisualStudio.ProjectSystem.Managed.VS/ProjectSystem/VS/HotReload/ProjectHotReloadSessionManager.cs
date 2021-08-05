@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
         }
 
-        public async Task ActivateSessionAsync(int processId)
+        public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger)
         {
             if (_pendingSessionState is not null)
             {
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 }
                 else
                 {
-                    _ = _pendingSessionState.Session.StartSessionAsync(default);
+                    _ = _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
                     ImmutableInterlocked.TryAdd(ref _activeSessions, processId, _pendingSessionState);
                 }
 
