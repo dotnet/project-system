@@ -14,11 +14,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     // are not deleted when a new file is selected. ApplicationIcon allows for both full paths
     // and relative paths anywhere on disk, but we are not utilizing that in this implementation.
     // The icon file does not need to be included in the project (such as a None/Content item).
-    [ExportInterceptingPropertyValueProvider(ApplicationIconPropertyName, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
+    [ExportInterceptingPropertyValueProvider(ConfigurationGeneral.ApplicationIconProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationIconValueProvider : InterceptingPropertyValueProviderBase
     {
-        private const string ApplicationIconPropertyName = "ApplicationIcon";
-
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IFileSystem _fileSystem;
 
@@ -47,10 +45,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
             // This isn't a limitation of ApplicationIcon; it is to simply mimic the legacy property page interaction.
             if (_unconfiguredProject.IsOutsideProjectDirectory(unevaluatedPropertyValue))
             {
-                string fileName = Path.GetFileName(unevaluatedPropertyValue);
-                string destination = Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), fileName);
-                _fileSystem.CopyFile(unevaluatedPropertyValue, destination, overwrite: true);
-                return fileName;
+                try
+                {
+                    string fileName = Path.GetFileName(unevaluatedPropertyValue);
+                    var destinationInfo = new FileInfo(Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), fileName));
+                    if (destinationInfo.Exists && destinationInfo.IsReadOnly)
+                    {
+                        // https://stackoverflow.com/a/8081331/294804
+                        File.SetAttributes(destinationInfo.FullName, destinationInfo.Attributes & ~FileAttributes.ReadOnly);
+                    }
+                    _fileSystem.CopyFile(unevaluatedPropertyValue, destinationInfo.FullName, overwrite: true);
+                    return fileName;
+                }
+                catch
+                {
+                    // If anything goes wrong with trying to copy the file, simply return the previous value.
+                    return await defaultProperties.GetUnevaluatedPropertyValueAsync(propertyName);
+                }
             }
 
             return PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
