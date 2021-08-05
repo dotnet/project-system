@@ -51,8 +51,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                     var destinationInfo = new FileInfo(Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), fileName));
                     if (destinationInfo.Exists && destinationInfo.IsReadOnly)
                     {
-                        // https://stackoverflow.com/a/8081331/294804
-                        File.SetAttributes(destinationInfo.FullName, destinationInfo.Attributes & ~FileAttributes.ReadOnly);
+                        // The file cannot be copied over; return the previous value.
+                        return await defaultProperties.GetUnevaluatedPropertyValueAsync(propertyName);
                     }
                     _fileSystem.CopyFile(unevaluatedPropertyValue, destinationInfo.FullName, overwrite: true);
                     return fileName;
