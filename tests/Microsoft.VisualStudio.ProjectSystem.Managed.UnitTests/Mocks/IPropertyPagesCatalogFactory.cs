@@ -44,29 +44,42 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 catalog.Add(category.Key,
                             IRuleFactory.Create(
-                                properties: category.Select(property => CreateProperty(property.PropertyName, property.Value, property.SetValues))));
+                                properties: category.Select(CreateProperty)));
             }
 
             return catalog;
         }
 
-        private static IProperty CreateProperty(string name, object value, List<object>? setValues = null)
+        private static IProperty CreateProperty(PropertyPageData data)
         {
             var property = new Mock<IProperty>();
             property.SetupGet(o => o.Name)
-                    .Returns(name);
+                    .Returns(data.PropertyName);
 
             property.Setup(o => o.GetValueAsync())
-                    .ReturnsAsync(value);
+                    .ReturnsAsync(data.Value);
 
-            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(value.ToString());
-            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(value.ToString());
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAtEndAsync()).ReturnsAsync(data.Value.ToString());
+            property.As<IEvaluatedProperty>().Setup(p => p.GetEvaluatedValueAsync()).ReturnsAsync(data.Value.ToString());
 
-            if (setValues != null)
+            if (data.SetValues != null)
             {
                 property.Setup(p => p.SetValueAsync(It.IsAny<object>()))
-                        .Callback<object>(setValues.Add)
+                        .Callback<object>(data.SetValues.Add)
                         .ReturnsAsync(() => { });
+            }
+
+            if (data.PropertyType == typeof(IStringProperty))
+            {
+                property.As<IStringProperty>()
+                        .Setup(p => p.GetValueAsStringAsync())
+                        .ReturnsAsync(data.Value.ToString());
+            } 
+            else if (data.PropertyType == typeof(IStringListProperty))
+            {
+                property.As<IStringListProperty>()
+                        .Setup(p => p.GetValueAsStringCollectionAsync())
+                        .ReturnsAsync(data.Value.ToString().Split(';').ToList().AsReadOnly());
             }
 
             return property.Object;

@@ -55,6 +55,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }, cancellationToken);
         }
 
+        public Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, Task<TResult>> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            return _projectLockService.ReadLockAsync(async access =>
+            {
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
+
+                return await action(evaluatedProject);
+            }, cancellationToken);
+        }
+
         public Task<TResult> OpenProjectForUpgradeableReadAsync<TResult>(ConfiguredProject project, Func<Project, TResult> action, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
@@ -67,6 +80,19 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 // Deliberately not async to reduce the type of
                 // code you can run while holding the lock.
                 return action(evaluatedProject);
+            }, cancellationToken);
+        }
+
+        public Task OpenProjectForUpgradeableReadAsync(ConfiguredProject project, Func<Project, Task> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            return _projectLockService.UpgradeableReadLockAsync(async access =>
+            {
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
+
+                await action(evaluatedProject);
             }, cancellationToken);
         }
 
@@ -120,6 +146,24 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }, cancellationToken);
         }
 
+        public async Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Func<ProjectRootElement, Task> action, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            await _projectLockService.WriteLockAsync(async access =>
+            {
+                await access.CheckoutAsync(project.FullPath);
+
+                ProjectRootElement rootElement = await access.GetProjectXmlAsync(project.FullPath, cancellationToken);
+
+                await action(rootElement);
+
+                // Avoid blocking thread on Dispose
+                await access.ReleaseAsync();
+            }, cancellationToken);
+        }
+
         public async Task OpenProjectForWriteAsync(ConfiguredProject project, Action<Project> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(project, nameof(project));
@@ -140,6 +184,29 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
                 // Avoid blocking thread on Dispose
                 await access.ReleaseAsync();
+            }, cancellationToken);
+        }
+
+        public async Task<TResult> OpenProjectForWriteAsync<TResult>(ConfiguredProject project, Func<Project, Task<TResult>> action, ProjectCheckoutOption option = ProjectCheckoutOption.Checkout, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(project, nameof(project));
+            Requires.NotNull(project, nameof(action));
+
+            return await _projectLockService.WriteLockAsync(async access =>
+            {
+                if (option == ProjectCheckoutOption.Checkout)
+                {
+                    await access.CheckoutAsync(project.UnconfiguredProject.FullPath);
+                }
+
+                Project evaluatedProject = await access.GetProjectAsync(project, cancellationToken);
+
+                TResult result = await action(evaluatedProject);
+
+                // Avoid blocking thread on Dispose
+                await access.ReleaseAsync();
+
+                return result;
             }, cancellationToken);
         }
     }

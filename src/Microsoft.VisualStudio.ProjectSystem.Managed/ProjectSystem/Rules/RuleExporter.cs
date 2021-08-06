@@ -69,6 +69,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int ConfigurationGeneralRule;
         }
 
+        private static class ConfigurationRules
+        {
+            /// <summary>
+            ///     Represents the evaluation properties represents the dimensions 
+            ///     that make up a project's configurations.
+            /// </summary>
+            [ExportRule(nameof(DeclaredDimensions), PropertyPageContexts.Project)]
+            [AppliesTo(ProjectCapability.ProjectConfigurationsDeclaredDimensions)]
+            [Order(Order.Default)]
+            public static int DeclaredDimensionsRule;
+        }
+
         private static class AppDesignerRules
         {
             /// <summary>

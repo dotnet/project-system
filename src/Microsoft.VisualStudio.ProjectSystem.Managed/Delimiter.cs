@@ -13,6 +13,11 @@ namespace Microsoft.VisualStudio
         internal static readonly char[] Comma = new char[] { ',' };
 
         /// <summary>
+        /// Single, static instance of an array that contains a period '|', which is used to split strings.
+        /// </summary>
+        internal static readonly char[] Pipe = new char[] { '|' };
+
+        /// <summary>
         /// Single, static instance of an array that contains a period '.', which is used to split strings.
         /// </summary>
         internal static readonly char[] Period = new char[] { '.' };

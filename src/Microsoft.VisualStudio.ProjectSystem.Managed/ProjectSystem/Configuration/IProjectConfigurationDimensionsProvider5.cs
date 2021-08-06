@@ -6,7 +6,7 @@ using Microsoft.Build.Construction;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal interface IProjectConfigurationDimensionsProvider5 : IProjectConfigurationDimensionsProvider3
+    internal interface IProjectConfigurationDimensionsProvider5 : IProjectConfigurationDimensionsProvider4
     {
         IEnumerable<string> GetBestGuessDimensionNames(ImmutableArray<ProjectPropertyElement> properties);
     }

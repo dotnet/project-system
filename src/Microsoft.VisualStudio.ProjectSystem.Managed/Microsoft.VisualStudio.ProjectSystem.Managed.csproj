@@ -364,6 +364,16 @@
 
     <XamlPropertyRuleNoCodeBehind Include="ProjectSystem\Rules\DebuggerGeneral.xaml" />
 
+    <Compile Update="ProjectSystem\Rules\DeclaredDimensions.cs">
+      <DependentUpon>DeclaredDimensions.xaml</DependentUpon>
+    </Compile>
+    <XamlPropertyRule Include="ProjectSystem\Rules\DeclaredDimensions.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <XlfInput>false</XlfInput>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <SubType>Designer</SubType>
+    </XamlPropertyRule>
+
     <Compile Update="ProjectSystem\Rules\DotNetCliToolReference.cs">
       <DependentUpon>DotNetCliToolReference.xaml</DependentUpon>
     </Compile>

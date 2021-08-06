@@ -138,6 +138,30 @@ namespace Microsoft.VisualStudio.Telemetry
         /// </summary>
         public static readonly string TempPECompileDuration = BuildPropertyName(TelemetryEventName.TempPEProcessQueue, "Duration");
 
+        /// <summary>
+        ///     Indicates the source of the dimension value that produced the value.
+        /// </summary>
+        public static string ConfigurationDimensionSource(string dimensionName)
+        {
+            return BuildPropertyName(TelemetryEventName.Prefix, $"Dimension.{dimensionName}.Source");
+        }
+
+        /// <summary>
+        ///     Indicates the hashed, semicolon separated, values of the dimension.
+        /// </summary>
+        public static string ConfigurationDimensionValues(string dimensionName)
+        {
+            return BuildPropertyName(TelemetryEventName.Prefix, $"Dimension.{dimensionName}.Values");
+        }
+
+        /// <summary>
+        ///     Indicates the the number of values of the dimension.
+        /// </summary>
+        public static string ConfigurationDimensionValuesCount(string dimensionName)
+        {
+            return BuildPropertyName(TelemetryEventName.Prefix, $"Dimension.{dimensionName}.ValuesCount");
+        }
+
         private static string BuildPropertyName(string eventName, string propertyName)
         {
             // Property names use the event names, but with slashes replaced by periods.

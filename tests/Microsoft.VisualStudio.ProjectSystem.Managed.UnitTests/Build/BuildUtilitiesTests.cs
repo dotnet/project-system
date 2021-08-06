@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Build.Construction;
 using Xunit;
@@ -9,6 +10,58 @@ namespace Microsoft.VisualStudio.Build
 {
     public class BuildUtilitiesTests
     {
+        [Theory]
+        [InlineData("'$(Configuration)' == ''",                                                     new[] { "Configuration" },                                new[] { "" })]
+        [InlineData("'$(BuildingInsideVisualStudio)' == 'true'",                                    new[] { "BuildingInsideVisualStudio" },                   new[] { "true" })]
+        [InlineData("'$(OS)' == 'Windows_NT'",                                                      new[] { "OS" },                                           new[] { "Windows_NT" })]
+        [InlineData("'$(Configuration)' == 'Debug'",                                                new[] { "Configuration" },                                new[] { "Debug" })]
+        [InlineData("'$(Configuration)' ==  'Debug'",                                               new[] { "Configuration" },                                new[] { "Debug" })]
+        [InlineData(" '$(Configuration)' == 'Debug' ",                                              new[] { "Configuration" },                                new[] { "Debug" })]
+        [InlineData("'$(Configuration)|$(Configuration)' == 'Debug|AnyCPU'",                        new[] { "Configuration" }, new[] { "AnyCPU" })]
+        [InlineData("'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'",                             new[] { "Configuration", "Platform" },                    new[] { "Debug", "AnyCPU" })]
+        [InlineData(" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU'",                            new[] { "Configuration", "Platform" },                    new[] { "Debug", "AnyCPU" })]
+        [InlineData(" '$(Configuration)|$(Platform)'  ==  'Debug|AnyCPU' ",                         new[] { "Configuration", "Platform" },                    new[] { "Debug", "AnyCPU" })]
+        [InlineData("'$(Configuration)|$(Platform)|$(TargetFramework)' == 'Debug|AnyCPU|net46'",    new[] { "Configuration", "Platform", "TargetFramework" }, new[] { "Debug", "AnyCPU", "net46" })]
+        [InlineData(" '$(Configuration)|$(Platform)|$(TargetFramework)' == 'Debug|AnyCPU|net46' ",  new[] { "Configuration", "Platform", "TargetFramework" }, new[] { "Debug", "AnyCPU", "net46" })]
+        [InlineData("'$(Configuration)|$(Platform)|$(TargetFramework)' == 'Debug|AnyCPU|'",         new[] { "Configuration", "Platform", "TargetFramework" }, new[] { "Debug", "AnyCPU", "" })]
+        public void TryCalculateConditionalProperties_ValidConditions(string condition, string[] expectedNames, string[] expectedValues)
+        {
+            bool result = BuildUtilities.TryCalculateConditionalProperties(condition, out IReadOnlyDictionary<string, string>? values);
+
+            Assert.True(result);
+
+            Assert.NotNull(values);
+            Assert.Equal(expectedNames, values!.Keys);
+            Assert.Equal(expectedValues, values!.Values);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("=")]
+        [InlineData(" = ")]
+        [InlineData("'$(Configuration'")]
+        [InlineData("'Configuration' == 'Debug'")]
+        [InlineData("'Configuration'")]
+        [InlineData("true")]
+        [InlineData("$(Configuration)")]
+        [InlineData("$(Configuration) == ''")]
+        [InlineData("'' ==")]
+        [InlineData("'' == ''")]
+        [InlineData("'$()' == ")]
+        [InlineData("'$()' == ''")]
+        [InlineData("'$(Configuration)' == ")]
+        [InlineData("'$(Configuration)|$(Platform)' == 'Debug'")]
+        [InlineData("'$(Configuration)|' == 'Debug|'")]
+        [InlineData("'$(Configuration)|$(Platform)|$(TargetFramework)' == 'Debug|AnyCPU'")]
+        [InlineData("'$(Configuration)|$(Platform)' == 'Debug|AnyCPU|net46'")]
+        public void TryCalculateConditionalProperties_InvalidConditions(string condition)
+        {
+            bool result = BuildUtilities.TryCalculateConditionalProperties(condition, out IReadOnlyDictionary<string, string>? values);
+
+            Assert.False(result);
+            Assert.Null(values);
+        }
+
         [Fact]
         public void GetProperty_MissingProperty()
         {

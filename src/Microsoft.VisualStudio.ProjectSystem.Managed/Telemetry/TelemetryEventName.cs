@@ -56,5 +56,25 @@ namespace Microsoft.VisualStudio.Telemetry
         ///     Indicates that the summary of a project's dependencies is being reported during project unload.
         /// </summary>
         public const string ProjectUnloadDependencies = Prefix + "/projectunload/dependencies";
+
+        /// <summary>
+        ///     Indicates the results of guessing the configurations for a project.
+        /// </summary>
+        public static readonly string GuessConfigurations = Prefix + "/guessconfigurations";
+
+        /// <summary>
+        ///     Indicates the results of guessing the default configuration values for a project.
+        /// </summary>
+        public static readonly string GuessDefaultConfigurationValues = Prefix + "/guessdefaultconfigurationvalues";
+
+        /// <summary>
+        ///     Indicates the results of calculating the default configuration values for a project.
+        /// </summary>
+        public static readonly string CalculateDefaultConfigurationValues = Prefix + "/calculatedefaultconfigurationvalues";
+
+        /// <summary>
+        ///     Indicates the results of calculating all the configurations for a project.
+        /// </summary>
+        public static readonly string CalculateConfigurations = Prefix + "/calculateconfigurations";
     }
 }

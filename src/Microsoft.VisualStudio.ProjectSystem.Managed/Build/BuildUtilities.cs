@@ -2,8 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Text;
@@ -15,7 +17,7 @@ namespace Microsoft.VisualStudio.Build
     /// </summary>
     internal static class BuildUtilities
     {
-        private const char Delimiter = ';';
+        private const char ListDelimiter = ';';
 
         /// <summary>
         ///     Returns a value indicating whether the specified property has a condition that
@@ -23,7 +25,12 @@ namespace Microsoft.VisualStudio.Build
         /// </summary>
         public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(ProjectPropertyElement element)
         {
-            Requires.NotNull(element, nameof(element));
+            return HasWellKnownConditionsThatAlwaysEvaluateToTrue(element.Condition);
+        }
+
+        public static bool HasWellKnownConditionsThatAlwaysEvaluateToTrue(string condition)
+        {
+            Requires.NotNull(condition, nameof(condition));
 
             // We look for known conditions that evaluate to true so that 
             // projects can have patterns where they opt in/out of target 
@@ -34,16 +41,14 @@ namespace Microsoft.VisualStudio.Build
             // <TargetFrameworks>net461;net452</TargetFrameworks>
             // <TargetFrameworks Condition = "'$(BuildingInsideVisualStudio)' == 'true'">net461</TargetFrameworks>
 
-            switch (element.Condition)
+            return condition switch
             {
-                case "":
-                case "true":
-                case "'$(OS)' == 'Windows_NT'":
-                case "'$(BuildingInsideVisualStudio)' == 'true'":
-                    return true;
-            }
-
-            return false;
+                "" => true,
+                "true" => true,
+                "'$(OS)' == 'Windows_NT'" => true,
+                "'$(BuildingInsideVisualStudio)' == 'true'" => true,
+                _ => false,
+            };
         }
 
         /// <summary>
@@ -70,7 +75,7 @@ namespace Microsoft.VisualStudio.Build
             HashSet<string>? seen = null;
 
             // We need to ensure that we return values in the specified order.
-            foreach (string value in new LazyStringSplit(propertyValue, Delimiter))
+            foreach (string value in new LazyStringSplit(propertyValue, ListDelimiter))
             {
                 string s = value.Trim();
 
@@ -110,7 +115,7 @@ namespace Microsoft.VisualStudio.Build
             foreach (string value in GetPropertyValues(evaluatedPropertyValue))
             {
                 newValue.Append(value);
-                newValue.Append(Delimiter);
+                newValue.Append(ListDelimiter);
             }
 
             newValue.Append(valueToAppend);
@@ -143,7 +148,7 @@ namespace Microsoft.VisualStudio.Build
                 {
                     if (newValue.Length != 0)
                     {
-                        newValue.Append(Delimiter);
+                        newValue.Append(ListDelimiter);
                     }
 
                     newValue.Append(value);
@@ -187,7 +192,7 @@ namespace Microsoft.VisualStudio.Build
             {
                 if (value.Length != 0)
                 {
-                    value.Append(Delimiter);
+                    value.Append(ListDelimiter);
                 }
 
                 if (string.Equals(propertyValue, oldValue, StringComparisons.PropertyValues))
@@ -237,6 +242,114 @@ namespace Microsoft.VisualStudio.Build
 
                 return propertyGroup.AddProperty(propertyName, string.Empty);
             }
+        }
+
+        private static readonly Regex s_dimensionNameInConditionRegex = new(@"^\$\(([^\$\(\)]*)\)$");
+
+        /// <summary>
+        /// Converts configuration dimensional value vector to a msbuild condition
+        /// Use the standard format of
+        /// '$(DimensionName1)|$(DimensionName2)|...|$(DimensionNameN)'=='DimensionValue1|...|DimensionValueN'
+        /// </summary>
+        /// <param name="dimensionalValues">vector of configuration dimensional properties</param>
+        /// <returns>msbuild condition representation</returns>
+        internal static string DimensionalValuePairsToCondition(IReadOnlyDictionary<string, string> dimensionalValues)
+        {
+            if (dimensionalValues.Count == 0)
+            {
+                return string.Empty; // no condition. Returns empty string to match MSBuild.
+            }
+
+            string left = string.Empty;
+            string right = string.Empty;
+
+            foreach (string key in dimensionalValues.Keys)
+            {
+                if (!string.IsNullOrEmpty(left))
+                {
+                    left += "|";
+                    right += "|";
+                }
+
+                left += "$(" + key + ")";
+                right += dimensionalValues[key];
+            }
+
+            string condition = "'" + left + "'=='" + right + "'";
+            return condition;
+        }
+
+        /// <summary>
+        /// Opposite to DimensionalValuePairsToCondition. Tries to parse an MSBuild condition to a dimensional vector
+        /// only matches standard pattern:
+        /// '$(DimensionName1)|$(DimensionName2)|...|$(DimensionNameN)'=='DimensionValue1|...|DimensionValueN'
+        /// </summary>
+        /// <param name="condition">msbuild condition string</param>
+        /// <param name="dimensionalValues">configuration dimensions vector (output)</param>
+        /// <returns>true on success</returns>
+        internal static bool TryCalculateConditionalProperties(string condition, [NotNullWhen(returnValue: true)]out IReadOnlyDictionary<string, string>? dimensionalValues)
+        {
+            Requires.NotNull(condition, nameof(condition));
+
+            dimensionalValues = null;
+
+            int equalIndex = condition.IndexOf("==", StringComparison.OrdinalIgnoreCase);
+            if (equalIndex <= 0)
+            {
+                return false;
+            }
+
+            string left = condition.Substring(0, equalIndex).Trim();
+            string right = condition.Substring(equalIndex + 2).Trim();
+
+            // left and right needs to ba a valid quoted strings
+            if (!UnquoteString(ref left) || !UnquoteString(ref right))
+            {
+                return false;
+            }
+
+            string[] dimensionNamesInCondition = left.Split(Delimiter.Pipe);
+            string[] dimensionValuesInCondition = right.Split(Delimiter.Pipe);
+
+            // number of keys need to match number of values
+            if (dimensionNamesInCondition.Length != dimensionValuesInCondition.Length)
+            {
+                return false;
+            }
+
+            var parsedDimensionalValues = new Dictionary<string, string>(dimensionNamesInCondition.Length, StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < dimensionNamesInCondition.Length; i++)
+            {
+                // Matches "$(Configuration)" pattern.
+                Match match = s_dimensionNameInConditionRegex.Match(dimensionNamesInCondition[i]);
+                if (!match.Success)
+                {
+                    return false;
+                }
+
+                // Pull out "Configuration" in "$(Configuration)"
+                string dimensionName = match.Groups[1].ToString();
+                if (dimensionName.Length == 0)
+                {
+                    return false;
+                }
+
+                parsedDimensionalValues[dimensionName] = dimensionValuesInCondition[i];
+            }
+
+            dimensionalValues = parsedDimensionalValues;
+            return true;
+        }
+
+        private static bool UnquoteString(ref string s)
+        {
+            if (s.Length < 2 || s[0] != '\'' || s[s.Length - 1] != '\'')
+            {
+                return false;
+            }
+
+            s = s.Substring(1, s.Length - 2);
+            return true;
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.Xml;
 using Microsoft.Build.Construction;
 using Microsoft.VisualStudio.ProjectSystem.Configuration;
+using Microsoft.VisualStudio.Telemetry;
+using Moq;
 using Xunit;
 using StringReader = System.IO.StringReader;
 
@@ -178,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private static ProjectReloadInterceptor CreateInstance()
         {
             var accessor = IProjectAccessorFactory.Create();
-            var provider = new TargetFrameworkProjectConfigurationDimensionProvider(accessor);
+            var provider = new ConfigurationDimensionProvider(accessor, Mock.Of<ITelemetryService>());
 
             var project = UnconfiguredProjectFactory.Create();
             var instance = new ProjectReloadInterceptor(project);

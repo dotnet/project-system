@@ -143,3 +143,10 @@ namespace System.Diagnostics.CodeAnalysis
         public string[] Members { get; }
     }
 }
+
+namespace System.Runtime.CompilerServices
+{
+    internal sealed class IsExternalInit
+    {
+    }
+}

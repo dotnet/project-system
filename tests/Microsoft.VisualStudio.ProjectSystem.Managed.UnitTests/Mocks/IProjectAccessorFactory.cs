@@ -47,6 +47,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 return Task.FromResult(result);
             }
 
+            public Task<TResult> OpenProjectForReadAsync<TResult>(ConfiguredProject project, Func<Project, Task<TResult>> action, CancellationToken cancellationToken = default)
+            {
+                return action(_evaluationProject);
+            }
+
             public Task<TResult> OpenProjectXmlForReadAsync<TResult>(UnconfiguredProject project, Func<ProjectRootElement, TResult> action, CancellationToken cancellationToken = default)
             {
                 var result = action(_rootElement);
@@ -78,6 +83,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 var result = action(_evaluationProject);
 
                 return Task.FromResult(result);
+            }
+
+            public Task OpenProjectForUpgradeableReadAsync(ConfiguredProject project, Func<Project, Task> action, CancellationToken cancellationToken = default)
+            {
+                return action(_evaluationProject);
+            }
+
+            public Task OpenProjectXmlForWriteAsync(UnconfiguredProject project, Func<ProjectRootElement, Task> action, CancellationToken cancellationToken = default)
+            {
+                return action(_rootElement);
             }
         }
     }
