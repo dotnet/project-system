@@ -17,6 +17,9 @@ using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
+#pragma warning disable IDE0055
+#pragma warning disable IDE0058
+
 namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     public sealed class BuildUpToDateCheckTests : BuildUpToDateCheckTestBase, IDisposable
@@ -958,7 +961,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             await _buildUpToDateCheck.ActivateAsync();
 
-            var destinationOutDir = @"NewProjectDirectory\newOutDir\Item1";
+            var destinationPath = @"NewProjectDirectory\newOutDir\Item1";
             var sourcePath = @"C:\Dev\Solution\Project\Item1";
 
             var itemChangeTime = DateTime.UtcNow.AddMinutes(-4);
@@ -972,7 +975,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 lastCheckTimeAtUtc: lastCheckTime,
                 lastItemsChangedAtUtc: itemChangeTime);
 
-            _fileSystem.AddFile(destinationOutDir, destinationTime);
+            _fileSystem.AddFile(destinationPath, destinationTime);
             _fileSystem.AddFile(sourcePath, sourceTime);
 
             await AssertNotUpToDateAsync(
@@ -981,8 +984,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     "No build outputs defined.",
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
-                    $"    Destination {destinationTime.ToLocalTime()}: '{destinationOutDir}'.",
-                    "PreserveNewest source is newer than destination, not up to date."
+                    $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
+                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
                 "CopyToOutputDirectory");
         }
@@ -1078,7 +1081,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     $"Checking PreserveNewest file '{sourcePath}':",
                     $"    Source {sourceTime.ToLocalTime()}: '{sourcePath}'.",
                     $"    Destination {destinationTime.ToLocalTime()}: '{destinationPath}'.",
-                    "PreserveNewest source is newer than destination, not up to date."
+                    $"PreserveNewest source '{sourcePath}' is newer than destination '{destinationPath}', not up to date."
                 },
                 "CopyToOutputDirectory");
         }
