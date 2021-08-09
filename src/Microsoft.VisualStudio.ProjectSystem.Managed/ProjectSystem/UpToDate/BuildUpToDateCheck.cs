@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 return log.Fail("FirstRun", "The up-to-date check has not yet run for this project. Not up-to-date.");
             }
 
-            foreach ((_, ImmutableArray<(string Path, string? Link, CopyType CopyType)> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)> items) in state.ItemsByItemType)
             {
                 foreach ((string path, _, CopyType copyType) in items)
                 {
@@ -204,12 +204,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
                     if (log.Level <= LogLevel.Info)
                     {
-                        foreach ((bool isAdd, string itemType, string path, string? link, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
+                        foreach ((bool isAdd, string itemType, string path, string? targetPath, CopyType copyType) in state.LastItemChanges.OrderBy(change => change.ItemType).ThenBy(change => change.Path))
                         {
-                            if (Strings.IsNullOrEmpty(link))
+                            if (Strings.IsNullOrEmpty(targetPath))
                                 log.Info("    {0} item {1} '{2}' (CopyType={3})", itemType, isAdd ? "added" : "removed", path, copyType);
                             else
-                                log.Info("    {0} item {1} '{2}' (CopyType={3}, Link='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, link);
+                                log.Info("    {0} item {1} '{2}' (CopyType={3}, TargetPath='{4}')", itemType, isAdd ? "added" : "removed", path, copyType, targetPath);
                         }
                     }
 
@@ -291,7 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     yield return (Path: state.NewestImportInput, IsRequired: true);
                 }
 
-                foreach ((string itemType, ImmutableArray<(string path, string? link, CopyType copyType)> changes) in state.ItemsByItemType)
+                foreach ((string itemType, ImmutableArray<(string path, string? targetPath, CopyType copyType)> changes) in state.ItemsByItemType)
                 {
                     if (!NonCompilationItemTypes.Contains(itemType))
                     {
@@ -595,9 +595,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         {
             string outputFullPath = Path.Combine(state.MSBuildProjectDirectory, state.OutputRelativeOrFullPath);
 
-            foreach ((_, ImmutableArray<(string Path, string? Link, CopyType CopyType)> items) in state.ItemsByItemType)
+            foreach ((_, ImmutableArray<(string Path, string? TargetPath, CopyType CopyType)> items) in state.ItemsByItemType)
             {
-                foreach ((string path, string? link, CopyType copyType) in items)
+                foreach ((string path, string? targetPath, CopyType copyType) in items)
                 {
                     // Only consider items with CopyType of CopyIfNewer
                     if (copyType != CopyType.CopyIfNewer)
@@ -608,7 +608,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     token.ThrowIfCancellationRequested();
 
                     string rootedPath = _configuredProject.UnconfiguredProject.MakeRooted(path);
-                    string filename = Strings.IsNullOrEmpty(link) ? rootedPath : link;
+                    string filename = Strings.IsNullOrEmpty(targetPath) ? rootedPath : targetPath;
 
                     if (string.IsNullOrEmpty(filename))
                     {
