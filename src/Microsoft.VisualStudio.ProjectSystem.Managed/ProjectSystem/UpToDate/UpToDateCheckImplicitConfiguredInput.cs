@@ -22,9 +22,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         public string? MSBuildProjectFullPath { get; }
 
         public string? MSBuildProjectDirectory { get; }
-        
+
         public string? CopyUpToDateMarkerItem { get; }
-        
+
         public string? OutputRelativeOrFullPath { get; }
 
         /// <summary>
@@ -525,7 +525,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             static string? GetTargetPath(IImmutableDictionary<string, string> itemMetadata)
             {
-                return itemMetadata.TryGetValue(BuildUpToDateCheck.Link, out string link) ? link : null;
+                // "Link" is an optional path and file name under which the item should be copied.
+                // It allows a source file to be moved to a different relative path, or to be renamed.
+                //
+                // From the perspective of the FUTD check, it is only relevant on CopyToOutputDirectory items.
+                //
+                // Two properties can provide this feature: "Link" and "TargetPath".
+                //
+                // If specified, "TargetPath" metadata controls the path of the target file, relative to the output
+                // folder.
+                //
+                // "Link" controls the location under the project in Solution Explorer where the item appears.
+                // If "TargetPath" is not specified, then "Link" can also serve the role of "TargetPath".
+                //
+                // If both are specified, we only use "TargetPath". The use case for specifying both is wanting
+                // to control the location of the item in Solution Explorer, as well as in the output directory.
+                // The former is not relevant to us here.
+
+                if (itemMetadata.TryGetValue(None.TargetPathProperty, out string? targetPath) && !string.IsNullOrWhiteSpace(targetPath))
+                {
+                    return targetPath;
+                }
+
+                if (itemMetadata.TryGetValue(None.LinkProperty, out string link) && !string.IsNullOrWhiteSpace(link))
+                {
+                    return link;
+                }
+
+                return null;
             }
 
             static ImmutableDictionary<string, ImmutableDictionary<string, ImmutableArray<string>>> BuildItemsByKindBySetName(IProjectChangeDescription projectChangeDescription, string kindPropertyName, string setPropertyName)

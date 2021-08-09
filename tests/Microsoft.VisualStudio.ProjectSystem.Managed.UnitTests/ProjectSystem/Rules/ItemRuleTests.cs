@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using Xunit;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Rules
@@ -35,11 +36,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
 
             string noneFile = Path.Combine(fullPath, "..", "None.xaml");
 
-            XElement none = LoadXamlRule(noneFile);
+            XElement none = LoadXamlRule(noneFile, out var namespaceManager);
             XElement rule = LoadXamlRule(fullPath);
 
             // First fix up the Name as we know they'll differ.
             rule.Attribute("Name").Value = "None";
+
+            if (ruleName is "Compile" or "EditorConfigFiles")
+            {
+                // Remove the "TargetPath" element for these types
+                var targetPathElement = none.XPathSelectElement(@"/msb:Rule/msb:StringProperty[@Name=""TargetPath""]", namespaceManager);
+                Assert.NotNull(targetPathElement);
+                targetPathElement!.Remove();
+            }
 
             AssertXmlEqual(none, rule);
         }
