@@ -20,10 +20,6 @@
   <StringProperty Name="TargetPath"
                   ReadOnly="True"
                   Visible="False" />
-
-  <StringProperty Name="TargetRefPath"
-                  ReadOnly="True"
-                  Visible="False" />
   
   <StringProperty Name="MaxSupportedLangVersion"
                   ReadOnly="True"
