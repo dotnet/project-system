@@ -183,9 +183,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             try
             {
-                await hotReloadState.Session.StopSessionAsync(default);
+                if (ImmutableInterlocked.TryRemove(ref _activeSessions, hotReloadState.Process.Id, out _))
+                {
+                    await hotReloadState.Session.StopSessionAsync(cancellationToken);
 
-                ImmutableInterlocked.TryRemove(ref _activeSessions, hotReloadState.Process.Id, out _);
+                    // First try to close the process nicely and if that doesn't work kill it.
+                    if (!hotReloadState.Process.CloseMainWindow())
+                    {
+                        hotReloadState.Process.Kill();
+                    }
+                }
             }
             catch (Exception ex)
             {
