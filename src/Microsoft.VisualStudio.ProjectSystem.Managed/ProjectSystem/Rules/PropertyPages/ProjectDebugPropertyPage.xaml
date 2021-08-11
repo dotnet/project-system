@@ -66,7 +66,13 @@
 
   <BoolProperty Name="HotReloadEnabled"
                 DisplayName="Enable Hot Reload"
-                Description="Apply code changes to the running application." />
+                Description="Apply code changes to the running application.">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "SupportsHotReload")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
   
   <BoolProperty Name="NativeDebugging"
                 DisplayName="Enable native code debugging"
