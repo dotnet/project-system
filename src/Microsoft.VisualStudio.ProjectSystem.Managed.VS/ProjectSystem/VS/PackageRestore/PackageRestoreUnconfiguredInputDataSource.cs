@@ -96,19 +96,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return new PackageRestoreUnconfiguredInput(restoreInfo, inputs);
         }
 
-        private string ResolveProjectAssetsFilePathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private string ResolveProjectAssetsFilePathConflicts(IReadOnlyCollection<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on where the project-wide asset file is located.
             return ResolvePropertyConflicts(updates, u => u.ProjectAssetsFilePath, NuGetRestore.ProjectAssetsFileProperty);
         }
 
-        private string ResolveMSBuildProjectExtensionsPathConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private string ResolveMSBuildProjectExtensionsPathConflicts(IReadOnlyCollection<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on where the project-wide extensions path is located
             return ResolvePropertyConflicts(updates, u => u.MSBuildProjectExtensionsPath, NuGetRestore.MSBuildProjectExtensionsPathProperty);
         }
 
-        private string ResolveOriginalTargetFrameworksConflicts(IEnumerable<PackageRestoreConfiguredInput> updates)
+        private string ResolveOriginalTargetFrameworksConflicts(IReadOnlyCollection<PackageRestoreConfiguredInput> updates)
         {
             // All configurations need to agree on what the overall "user-written" frameworks for the 
             // project so that conditions in the project-wide 'nuget.g.props' and 'nuget.g.targets' 
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             return ResolvePropertyConflicts(updates, u => u.OriginalTargetFrameworks, NuGetRestore.TargetFrameworksProperty);
         }
 
-        private string ResolvePropertyConflicts(IEnumerable<PackageRestoreConfiguredInput> updates, Func<ProjectRestoreInfo, string> propertyGetter, string propertyName)
+        private string ResolvePropertyConflicts(IReadOnlyCollection<PackageRestoreConfiguredInput> updates, Func<ProjectRestoreInfo, string> propertyGetter, string propertyName)
         {
             // Always use the first TFM listed in project to provide consistent behavior
             PackageRestoreConfiguredInput update = updates.First();
