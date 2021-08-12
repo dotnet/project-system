@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
@@ -30,41 +29,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>> targetBlock)
         {
-            // Provides the set of implicitly active configured projects
-            IProjectValueDataSource<IConfigurationGroup<ConfiguredProject>> activeConfiguredProjectsSource = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource;
-
             // Aggregates implicitly active UpToDateCheckImplicitConfiguredInput inputs from their sources
-            var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, UpToDateCheckImplicitConfiguredInput>(
-                _configuredProject,
-                projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IUpToDateCheckImplicitConfiguredInputDataSource>())
-                    .WhereNotNull() // Filter out any configurations which don't have this export
-                    .Select(DropConfiguredProjectVersions),
-                includeSourceVersions: true);
+            var joinBlock = new ConfiguredProjectDataSourceJoinBlock<UpToDateCheckImplicitConfiguredInput>(
+                project => project.Services.ExportProvider.GetExportedValueOrDefault<IUpToDateCheckImplicitConfiguredInputDataSource>(),
+                JoinableFactory,
+                _configuredProject.UnconfiguredProject);
 
-            // Dataflow from two configurations can depend on a same unconfigured level data source, and processes it at a different speed.
-            // Introduce a forward-only block to prevent regressions in versions.
-            var forwardOnlyBlock = ProjectDataSources.CreateDataSourceVersionForwardOnlyFilteringBlock<IReadOnlyCollection<UpToDateCheckImplicitConfiguredInput>>();
-
+            // Merges UpToDateCheckImplicitConfiguredInputs into a UpToDateCheckConfiguredInput
             DisposableValue<ISourceBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>>>
-                mergeBlock = forwardOnlyBlock.TransformWithNoDelta(update => update.Derive(MergeInputs));
-
-            JoinUpstreamDataSources(restoreConfiguredInputSource, activeConfiguredProjectsSource);
+                mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeInputs));
 
             return new DisposableBag
             {
-                restoreConfiguredInputSource,
-                activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion),
-                restoreConfiguredInputSource.SourceBlock.LinkTo(forwardOnlyBlock, DataflowOption.PropagateCompletion),
+                joinBlock,
                 mergeBlock,
+
+                // Link the active configured projects to our join block
+                _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
+
+                // Set the link up so that we publish changes to target block
                 mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion)
             };
-
-            IProjectValueDataSource<UpToDateCheckImplicitConfiguredInput> DropConfiguredProjectVersions(IUpToDateCheckImplicitConfiguredInputDataSource dataSource)
-            {
-                // Wrap it in a data source that will drop project version and identity versions so as they will never agree
-                // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-                return new DropConfiguredProjectVersionDataSource<UpToDateCheckImplicitConfiguredInput>(_configuredProject.UnconfiguredProject, dataSource);
-            }
 
             static UpToDateCheckConfiguredInput MergeInputs(IReadOnlyCollection<UpToDateCheckImplicitConfiguredInput> inputs)
             {

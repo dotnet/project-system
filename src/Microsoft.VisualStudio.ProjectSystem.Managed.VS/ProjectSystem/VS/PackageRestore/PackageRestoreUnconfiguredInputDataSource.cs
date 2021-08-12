@@ -38,37 +38,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // (via ProjectRestoreUpdate) and combine it into a single IVsProjectRestoreInfo2 instance and publish that. When a change is 
             // made to a configuration, such as adding a PackageReference, we should react to it and push a new version of our output. If the 
             // active configuration changes, we should react to it, and publish data from the new set of implicitly active configurations.
-            var disposables = new DisposableBag();
 
-            var restoreConfiguredInputSource = new UnwrapCollectionChainedProjectValueDataSource<IReadOnlyCollection<ConfiguredProject>, PackageRestoreConfiguredInput>(
-                _project,
-                projects => projects.Select(project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>())
-                                    .WhereNotNull() // Filter out those without PackageReference
-                                    .Select(DropConfiguredProjectVersions),
-                includeSourceVersions: true);
-
-            disposables.Add(restoreConfiguredInputSource);
-
-            IProjectValueDataSource<IConfigurationGroup<ConfiguredProject>> activeConfiguredProjectsSource = _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource;
-            disposables.Add(activeConfiguredProjectsSource.SourceBlock.LinkTo(restoreConfiguredInputSource, DataflowOption.PropagateCompletion));
-
-            // Dataflow from two configurations can depend on a same unconfigured level data source, and processes it at a different speed.
-            // Introduce a forward-only block to prevent regressions in versions.
-            var forwardOnlyBlock = ProjectDataSources.CreateDataSourceVersionForwardOnlyFilteringBlock<IReadOnlyCollection<PackageRestoreConfiguredInput>>();
-            disposables.Add(restoreConfiguredInputSource.SourceBlock.LinkTo(forwardOnlyBlock, DataflowOption.PropagateCompletion));
+            var joinBlock = new ConfiguredProjectDataSourceJoinBlock<PackageRestoreConfiguredInput>(
+                project => project.Services.ExportProvider.GetExportedValueOrDefault<IPackageRestoreConfiguredInputDataSource>(),
+                JoinableFactory,
+                _project);
 
             // Transform all restore data -> combined restore data
-            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = forwardOnlyBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
-            disposables.Add(mergeBlock);
+            DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
 
-            // Set the link up so that we publish changes to target block
-            mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+            return new DisposableBag
+            {
+                joinBlock,
+                mergeBlock,
 
-            // Join the source blocks, so if they need to switch to UI thread to complete 
-            // and someone is blocked on us on the same thread, the call proceeds
-            JoinUpstreamDataSources(restoreConfiguredInputSource, activeConfiguredProjectsSource);
+                // Link the active configured projects to our join block
+                _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
 
-            return disposables;
+                // Set the link up so that we publish changes to target block
+                mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion)
+            };
         }
 
         private PackageRestoreUnconfiguredInput MergeRestoreInputs(IReadOnlyCollection<PackageRestoreConfiguredInput> inputs)
@@ -210,13 +199,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
 
             return true;
-        }
-
-        private IProjectValueDataSource<PackageRestoreConfiguredInput> DropConfiguredProjectVersions(IPackageRestoreConfiguredInputDataSource dataSource)
-        {
-            // Wrap it in a data source that will drop project version and identity versions so as they will never agree
-            // on these versions as they are unique to each configuration. They'll be consistent by all other versions.
-            return new DropConfiguredProjectVersionDataSource<PackageRestoreConfiguredInput>(_project, dataSource);
         }
 
         private void ReportUserFault(string message)
