@@ -36,6 +36,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             };
         }
 
+        private protected static IProjectRuleSnapshotModel ItemWithMetadata(string itemSpec, params (string MetadataName, string MetadataValue)[] metadata)
+        {
+            return new IProjectRuleSnapshotModel
+            {
+                Items = ImmutableStringDictionary<IImmutableDictionary<string, string>>.EmptyOrdinal.Add(
+                    itemSpec,
+                    metadata.ToImmutableDictionary(pair => pair.MetadataName, pair => pair.MetadataValue, StringComparer.Ordinal))
+            };
+        }
+
         private protected static IProjectRuleSnapshotModel ItemsWithMetadata(params (string itemSpec, string metadataName, string metadataValue)[] items)
         {
             return new IProjectRuleSnapshotModel
