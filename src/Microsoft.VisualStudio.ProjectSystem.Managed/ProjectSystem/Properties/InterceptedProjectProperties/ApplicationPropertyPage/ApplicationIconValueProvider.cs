@@ -17,12 +17,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
     [ExportInterceptingPropertyValueProvider(ConfigurationGeneral.ApplicationIconProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ApplicationIconValueProvider : InterceptingPropertyValueProviderBase
     {
+        private readonly IProjectItemProvider _sourceItemsProvider;
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IFileSystem _fileSystem;
 
         [ImportingConstructor]
-        public ApplicationIconValueProvider(UnconfiguredProject unconfiguredProject, IFileSystem fileSystem)
+        public ApplicationIconValueProvider(
+            [Import(ExportContractNames.ProjectItemProviders.SourceFiles)] IProjectItemProvider sourceItemsProvider,
+            UnconfiguredProject unconfiguredProject,
+            IFileSystem fileSystem)
         {
+            _sourceItemsProvider = sourceItemsProvider;
             _unconfiguredProject = unconfiguredProject;
             _fileSystem = fileSystem;
         }
@@ -41,21 +46,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 return await defaultProperties.GetUnevaluatedPropertyValueAsync(propertyName);
             }
 
+            string propertyValue;
             // Copy the file into the project directory.
             // This isn't a limitation of ApplicationIcon; it is to simply mimic the legacy property page interaction.
             if (_unconfiguredProject.IsOutsideProjectDirectory(unevaluatedPropertyValue))
             {
                 try
                 {
-                    string fileName = Path.GetFileName(unevaluatedPropertyValue);
-                    var destinationInfo = new FileInfo(Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), fileName));
+                    propertyValue = Path.GetFileName(unevaluatedPropertyValue);
+                    var destinationInfo = new FileInfo(Path.Combine(Path.GetDirectoryName(_unconfiguredProject.FullPath), propertyValue));
                     if (destinationInfo.Exists && destinationInfo.IsReadOnly)
                     {
                         // The file cannot be copied over; return the previous value.
                         return await defaultProperties.GetUnevaluatedPropertyValueAsync(propertyName);
                     }
                     _fileSystem.CopyFile(unevaluatedPropertyValue, destinationInfo.FullName, overwrite: true);
-                    return fileName;
                 }
                 catch
                 {
@@ -63,8 +68,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                     return await defaultProperties.GetUnevaluatedPropertyValueAsync(propertyName);
                 }
             }
+            else
+            {
+                propertyValue = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
+            }
 
-            return PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
+            await _sourceItemsProvider.AddAsync(Content.SchemaName, propertyValue);
+            return propertyValue;
         }
     }
 }
