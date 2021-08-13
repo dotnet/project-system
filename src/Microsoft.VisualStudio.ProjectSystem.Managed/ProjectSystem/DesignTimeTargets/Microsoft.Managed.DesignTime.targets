@@ -234,6 +234,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SuggestedWorkload.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -365,6 +369,12 @@
   <!-- This target is used to collect the PackageReferences in the project. This target can be overriden to add\remove packagereferences before they are
        sent to NuGet to be restored.-->
   <Target Name="CollectPackageReferences" Returns="@(PackageReference)" />
+
+  <!-- This target is used to collect the SuggestedWorkload items in the project.-->
+  <Target Name="CollectSuggestedWorkloads"
+          Returns="@(SuggestedWorkload)"
+          DependsOnTargets="GetSuggestedWorkloads">
+  </Target>
 
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
