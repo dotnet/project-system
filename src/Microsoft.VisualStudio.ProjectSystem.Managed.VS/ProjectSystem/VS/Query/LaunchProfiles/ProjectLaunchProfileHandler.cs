@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -138,6 +139,99 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
         }
 
+        public async Task<EntityIdentity?> AddLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string commandName, string? newProfileName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            newProfileName ??= await GetNewProfileNameAsync(cancellationToken);
+
+            await _launchSettingsProvider.AddOrUpdateProfileAsync(
+                new WritableLaunchProfile
+                {
+                    Name = newProfileName,
+                    CommandName = commandName
+                }.ToLaunchProfile(),
+                addToFront: false);
+
+            if (_launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
+            {
+                queryExecutionContext.ReportUpdatedDataVersion(_launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+            }
+
+            return CreateLaunchProfileId(parent, newProfileName);
+        }
+
+        public async Task<EntityIdentity?> DuplicateLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string? newProfileName, string? newProfileCommandName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
+            Assumes.NotNull(launchSettings);
+
+            ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
+            if (existingProfile is not null)
+            {
+                newProfileName ??= await GetNewProfileNameAsync(cancellationToken);
+                newProfileCommandName ??= existingProfile.CommandName;
+
+                var writableProfile = new WritableLaunchProfile(existingProfile);
+                writableProfile.Name = newProfileName;
+                writableProfile.CommandName = newProfileCommandName;
+
+                await _launchSettingsProvider.AddOrUpdateProfileAsync(writableProfile.ToLaunchProfile(), addToFront: false);
+
+                if (_launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
+                {
+                    queryExecutionContext.ReportUpdatedDataVersion(_launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+                }
+
+                return CreateLaunchProfileId(parent, newProfileName);
+            }
+
+            return null;
+        }
+
+        public async Task<EntityIdentity?> RemoveLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string profileName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _launchSettingsProvider.RemoveProfileAsync(profileName);
+
+            if (_launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
+            {
+                queryExecutionContext.ReportUpdatedDataVersion(_launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+            }
+
+            return CreateLaunchProfileId(parent, profileName);
+        }
+
+        public async Task<(EntityIdentity, EntityIdentity)?> RenameLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string newProfileName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
+            Assumes.NotNull(launchSettings);
+
+            ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
+            if (existingProfile is not null)
+            {
+                var writableProfile = new WritableLaunchProfile(existingProfile);
+                writableProfile.Name = newProfileName;
+
+                await _launchSettingsProvider.RemoveProfileAsync(currentProfileName);
+                await _launchSettingsProvider.AddOrUpdateProfileAsync(writableProfile.ToLaunchProfile(), addToFront: false);
+
+                if (_launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
+                {
+                    queryExecutionContext.ReportUpdatedDataVersion(_launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
+                }
+
+                return (CreateLaunchProfileId(parent, currentProfileName), CreateLaunchProfileId(parent, newProfileName));
+            }
+
+            return null;
+        }
+
         private static IEntityValue CreateLaunchProfileValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, QueryProjectPropertiesContext propertiesContext, Rule rule, int order, IProjectState cache, ILaunchProfilePropertiesAvailableStatus properties)
         {
             LaunchProfileValue newLaunchProfile = new(queryExecutionContext.EntityRuntime, id, new LaunchProfilePropertiesAvailableStatus());
@@ -198,6 +292,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             Assumes.True(id.TryGetValue(ProjectModelIdentityKeys.SourceItemName, out string? name));
 
             return name;
+        }
+
+        private async Task<string> GetNewProfileNameAsync(CancellationToken cancellationToken = default)
+        {
+            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
+            Assumes.NotNull(launchSettings);
+
+            string? newProfileName = null;
+            for (int i = 1; newProfileName is null; i++)
+            {
+                string potentialProfileName = string.Format(VSResources.DefaultNewProfileName, i);
+                if (!launchSettings.Profiles.Any(profile => StringComparers.LaunchProfileNames.Equals(potentialProfileName, profile.Name)))
+                {
+                    newProfileName = potentialProfileName;
+                }
+            }
+
+            return newProfileName;
         }
     }
 }

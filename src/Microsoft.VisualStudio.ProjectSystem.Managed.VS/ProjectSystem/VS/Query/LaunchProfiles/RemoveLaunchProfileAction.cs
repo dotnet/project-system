@@ -20,11 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _executableStep = executableStep;
         }
 
-        protected override async Task ExecuteAsync(IEntityValue projectEntity, ILaunchSettingsActionService launchSettingsActionService, CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken)
         {
-            await launchSettingsActionService.RemoveLaunchProfileAsync(_executableStep.ProfileName, cancellationToken);
+            EntityIdentity? removedProfileId = await launchProfileHandler.RemoveLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.ProfileName, cancellationToken);
 
-            RemovedLaunchProfiles.Add((projectEntity, _executableStep.ProfileName));
+            if (removedProfileId is not null)
+            {
+                RemovedLaunchProfiles.Add((projectEntity, removedProfileId));
+            }
         }
     }
 }

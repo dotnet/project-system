@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Metadata;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
@@ -18,40 +17,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal abstract class LaunchProfileActionBase : QueryDataProducerBase<IEntityValue>, IQueryActionExecutor
     {
-        protected readonly List<(IEntityValue projectEntity, ILaunchProfile profile)> AddedLaunchProfiles = new();
-        protected readonly List<(IEntityValue projectEntity, string profileName)> RemovedLaunchProfiles = new();
+        /// <summary>
+        /// The set of entity properties to request when we create a new launch profile and
+        /// need to obtain an entity for it.
+        /// </summary>
+        private static readonly LaunchProfilePropertiesAvailableStatus s_requestedLaunchProfileProperties;
+
+        protected readonly List<(IEntityValue projectEntity, EntityIdentity)> AddedLaunchProfiles = new();
+        protected readonly List<(IEntityValue projectEntity, EntityIdentity)> RemovedLaunchProfiles = new();
+
+        static LaunchProfileActionBase()
+        {
+            // TODO: Note that even though we indicate here that the categories and properties
+            // child entities should be included we are still responsible for populating them
+            // manually.
+            s_requestedLaunchProfileProperties = new LaunchProfilePropertiesAvailableStatus();
+            s_requestedLaunchProfileProperties.RequireProperty(LaunchProfileType.CategoriesPropertyName);
+            s_requestedLaunchProfileProperties.RequireProperty(LaunchProfileType.CommandNamePropertyName);
+            s_requestedLaunchProfileProperties.RequireProperty(LaunchProfileType.NamePropertyName);
+            s_requestedLaunchProfileProperties.RequireProperty(LaunchProfileType.OrderPropertyName);
+            s_requestedLaunchProfileProperties.RequireProperty(LaunchProfileType.PropertiesPropertyName);
+            s_requestedLaunchProfileProperties.Freeze();
+        }
 
         public Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
         {
-            foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, ILaunchProfile profile)> group in AddedLaunchProfiles.GroupBy(item => item.projectEntity))
+            foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, EntityIdentity profileId)> group in AddedLaunchProfiles.GroupBy(item => item.projectEntity))
             {
                 var projectValue = (IEntityValueFromProvider)group.Key;
-
-                var returnedLaunchProfiles = new List<IEntityValue>();
-                if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
+                if (projectValue.ProviderState is UnconfiguredProject project
+                    && project.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler handler)
                 {
-                    returnedLaunchProfiles.AddRange(exitingProfiles);
-                }
-
-                foreach ((IEntityValue projectEntity, ILaunchProfile profile) in group)
-                {
-                    Assumes.NotNull(profile.Name);
-                    var newProfileEntity = new LaunchProfileValue(
-                        projectValue.EntityRuntime,
-                        LaunchProfileDataProducer.CreateLaunchProfileId(projectValue, LaunchProfileProjectItemProvider.ItemType, profile.Name),
-                        new LaunchProfilePropertiesAvailableStatus())
+                    var returnedLaunchProfiles = new List<IEntityValue>();
+                    if (projectValue.TryGetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, out IEnumerable<IEntityValue>? exitingProfiles))
                     {
-                        CommandName = profile.CommandName,
-                        Name = profile.Name
-                    };
+                        returnedLaunchProfiles.AddRange(exitingProfiles);
+                    }
 
-                    returnedLaunchProfiles.Add(newProfileEntity);
+                    foreach ((IEntityValue projectEntity, EntityIdentity addedProfileId) in group)
+                    {
+                        if (handler.RetrieveLaunchProfileEntityAsync(request.QueryExecutionContext, addedProfileId, s_requestedLaunchProfileProperties) is IEntityValue launchProfileEntity)
+                        {
+                            // TODO: Actually populate the categories and properties child entities.
+                            returnedLaunchProfiles.Add(launchProfileEntity);
+                        }
+                    }
+
+                    projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
                 }
-
-                projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
             }
 
-            foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, string profileName)> group in RemovedLaunchProfiles.GroupBy(item => item.projectEntity))
+            foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, EntityIdentity profileId)> group in RemovedLaunchProfiles.GroupBy(item => item.projectEntity))
             {
                 var projectValue = (IEntityValueFromProvider)group.Key;
 
@@ -61,9 +77,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     returnedLaunchProfiles.AddRange(exitingProfiles);
                 }
 
-                foreach ((IEntityValue projectEntity, string profileName) in group)
+                foreach ((IEntityValue projectEntity, EntityIdentity removedProfileId) in group)
                 {
-                    var removedProfileId = LaunchProfileDataProducer.CreateLaunchProfileId(projectValue, LaunchProfileProjectItemProvider.ItemType, profileName);
                     IEntityValue? entityToRemove = returnedLaunchProfiles.FirstOrDefault(entity => ((IEntityWithId)entity).Id.Equals(removedProfileId));
                     if (entityToRemove is not null)
                     {
@@ -82,21 +97,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             result.Request.QueryExecutionContext.CancellationToken.ThrowIfCancellationRequested();
 
             if (((IEntityValueFromProvider)result.Result).ProviderState is UnconfiguredProject project
-                && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsActionService>() is ILaunchSettingsActionService launchSettingsActionService
-                && project.Services.ExportProvider.GetExportedValueOrDefault<ILaunchSettingsProvider>() is ILaunchSettingsProvider launchSettingsProvider
-                && project.Services.ExportProvider.GetExportedValueOrDefault<LaunchSettingsTracker>() is LaunchSettingsTracker tracker)
+                && project.Services.ExportProvider.GetExportedValueOrDefault<IProjectLaunchProfileHandler>() is IProjectLaunchProfileHandler launchSettingsActionService)
             {
-                await ExecuteAsync(result.Result, launchSettingsActionService, result.Request.QueryExecutionContext.CancellationToken);
-
-                if (launchSettingsProvider.CurrentSnapshot is IVersionedLaunchSettings versionedLaunchSettings)
-                {
-                    result.Request.QueryExecutionContext.ReportUpdatedDataVersion(tracker.VersionKey, versionedLaunchSettings.Version);
-                }
+                await ExecuteAsync(result.Request.QueryExecutionContext, result.Result, launchSettingsActionService, result.Request.QueryExecutionContext.CancellationToken);
             }
 
             await ResultReceiver.ReceiveResultAsync(result);
         }
 
-        protected abstract Task ExecuteAsync(IEntityValue projectEntity, ILaunchSettingsActionService launchSettingsProvider, CancellationToken cancellationToken);
+        protected abstract Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler launchProfileHandler, CancellationToken cancellationToken);
     }
 }
