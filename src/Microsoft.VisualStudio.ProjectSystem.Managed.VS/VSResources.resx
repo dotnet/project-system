@@ -258,7 +258,7 @@ In order to debug this project, add an executable project to this solution which
     <comment>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</comment>
   </data>
   <data name="HotReloadApplyUpdatesSuccessful" xml:space="preserve">
-    <value>Updates applied successfully</value>
+    <value>Updates applied successfully.</value>
   </data>
   <data name="HotReloadApplyUpdatesFailure" xml:space="preserve">
     <value>Applying updates failed: {0}</value>
@@ -270,15 +270,43 @@ In order to debug this project, add an executable project to this solution which
     <value>Rebuilding and restarting the application since the edits can't be applied dynamically.</value>
   </data>
   <data name="HotReloadStoppingApplication" xml:space="preserve">
-    <value>Stopping application</value>
+    <value>Stopping application.</value>
   </data>
   <data name="HotReloadStartSession" xml:space="preserve">
-    <value>Hot Reload session started</value>
+    <value>Hot Reload session started.</value>
   </data>
   <data name="HotReloadStopSession" xml:space="preserve">
-    <value>Hot Reload session complete</value>
+    <value>Hot Reload session complete.</value>
   </data>
   <data name="HotReloadSendingUpdates" xml:space="preserve">
-    <value>Sending updates to running application</value>
+    <value>Sending updates to running application.</value>
+  </data>
+  <data name="ProjectHotReloadSessionManager_AttachingToProcess" xml:space="preserve">
+    <value>{0}: Attaching to process '{1}'.</value>
+    <comment>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ProcessAlreadyExited" xml:space="preserve">
+    <value>{0}: The process has already exited.</value>
+    <comment>{0} is the Hot Reload session identifier.</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ErrorAttachingToProcess" xml:space="preserve">
+    <value>{0}: Error while attaching to process '{1}':
+{2}
+{3}</value>
+    <comment>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_NoActiveProcess" xml:space="preserve">
+    <value>{0}: Unable to start Hot Reload session: no active process.</value>
+    <comment>{0} is the Hot Reload session identifier.</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ProcessExited" xml:space="preserve">
+    <value>{0}: The process has exited.</value>
+    <comment>{0} is the Hot Reload session identifier.</comment>
+  </data>
+  <data name="ProjectHotReloadSessionManager_ErrorStoppingTheSession" xml:space="preserve">
+    <value>{0}: Error while stopping the session:
+{1}
+{2}</value>
+    <comment>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</comment>
   </data>
 </root>

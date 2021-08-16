@@ -55,14 +55,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 {
                     Process? process = Process.GetProcessById(processId);
 
-                    await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{_pendingSessionState.Session.Name}: Attaching to process '{processId}'.");
+                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_AttachingToProcess, _pendingSessionState.Session.Name, processId));
 
                     process.Exited += _pendingSessionState.OnProcessExited;
                     process.EnableRaisingEvents = true;
 
                     if (process.HasExited)
                     {
-                        await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{_pendingSessionState.Session.Name}: The process has already exited.");
+                        await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessAlreadyExited, _pendingSessionState.Session.Name));
                         process.Exited -= _pendingSessionState.OnProcessExited;
                         process = null;
                     }
@@ -71,12 +71,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 }
                 catch (Exception ex)
                 {
-                    await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{_pendingSessionState.Session.Name}: Error while attaching to process '{processId}':\r\n{ex.GetType()}\r\n{ex.Message}");
+                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorAttachingToProcess, _pendingSessionState.Session.Name, processId, ex.GetType(), ex.Message));
                 }
 
                 if (_pendingSessionState.Process is null)
                 {
-                    await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{_pendingSessionState.Session.Name}: Unable to start Hot Reload session: no active process.");
+                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_NoActiveProcess, _pendingSessionState.Session.Name));
                 }
                 else
                 {
@@ -110,6 +110,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _pendingSessionState = null;
             return false;
         }
+
+        private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
 
         private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
         {
@@ -155,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(hotReloadState.Session);
             Assumes.NotNull(hotReloadState.Process);
 
-            await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{hotReloadState.Session.Name}: The process has exited.");
+            await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
 
             await StopProjectAsync(hotReloadState, default);
         }
@@ -199,7 +201,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             }
             catch (Exception ex)
             {
-                await _hotReloadDiagnosticOutputService.Value.WriteLineAsync($"{hotReloadState.Session.Name}: Error while stopping the session:\r\n{ex.GetType()}\r\n{ex.Message}");
+                await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ErrorStoppingTheSession, hotReloadState.Session.Name, ex.GetType(), ex.Message));
             }
 
             return true;
