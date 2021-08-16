@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// the result.
         /// </param>
         /// <returns>
-        /// The new <see cref="ILaunchProfile"/>, or <see langword="null"/> if the profile
-        /// could not be created.
+        /// The <see cref="EntityIdentity"/> representing the new <see cref="ILaunchProfile"/>,
+        /// or <see langword="null"/> if the profile could not be created.
         /// </returns>
         /// <remarks>
         /// If <paramref name="newProfileName"/> is the name of an existing launch profile,
@@ -82,9 +82,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// the result.
         /// </param>
         /// <returns>
-        /// The new <see cref="ILaunchProfile"/>, or <see langword="null"/> if the profile
-        /// could not be created. This may occur if the profile specified by <paramref name="currentProfileName"/>
-        /// cannot be found.
+        /// The <see cref="EntityIdentity"/> representing the new <see cref="ILaunchProfile"/>,
+        /// or <see langword="null"/> if the profile could not be created. This may occur if
+        /// the profile specified by <paramref name="currentProfileName"/> cannot be found.
         /// </returns>
         Task<EntityIdentity?> DuplicateLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string? newProfileName, string? newProfileCommandName, CancellationToken cancellationToken = default);
 
@@ -104,6 +104,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// A token whose cancellation indicates that the caller no longer is interested in
         /// the result.
         /// </param>
+        /// <returns>
+        /// The <see cref="EntityIdentity"/> representing the removed <see cref="ILaunchProfile"/>,
+        /// or <see langword="null"/> if the profile could not be found.
+        /// </returns>
         Task<EntityIdentity?> RemoveLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string profileName, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -126,14 +130,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// the result.
         /// </param>
         /// <returns>
-        /// The renamed <see cref="ILaunchProfile"/>, or <see langword="null"/> if the
-        /// profile could not be renamed. This may occur if the profile specified by <paramref name="currentProfileName"/>
-        /// cannot be found.
+        /// A tuple consisting of two <see cref="EntityIdentity"/>s with the first
+        /// representing the profile under its previous name and the second representing the
+        /// profile under the new name, or <see langword="null"/> if the profile cannot be
+        /// found.
         /// </returns>
         /// <remarks>
         /// If <paramref name="newProfileName"/> is the name of an existing launch profile,
         /// the existing profile will be replaced by the newly-renamed profile.
         /// </remarks>
-        Task<(EntityIdentity, EntityIdentity)?> RenameLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string newProfileName, CancellationToken cancellationToken = default);
+        Task<(EntityIdentity oldProfileId, EntityIdentity newProfileId)?> RenameLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string newProfileName, CancellationToken cancellationToken = default);
     }
 }

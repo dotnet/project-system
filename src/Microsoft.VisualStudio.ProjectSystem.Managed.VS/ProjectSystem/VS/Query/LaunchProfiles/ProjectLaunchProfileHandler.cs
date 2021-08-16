@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return CreateLaunchProfileId(parent, profileName);
         }
 
-        public async Task<(EntityIdentity, EntityIdentity)?> RenameLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string newProfileName, CancellationToken cancellationToken = default)
+        public async Task<(EntityIdentity oldProfileId, EntityIdentity newProfileId)?> RenameLaunchProfileAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, string currentProfileName, string newProfileName, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
