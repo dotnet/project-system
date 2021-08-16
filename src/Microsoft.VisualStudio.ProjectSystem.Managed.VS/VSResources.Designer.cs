@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Updates applied successfully.
+        ///   Looks up a localized string similar to Updates applied successfully..
         /// </summary>
         internal static string HotReloadApplyUpdatesSuccessful {
             get {
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sending updates to running application.
+        ///   Looks up a localized string similar to Sending updates to running application..
         /// </summary>
         internal static string HotReloadSendingUpdates {
             get {
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hot Reload session started.
+        ///   Looks up a localized string similar to Hot Reload session started..
         /// </summary>
         internal static string HotReloadStartSession {
             get {
@@ -295,7 +295,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping application.
+        ///   Looks up a localized string similar to Stopping application..
         /// </summary>
         internal static string HotReloadStoppingApplication {
             get {
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hot Reload session complete.
+        ///   Looks up a localized string similar to Hot Reload session complete..
         /// </summary>
         internal static string HotReloadStopSession {
             get {
