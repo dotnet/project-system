@@ -187,10 +187,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 {
                     await hotReloadState.Session.StopSessionAsync(cancellationToken);
 
-                    // First try to close the process nicely and if that doesn't work kill it.
-                    if (!hotReloadState.Process.CloseMainWindow())
+                    if (!hotReloadState.Process.HasExited)
                     {
-                        hotReloadState.Process.Kill();
+                        // First try to close the process nicely and if that doesn't work kill it.
+                        if (!hotReloadState.Process.CloseMainWindow())
+                        {
+                            hotReloadState.Process.Kill();
+                        }
                     }
                 }
             }
