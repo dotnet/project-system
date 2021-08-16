@@ -102,6 +102,44 @@
         <target state="translated">{0} - インポートは、ターゲット ファイルからのものです。このインポートは削除できません。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
+        <source>{0}: Attaching to process '{1}'.</source>
+        <target state="new">{0}: Attaching to process '{1}'.</target>
+        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
+        <source>{0}: Error while attaching to process '{1}':
+{2}
+{3}</source>
+        <target state="new">{0}: Error while attaching to process '{1}':
+{2}
+{3}</target>
+        <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_ErrorStoppingTheSession">
+        <source>{0}: Error while stopping the session:
+{1}
+{2}</source>
+        <target state="new">{0}: Error while stopping the session:
+{1}
+{2}</target>
+        <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
+        <source>{0}: Unable to start Hot Reload session: no active process.</source>
+        <target state="new">{0}: Unable to start Hot Reload session: no active process.</target>
+        <note>{0} is the Hot Reload session identifier.</note>
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
+        <source>{0}: The process has already exited.</source>
+        <target state="new">{0}: The process has already exited.</target>
+        <note>{0} is the Hot Reload session identifier.</note>
+      </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
+        <source>{0}: The process has exited.</source>
+        <target state="new">{0}: The process has exited.</target>
+        <note>{0} is the Hot Reload session identifier.</note>
+      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">コード要素 '{0}' の名前変更に失敗しました。</target>

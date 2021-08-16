@@ -421,6 +421,64 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_AttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_AttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
+        ///{2}
+        ///{3}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorAttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorAttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while stopping the session:
+        ///{1}
+        ///{2}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorStoppingTheSession {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorStoppingTheSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Unable to start Hot Reload session: no active process..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_NoActiveProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_NoActiveProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has already exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessAlreadyExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A project with an Output Type of Class Library cannot be started directly.
         ///
         ///In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project..
