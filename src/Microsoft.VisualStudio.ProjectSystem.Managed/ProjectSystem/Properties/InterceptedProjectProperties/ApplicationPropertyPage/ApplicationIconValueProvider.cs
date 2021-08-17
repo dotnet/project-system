@@ -73,8 +73,32 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties.Package
                 propertyValue = PathHelper.MakeRelative(_unconfiguredProject, unevaluatedPropertyValue);
             }
 
-            await _sourceItemsProvider.AddAsync(Content.SchemaName, propertyValue);
+            string existingPropertyValue = await defaultProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.ApplicationIconProperty);
+            IProjectItem? existingItem = await GetExistingContentItemAsync(existingPropertyValue);
+            if (existingItem != null)
+            {
+                await existingItem.SetUnevaluatedIncludeAsync(propertyValue);
+            }
+            else
+            {
+                await _sourceItemsProvider.AddAsync(Content.SchemaName, propertyValue);
+            }
+
             return propertyValue;
+        }
+
+        private async Task<IProjectItem?> GetExistingContentItemAsync(string existingPropertyValue)
+        {
+            foreach (IProjectItem item in await _sourceItemsProvider.GetItemsAsync(Content.SchemaName))
+            {
+                // If the filename of this item and the filename of the property's value match, consider those to be related to one another.
+                if (Path.GetFileName(item.EvaluatedInclude).Equals(Path.GetFileName(existingPropertyValue), StringComparisons.PropertyLiteralValues))
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
     }
 }
