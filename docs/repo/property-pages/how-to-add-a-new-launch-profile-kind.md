@@ -181,3 +181,5 @@ public sealed class MyPackage : AsyncPackage
     ...
 }
 ```
+
+And you're done. This Launch Profile UI will be available in any project with matching capabilities.
