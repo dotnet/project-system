@@ -170,6 +170,10 @@ If the text within this editor should be displayed with a monospace (fixed width
 </StringProperty>
 ```
 
+### Password Strings
+
+A `PasswordBox` control can be used for string properties by specifying `EditorType="PasswordString"`.
+
 ### Custom Editors
 
 If a non-standard editor is required for a given property, one may be provided via MEF.
