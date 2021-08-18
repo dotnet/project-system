@@ -437,6 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             if (IsRunProjectCommand(resolvedProfile)
                 && resolvedProfile.IsHotReloadEnabled()
+                && !resolvedProfile.IsRemoteDebugEnabled()
                 && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
