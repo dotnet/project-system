@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../SettingsPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|SettingsPropertyPage|Description">
+        <source>Settings</source>
+        <target state="new">Settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SettingsPropertyPage|DisplayName">
+        <source>Settings</source>
+        <target state="new">Settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenApplicationSettings|DisplayName">
+        <source>Create or open application settings</source>
+        <target state="new">Create or open application settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|Description">
+        <source>The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
+        <target state="new">The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|DisplayName">
+        <source>Ignored</source>
+        <target state="new">Ignored</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
