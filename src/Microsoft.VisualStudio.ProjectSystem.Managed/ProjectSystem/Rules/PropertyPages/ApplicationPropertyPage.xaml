@@ -260,6 +260,10 @@
                   Category="Resources"
                   Description="Sets the .ico file that you want to use as your program icon."
                   Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="FilePath">
         <ValueEditor.Metadata>
