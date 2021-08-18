@@ -435,9 +435,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
             }
 
-            if (IsRunProjectCommand(resolvedProfile)
-                && resolvedProfile.IsHotReloadEnabled()
-                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling
+            if (HotReloadShouldBeEnabled(resolvedProfile, launchOptions)
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
                 // Enable XAML Hot Reload
@@ -450,6 +448,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             return settings;
+        }
+
+        private static bool HotReloadShouldBeEnabled(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        {
+            return IsRunProjectCommand(resolvedProfile)
+                && resolvedProfile.IsHotReloadEnabled()
+                && !resolvedProfile.IsRemoteDebugEnabled()
+                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
         }
 
         private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
