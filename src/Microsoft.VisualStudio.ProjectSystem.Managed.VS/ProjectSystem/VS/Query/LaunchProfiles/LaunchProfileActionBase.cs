@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedLaunchProfileProperties.Freeze();
         }
 
-        public Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
+        public async Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
         {
             foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, EntityIdentity profileId)> group in AddedLaunchProfiles.GroupBy(item => item.projectEntity))
             {
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
                     foreach ((IEntityValue projectEntity, EntityIdentity addedProfileId) in group)
                     {
-                        if (handler.RetrieveLaunchProfileEntityAsync(request.QueryExecutionContext, addedProfileId, s_requestedLaunchProfileProperties) is IEntityValue launchProfileEntity)
+                        if (await handler.RetrieveLaunchProfileEntityAsync(request.QueryExecutionContext, addedProfileId, s_requestedLaunchProfileProperties) is IEntityValue launchProfileEntity)
                         {
                             // TODO: Actually populate the categories and properties child entities.
                             returnedLaunchProfiles.Add(launchProfileEntity);
@@ -89,7 +89,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 projectValue.SetRelatedEntities(ProjectSystem.Query.ProjectModel.Metadata.ProjectType.LaunchProfilesPropertyName, returnedLaunchProfiles);
             }
 
-            return ResultReceiver.OnRequestProcessFinishedAsync(request);
+            await ResultReceiver.OnRequestProcessFinishedAsync(request);
         }
 
         public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
