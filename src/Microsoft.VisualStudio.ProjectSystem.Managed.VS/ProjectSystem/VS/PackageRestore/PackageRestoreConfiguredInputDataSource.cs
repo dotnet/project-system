@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
     /// </summary>
     [Export(typeof(IPackageRestoreConfiguredInputDataSource))]
     [AppliesTo(ProjectCapability.PackageReferences)]
-    internal partial class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
+    internal class PackageRestoreConfiguredInputDataSource : ChainedProjectValueDataSourceBase<PackageRestoreConfiguredInput>, IPackageRestoreConfiguredInputDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
                                                                         .Add(NuGetRestore.SchemaName)                       // Evaluation
