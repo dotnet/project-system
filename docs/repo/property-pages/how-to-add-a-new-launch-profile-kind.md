@@ -103,6 +103,83 @@ And you're done. Projects that import the .targets file will now show this UI wh
 
 ## Option 2: Embedded XAML file
 
-In this option the XAML file is embedded in an assembly as a resource and discovered by means of a MEF export. Compared to Option 1 this requires more initial setup but does not require you to distribute an additional file. This may be an attractive option if you are already exporting MEF components for use in Visual Studio.
+In this option the XAML file is embedded in an assembly as a resource and discovered by means of a MEF export. Compared to Option 1, this requires more initial setup but does not require you to distribute an additional file. This may be an attractive option if you are already exporting MEF components for use in Visual Studio--for example, via an extension.
 
-_Steps to be determined._
+### Step 1: Add the Project System SDK
+
+Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.Sdk package package to your project.
+
+### Step 2: (optional): Add the Microsoft.Build.Framework package
+
+Use the NuGet Package Manager to add the Microsoft.Build.Framework package to your project. This is an optional step, but it will allow the XAML editor to find the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) type (and related types) and provide code completion, tool tips, Go to Definition, and other features while you type.
+
+### Step 3: Define the XAML file
+
+Add a new XAML file named "MyLaunchProfile.xaml" to your project. Depending on how the file is created you may end up with a `<Page>` item in your project but this is not what we want as we're not using the file to describe a piece of WPF UI.
+
+Update your project to replace the `<Page>` item with the following:
+
+```xml
+<ItemGroup>
+  <XamlPropertyRule Include="MyLaunchProfile.xaml">
+    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+    <SubType>Designer</SubType>
+    <DataAccess>None</DataAccess>
+    <RuleInjection>None</RuleInjection>
+  </XamlPropertyRule>
+</ItemGroup>
+```
+
+### Step 4: Describe the property page
+
+This is the same as Step 4 under "Option 1: XAML file on disk" (above). Please see that step for details.
+
+### Step 5: Register the property page
+
+Add a class to hold the MEF metadata describing the embedded XAML `Rule`:
+
+```csharp
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+
+namespace MyNamespace
+{
+    internal static class RuleExporter
+    {
+        [ExportPropertyXamlRuleDefinition(
+            xamlResourceAssemblyName: "<Assembly Name>, Version=<Assembly Version>, Culture=<Assembly Culture>, PublicKeyToken=<Assembly Public Key Token>",
+            xamlResourceStreamName: "XamlRuleToCode:MyLaunchProfile.xaml",
+            context: PropertyPageContexts.Project)]
+        [AppliesTo("MyUniqueProjectCapability")]
+        public static int MyLaunchProfileRule;
+    }
+}
+```
+
+Important points:
+- The `MyLaunchProfileRule` field itself is never used; it exists solely as a place to park the relevant attributes.
+- The `xamlResourceAssemblyName` parameter is the fully-qualified name of the assembly holding the embedded .xaml file.
+- The `xamlResourceStreamName` parameter specifies the name of the embedded resource. This will be of the form "XamlRuleToCode:<XAMl file name>".
+- The `context` parameter should always be `PropertyPageContexts.Project`.
+- The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
+
+### Step 6: Add the assembly as MEF asset
+
+Using the VSIX Manifest designer, ensure the assembly containing the embedded file is included as a "MefComponent" asset.
+
+### Step 7: Add the assembly to the VS binding path
+
+In order for Visual Studio to properly load the embedded `Rule` it needs to be able to load the containing assembly. This requires that the assembly be on the Visual Studio _binding path_. A full discussion of binding paths is beyond the scope of this document, but this is often accomplished by tagging the class defining your VS package with the `ProvideBindingPath` attribute, e.g.:
+
+```csharp
+[ProvideBindingPath]
+[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
+[Guid(MyPackage.PackageGuidString)]
+public sealed class MyPackage : AsyncPackage
+{
+    ...
+}
+```
+
+And you're done. This Launch Profile UI will be available in any project with matching capabilities.
