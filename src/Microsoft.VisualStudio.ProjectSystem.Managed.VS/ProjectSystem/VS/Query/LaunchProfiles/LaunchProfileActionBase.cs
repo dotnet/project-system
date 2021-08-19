@@ -64,8 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
         {
-            CategoryFromRuleDataProducer categoryDataProducer = new CategoryFromRuleDataProducer(s_requestedCategoryProperties);
-
             foreach (IGrouping<IEntityValue, (IEntityValue projectEntity, EntityIdentity profileId)> group in AddedLaunchProfiles.GroupBy(item => item.projectEntity))
             {
                 var projectValue = (IEntityValueFromProvider)group.Key;
