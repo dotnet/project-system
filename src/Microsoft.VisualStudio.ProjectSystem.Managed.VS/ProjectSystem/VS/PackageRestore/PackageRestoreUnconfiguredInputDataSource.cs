@@ -47,6 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             // Transform all restore data -> combined restore data
             DisposableValue<ISourceBlock<RestoreInfo>> mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeRestoreInputs));
 
+            JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
+
             return new DisposableBag
             {
                 joinBlock,

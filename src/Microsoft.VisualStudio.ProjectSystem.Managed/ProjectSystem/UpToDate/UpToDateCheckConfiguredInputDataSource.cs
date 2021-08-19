@@ -39,6 +39,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             DisposableValue<ISourceBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>>>
                 mergeBlock = joinBlock.TransformWithNoDelta(update => update.Derive(MergeInputs));
 
+            JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
+
             return new DisposableBag
             {
                 joinBlock,
