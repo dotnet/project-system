@@ -49,16 +49,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 
             JoinUpstreamDataSources(_activeConfigurationGroupService.ActiveConfiguredProjectGroupSource);
 
+            // Set the link up so that we publish changes to target block
+            mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion);
+
             return new DisposableBag
             {
                 joinBlock,
-                mergeBlock,
 
                 // Link the active configured projects to our join block
                 _activeConfigurationGroupService.ActiveConfiguredProjectGroupSource.SourceBlock.LinkTo(joinBlock, DataflowOption.PropagateCompletion),
-
-                // Set the link up so that we publish changes to target block
-                mergeBlock.Value.LinkTo(targetBlock, DataflowOption.PropagateCompletion)
             };
         }
 
