@@ -2491,8 +2491,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '1) Create a structure with our raw resources data (our preferred format)
             Dim ResourcesData As New ResourcesDataFormat(Resources)
 
-            TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceEditorView), TelemetryLogger.BinaryFormatterOperation.Serialize)
-
             '... then package it into a serialized blob
             Dim Stream As New MemoryStream
             ObjectSerializer.Serialize(Stream, ResourcesData)
@@ -2989,8 +2987,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ActualEffect = DragDropEffects.None
                 Return
             End If
-
-            TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceEditorView), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
             'Decode the data format
             Dim RawBytes() As Byte = DirectCast(Data.GetData(_CF_RESOURCES), Byte())

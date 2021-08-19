@@ -4,7 +4,6 @@ Imports System.ComponentModel.Design
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
 Imports System.Runtime.Serialization
 Imports System.Runtime.Versioning
@@ -1646,21 +1645,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Public Shared Sub LogAdvBuildSettingsPropPageEvent(eventValue As AdvBuildSettingsPropPageEvent)
                 Dim userTask = New UserTaskEvent(AdvBuildSettingsPropPageEventName, TelemetryResult.Success)
                 userTask.Properties(ProjectSystemPropertyNamePrefix + "appdesigner.advbuildsettingsproppage") = eventValue
-                TelemetryService.DefaultSession.PostEvent(userTask)
-            End Sub
-
-            Private Const BinaryFormatterEventName As String = EditorsEventNamePrefix + "binaryformatter"
-            Private Const BinaryFormatterPropertyNamePrefix As String = EditorsPropertyNamePrefix + "binaryformatter."
-            Public Enum BinaryFormatterOperation
-                Serialize = 0
-                Deserialize = 1
-            End Enum
-
-            Public Shared Sub LogBinaryFormatterEvent(className As String, operation As BinaryFormatterOperation, <CallerMemberName> Optional functionName As String = Nothing)
-                Dim userTask = New UserTaskEvent(BinaryFormatterEventName, TelemetryResult.Success)
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "functionname") = functionName
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "classname") = className
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "operation") = operation
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 

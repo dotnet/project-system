@@ -166,8 +166,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' </summary>
             ''' <param name="Stream">The stream to load from</param>
             Public Shared Function Load(Stream As Stream) As ResourceSerializationStore
-                TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
-
                 Return DirectCast(ObjectSerializer.Deserialize(Stream), ResourceSerializationStore)
             End Function
 
@@ -180,9 +178,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ''' <param name="stream">The stream to save to</param>
             Public Overrides Sub Save(Stream As Stream)
                 Close()
-
-                TelemetryLogger.LogBinaryFormatterEvent(NameOf(ResourceSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
-
                 ObjectSerializer.Serialize(Stream, Me)
 
                 Trace("Saved store")
@@ -581,8 +576,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 ''' <param name="Object">The object to serialize</param>
                 ''' <returns>The binary serialized object.</returns>
                 Private Shared Function SerializeObject([Object] As Object) As Byte()
-                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Serialize)
-
                     Dim MemoryStream As New MemoryStream
                     ObjectSerializer.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
@@ -596,8 +589,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If Not IsEntireResourceObject() Then
                         Throw New Package.InternalException
                     End If
-
-                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return DirectCast(ObjectSerializer.Deserialize(MemoryStream), Resource)
@@ -615,8 +606,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     If _serializedValue Is Nothing Then
                         Return Nothing
                     End If
-
-                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedResourceOrProperty), TelemetryLogger.BinaryFormatterOperation.Deserialize)
 
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return ObjectSerializer.Deserialize(MemoryStream)
