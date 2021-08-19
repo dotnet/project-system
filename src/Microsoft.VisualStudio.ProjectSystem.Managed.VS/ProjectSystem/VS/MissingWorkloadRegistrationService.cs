@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
                         var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds.ToArray());
 
-                        await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(projectGuid, transformedVsComponentIds.ToArray(), cancellationToken);
+                        await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(projectGuid, transformedVsComponentIds, cancellationToken);
                     }
 
                     await missingWorkloadRegistrationService.DisplayMissingComponentsPromptAsync(cancellationToken);
