@@ -24,6 +24,7 @@ And then check these documents for more details:
 
 - [Property Specification](property-specification.md)
 - [Visibility Conditions](visibility-conditions.md)
+- [Localization](localization.md)
 
 ## Architecture
 
