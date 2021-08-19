@@ -69,7 +69,10 @@
                 Description="Apply code changes to the running application.">
     <BoolProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-project-capability "SupportsHotReload")</NameValuePair.Value>
+        <NameValuePair.Value>
+          (and
+            (has-project-capability "SupportsHotReload")
+            (not (has-evaluated-value "Project" "RemoteDebugEnabled" true)))</NameValuePair.Value>
       </NameValuePair>
     </BoolProperty.Metadata>
   </BoolProperty>
