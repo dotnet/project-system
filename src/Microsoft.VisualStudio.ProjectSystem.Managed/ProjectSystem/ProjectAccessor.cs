@@ -105,7 +105,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(project, nameof(action));
 
-            await ((ConfiguredProject2)project).EnsureProjectEvaluatedAsync();
             await _projectLockService.WriteLockAsync(async access =>
             {
                 await access.CheckoutAsync(project.FullPath);
@@ -126,7 +125,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(project, nameof(project));
             Requires.NotNull(project, nameof(action));
 
-            await ((ConfiguredProject2)project).EnsureProjectEvaluatedAsync();
             await _projectLockService.WriteLockAsync(async access =>
             {
                 if (option == ProjectCheckoutOption.Checkout)

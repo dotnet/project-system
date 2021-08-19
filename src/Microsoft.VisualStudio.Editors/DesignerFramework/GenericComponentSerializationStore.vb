@@ -110,8 +110,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         ''' <param name="Stream">The stream to load from</param>
         Public Shared Function Load(Stream As Stream) As GenericComponentSerializationStore
-            TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Deserialize)
-
             Return DirectCast(ObjectSerializer.Deserialize(Stream), GenericComponentSerializationStore)
         End Function
 
@@ -124,9 +122,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' <param name="stream">The stream to save to</param>
         Public Overrides Sub Save(Stream As Stream)
             Close()
-
-            TelemetryLogger.LogBinaryFormatterEvent(NameOf(GenericComponentSerializationStore), TelemetryLogger.BinaryFormatterOperation.Serialize)
-
             ObjectSerializer.Serialize(Stream, Me)
         End Sub
 
@@ -470,8 +465,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If [Object] Is Nothing Then
                     Return Array.Empty(Of Byte)
                 Else
-                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Serialize)
-
                     Dim MemoryStream As New MemoryStream
                     ObjectSerializer.Serialize(MemoryStream, [Object])
                     Return MemoryStream.ToArray()
@@ -482,8 +475,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 If _serializedValue.Length = 0 Then
                     Return Nothing
                 Else
-                    TelemetryLogger.LogBinaryFormatterEvent(NameOf(SerializedObjectData), TelemetryLogger.BinaryFormatterOperation.Deserialize)
-
                     Dim MemoryStream As New MemoryStream(_serializedValue)
                     Return ObjectSerializer.Deserialize(MemoryStream)
                 End If
