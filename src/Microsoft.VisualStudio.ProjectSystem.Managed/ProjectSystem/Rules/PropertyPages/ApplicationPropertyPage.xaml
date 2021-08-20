@@ -145,7 +145,7 @@
 
   <DynamicEnumProperty Name="SupportedOSPlatformVersion"
                 DisplayName="Supported OS version"
-                Description="Specifies the minimum version of the OS that an app or library supports running on. If it is not specified, it should default to the version equivalent to the Target OS version value."
+                Description="Specifies the minimum OS version that the project will run on. When unspecified, the Target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs."
                 Category="General"
                 EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
     <DynamicEnumProperty.DataSource>
