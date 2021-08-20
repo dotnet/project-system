@@ -97,21 +97,6 @@
         <target state="new">TFM</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Description">
-        <source>Specifies the minimum runtime version of the selected operating system.</source>
-        <target state="new">Specifies the minimum runtime version of the selected operating system.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|DisplayName">
-        <source>Minimum OS version</source>
-        <target state="new">Minimum OS version</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms">
-        <source>platform</source>
-        <target state="new">platform</target>
-        <note />
-      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
         <target state="translated">Définit le point d'entrée à appeler au chargement de l'application. En règle générale, il s'agit du formulaire principal de votre application ou de la procédure 'Main' qui doit s'exécuter au démarrage de l'application. Les bibliothèques de classes ne définissent pas de point d'entrée.</target>
@@ -120,6 +105,21 @@
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
         <target state="translated">Objet de démarrage</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
+        <source>Specifies the minimum version of the OS that an app or library supports running on. If it is not specified, it should default to the version equivalent to the Target OS version value.</source>
+        <target state="new">Specifies the minimum version of the OS that an app or library supports running on. If it is not specified, it should default to the version equivalent to the Target OS version value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
+        <source>Supported OS version</source>
+        <target state="new">Supported OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">

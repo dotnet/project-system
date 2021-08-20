@@ -143,9 +143,9 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <DynamicEnumProperty Name="MinimumPlatformVersion"
-                DisplayName="Minimum OS version"
-                Description="Specifies the minimum runtime version of the selected operating system."
+  <DynamicEnumProperty Name="SupportedOSPlatformVersion"
+                DisplayName="Supported OS version"
+                Description="Specifies the minimum version of the OS that an app or library supports running on. If it is not specified, it should default to the version equivalent to the Target OS version value."
                 Category="General"
                 EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
     <DynamicEnumProperty.DataSource>
