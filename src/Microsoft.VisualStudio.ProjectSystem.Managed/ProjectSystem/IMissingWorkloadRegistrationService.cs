@@ -15,8 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     {
         void ClearMissingWorkloadMetadata();
 
-        Task DisplayMissingComponentsPromptAsync(CancellationToken cancellationToken);
-
         Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, WorkloadDescriptor workloadDescriptor, CancellationToken cancellationToken);
 
         void RegisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration);

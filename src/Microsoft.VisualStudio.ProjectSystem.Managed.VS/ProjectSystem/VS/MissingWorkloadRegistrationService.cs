@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.CompletedTask;
         }
 
-        public async Task DisplayMissingComponentsPromptAsync(CancellationToken cancellationToken)
+        private async Task DisplayMissingComponentsPromptAsync(CancellationToken cancellationToken)
         {
             if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
             {
@@ -118,17 +118,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 if (missingWorkloadRegistrationService != null)
                 {
-                    foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
-                    {
-                        var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
-                        var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds.ToArray());
+                    IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = await ComputeVsComponentIdsToRegisterAsync();
 
-                        await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(projectGuid, transformedVsComponentIds, cancellationToken);
-                    }
-
-                    await missingWorkloadRegistrationService.DisplayMissingComponentsPromptAsync(cancellationToken);
+                    await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken);
                 }
             }
+        }
+
+        private async Task<IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>> ComputeVsComponentIdsToRegisterAsync()
+        {
+            Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
+
+            foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
+            {
+                var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
+                var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds.ToArray());
+
+                vsComponentIdsToRegister[projectGuid] = transformedVsComponentIds;
+            }
+
+            return vsComponentIdsToRegister;
         }
     }
 }
