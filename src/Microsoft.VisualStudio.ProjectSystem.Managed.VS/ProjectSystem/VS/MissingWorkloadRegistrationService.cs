@@ -42,6 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public void ClearMissingWorkloadMetadata()
         {
             _projectGuidToWorkloadDescriptorsMap.Clear();
+            _projectGuidToProjectConfigurationsMap.Clear();
         }
 
         public Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptors, CancellationToken cancellationToken)
