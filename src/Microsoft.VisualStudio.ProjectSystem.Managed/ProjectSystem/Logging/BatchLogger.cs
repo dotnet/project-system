@@ -2,7 +2,6 @@
 
 using System;
 using System.Text;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
@@ -74,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
 
                 _builder.Append(' ', 4 * _indentLevel);
-                _builder.AppendFormat(format);
+                _builder.Append(format);
             }
         }
 
@@ -93,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 }
 
                 _builder.Append(' ', 4 * _indentLevel);
-                _builder.AppendFormat(text);
+                _builder.Append(text);
             }
         }
 

@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     /// </remarks>
     [Export(ExportContractNames.ProjectTreeProviders.PhysicalViewRootGraft, typeof(IProjectTreeProvider))]
     [AppliesTo(ProjectCapability.ProjectImportsTree)]
-    internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
+    internal sealed class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
         private static readonly ProjectImageMoniker s_rootIcon = KnownMonikers.ProjectImports.ToProjectSystemType();
         private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
         private static readonly ProjectTreeFlags s_projectImportFlags = ProjectImport | ProjectTreeFlags.FileOnDisk | ProjectTreeFlags.FileSystemEntity;
         private static readonly ProjectTreeFlags s_projectImportImplicitFlags = s_projectImportFlags + ProjectImportImplicit;
 
-        private readonly ImplicitProjectCheck _importPathCheck = new();
+        private readonly ProjectFileClassifier _projectFileClassifier = new();
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
         private readonly IUnconfiguredProjectTasksService _unconfiguredProjectTasksService;
@@ -190,12 +190,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                             {
                                 if (snapshot.Properties.TryGetValue(ConfigurationGeneral.MSBuildProjectExtensionsPathProperty, out string projectExtensionsPath))
                                 {
-                                    _importPathCheck.ProjectExtensionsPath = projectExtensionsPath;
+                                    _projectFileClassifier.ProjectExtensionsPath = projectExtensionsPath;
                                 }
 
                                 if (snapshot.Properties.TryGetValue(ConfigurationGeneral.NuGetPackageFoldersProperty, out string nuGetPackageFolders))
                                 {
-                                    _importPathCheck.NuGetPackageFolders = nuGetPackageFolders;
+                                    _projectFileClassifier.NuGetPackageFolders = nuGetPackageFolders;
                                 }
                             }
 
@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree2 child))
                                     {
                                         // No child exists for this import, so add it
-                                        bool isImplicit = _importPathCheck.IsImplicit(import.ProjectPath);
+                                        bool isImplicit = _projectFileClassifier.IsNonUserEditable(import.ProjectPath);
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
                                         string caption = Path.GetFileName(import.ProjectPath);

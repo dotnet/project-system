@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
     {
         private readonly ConfiguredProject _configuredProject;
         private readonly IProjectItemSchemaService _projectItemSchemaService;
+        private readonly IUpToDateCheckStatePersistence? _persistentState;
 
         private static ImmutableHashSet<string> ProjectPropertiesSchemas => ImmutableStringHashSet.EmptyOrdinal
             .Add(ConfigurationGeneral.SchemaName)
@@ -37,23 +39,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         [ImportingConstructor]
         public UpToDateCheckImplicitConfiguredInputDataSource(
             ConfiguredProject containingProject,
-            IProjectItemSchemaService projectItemSchemaService)
-            : base(containingProject, synchronousDisposal: true, registerDataSource: false)
+            IProjectItemSchemaService projectItemSchemaService,
+            [Import(AllowDefault = true)] IUpToDateCheckStatePersistence? persistentState)
+            : base(containingProject, synchronousDisposal: false, registerDataSource: false)
         {
             _configuredProject = containingProject;
             _projectItemSchemaService = projectItemSchemaService;
+            _persistentState = persistentState;
         }
 
         protected override IDisposable LinkExternalInput(ITargetBlock<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> targetBlock)
         {
             Assumes.Present(_configuredProject.Services.ProjectSubscription);
 
+            bool attemptedStateRestore = false;
+
             // Initial state is empty. We will evolve this reference over time, updating it iteratively
             // on each new data update.
             UpToDateCheckImplicitConfiguredInput state = UpToDateCheckImplicitConfiguredInput.Empty;
 
             IPropagatorBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> transformBlock
-                = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>>(Transform);
+                = DataflowBlockSlim.CreateTransformBlock<IProjectVersionedValue<UpdateValues>, IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>>(TransformAsync);
 
             IProjectValueDataSource<IProjectSubscriptionUpdate> source1 = _configuredProject.Services.ProjectSubscription.JointRuleSource;
             IProjectValueDataSource<IProjectSubscriptionUpdate> source2 = _configuredProject.Services.ProjectSubscription.SourceItemsRuleSource;
@@ -80,8 +86,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 JoinUpstreamDataSources(source1, source2, source3, source4, source5)
             };
 
-            IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput> Transform(IProjectVersionedValue<UpdateValues> e)
+            async Task<IProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>> TransformAsync(IProjectVersionedValue<UpdateValues> e)
             {
+                if (!attemptedStateRestore)
+                {
+                    attemptedStateRestore = true;
+
+                    if (_persistentState is not null)
+                    {
+                        // Restoring state requires the UI thread. We must use JTF.RunAsync here to ensure the UI
+                        // thread is shared between related work and prevent deadlocks.
+                        (int ItemHash, DateTime InputsChangedAtUtc)? restoredState =
+                            await JoinableFactory.RunAsync(() => _persistentState.RestoreStateAsync(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions));
+
+                        if (restoredState is not null)
+                        {
+                            state = state.WithRestoredState(restoredState.Value.ItemHash, restoredState.Value.InputsChangedAtUtc);
+                        }
+                    }
+                }
+
+                int? priorItemHash = state.ItemHash;
+                DateTime priorLastItemsChangedAtUtc = state.LastItemsChangedAtUtc;
+
                 var snapshot = e.Value.Item3 as IProjectSnapshot2;
                 Assumes.NotNull(snapshot);
 
@@ -90,8 +117,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     sourceItemsUpdate: e.Value.Item2,
                     projectSnapshot: snapshot,
                     projectItemSchema: e.Value.Item4,
-                    projectCatalogSnapshot: e.Value.Item5,
-                    configuredProjectVersion: e.DataSourceVersions[ProjectDataSources.ConfiguredProjectVersion]);
+                    projectCatalogSnapshot: e.Value.Item5);
+
+                if (_persistentState != null && (priorItemHash != state.ItemHash || priorLastItemsChangedAtUtc != state.LastItemsChangedAtUtc))
+                {
+                    // The input hash is always non-null after calling Update.
+                    Assumes.NotNull(state.ItemHash);
+
+                    _persistentState.StoreState(_configuredProject.UnconfiguredProject.FullPath, _configuredProject.ProjectConfiguration.Dimensions, state.ItemHash.Value, state.LastItemsChangedAtUtc);
+                }
 
                 return new ProjectVersionedValue<UpToDateCheckImplicitConfiguredInput>(state, e.DataSourceVersions);
             }

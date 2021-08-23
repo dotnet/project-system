@@ -13,8 +13,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         private readonly ConfiguredProject _selectedConfiguredProject;
         private readonly string _itemSpecification;
         private readonly AbstractReferenceHandler _referenceHandler;
-        protected string SetValue = PropertySerializer.SimpleTypes.ToString(true);
-        protected string UnsetValue = PropertySerializer.SimpleTypes.ToString(false);
+        protected string SetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(true);
+        protected string UnsetTreatAsUsed = PropertySerializer.SimpleTypes.ToString(false);
 
         public SetTreatAsUsedAttributeCommand(AbstractReferenceHandler abstractReferenceHandler, ConfiguredProject selectedConfiguredProject, string itemSpecification)
         {
@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return false;
             }
 
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, SetValue);
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, SetTreatAsUsed);
 
             return true;
         }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
                 return false;
             }
 
-            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, UnsetValue);
+            await item.Metadata.SetPropertyValueAsync(ProjectReference.TreatAsUsedProperty, UnsetTreatAsUsed);
 
             return true;
         }

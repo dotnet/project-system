@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService,
             bool useNoneValue = false)
-            : base(project, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             SubscriptionService = subscriptionService;
             _useNoneValue = useNoneValue;

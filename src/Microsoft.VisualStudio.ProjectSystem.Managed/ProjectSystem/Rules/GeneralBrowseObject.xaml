@@ -333,7 +333,7 @@
                        Visible="False" />
 
   <DynamicEnumProperty Name="SupportedTargetFrameworks"
-                       EnumProvider="SupportedTargetFrameworksEnumProvider"
+                       EnumProvider="SupportedTargetFrameworkAliasEnumProvider"
                        Visible="False" />
 
   <IntProperty Name="TargetFramework"
