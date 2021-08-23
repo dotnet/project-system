@@ -39,6 +39,34 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         }
 
         [Fact]
+        public async Task EnsureTasksAreRunInOrderWithReturnValues()
+        {
+            const int NumberOfTasks = 25;
+            var sequencer = new SequentialTaskExecutor();
+
+            var tasks = new List<Task<int>>();
+            for (int i = 0; i < NumberOfTasks; i++)
+            {
+                int num = i;
+                tasks.Add(sequencer.ExecuteTask(async () =>
+                {
+                    async Task<int> func()
+                    {
+                        await Task.Delay(1);
+                        return num;
+                    }
+                    return await func();
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+            for (int i = 0; i < NumberOfTasks; i++)
+            {
+                Assert.Equal(i, tasks[i].Result);
+            }
+        }
+
+        [Fact]
         public async Task EnsureNestedCallsAreExecutedDirectly()
         {
             const int NumberOfTasks = 10;
