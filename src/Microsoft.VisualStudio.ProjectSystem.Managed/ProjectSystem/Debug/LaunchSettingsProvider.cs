@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private readonly IActiveConfiguredProjectSubscriptionService? _projectSubscriptionService;
         private readonly IFileSystem _fileSystem;
         private readonly TaskCompletionSource _firstSnapshotCompletionSource = new();
-        private readonly SequentialTaskExecutor _sequentialTaskQueue = new();
+        private readonly SequentialTaskExecutor _sequentialTaskQueue;
         private readonly Lazy<ILaunchProfile?> _defaultLaunchProfile;
         private IReceivableSourceBlock<ILaunchSettings>? _changedSourceBlock;
         private IBroadcastBlock<ILaunchSettings>? _broadcastBlock;
@@ -67,12 +67,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
             IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerSpecialFileProvider,
-            IProjectFaultHandlerService projectFaultHandler)
+            IProjectFaultHandlerService projectFaultHandler,
+            JoinableTaskContext joinableTaskContext)
         {
             _project = project;
             _projectServices = projectServices;
             _fileSystem = fileSystem;
             _commonProjectServices = commonProjectServices;
+
+            _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext));
+
             JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
                                                                                                                     project);
             SourceControlIntegrations = new OrderPrecedenceImportCollection<ISourceCodeControlIntegration>(projectCapabilityCheckProvider: project);

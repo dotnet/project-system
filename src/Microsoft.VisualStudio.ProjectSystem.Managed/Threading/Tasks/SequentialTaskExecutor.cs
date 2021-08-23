@@ -17,9 +17,18 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         private Task _taskAdded = Task.CompletedTask;
         private readonly object _syncObject = new();
         private readonly CancellationTokenSource _disposedCancelTokenSource = new();
+        private readonly JoinableTaskCollection _joinableCollection;
+        private readonly JoinableTaskFactory _joinableFactory;
+
+        public SequentialTaskExecutor(JoinableTaskContextNode joinableTaskContext)
+        {
+            _joinableCollection = joinableTaskContext.CreateCollection();
+            _joinableCollection.DisplayName = nameof(SequentialTaskExecutor);
+            _joinableFactory = joinableTaskContext.CreateFactory(_joinableCollection);
+        }
 
         /// <summary>
-        /// Deadlocks will occur if a task returned from ExecuteTask , awaits a task which also calls ExecuteTask. The 2nd one will never get started since
+        /// Deadlocks will occur if a task returned from ExecuteTask, awaits a task which also calls ExecuteTask. The 2nd one will never get started since
         /// it will be backed up behind the first one completing. The AsyncLocal is used to detect when a task is being executed, and if a downstream one gets
         /// added, it will be executed directly, rather than get queued
         /// </summary>
@@ -49,7 +58,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     try
                     {
                         _executingTask.Value = true;
-                        await asyncFunction();
+                        await _joinableFactory.RunAsync(asyncFunction);
                     }
                     finally
                     {
@@ -57,7 +66,15 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     }
                 }, TaskScheduler.Default).Unwrap();
 
-                return _taskAdded;
+                return JoinTaskAsync();
+
+                async Task JoinTaskAsync()
+                {
+                    using (_joinableCollection.Join())
+                    {
+                        await _taskAdded;
+                    }
+                }
             }
         }
 
@@ -82,7 +99,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     try
                     {
                         _executingTask.Value = true;
-                        return await asyncFunction();
+                        return await _joinableFactory.RunAsync(asyncFunction);
                     }
                     finally
                     {
@@ -90,7 +107,15 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                     }
                 }, TaskScheduler.Default).Unwrap();
 
-                return (Task<T>)_taskAdded;
+                return JoinTaskAsync();
+
+                async Task<T> JoinTaskAsync()
+                {
+                    using (_joinableCollection.Join())
+                    {
+                        return await (Task<T>)_taskAdded;
+                    }
+                }
             }
         }
 

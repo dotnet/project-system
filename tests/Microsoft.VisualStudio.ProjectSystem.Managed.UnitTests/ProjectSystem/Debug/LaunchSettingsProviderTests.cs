@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders;
+using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json;
@@ -34,7 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
             var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
-            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project));
+            var joinableTaskContext = new JoinableTaskContext();
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService, new DefaultLaunchProfileProvider(project), joinableTaskContext);
             return provider;
         }
 
@@ -1029,8 +1031,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
             IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
             IProjectFaultHandlerService projectFaultHandler,
-            IDefaultLaunchProfileProvider defaultLaunchProfileProvider)
-          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
+            IDefaultLaunchProfileProvider defaultLaunchProfileProvider,
+            JoinableTaskContext joinableTaskContext)
+          : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler, joinableTaskContext)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
             FileWatcher = new SimpleFileWatcher();
