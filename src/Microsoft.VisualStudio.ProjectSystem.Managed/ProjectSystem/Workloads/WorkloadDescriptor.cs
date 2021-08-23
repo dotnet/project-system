@@ -1,13 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-using System;
-
 namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
     /// <summary>
     ///     Represents a mapping from a .NET workload to a Visual Studio component.
     /// </summary>
-    internal class WorkloadDescriptor : IEquatable<WorkloadDescriptor>
+    internal readonly struct WorkloadDescriptor
     {
         /// <summary>
         /// An empty workload descriptor is used to indicate an unknown workload
@@ -32,24 +30,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
         /// </summary>
         public string VisualStudioComponentId { get; }
 
-        public bool Equals(WorkloadDescriptor? other)
+        public bool Equals(WorkloadDescriptor other)
         {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            return StringComparer.Ordinal.Equals(WorkloadName, other.WorkloadName);
+            return StringComparers.WorkloadNames.Equals(WorkloadName, other.WorkloadName)
+                && StringComparers.VisualStudioSetupComponentIds.Equals(VisualStudioComponentId, other.VisualStudioComponentId);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as WorkloadDescriptor);
+            if (obj is WorkloadDescriptor workloadDescriptor)
+            {
+                return Equals(workloadDescriptor);
+            }
+
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return WorkloadName.GetHashCode();
+            int hashCode = StringComparers.WorkloadNames.GetHashCode(WorkloadName) * -1521134295;
+            hashCode += StringComparers.VisualStudioSetupComponentIds.GetHashCode(VisualStudioComponentId);
+            return hashCode;
         }
     }
 }

@@ -41,6 +41,7 @@ namespace Microsoft.VisualStudio
         public static StringComparer LanguageIdentifiers => StringComparer.Ordinal;
         public static StringComparer LanguageIdentifiersIgnoreCase => StringComparer.OrdinalIgnoreCase;
         public static StringComparer VisualStudioSetupComponentIds => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer WorkloadNames => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
@@ -78,5 +79,6 @@ namespace Microsoft.VisualStudio
         public static StringComparison LanguageIdentifiers => StringComparison.Ordinal;
         public static StringComparison LanguageIdentifiersIgnoreCase => StringComparison.OrdinalIgnoreCase;
         public static StringComparison VisualStudioSetupComponentIds => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison WorkloadNames => StringComparison.OrdinalIgnoreCase;
     }
 }
