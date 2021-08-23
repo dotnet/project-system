@@ -75,6 +75,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
 
+            _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
+
             Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
 
             _subscription = ProjectDataSources.SyncLinkTo(
@@ -83,8 +85,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     DataflowBlockFactory.CreateActionBlock(action, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality),
                     linkOptions: DataflowOption.PropagateCompletion,
                     cancellationToken: cancellationToken);
-
-            _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
         }
 
         private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<(IProjectSnapshot projectSnapshot, ISet<WorkloadDescriptor> workloadDescriptors)> pair)
