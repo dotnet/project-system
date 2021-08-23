@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
-using Task = System.Threading.Tasks.Task;
 
 namespace Microsoft.VisualStudio.Threading.Tasks
 {
