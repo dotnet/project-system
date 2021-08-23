@@ -12,11 +12,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
     [Export(typeof(IVisualStudioComponentIdTransformer))]
     internal class VisualStudioParentWorkloadTransformer : IVisualStudioComponentIdTransformer
     {
+        private const string NetCrossPlatVisualStudioWorkloadName = "Microsoft.VisualStudio.Workload.NetCrossPlat";
+
         private const string MauiAndroidWorkloadName = "maui.android";
         private const string MauiIOSWorkloadName = "maui.ios";
         private const string MauiMacCatalystWorkloadName = "maui.maccatalyst";
+        private const string MauiWindowsWorkloadName = "maui.windows";
 
         private static readonly string[] s_mauiAndroidComponents = new string[] {
+            NetCrossPlatVisualStudioWorkloadName,
             "maui.android",
             "android.aot",
             "Component.OpenJDK",
@@ -34,6 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
         };
 
         private static readonly string[] s_mauiIOSComponents = new string[] {
+            NetCrossPlatVisualStudioWorkloadName,
             "maui.ios",
             "ios",
             "Component.Xamarin.RemotedSimulator",
@@ -46,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
         };
 
         private static readonly string[] s_mauiMacCatalystComponents = new string[] {
+            NetCrossPlatVisualStudioWorkloadName,
             "maui.maccatalyst",
             "maccatalyst",
             "Microsoft.VisualStudio.Component.MonoDebugger",
@@ -56,11 +62,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
             "Xamarin.VisualStudio.Onboarding",
         };
 
+        private static readonly string[] s_mauiWindowsComponents = new string[] {
+            NetCrossPlatVisualStudioWorkloadName,
+        };
+
         private static readonly Dictionary<string, IReadOnlyCollection<string>> s_vsComponentIdToParentComponentsMap = new(StringComparers.VisualStudioSetupComponentIdComparer)
         {
             { MauiAndroidWorkloadName, s_mauiAndroidComponents },
             { MauiIOSWorkloadName, s_mauiIOSComponents },
-            { MauiMacCatalystWorkloadName, s_mauiMacCatalystComponents }
+            { MauiMacCatalystWorkloadName, s_mauiMacCatalystComponents },
+            { MauiWindowsWorkloadName, s_mauiWindowsComponents },
         };
 
         public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IReadOnlyCollection<string> vsComponentIds)
