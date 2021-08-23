@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio
         public static StringComparer ProjectTreeCaptionIgnoreCase => StringComparer.OrdinalIgnoreCase;
         public static StringComparer LanguageIdentifiers => StringComparer.Ordinal;
         public static StringComparer LanguageIdentifiersIgnoreCase => StringComparer.OrdinalIgnoreCase;
-        public static StringComparer VisualStudioSetupComponentIdComparer => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer VisualStudioSetupComponentIds => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
@@ -77,5 +77,6 @@ namespace Microsoft.VisualStudio
         public static StringComparison ProjectTreeCaptionIgnoreCase => StringComparison.OrdinalIgnoreCase;
         public static StringComparison LanguageIdentifiers => StringComparison.Ordinal;
         public static StringComparison LanguageIdentifiersIgnoreCase => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison VisualStudioSetupComponentIds => StringComparison.OrdinalIgnoreCase;
     }
 }

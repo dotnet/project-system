@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
             NetCrossPlatVisualStudioWorkloadName,
         };
 
-        private static readonly Dictionary<string, IReadOnlyCollection<string>> s_vsComponentIdToParentComponentsMap = new(StringComparers.VisualStudioSetupComponentIdComparer)
+        private static readonly Dictionary<string, IReadOnlyCollection<string>> s_vsComponentIdToParentComponentsMap = new(StringComparers.VisualStudioSetupComponentIds)
         {
             { MauiAndroidWorkloadName, s_mauiAndroidComponents },
             { MauiIOSWorkloadName, s_mauiIOSComponents },
@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
 
         public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IReadOnlyCollection<string> vsComponentIds)
         {
-            HashSet<string> finalVsComponentIdSet = new(StringComparers.VisualStudioSetupComponentIdComparer);
+            HashSet<string> finalVsComponentIdSet = new(StringComparers.VisualStudioSetupComponentIds);
 
             foreach (string vsComponentId in  vsComponentIds)
             {
