@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
 {
     [Export(typeof(IWorkloadDescriptorDataSource))]
     [AppliesTo(ProjectCapability.DotNet)]
-    internal sealed class WorkloadDescriptorDataSource : ChainedProjectValueDataSourceBase<WorkloadDescriptor>, IWorkloadDescriptorDataSource
+    internal sealed class WorkloadDescriptorDataSource : ChainedProjectValueDataSourceBase<ISet<WorkloadDescriptor>>, IWorkloadDescriptorDataSource
     {
         private static readonly ImmutableHashSet<string> s_rules = Empty.OrdinalIgnoreCaseStringSet
-                                                                        .Add(SuggestedWorkload.SchemaName); // From Evaluation
+                                                                        .Add(SuggestedWorkload.SchemaName);
 
         private readonly IProjectSubscriptionService _projectSubscriptionService;
 
@@ -27,14 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             _projectSubscriptionService = projectSubscriptionService;
         }
 
-        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<WorkloadDescriptor>> targetBlock)
+        protected override IDisposable? LinkExternalInput(ITargetBlock<IProjectVersionedValue<ISet<WorkloadDescriptor>>> targetBlock)
         {
-            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.JointRuleSource;
+            IProjectValueDataSource<IProjectSubscriptionUpdate> source = _projectSubscriptionService.ProjectBuildRuleSource;
 
-            // Transform the changes from evaluation/design-time build -> workload data
-            DisposableValue<ISourceBlock<IProjectVersionedValue<WorkloadDescriptor>>> transformBlock =
+            // Transform the changes from design-time build -> workload data
+            DisposableValue<ISourceBlock<IProjectVersionedValue<ISet<WorkloadDescriptor>>>> transformBlock =
                 source.SourceBlock.TransformWithNoDelta(update => update.Derive(u => CreateWorkloadDescriptor(u.CurrentState)),
-                                                        suppressVersionOnlyUpdates: false,    // We need to coordinate these at the unconfigured-level
+                                                        suppressVersionOnlyUpdates: false,
                                                         ruleNames: s_rules);
 
             // Set the link up so that we publish changes to target block
@@ -47,26 +48,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Workloads
             return transformBlock;
         }
 
-        private WorkloadDescriptor CreateWorkloadDescriptor(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
+        private ISet<WorkloadDescriptor> CreateWorkloadDescriptor(IImmutableDictionary<string, IProjectRuleSnapshot> currentState)
         {
             IProjectRuleSnapshot suggestedWorkloads = currentState.GetSnapshotOrEmpty(SuggestedWorkload.SchemaName);
 
-            if (suggestedWorkloads.Items.Any())
+            if (suggestedWorkloads.Items.Count == 0)
             {
-                System.Diagnostics.Debug.Assert(suggestedWorkloads.Items.Count == 1, $"Expected only 1 SuggestedWorkload item but found {suggestedWorkloads.Items.Count}");
-                var workload = suggestedWorkloads.Items.First();
-                string workloadName = workload.Key;
-
-                if (workload.Value.TryGetValue(SuggestedWorkload.VisualStudioComponentIdProperty, out string vsComponentId))
-                {
-                    if (!string.IsNullOrWhiteSpace(workloadName) && !string.IsNullOrWhiteSpace(vsComponentId))
-                    {
-                        return new WorkloadDescriptor(workloadName, vsComponentId);
-                    }
-                }
+                return ImmutableHashSet<WorkloadDescriptor>.Empty;
             }
 
-            return WorkloadDescriptor.Empty;
+            var workloadDescriptors = suggestedWorkloads.Items.Select(item =>
+            {
+                string workloadName = item.Key;
+
+                if (!string.IsNullOrWhiteSpace(workloadName)
+                    && item.Value.TryGetValue(SuggestedWorkload.VisualStudioComponentIdProperty, out string vsComponentId)
+                    && !string.IsNullOrWhiteSpace(vsComponentId))
+                {
+                    return new WorkloadDescriptor(workloadName, vsComponentId);
+                }
+
+                return WorkloadDescriptor.Empty;
+            });
+
+            return new HashSet<WorkloadDescriptor>(workloadDescriptors);
         }
     }
 }

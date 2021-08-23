@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
 
-            Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, WorkloadDescriptor>>> action = OnWorkloadDescriptorComputed;
+            Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
 
             _subscription = ProjectDataSources.SyncLinkTo(
                 _projectSubscriptionService.ProjectSource.SourceBlock.SyncLinkOptions(),
@@ -87,27 +87,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
         }
 
-        private void OnWorkloadDescriptorComputed(IProjectVersionedValue<(IProjectSnapshot projectSnapshot, WorkloadDescriptor workloadDescriptor)> pair)
+        private void OnWorkloadDescriptorsComputed(IProjectVersionedValue<(IProjectSnapshot projectSnapshot, ISet<WorkloadDescriptor> workloadDescriptors)> pair)
         {
             if (!_enabled || _hasNoMissingWorkloads == true)
             {
                 return;
             }
 
-            if (WorkloadDescriptor.Empty.Equals(pair.Value.workloadDescriptor))
+            if (pair.Value.workloadDescriptors.Count == 0)
             {
                 _hasNoMissingWorkloads = true;
             }
             else
             {
                 _missingWorkloads ??= new HashSet<WorkloadDescriptor>();
-                if (!_missingWorkloads.Add(pair.Value.workloadDescriptor))
+                if (!_missingWorkloads.AddRange(pair.Value.workloadDescriptors))
                 {
                     return;
                 }
             }
 
-            var task = _missingWorkloadRegistrationService.RegisterMissingWorkloadAsync(_projectGuid, _project.ProjectConfiguration, pair.Value.workloadDescriptor, cancellationToken: default);
+            var task = _missingWorkloadRegistrationService.RegisterMissingWorkloadAsync(_projectGuid, _project.ProjectConfiguration, pair.Value.workloadDescriptors, cancellationToken: default);
 
             _projectFaultHandlerService.Forget(task, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
         }

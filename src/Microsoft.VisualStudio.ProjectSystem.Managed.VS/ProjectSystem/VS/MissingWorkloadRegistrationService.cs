@@ -44,9 +44,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _projectGuidToWorkloadDescriptorsMap.Clear();
         }
 
-        public Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, WorkloadDescriptor workloadDescriptor, CancellationToken cancellationToken)
+        public Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptors, CancellationToken cancellationToken)
         {
-            if (!WorkloadDescriptor.Empty.Equals(workloadDescriptor))
+            if (workloadDescriptors.Count > 0)
             {
                 if (!_projectGuidToWorkloadDescriptorsMap.TryGetValue(projectGuid, out var workloadDescriptorSet))
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     _projectGuidToWorkloadDescriptorsMap[projectGuid] = workloadDescriptorSet;
                 }
 
-                workloadDescriptorSet.Add(workloadDescriptor);
+                workloadDescriptorSet.AddRange(workloadDescriptors);
             }
 
             if (_projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out var projectConfigurationSet))
