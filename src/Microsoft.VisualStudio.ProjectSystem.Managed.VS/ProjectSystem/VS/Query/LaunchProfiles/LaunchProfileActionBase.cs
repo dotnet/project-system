@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
@@ -25,6 +26,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private static readonly LaunchProfilePropertiesAvailableStatus s_requestedLaunchProfileProperties;
         private static readonly CategoryPropertiesAvailableStatus s_requestedCategoryProperties;
         private static readonly UIPropertyPropertiesAvailableStatus s_requestedPropertyProperties;
+        private static readonly UIPropertyEditorPropertiesAvailableStatus s_requestedEditorProperties;
+        private static readonly UIEditorMetadataPropertiesAvailableStatus s_requestedEditorMetadataProperties;
+        private static readonly UIPropertyValuePropertiesAvailableStatus s_requestedValueProperties;
+        private static readonly SupportedValuePropertiesAvailableStatus s_requestedSupportedValueProperties;
 
         protected readonly List<(IEntityValue projectEntity, EntityIdentity)> AddedLaunchProfiles = new();
         protected readonly List<(IEntityValue projectEntity, EntityIdentity)> RemovedLaunchProfiles = new();
@@ -60,6 +65,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.TypePropertyName);
             s_requestedPropertyProperties.RequireProperty(UIPropertyType.VisibilityConditionPropertyName);
             s_requestedPropertyProperties.Freeze();
+
+            s_requestedEditorProperties = new UIPropertyEditorPropertiesAvailableStatus();
+            s_requestedEditorProperties.RequireProperty(UIPropertyEditorType.MetadataPropertyName);
+            s_requestedEditorProperties.RequireProperty(UIPropertyEditorType.NamePropertyName);
+            s_requestedEditorProperties.Freeze();
+
+            s_requestedEditorMetadataProperties = new UIEditorMetadataPropertiesAvailableStatus();
+            s_requestedEditorMetadataProperties.RequireProperty(UIEditorMetadataType.NamePropertyName);
+            s_requestedEditorMetadataProperties.RequireProperty(UIEditorMetadataType.ValuePropertyName);
+            s_requestedEditorMetadataProperties.Freeze();
+
+            s_requestedValueProperties = new UIPropertyValuePropertiesAvailableStatus();
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.ConfigurationDimensionsPropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.EvaluatedValuePropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.SupportedValuesPropertyName);
+            s_requestedValueProperties.RequireProperty(UIPropertyValueType.UnevaluatedValuePropertyName);
+            s_requestedValueProperties.Freeze();
+
+            s_requestedSupportedValueProperties = new SupportedValuePropertiesAvailableStatus();
+            s_requestedSupportedValueProperties.RequireProperty(SupportedValueType.DisplayNamePropertyName);
+            s_requestedSupportedValueProperties.RequireProperty(SupportedValueType.ValuePropertyName);
+            s_requestedSupportedValueProperties.Freeze();
         }
 
         public async Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
@@ -90,13 +117,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                                 // values. We already requested the non-entity properties when creating the entity
                                 // for the launch profile.
 
+                                // Add categories to the profile
                                 ImmutableArray<IEntityValue> categories = ImmutableArray.CreateRange(
                                     CategoryDataProducer.CreateCategoryValues(request.QueryExecutionContext, launchProfileEntity, state.Rule, s_requestedCategoryProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.CategoriesPropertyName, categories);
 
+                                // Add properties to the profile
                                 ImmutableArray<IEntityValue> properties = ImmutableArray.CreateRange(
                                     UIPropertyDataProducer.CreateUIPropertyValues(request.QueryExecutionContext, launchProfileEntity, state.ProjectState, state.PropertiesContext, state.Rule, s_requestedPropertyProperties));
                                 launchProfileEntity.SetRelatedEntities(LaunchProfileType.PropertiesPropertyName, properties);
+                                
+                                await PopulateEditorsAndValues(properties);
                             }
 
                             returnedLaunchProfiles.Add(launchProfileEntity);
@@ -130,6 +161,57 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             }
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
+
+            static async Task PopulateSupportedValues(ImmutableArray<IEntityValue> valueEntities)
+            {
+                foreach (IEntityValueFromProvider valueEntity in valueEntities)
+                {
+                    if (valueEntity.ProviderState is PropertyValueProviderState valueState)
+                    {
+                        // Add supported values to values
+                        ImmutableArray<IEntityValue> supportedValues = ImmutableArray.CreateRange(
+                            await SupportedValueDataProducer.CreateSupportedValuesAsync(valueEntity, valueState.Property, s_requestedSupportedValueProperties));
+                        valueEntity.SetRelatedEntities(UIPropertyValueType.SupportedValuesPropertyName, supportedValues);
+                    }
+                }
+            }
+
+            static void PopulateEditorMetadata(ImmutableArray<IEntityValue> editors)
+            {
+                foreach (IEntityValueFromProvider editorEntity in editors)
+                {
+                    if (editorEntity.ProviderState is ValueEditor editorState)
+                    {
+                        // Add editor metadata to the editor
+                        ImmutableArray<IEntityValue> editorMetadata = ImmutableArray.CreateRange(
+                            UIEditorMetadataProducer.CreateMetadataValues(editorEntity, editorState, s_requestedEditorMetadataProperties));
+                        editorEntity.SetRelatedEntities(UIPropertyEditorType.MetadataPropertyName, editorMetadata);
+                    }
+                }
+            }
+
+            async Task PopulateEditorsAndValues(ImmutableArray<IEntityValue> properties)
+            {
+                foreach (IEntityValueFromProvider propertyEntity in properties)
+                {
+                    if (propertyEntity.ProviderState is PropertyProviderState propertyProviderState)
+                    {
+                        // Add editors to the property
+                        ImmutableArray<IEntityValue> editors = ImmutableArray.CreateRange(
+                            UIPropertyEditorDataProducer.CreateEditorValues(request.QueryExecutionContext, propertyEntity, propertyProviderState.ContainingRule, propertyProviderState.PropertyName, s_requestedEditorProperties));
+                        propertyEntity.SetRelatedEntities(UIPropertyType.EditorsPropertyName, editors);
+
+                        PopulateEditorMetadata(editors);
+
+                        // Add values to the property
+                        ImmutableArray<IEntityValue> values = ImmutableArray.CreateRange(
+                            await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(request.QueryExecutionContext, propertyEntity, propertyProviderState.ProjectState, propertyProviderState.ContainingRule, propertyProviderState.PropertiesContext, propertyProviderState.PropertyName, s_requestedValueProperties));
+                        propertyEntity.SetRelatedEntities(UIPropertyType.ValuesPropertyName, values);
+
+                        await PopulateSupportedValues(values);
+                    }
+                }
+            }
         }
 
         public async Task ReceiveResultAsync(QueryProcessResult<IEntityValue> result)
