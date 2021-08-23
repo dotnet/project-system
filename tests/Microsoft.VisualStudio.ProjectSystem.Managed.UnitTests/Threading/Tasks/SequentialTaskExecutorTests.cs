@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 }));
             }
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 Assert.Equal(i, sequences[i]);
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
                 }));
             }
 
-            await Task.WhenAll(tasks.ToArray());
+            await Task.WhenAll(tasks);
             for (int i = 0; i < NumberOfTasks; i++)
             {
                 Assert.Equal(i, sequences[i]);
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.Threading.Tasks
 
             try
             {
-                await Task.WhenAll(tasks.ToArray());
+                await Task.WhenAll(tasks);
             }
             catch (OperationCanceledException)
             {
