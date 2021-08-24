@@ -14,8 +14,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IMissingWorkloadRegistrationService
     {
-        void ClearMissingWorkloadMetadata();
-
         Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptor, CancellationToken cancellationToken);
 
         void RegisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration);

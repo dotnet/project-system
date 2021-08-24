@@ -22,17 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal class VsSolutionEventListener : OnceInitializedOnceDisposedAsync, IVsSolutionEvents, IVsSolutionLoadEvents, IVsPrioritizedSolutionEvents, ILoadedInHostListener, ISolutionService
     {
         private readonly IVsUIService<IVsSolution> _solution;
-        private readonly IMissingWorkloadRegistrationService _missingWorkloadRegistrationService;
 
         private TaskCompletionSource _loadedInHost = new();
         private uint _cookie = VSConstants.VSCOOKIE_NIL;
 
         [ImportingConstructor]
-        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext, IMissingWorkloadRegistrationService missingWorkloadRegistrationService)
+        public VsSolutionEventListener(IVsUIService<SVsSolution, IVsSolution> solution, JoinableTaskContext joinableTaskContext)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             _solution = solution;
-            _missingWorkloadRegistrationService = missingWorkloadRegistrationService;
         }
 
         public Task LoadedInHost
@@ -105,8 +103,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterCloseSolution(object pUnkReserved)
         {
             _loadedInHost = new TaskCompletionSource();
-
-            _missingWorkloadRegistrationService.ClearMissingWorkloadMetadata();
 
             return HResult.OK;
         }

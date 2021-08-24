@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.ServiceHub.Framework;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 using Microsoft.VisualStudio.RpcContracts.Setup;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
 
@@ -18,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     ///     Tracks the set of missing workload packs for each .NET project in a solution.
     /// </summary>
     [Export(typeof(IMissingWorkloadRegistrationService))]
-    internal class MissingWorkloadRegistrationService : OnceInitializedOnceDisposedAsync, IMissingWorkloadRegistrationService
+    internal class MissingWorkloadRegistrationService : OnceInitializedOnceDisposedAsync, IMissingWorkloadRegistrationService, IVsSolutionEvents
     {
         private readonly IDictionary<Guid, ISet<WorkloadDescriptor>> _projectGuidToWorkloadDescriptorsMap;
         private readonly IDictionary<Guid, ISet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
@@ -39,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _visualStudioComponentIdTransformer = visualStudioComponentIdTransformer;
         }
 
-        public void ClearMissingWorkloadMetadata()
+        private void ClearMissingWorkloadMetadata()
         {
             _projectGuidToWorkloadDescriptorsMap.Clear();
             _projectGuidToProjectConfigurationsMap.Clear();
@@ -139,6 +140,58 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             return vsComponentIdsToRegister;
+        }
+
+        public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnQueryCloseProject(IVsHierarchy pHierarchy, int fRemoving, ref int pfCancel)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnQueryUnloadProject(IVsHierarchy pRealHierarchy, ref int pfCancel)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnQueryCloseSolution(object pUnkReserved, ref int pfCancel)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnBeforeCloseSolution(object pUnkReserved)
+        {
+            return HResult.NotImplemented;
+        }
+
+        public int OnAfterCloseSolution(object pUnkReserved)
+        {
+            ClearMissingWorkloadMetadata();
+
+            return HResult.OK;
         }
     }
 }
