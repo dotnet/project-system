@@ -28,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
         private readonly IDataProgressTrackerService _dataProgressTrackerService;
         private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
+        private readonly IWorkspaceContextUpdateSerializer _updateSerializer;
 
         [ImportingConstructor]
         public WorkspaceProjectContextHost(ConfiguredProject project,
@@ -39,7 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                            IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                            ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                            IDataProgressTrackerService dataProgressTrackerService,
-                                           IProjectBuildSnapshotService projectBuildSnapshotService)
+                                           IProjectBuildSnapshotService projectBuildSnapshotService,
+                                           IWorkspaceContextUpdateSerializer updateSerializer)
             : base(threadingService.JoinableTaskContext)
         {
             _project = project;
@@ -52,6 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
             _dataProgressTrackerService = dataProgressTrackerService;
             _projectBuildSnapshotService = projectBuildSnapshotService;
+            _updateSerializer = updateSerializer;
         }
 
         public Task ActivateAsync()
@@ -101,7 +104,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _activeConfiguredProjectProvider,
                 _applyChangesToWorkspaceContextFactory,
                 _dataProgressTrackerService,
-                _projectBuildSnapshotService);
+                _projectBuildSnapshotService,
+                _updateSerializer);
         }
     }
 }

@@ -122,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             });
         }
 
-        private static WorkspaceProjectContextHost CreateInstance(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null)
+        private static WorkspaceProjectContextHost CreateInstance(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeWorkspaceProjectContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null, IWorkspaceContextUpdateSerializer? updateSerializer = null)
         {
             project ??= ConfiguredProjectFactory.Create();
             threadingService ??= IProjectThreadingServiceFactory.Create();
@@ -134,6 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IProjectBuildSnapshotService projectBuildSnapshotService = IProjectBuildSnapshotServiceFactory.Create();
+            updateSerializer ??= IWorkspaceContextUpdateSerializerFactory.Create();
 
             return new WorkspaceProjectContextHost(project,
                                                    threadingService,
@@ -144,7 +145,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                    activeConfiguredProjectProvider,
                                                    ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
                                                    dataProgressTrackerService,
-                                                   projectBuildSnapshotService);
+                                                   projectBuildSnapshotService,
+                                                   updateSerializer);
         }
     }
 }

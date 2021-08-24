@@ -31,6 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
             private readonly IProjectBuildSnapshotService _projectBuildSnapshotService;
+            private readonly IWorkspaceContextUpdateSerializer _updateSerializer;
 
             private IDataProgressTrackerServiceRegistration? _evaluationProgressRegistration;
             private IDataProgressTrackerServiceRegistration? _projectBuildProgressRegistration;
@@ -48,7 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                                        IDataProgressTrackerService dataProgressTrackerService,
-                                                       IProjectBuildSnapshotService projectBuildSnapshotService)
+                                                       IProjectBuildSnapshotService projectBuildSnapshotService,
+                                                       IWorkspaceContextUpdateSerializer updateSerializer)
                 : base(threadingService.JoinableTaskContext)
             {
                 _project = project;
@@ -60,6 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
                 _projectBuildSnapshotService = projectBuildSnapshotService;
+                _updateSerializer = updateSerializer;
             }
 
             public Task InitializeAsync()
@@ -181,7 +184,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
             internal Task OnProjectChangedAsync(ProjectChange change, WorkspaceContextHandlerType handlerType)
             {
-                return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(change, handlerType, ct), _tasksService.UnloadCancellationToken);
+                return ExecuteUnderLockAsync(
+                    cancellationToken => _updateSerializer.ApplyUpdateAsync(
+                        () => ApplyProjectChangesUnderLockAsync(change, handlerType, cancellationToken)),
+                    _tasksService.UnloadCancellationToken);
             }
 
             private async Task ApplyProjectChangesUnderLockAsync(ProjectChange change, WorkspaceContextHandlerType handlerType, CancellationToken cancellationToken)

@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return instance;
         }
 
-        private static WorkspaceProjectContextHostInstance CreateInstance(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeEditorContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null)
+        private static WorkspaceProjectContextHostInstance CreateInstance(ConfiguredProject? project = null, IProjectThreadingService? threadingService = null, IUnconfiguredProjectTasksService? tasksService = null, IProjectSubscriptionService? projectSubscriptionService = null, IActiveEditorContextTracker? activeEditorContextTracker = null, IWorkspaceProjectContextProvider? workspaceProjectContextProvider = null, IApplyChangesToWorkspaceContext? applyChangesToWorkspaceContext = null, IWorkspaceContextUpdateSerializer? updateSerializer = null)
         {
             project ??= ConfiguredProjectFactory.Create();
             threadingService ??= IProjectThreadingServiceFactory.Create();
@@ -315,6 +315,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             IActiveConfiguredProjectProvider activeConfiguredProjectProvider = IActiveConfiguredProjectProviderFactory.Create();
             IDataProgressTrackerService dataProgressTrackerService = IDataProgressTrackerServiceFactory.Create();
             IProjectBuildSnapshotService projectBuildSnapshotService = IProjectBuildSnapshotServiceFactory.Create();
+            updateSerializer ??= IWorkspaceContextUpdateSerializerFactory.Create();
 
             return new WorkspaceProjectContextHostInstance(project,
                                                            threadingService,
@@ -325,7 +326,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                            activeConfiguredProjectProvider,
                                                            ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => applyChangesToWorkspaceContext),
                                                            dataProgressTrackerService,
-                                                           projectBuildSnapshotService);
+                                                           projectBuildSnapshotService,
+                                                           updateSerializer);
         }
     }
 }
