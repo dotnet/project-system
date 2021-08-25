@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
             { MauiWindowsWorkloadName },
         };
 
-        public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IReadOnlyCollection<string> vsComponentIds)
+        public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IEnumerable<string> vsComponentIds)
         {
             HashSet<string> finalVsComponentIdSet = new(StringComparers.VisualStudioSetupComponentIds);
 

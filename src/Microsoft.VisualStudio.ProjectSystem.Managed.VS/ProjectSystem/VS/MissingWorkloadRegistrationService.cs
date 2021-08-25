@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
             {
                 var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
-                var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds.ToArray());
+                var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds);
 
                 vsComponentIdsToRegister[projectGuid] = transformedVsComponentIds;
             }

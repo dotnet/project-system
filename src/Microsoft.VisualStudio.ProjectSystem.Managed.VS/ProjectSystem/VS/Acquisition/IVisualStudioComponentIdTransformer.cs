@@ -11,6 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IVisualStudioComponentIdTransformer
     {
-        Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IReadOnlyCollection<string> vsComponentIds);
+        Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IEnumerable<string> vsComponentIds);
     }
 }
