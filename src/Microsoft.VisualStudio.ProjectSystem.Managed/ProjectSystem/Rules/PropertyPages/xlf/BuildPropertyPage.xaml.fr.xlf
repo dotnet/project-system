@@ -117,6 +117,16 @@
         <target state="translated">Considérer les avertissements comme des erreurs</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="new">Advanced settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">Configure les options d'erreur et d'avertissement pour le processus de génération.</target>

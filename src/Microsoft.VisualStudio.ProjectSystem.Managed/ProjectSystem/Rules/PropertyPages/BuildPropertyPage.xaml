@@ -26,6 +26,10 @@
     <Category Name="StrongNaming"
               Description="Configures strong name signing of build outputs."
               DisplayName="Strong naming" />
+    
+    <Category Name="Advanced"
+              DisplayName="Advanced"
+              Description="Advanced settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -147,75 +151,6 @@
                DisplayName="PDB file, portable across platforms" />
     <EnumValue Name="embedded"
                DisplayName="Embedded in DLL/EXE, portable across platforms" />
-  </EnumProperty>
-
-  <StringProperty Name="LangVersion"
-                  DisplayName="Language version"
-                  Description="Why can't I select the C# language version?">
-    <StringProperty.DataSource>
-      <DataSource PersistedName="LangVersion"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
-    <StringProperty.ValueEditors>
-      <ValueEditor EditorType="LinkAction">
-        <ValueEditor.Metadata>
-          <NameValuePair Name="Action" Value="URL" />
-          <NameValuePair Name="URL" Value="https://aka.ms/csharp-versions" />
-        </ValueEditor.Metadata>
-      </ValueEditor>
-    </StringProperty.ValueEditors>
-  </StringProperty>
-
-  <BoolProperty Name="CheckForOverflowUnderflow"
-                DisplayName="Check for arithmetic overflow"
-                Description="Throw exceptions when integer arithmetic produces out of range values."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166113"
-                Category="General">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
-
-  <BoolProperty Name="Deterministic"
-                DisplayName="Deterministic"
-                Description="Produce identical compilation output for identical inputs."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165770"
-                Category="General" />
- 
-  <EnumProperty Name="ErrorReport"
-                DisplayName="Internal compiler error reporting"
-                Description="Send internal compiler error (ICE) reports to Microsoft."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165771"
-                Category="General">
-    <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False" />
-    </EnumProperty.DataSource>
-    <EnumValue Name="none"
-               DisplayName="Never send" />
-    <EnumValue Name="prompt"
-               DisplayName="Prompt before sending" />
-    <EnumValue Name="queue"
-               DisplayName="Queue" />
-    <EnumValue Name="send"
-               DisplayName="Send" />
-  </EnumProperty>
- 
-  <EnumProperty Name="FileAlignment"
-                DisplayName="File alignment"
-                Description="Specifies, in bytes, where to align the sections of the output file."
-                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166114"
-                Category="General">
-    <EnumValue Name="512"
-               DisplayName="512" />
-    <EnumValue Name="1024"
-               DisplayName="1024" />
-    <EnumValue Name="2048"
-               DisplayName="2048" />
-    <EnumValue Name="4096"
-               DisplayName="4096" />
-    <EnumValue Name="8192"
-               DisplayName="8192" />
   </EnumProperty>
 
   <EnumProperty Name="WarningLevel"
@@ -443,5 +378,75 @@
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
   </BoolProperty>
+
+  <StringProperty Name="LangVersion"
+                  DisplayName="Language version"
+                  Description="Why can't I select the C# language version?"
+                  Category="Advanced">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="LangVersion"
+                  Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="URL" />
+          <NameValuePair Name="URL" Value="https://aka.ms/csharp-versions" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <BoolProperty Name="CheckForOverflowUnderflow"
+                DisplayName="Check for arithmetic overflow"
+                Description="Throw exceptions when integer arithmetic produces out of range values."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166113"
+                Category="Advanced">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="Deterministic"
+                DisplayName="Deterministic"
+                Description="Produce identical compilation output for identical inputs."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165770"
+                Category="Advanced" />
+
+  <EnumProperty Name="ErrorReport"
+                DisplayName="Internal compiler error reporting"
+                Description="Send internal compiler error (ICE) reports to Microsoft."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165771"
+                Category="Advanced">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="none"
+               DisplayName="Never send" />
+    <EnumValue Name="prompt"
+               DisplayName="Prompt before sending" />
+    <EnumValue Name="queue"
+               DisplayName="Queue" />
+    <EnumValue Name="send"
+               DisplayName="Send" />
+  </EnumProperty>
+
+  <EnumProperty Name="FileAlignment"
+                DisplayName="File alignment"
+                Description="Specifies, in bytes, where to align the sections of the output file."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166114"
+                Category="Advanced">
+    <EnumValue Name="512"
+               DisplayName="512" />
+    <EnumValue Name="1024"
+               DisplayName="1024" />
+    <EnumValue Name="2048"
+               DisplayName="2048" />
+    <EnumValue Name="4096"
+               DisplayName="4096" />
+    <EnumValue Name="8192"
+               DisplayName="8192" />
+  </EnumProperty>
 
 </Rule>
