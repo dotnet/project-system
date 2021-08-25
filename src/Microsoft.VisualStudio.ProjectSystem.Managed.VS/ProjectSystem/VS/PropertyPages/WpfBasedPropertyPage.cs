@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected override Task<int> OnApplyAsync()
         {
-#pragma warning disable VSTHRD110 // Observe result of async calls
+#pragma warning disable VSTHRD110 // Observe result of async calls (https://github.com/microsoft/vs-threading/issues/881)
             return _control?.ApplyAsync() ?? Task.FromResult((int)HResult.Fail);
 #pragma warning restore VSTHRD110 // Observe result of async calls
         }
