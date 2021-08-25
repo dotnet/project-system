@@ -209,7 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             /// </summary>
             [ExportRule(nameof(SuggestedWorkload), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.DotNet)]
-            [Order(Order.Default - 1)]
+            [Order(Order.Default)]
             public static int SuggestedWorkloadRule;
         }
     }
