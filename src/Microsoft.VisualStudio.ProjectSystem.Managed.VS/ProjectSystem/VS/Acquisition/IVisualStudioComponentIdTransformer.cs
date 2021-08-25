@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
+    /// <summary>
+    ///     Transforms a collection of Visual Studio component IDs.
+    /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IVisualStudioComponentIdTransformer
     {

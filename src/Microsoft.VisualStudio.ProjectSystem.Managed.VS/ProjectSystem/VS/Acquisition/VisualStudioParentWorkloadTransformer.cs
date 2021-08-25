@@ -8,6 +8,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
 {
     /// <summary>
     ///     Transforms a collection of Visual Studio component IDs.
+    ///     Installing only the MAUI .NET workloads may not be sufficient for a productive
+    ///     design-time experience. This class adds the .NET cross platform development
+    ///     workload to the list of components to be installed whenever a .NET MAUI workload
+    ///     is in the collection of components to be installed.
     /// </summary>
     [Export(typeof(IVisualStudioComponentIdTransformer))]
     internal class VisualStudioParentWorkloadTransformer : IVisualStudioComponentIdTransformer
@@ -19,59 +23,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
         private const string MauiMacCatalystWorkloadName = "maui.maccatalyst";
         private const string MauiWindowsWorkloadName = "maui.windows";
 
-        private static readonly string[] s_mauiAndroidComponents = new string[] {
-            NetCrossPlatVisualStudioWorkloadName,
-            "maui.android",
-            "android.aot",
-            "Component.OpenJDK",
-            "Component.Android.SDK30",
-            "Microsoft.VisualStudio.Android.SdkManager",
-            "Microsoft.VisualStudio.Android.DeviceManager",
-            "Microsoft.VisualStudio.Component.MonoDebugger",
-            "Microsoft.VisualStudio.Component.Merq",
-            "Xamarin.VisualStudio",
-            "Xamarin.VisualStudio.Android.Deploy",
-            "Xamarin.VisualStudio.Android.Designer",
-            "Xamarin.VisualStudio.Designer",
-            "Xamarin.VisualStudio.Forms.Editor",
-            "Xamarin.VisualStudio.Onboarding",
-        };
-
-        private static readonly string[] s_mauiIOSComponents = new string[] {
-            NetCrossPlatVisualStudioWorkloadName,
-            "maui.ios",
-            "ios",
-            "Component.Xamarin.RemotedSimulator",
-            "Microsoft.VisualStudio.Component.MonoDebugger",
-            "Microsoft.VisualStudio.Component.Merq",
-            "Xamarin.VisualStudio",
-            "Xamarin.VisualStudio.Designer",
-            "Xamarin.VisualStudio.Forms.Editor",
-            "Xamarin.VisualStudio.Onboarding",
-        };
-
-        private static readonly string[] s_mauiMacCatalystComponents = new string[] {
-            NetCrossPlatVisualStudioWorkloadName,
-            "maui.maccatalyst",
-            "maccatalyst",
-            "Microsoft.VisualStudio.Component.MonoDebugger",
-            "Microsoft.VisualStudio.Component.Merq",
-            "Xamarin.VisualStudio",
-            "Xamarin.VisualStudio.Designer",
-            "Xamarin.VisualStudio.Forms.Editor",
-            "Xamarin.VisualStudio.Onboarding",
-        };
-
-        private static readonly string[] s_mauiWindowsComponents = new string[] {
-            NetCrossPlatVisualStudioWorkloadName,
-        };
-
-        private static readonly Dictionary<string, IReadOnlyCollection<string>> s_vsComponentIdToParentComponentsMap = new(StringComparers.VisualStudioSetupComponentIds)
+        private static readonly HashSet<string> s_mauiWorkloads = new(StringComparers.WorkloadNames)
         {
-            { MauiAndroidWorkloadName, s_mauiAndroidComponents },
-            { MauiIOSWorkloadName, s_mauiIOSComponents },
-            { MauiMacCatalystWorkloadName, s_mauiMacCatalystComponents },
-            { MauiWindowsWorkloadName, s_mauiWindowsComponents },
+            { MauiAndroidWorkloadName },
+            { MauiIOSWorkloadName },
+            { MauiMacCatalystWorkloadName },
+            { MauiWindowsWorkloadName },
         };
 
         public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IReadOnlyCollection<string> vsComponentIds)
@@ -82,9 +39,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
             {
                 finalVsComponentIdSet.Add(vsComponentId);
 
-                if (s_vsComponentIdToParentComponentsMap.TryGetValue(vsComponentId, out IReadOnlyCollection<string> mappedVsComponentIds))
+                if (s_mauiWorkloads.Contains(vsComponentId))
                 {
-                    finalVsComponentIdSet.AddRange(mappedVsComponentIds);
+                    finalVsComponentIdSet.Add(NetCrossPlatVisualStudioWorkloadName);
                 }
             }
 
