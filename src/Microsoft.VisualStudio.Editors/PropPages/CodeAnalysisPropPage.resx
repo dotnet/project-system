@@ -293,15 +293,18 @@
   </data>
   <data name="AnalysisLevelComboBox.AutoCompleteCustomSource" xml:space="preserve">
     <value>preview</value>
+    <comment>"preview" is a project property term and should not be localized</comment>
   </data>
   <data name="AnalysisLevelComboBox.AutoCompleteCustomSource1" xml:space="preserve">
     <value>latest</value>
+    <comment>"latest" is a project property term and should not be localized</comment>
   </data>
   <data name="AnalysisLevelComboBox.AutoCompleteCustomSource2" xml:space="preserve">
     <value>5.0</value>
   </data>
   <data name="AnalysisLevelComboBox.AutoCompleteCustomSource3" xml:space="preserve">
     <value>none</value>
+    <comment>"none" is a project property term and should not be localized</comment>
   </data>
   <data name="AnalysisLevelComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>118, 230</value>

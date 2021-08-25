@@ -4,13 +4,13 @@
     <body>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
         <source>preview</source>
-        <target state="translated">versión preliminar</target>
-        <note />
+        <target state="needs-review-translation">versión preliminar</target>
+        <note>"preview" is a project property term and should not be localized</note>
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
         <source>latest</source>
-        <target state="translated">más reciente</target>
-        <note />
+        <target state="needs-review-translation">más reciente</target>
+        <note>"latest" is a project property term and should not be localized</note>
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
         <source>5.0</source>
@@ -19,8 +19,8 @@
       </trans-unit>
       <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
         <source>none</source>
-        <target state="translated">ninguno</target>
-        <note />
+        <target state="needs-review-translation">ninguno</target>
+        <note>"none" is a project property term and should not be localized</note>
       </trans-unit>
       <trans-unit id="AnalysisLevelLabel.Text">
         <source>Analysis Level</source>
