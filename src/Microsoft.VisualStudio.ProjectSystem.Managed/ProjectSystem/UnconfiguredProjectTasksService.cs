@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public Task SolutionLoadedInHost
         {
-#pragma warning disable VSTHRD110 // Observe result of async calls
+#pragma warning disable VSTHRD110 // Observe result of async calls (https://github.com/microsoft/vs-threading/issues/881)
             get { return _solutionService?.LoadedInHost.WithCancellation(_tasksService.UnloadCancellationToken) ?? throw new NotSupportedException(); }
 #pragma warning restore VSTHRD110 // Observe result of async calls
         }
