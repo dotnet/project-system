@@ -174,6 +174,27 @@ If the text within this editor should be displayed with a monospace (fixed width
 
 A `PasswordBox` control can be used for string properties by specifying `EditorType="PasswordString"`.
 
+### Evaluated-preview-only Strings
+
+If you wish for a property to only display a non-editable preview of its evaluated values, you can use the `ShowEvaluatedPreviewOnly` editor metadata.
+
+We use this on the `LangVersion` property, for example, as this value is intentionally non-editable, yet we want to allow the user to see the evaluated values. This value is specified by SDK targets, and so there is no useful unevaluated value to display for this property.
+
+```xml
+<StringProperty Name="LangVersion"
+                DisplayName="Language version"
+                Description="The version of the language available to code in this project."
+                ReadOnly="true">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="String">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="ShowEvaluatedPreviewOnly" Value="True" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
 ### Custom Editors
 
 If a non-standard editor is required for a given property, one may be provided via MEF.
