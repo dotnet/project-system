@@ -80,6 +80,23 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
+  <BoolProperty Name="ImplicitUsings"
+                DisplayName="Global usings"
+                Description="Enable default global usings."
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="implicit" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-csharp-lang-version-or-greater "10")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
   <BoolProperty Name="Prefer32Bit"
                 DisplayName="Prefer 32-bit"
                 Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."

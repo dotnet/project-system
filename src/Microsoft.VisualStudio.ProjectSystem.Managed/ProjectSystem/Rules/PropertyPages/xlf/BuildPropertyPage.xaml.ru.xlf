@@ -62,6 +62,21 @@
         <target state="translated">Файл документации</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable default global usings.</source>
+        <target state="new">Enable default global usings.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Global usings</source>
+        <target state="new">Global usings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="new">implicit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="translated">Включить оптимизацию компилятора для быстрого и эффективного получения выходных данных меньшего размера.</target>
