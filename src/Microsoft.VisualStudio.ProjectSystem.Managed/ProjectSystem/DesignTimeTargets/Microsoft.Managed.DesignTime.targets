@@ -234,10 +234,6 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)SuggestedWorkload.xaml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
