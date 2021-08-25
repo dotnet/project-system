@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
 {
@@ -31,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
             { MauiWindowsWorkloadName },
         };
 
-        public Task<IReadOnlyCollection<string>> TransformVisualStudioComponentIdsAsync(IEnumerable<string> vsComponentIds)
+        public IReadOnlyCollection<string> TransformVisualStudioComponentIds(IEnumerable<string> vsComponentIds)
         {
             HashSet<string> finalVsComponentIdSet = new(StringComparers.VisualStudioSetupComponentIds);
 
@@ -45,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Acquisition
                 }
             }
 
-            return Task.FromResult((IReadOnlyCollection<string>)finalVsComponentIdSet);
+            return finalVsComponentIdSet;
         }
     }
 }

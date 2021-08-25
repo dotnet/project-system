@@ -120,21 +120,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             {
                 if (missingWorkloadRegistrationService != null)
                 {
-                    IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = await ComputeVsComponentIdsToRegisterAsync();
+                    IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = ComputeVsComponentIdsToRegister();
 
                     await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken);
                 }
             }
         }
 
-        private async Task<IReadOnlyDictionary<Guid, IReadOnlyCollection<string>>> ComputeVsComponentIdsToRegisterAsync()
+        private IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> ComputeVsComponentIdsToRegister()
         {
             Dictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = new();
 
             foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
             {
                 var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
-                var transformedVsComponentIds = await _visualStudioComponentIdTransformer.TransformVisualStudioComponentIdsAsync(vsComponentIds);
+                var transformedVsComponentIds = _visualStudioComponentIdTransformer.TransformVisualStudioComponentIds(vsComponentIds);
 
                 vsComponentIdsToRegister[projectGuid] = transformedVsComponentIds;
             }
