@@ -448,8 +448,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
-        <source>Why can't I select the C# language version?</source>
-        <target state="translated">Pourquoi ne puis-je pas sélectionner la version de langage C# ?</target>
+        <source>The version of the language available to code in this project.</source>
+        <target state="needs-review-translation">Pourquoi ne puis-je pas sélectionner la version de langage C# ?</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
