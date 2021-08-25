@@ -29,6 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         private static readonly UIPropertyEditorPropertiesAvailableStatus s_requestedEditorProperties;
         private static readonly UIEditorMetadataPropertiesAvailableStatus s_requestedEditorMetadataProperties;
         private static readonly UIPropertyValuePropertiesAvailableStatus s_requestedValueProperties;
+        private static readonly ConfigurationDimensionPropertiesAvailableStatus s_requestedConfigurationDimensionProperties;
         private static readonly SupportedValuePropertiesAvailableStatus s_requestedSupportedValueProperties;
 
         protected readonly List<(IEntityValue projectEntity, EntityIdentity)> AddedLaunchProfiles = new();
@@ -87,6 +88,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             s_requestedSupportedValueProperties.RequireProperty(SupportedValueType.DisplayNamePropertyName);
             s_requestedSupportedValueProperties.RequireProperty(SupportedValueType.ValuePropertyName);
             s_requestedSupportedValueProperties.Freeze();
+
+            s_requestedConfigurationDimensionProperties = new ConfigurationDimensionPropertiesAvailableStatus();
+            s_requestedConfigurationDimensionProperties.RequireProperty(ConfigurationDimensionType.NamePropertyName);
+            s_requestedConfigurationDimensionProperties.RequireProperty(ConfigurationDimensionType.ValuePropertyName);
+            s_requestedConfigurationDimensionProperties.Freeze();
         }
 
         public async Task OnRequestProcessFinishedAsync(IQueryProcessRequest request)
@@ -162,7 +168,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             await ResultReceiver.OnRequestProcessFinishedAsync(request);
 
-            static async Task PopulateSupportedValues(ImmutableArray<IEntityValue> valueEntities)
+            static async Task PopulateSupportedValuesAndConfigurations(ImmutableArray<IEntityValue> valueEntities)
             {
                 foreach (IEntityValueFromProvider valueEntity in valueEntities)
                 {
@@ -172,6 +178,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                         ImmutableArray<IEntityValue> supportedValues = ImmutableArray.CreateRange(
                             await SupportedValueDataProducer.CreateSupportedValuesAsync(valueEntity, valueState.Property, s_requestedSupportedValueProperties));
                         valueEntity.SetRelatedEntities(UIPropertyValueType.SupportedValuesPropertyName, supportedValues);
+
+                        ImmutableArray<IEntityValue> configurationDimensions = ImmutableArray.CreateRange(
+                            ConfigurationDimensionDataProducer.CreateProjectConfigurationDimensions(valueEntity, valueState.ProjectConfiguration, valueState.Property, s_requestedConfigurationDimensionProperties));
+                        valueEntity.SetRelatedEntities(UIPropertyValueType.ConfigurationDimensionsPropertyName, configurationDimensions);
                     }
                 }
             }
@@ -208,7 +218,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                             await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(request.QueryExecutionContext, propertyEntity, propertyProviderState.ProjectState, propertyProviderState.ContainingRule, propertyProviderState.PropertiesContext, propertyProviderState.PropertyName, s_requestedValueProperties));
                         propertyEntity.SetRelatedEntities(UIPropertyType.ValuesPropertyName, values);
 
-                        await PopulateSupportedValues(values);
+                        await PopulateSupportedValuesAndConfigurations(values);
                     }
                 }
             }
