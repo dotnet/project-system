@@ -20,10 +20,10 @@ namespace Microsoft.VisualStudio.Threading.Tasks
         private readonly JoinableTaskCollection _joinableCollection;
         private readonly JoinableTaskFactory _joinableFactory;
 
-        public SequentialTaskExecutor(JoinableTaskContextNode joinableTaskContext)
+        public SequentialTaskExecutor(JoinableTaskContextNode joinableTaskContext, string displayName)
         {
             _joinableCollection = joinableTaskContext.CreateCollection();
-            _joinableCollection.DisplayName = nameof(SequentialTaskExecutor);
+            _joinableCollection.DisplayName = $"{nameof(SequentialTaskExecutor)}_{displayName}";
             _joinableFactory = joinableTaskContext.CreateFactory(_joinableCollection);
         }
 

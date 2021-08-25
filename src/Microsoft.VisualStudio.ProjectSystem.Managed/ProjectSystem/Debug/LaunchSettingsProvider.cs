@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             _fileSystem = fileSystem;
             _commonProjectServices = commonProjectServices;
 
-            _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext));
+            _sequentialTaskQueue = new SequentialTaskExecutor(new JoinableTaskContextNode(joinableTaskContext), nameof(LaunchSettingsProvider));
 
             JsonSerializationProviders = new OrderPrecedenceImportCollection<ILaunchSettingsSerializationProvider, IJsonSection>(ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
                                                                                                                     project);
