@@ -25,18 +25,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IDictionary<Guid, ISet<ProjectConfiguration>> _projectGuidToProjectConfigurationsMap;
         private readonly IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> _serviceBrokerContainer;
         private readonly IVisualStudioComponentIdTransformer _visualStudioComponentIdTransformer;
+        private readonly IProjectFaultHandlerService _projectFaultHandlerService;
 
         [ImportingConstructor]
         public MissingWorkloadRegistrationService(
             JoinableTaskContext joinableTaskContext,
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
-            IProjectThreadingService projectThreadingService,
+            IProjectFaultHandlerService projectFaultHandlerService,
             IVisualStudioComponentIdTransformer visualStudioComponentIdTransformer)
             : base(new JoinableTaskContextNode(joinableTaskContext))
         {
             _projectGuidToWorkloadDescriptorsMap = new Dictionary<Guid, ISet<WorkloadDescriptor>>();
             _projectGuidToProjectConfigurationsMap = new Dictionary<Guid, ISet<ProjectConfiguration>>();
             _serviceBrokerContainer = serviceBrokerContainer;
+            _projectFaultHandlerService = projectFaultHandlerService;
             _visualStudioComponentIdTransformer = visualStudioComponentIdTransformer;
         }
 
@@ -46,7 +48,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _projectGuidToProjectConfigurationsMap.Clear();
         }
 
-        public Task RegisterMissingWorkloadAsync(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptors, CancellationToken cancellationToken)
+        public void RegisterMissingWorkloads(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptors)
         {
             if (workloadDescriptors.Count > 0)
             {
@@ -59,16 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 workloadDescriptorSet.AddRange(workloadDescriptors);
             }
 
-            if (_projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out var projectConfigurationSet))
-            {
-                projectConfigurationSet.Remove(projectConfiguration);
-                if (projectConfigurationSet.Count == 0 && ShouldDisplayMissingComponentsPrompt())
-                {
-                    return DisplayMissingComponentsPromptAsync(cancellationToken);
-                }
-            }
-
-            return Task.CompletedTask;
+            UnregisterProjectConfiguration(projectGuid, projectConfiguration);
         }
 
         public void RegisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration)
@@ -80,6 +73,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
 
             projectConfigurationSet.Add(projectConfiguration);
+        }
+
+        public void UnregisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration)
+        {
+            if (_projectGuidToProjectConfigurationsMap.TryGetValue(projectGuid, out var projectConfigurationSet))
+            {
+                projectConfigurationSet.Remove(projectConfiguration);
+                if (projectConfigurationSet.Count == 0 && ShouldDisplayMissingComponentsPrompt())
+                {
+                    var displayMissingComponentsTask = DisplayMissingComponentsPromptAsync();
+
+                    _projectFaultHandlerService.Forget(displayMissingComponentsTask, project: null, ProjectFaultSeverity.LimitedFunctionality);
+                }
+            }
         }
 
         private bool ShouldDisplayMissingComponentsPrompt()
@@ -99,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return Task.CompletedTask;
         }
 
-        private async Task DisplayMissingComponentsPromptAsync(CancellationToken cancellationToken)
+        private async Task DisplayMissingComponentsPromptAsync()
         {
             if (_projectGuidToWorkloadDescriptorsMap.Count == 0)
             {
@@ -122,7 +129,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 {
                     IReadOnlyDictionary<Guid, IReadOnlyCollection<string>> vsComponentIdsToRegister = ComputeVsComponentIdsToRegister();
 
-                    await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken);
+                    await missingWorkloadRegistrationService.RegisterMissingComponentsAsync(vsComponentIdsToRegister, cancellationToken: default);
                 }
             }
         }

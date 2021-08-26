@@ -59,6 +59,8 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _enabled = false;
 
+            _missingWorkloadRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
+
             return Task.CompletedTask;
         }
 
@@ -107,9 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            var task = _missingWorkloadRegistrationService.RegisterMissingWorkloadAsync(_projectGuid, _project.ProjectConfiguration, pair.Value.workloadDescriptors, cancellationToken: default);
-
-            _projectFaultHandlerService.Forget(task, _project.UnconfiguredProject, ProjectFaultSeverity.LimitedFunctionality);
+            _missingWorkloadRegistrationService.RegisterMissingWorkloads(_projectGuid, _project.ProjectConfiguration, pair.Value.workloadDescriptors);
         }
     }
 }
