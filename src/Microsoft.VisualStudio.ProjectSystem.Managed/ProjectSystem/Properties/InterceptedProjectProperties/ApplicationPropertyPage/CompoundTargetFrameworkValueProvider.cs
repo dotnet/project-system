@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string TargetPlatformProperty = ConfigurationGeneral.TargetPlatformIdentifierProperty;
         private const string TargetPlatformVersionProperty = ConfigurationGeneral.TargetPlatformVersionProperty;
         private const string TargetFrameworkProperty = ConfigurationGeneral.TargetFrameworkProperty;
-        private const string MinimumPlatformVersionProperty = "MinimumPlatformVersion";
+        private const string SupportedOSPlatformVersionProperty = "SupportedOSPlatformVersion";
 
         private readonly ProjectProperties _properties;
         private readonly ConfiguredProject _configuredProject;
@@ -216,14 +216,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         }
 
         /// <summary>
-        /// Resets the values on the TargetPlatformProperty and MinimumPlatformVersionProperty.
+        /// Resets the values on the TargetPlatformProperty and SupportedOSPlatformVersionProperty.
         /// </summary>
         /// <param name="projectProperties"></param>
         /// <returns></returns>
         private static async Task ResetPlatformPropertiesAsync(IProjectProperties projectProperties)
         {
             await projectProperties.DeletePropertyAsync(TargetPlatformVersionProperty);
-            await projectProperties.DeletePropertyAsync(MinimumPlatformVersionProperty);
+            await projectProperties.DeletePropertyAsync(SupportedOSPlatformVersionProperty);
         }
     }
 }

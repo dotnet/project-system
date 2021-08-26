@@ -143,10 +143,11 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <DynamicEnumProperty Name="MinimumPlatformVersion"
-                DisplayName="Minimum OS version"
-                Description="Specifies the minimum runtime version of the selected operating system."
+  <DynamicEnumProperty Name="SupportedOSPlatformVersion"
+                DisplayName="Supported OS version"
+                Description="Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs."
                 Category="General"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2171707"
                 EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
