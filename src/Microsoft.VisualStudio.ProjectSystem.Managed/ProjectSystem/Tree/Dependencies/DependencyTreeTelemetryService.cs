@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
@@ -22,23 +24,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     /// </remarks>
     [Export(typeof(IDependencyTreeTelemetryService))]
     [AppliesTo(ProjectCapability.DependenciesTree)]
-    internal sealed class DependencyTreeTelemetryService : IDependencyTreeTelemetryService
+    internal sealed class DependencyTreeTelemetryService : IDependencyTreeTelemetryService, IDisposable
     {
         private const int MaxEventCount = 10;
 
         private readonly UnconfiguredProject _project;
         private readonly ITelemetryService? _telemetryService;
         private readonly ISafeProjectGuidService _safeProjectGuidService;
+        private readonly Stopwatch _projectLoadTime = Stopwatch.StartNew();
         private readonly object _stateUpdateLock = new object();
 
         /// <summary>
         /// Holds data used for telemetry. If telemetry is disabled, or if required
         /// information has been gathered, this field will be null.
         /// </summary>
-        private Dictionary<ITargetFramework, TelemetryState>? _stateByFramework;
+        private Dictionary<TargetFramework, TelemetryState>? _stateByFramework;
 
         private string? _projectId;
-        private int _eventCount = 0;
+        private int _eventCount;
+        private DependenciesSnapshot? _dependenciesSnapshot;
 
         [ImportingConstructor]
         public DependencyTreeTelemetryService(
@@ -52,13 +56,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             if (telemetryService != null)
             {
                 _telemetryService = telemetryService;
-                _stateByFramework = new Dictionary<ITargetFramework, TelemetryState>();
+                _stateByFramework = new Dictionary<TargetFramework, TelemetryState>();
             }
         }
 
-        public bool IsActive => _stateByFramework != null;
-
-        public void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
+        public void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules)
         {
             if (_stateByFramework == null)
                 return;
@@ -68,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 if (_stateByFramework == null)
                     return;
 
-                foreach (ITargetFramework targetFramework in targetFrameworks)
+                foreach (TargetFramework targetFramework in targetFrameworks)
                 {
                     if (!_stateByFramework.TryGetValue(targetFramework, out TelemetryState telemetryState))
                     {
@@ -83,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules)
+        public void ObserveTargetFrameworkRules(TargetFramework targetFramework, IEnumerable<string> rules)
         {
             if (_stateByFramework == null)
                 return;
@@ -103,10 +105,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
         }
 
-        public async Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
+        public async ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency)
         {
             if (_stateByFramework == null)
                 return;
+
+            Assumes.NotNull(_telemetryService);
 
             bool observedAllRules;
             lock (_stateUpdateLock)
@@ -126,7 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
             if (hasUnresolvedDependency)
             {
-                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedUnresolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedUnresolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedUnresolvedObservedAllRules, observedAllRules)
@@ -134,7 +138,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             }
             else
             {
-                _telemetryService!.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
+                _telemetryService.PostProperties(TelemetryEventName.TreeUpdatedResolved, new[]
                 {
                     (TelemetryPropertyName.TreeUpdatedResolvedProject, (object)_projectId),
                     (TelemetryPropertyName.TreeUpdatedResolvedObservedAllRules, observedAllRules)
@@ -153,8 +157,92 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 }
                 else
                 {
-                    return _telemetryService!.HashValue(_project.FullPath);
+                    return _telemetryService.HashValue(_project.FullPath);
                 }
+            }
+        }
+
+        public void ObserveSnapshot(DependenciesSnapshot dependenciesSnapshot)
+        {
+            _dependenciesSnapshot = dependenciesSnapshot;
+        }
+
+        public void Dispose()
+        {
+            if (_telemetryService != null && _dependenciesSnapshot != null && _projectId != null)
+            {
+                var data = new List<TargetData>();
+                int totalDependencyCount = 0;
+                int unresolvedDependencyCount = 0;
+
+                // Scan the snapshot and tally dependencies
+                foreach ((TargetFramework targetFramework, TargetedDependenciesSnapshot targetedSnapshot) in _dependenciesSnapshot.DependenciesByTargetFramework)
+                {
+                    var targetData = new TargetData(targetFramework.ShortName);
+
+                    data.Add(targetData);
+
+                    foreach (IDependency dependency in targetedSnapshot.Dependencies)
+                    {
+                        // Only include visible dependencies in telemetry counts
+                        if (!dependency.Visible)
+                        {
+                            continue;
+                        }
+
+                        targetData.Add(dependency);
+
+                        totalDependencyCount++;
+
+                        if (!dependency.Resolved)
+                        {
+                            unresolvedDependencyCount++;
+                        }
+                    }
+                }
+
+                _telemetryService.PostProperties(TelemetryEventName.ProjectUnloadDependencies, new (string, object)[]
+                {
+                    (TelemetryPropertyName.ProjectUnloadDependenciesVersion, 2),
+                    (TelemetryPropertyName.ProjectUnloadDependenciesProject, _projectId),
+                    (TelemetryPropertyName.ProjectUnloadProjectAgeMillis, _projectLoadTime.ElapsedMilliseconds),
+                    (TelemetryPropertyName.ProjectUnloadTotalDependencyCount, totalDependencyCount),
+                    (TelemetryPropertyName.ProjectUnloadUnresolvedDependencyCount, unresolvedDependencyCount),
+                    (TelemetryPropertyName.ProjectUnloadTargetFrameworkCount, _dependenciesSnapshot.DependenciesByTargetFramework.Count),
+                    (TelemetryPropertyName.ProjectUnloadDependencyBreakdown, new ComplexPropertyValue(data.ToArray()))
+                });
+            }
+        }
+
+        private sealed class TargetData
+        {
+            private readonly Dictionary<string, (int Total, int Unresolved)> _countsByType = new Dictionary<string, (int Total, int Unresolved)>();
+
+            public string TargetFramework { get; }
+            public int Total { get; private set; }
+            public int Unresolved { get; private set; }
+
+            public object[] Breakdown => _countsByType.Select(kvp => new { Type = kvp.Key, kvp.Value.Total, kvp.Value.Unresolved }).ToArray();
+
+            public TargetData(string targetFramework) => TargetFramework = targetFramework;
+
+            public void Add(IDependency dependency)
+            {
+                if (!_countsByType.TryGetValue(dependency.ProviderType, out (int Total, int Unresolved) counts))
+                {
+                    counts = (0, 0);
+                }
+
+                if (!dependency.Resolved)
+                {
+                    Unresolved++;
+                    counts.Unresolved++;
+                }
+                
+                Total++;
+                counts.Total++;
+
+                _countsByType[dependency.ProviderType] = counts;
             }
         }
 

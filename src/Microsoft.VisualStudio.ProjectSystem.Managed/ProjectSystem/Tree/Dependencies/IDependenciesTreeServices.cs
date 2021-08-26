@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             ProjectTreeFlags? flags = null);
 
         /// <summary>
-        /// Gets an <see cref="IRule"/> to attach to a project item, which would be used to 
+        /// Gets an <see cref="IRule"/> to attach to a project item, which would be used to
         /// display browse object properties page.
         /// </summary>
         /// <param name="dependency"></param>
@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// <param name="catalogs"></param>
         Task<IRule?> GetBrowseObjectRuleAsync(
             IDependency dependency,
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             IProjectCatalogSnapshot? catalogs);
     }
 }

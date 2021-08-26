@@ -10,7 +10,6 @@ Imports Microsoft.VisualStudio.Utilities
 
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
-
     ''' <summary>
     ''' In case we're building an editor, the editor's view will contain some user controls built from FX.
     '''   These user controls handles context menu in a different way. To show the context menu the correct way,
@@ -20,8 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     ''' </summary>
     Friend Class DesignerDataGridView
         Inherits DataGridView
-
-
 
         ' ContextMenuShow will be raised when this list view needs to show its context menu.
         ' The derived control simply needs to handle this event to know when to show a
@@ -60,7 +57,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         Friend Overridable Sub OnCellClickBeginEdit(e As System.ComponentModel.CancelEventArgs)
             RaiseEvent CellClickBeginEdit(Me, e)
         End Sub
-
 
         ''' <summary>
         ''' We override Control.WndProc to raise the ContextMenuShow event.
@@ -161,7 +157,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Try
         End Sub
 
-
         ''' <summary>
         ''' We want to filter out Ctrl+0 for "our" datagridviews
         ''' (they normally do a clear cell, which is bad for comboboxcolumns...)
@@ -193,7 +188,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
 
         End Function
-
 
         ''' <summary>
         ''' We want to filter out Ctrl+0 for "our" datagridviews

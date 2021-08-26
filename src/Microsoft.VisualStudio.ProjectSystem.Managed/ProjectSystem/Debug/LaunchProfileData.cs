@@ -137,22 +137,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var data = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);
 
             // Don't write out empty elements
-            if (!string.IsNullOrEmpty(profile.CommandName))
+            if (!Strings.IsNullOrEmpty(profile.CommandName))
             {
                 data.Add(Prop_commandName, profile.CommandName);
             }
 
-            if (!string.IsNullOrEmpty(profile.ExecutablePath))
+            if (!Strings.IsNullOrEmpty(profile.ExecutablePath))
             {
                 data.Add(Prop_executablePath, profile.ExecutablePath);
             }
 
-            if (!string.IsNullOrEmpty(profile.CommandLineArgs))
+            if (!Strings.IsNullOrEmpty(profile.CommandLineArgs))
             {
                 data.Add(Prop_commandLineArgs, profile.CommandLineArgs);
             }
 
-            if (!string.IsNullOrEmpty(profile.WorkingDirectory))
+            if (!Strings.IsNullOrEmpty(profile.WorkingDirectory))
             {
                 data.Add(Prop_workingDirectory, profile.WorkingDirectory);
             }
@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 data.Add(Prop_launchBrowser, profile.LaunchBrowser);
             }
 
-            if (!string.IsNullOrEmpty(profile.LaunchUrl))
+            if (!Strings.IsNullOrEmpty(profile.LaunchUrl))
             {
                 data.Add(Prop_launchUrl, profile.LaunchUrl);
             }

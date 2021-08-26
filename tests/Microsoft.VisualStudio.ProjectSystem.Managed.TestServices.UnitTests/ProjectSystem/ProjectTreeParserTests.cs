@@ -64,7 +64,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             AssertThrows(input, ProjectTreeFormatError.IdExpected_EncounteredEndOfString);
         }
 
-
         [Theory]
         [InlineData(@"Root, FilePath:")]
         [InlineData(@"Root, FilePath: ""C:\Temp"",")]
@@ -91,7 +90,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             AssertThrows(input, ProjectTreeFormatError.DelimiterExpected);
         }
-
 
         [Theory]
         [InlineData(@"Root, FilePath,")]
@@ -198,7 +196,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         [InlineData(@"Root (), FilePath: """"",                                                     @"Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         [InlineData(@"Project Root (), FilePath: """"",                                             @"Project Root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
         [InlineData(@"This is the project root (), FilePath: """"",                                 @"This is the project root[caption] (visibility: visible, flags: {}), FilePath: ""[filepath]""")]
-        
+
         public void Parse_RootWithEmptyProperties_CanParse(string input, string expected)
         {
             AssertProjectTree(input, expected);
@@ -362,7 +360,6 @@ Root[caption]
         {
             AssertProjectTree(input, expected, ProjectTreeWriterOptions.None);
         }
-
 
         [Theory]
         [InlineData(@"

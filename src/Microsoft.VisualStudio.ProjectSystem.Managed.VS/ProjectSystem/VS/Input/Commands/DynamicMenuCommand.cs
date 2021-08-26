@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 {
     /// <summary>
-    /// Implementation of an OleMenuCommand which supports the DynamicStart (like an MRU list) type 
+    /// Implementation of an OleMenuCommand which supports the DynamicStart (like an MRU list) type
     /// of commands
     /// </summary>
     internal abstract class DynamicMenuCommand : OleMenuCommand
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         }
 
         /// <summary>
-        /// Returns the current index (0 based) of the command that is currently selected (set by 
+        /// Returns the current index (0 based) of the command that is currently selected (set by
         /// MatchedCommandId).
         /// </summary>
         public int CurrentIndex
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected static void ExecHandler(object sender, EventArgs e)
         {
-            if (!(sender is DynamicMenuCommand command))
+            if (sender is not DynamicMenuCommand command)
             {
                 return;
             }
@@ -92,7 +92,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
             command.MatchedCommandId = 0;
         }
 
-
         /// <summary>
         /// QueryStatus handler called to update the status of the menu items. Does some
         /// basic validation before calling the commands QueryStatusCommand to update
@@ -100,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
         /// </summary>
         protected static void QueryStatusHandler(object sender, EventArgs e)
         {
-            if (!(sender is DynamicMenuCommand command))
+            if (sender is not DynamicMenuCommand command)
             {
                 return;
             }

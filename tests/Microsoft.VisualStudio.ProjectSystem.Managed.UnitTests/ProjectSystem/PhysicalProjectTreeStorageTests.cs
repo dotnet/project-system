@@ -152,7 +152,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             await storage.AddFileAsync("File.cs");
 
             Assert.Equal(@"C:\File.cs", result);
-
         }
 
         [Fact]
@@ -324,7 +323,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 project,
                 projectTreeService,
                 new Lazy<IFileSystem>(() => fileSystem),
-                ActiveConfiguredProjectFactory.ImplementValue(() => new PhysicalProjectTreeStorage.ConfiguredImports(folderManager, sourceItemsProvider)));
+                IActiveConfiguredValueFactory.ImplementValue(() => new PhysicalProjectTreeStorage.ConfiguredImports(folderManager, sourceItemsProvider)));
         }
     }
 }

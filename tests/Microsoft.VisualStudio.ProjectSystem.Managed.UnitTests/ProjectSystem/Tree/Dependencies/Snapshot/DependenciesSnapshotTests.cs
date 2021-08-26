@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         public void Constructor_WhenRequiredParamsNotProvided_ShouldThrow()
         {
             var tfm = TargetFramework.Any;
-            var dic = ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty;
+            var dic = ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty;
 
             Assert.Throws<ArgumentNullException>("activeTargetFramework",         () => new DependenciesSnapshot(null!, dic));
             Assert.Throws<ArgumentNullException>("dependenciesByTargetFramework", () => new DependenciesSnapshot(tfm,   null!));
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             var ex = Assert.Throws<ArgumentException>(() => new DependenciesSnapshot(
                 activeTargetFramework: targetFramework,
-                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty));
+                ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty));
 
             Assert.StartsWith("Must contain activeTargetFramework (tfm1).", ex.Message);
         }
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             _ = new DependenciesSnapshot(
                 activeTargetFramework: TargetFramework.Empty,
-                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
+                ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             _ = new DependenciesSnapshot(
                 activeTargetFramework: TargetFramework.Unsupported,
-                ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty);
+                ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
-            var targetFrameworks = ImmutableArray<ITargetFramework>.Empty.Add(targetFramework);
+            var targetFrameworks = ImmutableArray<TargetFramework>.Empty.Add(targetFramework);
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(catalogs, targetFramework);
 
             var previousSnapshot = new DependenciesSnapshot(
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             var previousCatalogs = IProjectCatalogSnapshotFactory.Create();
             var updatedCatalogs = IProjectCatalogSnapshotFactory.Create();
             var targetFramework = new TargetFramework("tfm1");
-            var targetFrameworks = ImmutableArray<ITargetFramework>.Empty.Add(targetFramework);
+            var targetFrameworks = ImmutableArray<TargetFramework>.Empty.Add(targetFramework);
             var dependenciesByTargetFramework = CreateDependenciesByTargetFramework(previousCatalogs, targetFramework);
 
             var previousSnapshot = new DependenciesSnapshot(
@@ -160,7 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 targetFramework,
                 targetChanges.TryBuildChanges()!,
                 catalogs,
-                targetFrameworks: ImmutableArray.Create<ITargetFramework>(targetFramework),
+                targetFrameworks: ImmutableArray.Create(targetFramework),
                 activeTargetFramework: targetFramework,
                 ImmutableArray<IDependenciesSnapshotFilter>.Empty,
                 new Dictionary<string, IProjectDependenciesSubTreeProvider>(),
@@ -180,8 +180,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_FromEmpty()
         {
-            ITargetFramework tfm1 = new TargetFramework("tfm1");
-            ITargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var snapshot = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -195,8 +195,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_SameMembers_DifferentActive()
         {
-            ITargetFramework tfm1 = new TargetFramework("tfm1");
-            ITargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -210,8 +210,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_SameMembers_SameActive()
         {
-            ITargetFramework tfm1 = new TargetFramework("tfm1");
-            ITargetFramework tfm2 = new TargetFramework("tfm2");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -224,9 +224,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         [Fact]
         public void SetTargets_DifferentMembers_DifferentActive()
         {
-            ITargetFramework tfm1 = new TargetFramework("tfm1");
-            ITargetFramework tfm2 = new TargetFramework("tfm2");
-            ITargetFramework tfm3 = new TargetFramework("tfm3");
+            var tfm1 = new TargetFramework("tfm1");
+            var tfm2 = new TargetFramework("tfm2");
+            var tfm3 = new TargetFramework("tfm3");
 
             var before = DependenciesSnapshot.Empty
                 .SetTargets(ImmutableArray.Create(tfm1, tfm2), tfm1);
@@ -240,11 +240,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             Assert.Same(before.DependenciesByTargetFramework[tfm2], after.DependenciesByTargetFramework[tfm2]);
         }
 
-        private static ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot> CreateDependenciesByTargetFramework(
+        private static ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot> CreateDependenciesByTargetFramework(
             IProjectCatalogSnapshot catalogs,
-            params ITargetFramework[] targetFrameworks)
+            params TargetFramework[] targetFrameworks)
         {
-            var dic = ImmutableDictionary<ITargetFramework, TargetedDependenciesSnapshot>.Empty;
+            var dic = ImmutableDictionary<TargetFramework, TargetedDependenciesSnapshot>.Empty;
 
             foreach (var targetFramework in targetFrameworks)
             {

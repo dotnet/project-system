@@ -12,13 +12,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     internal partial class DebugPageControl : PropertyPageControl
     {
-        private bool _customControlLayoutUpdateRequired = false;
+        private bool _customControlLayoutUpdateRequired;
 
         public DebugPageControl()
         {
             InitializeComponent();
             DataContextChanged += DebugPageControlControl_DataContextChanged;
             LayoutUpdated += DebugPageControl_LayoutUpdated;
+            // This isn't a themed UI, but we want to enable high contrast mode.
+            SetResourceReference(BackgroundProperty, SystemColors.ControlBrushKey);
         }
 
         private void DebugPageControlControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

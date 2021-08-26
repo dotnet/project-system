@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Composition;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     A configured-project service which will be activated when its configured project becomes implicitly active, or deactivated when it not.
+    ///     A configured-project service which will be activated when its configured project becomes implicitly active, or deactivated when it is not.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.ConfiguredProject, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ZeroOrMore)]
     internal interface IImplicitlyActiveService

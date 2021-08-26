@@ -37,7 +37,6 @@ namespace Microsoft.VisualStudio
                 string devenv = Environment.GetEnvironmentVariable("VSAPPIDNAME");
                 if (!string.IsNullOrEmpty(vsDirectory) && !string.IsNullOrEmpty(devenv))
                 {   // Use the same version we're running inside (Test Explorer)
-
                     Environment.SetEnvironmentVariable(installationUnderTest, Path.Combine(vsDirectory, devenv));
                 }
             }

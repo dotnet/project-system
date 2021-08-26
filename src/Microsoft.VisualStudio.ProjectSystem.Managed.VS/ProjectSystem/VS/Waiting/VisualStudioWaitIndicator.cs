@@ -25,88 +25,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Waiting
             _waitDialogFactoryService = waitDialogFactoryService;
         }
 
-        public void Wait(string title, string message, bool allowCancel, Action<CancellationToken> action)
+        public WaitIndicatorResult<T> Run<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncMethod) where T : class?
         {
-            _ = WaitWithResult(title, message, allowCancel, action);
-        }
-
-        public T Wait<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> action)
-        {
-            if (typeof(T) == typeof(Task))
-                throw new ArgumentException("Type argument must not be Task", nameof(T));
-
-            (_, T result) = WaitWithResult(title, message, allowCancel, action);
-            return result;
-        }
-
-        public void WaitForAsyncFunction(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
-        {
-            _ = WaitForAsyncFunctionWithResult(title, message, allowCancel, asyncFunction);
-        }
-
-        public T WaitForAsyncFunction<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
-        {
-            (_, T result) = WaitForAsyncFunctionWithResult(title, message, allowCancel, asyncFunction);
-            return result;
-        }
-
-        public WaitIndicatorResult WaitForAsyncFunctionWithResult(string title, string message, bool allowCancel, Func<CancellationToken, Task> asyncFunction)
-        {
-            (WaitIndicatorResult waitResult, _) = WaitForOperationImpl(title, message, allowCancel, token =>
-            {
-                _joinableTaskContext.Factory.Run(() => asyncFunction(token));
-                return true;
-            });
-
-            return waitResult;
-        }
-
-        public WaitIndicatorResult WaitWithResult(string title, string message, bool allowCancel, Action<CancellationToken> action)
-        {
-            (WaitIndicatorResult waitResult, _) = WaitForOperationImpl(title, message, allowCancel, token =>
-            {
-                action(token);
-                return true;
-            });
-
-            return waitResult;
-        }
-
-        public (WaitIndicatorResult, T) WaitForAsyncFunctionWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, Task<T>> asyncFunction)
-        {
-            return WaitForOperationImpl(title, message, allowCancel, token => _joinableTaskContext.Factory.Run(() => asyncFunction(token)));
-        }
-
-        public (WaitIndicatorResult, T) WaitWithResult<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
-        {
-            return WaitForOperationImpl(title, message, allowCancel, function);
-        }
-
-        private (WaitIndicatorResult, T) WaitForOperationImpl<T>(string title, string message, bool allowCancel, Func<CancellationToken, T> function)
-        {
-            Assumes.True(_joinableTaskContext.IsOnMainThread);
+            _joinableTaskContext.VerifyIsOnMainThread();
 
             using IWaitContext waitContext = StartWait(title, message, allowCancel);
 
             try
             {
-                T result = function(waitContext.CancellationToken);
+#pragma warning disable VSTHRD102 // Deliberate usage  
+                T result = _joinableTaskContext.Factory.Run(() => asyncMethod(waitContext.CancellationToken));
+#pragma warning restore VSTHRD102
 
-                return (WaitIndicatorResult.Completed, result);
+                return WaitIndicatorResult<T>.FromResult(result);
             }
             catch (OperationCanceledException)
             {
-                // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
-#pragma warning disable CS8653
-                return (WaitIndicatorResult.Canceled, default);
-#pragma warning restore CS8653
+                return WaitIndicatorResult<T>.Cancelled;
             }
             catch (AggregateException aggregate) when (aggregate.InnerExceptions.All(e => e is OperationCanceledException))
             {
-                // TODO track https://github.com/dotnet/roslyn/issues/37069 regarding these suppressions
-#pragma warning disable CS8653
-                return (WaitIndicatorResult.Canceled, default);
-#pragma warning restore CS8653
+                return WaitIndicatorResult<T>.Cancelled;
             }
         }
 

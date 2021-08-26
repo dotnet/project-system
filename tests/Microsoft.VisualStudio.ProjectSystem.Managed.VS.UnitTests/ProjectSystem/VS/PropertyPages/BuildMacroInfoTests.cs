@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
             var threadingService = IProjectThreadingServiceFactory.Create();
 
-            return new BuildMacroInfo(ActiveConfiguredProjectFactory.ImplementValue(() => configuredProject), threadingService);
+            return new BuildMacroInfo(IActiveConfiguredValueFactory.ImplementValue(() => configuredProject), threadingService);
         }
     }
 }

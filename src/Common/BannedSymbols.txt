@@ -89,3 +89,5 @@ M:Microsoft.VisualStudio.ProjectSystem.OnceInitializedOnceDisposedAsync.Initiali
 
 M:System.Diagnostics.Debugger.Break(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
 M:System.Diagnostics.Debugger.Launch(); This should not be used in production code as the resulting dialog is not meant to be shown to users.
+
+T:Microsoft.VisualStudio.ProjectSystem.ActiveConfiguredProject`1; Use IActiveConfiguredValue<T>, and handle when Value returns null.

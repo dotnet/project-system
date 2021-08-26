@@ -110,64 +110,49 @@
                   Visible="False" />
 
   <StringProperty Name="TargetFramework"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFramework"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
+
 
   <StringProperty Name="TargetFrameworkIdentifier"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFrameworkIdentifier"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
+
 
   <StringProperty Name="TargetFrameworkMoniker"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFrameworkMoniker"
-                  Persistence="ProjectFileWithInterceptionViaSnapshot"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
+
 
   <StringProperty Name="TargetFrameworkProfile"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFrameworkProfile"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
 
   <StringProperty Name="TargetFrameworks"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFrameworks"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
+
 
   <StringProperty Name="TargetFrameworkVersion"
-                  Visible="False">
-    <StringProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="TargetFrameworkVersion"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </StringProperty.DataSource>
-  </StringProperty>
+                  ReadOnly="True"
+                  Visible="False" />
+
+
+  <StringProperty Name="TargetPlatformMoniker"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetPlatformMinVersion"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetPlatformIdentifier"
+                  ReadOnly="True"
+                  Visible="False" />
+
+  <StringProperty Name="TargetPlatformVersion"
+                  ReadOnly="True"
+                  Visible="False" />                  
 
   <StringProperty Name="TreatWarningsAsErrors"
                   ReadOnly="True"

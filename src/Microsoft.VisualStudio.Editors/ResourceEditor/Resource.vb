@@ -18,7 +18,6 @@ Imports Microsoft.VisualStudio.Shell
 
 Imports VB = Microsoft.VisualBasic
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
@@ -38,9 +37,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Implements FileWatcher.IFileWatcherListener
         Implements ResourceTypeEditor.IResource
 
-
 #Region "Interface ITypeResolutionContextProvider"
-
 
         ''' <summary>
         ''' This is a very simple interface used to communicate a TypeResolutionService
@@ -59,7 +56,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Interface
 
 #End Region
-
 
 #Region "Private enum - ResourcePersistenceMode"
 
@@ -162,7 +158,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         End Class
 
-
         ''' <summary>
         ''' Indicates the possible types for a file-based resource in the resource editor.
         ''' </summary>
@@ -172,7 +167,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Enum
 
 #End Region
-
 
 #Region "Private class - ImagePropertiesCache"
 
@@ -190,7 +184,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Class
 
 #End Region
-
 
 #Region "Non-shared fields"
 
@@ -223,7 +216,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private _cachedImageProperties As ImagePropertiesCache
 
         'ISite reference (needed for IComponent implementation, see Site property)
-        Private _site As ISite = Nothing
+        Private _site As ISite
 
         'This is either an ITypeResolutionService instance (if the .resx file was opened inside the context
         '  of a project), or an array of AssemblyName's (if the .resx file was opened outside of 
@@ -368,7 +361,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Constructors/Destructors"
 
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -399,7 +391,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  it's Nothing, so that we don't alter the .resx file.
         End Sub
 
-
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -420,7 +411,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Init(NewResXDataNode(Name, Comment, Value), Integer.MaxValue, TypeResolutionContextProvider)
             TryGuessFileEncoding()
         End Sub
-
 
         ''' <summary>
         ''' Constructor.
@@ -472,7 +462,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddFileWatcherEntry()
         End Sub
 
-
         ''' <summary>
         ''' IDisposable.Dispose()
         ''' </summary>
@@ -483,7 +472,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
-
 
         ''' <summary>
         ''' Dispose.
@@ -519,7 +507,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Properties"
 
@@ -557,7 +544,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Retrieves the ResXDataNode associated with this resource
         ''' </summary>
@@ -566,7 +552,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _resXDataNode
             End Get
         End Property
-
 
 #End Region
 
@@ -602,7 +587,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Sets/Gets the Name property of the Resource component, without undo support, and without causing the 
         '''  designer to be dirtied (because ComponentChangeService notifications won't get sent)
@@ -634,7 +618,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Sets the Name of this resource *without* changing the name of the resource
         '''   in its parent ResourceFile hash, and without enabling Undo, and without
@@ -659,7 +642,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Sets/Gets the Comment property of the Resource component.  This is the member which should be
         '''   used normally (including changing the property in response to user manipulation), since it
@@ -675,7 +657,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Sets/Gets the Comment property of the Resource component, without undo support, and without causing the 
         '''  designer to be dirtied (because ComponentChangeService notifications won't get sent)
@@ -687,7 +668,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 InvalidateUI()
             End Set
         End Property
-
 
         ''' <summary>
         '''  Returns the ResourcePersistenceMode property.  (This property is shown in the properties window.)
@@ -704,7 +684,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 s_propertyDescriptor_Persistence.SetValue(Me, Value)
             End Set
         End Property
-
 
         ''' <summary>
         ''' Sets/Gets the persistence mode for this resource, without undo support, and without causing the 
@@ -822,7 +801,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets or retrieves the FileName that the link is pointing to.  This property is not (at least
         '''   not currently) publicly exposed.  However, it has a custom property descriptor so that
@@ -842,7 +820,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 s_propertyDescriptor_Filename_ReadWrite.SetValue(Me, Value)
             End Set
         End Property
-
 
         ''' <summary>
         ''' Gets or retrieves the FileName that the link is pointing to.  This property is not (at least
@@ -892,7 +869,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets or retrieves the Encoding used for text file resources.
         ''' </summary>
@@ -914,7 +890,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Sets/Gets the Encoding used for text file resources, without undo support, and without causing the 
         '''  designer to be dirtied (because ComponentChangeService notifications won't get sent)
@@ -928,7 +903,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Does a reset on the "Encoding" property (when the user chooses it with a right-click on the
         '''   property browser).  In this case, that means re-automatically 
@@ -938,7 +912,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Encoding = Nothing 'Note that we will get Undo/redo on this operation, which is what we want.
             TryGuessFileEncoding()
         End Sub
-
 
         ''' <summary>
         ''' Gets/sets the file type of a binary or text file resource.
@@ -965,14 +938,13 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Set
         End Property
 
-
         ''' <summary>
         ''' Gets/sets the file type of a binary or text file resource, without undo support, and without causing the 
         '''  designer to be dirtied (because ComponentChangeService notifications won't get sent)
         ''' </summary>
         Private WriteOnly Property FileTypeWithoutUndo As FileTypes
             Set
-                If Not IsLink OrElse Not TypeOf ResourceTypeEditor Is ResourceTypeEditorFileBase OrElse _resXDataNode.FileRef Is Nothing Then
+                If Not IsLink OrElse TypeOf ResourceTypeEditor IsNot ResourceTypeEditorFileBase OrElse _resXDataNode.FileRef Is Nothing Then
                     Debug.Fail("")
                     Return
                 End If
@@ -1047,7 +1019,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Retrieves the path to the linked file (if any), relative to the resx file's path
         ''' </summary>
@@ -1074,7 +1045,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ""
             End Get
         End Property
-
 
         ''' <summary>
         ''' Retrieves the absolute path to the linked file (if any)
@@ -1123,7 +1093,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Returns the *currently* cached value of the resource, if any.
         '''  If the cached value is Nothing, it will *not* attempt to load 
@@ -1152,7 +1121,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Returns True iff this resource is a ResXNullRef (a Nothing value encoded into the resx).
         ''' </summary>
@@ -1161,7 +1129,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return IsResXNullRef(ValueTypeName)
             End Get
         End Property
-
 
         ''' <summary>
         ''' Returns True iff the type name given is the one used to mark a ResXDataNode as a ResXNullRef (a Nothing value encoded into the resx).
@@ -1174,7 +1141,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Match
             End Get
         End Property
-
 
         ''' <summary>
         ''' Gets the resource type editor associated with this resource.  This value is calculated
@@ -1265,7 +1231,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Retrieves a friendly description of the type of resource for the user (e.g., "Icon", "Windows Metafile").
         ''' Used in the type column of the resource listview.
@@ -1280,7 +1245,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ""
             End Get
         End Property
-
 
         ''' <summary>
         ''' Retrieves a string representing the "size" of the resource, e.g. "240 x 128"
@@ -1299,7 +1263,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 #End Region
 
 #End Region
-
 
 #Region "Getting/setting the Value of the Resource"
 
@@ -1321,7 +1284,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Function
 
-
         ''' <summary>
         ''' Attempts to retrieve or calculate the actual value of the resource.  
         ''' If it's a linked resource and has not yet been cached, it will attempt
@@ -1331,7 +1293,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function GetValue() As Object Implements ResourceTypeEditor.IResource.GetValue
             Debug.Assert(ValueTypeName <> "")
 
-            Debug.Assert(_resourceTypeEditor Is Nothing OrElse Not TypeOf _resourceTypeEditor Is ResourceTypeEditorFileBase, "Perf warning: calling GetValue() on a text/binary file resource - that shouldn't happen")
+            Debug.Assert(_resourceTypeEditor Is Nothing OrElse TypeOf _resourceTypeEditor IsNot ResourceTypeEditorFileBase, "Perf warning: calling GetValue() on a text/binary file resource - that shouldn't happen")
 
             'Is this value supposed to be Nothing?
             If IsResXNullRef Then
@@ -1386,7 +1348,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Value
         End Function
 
-
         ''' <summary>
         ''' Given an exception that was thrown during GetValue or CheckValueForErrors, create a task list
         '''   entry from that exception (if one doesn't already exist).  Handles some special cases.
@@ -1424,9 +1385,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SetTask(ResourceFile.ResourceTaskType.CantInstantiateResource, ErrorMessage, TaskPriority.Normal, HelpLink)
         End Sub
 
-
-
-
         ''' <summary>
         ''' Sets the Value property of the Resource component.  This is the member which should be
         '''   used normally (including changing the property in response to user manipulation), since it
@@ -1450,7 +1408,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 s_propertyDescriptor_ValueAsObject.SetValue(Me, NewResourceValue)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Sets the Value property of the Resource component, without undo support, and without causing the 
@@ -1588,7 +1545,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End With
         End Sub
 
-
         ''' <summary>
         ''' Invalidates any currently stored cached thumbnail and image properties, as well as any
         '''   UI view, so that the resource may be fully updated, including thumbnail.
@@ -1600,7 +1556,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _parentResourceFile.InvalidateResourceInView(Me, InvalidateThumbnail:=True)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Invalidates any current UI view of this resource, so that it may be updated.  If this resource
@@ -1743,7 +1698,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddFileWatcherEntry()
         End Sub
 
-
         ''' <summary>
         ''' Sets up a FileWatcher entry for this resource if it is a linked resource.
         '''   times.
@@ -1757,7 +1711,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Sets up a FileWatcher entry for this resource if it is a linked resource, and if the resource is contained
         '''   in a resource file.
@@ -1769,7 +1722,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 AddFileWatcherEntry(_parentResourceFile.RootComponent.RootDesigner.GetView().FileWatcher)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Removes the file watcher entry for the linked filename, if this resource is a link, and if the resource
@@ -1785,7 +1737,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Removes the file watcher entry for the linked filename, if this resource is a link.
         ''' </summary>
@@ -1796,7 +1747,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called when the file watcher notices a change, deletion, creation, rename, etc. of the file
@@ -1846,7 +1796,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Adds a task list entry of a particular type for this Resource.  If there is already an old
         '''   one of this same type for this resource, it is removed (if it's different).
@@ -1861,7 +1810,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _parentResourceFile.SetResourceTask(Me, TaskType, Text, Priority, HelpLink, ErrorCategory)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Lazy-initializes and gets a list of names which are not recommended for use by 
@@ -1886,7 +1834,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Checks this resource for any errors.  If any are found (and we're currently
         '''   part of a ResourceFile), then they are automatically added to the task list.
@@ -1901,7 +1848,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             CheckValueForErrors(FastChecksOnly)
             CheckCommentForErrors()
         End Sub
-
 
         ''' <summary>
         ''' Checks this resource's Name property for any errors.  If any are found (and we're currently
@@ -1934,7 +1880,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'No problems found.
             ClearTask(ResourceFile.ResourceTaskType.BadName)
         End Sub
-
 
         ''' <summary>
         ''' Checks this resource's Value property for any errors.  If any are found (and we're currently
@@ -1983,7 +1928,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Checks this resource's Comment property for any errors.  If any are found (and we're currently
         '''   part of a ResourceFile), then they are automatically added to the task list.
@@ -2026,7 +1970,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Gets a type converter that handles the type of values stored in a resource with the specified properties.
         ''' </summary>
@@ -2042,14 +1985,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Gets a type converter that handles the type of values stored in this resource.
         ''' </summary>
         Public Function GetTypeConverter() As TypeConverter
             Return GetTypeConverter(CachedValue, ValueTypeName, IsResXNullRef)
         End Function
-
 
         ''' <summary>
         ''' Determines if a resource with the given properties is convertible both to and from string values.
@@ -2060,7 +2001,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function IsConvertibleFromToString(ValueTypeName As String, IsResXNullRef As Boolean) As Boolean
             Return IsConvertibleFromToString(Nothing, ValueTypeName, IsResXNullRef)
         End Function
-
 
         ''' <summary>
         ''' Determines if a resource with the given properties is convertible both to and from string values.
@@ -2084,7 +2024,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return False
             End If
         End Function
-
 
         ''' <summary>
         ''' Determines if this resource is convertible both to and from string values.
@@ -2160,7 +2099,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Properties
         End Function
 
-
         ''' <summary>
         '''  Returns the value of the specified property for the property grid.
         ''' </summary>
@@ -2198,7 +2136,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Return Nothing
             End Select
         End Function
-
 
         ''' <summary>
         '''  Sets the specified property's value to the specified value (after validating that it's valid)
@@ -2271,7 +2208,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Select
         End Sub
 
-
         ''' <summary>
         ''' Called by the custom property descriptors when a value should be reset.
         ''' </summary>
@@ -2296,7 +2232,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Const SERIALIZATIONKEY_RESXDATANODE As String = "ResXDataNode"
         Private Const SERIALIZATIONKEY_SAVEDFILENAME As String = "SavedFileName"
         Private Const SERIALIZATIONKEY_ORIGINALFILETIMESTAMP As String = "OriginalFileTimeStamp"
-
 
         ''' <summary>
         ''' Deserialization constructor.
@@ -2339,7 +2274,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Validation"
 
-
         ''' <summary>
         ''' Validates a resource's Name
         ''' </summary>
@@ -2351,7 +2285,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Function ValidateName(NewName As String, OldName As String, Optional ByRef NewFormattedName As String = Nothing, Optional ByRef Exception As Exception = Nothing) As Boolean
             Return ValidateName(ParentResourceFile, NewName, OldName, NewFormattedName, Exception)
         End Function
-
 
         ''' <summary>
         ''' Validates a resource's Name
@@ -2372,7 +2305,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             NewFormattedName = NewFormattedNames(0)
             Return Result
         End Function
-
 
         ''' <summary>
         ''' Validates a resource's Name
@@ -2429,7 +2361,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return True
         End Function
 
-
         ''' <summary>
         ''' Checks the given list of resource names for validation, and fixes them up the way the strongly-typed 
         '''   resource generator would.  If any can't be fixed (e.g. "123"), throws an exception.
@@ -2461,7 +2392,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Next
             End If
         End Sub
-
 
         ''' <summary>
         ''' Validates a resource's Name
@@ -2674,7 +2604,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Node
         End Function
 
-
         ''' <summary>
         ''' Creates a new ResXDataNode.
         ''' </summary>
@@ -2717,7 +2646,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _typeResolutionContext = TypeResolutionContext
             End If
         End Sub
-
 
         ''' <summary>
         ''' Returns the type resolution context for this resource.  This is either an ITypeResolutionService instance 
@@ -2766,7 +2694,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _categoryCache
         End Function
 
-
         ''' <summary>
         ''' Debug override for ToString
         ''' </summary>
@@ -2789,7 +2716,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Comment
             Message.Append(", Comment=""")
             Message.Append(Comment)
-            Message.Append("""")
+            Message.Append(""""c)
 
             'Value
             Dim resourceTypeEditorStringBase = TryCast(ResourceTypeEditor, ResourceTypeEditorStringBase)
@@ -2813,13 +2740,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Message.Append(Value)
             End If
 
-            Message.Append("]")
+            Message.Append("]"c)
             Return Message.ToString()
 #Else
             Return MyBase.ToString()
 #End If
         End Function
-
 
         ''' <summary>
         ''' If this is a text file, and the user hasn't already specified an encoding, then guess it by analyzing the file
@@ -2834,7 +2760,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             End If
         End Sub
-
 
 #End Region
 

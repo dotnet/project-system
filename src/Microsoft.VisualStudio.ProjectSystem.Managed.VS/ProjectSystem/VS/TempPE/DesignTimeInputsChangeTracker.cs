@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 {
     [Export(typeof(IDesignTimeInputsChangeTracker))]
     [AppliesTo(ProjectCapability.CSharpOrVisualBasicLanguageService)]
-    internal class DesignTimeInputsChangeTracker : ProjectValueDataSourceBase<DesignTimeInputsDelta>, IDesignTimeInputsChangeTracker
+    internal class DesignTimeInputsChangeTracker : ProjectValueDataSourceBase<DesignTimeInputSnapshot>, IDesignTimeInputsChangeTracker
     {
         private readonly UnconfiguredProject _project;
         private readonly IActiveConfiguredProjectSubscriptionService _projectSubscriptionService;
@@ -22,15 +22,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         private readonly DisposableBag _disposables = new DisposableBag();
 
-        private DesignTimeInputsDelta? _currentState;
+        private DesignTimeInputSnapshot? _currentState;
         private int _version;
 
-        private IBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _broadcastBlock;
+        private IBroadcastBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>? _broadcastBlock;
 
         /// <summary>
         /// The public facade for the broadcast block. We don't expose the broadcast block directly because we don't want to allow consumers to complete or fault us
         /// </summary>
-        private IReceivableSourceBlock<IProjectVersionedValue<DesignTimeInputsDelta>>? _publicBlock;
+        private IReceivableSourceBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>? _publicBlock;
 
         [ImportingConstructor]
         public DesignTimeInputsChangeTracker(UnconfiguredProject project,
@@ -56,7 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public override IComparable DataSourceVersion => _version;
 
-        public override IReceivableSourceBlock<IProjectVersionedValue<DesignTimeInputsDelta>> SourceBlock
+        public override IReceivableSourceBlock<IProjectVersionedValue<DesignTimeInputSnapshot>> SourceBlock
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             // Create an action block to process the design time inputs and configuration general changes
             ITargetBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>> inputsAction = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>>>(ProcessDataflowChanges, _project);
 
-            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
+            _broadcastBlock = DataflowBlockSlim.CreateBroadcastBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(nameFormat: nameof(DesignTimeInputsChangeTracker) + "Broadcast {1}");
             _publicBlock = AllowSourceBlockCompletion ? _broadcastBlock : _broadcastBlock.SafePublicize();
 
             Assumes.Present(_project.Services.ProjectAsynchronousTasks);
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         internal void ProcessFileChangeNotification(IProjectVersionedValue<string[]> arg)
         {
             // File changes don't change state, but it makes sense to run with the state at the time the update came in
-            DesignTimeInputsDelta? state = _currentState;
+            DesignTimeInputSnapshot? state = _currentState;
 
             // Ignore any file changes until we've received the first set of design time inputs (which shouldn't happen anyway)
             // That first update will send out all of the files so we're not losing anything
@@ -141,23 +141,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
 
             // File changes don't get project state, so they don't update it.
-            var delta = new DesignTimeInputsDelta(state.Inputs, state.SharedInputs, changedInputs, state.TempPEOutputPath);
-            PostToOutput(delta);
+            var snapshot = new DesignTimeInputSnapshot(state.Inputs, state.SharedInputs, changedInputs, state.TempPEOutputPath);
+            PublishSnapshot(snapshot);
         }
 
+        // Should always produce output data to avoid hangs.
         internal void ProcessDataflowChanges(IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
+        {
+            _currentState = GenerateOutputData(_currentState, input) ?? DesignTimeInputSnapshot.Empty;
+
+            PublishSnapshot(_currentState);
+        }
+
+        private static DesignTimeInputSnapshot? GenerateOutputData(
+            DesignTimeInputSnapshot? previousState,
+            IProjectVersionedValue<ValueTuple<DesignTimeInputs, IProjectSubscriptionUpdate>> input)
         {
             DesignTimeInputs inputs = input.Value.Item1;
 
             if (!input.Value.Item2.ProjectChanges.TryGetValue(ConfigurationGeneral.SchemaName, out IProjectChangeDescription configChanges))
             {
                 // If this isn't an update we can deal with, just ignore it
-                _currentState = null;
-                return;
+                return null;
             }
-
-            // This can't change while we're running, but let's use a local so you don't have to take my word for it
-            DesignTimeInputsDelta? previousState = _currentState;
 
             var changedInputs = new List<DesignTimeInputFileChange>();
             // On the first call where we receive design time inputs we queue compilation of all of them, knowing that we'll only compile if the file write date requires it
@@ -194,8 +200,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
             string tempPEOutputPath;
             // Make sure we have the up to date output path. If either of these don't exist, they will be null and we'll handle the ArgumentException below
-            string basePath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.ProjectDirProperty);
-            string objPath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.IntermediateOutputPathProperty);
+            string? basePath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.ProjectDirProperty);
+            string? objPath = configChanges.After.Properties.GetValueOrDefault(ConfigurationGeneral.IntermediateOutputPathProperty);
             try
             {
                 tempPEOutputPath = Path.Combine(basePath, objPath, "TempPE");
@@ -205,13 +211,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 // if the path is bad, or we couldn't get part of it, then we presume we wouldn't be able to act on any files
                 // so we can just clear _currentState to ensure file changes aren't processed, and return.
                 // If the path is ever fixed this block will trigger again and all will be right with the world.
-                _currentState = null;
-                return;
+                return null;
             }
 
             // This is our only update to current state, and data flow protects us from overlaps. File changes don't update state
-            _currentState = new DesignTimeInputsDelta(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
-            PostToOutput(_currentState);
+            return new DesignTimeInputSnapshot(inputs.Inputs, inputs.SharedInputs, changedInputs, tempPEOutputPath);
 
             void AddAllInputsToQueue(bool ignoreFileWriteTime)
             {
@@ -222,12 +226,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
-        private void PostToOutput(DesignTimeInputsDelta delta)
+        private void PublishSnapshot(DesignTimeInputSnapshot snapshot)
         {
             _version++;
-            ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
-
-            _broadcastBlock.Post(new ProjectVersionedValue<DesignTimeInputsDelta>(delta, dataSources));
+            _broadcastBlock.Post(new ProjectVersionedValue<DesignTimeInputSnapshot>(
+                snapshot,
+                Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
         }
     }
 }

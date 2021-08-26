@@ -179,7 +179,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
                     TargetFrameworkPropertyControlData = New TargetFrameworkPropertyControlData(
                             VsProjPropId100.VBPROJPROPID_TargetFrameworkMoniker,
-                            ApplicationPropPage.Const_TargetFrameworkMoniker,
                             TargetFrameworkComboBox,
                             AddressOf SetTargetFrameworkMoniker,
                             AddressOf GetTargetFrameworkMoniker,
@@ -194,7 +193,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Get
         End Property
 
-
         ''' <summary>
         ''' Removes references to anything that was passed in to SetObjects
         ''' </summary>
@@ -206,13 +204,11 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             _isMyApplicationPropertiesCached = False
         End Sub
 
-
         Private ReadOnly Property MyApplicationPropertiesSupported As Boolean
             Get
                 Return MyApplicationProperties IsNot Nothing
             End Get
         End Property
-
 
         ''' <summary>
         ''' Gets the MyApplication.MyApplicationProperties object returned by the project system (which the project system creates by calling into us)
@@ -226,8 +222,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                     'Set a flag so we don't keep trying to query for this property
                     _isMyApplicationPropertiesCached = True
 
-                    ' TODO: Remove this condition once VB property pages are fully supported on CPS
-                    If Not ProjectHierarchy.IsCapabilityMatch("PreventAutomaticMyApplication") Then
+                    'Only enable MyApplication when capability is present.
+                    If ProjectHierarchy.IsCapabilityMatch("EnableMyApplication") Then
                         _myApplicationPropertiesCache = MyApplicationProjectLifetimeTracker.Track(ProjectHierarchy)
                         _myApplicationPropertiesNotifyPropertyChanged = TryCast(_myApplicationPropertiesCache, INotifyPropertyChanged)
                     Else
@@ -240,7 +236,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _myApplicationPropertiesCache
             End Get
         End Property
-
 
         ''' <summary>
         ''' Attempts to run the custom tool for the .myapp file.  If an exception
@@ -259,7 +254,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-
         ''' <summary>
         ''' This is a readonly property, so don't return anything
         ''' </summary>
@@ -272,7 +266,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Value given us for "MyApplication" property 
+        ''' Value given us for "MyApplication" property
         ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
@@ -294,7 +288,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Value given us for "MyType" property 
+        ''' Value given us for "MyType" property
         ''' </summary>
         ''' <param name="control"></param>
         ''' <param name="prop"></param>
@@ -318,7 +312,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Gets the output type from the UI fields
@@ -372,7 +365,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
         ''' <summary>
-        ''' Make sure the application type combobox is showing the appropriate 
+        ''' Make sure the application type combobox is showing the appropriate
         ''' value
         ''' </summary>
         Private Sub UpdateApplicationTypeUI()
@@ -395,7 +388,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 EnableUseApplicationFrameworkCheckBox(False)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Getter for the "CustSubMain" property.
@@ -562,7 +554,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' <param name="value"></param>
         Protected Function StartupObjectSet(control As Control, prop As PropertyDescriptor, value As Object) As Boolean
             'This is handled by the ApplicationType set, so do nothing here
-            'CONSIDER: The start-up object/MainForm-handling code needs to be reworked - it makes undo/redo/external property changes 
+            'CONSIDER: The start-up object/MainForm-handling code needs to be reworked - it makes undo/redo/external property changes
             '  more difficult than they should be.  Get code should not be changing the value of other properties.
 
             If Not m_fInsideInit Then
@@ -659,7 +651,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns True iff the My Application framework should be supportable
         '''   in this project.  It does not necessarily mean that it's turned on,
@@ -683,7 +674,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Returns True iff the My Application framework stuff is supported
@@ -711,7 +701,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return False
             End If
         End Function
-
 
         ''' <summary>
         ''' Retrieve the list of start-up forms (not start-up objects) from the VB compiler
@@ -925,7 +914,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override this to implement custom processing.
         ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
         '''   it is called on every SetObjects call, which means that when the user changes the
-        '''   selected configuration, it is called again. 
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PreInitPage()
             MyBase.PreInitPage()
@@ -964,7 +953,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' Override this to implement custom processing.
         ''' IMPORTANT NOTE: this method can be called multiple times on the same page.  In particular,
         '''   it is called on every SetObjects call, which means that when the user changes the
-        '''   selected configuration, it is called again. 
+        '''   selected configuration, it is called again.
         ''' </remarks>
         Protected Overrides Sub PostInitPage()
             MyBase.PostInitPage()
@@ -998,7 +987,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         ''' framework.
         ''' </summary>
         Protected Overrides Sub TargetFrameworkMonikerChanged()
-            ShowAutoGeneratedBindingRedirectsCheckBox(TargetFrameworkComboBox, AutoGenerateBindingRedirectsCheckBox)
+            ShowAutoGeneratedBindingRedirectsCheckBox(AutoGenerateBindingRedirectsCheckBox)
         End Sub
 
         Public Overrides Function GetUserDefinedPropertyDescriptor(PropertyName As String) As PropertyDescriptor
@@ -1236,7 +1225,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return True
         End Function
 
-
         ''' <summary>
         ''' Get the current value of MyType from the project properties
         ''' </summary>
@@ -1248,7 +1236,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return Nothing
         End Function
-
 
         ''' <summary>
         ''' If MyType is set to "Empty" or "Custom", then the property page should consider
@@ -1269,7 +1256,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Return _isMyTypeDisabled
         End Function
 
-
         ''' <summary>
         ''' Sets the current value of MyType based on the application type
         ''' </summary>
@@ -1282,7 +1268,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             NewMyType = NothingToEmptyString(NewMyType)
             Dim CurrentMyType As Object = Nothing
             If MyTypeGet(Nothing, Nothing, CurrentMyType) Then
-                If CurrentMyType Is Nothing OrElse Not TypeOf CurrentMyType Is String OrElse Not String.Equals(NewMyType, CStr(CurrentMyType), StringComparison.Ordinal) Then
+                If CurrentMyType Is Nothing OrElse TypeOf CurrentMyType IsNot String OrElse Not String.Equals(NewMyType, CStr(CurrentMyType), StringComparison.Ordinal) Then
                     'The value has changed - 
                     ' now poke it into our storage thru the same mechanism that the page-hosting
                     '   infrastructure does.
@@ -1345,7 +1331,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             Return MyType
         End Function
-
 
         ''' <summary>
         ''' Sets the text on the start-up object label to be either "Startup object" or "Startup form" depending
@@ -1478,7 +1463,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetDirty(sender, True)
         End Sub
 
-
         ''' <summary>
         ''' Handle the "View Code" button's click event.  On this, we navigate to the MyEvents.vb file
         ''' </summary>
@@ -1509,9 +1493,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-
         ''' <summary>
-        ''' Happens when the splash screen combobox box is opened.  Use this to populate it with the 
+        ''' Happens when the splash screen combobox box is opened.  Use this to populate it with the
         '''   correct current choices.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -1521,9 +1504,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             SetComboBoxDropdownWidth(DirectCast(sender, ComboBox))
         End Sub
 
-
         ''' <summary>
-        ''' Happens when the start-up object combobox box is opened.  Use this to populate it with the 
+        ''' Happens when the start-up object combobox box is opened.  Use this to populate it with the
         '''   correct current choices.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -1579,7 +1561,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
             If UseApplicationFrameworkCheckBox.CheckState = CheckState.Checked Then
                 'Having the application framework enabled requires that the start-up object be a form.  If there
-                '  is no such form available, the code in StartupObjectGet will not be able to correct the Start-up 
+                '  is no such form available, the code in StartupObjectGet will not be able to correct the Start-up
                 '  object to be a form, and we'll end up possibly with compiler errors in the generated code which will
                 '  be confusing to the user.  So if there is no start-up form available in the project, then disable
                 '  the application framework again and tell the user why.
@@ -1632,7 +1614,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  while our page is up, our functionality might be affected
             Return Value IsNot Nothing AndAlso Value.Equals(_noneText, StringComparison.Ordinal)
         End Function
-
 
         ''' <summary>
         ''' Fired when any of the MyApplicationProperty values has been changed

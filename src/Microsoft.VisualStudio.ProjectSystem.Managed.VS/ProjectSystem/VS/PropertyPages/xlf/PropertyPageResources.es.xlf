@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationMode">
-        <source>Authentication mode:</source>
-        <target state="translated">Modo de autenticación:</target>
+        <source>Au_thentication mode:</source>
+        <target state="translated">_Modo de autenticación:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FindBtn">
-        <source>Find...</source>
-        <target state="translated">Buscar...</target>
+        <source>_Find...</source>
+        <target state="translated">_Buscar...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
-        <source>Use remote m_achine:</source>
-        <target state="translated">Usar _máquina remota:</target>
+        <source>_Use remote machine:</source>
+        <target state="translated">_Usar máquina remota:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -138,38 +138,38 @@
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
-        <source>Add</source>
-        <target state="translated">Agregar</target>
+        <source>_Add</source>
+        <target state="translated">_Agregar</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
-        <source>Application arguments:</source>
-        <target state="translated">Argumentos de aplicación:</target>
+        <source>Application ar_guments:</source>
+        <target state="translated">Arg_umentos de aplicación:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
-        <source>Browse...</source>
-        <target state="translated">Examinar...</target>
+        <source>_Browse...</source>
+        <target state="translated">_Examinar...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
-        <source>Delete</source>
-        <target state="translated">Eliminar</target>
+        <source>_Delete</source>
+        <target state="translated">_Eliminar</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
-        <source>Environment variables:</source>
-        <target state="translated">Variables de entorno:</target>
+        <source>Environ_ment variables:</source>
+        <target state="translated">Variables de e_ntorno:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable:</source>
-        <target state="translated">Ejecutable:</target>
+        <source>_Executable:</source>
+        <target state="translated">Arc_hivo ejecutable:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
-        <source>Launch:</source>
-        <target state="translated">Iniciar:</target>
+        <source>_Launch:</source>
+        <target state="translated">_Iniciar:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -183,18 +183,18 @@
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">
-        <source>New...</source>
-        <target state="translated">Nuevo...</target>
+        <source>_New...</source>
+        <target state="translated">_Nuevo...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
-        <source>Profile:</source>
-        <target state="translated">Perfil:</target>
+        <source>_Profile:</source>
+        <target state="translated">_Perfil:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
-        <source>Remove</source>
-        <target state="translated">Quitar</target>
+        <source>_Remove</source>
+        <target state="translated">_Quitar</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -203,8 +203,8 @@
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
-        <source>Working directory:</source>
-        <target state="translated">Directorio de trabajo:</target>
+        <source>_Working directory:</source>
+        <target state="translated">Dir_ectorio de trabajo:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -248,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
-        <source>Enable native code debugging</source>
-        <target state="translated">Habilitar depuración de código nativo</target>
+        <source>Enable nati_ve code debugging</source>
+        <target state="translated">Habilitar depuración de código nati_vo</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -258,8 +258,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
-        <source>Enable SQL Server debugging</source>
-        <target state="translated">Habilitar depuración de SQL Server</target>
+        <source>Enable _SQL Server debugging</source>
+        <target state="translated">Habilitar depuración de _SQL Server</target>
         <note />
       </trans-unit>
     </body>

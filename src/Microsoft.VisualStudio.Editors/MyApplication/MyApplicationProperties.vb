@@ -16,7 +16,6 @@ Imports Microsoft.VisualStudio.Shell.Interop
 
 Namespace Microsoft.VisualStudio.Editors.MyApplication
 
-
     Public Enum ApplicationTypes
         'Unknown = -1 'Not shown in UI
         'Custom = -2 'Not shown in UI
@@ -27,11 +26,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         WebControl = 4
     End Enum
 
-
     '****************************************************************************************
     'Interface IVsMyAppManager
     '****************************************************************************************
-
 
     ''' <summary>
     ''' This is a class that the project system uses to get the MyApplicationProperties object that it exposes publicly
@@ -75,12 +72,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Function Close() As Integer 'Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
     End Interface
 
-
-
     '****************************************************************************************
     ' Interface IVsMyApplicationProperties
     '****************************************************************************************
-
 
     Friend Enum MyAppDISPIDs
         CustomSubMain = 1
@@ -113,8 +107,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         <DispId(MyAppDISPIDs.SaveMySettingsOnExit)> Property SaveMySettingsOnExit As Boolean
     End Interface
 
-
-
     Friend Interface IMyApplicationPropertiesInternal 'Not publicly exposed - for internal use only
         Inherits IVsMyApplicationProperties
 
@@ -126,7 +118,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
     End Interface
 
     '****************************************************************************************
-
 
     ''' <summary>
     ''' Our implementation of IVsMyAppManager
@@ -155,14 +146,9 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
     End Class
 
-
-
-
     '****************************************************************************************
     ' Class MyApplicationProperties
     '****************************************************************************************
-
-
 
     ''' <summary>
     ''' This class provides access to the MyApplication properties
@@ -185,7 +171,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         ''' <param name="e"></param>
         Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 #End Region
-
 
         Friend Const Const_MyType_WindowsForms As String = "WindowsForms"
         'WindowsFormsWithCustomSubMain is used for applicationtype="Windows Application" when Custom Sub Main
@@ -300,7 +285,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-
         ''' <summary>
         ''' Flushes all values from m_MyAppData to the doc data.  This should be done after any property change.
         ''' </summary>
@@ -323,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 _myAppData.IsDirty = False
             End If
         End Sub
-
 
         ''' <summary>
         ''' Attempts to check out the doc data, if it is not already checked out.  This should be done prior to any property change.
@@ -352,7 +335,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-        Protected Overloads Function AddFileToProject(ProjectItems As ProjectItems, FileName As String, CopyFile As Boolean) As ProjectItem
+        Private Overloads Function AddFileToProject(ProjectItems As ProjectItems, FileName As String, CopyFile As Boolean) As ProjectItem
             Dim ProjectItem As ProjectItem = MyAppProjectItem
 
             'First see if it is already in the project
@@ -399,7 +382,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 Return Not _myAppData.MySubMain
             End Get
         End Property
-
 
         Public Property CustomSubMain As Boolean Implements IVsMyApplicationProperties.CustomSubMain
             Get
@@ -611,9 +593,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End Set
         End Property
 
-
 #End Region
-
 
         ''' <summary>
         ''' Makes sure the .MyApp file exists, creates a doc data for it, etc.
@@ -675,14 +655,12 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns the full path/filename of the .myapp file
         ''' </summary>
         Private Function MyAppFileNameWithPath() As String
             Return Path.Combine(ProjectDesignerProjectItem.FileNames(1), _myAppFileName)
         End Function
-
 
         ''' <summary>
         ''' Returns the DTE ProjectItem for the .myapp file
@@ -846,7 +824,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                     End Try
                 Next
 
-
                 If MyEventsNamespace Is Nothing Then
                     Debug.Fail("Unable to add Namespace to new file")
                 Else
@@ -1001,7 +978,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Called by the project system upon closing a project.  Any unpersisted data at this point is discarded
         ''' </summary>
@@ -1012,7 +988,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 _docDataService = Nothing
             End If
         End Sub
-
 
         ''' <summary>
         ''' Called by the project system when we need to save all the MyApplication files.  Saves directly to disk.  Does not save
@@ -1055,7 +1030,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        Protected Overloads Sub Dispose(disposing As Boolean)
+        Private Overloads Sub Dispose(disposing As Boolean)
             If disposing Then
                 Close()
             End If
@@ -1064,7 +1039,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Public Overloads Sub Dispose() Implements IDisposable.Dispose
             Dispose(True)
         End Sub
-
 
         ''' <summary>
         ''' Gets the root namespace for a given IVsHierarchy
@@ -1079,7 +1053,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Debug.Fail("Unable to get project's root namespace inside MyApplicationProperties")
             Return ""
         End Function
-
 
         ''' <summary>
         ''' Returns the set of files that need to be checked out to change the given property
@@ -1121,7 +1094,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 FireChangeNotificationsForNewValues(OldValues, NewValues)
             End Using
         End Sub
-
 
         ''' <summary>
         ''' Given a set of old and new property values, fires a property changed notification for each property that has changed values.
@@ -1180,7 +1152,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return NothingToEmptyString(String1).Equals(NothingToEmptyString(String2), StringComparison.Ordinal)
         End Function
 
-
         ''' <summary>
         ''' Fires the PropertyChanged event
         ''' </summary>
@@ -1189,9 +1160,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
         End Sub
 
-
         '************************************************
-
 
         ''' <summary>
         ''' A text writer for the DocData behind the .myapp file
@@ -1214,7 +1183,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                 End Get
             End Property
         End Class
-
 
 #Region "MyType, Application Type, Output Type, My Application-related stuff"
         '
@@ -1240,7 +1208,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         '  Windows Service       ->  “Console”
         '  Web Control Library   ->  "WebControl"
         '
-
 
         ''' <summary>
         ''' Given an OutputType, returns the Application Type for it, differentiating if necessary based on the value of MyType

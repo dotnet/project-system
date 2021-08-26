@@ -27,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CSharp.ProjectItemsSchema.xaml;"/>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.CSharp.xaml;"/>
 
     <ProjectCapability Include="
                           CSharp;

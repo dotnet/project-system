@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     An <see langword="abstract"/> base class that simplifies the lifetime of 
+    ///     An <see langword="abstract"/> base class that simplifies the lifetime of
     ///     a component that is loaded and unloaded multiple times.
     /// </summary>
     internal abstract class AbstractMultiLifetimeComponent<T> : OnceInitializedOnceDisposedAsync

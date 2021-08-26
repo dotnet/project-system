@@ -135,7 +135,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 End If
             Next
 
-
             ' Check if we need to add/change any application scoped settings
             '
             For Each SettingsValue As SettingsPropertyValue In DeserializedAppScopedSettingValues
@@ -190,7 +189,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     VSErrorHandler.ThrowOnFailure(ProjSpecialFiles.GetFile(__PSFFILEID.PSFFILEID_AppConfig, Flags, AppConfigItemId, AppConfigFileName))
                 Catch ex As System.Runtime.InteropServices.COMException When ex.ErrorCode = Interop.Win32Constant.OLE_E_PROMPTSAVECANCELLED
                     Throw New ComponentModel.Design.CheckoutException(My.Resources.Microsoft_VisualStudio_Editors_Designer.DFX_UnableToCheckout, ex)
-                Catch ex As Exception When Not TypeOf ex Is ComponentModel.Design.CheckoutException
+                Catch ex As Exception When TypeOf ex IsNot ComponentModel.Design.CheckoutException
                     ' VsWhidbey 224145, ProjSpecialFiles.GetFile(create:=true) fails on vbexpress sku
                     AppConfigItemId = VSITEMID.NIL
                     Debug.Fail(String.Format("ProjSpecialFiles.GetFile (create={0}) failed: {1}", CreateIfNotExists, ex))
@@ -252,7 +251,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Dim FullyQualifiedClassName As String = ProjectUtils.FullyQualifiedClassName(NamespaceName, ClassName)
             Serialize(Settings, typeCache, valueCache, ConfigHelperService.GetSectionName(FullyQualifiedClassName, String.Empty), AppConfigDocData, Hierarchy, SynchronizeUserConfig)
         End Sub
-
 
         ''' <summary>
         ''' Write out any and all changes to the app.config file

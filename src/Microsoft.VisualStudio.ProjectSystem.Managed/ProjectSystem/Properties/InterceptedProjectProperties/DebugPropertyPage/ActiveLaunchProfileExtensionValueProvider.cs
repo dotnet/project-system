@@ -47,8 +47,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         private const string False = "false";
 
         [ImportingConstructor]
-        public ActiveLaunchProfileExtensionValueProvider(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
-            : base(project, launchSettingsProvider, projectThreadingService)
+        public ActiveLaunchProfileExtensionValueProvider(ILaunchSettingsProvider launchSettingsProvider)
+            : base(launchSettingsProvider)
         {
         }
 
@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public override bool SetPropertyValue(string propertyName, string value, IWritableLaunchSettings launchSettings)
         {
-            var activeProfile = launchSettings.ActiveProfile;
+            IWritableLaunchProfile? activeProfile = launchSettings.ActiveProfile;
             if (activeProfile == null)
             {
                 return false;
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return defaultValue;
             }
 
-            if (launchProfile.OtherSettings.TryGetValue(propertyName, out object value) &&
+            if (launchProfile.OtherSettings.TryGetValue(propertyName, out object? value) &&
                 value is T b)
             {
                 return b;
@@ -152,7 +152,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 current = defaultValue;
             }
 
-            if (!(current is T currentTyped) || !Equals(currentTyped, value))
+            if (current is not T currentTyped || !Equals(currentTyped, value))
             {
                 launchProfile.OtherSettings[propertyName] = value;
                 return true;

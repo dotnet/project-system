@@ -6,8 +6,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-#nullable disable
-
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     internal class TestProjectTree : IProjectTree
@@ -22,20 +20,20 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public bool IsProjectItem { get; set; }
 
         // for scenario where we need to see if it was recreated or not
-        public string CustomTag { get; set; }
+        public string? CustomTag { get; set; }
 
         public int Size { get; }
-        public IRule BrowseObjectProperties { get; set; }
+        public IRule? BrowseObjectProperties { get; set; }
         public ProjectTreeFlags Flags { get; set; } = ProjectTreeFlags.Empty;
         public bool IsFolder { get; }
         public bool Visible { get; set; }
-        public ProjectImageMoniker ExpandedIcon { get; set; }
-        public ProjectImageMoniker Icon { get; set; }
-        public string FilePath => null;
-        public string Caption { get; set; }
+        public ProjectImageMoniker? ExpandedIcon { get; set; }
+        public ProjectImageMoniker? Icon { get; set; }
+        public string? FilePath => null;
+        public string Caption { get; set; } = "Caption";
         IReadOnlyList<IProjectTree> IProjectTree.Children => Children.ToList();
-        public IProjectTree Root { get; }
-        public IProjectTree Parent { get; set; }
+        public IProjectTree Root { get; } = null!;
+        public IProjectTree? Parent { get; set; }
         public IntPtr Identity { get; }
 
         public IProjectTree Add(IProjectTree subtree)
@@ -47,26 +45,27 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectItemTree Add(IProjectItemTree subtree)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public IEnumerable<IProjectTreeDiff> ChangesSince(IProjectTree priorVersion)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public bool Contains(IntPtr nodeId)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public IProjectTree Find(IntPtr nodeId)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public IProjectTree Remove()
         {
+            Assumes.NotNull(Parent);
             return Parent.Remove(this);
         }
 
@@ -83,48 +82,48 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectItemTree Replace(IProjectItemTree subtree)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public IProjectTree Replace(IProjectTree subtree)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IProjectTree SetBrowseObjectProperties(IRule browseObjectProperties)
+        public IProjectTree SetBrowseObjectProperties(IRule? browseObjectProperties)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public IProjectTree SetCaption(string caption)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IProjectTree SetExpandedIcon(ProjectImageMoniker expandedIcon)
+        public IProjectTree SetExpandedIcon(ProjectImageMoniker? expandedIcon)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public IProjectTree SetFlags(ProjectTreeFlags flags)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IProjectTree SetIcon(ProjectImageMoniker icon)
+        public IProjectTree SetIcon(ProjectImageMoniker? icon)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IProjectItemTree SetItem(IProjectPropertiesContext context, IPropertySheet propertySheet, bool isLinked)
+        public IProjectItemTree SetItem(IProjectPropertiesContext context, IPropertySheet? propertySheet, bool isLinked)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
-        public IProjectTree SetProperties(string caption = null, string filePath = null, IRule browseObjectProperties = null,
-                                          ProjectImageMoniker icon = null, ProjectImageMoniker expandedIcon = null, bool?
-                                          visible = null, ProjectTreeFlags? flags = null, IProjectPropertiesContext context = null,
-                                          IPropertySheet propertySheet = null, bool? isLinked = null, bool resetFilePath = false,
+        public IProjectTree SetProperties(string? caption = null, string? filePath = null, IRule? browseObjectProperties = null,
+                                          ProjectImageMoniker? icon = null, ProjectImageMoniker? expandedIcon = null, bool? visible = null,
+                                          ProjectTreeFlags? flags = null, IProjectPropertiesContext? context = null,
+                                          IPropertySheet? propertySheet = null, bool? isLinked = null, bool resetFilePath = false,
                                           bool resetBrowseObjectProperties = false, bool resetIcon = false, bool resetExpandedIcon = false)
         {
             Icon = icon ?? Icon;
@@ -137,19 +136,17 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         public IProjectTree SetVisible(bool visible)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public bool TryFind(IntPtr nodeId, out IProjectTree subtree)
         {
-            subtree = null;
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool TryFindImmediateChild(string caption, out IProjectTree subtree)
         {
-            subtree = null;
-            return false;
+            throw new NotImplementedException();
         }
 
         private sealed class ChildCollection : Collection<TestProjectTree>

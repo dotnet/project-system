@@ -22,8 +22,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         Private ReadOnly _packageLicenseFilePropName As String = "PackageLicenseFile"
         Private ReadOnly _packageIconFilePropName As String = "PackageIcon"
         Private ReadOnly _packageIconUrlPropName As String = "PackageIconUrl"
-        Private _licenseUrlDetected As Boolean = False
-        Private _newLicensePropertyDetectedAtInit As Boolean = False
+        Private _licenseUrlDetected As Boolean
+        Private _newLicensePropertyDetectedAtInit As Boolean
         Private _unconfiguredProject As UnconfiguredProject
         Private _configuredProject As ConfiguredProject
         Private _projectSourceItemProvider As IProjectSourceItemProvider
@@ -340,7 +340,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         Private Sub SetLicenseUrlWarningActive(setActive As Boolean)
             LicenseLineLabel.Visible = Not setActive
             LicenseUrlWarning.Visible = setActive
@@ -494,7 +493,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         Private Sub AddOrChangeItem(oldInclude As String, newInclude As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
-#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
             ThreadHelper.JoinableTaskFactory.Run(
                 Async Function()
                     Await projectLock.WriteLockAsync(
@@ -516,12 +514,10 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Await access.ReleaseAsync()
                         End Function)
                 End Function)
-#Enable Warning RS0030 ' Do not used banned APIs
         End Sub
 
         Private Sub RemoveItem(include As String)
             Dim projectLock = _configuredProject.Services.ExportProvider.GetExportedValue(Of IProjectLockService)()
-#Disable Warning RS0030 ' Do not used banned APIs. The project lock is needed here - there is no IVT for ProjectAccessor
             ThreadHelper.JoinableTaskFactory.Run(
                 Async Function()
                     Await projectLock.WriteLockAsync(
@@ -531,7 +527,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                             Await access.ReleaseAsync()
                         End Function)
                 End Function)
-#Enable Warning RS0030
         End Sub
 
         Private Function AbsoluteToRelativePath(fileName As String) As String

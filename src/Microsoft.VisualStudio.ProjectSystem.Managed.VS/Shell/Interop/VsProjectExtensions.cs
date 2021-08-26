@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
     internal static class VsProjectExtensions
     {
         /// <summary>
-        ///     Returns the <see cref="HierarchyId"/> of the given document moniker, or 
+        ///     Returns the <see cref="HierarchyId"/> of the given document moniker, or
         ///     <see cref="HierarchyId.Nil"/> if the document moniker is not part of the project.
         /// </summary>
         public static HierarchyId GetHierarchyId(this IVsProject project, string documentMoniker)
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
             Verify.HResult(project.IsDocumentInProject(documentMoniker, out int isFound, priority, out uint itemId));
 
             // We only return items that are actually part of the project. CPS returns non-member from this API.
-            if (isFound == 0 || priority[0] != VSDOCUMENTPRIORITY.DP_Standard && priority[0] != VSDOCUMENTPRIORITY.DP_Intrinsic)
+            if (isFound == 0 || (priority[0] != VSDOCUMENTPRIORITY.DP_Standard && priority[0] != VSDOCUMENTPRIORITY.DP_Intrinsic))
                 return HierarchyId.Nil;
 
             HierarchyId id = itemId;

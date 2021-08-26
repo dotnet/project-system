@@ -38,10 +38,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             WriteEndElement(o)
         End Sub 'Write2_MyApplicationData
 
-
         Protected Overrides Sub InitCallbacks()
         End Sub 'InitCallbacks
-
 
         Public Sub Write3_MyApplicationData(o As Object)
             WriteStartDocument()
@@ -53,7 +51,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Write2_MyApplicationData("MyApplicationData", "", CType(o, MyApplicationData), True, False)
         End Sub 'Write3_MyApplicationData 
 
-        Private _publicMethods As Hashtable = Nothing
+        Private _publicMethods As Hashtable
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
@@ -66,7 +64,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return False
         End Function 'CanSerialize 
     End Class 'MyApplicationDataSerializationWriter
-
 
     Friend Class MyApplicationDataSerializationReader
         Inherits XmlSerializationReader
@@ -158,7 +155,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
                         UnknownNode(CType(o, Object))
                     End If
 
-
                 Else
 
                     UnknownNode(CType(o, Object))
@@ -172,10 +168,8 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return o
         End Function 'Read2_MyApplicationData
 
-
         Protected Overrides Sub InitCallbacks()
         End Sub 'InitCallbacks
-
 
         Public Function Read4_MyApplicationData() As Object
 
@@ -206,7 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         Private _id8_AuthenticationMode As String
         Private _id12_SaveMySettingsOnExit As String
 
-
         Protected Overrides Sub InitIDs()
 
             _id9_SplashScreen = Reader.NameTable.Add("SplashScreen")
@@ -232,7 +225,7 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             _id12_SaveMySettingsOnExit = Reader.NameTable.Add("SaveMySettingsOnExit")
         End Sub 'InitIDs 
 
-        Private _publicMethods As Hashtable = Nothing
+        Private _publicMethods As Hashtable
 
         Public Function GetPublicMethods() As Hashtable
             If _publicMethods Is Nothing Then
@@ -242,7 +235,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
         End Function 'GetPublicMethods 
     End Class 'MyApplicationDataSerializationReader
 
-
     Friend Class MyApplicationDataSerializer
         Inherits XmlSerializer
 
@@ -250,16 +242,13 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
             Return New MyApplicationDataSerializationReader()
         End Function 'CreateReader
 
-
         Protected Overrides Function CreateWriter() As XmlSerializationWriter
             Return New MyApplicationDataSerializationWriter()
         End Function 'CreateWriter
 
-
         Public Overrides Function CanDeserialize(xmlReader As Xml.XmlReader) As Boolean
             Return xmlReader.IsStartElement("MyApplicationData", "")
         End Function 'CanDeserialize
-
 
         Protected Overrides Sub Serialize(objectToSerialize As Object, writer As XmlSerializationWriter)
 
@@ -270,7 +259,6 @@ Namespace Microsoft.VisualStudio.Editors.MyApplication
 
             CType(writer, MyApplicationDataSerializationWriter).Write3_MyApplicationData(objectToSerialize)
         End Sub 'Serialize
-
 
         Protected Overrides Function Deserialize(reader As XmlSerializationReader) As Object
 

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Moq;
@@ -55,9 +56,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileExecutablePath = @"C:\user\bin\alpha.exe";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileExecutablePath: activeProfileExecutablePath);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -70,9 +69,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileExecutablePath = @"C:\user\bin\beta.exe";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileExecutablePath: activeProfileExecutablePath);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -82,7 +79,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task ExecutablePath_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
-            string activeProfileExecutablePath = @"C:\user\bin\gamma.exe";
+            string? activeProfileExecutablePath = @"C:\user\bin\gamma.exe";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Gamma",
                 activeProfileExecutablePath: activeProfileExecutablePath,
@@ -91,9 +88,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     activeProfileExecutablePath = s.ActiveProfile!.ExecutablePath;
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await launchProfileProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.ExecutablePathPropertyName, @"C:\user\bin\delta.exe", Mock.Of<IProjectProperties>());
 
@@ -106,9 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileLaunchTarget = "AlphaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Alpha", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -121,9 +114,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileLaunchTarget = "BetaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Beta", activeProfileLaunchTarget: activeProfileLaunchTarget);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await launchProfileProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -133,7 +124,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchTarget_OnSetPropertyValueAsync_SetsTargetInActiveProfile()
         {
-            string activeProfileLaunchTarget = "GammaCommand";
+            string? activeProfileLaunchTarget = "GammaCommand";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Gamma",
                 activeProfileLaunchTarget,
@@ -142,9 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     activeProfileLaunchTarget = s.ActiveProfile!.CommandName;
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var launchProfileProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await launchProfileProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchTargetPropertyName, "NewCommand", Mock.Of<IProjectProperties>());
 
@@ -157,9 +146,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileCommandLineArguments = "/bird:YES /giraffe:NO";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "ZooAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await commandLineArgumentsProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -172,9 +159,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileCommandLineArguments = "/alpaca:YES /llama:NO /vicuña:NONONO";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "SortOfFarmAnimals", activeProfileCommandLineArgs: activeProfileCommandLineArguments);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await commandLineArgumentsProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -184,7 +169,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task CommandLineArguments_OnSetPropertyValueAsync_SetsArgumentsInActiveProfile()
         {
-            string activeProfileCommandLineArgs = "/orca:YES /bluewhale:NO";
+            string? activeProfileCommandLineArgs = "/orca:YES /bluewhale:NO";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "SeaMammals",
                 activeProfileCommandLineArgs: activeProfileCommandLineArgs,
@@ -195,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var commandLineArgumentsProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await commandLineArgumentsProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.CommandLineArgumentsPropertyName, "/seaotters:YES /seals:YES", Mock.Of<IProjectProperties>());
 
@@ -208,9 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileWorkingDirectory = @"C:\alpha\beta\gamma";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -223,9 +206,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileWorkingDirectory = @"C:\delta\epsilon\phi";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "Two", activeProfileWorkingDirectory: activeProfileWorkingDirectory);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await workingDirectoryProvider.OnGetUnevaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -235,7 +216,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task WorkingDirectory_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
         {
-            string activeProfileWorkingDirectory = @"C:\one\two\three";
+            string? activeProfileWorkingDirectory = @"C:\one\two\three";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Three",
                 activeProfileWorkingDirectory: activeProfileWorkingDirectory,
@@ -246,7 +227,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var project = UnconfiguredProjectFactory.Create();
             var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.WorkingDirectoryPropertyName, @"C:\four\five\six", Mock.Of<IProjectProperties>());
 
@@ -259,9 +240,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             bool activeProfileLaunchBrowser = true;
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchBrowser: activeProfileLaunchBrowser);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchBrowserPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -280,9 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     activeProfileLaunchBrowser = s.ActiveProfile!.LaunchBrowser;
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchBrowserPropertyName, "true", Mock.Of<IProjectProperties>());
 
@@ -295,9 +272,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string activeProfileLaunchUrl = "https://microsoft.com";
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileLaunchUrl: activeProfileLaunchUrl);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             var actualValue = await workingDirectoryProvider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchUrlPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -307,7 +282,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task LaunchUrl_OnSetPropertyValueAsync_SetsUrlInActiveProfile()
         {
-            string activeProfileLaunchUrl = "https://incorrect.com";
+            string? activeProfileLaunchUrl = "https://incorrect.com";
             var settingsProvider = SetupLaunchSettingsProvider(
                 activeProfileName: "Three",
                 activeProfileLaunchUrl: activeProfileLaunchUrl,
@@ -316,9 +291,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                     activeProfileLaunchUrl = s.ActiveProfile!.LaunchUrl;
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(project, settingsProvider, threadingService);
+            var workingDirectoryProvider = new ActiveLaunchProfileCommonValueProvider(settingsProvider);
 
             await workingDirectoryProvider.OnSetPropertyValueAsync(ActiveLaunchProfileCommonValueProvider.LaunchUrlPropertyName, "https://microsoft.com", Mock.Of<IProjectProperties>());
 
@@ -335,9 +308,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.AuthenticationModePropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -347,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         [Fact]
         public async Task AuthenticationMode_OnSetPropertyValueAsync_SetsDirectoryInActiveProfile()
         {
-            string activeProfileAuthenticationMode = "Windows";
+            string? activeProfileAuthenticationMode = "Windows";
             var activeProfileOtherSettings = new Dictionary<string, object>
             {
                 { LaunchProfileExtensions.RemoteAuthenticationModeProperty, activeProfileAuthenticationMode }
@@ -358,12 +329,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileAuthenticationMode = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileAuthenticationMode = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteAuthenticationModeProperty];
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.AuthenticationModePropertyName, "NotWindows", Mock.Of<IProjectProperties>());
 
@@ -381,9 +351,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.NativeDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -404,12 +372,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileNativeDebugging = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileNativeDebugging = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.NativeDebuggingProperty];
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.NativeDebuggingPropertyName, "true", Mock.Of<IProjectProperties>());
 
@@ -427,9 +394,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugEnabledPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -450,12 +415,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileRemoteDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugEnabledProperty];
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugEnabledPropertyName, "true", Mock.Of<IProjectProperties>());
 
@@ -473,9 +437,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugMachinePropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -496,12 +458,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileRemoteMachineName = (string)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileRemoteMachineName = (string)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.RemoteDebugMachineProperty];
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.RemoteDebugMachinePropertyName, "Cheetah", Mock.Of<IProjectProperties>());
 
@@ -519,9 +480,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileOtherSettings: activeProfileOtherSettings);
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.SqlDebuggingPropertyName, string.Empty, Mock.Of<IProjectProperties>());
 
@@ -542,16 +501,82 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 activeProfileOtherSettings: activeProfileOtherSettings,
                 updateLaunchSettingsCallback: s =>
                 {
-                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile!.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
+                    Assumes.NotNull(s.ActiveProfile?.OtherSettings);
+                    activeProfileSqlDebugEnabled = (bool)s.ActiveProfile.OtherSettings[LaunchProfileExtensions.SqlDebuggingProperty];
                 });
 
-            var project = UnconfiguredProjectFactory.Create();
-            var threadingService = IProjectThreadingServiceFactory.Create();
-            var provider = new ActiveLaunchProfileExtensionValueProvider(project, settingsProvider, threadingService);
+            var provider = new ActiveLaunchProfileExtensionValueProvider(settingsProvider);
 
             await provider.OnSetPropertyValueAsync(ActiveLaunchProfileExtensionValueProvider.SqlDebuggingPropertyName, "true", Mock.Of<IProjectProperties>());
 
             Assert.True(activeProfileSqlDebugEnabled);
+        }
+
+        [Fact]
+        public async Task EnvironmentVariables_OnGetPropertyValueAsync_GetsEscapedValuesFromActiveProfile()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "Alpha", "Comma: , Equals: =" },
+                { "Beta", "12345" }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileEnvironmentVariables: activeProfileEnvironmentVariables);
+
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(settingsProvider);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "Alpha=Comma: /, Equals: /=,Beta=12345", actual: actualValue);
+        }
+
+        [Fact]
+        public async Task EnvironmentVariables_OnGetPropertyValueAsync_VariablesAreSorted()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "var3", "value3" },
+                { "var2", "value2" },
+                { "var1", "value1" }
+            };
+
+            var settingsProvider = SetupLaunchSettingsProvider(activeProfileName: "One", activeProfileEnvironmentVariables: activeProfileEnvironmentVariables);
+
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(settingsProvider);
+
+            var actualValue = await provider.OnGetEvaluatedPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, string.Empty, Mock.Of<IProjectProperties>());
+
+            Assert.Equal(expected: "var1=value1,var2=value2,var3=value3", actual: actualValue);
+        }
+
+        [Fact]
+        public async Task EnvironmentVariables_OnSetPropertyValueAsync_HandlesEscapeCharactersProperly()
+        {
+            var activeProfileEnvironmentVariables = new Dictionary<string, string>
+            {
+                { "Alpha", "one" }
+            };
+
+            ImmutableDictionary<string, string>? updatedEnvironmentVariables = null;
+
+            var settingsProvider = SetupLaunchSettingsProvider(
+                activeProfileName: "One",
+                activeProfileEnvironmentVariables: activeProfileEnvironmentVariables,
+                updateLaunchSettingsCallback: s =>
+                {
+                    Assumes.NotNull(s.ActiveProfile?.EnvironmentVariables);
+                    updatedEnvironmentVariables = s.ActiveProfile?.EnvironmentVariables;
+                });
+
+            var project = UnconfiguredProjectFactory.Create();
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var provider = new ActiveLaunchProfileEnvironmentVariableValueProvider(settingsProvider);
+
+            await provider.OnSetPropertyValueAsync(ActiveLaunchProfileEnvironmentVariableValueProvider.EnvironmentVariablesPropertyName, "Alpha=Equals: /= Comma: /, Slash: //,Beta=two", Mock.Of<IProjectProperties>());
+
+            Assumes.NotNull(updatedEnvironmentVariables);
+            Assert.Equal(expected: "Equals: = Comma: , Slash: /", actual: updatedEnvironmentVariables["Alpha"]);
+            Assert.Equal(expected: "two", actual: updatedEnvironmentVariables["Beta"]);
         }
 
         private static ILaunchSettingsProvider SetupLaunchSettingsProvider(
@@ -562,6 +587,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string? activeProfileWorkingDirectory = null,
             bool? activeProfileLaunchBrowser = null,
             string? activeProfileLaunchUrl = null,
+            Dictionary<string, string>? activeProfileEnvironmentVariables = null,
             Dictionary<string, object>? activeProfileOtherSettings = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null)
@@ -605,9 +631,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
             if (activeProfileOtherSettings != null)
             {
-                foreach (var kvp in activeProfileOtherSettings)
+                Assumes.NotNull(profile.OtherSettings);
+
+                foreach ((string key, object value) in activeProfileOtherSettings)
                 {
-                    profile.OtherSettings.Add(kvp.Key, kvp.Value);
+                    profile.OtherSettings.Add(key, value);
+                }
+            }
+
+            if (activeProfileEnvironmentVariables != null)
+            {
+                Assumes.NotNull(profile.EnvironmentVariables);
+
+                foreach ((string key, string value) in activeProfileEnvironmentVariables)
+                {
+                    profile.EnvironmentVariables.Add(key, value);
                 }
             }
 

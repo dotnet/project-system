@@ -29,12 +29,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CopyPayload|DisplayName">
         <source>Copy Payload</source>
-        <target state="translated">Nutzlast kopieren</target>
+        <target state="translated">Nutzdaten kopieren</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CopyPayloadToSubDirectory|DisplayName">
         <source>Copy Payload to Subdirectory</source>
-        <target state="translated">Nutzlast in Unterverzeichnis kopieren</target>
+        <target state="translated">Nutzdaten in Unterverzeichnis kopieren</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ExpandContent|DisplayName">

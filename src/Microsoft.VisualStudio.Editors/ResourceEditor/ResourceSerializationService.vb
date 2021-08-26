@@ -10,7 +10,6 @@ Imports System.IO
 
 Imports Microsoft.VisualStudio.Editors.Common
 
-
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     ''' <summary>
@@ -43,9 +42,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     Friend NotInheritable Class ResourceSerializationService
         Inherits ComponentSerializationService
 
-
-
-
         ''' <summary>
         ''' This method creates a new SerializationStore.  The serialization store can 
         '''   be passed to any of the various Serialize methods to build up serialization 
@@ -53,12 +49,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         ''' </summary>
         Public Sub New()
         End Sub
-
-
-
-
-
-
 
         ''' <summary>
         ''' Does debug-only tracing for this class and its entire processes.
@@ -70,7 +60,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.WriteLineIf(Switches.RSEResourceSerializationService.TraceVerbose, "ResourceSerializationService: " & String.Format(Message, FormatArguments))
         End Sub
 
-
         ''' <summary>
         ''' This method creates a new SerializationStore.  The serialization store can 
         '''  be passed to any of the various Serialize methods to build up serialization 
@@ -80,7 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overrides Function CreateStore() As SerializationStore
             Return New ResourceSerializationStore()
         End Function
-
 
         ''' <summary>
         ''' This method loads a SerializationStore and from the given
@@ -95,7 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return ResourceSerializationStore.Load(Stream)
         End Function
 
-
         ''' <summary>
         ''' This method serializes the given object to the store.  The store 
         '''   can be used to serialize more than one object by calling this method 
@@ -107,7 +94,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Value, NameOf(Value))
 
-            If Not TypeOf Value Is Resource Then
+            If TypeOf Value IsNot Resource Then
                 Throw CreateArgumentException(NameOf(Value))
             End If
             Dim Resource As Resource = DirectCast(Value, Resource)
@@ -156,7 +143,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             RFStore.AddMember(OwningResource, Member)
         End Sub
 
-
         ''' <summary>
         ''' This method serializes the given member on the given object, 
         '''   but attempts to do so in such a way as to serialize only the 
@@ -177,7 +163,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SerializeMember(Store, OwningObject, Member)
         End Sub
 
-
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
         '''     objects contained within it.  If a container is provided, objects 
@@ -195,7 +180,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return RFStore.Deserialize()
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
@@ -216,7 +200,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return RFStore.Deserialize(Container)
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store, but rather than produce 
@@ -245,6 +228,5 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
     End Class
-
 
 End Namespace

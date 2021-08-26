@@ -2,74 +2,89 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ko" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|NativeDebugging|Description">
+        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
+        <target state="translated">관리형 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)할 수 있도록 설정합니다. </target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">네이티브 코드 디버깅 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
+        <target state="translated">디버거가 원격 머신의 프로세스에 연결되어야 함을 나타냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="new">Use remote machine</target>
+        <target state="translated">원격 머신 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">SQL Server 디버깅 사용</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">원격 머신에 연결할 때 사용할 인증 체계입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
+        <target state="translated">인증 모드</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
-        <target state="new">Properties associated with launching and debugging the project output.</target>
+        <target state="translated">프로젝트 출력의 시작 및 디버깅에 연결된 속성입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|DisplayName">
         <source>Project</source>
-        <target state="new">Project</target>
+        <target state="translated">프로젝트</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="new">Command line arguments to pass to the executable.</target>
+        <target state="translated">실행 파일에 전달할 명령줄 인수입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
+        <target state="translated">명령줄 인수</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|Description">
+        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
+        <target state="translated">프로세스를 실행하기 전에 설정할 환경 변수입니다. 변수는 쉼표(,)로 구분하고 변수 이름과 값은 등호(=)로 구분합니다(예: var1=value1,var2=value2,var3=value3). 변수 내에 나타나는 쉼표와 등호는 슬래시(/)로 이스케이프할 수 있습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
+        <source>Environment variables</source>
+        <target state="translated">환경 변수</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="new">Remote machine name</target>
+        <target state="translated">원격 머신 이름</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="new">Path to the working directory where the process will be started.</target>
+        <target state="translated">프로세스가 시작될 작업 디렉터리 경로입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="new">Working directory</target>
+        <target state="translated">작업 디렉터리</target>
         <note />
       </trans-unit>
     </body>

@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var difference = IProjectChangeDiffFactory.Create();
             var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             var logger = IProjectLoggerFactory.Create();
-            
+
             Assert.Throws<ArgumentNullException>(() =>
             {
                 handler.ApplyProjectEvaluation(null!, difference, metadata, metadata, true, logger);
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             var version = 1;
             var difference = IProjectChangeDiffFactory.Create();
             var metadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            
+
             Assert.Throws<ArgumentNullException>(() =>
             {
                 handler.ApplyProjectEvaluation(version, difference, metadata, metadata, true, null!);
@@ -462,7 +462,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         private static void ApplyProjectEvaluation(AbstractEvaluationCommandLineHandler handler, IComparable version, IProjectChangeDiff difference, IImmutableDictionary<string, IImmutableDictionary<string, string>>? metadata = null)
         {
             metadata ??= ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
-            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty; 
+            var previousMetadata = ImmutableDictionary<string, IImmutableDictionary<string, string>>.Empty;
             bool isActiveContext = true;
             var logger = IProjectLoggerFactory.Create();
 

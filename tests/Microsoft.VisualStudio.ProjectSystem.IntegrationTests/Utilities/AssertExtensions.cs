@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Test.Apex.VisualStudio.Shell.ToolWindows;
 using Microsoft.VisualStudio.Imaging.Interop;
+using Microsoft.VisualStudio.ProjectSystem.Imaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 throw new AssertFailedException($"ImageMoniker did not match.{Environment.NewLine}Expected: {S(expected)}{Environment.NewLine}Actual: {S(actualMoniker)}");
             }
 
-            static string S(ImageMoniker a) => ManagedImageMonikers.ImageMonikerDebugDisplay(a);
+            static string S(ImageMoniker a) => ImageMonikerDebuggerDisplay.FromImageMoniker(a);
         }
 
         public static ImageMoniker ToImageMoniker(this ExportableImageMoniker actual)

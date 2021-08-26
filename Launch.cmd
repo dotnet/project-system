@@ -11,6 +11,8 @@ set VisualStudioXamlRulesDir=%Root%\artifacts\Debug\VSSetup\Rules\
 set VisualBasicDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.VisualBasic.DesignTime.targets
 set FSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.FSharp.DesignTime.targets
 set CSharpDesignTimeTargetsPath=%VisualStudioXamlRulesDir%Microsoft.CSharp.DesignTime.targets
+set CPS_DiagnosticRuntime=1
+set CPS_MetricsCollection=1
 
 :ParseArguments
 if "%1" == "" goto :DoneParsing

@@ -38,8 +38,14 @@
                        DisplayName="Authentication mode"
                        Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
                        EnumProvider="AuthenticationModeEnumProvider" />
+
+  <StringProperty Name="EnvironmentVariables"
+                  DisplayName="Environment variables"
+                  Description="The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/)."/>
+
   <BoolProperty Name="NativeDebugging"
-                DisplayName="Enable native code debugging" />
+                DisplayName="Enable native code debugging"
+                Description="Enables debugging for managed and native code together, also known as mixed-mode debugging. "/>
 
   <BoolProperty Name="SqlDebugging"
                 DisplayName="Enable SQL Server debugging" />

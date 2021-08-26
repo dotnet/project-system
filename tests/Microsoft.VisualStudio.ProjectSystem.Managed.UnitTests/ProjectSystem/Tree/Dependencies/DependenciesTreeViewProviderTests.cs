@@ -15,9 +15,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
     public sealed class DependenciesTreeViewProviderTests
     {
-        private readonly ITargetFramework _tfm1 = new TargetFramework("tfm1");
-        private readonly ITargetFramework _tfm2 = new TargetFramework("tfm2");
-        
+        private readonly TargetFramework _tfm1 = new TargetFramework("tfm1");
+        private readonly TargetFramework _tfm2 = new TargetFramework("tfm2");
+
         private readonly ITestOutputHelper _output;
 
         private static readonly ImageMoniker s_rootImage = KnownMonikers.AboutBox;
@@ -176,7 +176,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             {
                                 Caption = "DependencyExisting",
                                 CustomTag = "Untouched",
-                                Flags = DependencyTreeFlags.Unresolved
+                                Flags = ProjectTreeFlags.BrokenReference
                             }
                         }
                     }
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             {
                                 Caption = "DependencyExisting",
                                 CustomTag = "Untouched",
-                                Flags = DependencyTreeFlags.Resolved
+                                Flags = ProjectTreeFlags.ResolvedReference
                             }
                         }
                     }
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                             new TestProjectTree
                             {
                                 Caption = "DependencyExisting",
-                                Flags = DependencyTreeFlags.Resolved
+                                Flags = ProjectTreeFlags.ResolvedReference
                             }
                         }
                     }
@@ -568,12 +568,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             return new DependenciesTreeViewProvider(treeServices, treeViewModelFactory, commonServices);
         }
 
-        private static DependenciesSnapshot GetSnapshot(params (ITargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
+        private static DependenciesSnapshot GetSnapshot(params (TargetFramework tfm, IReadOnlyList<IDependency> dependencies)[] testData)
         {
             var catalogs = IProjectCatalogSnapshotFactory.Create();
-            var dependenciesByTarget = new Dictionary<ITargetFramework, TargetedDependenciesSnapshot>();
+            var dependenciesByTarget = new Dictionary<TargetFramework, TargetedDependenciesSnapshot>();
 
-            foreach ((ITargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
+            foreach ((TargetFramework tfm, IReadOnlyList<IDependency> dependencies) in testData)
             {
                 var targetedSnapshot = new TargetedDependenciesSnapshot(
                     tfm,
@@ -628,8 +628,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     {
                         builder.Append(' ', indent * 4);
                         builder.Append("Caption=").Append(tree.Caption).Append(", ");
-                        builder.Append("IconHash=").Append(tree.Icon.GetHashCode()).Append(", ");
-                        builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon.GetHashCode()).Append(", ");
+                        builder.Append("IconHash=").Append(tree.Icon?.GetHashCode()).Append(", ");
+                        builder.Append("ExpandedIconHash=").Append(tree.ExpandedIcon?.GetHashCode()).Append(", ");
                         builder.Append("Rule=").Append(tree.BrowseObjectProperties?.Name ?? "").Append(", ");
                         builder.Append("IsProjectItem=").Append(tree.IsProjectItem).Append(", ");
                         builder.Append("CustomTag=").Append(tree.CustomTag);

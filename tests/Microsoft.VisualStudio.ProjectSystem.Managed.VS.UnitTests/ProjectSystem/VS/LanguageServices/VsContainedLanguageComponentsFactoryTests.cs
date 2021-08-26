@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
             Assert.Equal(1u, itemIdResult);
         }
 
-        private static void AssertFailed(int result, IVsHierarchy hierarchy, uint itemid, IVsContainedLanguageFactory containedLanguageFactory)
+        private static void AssertFailed(int result, IVsHierarchy? hierarchy, uint itemid, IVsContainedLanguageFactory? containedLanguageFactory)
         {
             Assert.Equal(VSConstants.E_FAIL, result);
             Assert.Null(hierarchy);

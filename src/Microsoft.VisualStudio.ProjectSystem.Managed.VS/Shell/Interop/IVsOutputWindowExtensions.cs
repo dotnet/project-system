@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
         }
 
         /// <summary>
-        ///     Returns the GUID associated with the active window pane, or <see cref="Guid.Empty"/> if no 
+        ///     Returns the GUID associated with the active window pane, or <see cref="Guid.Empty"/> if no
         ///     active pane or the active pane is unknown.
         /// </summary>
         /// <exception cref="ArgumentNullException">

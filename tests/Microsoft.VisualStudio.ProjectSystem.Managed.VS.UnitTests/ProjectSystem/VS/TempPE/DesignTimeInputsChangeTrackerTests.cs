@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading.Tasks;
 using Moq;
 using Xunit;
 using Xunit.Sdk;
@@ -21,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private string _intermediateOutputPath = "MyOutput";
         private readonly DesignTimeInputsChangeTracker _changeTracker;
 
-        private readonly List<DesignTimeInputsDelta> _outputProduced = new List<DesignTimeInputsDelta>();
-        private readonly TaskCompletionSource<bool> _outputProducedSource = new TaskCompletionSource<bool>();
+        private readonly List<DesignTimeInputSnapshot> _outputProduced = new List<DesignTimeInputSnapshot>();
+        private readonly TaskCompletionSource _outputProducedSource = new TaskCompletionSource();
         private int _expectedOutput;
 
         [Fact]
@@ -242,19 +243,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
                 AllowSourceBlockCompletion = true
             };
 
-
             // Create a block to receive the output
-            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputsDelta>>(OutputProduced);
+            var receiver = DataflowBlockSlim.CreateActionBlock<IProjectVersionedValue<DesignTimeInputSnapshot>>(OutputProduced);
             _changeTracker.SourceBlock.LinkTo(receiver, DataflowOption.PropagateCompletion);
         }
 
-        private void OutputProduced(IProjectVersionedValue<DesignTimeInputsDelta> val)
+        private void OutputProduced(IProjectVersionedValue<DesignTimeInputSnapshot> val)
         {
             _outputProduced.Add(val.Value);
 
             if (_outputProduced.Count == _expectedOutput)
             {
-                _outputProducedSource?.SetResult(true);
+                _outputProducedSource?.SetResult();
             }
         }
 

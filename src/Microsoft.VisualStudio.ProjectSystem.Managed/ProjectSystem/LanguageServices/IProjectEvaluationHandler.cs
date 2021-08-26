@@ -26,12 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     the time the <see cref="IProjectChangeDescription"/> was produced.
         /// </param>
         /// <param name="projectChange">
-        ///     A <see cref="IProjectChangeDescription"/> representing the set of 
+        ///     A <see cref="IProjectChangeDescription"/> representing the set of
         ///     changes made to the project.
         /// </param>
-        /// <param name="isActiveContext">
-        ///     <see langword="true"/> if the underlying <see cref="IWorkspaceProjectContext"/>
-        ///     is the active context; otherwise, <see langword="false"/>.
+        /// <param name="state">
+        ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
         /// </param>
         /// <param name="logger">
         ///     The <see cref="IProjectLogger"/> for logging to the log.
@@ -47,6 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="logger"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IComparable version, IProjectChangeDescription projectChange, bool isActiveContext, IProjectLogger logger);
+        void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger);
     }
 }

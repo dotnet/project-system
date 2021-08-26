@@ -26,8 +26,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Get
         End Property
 
-
-
         ''' <summary>
         '''   Returns the root designer that is associated with this component, i.e., the
         '''   designer which is showing the UI to the user which allows this component's

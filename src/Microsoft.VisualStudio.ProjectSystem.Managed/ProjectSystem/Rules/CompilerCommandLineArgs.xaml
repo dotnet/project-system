@@ -7,7 +7,7 @@
     <DataSource HasConfigurationCondition="False"
                 ItemType="CompilerCommandLineArgs "
                 MSBuildTarget="CompileDesignTime"
-                Persistence="CompilerCommandLineArgs "
+                Persistence="ProjectFile"
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
   </Rule.DataSource>

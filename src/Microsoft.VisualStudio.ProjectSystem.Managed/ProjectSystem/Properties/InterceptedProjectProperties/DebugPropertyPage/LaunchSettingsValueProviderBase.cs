@@ -26,15 +26,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     /// </summary>
     public abstract class LaunchSettingsValueProviderBase : InterceptingPropertyValueProviderBase
     {
-        private readonly UnconfiguredProject _project;
         private readonly ILaunchSettingsProvider _launchSettingsProvider;
-        private readonly IProjectThreadingService _projectThreadingService;
 
-        public LaunchSettingsValueProviderBase(UnconfiguredProject project, ILaunchSettingsProvider launchSettingsProvider, IProjectThreadingService projectThreadingService)
+        public LaunchSettingsValueProviderBase(ILaunchSettingsProvider launchSettingsProvider)
         {
-            _project = project;
             _launchSettingsProvider = launchSettingsProvider;
-            _projectThreadingService = projectThreadingService;
         }
 
         public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -47,25 +43,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             return GetPropertyValueAsync(propertyName);
         }
 
-        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            _projectThreadingService.RunAndForget(async () =>
-            {
-                ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
 
-                var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
-                if (SetPropertyValue(propertyName, unevaluatedPropertyValue, writableLaunchSettings))
-                {
-                    await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
-                }
-            },
-options: ForkOptions.HideLocks,
-unconfiguredProject: _project);
+            var writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
+            if (SetPropertyValue(propertyName, unevaluatedPropertyValue, writableLaunchSettings))
+            {
+                await _launchSettingsProvider.UpdateAndSaveSettingsAsync(writableLaunchSettings.ToLaunchSettings());
+            }
 
             // We've intercepted the "set" operation and redirected it to the launch settings.
             // Return "null" to indicate that the value should _not_ be set in the project file
             // as well.
-            return Task.FromResult<string?>(null);
+            return null;
         }
 
         private async Task<string> GetPropertyValueAsync(string propertyName)

@@ -10,14 +10,12 @@ Imports Microsoft.VisualStudio.Editors.DesignerFramework
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
-
     ''' <summary>
     ''' Requests a new resource name from the user.
     ''' </summary>
     Friend NotInheritable Class DialogQueryName
         Inherits BaseDialog
         'Inherits System.Windows.Forms.Form
-
 
         ''' <summary>
         ''' Constructor.
@@ -142,15 +140,11 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
-
         'Set to true if the user cancels the dialog
         Private _canceled As Boolean
 
         ' RootDesigner
         Private _rootDesigner As ResourceEditorRootDesigner
-
-
 
         ''' <summary>
         ''' Requests a new resource name from the user.
@@ -181,7 +175,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End With
         End Function
 
-
         ''' <summary>
         ''' Click handler for the Add button
         ''' </summary>
@@ -208,7 +201,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 TextBoxName.SelectionLength = TextBoxName.Text.Length
             End If
         End Sub
-
 
         ''' <summary>
         ''' Click handler for the Cancel button

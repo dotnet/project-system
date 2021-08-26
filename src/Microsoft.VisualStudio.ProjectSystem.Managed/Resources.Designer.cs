@@ -160,6 +160,24 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} - {1}.
+        /// </summary>
+        internal static string NeutralLanguage_DisplayNameFormatString {
+            get {
+                return ResourceManager.GetString("NeutralLanguage_DisplayNameFormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (None).
+        /// </summary>
+        internal static string NeutralLanguage_NoneValue {
+            get {
+                return ResourceManager.GetString("NeutralLanguage_NoneValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string NoActionProfileName {
@@ -207,7 +225,7 @@ namespace Microsoft.VisualStudio {
         /// <summary>
         ///   Looks up a localized string similar to The project file &apos;{0}&apos; cannot be opened. 
         ///
-        ///This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and readd the project to have the solution pick up the right project type..
+        ///This project was loaded using the wrong project type, likely as a result of renaming the project extension outside of Visual Studio. Remove and re-add the project to have the solution pick up the right project type..
         /// </summary>
         internal static string ProjectLoadedWithWrongProjectType {
             get {

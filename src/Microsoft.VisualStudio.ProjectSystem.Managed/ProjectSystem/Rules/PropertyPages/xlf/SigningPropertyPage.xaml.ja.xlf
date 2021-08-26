@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ja" original="../SigningPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="translated">秘密キーへのアクセスが制限されている場合に遅延署名を使用します。ビルド中には公開キーが使用され、秘密キー情報の追加はアセンブリが渡されるまで先送りされます。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">遅延署名のみ</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Select this check box to sign the assembly.</source>
+        <target state="translated">アセンブリに署名するには、このチェック ボックスをオンにします。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">アセンブリに署名する</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|Description">
+        <source>Properties related to producing signing assemblies.</source>
+        <target state="translated">署名アセンブリの生成に関連するプロパティ。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+        <source>Signing</source>
+        <target state="translated">署名</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">厳密な名前のキー ファイル</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

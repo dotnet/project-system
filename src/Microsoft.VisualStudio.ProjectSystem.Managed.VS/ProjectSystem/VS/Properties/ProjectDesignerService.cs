@@ -45,7 +45,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
             if (frame != null)
             {   // Opened within Visual Studio
-
                 // Can only use Shell APIs on the UI thread
                 await _projectVsServices.ThreadingService.SwitchToUIThread();
 

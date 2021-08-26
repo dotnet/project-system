@@ -380,7 +380,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // NOTE when we previously had zero item types, we can surmise that the project has just been loaded. In such
                 // a case it is not correct to assume that the items changed, and so we do not update the timestamp.
                 // See https://github.com/dotnet/project-system/issues/5386
-                DateTime lastItemsChangedAtUtc = itemsChanged && ItemTypes.Count != 0 ? DateTime.UtcNow : LastItemsChangedAtUtc;
+                DateTime lastItemsChangedAtUtc = itemsChanged && !ItemTypes.IsEmpty ? DateTime.UtcNow : LastItemsChangedAtUtc;
 
                 DateTime lastAdditionalDependentFileTimesChangedAtUtc = GetLastTimeAdditionalDependentFilesAddedOrRemoved();
 
@@ -405,20 +405,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     lastAdditionalDependentFileTimesChangedAtUtc: lastAdditionalDependentFileTimesChangedAtUtc,
                     lastItemsChangedAtUtc: lastItemsChangedAtUtc, lastCheckedAtUtc: LastCheckedAtUtc);
 
-
                 DateTime GetLastTimeAdditionalDependentFilesAddedOrRemoved()
                 {
                     var lastExistingAdditionalDependentFiles = AdditionalDependentFileTimes.Where(pair => pair.Value != DateTime.MinValue)
                                                                        .Select(pair => pair.Key)
                                                                        .ToImmutableHashSet();
 
-                    var currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
+                    IEnumerable<string> currentExistingAdditionalDependentFiles = projectSnapshot.AdditionalDependentFileTimes
                                                                         .Where(pair => pair.Value != DateTime.MinValue)
                                                                         .Select(pair => pair.Key);
 
                     bool additionalDependentFilesChanged = !lastExistingAdditionalDependentFiles.SetEquals(currentExistingAdditionalDependentFiles);
 
-                    return additionalDependentFilesChanged && lastExistingAdditionalDependentFiles.Count != 0 ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
+                    return additionalDependentFilesChanged && !lastExistingAdditionalDependentFiles.IsEmpty ? DateTime.UtcNow : LastAdditionalDependentFileTimesChangedAtUtc;
                 }
 
                 static CopyType GetCopyType(IImmutableDictionary<string, string> itemMetadata)

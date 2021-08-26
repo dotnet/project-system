@@ -17,9 +17,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         '  of the project.  
         Private _checkoutSectionCount As Integer
 
-
-
-
 #Region "Rude checkout support"
 
         ''' <summary>
@@ -32,7 +29,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             Debug.Assert(_checkoutSectionCount >= 0, "Bad m_CheckoutCriticalSectionCount count")
             _checkoutSectionCount += 1
         End Sub
-
 
         ''' <summary>
         '''After any code which may check out the project file, a designer must call this function.  This
@@ -77,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-
         ''' <summary>
         ''' If true, the project has been reloaded between a call to EnterProjectCheckoutSection and 
         '''   LeaveProjectCheckoutSection.  See EnterProjectCheckoutSection() for more information.
@@ -88,7 +83,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End Get
         End Property
 
-
         ''' <summary>
         ''' If true, a call to EnterProjectCheckoutSection has been made, and the matching LeaveProjectCheckoutSection
         '''   call has not yet been made.
@@ -98,7 +92,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return _checkoutSectionCount > 0
             End Get
         End Property
-
 
         ''' <summary>
         ''' Dispose
@@ -124,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
             MyBase.Dispose(disposing)
         End Sub
-
 
         ''' <summary>
         ''' Called in a delayed fashion (via PostMessage) after a LeaveProjectCheckoutSection call if the

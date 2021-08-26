@@ -346,6 +346,16 @@
     </IntProperty.DataSource>
   </IntProperty>
 
+  <StringProperty Name="FriendlyTargetFramework"
+                Visible="False">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                PersistedName="TargetFramework"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
   <StringProperty Name="TargetFrameworkMoniker"
                   Visible="False">
     <StringProperty.DataSource>
@@ -425,6 +435,36 @@
       <DataSource HasConfigurationCondition="False"
                   PersistedName="RunAnalyzersDuringLiveAnalysis"
                   Persistence="UserFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="EnableNETAnalyzers"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="EnableNETAnalyzers"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="AnalysisLevel"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="AnalysisLevel"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="EnforceCodeStyleInBuild"
+                Visible="False">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="EnforceCodeStyleInBuild"
+                  Persistence="ProjectFile"
                   SourceOfDefaultValue="AfterContext" />
     </BoolProperty.DataSource>
   </BoolProperty>

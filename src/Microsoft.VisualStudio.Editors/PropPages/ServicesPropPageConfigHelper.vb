@@ -1,6 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.Diagnostics.CodeAnalysis
 Imports System.Globalization
 Imports System.IO
 Imports System.Runtime.InteropServices
@@ -147,7 +146,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         'This code is stolen from SecurityPropertyPage.  If you don't do this, the document doesn't get written unless it
         'happens to be open
 
-        <SuppressMessage("Microsoft.Globalization", "CA1303:DoNotPassLiteralsAsLocalizedParameters")>
         Private Shared Sub SaveAppConfig(fileName As String, provider As IServiceProvider, hierarchy As IVsHierarchy)
             Dim rdt As IVsRunningDocumentTable = TryCast(provider.GetService(GetType(IVsRunningDocumentTable)), IVsRunningDocumentTable)
             Debug.Assert(rdt IsNot Nothing, "What?  No RDT?")
@@ -833,7 +831,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
             Return Nothing
         End Function
-
 
         Friend Shared Function GetCacheTimeout(doc As XmlDocument, Optional projectHierarchy As IVsHierarchy = Nothing) As Integer
             Return TryGettingIntegerAttributeValue(GetDefaultClientServicesRoleManagerProviderNode(doc, projectHierarchy), CacheTimeout, CacheTimeoutDefault)

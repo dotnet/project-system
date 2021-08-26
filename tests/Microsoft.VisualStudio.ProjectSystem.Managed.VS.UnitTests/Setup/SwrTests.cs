@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.ProjectSystem.Rules;
 using Microsoft.VisualStudio.Utilities;
 using Xunit;
 using Xunit.Abstractions;
@@ -64,6 +65,12 @@ namespace Microsoft.VisualStudio.Setup
                 var setupFiles = setupFilesByCulture[culture];
                 var ruleFiles = ruleFilesByCulture[culture];
 
+                var embeddedRules = RuleServices.GetAllEmbeddedRules()
+                                                .Select(name => name + ".xaml");
+
+                // Exclude the ones that are embedded, they won't be installed
+                ruleFiles = ruleFiles.Except(embeddedRules);
+
                 foreach (var missing in ruleFiles.Except(setupFiles, StringComparer.OrdinalIgnoreCase))
                 {
                     guilty = true;
@@ -115,7 +122,7 @@ namespace Microsoft.VisualStudio.Setup
 
                 return (null, null);
             }
-        }        
+        }
 
         private static IEnumerable<(string Folder, string File)> ReadSwrFiles(string path)
         {

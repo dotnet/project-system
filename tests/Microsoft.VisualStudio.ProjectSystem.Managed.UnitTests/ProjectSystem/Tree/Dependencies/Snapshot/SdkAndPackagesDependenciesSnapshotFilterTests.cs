@@ -110,7 +110,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Id = packageName,
                 ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
-                Flags = DependencyTreeFlags.PackageDependency.Union(DependencyTreeFlags.Unresolved) // to see if unresolved is fixed
+                Flags = DependencyTreeFlags.PackageDependency.Union(ProjectTreeFlags.BrokenReference) // to see if unresolved is fixed
             };
 
             var packageDependency = new TestDependency
@@ -155,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 Id = packageName,
                 ProviderType = SdkRuleHandler.ProviderTypeString,
                 Resolved = true,
-                Flags = DependencyTreeFlags.SdkDependency.Union(DependencyTreeFlags.Resolved)
+                Flags = DependencyTreeFlags.SdkDependency.Union(ProjectTreeFlags.ResolvedReference)
             };
 
             var packageDependency = new TestDependency

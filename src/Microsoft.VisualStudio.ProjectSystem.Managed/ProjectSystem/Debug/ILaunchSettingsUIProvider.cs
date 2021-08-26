@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         string CommandName { get; }
 
         /// <summary>
-        /// The user-friendly name of this this launch provider, to show in the drop down.
+        /// The user-friendly name of this launch provider, to show in the drop down.
         /// </summary>
         string FriendlyName { get; }
 

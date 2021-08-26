@@ -13,18 +13,14 @@ csharp_style_var_elsewhere = true:none
 # where we want to marshal the continuations back to it.
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.CA2016.severity = none        # ForwardCancellationTokenToInvocations
 dotnet_diagnostic.CA2000.severity = none
 dotnet_diagnostic.CA2009.severity = none
 
 # System.Runtime.Analyzers
 dotnet_diagnostic.CA1825.severity = none        # Avoid zero length allocations - suppress for non-shipping/test projects (originally RS0007)
 
-# Microsoft.Composition.Analyzers
-dotnet_diagnostic.RS0006.severity = none
-dotnet_diagnostic.RS0023.severity = none
-
 # Microsoft.CodeAnalysis.CSharp.Features
-dotnet_diagnostic.IDE0001.severity = none       # Too noisy due to https://github.com/dotnet/roslyn/issues/27819
 dotnet_diagnostic.IDE1006.severity = none       # Naming styles is too noisy as it fires on all async tests
 dotnet_diagnostic.IDE1006WithoutSuggestion.severity = none
 dotnet_diagnostic.IDE0060.severity = none       # Unused parameter rule fires on [MemberData] usage

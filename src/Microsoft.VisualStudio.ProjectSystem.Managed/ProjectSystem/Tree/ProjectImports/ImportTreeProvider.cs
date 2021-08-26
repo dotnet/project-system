@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 using Microsoft.VisualStudio.ProjectSystem.VS;
@@ -34,8 +35,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
     internal sealed partial class ImportTreeProvider : ProjectTreeProviderBase, IProjectTreeProvider, IShowAllFilesProjectTreeProvider
     {
         private static readonly ProjectImageMoniker s_rootIcon = ManagedImageMonikers.ProjectImports.ToProjectSystemType();
-        private static readonly ProjectImageMoniker s_nodeIcon = ManagedImageMonikers.TargetFile.ToProjectSystemType();
-        private static readonly ProjectImageMoniker s_nodeImplicitIcon = ManagedImageMonikers.TargetFilePrivate.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_nodeIcon = KnownMonikers.TargetFile.ToProjectSystemType();
+        private static readonly ProjectImageMoniker s_nodeImplicitIcon = KnownMonikers.TargetFilePrivate.ToProjectSystemType();
 
         public static ProjectTreeFlags ProjectImport { get; } = ProjectTreeFlags.Create("ProjectImport");
         public static ProjectTreeFlags ProjectImportImplicit { get; } = ProjectTreeFlags.Create("ProjectImportImplicit");
@@ -68,6 +69,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;
             _unconfiguredProjectTasksService = unconfiguredProjectTasksService;
+        }
+
+        public override string? GetPath(IProjectTree node)
+        {
+            // Only process nodes belonging to our tree.
+            // This test excludes the root which is fine as it doesn't have a file path.
+            if (node.Flags.Contains(ProjectImport))
+            {
+                return node.FilePath;
+            }
+
+            return null;
         }
 
         public bool ShowAllFiles

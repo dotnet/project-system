@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             // Look through the properties and find all declared dimensions (ie <Configurations>, <Platforms>, <TargetFrameworks>) 
             // and return their dimension name equivalents (Configuration, Platform, TargetFramework)
             return DimensionProviders.Select(v => v.Value)
-                                     .OfType<IProjectConfigurationDimensionsProvider4>()
+                                     .OfType<IProjectConfigurationDimensionsProvider5>()
                                      .SelectMany(p => p.GetBestGuessDimensionNames(properties));
         }
     }

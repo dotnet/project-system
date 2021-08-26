@@ -11,10 +11,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     /// <summary>
     /// Provides the names and display names of "debugger" property pages that specify a
-    /// launch target. 
+    /// launch target.
     /// </summary>
     /// <remarks>
-    /// Specifically, we look for pages with a "debugger" <see cref="Rule.PageTemplate"/>
+    /// Specifically, we look for pages with a "commandNameBasedDebugger" <see cref="Rule.PageTemplate"/>
     /// and a CommandName property in their metadata.
     /// </remarks>
     [ExportDynamicEnumValuesProvider(nameof(LaunchTargetPropertyPageEnumProvider))]
@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return (ICollection<IEnumValue>)catalog.GetPropertyPagesSchemas()
                     .Select(name => catalog.GetSchema(name))
                     .WhereNotNull()
-                    .Where(rule => string.Equals(rule.PageTemplate, "Debugger", StringComparison.OrdinalIgnoreCase)
+                    .Where(rule => string.Equals(rule.PageTemplate, "CommandNameBasedDebugger", StringComparison.OrdinalIgnoreCase)
                             && rule.Metadata.TryGetValue("CommandName", out object pageCommandNameObj))
                     .Select(rule => new PageEnumValue(new EnumValue
                     {

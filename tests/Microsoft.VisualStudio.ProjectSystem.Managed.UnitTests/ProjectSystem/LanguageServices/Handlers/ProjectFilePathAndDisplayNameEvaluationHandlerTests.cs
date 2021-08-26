@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             context.DisplayName = "DisplayName";
 
             var handler = CreateInstance(context: context);
-            
+
             var projectChange = IProjectChangeDescriptionFactory.FromJson(
 @"{
     ""Difference"": { 
@@ -78,7 +78,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 
             Assert.Equal(@"Project", context.DisplayName);
         }
-
 
         [Theory] // Dimension Names                             Dimension Values       Implicit Dimension Names,                 Expected
         [InlineData("Configuration",                            "Debug",               "",                                       "Project")]

@@ -28,12 +28,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             activeProfileValue.Setup(s => s.Name).Returns(activeProfile);
             var debuggerData = new PropertyPageData(ProjectDebugger.SchemaName, ProjectDebugger.ActiveDebugProfileProperty, activeProfileValue.Object);
 
-            var specialFilesManager = ActiveConfiguredProjectFactory.ImplementValue(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
+            var specialFilesManager = IActiveConfiguredValueFactory.ImplementValue<IAppDesignerFolderSpecialFileProvider?>(() => IAppDesignerFolderSpecialFileProviderFactory.ImplementGetFile(appDesignerFolder));
             var project = UnconfiguredProjectFactory.Create(fullPath: @"c:\test\Project1\Project1.csproj");
             var properties = ProjectPropertiesFactory.Create(project, new[] { debuggerData });
             var commonServices = IUnconfiguredProjectCommonServicesFactory.Create(project, IProjectThreadingServiceFactory.Create(), null, properties);
             var projectServices = IUnconfiguredProjectServicesFactory.Create(IProjectAsynchronousTasksServiceFactory.Create());
-            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager);
+            var projectFaultHandlerService = IProjectFaultHandlerServiceFactory.Create();
+            var provider = new LaunchSettingsUnderTest(project, projectServices, fileSystem ?? new IFileSystemMock(), commonServices, null, specialFilesManager, projectFaultHandlerService);
             return provider;
         }
 
@@ -84,7 +85,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Null(provider.ActiveProfile);
 
             provider.SetCurrentSnapshot(testProfiles.Object);
-            Assert.Equal(activeProfile, provider.ActiveProfile.Name);
+            Assert.NotNull(provider.ActiveProfile);
+            Assert.Equal(activeProfile, provider.ActiveProfile?.Name);
         }
 
         [Fact]
@@ -269,7 +271,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.False(await provider.SettingsFileHasChangedAsyncTest());
         }
-
 
         [Fact]
         public async Task ReadProfilesFromDisk_NoFile()
@@ -661,7 +662,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
-            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name.Equals("test")));
+            Assert.Null(provider.CurrentSnapshot.Profiles.FirstOrDefault(p => p.Name!.Equals("test")));
         }
 
         [Fact]
@@ -714,9 +715,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.Equal(!isInMemory, moqFS.FileExists(provider.LaunchSettingsFile));
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
             // Check snapshot
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
 
-            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
         }
 
         [Theory]
@@ -749,9 +750,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
             // Check snapshot
             AssertEx.CollectionLength(provider.CurrentSnapshot.GlobalSettings, 2);
-            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object updatedSettings));
+            Assert.True(provider.CurrentSnapshot.GlobalSettings.TryGetValue("iisSettings", out object? updatedSettings));
 
-            Assert.True(((IISSettingsData)updatedSettings).WindowsAuthentication);
+            Assert.True(((IISSettingsData)updatedSettings!).WindowsAuthentication);
         }
         [Fact]
         public async Task RemoveGlobalSettingAsync_SettingDoesntExist()
@@ -877,15 +878,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     // Derives from base class to be able to set protected members
     internal class LaunchSettingsUnderTest : LaunchSettingsProvider
     {
-        // ECan pass null for all and a default will be created
         public LaunchSettingsUnderTest(
             UnconfiguredProject project,
             IUnconfiguredProjectServices projectServices,
             IFileSystem fileSystem,
             IUnconfiguredProjectCommonServices commonProjectServices,
             IActiveConfiguredProjectSubscriptionService? projectSubscriptionService,
-            ActiveConfiguredProject<IAppDesignerFolderSpecialFileProvider> appDesignerFolderSpecialFileProvider,
-            IProjectFaultHandlerService? projectFaultHandler = null)
+            IActiveConfiguredValue<IAppDesignerFolderSpecialFileProvider?> appDesignerFolderSpecialFileProvider,
+            IProjectFaultHandlerService projectFaultHandler)
           : base(project, projectServices, fileSystem, commonProjectServices, projectSubscriptionService, appDesignerFolderSpecialFileProvider, projectFaultHandler)
         {
             // Block the code from setting up one on the real file system. Since we block, it we need to set up the fileChange scheduler manually
@@ -944,7 +944,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 
         [JsonProperty(PropertyName = "iis")]
         public ServerBindingData? IISBindingData { get; set; }
-
 
         [JsonProperty(PropertyName = "iisExpress")]
         public ServerBindingData? IISExpressBindingData { get; set; }

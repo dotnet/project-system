@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -38,7 +37,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags,
                 model.Flags);
         }
 
@@ -69,7 +69,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags,
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags,
                 model.Flags);
         }
 
@@ -100,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags,
+                DependencyTreeFlags.UnresolvedDependencyFlags,
                 model.Flags);
         }
 
@@ -125,13 +126,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(AssemblyReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.ReferencePrivate, model.Icon);
-            Assert.Equal(ManagedImageMonikers.ReferencePrivate, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.ReferencePrivate, model.Icon);
+            Assert.Equal(KnownMonikers.ReferencePrivate, model.ExpandedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedIcon);
             Assert.Equal(KnownMonikers.ReferenceWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.AssemblyDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);
         }

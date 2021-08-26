@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -41,8 +40,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 
             Assert.NotNull(result);
             Assert.Equal(targetFramework.FullName, result.Caption);
-            Assert.Equal(ManagedImageMonikers.LibraryWarning, result.Icon);
-            Assert.Equal(ManagedImageMonikers.LibraryWarning, result.ExpandedIcon);
+            Assert.Equal(KnownMonikers.LibraryWarning, result.Icon);
+            Assert.Equal(KnownMonikers.LibraryWarning, result.ExpandedIcon);
             Assert.True(result.Flags.Contains(DependencyTreeFlags.TargetNode));
             Assert.True(result.Flags.Contains("$TFM:tFm1"));
         }
@@ -96,8 +95,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var project = UnconfiguredProjectFactory.Create();
             var factory = new DependenciesViewModelFactory(project);
 
-            Assert.Equal(ManagedImageMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.None));
-            Assert.Equal(ManagedImageMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.Warning));
+            Assert.Equal(KnownMonikers.ReferenceGroup, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.None));
+            Assert.Equal(KnownMonikers.ReferenceGroupWarning, factory.GetDependenciesRootIcon(maximumDiagnosticLevel: DiagnosticLevel.Warning));
         }
 
         private class TestableDependenciesViewModelFactory : DependenciesViewModelFactory

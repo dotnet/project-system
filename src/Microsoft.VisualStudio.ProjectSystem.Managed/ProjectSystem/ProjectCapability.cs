@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public const string ProjectConfigurationsDeclaredDimensions = ProjectCapabilities.ProjectConfigurationsDeclaredDimensions;
         public const string LanguageService = nameof(LanguageService);
         public const string DotNetLanguageService = DotNet + " & " + LanguageService;
-        
+
         /// <summary>
         /// Instructs CPS to order tree items according to the <see cref="IProjectTree2.DisplayOrder"/> property first.
         /// This is in addition to the default ordering by <see cref="ProjectTreeFlags.Common.BubbleUp"/>, then by
@@ -39,13 +39,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// alphabetical.
         /// </summary>
         public const string SortByDisplayOrder = ProjectCapabilities.SortByDisplayOrder;
-        
+
         /// <summary>
         /// Enables commands and behaviour that allows reordering items in the tree.
         /// Used by F# projects, for which item order is significant to compilation.
         /// </summary>
         public const string EditableDisplayOrder = nameof(EditableDisplayOrder);
-        
+
         public const string DotNet = ".NET";
         public const string WindowsForms = nameof(WindowsForms);
         public const string WPF = nameof(WPF);

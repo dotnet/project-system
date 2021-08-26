@@ -1,22 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Runtime.Versioning;
 
 namespace Microsoft.VisualStudio.ProjectSystem
 {
-    internal class TargetFramework : ITargetFramework
+    internal sealed class TargetFramework : IEquatable<TargetFramework?>
     {
-        public static readonly ITargetFramework Empty = new TargetFramework(string.Empty);
+        public static readonly TargetFramework Empty = new TargetFramework(string.Empty);
 
         /// <summary>
         /// The target framework used when a TFM short-name cannot be resolved.
         /// </summary>
-        public static readonly ITargetFramework Unsupported = new TargetFramework("Unsupported,Version=v0.0");
+        public static readonly TargetFramework Unsupported = new TargetFramework("Unsupported,Version=v0.0");
 
         /// <summary>
         /// Any represents all TFMs, no need to be localized, used only in internal data.
         /// </summary>
-        public static readonly ITargetFramework Any = new TargetFramework("any");
+        public static readonly TargetFramework Any = new TargetFramework("any");
 
         public TargetFramework(FrameworkName frameworkName, string? shortName = null)
         {
@@ -24,7 +25,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             FullName = frameworkName.FullName;
             ShortName = shortName ?? string.Empty;
-            FriendlyName = $"{frameworkName.Identifier} {frameworkName.Version}";
         }
 
         /// <summary>
@@ -38,55 +38,41 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             FullName = moniker;
             ShortName = moniker;
-            FriendlyName = moniker;
         }
 
+        /// <summary>
+        /// Gets the full moniker (TFM).
+        /// </summary>
         public string FullName { get; }
 
+        /// <summary>
+        /// Gets the short name.
+        /// </summary>
         public string ShortName { get; }
 
-        public string FriendlyName { get; }
-
         /// <summary>
-        /// Override Equals to handle equivalency correctly. They are equal if the 
+        /// Override Equals to handle equivalency correctly. They are equal if the
         /// monikers match
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj switch
-            {
-                ITargetFramework targetFramework => Equals(targetFramework),
-                string s => Equals(s),
-                _ => false
-            };
+            return obj is TargetFramework targetFramework && Equals(targetFramework);
         }
 
-        public bool Equals(ITargetFramework? obj)
+        public bool Equals(TargetFramework? obj)
         {
-            if (obj != null)
-            {
-                return FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
-            }
-
-            return false;
+            return obj != null && FullName.Equals(obj.FullName, StringComparisons.FrameworkIdentifiers);
         }
 
-        public bool Equals(string? obj)
+        public static bool operator ==(TargetFramework? left, TargetFramework? right)
         {
-            if (obj != null)
-            {
-                return string.Equals(FullName, obj, StringComparisons.FrameworkIdentifiers)
-                    || string.Equals(ShortName, obj, StringComparisons.FrameworkIdentifiers);
-            }
-
-            return false;
+            return left is null ? right is null : left.Equals(right);
         }
 
-        public static bool operator ==(TargetFramework left, TargetFramework right)
-            => left is null ? right is null : left.Equals(right);
-
-        public static bool operator !=(TargetFramework left, TargetFramework right)
-            => !(left == right);
+        public static bool operator !=(TargetFramework? left, TargetFramework? right)
+        {
+            return !(left == right);
+        }
 
         public override int GetHashCode()
         {

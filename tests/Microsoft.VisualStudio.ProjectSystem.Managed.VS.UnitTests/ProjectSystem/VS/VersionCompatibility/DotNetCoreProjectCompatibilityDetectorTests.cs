@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
 {
     public class DotNetCoreProjectCompatibilityDetectorTests
     {
-
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -157,7 +156,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             Mock.Get(dialogServices).Verify(x => x.DontShowAgainMessageBox(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
-
         private static DotNetCoreProjectCompatibilityDetector CreateCompatibilityDetector(out IDialogServices dialogServices,
                                                                                           string? versionDataString = null,
                                                                                           Version? vsVersion = null,
@@ -183,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
             var vsSolutionService = IVsServiceFactory.Create<SVsSolution, IVsSolution>(IVsSolutionFactory.CreateWithAdviseUnadviseSolutionEvents(1, isFullyLoaded: isSolutionOpen));
             var vsAppIdService = IVsServiceFactory.Create<SVsAppId, IVsAppId>(Mock.Of<IVsAppId>());
             var vsShellService = IVsServiceFactory.Create<SVsShell, IVsShell>(Mock.Of<IVsShell>());
-            
+
             var compatibilityDetector = new TestDotNetCoreProjectCompatibilityDetector(projectAccessor,
                                                                                        lazyDialogServices,
                                                                                        threadHandling,
@@ -221,7 +219,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
     }
   }
 }";
-
 
         private const string defaultUnSupportedVersionDataString = @" {
   ""vsVersions"": {

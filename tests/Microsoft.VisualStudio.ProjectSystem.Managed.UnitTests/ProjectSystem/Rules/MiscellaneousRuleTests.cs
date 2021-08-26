@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 var visibleAttribute = element.Attribute("Visible");
 
-                if (visibleAttribute != null && visibleAttribute.Value.Equals("false", StringComparison.OrdinalIgnoreCase))
+                if (visibleAttribute?.Value.Equals("false", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     Assert.Null(element.Attribute("DisplayName"));
                     Assert.Null(element.Attribute("Description"));
@@ -128,6 +128,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             {
                 // An item type must be specified
                 Assert.NotNull(itemType);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetAllRules))]
+        public void PropertiesDataSourcesMustMatchItemDataSources(string ruleName, string fullPath)
+        {
+            var root = LoadXamlRule(fullPath, out var namespaceManager);
+
+            var dataSource = root.XPathSelectElement(@"/msb:Rule/msb:Rule.DataSource/msb:DataSource", namespaceManager);
+
+            var itemType = dataSource?.Attribute("ItemType");
+            if (itemType != null)
+            {
+                foreach (var property in GetProperties(root))
+                {
+                    var element = GetDataSource(property);
+
+                    var propertyItemType = element?.Attribute("ItemType");
+                    if (propertyItemType != null)
+                    {
+                        Assert.Equal(itemType?.Value, propertyItemType.Value);
+                    }
+                }
             }
         }
 

@@ -19,4 +19,9 @@
       <SourceRoot Remove="@(SourceRoot)" Condition="'%(SourceRoot.SourceLinkUrl)' == ''" />
     </ItemGroup>
   </Target>
+
+
+  <!-- WORKAROUND: https://github.com/dotnet/wpf/issues/810 -->
+  <Import Project="$(_WpfTempProjectNuGetFilePathNoExt).targets" Condition="'$(_WpfTempProjectNuGetFilePathNoExt)' != '' and Exists('$(_WpfTempProjectNuGetFilePathNoExt).targets')"/>
+
 </Project>

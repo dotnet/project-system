@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                     if (!string.Equals(_nuGetPackageFoldersString, value, StringComparisons.Paths))
                     {
                         _nuGetPackageFoldersString = value;
-                        _nuGetPackageFolders = value.Split(';');
+                        _nuGetPackageFolders = value.Split(Delimiter.Semicolon);
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                     // unlikely and should be easy to work around if ever needed.
                     const string DevEnvExeRelativePath = "Common7\\IDE\\";
 
-                    if (dir != null && dir.EndsWith(DevEnvExeRelativePath))
+                    if (dir?.EndsWith(DevEnvExeRelativePath) == true)
                     {
                         dir = dir.Substring(0, dir.Length - DevEnvExeRelativePath.Length);
                     }

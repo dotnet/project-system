@@ -8,7 +8,7 @@ using System.Text;
 namespace Microsoft.VisualStudio.Text
 {
     /// <summary>
-    ///  Provides support for computing a hash for <see cref="string"/> instances 
+    ///  Provides support for computing a hash for <see cref="string"/> instances
     ///  incrementally across several segments.
     /// </summary>
     internal class IncrementalHasher : IDisposable

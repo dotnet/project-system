@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="es" original="../SigningPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="translated">Use la firma retrasada cuando el acceso a la clave privada esté restringido. La clave pública se usará durante la compilación y la adición de la información de clave privada se aplazará hasta la entrega del ensamblado.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">Solo retrasar firma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Select this check box to sign the assembly.</source>
+        <target state="translated">Seleccione esta casilla para firmar el ensamblado.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">Firmar el ensamblado</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|Description">
+        <source>Properties related to producing signing assemblies.</source>
+        <target state="translated">Propiedades relacionadas con la generación de ensamblados de firma.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|SigningPropertyPage|DisplayName">
+        <source>Signing</source>
+        <target state="translated">Firma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">Archivo de clave de nombre seguro</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

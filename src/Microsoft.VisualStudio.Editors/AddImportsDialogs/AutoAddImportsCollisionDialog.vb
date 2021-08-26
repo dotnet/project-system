@@ -42,12 +42,10 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             Refresh()
         End Sub
 
-
         Private Sub FixupForRadioButtonLimitations(radioButtonToLayout As RadioButton, dummyLabel As Label)
 
             radioButtonToLayout.AutoSize = False
             radioButtonToLayout.Text = dummyLabel.Text
-
 
             ' need to add 4 since radiobuttons have default padding of 2px.
             radioButtonToLayout.Height = dummyLabel.Height + 4
@@ -56,7 +54,6 @@ Namespace Microsoft.VisualStudio.Editors.AddImports
             m_layoutPanel.Controls.Remove(dummyLabel)
             m_layoutPanel.SetColumnSpan(radioButtonToLayout, 4) ' will set the Width appropriately
         End Sub
-
 
         Private Sub ButtonClick(sender As Object, e As EventArgs) Handles m_cancelButton.Click, m_okButton.Click
             Close()

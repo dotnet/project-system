@@ -19,8 +19,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Implements IVsUpdateSolutionEvents
         Implements IVsCfgProviderEvents
 
-
-
 #Region "Fields/constants"
 
         'The active project/hierarchy (with the current design, this can never change for this instance of the 
@@ -55,7 +53,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 #End Region
 
-
 #Region "Enums"
 
         ''' <summary>
@@ -68,7 +65,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Enum
 
 #End Region
-
 
 #Region "Events"
 
@@ -107,8 +103,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 #End Region
 
-
-
         ''' <summary>
         ''' Constructor
         ''' </summary>
@@ -132,7 +126,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             AdviseEventHandling()
         End Sub
 
-
         ''' <summary>
         ''' Dispose
         ''' </summary>
@@ -142,7 +135,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _vsCfgProvider = Nothing
             _vsSolutionBuildManager = Nothing
         End Sub
-
 
         ''' <summary>
         ''' Changes the selected configuration and platform by name and selection type search, and notifies the pages of the update.
@@ -161,7 +153,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             ChangeSelection(NewSelectedConfigIndex, NewSelectedPlatformIndex, FireNotifications)
         End Sub
-
 
         ''' <summary>
         ''' Changes the selected configuration and platform to the given indices, and notifies the pages of the update.
@@ -184,7 +175,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns the index of the item to be the currently selected item in the configuration dropdown of all
         '''   config-dependent property pages
@@ -194,7 +184,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return _selectedConfigIndex
             End Get
         End Property
-
 
         ''' <summary>
         ''' Returns the index of the item to be the currently selected item in the platform dropdown of all
@@ -206,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Get
         End Property
 
-
         'Note: currently, this class keeps a list of the configuration and platforms to be displayed, and the
         '  PropPageDesigner contains the comboboxes (i.e., each page's PropPageDesignerView has comboboxes, so there
         '  are multiple of them.  It would be easier to move the comboboxes to the application designer, except:
@@ -215,7 +203,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         '       if the comboboxes are in the app designer (because the app designer is the docview parent and the
         '       shell doesn't currently allow it to participate in message pre-processing)
         '  c) I didn't want to change the UI that much at this point in the product cycle
-
 
         ''' <summary>
         ''' All current entries to be displayed in each pages' configuration combobox
@@ -229,7 +216,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Get
         End Property
 
-
         ''' <summary>
         ''' All current entries to be displayed in each pages' platform combobox
         ''' </summary>
@@ -241,7 +227,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return _platformDropdownEntries
             End Get
         End Property
-
 
         ''' <summary>
         ''' Updates the configuration and platform dropdown entries based on the current
@@ -313,7 +298,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             _selectedPlatformIndex = 0
         End Sub
 
-
         ''' <summary>
         ''' Retrieves the project associated with this configuration state
         ''' </summary>
@@ -323,7 +307,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return _project
             End Get
         End Property
-
 
         ''' <summary>
         ''' Configuration provider for the project (IVsCfgProvider2)
@@ -335,7 +318,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Get
         End Property
 
-
         ''' <summary>
         ''' Returns whether or not we're in simplified config mode for this project, which means that
         '''   we hide the configuration/platform comboboxes.
@@ -345,7 +327,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Return Common.ShellUtil.GetIsSimplifiedConfigMode(_projectHierarchy)
             End Get
         End Property
-
 
         ''' <summary>
         ''' Since there's no notification for the Tools.Options "Show Advanced Build Configurations" property when it
@@ -362,7 +343,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End If
         End Sub
 
-
         ''' <summary>
         ''' Retrieves the current list of all configurations for the project
         ''' </summary>
@@ -378,7 +358,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return Configs
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current list of all configuration names for the project
         ''' </summary>
@@ -393,7 +372,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return Names
         End Function
 
-
         ''' <summary>
         ''' Retrieves the current list of all configuration platform names for the project
         ''' </summary>
@@ -407,7 +385,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Return Names
         End Function
-
 
         ''' <summary>
         ''' Selects an item in the configuration or platform combobox by configuration/platform name and selection type.
@@ -504,9 +481,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return 0
         End Function
 
-
-
-
 #Region "Configuration change handling"
 
         ''' <summary>
@@ -519,7 +493,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             VSErrorHandler.ThrowOnFailure(_vsSolutionBuildManager.AdviseUpdateSolutionEvents(Me, _updateSolutionEventsCookie))
             VSErrorHandler.ThrowOnFailure(VsCfgProvider.AdviseCfgProviderEvents(Me, _cfgProviderEventsCookie))
         End Sub
-
 
         ''' <summary>
         ''' Stoplistening to configuration change events
@@ -535,7 +508,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 _cfgProviderEventsCookie = 0
             End If
         End Sub
-
 
         ''' <summary>
         ''' Update the current set of entries and fire the notification events to the property pages
@@ -561,7 +533,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             RaiseEvent ConfigurationListAndSelectionChanged()
         End Sub
 
-
         ''' <summary>
         ''' A configuration name has been added.
         ''' </summary>
@@ -576,7 +547,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw
             End Try
         End Function
-
 
         ''' <summary>
         ''' A configuration name has been deleted.
@@ -596,7 +566,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw
             End Try
         End Function
-
 
         ''' <summary>
         ''' A configuration name has been renamed
@@ -618,7 +587,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             End Try
         End Function
 
-
         ''' <summary>
         ''' A platform name has been added
         ''' </summary>
@@ -633,7 +601,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw
             End Try
         End Function
-
 
         ''' <summary>
         ''' A platform name has been deleted
@@ -653,7 +620,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Throw
             End Try
         End Function
-
 
         ''' <summary>
         ''' Fired after the active project configuration for a project in the solution has been
@@ -701,10 +667,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
 #End Region
 
-
         '**************************************
-
-
 
         ''' <summary>
         ''' This nested class represents an item in the configuration or platform dropdown listbox
@@ -726,7 +689,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
                 Me.Name = Name
                 Me.SelectionType = SelectionType
             End Sub
-
 
             ''' <summary>
             ''' Returns the display string to show in the combobox

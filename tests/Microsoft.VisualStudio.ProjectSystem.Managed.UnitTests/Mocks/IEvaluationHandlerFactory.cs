@@ -18,14 +18,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return mock.Object;
         }
 
-        public static IProjectEvaluationHandler ImplementHandle(string evaluationRule, Action<IComparable, IProjectChangeDescription, bool, IProjectLogger> action)
+        public static IProjectEvaluationHandler ImplementHandle(string evaluationRule, Action<IComparable, IProjectChangeDescription, ContextState, IProjectLogger> action)
         {
             var mock = new Mock<IProjectEvaluationHandler>();
 
             mock.SetupGet(h => h.ProjectEvaluationRule)
                 .Returns(evaluationRule);
 
-            mock.Setup(h => h.Handle(It.IsAny<IComparable>(), It.IsAny<IProjectChangeDescription>(), It.IsAny<bool>(), It.IsAny<IProjectLogger>()))
+            mock.Setup(h => h.Handle(It.IsAny<IComparable>(), It.IsAny<IProjectChangeDescription>(), It.IsAny<ContextState>(), It.IsAny<IProjectLogger>()))
                 .Callback(action);
 
             return mock.Object;

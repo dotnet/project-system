@@ -18,6 +18,8 @@ namespace Microsoft.VisualStudio.IO
     {
         Stream Create(string path);
 
+        bool PathExists(string path);
+
         bool FileExists(string path);
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
@@ -26,15 +28,14 @@ namespace Microsoft.VisualStudio.IO
         void WriteAllText(string path, string content, Encoding encoding);
         void WriteAllBytes(string path, byte[] bytes);
 
-
         /// <summary>
-        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to, 
+        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to,
         ///     or <see cref="DateTime.MinValue"/> if the path does not exist or is not accessible.
         /// </summary>
         DateTime GetLastFileWriteTimeOrMinValueUtc(string path);
 
         /// <summary>
-        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to, 
+        ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to,
         ///     indicating if the path exists and is accessible.
         /// </summary>
         /// <returns>

@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices.CSharp
     ///     Provides the C# <see cref="CodeDomProvider"/> for use by designers and code generators.
     /// </summary>
     /// <remarks>
-    ///     This service is requested by <see cref="IVSMDCodeDomCreator.CreateCodeDomProvider(object, int)"/> and 
+    ///     This service is requested by <see cref="IVSMDCodeDomCreator.CreateCodeDomProvider(object, int)"/> and
     ///     returned by <see cref="IVSMDCodeDomProvider.CodeDomProvider"/>.
     /// </remarks>
     [ExportVsProfferedProjectService(typeof(CodeDomProvider))]

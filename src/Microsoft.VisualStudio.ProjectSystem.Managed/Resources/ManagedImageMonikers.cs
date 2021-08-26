@@ -1,177 +1,84 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Diagnostics;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Imaging.Interop;
-using Microsoft.VisualStudio.ProjectSystem;
-
-[assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ImageMonikerDebugDisplay(this)}", Target = typeof(ImageMoniker))]
-[assembly: DebuggerDisplay("{Microsoft.VisualStudio.ProjectSystem.VS.ManagedImageMonikers.ProjectImageMonikerDebugDisplay(this)}", Target = typeof(ProjectImageMoniker))]
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS
 {
     /// <summary>
     /// Contains monikers for icons shipped with Managed Project System.
     /// </summary>
+    
     public static class ManagedImageMonikers
     {
         // These GUIDs and IDs are defined in src\Microsoft.VisualStudio.ProjectSystem.Managed.VS\ManagedImages.imagemanifest
-
         private static readonly Guid s_manifestGuid = new Guid("{259567C1-AA6B-46BF-811C-C145DD9F3B48}");
 
-        public static ImageMoniker ApplicationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 0 };
-        public static ImageMoniker ApplicationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 1 };
-        public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
-        public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
-        public static ImageMoniker Component => new ImageMoniker { Guid = s_manifestGuid, Id = 4 };
-        public static ImageMoniker ComponentPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 5 };
-        public static ImageMoniker ComponentWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 6 };
-        public static ImageMoniker ErrorSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 7 };
-        public static ImageMoniker LibraryWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 8 };
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ApplicationPrivate => KnownMonikers.ApplicationPrivate;
+
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ApplicationWarning => KnownMonikers.ApplicationWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COM")]
+        public static ImageMoniker Component => KnownMonikers.COM;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMPrivate")]
+        public static ImageMoniker ComponentPrivate => KnownMonikers.COMPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.COMWarning")]
+        public static ImageMoniker ComponentWarning => KnownMonikers.COMWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker LibraryWarning => KnownMonikers.LibraryWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceGroup => KnownMonikers.ReferenceGroup;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceGroupWarning => KnownMonikers.ReferenceGroupWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferencePrivate => KnownMonikers.ReferencePrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDK")]
+        public static ImageMoniker Sdk => KnownMonikers.SDK;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDKPrivate")]
+        public static ImageMoniker SdkPrivate => KnownMonikers.SDKPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers.SDKWarning")]
+        public static ImageMoniker SdkWarning => KnownMonikers.SDKWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProject => KnownMonikers.SharedProject;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProjectPrivate => KnownMonikers.SharedProjectPrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker SharedProjectWarning => KnownMonikers.SharedProjectWarning; 
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker TargetFile => KnownMonikers.TargetFile;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker TargetFilePrivate => KnownMonikers.TargetFilePrivate;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker PropertiesFolderClosed => KnownMonikers.PropertiesFolderClosed;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker PropertiesFolderOpened => KnownMonikers.PropertiesFolderOpen;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Application => KnownMonikers.Application;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker CodeInformation => KnownMonikers.CodeInformation;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Library => KnownMonikers.Library;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker Reference => KnownMonikers.Reference;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ReferenceWarning => KnownMonikers.ReferenceWarning;
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker ErrorSmall => throw new NotSupportedException();
+        [Obsolete("Please use Microsoft.VisualStudio.Imaging.KnownMonikers")]
+        public static ImageMoniker WarningSmall => throw new NotSupportedException();
+
+        // Everything below this, still needs to be moved to the ImageCatalog
         public static ImageMoniker NuGetGrey => new ImageMoniker { Guid = s_manifestGuid, Id = 9 };
         public static ImageMoniker NuGetGreyPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 10 };
         public static ImageMoniker NuGetGreyWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 11 };
-        public static ImageMoniker ReferenceGroup => new ImageMoniker { Guid = s_manifestGuid, Id = 12 };
-        public static ImageMoniker ReferenceGroupWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 13 };
-        public static ImageMoniker ReferencePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 14 };
-        public static ImageMoniker Sdk => new ImageMoniker { Guid = s_manifestGuid, Id = 15 };
-        public static ImageMoniker SdkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 16 };
-        public static ImageMoniker SdkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 17 };
-        public static ImageMoniker SharedProject => new ImageMoniker { Guid = s_manifestGuid, Id = 18 };
-        public static ImageMoniker SharedProjectPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 19 };
-        public static ImageMoniker SharedProjectWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 20 };
-        public static ImageMoniker WarningSmall => new ImageMoniker { Guid = s_manifestGuid, Id = 21 };
         public static ImageMoniker Framework => new ImageMoniker { Guid = s_manifestGuid, Id = 22 };
         public static ImageMoniker FrameworkPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 23 };
         public static ImageMoniker FrameworkWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 24 };
         public static ImageMoniker ProjectImports => new ImageMoniker { Guid = s_manifestGuid, Id = 25 };
-        public static ImageMoniker TargetFile => new ImageMoniker { Guid = s_manifestGuid, Id = 26 };
-        public static ImageMoniker TargetFilePrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 27 };
-        public static ImageMoniker PropertiesFolderClosed => new ImageMoniker { Guid = s_manifestGuid, Id = 28 };
-        public static ImageMoniker PropertiesFolderOpened => new ImageMoniker { Guid = s_manifestGuid, Id = 29 };
+        public static ImageMoniker CodeInformationPrivate => new ImageMoniker { Guid = s_manifestGuid, Id = 2 };
+        public static ImageMoniker CodeInformationWarning => new ImageMoniker { Guid = s_manifestGuid, Id = 3 };
 
-        // These internal fields are provided for convenience
-
-        internal static ImageMoniker Abbreviation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Abbreviation };
-        internal static ImageMoniker AboutBox => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.AboutBox };
-        internal static ImageMoniker AbsolutePosition => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.AbsolutePosition };
-        public static ImageMoniker Application => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Application };
-        internal static ImageMoniker BinaryFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.BinaryFile };
-        internal static ImageMoniker Blank => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Blank };
-        public static ImageMoniker CodeInformation => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CodeInformation };
-        internal static ImageMoniker CSProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CSProjectNode };
-        internal static ImageMoniker CSSharedProject => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.CSSharedProject };
-        internal static ImageMoniker FSFileNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSFileNode };
-        internal static ImageMoniker FSProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSProjectNode };
-        internal static ImageMoniker FSScript => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSScript };
-        internal static ImageMoniker FSSignatureFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.FSSignatureFile };
-        internal static ImageMoniker GlyphDown => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.GlyphDown };
-        internal static ImageMoniker GlyphUp => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.GlyphUp };
-        public static ImageMoniker Library => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Library };
-        internal static ImageMoniker Path => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Path };
-        internal static ImageMoniker PathIcon => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathIcon };
-        internal static ImageMoniker PathListBox => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBox };
-        internal static ImageMoniker PathListBoxItem => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.PathListBoxItem };
-        internal static ImageMoniker QuestionMark => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.QuestionMark };
-        public static ImageMoniker Reference => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Reference };
-        public static ImageMoniker ReferenceWarning => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.ReferenceWarning };
-        // NOTE SharedProject is defined in both manifests
-//      internal static ImageMoniker SharedProject    => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.SharedProject    };
-        internal static ImageMoniker Sound => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Sound };
-        internal static ImageMoniker StatusError => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.StatusError };
-        internal static ImageMoniker TextFile => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.TextFile };
-        internal static ImageMoniker Uninstall => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.Uninstall };
-        internal static ImageMoniker VBProjectNode => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBProjectNode };
-        internal static ImageMoniker VBSharedProject => new ImageMoniker { Guid = KnownImageIds.ImageCatalogGuid, Id = KnownImageIds.VBSharedProject };
-
-        #region DebuggerDisplay support for known project system image monikers
-
-        // These methods are called by the debugger, as instructed by the DebuggerDisplayAttributes at the top of the file.
-
-        internal static string ImageMonikerDebugDisplay(ImageMoniker moniker) => DebugDisplay(moniker.Guid, moniker.Id);
-
-        internal static string ProjectImageMonikerDebugDisplay(ProjectImageMoniker moniker) => DebugDisplay(moniker.Guid, moniker.Id);
-
-        private static string DebugDisplay(Guid guid, int id)
-        {
-            if (guid == s_manifestGuid)
-            {
-                switch (id)
-                {
-                    case 0: return nameof(ApplicationPrivate);
-                    case 1: return nameof(ApplicationWarning);
-                    case 2: return nameof(CodeInformationPrivate);
-                    case 3: return nameof(CodeInformationWarning);
-                    case 4: return nameof(Component);
-                    case 5: return nameof(ComponentPrivate);
-                    case 6: return nameof(ComponentWarning);
-                    case 7: return nameof(ErrorSmall);
-                    case 8: return nameof(LibraryWarning);
-                    case 9: return nameof(NuGetGrey);
-                    case 10: return nameof(NuGetGreyPrivate);
-                    case 11: return nameof(NuGetGreyWarning);
-                    case 12: return nameof(ReferenceGroup);
-                    case 13: return nameof(ReferenceGroupWarning);
-                    case 14: return nameof(ReferencePrivate);
-                    case 15: return nameof(Sdk);
-                    case 16: return nameof(SdkPrivate);
-                    case 17: return nameof(SdkWarning);
-                    case 18: return nameof(SharedProject);
-                    case 19: return nameof(SharedProjectPrivate);
-                    case 20: return nameof(SharedProjectWarning);
-                    case 21: return nameof(WarningSmall);
-                    case 22: return nameof(Framework);
-                    case 23: return nameof(FrameworkPrivate);
-                    case 24: return nameof(FrameworkWarning);
-                    case 25: return nameof(ProjectImports);
-                    case 26: return nameof(TargetFile);
-                    case 27: return nameof(TargetFilePrivate);
-                    case 28: return nameof(PropertiesFolderClosed);
-                    case 29: return nameof(PropertiesFolderOpened);
-                }
-            }
-
-            if (guid == KnownImageIds.ImageCatalogGuid)
-            {
-                switch (id)
-                {
-                    case KnownImageIds.Abbreviation: return nameof(KnownImageIds.Abbreviation);
-                    case KnownImageIds.AboutBox: return nameof(KnownImageIds.AboutBox);
-                    case KnownImageIds.AbsolutePosition: return nameof(KnownImageIds.AbsolutePosition);
-                    case KnownImageIds.Application: return nameof(KnownImageIds.Application);
-                    case KnownImageIds.BinaryFile: return nameof(KnownImageIds.BinaryFile);
-                    case KnownImageIds.Blank: return nameof(KnownImageIds.Blank);
-                    case KnownImageIds.CodeInformation: return nameof(KnownImageIds.CodeInformation);
-                    case KnownImageIds.CSProjectNode: return nameof(KnownImageIds.CSProjectNode);
-                    case KnownImageIds.CSSharedProject: return nameof(KnownImageIds.CSSharedProject);
-                    case KnownImageIds.FSFileNode: return nameof(KnownImageIds.FSFileNode);
-                    case KnownImageIds.FSProjectNode: return nameof(KnownImageIds.FSProjectNode);
-                    case KnownImageIds.FSScript: return nameof(KnownImageIds.FSScript);
-                    case KnownImageIds.FSSignatureFile: return nameof(KnownImageIds.FSSignatureFile);
-                    case KnownImageIds.GlyphDown: return nameof(KnownImageIds.GlyphDown);
-                    case KnownImageIds.GlyphUp: return nameof(KnownImageIds.GlyphUp);
-                    case KnownImageIds.Library: return nameof(KnownImageIds.Library);
-                    case KnownImageIds.Path: return nameof(KnownImageIds.Path);
-                    case KnownImageIds.PathIcon: return nameof(KnownImageIds.PathIcon);
-                    case KnownImageIds.PathListBox: return nameof(KnownImageIds.PathListBox);
-                    case KnownImageIds.PathListBoxItem: return nameof(KnownImageIds.PathListBoxItem);
-                    case KnownImageIds.QuestionMark: return nameof(KnownImageIds.QuestionMark);
-                    case KnownImageIds.Reference: return nameof(KnownImageIds.Reference);
-                    case KnownImageIds.ReferenceWarning: return nameof(KnownImageIds.ReferenceWarning);
-                    case KnownImageIds.SharedProject: return nameof(KnownImageIds.SharedProject);
-                    case KnownImageIds.Sound: return nameof(KnownImageIds.Sound);
-                    case KnownImageIds.StatusError: return nameof(KnownImageIds.StatusError);
-                    case KnownImageIds.TextFile: return nameof(KnownImageIds.TextFile);
-                    case KnownImageIds.Uninstall: return nameof(KnownImageIds.Uninstall);
-                    case KnownImageIds.VBProjectNode: return nameof(KnownImageIds.VBProjectNode);
-                    case KnownImageIds.VBSharedProject: return nameof(KnownImageIds.VBSharedProject);
-                }
-            }
-
-            return $"{guid} ({id})";
-        }
-
-        #endregion
     }
 }

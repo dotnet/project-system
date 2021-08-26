@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Build
 {
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         private readonly ConfiguredProject _configuredProject;
         private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
 
-        private TaskCompletionSource<object?> _activationTask;
+        private TaskCompletionSource _activationTask;
 
         [ImportingConstructor]
         public ImplicitlyActiveConfiguredProjectReadyToBuild(
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
         {
             _configuredProject = configuredProject;
             _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
-            _activationTask = new TaskCompletionSource<object?>();
+            _activationTask = new TaskCompletionSource();
 
             _activeConfiguredProjectProvider.Changed += ActiveConfiguredProject_Changed;
         }
@@ -44,12 +45,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Build
                 {
                     if (!nowActive)
                     {
-                        _activationTask = new TaskCompletionSource<object?>();
+                        _activationTask = new TaskCompletionSource();
                     }
                 }
                 else if (nowActive)
                 {
-                    _activationTask.TrySetResult(null);
+                    _activationTask.TrySetResult();
                 }
 
                 return _activationTask.Task;

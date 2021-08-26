@@ -20,9 +20,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public string SchemaName { get; set; }
         public string? SchemaItemType { get; set; }
         string IDependencyModel.Version => throw new NotImplementedException();
-        public bool Resolved { get; set; } = false;
+        public bool Resolved { get; set; }
         public bool TopLevel => true;
-        public bool Implicit { get; set; } = false;
+        public bool Implicit { get; set; }
         public bool Visible { get; set; } = true;
         int IDependencyModel.Priority => throw new NotImplementedException();
         public ImageMoniker Icon { get; set; }
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                    && (OriginalItemSpec == null || OriginalItemSpec == dependency.OriginalItemSpec)
                    && (Path == null || Path == dependency.FilePath)
                    && (SchemaName == null || SchemaName == dependency.SchemaName)
-                   && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.GenericDependency) || SchemaItemType == dependency.SchemaItemType)
+                   && (SchemaItemType == null || !Flags.Contains(DependencyTreeFlags.Dependency) || SchemaItemType == dependency.SchemaItemType)
                    && Resolved == dependency.Resolved
                    && Implicit == dependency.Implicit
                    && Visible == dependency.Visible

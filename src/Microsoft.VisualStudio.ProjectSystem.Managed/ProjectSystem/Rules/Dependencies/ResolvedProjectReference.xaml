@@ -8,7 +8,7 @@
   <Rule.DataSource>
     <DataSource HasConfigurationCondition="False"
                 ItemType="ProjectReference"
-                MSBuildTarget="ResolveProjectReferencesDesignTime"
+                MSBuildTarget="ResolveProjectReferencesDesignTime2"
                 Persistence="ResolvedReference"
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
@@ -25,6 +25,17 @@
                   SourceOfDefaultValue="AfterContext" />
     </StringListProperty.DataSource>
   </StringListProperty>
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource ItemType="ProjectReference"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <BoolProperty Name="CopyLocal"
                 Description="Indicates whether the reference will be copied to the output directory."

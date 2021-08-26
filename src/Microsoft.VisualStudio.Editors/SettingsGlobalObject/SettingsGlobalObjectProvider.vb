@@ -47,7 +47,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         Inherits GlobalObjectProvider
         Implements IServiceProvider, IVsRunningDocTableEvents, IVsTrackProjectDocumentsEvents2
 
-
         Private _globalObjects As Dictionary(Of Project, GlobalObjectCollection)
         Private _typedGlobalObjects As Dictionary(Of Project, Dictionary(Of Type, GlobalObjectCollection))
         Private _oldGlobalObjects As Dictionary(Of Project, GlobalObjectCollection)
@@ -92,7 +91,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Return _rdt
             End Get
         End Property
-
 
         ''' <summary>
         ''' Performs the actual global object creation.
@@ -316,7 +314,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 
         End Function 'GetFileNameForProjectItem
 
-
         ''' <summary>
         '''  Returns a collection of global objects.  If a base type is specified, the collection 
         '''  should only consist of global objects derived from the given base type.  
@@ -420,7 +417,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     gobs.Item(baseType) = result
                 End If
             End If
-
 
             If result.Count = 0 AndAlso GetType(SettingsBase).IsAssignableFrom(baseType) Then
                 ' BEGIN HACK: If we didn't find anything, we'll make a last try using IVsProjectSpecialFiles 
@@ -714,7 +710,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Return NativeMethods.S_OK
             End If
 
-
             Dim hier As IVsHierarchy = Nothing
             If Not IgnoreAppConfigChanges AndAlso
                ((attributes And (__VSRDTATTRIB.RDTA_DocDataReloaded Or __VSRDTATTRIB.RDTA_DocDataIsNotDirty)) <> 0) AndAlso
@@ -830,7 +825,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End If
         End Function
 
-
         ''' <summary>
         ''' IVsRunningDocTable events we don't care about.
         ''' </summary>
@@ -945,7 +939,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Requires.NotNull(rgFlags, NameOf(rgFlags))
             If rgFlags.Length <> cFiles Then Throw Common.CreateArgumentException(NameOf(rgFlags))
 
-
             Dim expandedHierarchies() As IVsHierarchy = GetCorrespondingProjects(rgpProjects, rgFirstIndices, cFiles)
             For i As Integer = 0 To cFiles - 1
                 If expandedHierarchies(i) IsNot Nothing Then
@@ -1030,7 +1023,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Return result
         End Function
 
-
         ''' <summary>
         ''' Called when a new project item is removed from a project we're tracking.  In this
         ''' case we must find the individual global object, raise its removing event, and
@@ -1112,32 +1104,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         End Sub
     End Class
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ''' <summary>
     ''' Our global object for .settings files.  This monitors changes to the individual settings file.
     ''' </summary>
@@ -1165,7 +1131,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
         ''' (the XML serializer may use the DynamicTypeService to resolve the type to
         ''' deserialize, which means that we may be called again - See VsWhidbey 444946)
         ''' </summary>
-        Private _loadingSettings As Boolean = False
+        Private _loadingSettings As Boolean
 
         ''' <summary>
         ''' Create a new settings global object.  We defer building the type until later.
@@ -1201,7 +1167,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 Return _dtSettings
             End Get
         End Property
-
 
         Friend Function ResolveType(typeName As String) As Type
             Return _typeCache.GetSettingType(typeName)
@@ -1242,7 +1207,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                 End If
             End Set
         End Property
-
 
         ''' <summary>
         ''' Interesting to know what project item we're related to.
@@ -1483,7 +1447,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
 #End If
             Return Nothing
         End Function 'GetSerializerCore
-
 
         ''' <summary>
         ''' Loads a DesignTimeSettings object from the given fileName
@@ -1750,9 +1713,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
                     GetDocumentInfo(fileName, readLocks, editLocks, itemid, docCookie)
                 End If
 
-
                 Try
-
 
                     Dim disposable As IDisposable = docDataTemp.CreateChangeMarker()
                     Try
@@ -1844,7 +1805,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Dim appConfigHier As IVsHierarchy = Nothing
             Dim pAppConfigUnkDocData As IntPtr
             Dim AppConfigFileName As String = Nothing
-
 
             Dim oldIgnoreAppConfigChanges As Boolean = _provider.IgnoreAppConfigChanges
             Try
@@ -1946,15 +1906,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             Next ns
         End Sub 'ScrubCompileUnit
 
-
-
-
-
-
-
-
-
-
         ''' <summary>
         ''' This class is the code serializer for SettingsFile global object.
         ''' </summary>
@@ -2028,16 +1979,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Function 'Serialize
 
         End Class 'SettingsFileCodeDomSerializer
-
-
-
-
-
-
-
-
-
-
 
         ''' <summary>
         ''' The virtual type implementor for our global object.  This maps properties to setting names.
@@ -2438,11 +2379,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Sub
         End Class
 
-
-
-
-
-
         ''' <summary>
         ''' Attribute we tack on to values that we return from GetPropertyValue to identify which property
         ''' the value hails from.
@@ -2482,9 +2418,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsGlobalObjects
             End Property
         End Class 'SettingsGlobalObjectValueAttribute
 
-
     End Class 'SettingsFileGlobalObject
-
 
     ''' <summary>
     ''' Class that helps get an IVsHierarchy given a DTE project.

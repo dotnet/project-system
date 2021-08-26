@@ -12,7 +12,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
     Friend NotInheritable Class FindReplace
 
-
         ''' <summary>
         '''  The fields of the resource we're going to find the pattern in.
         ''' </summary>
@@ -24,8 +23,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MinimumValue = Name
             MaximumValue = Comment
         End Enum
-
-
 
         'Pointer to the root designer
         Private ReadOnly _rootDesigner As ResourceEditorRootDesigner
@@ -61,8 +58,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         'Last resource that had a match
         Private _lastResourceWithMatchFound As Resource
 
-
-
         ''' <summary>
         ''' Constructor
         ''' </summary>
@@ -72,7 +67,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _rootDesigner = RootDesigner
         End Sub
 
-
         ''' <summary>
         ''' Does debug-only tracing for this class.
         ''' </summary>
@@ -81,7 +75,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Shared Sub Trace(Message As String)
             Debug.WriteLineIf(Switches.RSEFindReplace.TraceVerbose, "RSE Find/Replace: " & Message)
         End Sub
-
 
         ''' <summary>
         '''  Reset the array of Resources to find / replace in and the find / replace loop.
@@ -104,7 +97,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 _resourcesToSearch = Nothing
             End If
         End Sub
-
 
         ''' <summary>
         ''' Specifies our editor's supported capabilities for Find / Replace.
@@ -148,7 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 pgrfOptions(0) = CType(Options, UInteger)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Returns a value of a requested property.
@@ -195,7 +186,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Select
         End Function
 
-
         ''' <summary>
         ''' Gets the find state object that we hold for the find engine.
         ''' </summary>
@@ -205,7 +195,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _findState
         End Function
 
-
         ''' <summary>
         ''' Sets the find state object that we hold for the find engine.
         ''' </summary>
@@ -213,7 +202,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub SetFindState(pUnk As Object)
             _findState = pUnk
         End Sub
-
 
         ''' <summary>
         ''' Searches for a text pattern.
@@ -409,7 +397,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return (CType(grfOptions, __VSFINDOPTIONS) And Flag) <> 0
         End Function
 
-
         ''' <summary>
         ''' Returns true if the given resource is to be treated as a single unit for find matches.  I.e., if
         '''   true, then find will stop exactly once on that resource, even if multiple matches are found in different
@@ -423,7 +410,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function ResourceIsSearchedAsSingleUnit(Resource As Resource) As Boolean
             Return Not Resource.ResourceTypeEditor.DisplayInStringTable()
         End Function
-
 
         ''' <summary>
         ''' Increments the current index pointer to the next resource
@@ -442,7 +428,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End If
         End Sub
-
 
         ''' <summary>
         '''  Calculate the next index and field to search based on the current index/field and the direction of find
@@ -471,7 +456,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert([Enum].IsDefined(GetType(Field), _currentFieldInCurrentIndex), "Field enum is not contiguous?")
         End Sub
 
-
         ''' <summary>
         '''  Function to find a match of a specified pattern in a specified text.
         ''' </summary>
@@ -497,7 +481,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return fFound <> 0
         End Function
-
 
         ''' <summary>
         ''' Returns the ordered array of resources that we will use in find / replace.
@@ -529,7 +512,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return ReturnArray
             End Get
         End Property
-
 
         ''' <summary>
         ''' Determines the base resource where we want to start searching, if this is
@@ -627,7 +609,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Returns the resource editor view associated with this designer.
         ''' </summary>
@@ -636,7 +617,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _rootDesigner.GetView()
             End Get
         End Property
-
 
         ''' <summary>
         ''' Returns True iff there a View has already been created.

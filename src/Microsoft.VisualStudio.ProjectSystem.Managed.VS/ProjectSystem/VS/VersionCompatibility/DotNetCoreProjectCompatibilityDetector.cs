@@ -234,7 +234,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             if (finalCompatLevel != CompatibilityLevel.Recommended)
             {
-
                 // Warn the user.
                 await WarnUserOfIncompatibleProjectAsync(finalCompatLevel, compatDataToUse, isPreviewSDKInUse);
             }
@@ -242,7 +241,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Used so we know when to process newly added projects
             SolutionOpen = true;
         }
-
 
         /// <summary>
         /// Fired when the solution load process is fully complete, including all background loading
@@ -442,7 +440,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 Dictionary<Version, VersionCompatibilityData>? versionCompatData = GetCompatibilityDataFromCacheFile();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
-                if (_versionDataCacheFile != null && _versionDataCacheFile.CacheFileIsStale())
+                if (_versionDataCacheFile?.CacheFileIsStale() == true)
                 {
                     _ = _versionDataCacheFile.TryToUpdateCacheFileAsync(() =>
                     {
@@ -474,7 +472,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             catch
             {
-
             }
 
             if (CurrentVersionCompatibilityData == null)
@@ -506,7 +503,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             }
             catch
             {
-
             }
             return null;
         }

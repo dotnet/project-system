@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var services = IUnconfiguredProjectServicesFactory.Create(activeConfiguredProjectProvider: activeConfiguredProjectProvider, projectConfigurationsService: configurationsService);
             var project = UnconfiguredProjectFactory.ImplementLoadConfiguredProjectAsync((projectConfiguration) =>
             {
-                return Task.FromResult<ConfiguredProject>(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
+                return Task.FromResult(ConfiguredProjectFactory.ImplementProjectConfiguration(projectConfiguration));
             });
 
             var dimensionProviders = dimensionNames.Select(name => IActiveConfiguredProjectsDimensionProviderFactory.ImplementDimensionName(name));

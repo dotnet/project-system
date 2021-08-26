@@ -2,9 +2,54 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="it" original="../CodeAnalysisPropPage.resx">
     <body>
+      <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource">
+        <source>preview</source>
+        <target state="translated">anteprima</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource1">
+        <source>latest</source>
+        <target state="translated">più recente</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource2">
+        <source>5.0</source>
+        <target state="translated">5.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnalysisLevelComboBox.AutoCompleteCustomSource3">
+        <source>none</source>
+        <target state="translated">nessuno</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnalysisLevelLabel.Text">
+        <source>Analysis Level</source>
+        <target state="translated">Livello di analisi</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnableNETAnalyzersCheckBox.Text">
+        <source>Enable .NET analyzers</source>
+        <target state="translated">Abilita gli analizzatori .NET</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnforceCodeStyleInBuildCheckBox.Text">
+        <source>Enforce CodeStyle on build (experimental)</source>
+        <target state="translated">Applica CodeStyle durante la compilazione (sperimentale)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Label1.Text">
+        <source>.NET analyzers</source>
+        <target state="translated">Analizzatori .NET</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NETAnalyzersLinkLabel.Text">
+        <source>What are .NET analyzers?</source>
+        <target state="translated">Che cosa sono gli analizzatori .NET?</target>
+        <note />
+      </trans-unit>
       <trans-unit id="RoslynAnalyzersLabel.Text">
-        <source>Analyzers</source>
-        <target state="translated">Analizzatori</target>
+        <source>All analyzers</source>
+        <target state="translated">Tutti gli analizzatori</target>
         <note />
       </trans-unit>
       <trans-unit id="RoslynAnalyzersHelpLinkLabel.Text">

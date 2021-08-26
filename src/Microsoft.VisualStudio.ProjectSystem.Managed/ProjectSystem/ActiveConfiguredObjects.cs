@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Represents a set of ordered active configured objects, such as <see cref="ConfiguredProject"/> objects or <see cref="ProjectConfiguration"/> 
+    ///     Represents a set of ordered active configured objects, such as <see cref="ConfiguredProject"/> objects or <see cref="ProjectConfiguration"/>
     ///     objects, and the names of the configuration dimensions that participated in the calculation of the active configured objects.
     /// </summary>
     /// <typeparam name="T">
@@ -15,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
     internal class ActiveConfiguredObjects<T>
     {
         /// <summary>
-        ///     Initializes a new instance of <see cref="ActiveConfiguredObjects{T}"/> with the specified objects and configurations 
+        ///     Initializes a new instance of <see cref="ActiveConfiguredObjects{T}"/> with the specified objects and configurations
         ///     dimension names.
         /// </summary>
         /// <param name="objects">
         ///     An <see cref="ImmutableArray{T}"/> of the active configured objects.
         /// </param>
         /// <param name="dimensionNames">
-        ///     An <see cref="IImmutableSet{T}"/> containing the names of the configuration dimensions that participated in 
+        ///     An <see cref="IImmutableSet{T}"/> containing the names of the configuration dimensions that participated in
         ///     the calculation of the active configured objects, or empty if no dimensions participated in the calculation.
         /// </param>
         /// <exception cref="ArgumentNullException">

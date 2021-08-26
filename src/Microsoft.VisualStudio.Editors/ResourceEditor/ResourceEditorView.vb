@@ -40,7 +40,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Implements IVsBroadcastMessageEvents
         Implements IVsWindowPaneCommit
 
-
 #Region "Instance Fields"
 
         'A file watcher instance to listen for changes in the files we have links to.
@@ -141,7 +140,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Shared Fields"
 
         'A cached set of default, commonly-used assemblies to handle all our intrinsic type editors
@@ -161,9 +159,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 GetType(DataSet).Assembly.GetName()
             }
 
-
 #End Region
-
 
 #Region "Controls which *are* initialized in InitializeComponents"
 
@@ -178,9 +174,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Constructors/destructors"
-
 
         ''' <summary>
         ''' Constructor needed for form designer (should use the constructor with a service provider)
@@ -189,7 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub New()
             Me.New(Nothing)
         End Sub
-
 
         ''' <summary>
         ''' Constructor
@@ -206,7 +199,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             InitializeResourceCategories()
             InitializeUI()
         End Sub
-
 
         ''' <summary>
         ''' Overrides Dispose()
@@ -342,7 +334,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #Region "Properties"
 
-
         ''' <summary>
         ''' Retrieves the set of categories handled by this instance of the resource editor.
         ''' </summary>
@@ -351,7 +342,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _categories
             End Get
         End Property
-
 
         ''' <summary>
         ''' Retrieves the file watcher for this instance of the resource editor.  Creates one if necessary.
@@ -387,7 +377,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' ReadOnly Mode
         ''' </summary>
@@ -396,8 +385,8 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _readOnlyMode
             End Get
             Set
-                If _readOnlyMode <> value Then
-                    _readOnlyMode = value
+                If _readOnlyMode <> Value Then
+                    _readOnlyMode = Value
                     RefreshCommandStatus()
                 End If
             End Set
@@ -413,7 +402,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Get
         End Property
 
-
         ''' <summary>
         ''' Gets the ResourceFile that is being viewed/edited in this view.
         ''' </summary>
@@ -422,7 +410,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return _resourceFile
             End Get
         End Property
-
 
         ''' <summary>
         ''' The component being edited - ResourceEditorRootComponent
@@ -437,7 +424,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End If
             End Get
         End Property
-
 
         Public ReadOnly Property CurrentCategory As Category
             Get
@@ -493,7 +479,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                         End If
                         If registryKey IsNot Nothing Then
                             Using registryKey
-                                registryKey.SetValue("SafeExtensions", value, RegistryValueKind.String)
+                                registryKey.SetValue("SafeExtensions", Value, RegistryValueKind.String)
                             End Using
                         End If
                     Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SafeExtensions), NameOf(ResourceEditorView))
@@ -503,7 +489,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Property
 
 #End Region
-
 
 #Region " Windows Form Designer generated code "
 
@@ -565,9 +550,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "UI Initialization"
-
 
         ''' <summary>
         ''' Initializes all UI elements.
@@ -576,7 +559,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AllowDrop = True
             StringTable.RowHeadersWidth = DpiAwareness.LogicalToDeviceUnits(Handle, 35)
         End Sub
-
 
         ''' <summary>
         ''' Gets the environment font for the shell.
@@ -592,7 +574,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
         End Function
-
 
         ''' <summary>
         ''' Initialize the fonts in the resource editor from the environment (or from the resx file,
@@ -619,10 +600,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
-
 #End Region
-
 
 #Region "Other Initialization"
 
@@ -666,7 +644,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Tells the view to starting displaying resources from a ResourceFile.  Can only be called once.
         ''' </summary>
@@ -689,7 +666,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             PopulateResources(CategoryToDisplay)
         End Sub
-
 
         ''' <summary>
         ''' Register the resource editor's menu commands (context menus)
@@ -826,7 +802,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Create instances of all the categories
         ''' </summary>
@@ -907,9 +882,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Layout/Resize/Settings change"
-
 
         'CONSIDER: is there a Layout event?  Use that instead?
         ''' <summary>
@@ -920,8 +893,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             LayOutResourceEditor()
         End Sub
-
-
 
         ''' <summary>
         ''' Lays out the resource editor's controls.
@@ -945,7 +916,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Receives broadcast messages passed on by the VS shell
         ''' </summary>
@@ -960,11 +930,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
 #End Region
-
-
-
 
 #Region "Populate with data from the resources file"
 
@@ -1051,7 +1017,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "General UI"
 
@@ -1159,7 +1124,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Invalidates a given resource so that it is redrawn on the next paint.
         ''' </summary>
@@ -1177,7 +1141,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Select
             End If
         End Sub
-
 
         ''' <summary>
         ''' Displays a message box using the Visual Studio-approved manner.
@@ -1197,7 +1160,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
-
         ''' <summary>
         ''' Displays a message box for an exception using the Visual Studio-approved manner.
         ''' </summary>
@@ -1205,7 +1167,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Overridable Sub DsMsgBox(ex As Exception)
             DesignerMessageBox.Show(DirectCast(RootDesigner, IServiceProvider), ex, s_messageBoxCaption)
         End Sub
-
 
         ''' <summary>
         ''' Switch to the specified category, if it's not already the current category.
@@ -1217,9 +1178,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
 #End Region
-
 
 #Region "IVsWindowPaneCommit implementation"
         ''' <summary>
@@ -1233,7 +1192,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return NativeMethods.S_OK
         End Function
 #End Region
-
 
 #Region "Selection"
 
@@ -1259,7 +1217,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Array.Empty(Of Resource)
         End Function
 
-
         ''' <summary>
         ''' Unselects all resources in the current view.
         ''' </summary>
@@ -1278,7 +1235,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Highlights (selects and ensures visible) the given set of resources.
         ''' </summary>
@@ -1287,7 +1243,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Public Sub HighlightResources(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
             HighlightResourceHelper(Resources, 0, True, HighlightEntireResource:=True)
         End Sub
-
 
         ''' <summary>
         ''' This function selects and ensures that a single, given resource is visible and selected.  If possible
@@ -1305,7 +1260,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' This function selects and ensures that a single, given resource is visible and selected.
         '''   It will change the currently-shown category and scroll the given resource into view, if
@@ -1318,7 +1272,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 HighlightResourceHelper(New Resource() {Resource}, 0, SelectInPropertyGrid, HighlightEntireResource:=True)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Helper function for HighlightResource.
@@ -1378,7 +1331,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Navigates to a particular resource.  I.e., makes sure the resx file
         '''   has focus, and highlights the given resource.  Used for instance
@@ -1403,11 +1355,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 #End Region
 
-
 #Region "Integration with Visual Studio's Properties Window"
 
         Private _propertyGridNeedUpdate As Boolean
-
 
         ''' <summary>
         ''' Set the selection in the properties window to the currently-selected set of resources.
@@ -1473,7 +1423,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Unselects all resources from the property grid.
         ''' </summary>
@@ -1494,7 +1443,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Called when a row is selected/deselected in the string table.  Update selection.
         ''' </summary>
@@ -1512,7 +1460,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Called when the user navigates to a different cell in the string table.  Update selection (we need this
         '''  because GetSelectedResources() can return the current cell as if it were a selected row).
@@ -1527,14 +1474,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Delegate for calling into HighlightResources.  Used by DelayedPropertyGridUpdate.
         ''' </summary>
         ''' <param name="Resources"></param>
         ''' <param name="SelectInPropertyGrid"></param>
         Private Delegate Sub HighlightResourcesDelegate(Resources As ICollection(Of Resource), SelectInPropertyGrid As Boolean)
-
 
         ''' <summary>
         ''' Updates the property grid in a delayed manner (essentially posts a message to itself to update at the next
@@ -1686,7 +1631,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             End Using
         End Function
-
 
         ''' <summary>
         ''' Given a set of Resource instances that aren't in a ResourceFile yet, add them to our
@@ -1848,7 +1792,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         End Sub
 
-
         ''' <summary>
         ''' Given a set of resources which are in our ResourceFile but not displayed
         '''   in our view yet, add them to our view.
@@ -1918,7 +1861,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             HighlightResources(NewResourcesInCurrentCategory, True)
         End Sub
 
-
         ''' <summary>
         ''' Removes a set of resources from the ResourceFile.
         ''' </summary>
@@ -1961,7 +1903,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Removes a set of resources from the currently-displayed table or listview, if they're
         '''   in it.  Does not remove them from the ResourceFile.
@@ -1982,7 +1923,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             UnselectAllResources()
         End Sub
 
-
         ''' <summary>
         ''' This is called when resources have been added to our ResourceFile "behind our
         '''   backs (i.e., by the Undo engine).  We simply need to add the resources
@@ -1993,7 +1933,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddAndHighlightResourcesInView(New Resource() {Resource})
             OnResourceTouched(Resource)
         End Sub
-
 
         ''' <summary>
         ''' This is called when resources have been removed from our ResourceFile "behind our
@@ -2039,7 +1978,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Given a file and path, create a single resource from it.  Do not add it to a 
         '''   ResourceFile, and do not add the file to the project.
@@ -2065,7 +2003,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return NewResource
         End Function
 
-
         ''' <summary>
         ''' Given a filename, returns an ID based on that name
         ''' </summary>
@@ -2073,7 +2010,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function GetResourceNameFromFileName(FileName As String) As String
             Return Path.GetFileNameWithoutExtension(GetFileNameInActualCase(FileName))
         End Function
-
 
         ''' <summary>
         ''' Given a filename extension, determines which Resource Type Editor is the preferred editor to
@@ -2118,7 +2054,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #Region "Drag-drop, Cut, Copy, Cancel edit, Delete and Paste Menu Commands"
 
@@ -2331,7 +2266,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Enabled handler for the Rename menus.  Determines if the menu items should be enabled or not.
         ''' </summary>
@@ -2400,7 +2334,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             RemoveResources(GetSelectedResources())
         End Sub
 
-
         ''' <summary>
         ''' Handles the Rename menu command
         ''' </summary>
@@ -2413,7 +2346,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Handles the Cut menu command
         ''' </summary>
@@ -2423,7 +2355,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MenuCopy(sender, e)
             MenuRemove(sender, e)
         End Sub
-
 
         ''' <summary>
         ''' Handles the Copy menu command
@@ -2441,7 +2372,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 CopyResourcesToClipboard(GetSelectedResources())
             End If
         End Sub
-
 
         ''' <summary>
         ''' Handles the Paste menu command
@@ -2465,9 +2395,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Drag-drop, Cut, Copy and Paste Menu Implementation"
-
 
 #Region "Clipboard Formats"
 
@@ -2481,7 +2409,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Csv 'Comma-separated values (Excel and others)
             UnicodeText 'Tab-separated values (Notepad etc)
         End Enum
-
 
         '**** WARNING:
         '  
@@ -2575,7 +2502,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Stream.Read(Bytes, 0, CInt(Stream.Length))
             Data.SetData(_CF_RESOURCES, False, Bytes)
 
-
             '2) Visual Studio solution explorer formats
             '
             'We don't actually add source the solution explorer formats - the solution explorer 
@@ -2583,7 +2509,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  for our needs as far as sourcing goes (when the Solution explorer is the
             '  source, it doesn't give us the file drop format, so we'll have to understand
             '  its native formats as a target in DataFormatSupported)
-
 
             '3) Windows Explorer format (file drop)
             'This is just a list of filenames.  For non-linked resources, we export them to a temporary 
@@ -2647,7 +2572,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Data.SetData(DataFormats.FileDrop, False, FileNamesArray)
             End If
 
-
             ' 4) CSV (for Excel and other apps)
             ' 
             '  This is for text-convertible resources only
@@ -2656,7 +2580,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Data.SetData(_CF_CSV, True, CsvText)
             End If
 
-
             ' 5) UnicodeText (tab-delimited) (for NotePad and other apps)
             ' 
             '  This is for text-convertible resources only
@@ -2664,7 +2587,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             If UnicodeText <> "" Then
                 Data.SetData(_CF_UNICODE, True, UnicodeText)
             End If
-
 
             ' 6) We place this format on the clipboard so we can tell when we get a drop
             '      whether the data came from this instance of the resource editor or not.
@@ -2676,7 +2598,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'And we're done
             Return Data
         End Function
-
 
         ''' <summary>
         ''' Copies a set of resources to the clipboard in all formats sourced by us.
@@ -2741,7 +2662,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return DragDropEffects.None
         End Function
-
 
         ''' <summary>
         ''' Given a Data object during drag/drop, plus the currently-allowed copy/move effects,
@@ -2808,7 +2728,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return False
         End Function
 
-
         ''' <summary>
         ''' Handles setting the drag/drop effect for drag/drop events
         ''' </summary>
@@ -2818,7 +2737,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Call DataFormatSupported(e.Data, e.AllowedEffect, e.Effect, ActualFormat)
         End Sub
 
-
         ''' <summary>
         ''' Called when the mouse is moved over our view during a drag/drop operation
         ''' </summary>
@@ -2827,7 +2745,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             MyBase.OnDragOver(e)
             SetDragDropEffect(e)
         End Sub
-
 
         ''' <summary>
         ''' Called when the mouse is moved into our view during a drag/drop operation
@@ -2864,7 +2781,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Occurs when the user begins dragging an item in the listview.
         '''   We use this to start sourcing a drag/drop operation from the listview.
@@ -2881,7 +2797,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 RemoveResources(ResourcesToDrag)
             End If
         End Sub
-
 
 #End Region
 
@@ -2927,7 +2842,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Using
         End Sub
 
-
         ''' <summary>
         ''' Handles a drop or a paste of a Data object using the solution explorer formats
         ''' </summary>
@@ -2953,7 +2867,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 AddOrUpdateResourcesFromFiles(FileNames, CopyFileIfExists, CopyFileIfExists, FixInvalidIdentifiers:=True)
             End If
         End Sub
-
 
         ''' <summary>
         ''' Handles a drop or a paste of a Data object using the Windows Explorer format
@@ -2985,8 +2898,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddOrUpdateResourcesFromFiles(FileNames, CopyFileIfExists, CopyFileIfExists, FixInvalidIdentifiers:=True)
         End Sub
 
-
-
         ''' <summary>
         ''' Handles a drop or a paste of a Data object using the CSV format (strings only)
         ''' </summary>
@@ -3013,7 +2924,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Resources() As Resource = CsvEncoder.DecodeResources(CsvText, Me, CsvEncoder.EncodingType.Csv)
             AddResources(Resources, CopyFileIfExists:=False, AddToProject:=False)
         End Sub
-
 
         ''' <summary>
         ''' Handles a drop or a paste of a Data object using the UnicodeText format (strings only)
@@ -3042,7 +2952,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddResources(Resources, CopyFileIfExists:=False, AddToProject:=False)
         End Sub
 
-
         ''' <summary>
         ''' Decodes text data from an IDataObject
         ''' </summary>
@@ -3063,7 +2972,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return Text
         End Function
-
 
         ''' <summary>
         ''' Handles a drop or a paste of a Data object using the Resource Editor private formats
@@ -3091,7 +2999,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             AddResources(ResourcesData.Resources, CopyFileIfExists, AddToProject:=True)
         End Sub
 
-
         ''' <summary>
         ''' Represents a single file drop info from a drag/drop initiated from the Visual Studio solution explorer
         ''' </summary>
@@ -3100,7 +3007,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Public Guid As String
             Public ProjectFile As String
         End Structure
-
 
         ''' <summary>
         ''' Given an HDROP from the Visual Studio solution explorer (CF_VSREFPROJECTITEMS or CF_VSSTGPROJECTITEMS), this
@@ -3111,7 +3017,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim Files() As DraggedFileInfo
             Const MAX_PATH As Integer = 260
             Const FILEINFO_LENGTH As Integer = 2 * MAX_PATH + 41     ' FILEINFO include two paths and a GUID
-
 
             If HDropStream.Length <= Integer.MaxValue Then
                 Dim StreamLength As Integer = CInt(HDropStream.Length)
@@ -3168,12 +3073,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #End Region
 
-
 #Region "Play"
-
 
         ''' <summary>
         ''' Enabled handler for the Play menu command.  Determines if the menu item should be enabled/visible.
@@ -3190,7 +3092,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return CanPlayResources(GetSelectedResources())
         End Function
-
 
         ''' <summary>
         ''' Given a set of resources, determines if they can be played as audio.
@@ -3209,7 +3110,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Handler for the "Play" menu command
@@ -3258,9 +3158,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Open/Open With"
-
 
         ''' <summary>
         ''' Occurs on a double-click of an item (or ENTER).  We respond with our default action, Menu.Open for most items, or witih
@@ -3276,7 +3174,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Handler for the "Open" menu command
         ''' </summary>
@@ -3291,7 +3188,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Handler for the "Open With..." menu command
         ''' </summary>
@@ -3305,7 +3201,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DsMsgBox(ex)
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Enabled handler for the Open/Open With menu commands.  Determines if the menu item should be enabled.
@@ -3324,7 +3219,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Dim SelectedResources() As Resource = GetSelectedResources()
             Return SelectedResources IsNot Nothing AndAlso SelectedResources.Length > 0
         End Function
-
 
         ''' <summary>
         ''' Does an "Open" or "Open With" operation on a resource.
@@ -3466,7 +3360,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Import/Export commands"
 
         ''' <summary>
@@ -3520,7 +3413,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 DsMsgBox(ex)
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Command handler for the Import menu.
@@ -3586,7 +3478,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Indicates whether all resources in a set of resources can be imported or exported
         ''' </summary>
@@ -3598,9 +3489,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 '  stuff from the "other" category or stuff that doesn't have a defined extension.
                 If _
                     Not Resource.IsResXNullRef _
-                    AndAlso Not TypeOf Resource.ResourceTypeEditor Is ResourceTypeEditorStringBase _
+                    AndAlso TypeOf Resource.ResourceTypeEditor IsNot ResourceTypeEditorStringBase _
                     AndAlso Not Resource.IsLink _
-                    AndAlso Not Resource.GetCategory(_categories) Is _categoryOther _
+                    AndAlso Resource.GetCategory(_categories) IsNot _categoryOther _
                 Then
                     If Resource.ResourceTypeEditor.TryCanSaveResourceToFile(Resource) Then
                         'This one's okay
@@ -3613,7 +3504,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return True
         End Function
-
 
         ''' <summary>
         ''' Menu handler for the Import command.  Determines whether it's enabled and/or visible
@@ -3639,7 +3529,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 AndAlso CanImportOrExportResources(SelectedResources)
         End Function
 
-
         ''' <summary>
         ''' Menu handler for the Export command.  Determines whether it's enabled and/or visible
         ''' </summary>
@@ -3659,7 +3548,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 AndAlso SelectedResources.Length > 0 _
                 AndAlso CanImportOrExportResources(SelectedResources)
         End Function
-
 
         ''' <summary>
         ''' Given a Resource, get a filename to suggest to the user for saving that resource, based on its name.
@@ -3684,7 +3572,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' Asks the user if it's okay to replace all of the given files.
         ''' </summary>
@@ -3706,7 +3593,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return DialogResult.Yes = DsMsgBox(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Dlg_ReplaceExistingFiles & vbCrLf & ExistingFiles, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)
             End If
         End Function
-
 
         ''' <summary>
         ''' Exports a set of resources to a specified destination folder.
@@ -3794,9 +3680,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
 #End Region
-
 
 #Region "Select All command"
 
@@ -3838,7 +3722,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "EditBox related"
 
         ''' <summary>
@@ -3869,7 +3752,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 #End Region
-
 
 #Region "Keyboard shortcuts"
 
@@ -3913,7 +3795,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Category buttons"
 
         ''' <summary>
@@ -3932,7 +3813,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             _categoryStrings.ResourcesExistChanged
         End Sub
 
-
         ''' <summary>
         ''' Command handler for "Strings" resource type menu item
         ''' </summary>
@@ -3941,7 +3821,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub MenuResourceTypeStrings(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryStrings)
         End Sub
-
 
         ''' <summary>
         ''' Command handler for "Images" resource type menu item
@@ -3952,7 +3831,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SwitchToCategory(_categoryImages)
         End Sub
 
-
         ''' <summary>
         ''' Command handler for "Icons" resource type menu item
         ''' </summary>
@@ -3961,7 +3839,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub MenuResourceTypeIcons(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryIcons)
         End Sub
-
 
         ''' <summary>
         ''' Command handler for "Audio" resource type menu item
@@ -3972,7 +3849,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             SwitchToCategory(_categoryAudio)
         End Sub
 
-
         ''' <summary>
         ''' Command handler for "Files" resource type menu item
         ''' </summary>
@@ -3981,7 +3857,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub MenuResourceTypeFiles(sender As Object, e As EventArgs)
             SwitchToCategory(_categoryFiles)
         End Sub
-
 
         ''' <summary>
         ''' Command handler for "Other" resource type menu item
@@ -3993,7 +3868,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Add Existing menu item (add new resource from existing file)"
 
@@ -4051,7 +3925,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Add Button menus items (add new resources of a given type)"
 
         ''' <summary>
@@ -4093,7 +3966,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             StringTable.NewString()
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Add.New Image.BMP Image" ToolStripMenuItem
         ''' </summary>
@@ -4103,7 +3975,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' Remember the type of the last added image
             CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_BMP_Click
         End Sub
-
 
         ''' <summary>
         ''' Handles the "Add.New Image.GIF Image" ToolStripMenuItem
@@ -4115,7 +3986,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_GIF_Click
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Add.New Image.JPEG Image" ToolStripMenuItem
         ''' </summary>
@@ -4125,7 +3995,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ' Remember the type of the last added image
             CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_JPEG_Click
         End Sub
-
 
         ''' <summary>
         ''' Handles the "Add.New Image.PNG" ToolStripMenuItem
@@ -4137,7 +4006,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_PNG_Click
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Add.New Image.TIFF Image" ToolStripMenuItem
         ''' </summary>
@@ -4148,7 +4016,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             CurrentCategory.AddCommand = AddressOf ButtonAdd_NewImage_TIFF_Click
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Add.New Icon" ToolStripMenuItem
         ''' </summary>
@@ -4156,14 +4023,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             QueryAddNewLinkedResource(ResourceTypeEditors.Icon, ResourceTypeEditorIcon.EXT_ICO)
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Add.New Text File" ToolStripMenuItem
         ''' </summary>
         Private Sub ButtonAdd_NewTextFile_Click(sender As Object, e As EventArgs)
             QueryAddNewLinkedResource(ResourceTypeEditors.TextFile, ResourceTypeEditorTextFile.EXT_TXT)
         End Sub
-
 
         ''' <summary>
         ''' Gets the location on disk where a new file should be created.  If we're in a project with a Resources
@@ -4206,7 +4071,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return NewResourceFilePath
         End Function
-
 
         ''' <summary>
         ''' Give a resource type editor, allows the user to create a new resource file of any type
@@ -4311,7 +4175,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "View Buttons"
 
         ''' <summary>
@@ -4332,7 +4195,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ChangeResourceView(ResourceListView.ResourceView.List)
         End Sub
 
-
         ''' <summary>
         ''' Handles the "Details" view button.  Changes the listview to "Details" mode.
         ''' </summary>
@@ -4341,7 +4203,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Sub ButtonViews_Details_Click(sender As Object, e As EventArgs)
             ChangeResourceView(ResourceListView.ResourceView.Details)
         End Sub
-
 
         ''' <summary>
         ''' Handles the "Thumbnail" view button.  Changes the listview to "Thumbnail" mode.
@@ -4369,9 +4230,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Handling context menus"
-
 
         ''' <summary>
         ''' Shows a context menu, given mouse event args.
@@ -4387,14 +4246,12 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Called when the listview should show a context menu.
         ''' </summary>
         Private Sub ResourceListView_ContextMenuShow(sender As Object, e As MouseEventArgs) Handles _resourceListView.ContextMenuShow
             ShowContextMenu(sender, e)
         End Sub
-
 
         ''' <summary>
         ''' Called when the string table should show a context menu.
@@ -4405,9 +4262,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             ShowContextMenu(sender, e)
         End Sub
 
-
 #End Region
-
 
 #Region "File dialog utilities"
 
@@ -4440,7 +4295,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Using
         End Function
 
-
         'CONSIDER: use ShowDialog() return
         ''' <summary>
         ''' Shows an "Open File" dialog.
@@ -4468,7 +4322,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Throw NewException(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_Err_MaxFilesLimitation, HelpIDs.Err_MaxFilesLimitation, ex)
             End Try
         End Function
-
 
         ''' <summary>
         ''' Shows a "Save File" dialog.
@@ -4499,7 +4352,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return newFileName
         End Function
 
-
         ''' <summary>
         ''' Given a list of categories, builds a complete list of filters for an open file dialog.
         ''' </summary>
@@ -4518,7 +4370,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                     Dim FilterString As String = TypeEditor.GetOpenFileDialogFilter(_resourceFile)
                     If FilterString <> "" Then
                         If Filter.Length <> 0 Then
-                            Filter.Append("|")
+                            Filter.Append("|"c)
                         End If
                         Filter.Append(FilterString)
                         If Category Is DefaultCategory AndAlso FilterIndexForDefaultCategory <= 0 Then
@@ -4543,7 +4395,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Temporary files and folders management"
 
         'Options for when to delete temporary files/folders that were created.
@@ -4552,7 +4403,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             DeleteOnClipboardFlush
             'DeleteAtExit
         End Enum
-
 
         ''' <summary>
         ''' Tries to delete a list of temporary files.
@@ -4570,7 +4420,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Next
         End Sub
 
-
         ''' <summary>
         ''' Tries to delete a list of temporary folders.
         ''' </summary>
@@ -4586,7 +4435,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 End Try
             Next
         End Sub
-
 
         ''' <summary>
         ''' Create a subdirectory in the user's temporary folder and returns it.  It will
@@ -4609,7 +4457,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             '  Do *not* add to the list of folders to delete.
             Return Path.GetTempPath
         End Function
-
 
         ''' <summary>
         ''' Creates and returns a temporary file.
@@ -4654,7 +4501,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #Region "Internal Resources (those used by the resource editor in its own UI)"
 
@@ -4738,7 +4584,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Project-related utilities"
 
         ''' <summary>
@@ -4755,7 +4600,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return Nothing
             End If
         End Function
-
 
         ''' <summary>
         ''' Returns the DTE Project associated with the ResX file being edited.
@@ -4778,7 +4622,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Retrieves the IVsHierarchy interface for the project the resx file is in
         ''' </summary>
@@ -4787,7 +4630,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Debug.Assert(Hierarchy IsNot Nothing, "Couldn't find IVsHierarchy as a service from our root designer - should have been added from our designerloader")
             Return Hierarchy
         End Function
-
 
         ''' <summary>
         ''' Retrieves the designer loader associated with this designer
@@ -4810,7 +4652,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return DesignerLoader
         End Function
 
-
         ''' <summary>
         ''' Retrieves the itemid for the resx file
         ''' </summary>
@@ -4825,9 +4666,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Resource.ITypeResolutionContextProvider implementation"
-
 
         ''' <summary>
         ''' Retrieve a type resolution service for the project that the .resx file is
@@ -4866,7 +4705,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return _typeResolutionServiceCache 'Value may be Nothing, even if cached.
         End Function
 
-
         ''' <summary>
         ''' Retrieves a default set of assemblies to be used for resolving types in the case that 
         '''   a .resx file is opened outside the context of a project.  This is a list of
@@ -4877,7 +4715,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #Region "Disambiguate TextBox UNDO vs shell UNDO"
 
@@ -4890,7 +4727,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         '  we instead implement IOleCommandTarget on our view helper (which we've set up to be our root designer),
         '  because the view helper gets a crack at the command before the undo manager does.
         'The root designer delegates the IOleCommandTarget calls to us here.
-
 
         ''' <summary>
         ''' Handles IOleCommandTarget from the view helper (our root designer).
@@ -4932,9 +4768,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "Set and check custom tool and namespace"
-
 
         'The custom tool name to use for stand-alone resx files.
         Private Const STANDARDCUSTOMTOOL As String = "ResXFileCodeGenerator"
@@ -4946,7 +4780,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         'The namespace to use
         Private Const CUSTOMTOOLNAMESPACE As String = "My.Resources"
-
 
         ''' <summary>
         ''' Returns true iff the resx file being edited is the default resx file
@@ -5035,8 +4868,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return IsVBProject(GetProject()) AndAlso IsDefaultResXFile()
         End Function
 
-
-
         ''' <summary>
         ''' Gets the current value of the Custom Tool property for this resx file.  If the project
         '''   does not support a Custom Tool property, returns Nothing.
@@ -5059,7 +4890,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #Region "Global Symbol Rename"
 
@@ -5149,7 +4979,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Sub
 
-
         ''' <summary>
         ''' Gets the fully qualified name for the strongly-generated class name, but only if the single file
         '''   generator is our own.  Otherwise returns empty.
@@ -5184,7 +5013,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return String.Empty
             End If
 
-
             Dim ClassName As String = GetGeneratedClassNameFromFileName(Path.GetFileName(RootDesigner.GetResXFileNameAndPath()))
             Dim Project As Project = GetProject()
             Dim RootNamespace As String = GetRootNamespace(Project)
@@ -5216,7 +5044,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return CombineNamespaces(defaultNamespace, ClassName)
         End Function
-
 
         ''' <summary>
         ''' Gets the namespace that will be generated for the given hierarchy/itemid
@@ -5255,7 +5082,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return RootNamespace
         End Function
 
-
         ''' <summary>
         ''' Given a filename, determines what the generated class name would be
         ''' </summary>
@@ -5265,7 +5091,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Function
 
 #End Region
-
 
 #Region "Undo State"
 
@@ -5302,7 +5127,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
 #End Region
 
-
 #Region "WndProc handling"
 
         ''' <summary>
@@ -5318,7 +5142,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         End Sub
 
 #End Region
-
 
 #Region "Debugging code"
 

@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             newList.VSImports = new Lazy<VisualBasicVSImports>(() => new TestVisualBasicVSImports(
                 Mock.Of<VSLangProj.VSProject>(),
                 IProjectThreadingServiceFactory.Create(),
-                ActiveConfiguredProjectFactory.ImplementValue<ConfiguredProject>(()=> ConfiguredProjectFactory.Create()),
+                IActiveConfiguredValueFactory.ImplementValue(()=> ConfiguredProjectFactory.Create()),
                 IProjectAccessorFactory.Create(),
                 IUnconfiguredProjectVsServicesFactory.Create(),
                 newList));
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
             private readonly TestVisualBasicNamespaceImportsList _testImportsList;
             public TestVisualBasicVSImports(VSLangProj.VSProject vsProject,
                                             IProjectThreadingService threadingService,
-                                            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
+                                            IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
                                             IProjectAccessor projectAccessor,
                                             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
                                             TestVisualBasicNamespaceImportsList importsList)

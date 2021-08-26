@@ -14,7 +14,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
     {
         #region Factories and internal constructor
 
-        public static TargetedDependenciesSnapshot CreateEmpty(ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public static TargetedDependenciesSnapshot CreateEmpty(TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             return new TargetedDependenciesSnapshot(
                 targetFramework,
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
             bool anyChanges = false;
 
-            ITargetFramework targetFramework = previousSnapshot.TargetFramework;
+            TargetFramework targetFramework = previousSnapshot.TargetFramework;
 
             var dependencyById = previousSnapshot.Dependencies.ToDictionary(IDependencyExtensions.GetDependencyId);
 
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
                 if (dependency != null)
                 {
                     // A dependency was accepted
-                    var id = dependencyModel.GetDependencyId();
+                    DependencyId id = dependencyModel.GetDependencyId();
                     dependencyById.Remove(id);
                     dependencyById.Add(id, dependency);
                     anyChanges = true;
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
 
         // Internal, for test use -- normal code should use the factory methods
         internal TargetedDependenciesSnapshot(
-            ITargetFramework targetFramework,
+            TargetFramework targetFramework,
             IProjectCatalogSnapshot? catalogs,
             ImmutableArray<IDependency> dependencies)
         {
@@ -189,9 +189,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
         #endregion
 
         /// <summary>
-        /// <see cref="ITargetFramework" /> for which project has dependencies contained in this snapshot.
+        /// <see cref="TargetFramework" /> for which project has dependencies contained in this snapshot.
         /// </summary>
-        public ITargetFramework TargetFramework { get; }
+        public TargetFramework TargetFramework { get; }
 
         /// <summary>
         /// Catalogs of rules for project items (optional, custom dependency providers might not provide it).
@@ -236,6 +236,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot
             return max;
         }
 
-        public override string ToString() => $"{TargetFramework.FriendlyName} - {Dependencies.Length} dependencies";
+        public override string ToString() => $"{TargetFramework.ShortName} - {Dependencies.Length} dependencies";
     }
 }

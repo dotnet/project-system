@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../ProjectItemsSchema.VisualBasic.xaml">
+    <body>
+      <trans-unit id="ContentType|VisualBasicFile|DisplayName">
+        <source>VB file</source>
+        <target state="translated">File VB</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|Compile|DisplayName">
+        <source>VB compiler</source>
+        <target state="translated">Compilatore VB</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|AdditionalFiles|DisplayName">
+        <source>VB analyzer additional file</source>
+        <target state="translated">File aggiuntivo dell'analizzatore VB</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ItemType|EditorConfigFiles|DisplayName">
+        <source>.editorconfig file</source>
+        <target state="translated">File con estensione editorconfig</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

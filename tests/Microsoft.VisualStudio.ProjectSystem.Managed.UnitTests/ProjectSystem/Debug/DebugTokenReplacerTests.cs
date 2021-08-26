@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         };
 
         private readonly Mock<IEnvironmentHelper> _envHelper;
-        
+
         public DebugTokenReplacerTests()
         {
             _envHelper = new Mock<IEnvironmentHelper>();
@@ -64,10 +64,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             Assert.False(resolvedProfile.LaunchBrowser);
             Assert.Equal("http://localhost:8080/", resolvedProfile.LaunchUrl);
             Assert.Equal("c:\\test\\Property6", resolvedProfile.WorkingDirectory);
-            Assert.Equal("envVariable1", resolvedProfile.EnvironmentVariables["var1"]);
-            Assert.Equal("Property3", resolvedProfile.EnvironmentVariables["var2"]);
-            Assert.Equal("envVariable1", resolvedProfile.OtherSettings["setting1"]);
-            Assert.True((bool)resolvedProfile.OtherSettings["setting2"]);
+            Assert.Equal("envVariable1", resolvedProfile.EnvironmentVariables?["var1"]);
+            Assert.Equal("Property3", resolvedProfile.EnvironmentVariables?["var2"]);
+            Assert.Equal("envVariable1", resolvedProfile.OtherSettings?["setting1"]);
+            Assert.True((bool?)resolvedProfile.OtherSettings?["setting2"]);
         }
 
         [Theory]
@@ -90,7 +90,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         private DebugTokenReplacer CreateInstance()
         {
             var environmentHelper = _envHelper.Object;
-            
+
             var activeDebugFramework = new Mock<IActiveDebugFrameworkServices>();
             activeDebugFramework.Setup(s => s.GetConfiguredProjectForActiveFrameworkAsync())
                 .Returns(() => Task.FromResult<ConfiguredProject?>(ConfiguredProjectFactory.Create()));
