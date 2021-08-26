@@ -328,8 +328,14 @@
                   DisplayName="Resource file"
                   Description="Specifies a resource file for the project."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
-                  Category="Resources"
-                  Subtype="file">
+                  Category="Resources">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Win32 resource files (*.res)|*.res|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
