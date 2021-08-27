@@ -21,5 +21,10 @@ namespace Microsoft.VisualStudio.Shell.Interop
         /// Returns the local app data folder as defined by <see cref="__VSSPROPID4.VSSPROPID_LocalAppDataDir"/>.
         /// </summary>
         Task<string?> GetLocalAppDataFolderAsync(IVsService<IVsShell> vsShellService);
+
+        /// <summary>
+        /// Returns the virtual registry root as defined by <see cref="__VSSPROPID.VSSPROPID_VirtualRegistryRoot"/>.
+        /// </summary>
+        Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService);
     }
 }
