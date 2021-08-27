@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
         private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
+        private readonly Lazy<IDebuggerSettings> _debuggerSettings;
 
         [ImportingConstructor]
         public ProjectLaunchTargetsProvider(
@@ -60,7 +61,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IProjectThreadingService threadingService,
             IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
-            Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager)
+            Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
+            Lazy<IDebuggerSettings> debuggerSettings)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -73,6 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _debugger = debugger;
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
             _hotReloadSessionManager = hotReloadSessionManager;
+            _debuggerSettings = debuggerSettings;
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -435,7 +438,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
             }
 
-            if (HotReloadShouldBeEnabled(resolvedProfile, launchOptions)
+            if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions)
                 && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
             {
                 // Enable XAML Hot Reload
@@ -450,12 +453,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             return settings;
         }
 
-        private static bool HotReloadShouldBeEnabled(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
         {
-            return IsRunProjectCommand(resolvedProfile)
+            bool hotReloadEnabledAtProjectLevel = IsRunProjectCommand(resolvedProfile)
                 && resolvedProfile.IsHotReloadEnabled()
                 && !resolvedProfile.IsRemoteDebugEnabled()
                 && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+            if (hotReloadEnabledAtProjectLevel)
+            {
+                bool hotReloadEnabledGlobally = (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
+                    ? await _debuggerSettings.Value.IsNonDebugHotReloadEnabledAsync()
+                    : await _debuggerSettings.Value.IsEncEnabledAsync();
+
+                return hotReloadEnabledGlobally;
+            }
+
+            return false;
         }
 
         private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
