@@ -385,18 +385,14 @@
 
   <StringProperty Name="LangVersion"
                   DisplayName="Language version"
-                  Description="Why can't I select the C# language version?"
+                  Description="The version of the language available to code in this project."
+                  HelpUrl="https://aka.ms/csharp-versions"
+                  ReadOnly="true"
                   Category="Advanced">
-    <StringProperty.DataSource>
-      <DataSource PersistedName="LangVersion"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
     <StringProperty.ValueEditors>
-      <ValueEditor EditorType="LinkAction">
+      <ValueEditor EditorType="String">
         <ValueEditor.Metadata>
-          <NameValuePair Name="Action" Value="URL" />
-          <NameValuePair Name="URL" Value="https://aka.ms/csharp-versions" />
+          <NameValuePair Name="ShowEvaluatedPreviewOnly" Value="True" />
         </ValueEditor.Metadata>
       </ValueEditor>
     </StringProperty.ValueEditors>
