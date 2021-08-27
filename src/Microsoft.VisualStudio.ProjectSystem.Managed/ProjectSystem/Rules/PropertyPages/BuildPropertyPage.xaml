@@ -105,6 +105,7 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
+  <!-- Localization Notice: 'unsafe' is used as a keyword in the description and should not be translated -->
   <BoolProperty Name="AllowUnsafeBlocks"
                 DisplayName="Unsafe code"
                 Description="Allow code that uses the 'unsafe' keyword to compile."

@@ -14,7 +14,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['güvenli olmayan' anahtar sözcüğü kullanan kodun derlenmesine izin verin.]]></Val>
+            <Val><![CDATA['unsafe' anahtar sözcüğü kullanan kodun derlenmesine izin verin.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>

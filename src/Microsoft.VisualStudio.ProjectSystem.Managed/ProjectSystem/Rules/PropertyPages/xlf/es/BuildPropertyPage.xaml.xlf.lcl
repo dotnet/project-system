@@ -14,7 +14,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Permite que el código que use la palabra clave "no seguro" se compile.]]></Val>
+            <Val><![CDATA[Permite que el código que use la palabra clave "unsafe" se compile.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
