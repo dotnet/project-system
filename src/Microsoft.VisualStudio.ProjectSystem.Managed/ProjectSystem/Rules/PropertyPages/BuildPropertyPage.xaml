@@ -110,6 +110,9 @@
                 Description="Allow code that uses the 'unsafe' keyword to compile."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146797"
                 Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="pointers" />
     </BoolProperty.Metadata>
