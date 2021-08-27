@@ -138,7 +138,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
             Assert.Equal(0u, resolvedAssemblyPaths);
         }
 
-
         [Fact]
         public void ResolveAssemblyPathInTargetFx_MoreAssembliesToResolveThanAssemblySpecs_ReturnsE_INVALIDARG()
         {
@@ -164,7 +163,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
         [Fact]
         public void ResolveAssemblyPathInTargetFx_UnresolvedAssembly_SetsResolvedAssemblyPathsToZero()
         {   // BUG: https://devdiv.visualstudio.com/DevDiv/_workitems?id=368836
-
             var reference = Reference3Factory.CreateAssemblyReference("mscorlib", "1.0.0.0");
 
             var resolution = CreateInstance(reference);

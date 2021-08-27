@@ -10,7 +10,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.UI
 {
     internal partial class DontShowAgainMessageBox : DialogWindow
     {
-
         public DontShowAgainMessageBox(string caption, string message, string? checkboxText, bool initialStateOfCheckbox,
                                        string? learnMoreText, string learnMoreUrl, IUserNotificationServices userNotificationServices)
         {

@@ -8,7 +8,6 @@ Imports OleInterop = Microsoft.VisualStudio.OLE.Interop
 
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
-
     ''' <summary>
     ''' We place an instance of this class into the project designer's window frame's ViewHelper property.
     '''   It allows us to gain access to command routing in the shell and also window frame events
@@ -91,7 +90,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                     Case Constants.MenuConstants.CmdIdSaveProjectItemAs
                         Debug.Fail("Shouldn't get able to get here - we were supposed to have disabled the menu for save as...")
                         Return NativeMethods.S_OK
-
 
                     Case Constants.MenuConstants.CmdIdFileClose, CmdIdCloseDocument
                         'cmdidFileClose = File.CLose
@@ -229,7 +227,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return NativeMethods.OLECMDERR_E_NOTSUPPORTED
         End Function
 
-
 #Region "IVsWindowFrameNotify3 implementation"
 
         ' - IVsWindowFrameNotify3 -
@@ -245,8 +242,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         ' Note: IVsWindowFrameNotify is implemented on the object that is passed to the window 
         '   frame with the property VSFPROPID_ViewHelper from the VSFPROP enumeration.
         ' [This class is registered as the project designer's view helper.]
-
-
 
         ''' <summary>
         ''' Notifies the VSPackage that a window frame is closing and tells the environment what action to take.
@@ -307,7 +302,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return NativeMethods.S_OK
         End Function
 
-
         ''' <summary>
         ''' Notifies the VSPackage that a window's docked state is being altered.
         ''' </summary>
@@ -320,7 +314,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return NativeMethods.S_OK
         End Function
 
-
         ''' <summary>
         ''' Notifies the VSPackage that a window is being moved.
         ''' </summary>
@@ -331,7 +324,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private Function OnMove(x As Integer, y As Integer, w As Integer, h As Integer) As Integer Implements IVsWindowFrameNotify3.OnMove
             Return NativeMethods.S_OK
         End Function
-
 
         ''' <summary>
         ''' Notifies the VSPackage of a change in the window's display state.
@@ -353,7 +345,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Return NativeMethods.S_OK
         End Function
-
 
         ''' <summary>
         ''' Notifies the VSPackage that a window is being resized.

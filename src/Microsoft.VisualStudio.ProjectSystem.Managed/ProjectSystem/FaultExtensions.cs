@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///      Executes the specified delegate in a safe fire-and-forget manner, prevent the project from 
+        ///      Executes the specified delegate in a safe fire-and-forget manner, prevent the project from
         ///      closing until it has completed.
         /// </summary>
         /// <param name="threadingService">
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         /// <summary>
-        ///     Executes the specified delegate in a safe fire-and-forget manner, prevent the project from 
+        ///     Executes the specified delegate in a safe fire-and-forget manner, prevent the project from
         ///     closing until it has completed.
         /// </summary>
         /// <param name="threadingService">
@@ -202,7 +202,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             Requires.NotNull(faultHandlerService, nameof(faultHandlerService));
             Requires.NotNull(block, nameof(block));
 
-            return block.Completion.ContinueWith(_ => 
+            return block.Completion.ContinueWith(_ =>
             {
                 var dataSourceException = new AggregateException(
                     string.Format(

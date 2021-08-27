@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Telemetry
         void PostEvent(string eventName);
 
         /// <summary>
-        ///     Posts an event with the specified event name and property with the 
+        ///     Posts an event with the specified event name and property with the
         ///     specified name and value.
         /// </summary>
         /// <param name="eventName">
@@ -54,11 +54,11 @@ namespace Microsoft.VisualStudio.Telemetry
         ///         -or
         ///     </para>
         ///     <paramref name="propertyName"/> is an empty string ("").
-        /// </exception> 
+        /// </exception>
         void PostProperty(string eventName, string propertyName, object propertyValue);
 
         /// <summary>
-        ///     Posts an event with the specified event name and properties with the 
+        ///     Posts an event with the specified event name and properties with the
         ///     specified names and values.
         /// </summary>
         /// <param name="eventName">
@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.Telemetry
         ///         -or-
         ///     </para>
         ///     <paramref name="properties"/> is contains no elements.
-        /// </exception> 
+        /// </exception>
         void PostProperties(string eventName, IEnumerable<(string propertyName, object propertyValue)> properties);
 
         /// <summary>

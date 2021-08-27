@@ -151,5 +151,4 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
     End Class
 
-
 End Namespace

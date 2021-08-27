@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
     internal interface IEnvironmentOptions
     {
         /// <summary>
-        ///     Returns the value associated with the specified category, page and option, if it exists, 
+        ///     Returns the value associated with the specified category, page and option, if it exists,
         ///     otherwise, returns <paramref name="defaultValue"/>.
         /// </summary>
         /// <param name="category">

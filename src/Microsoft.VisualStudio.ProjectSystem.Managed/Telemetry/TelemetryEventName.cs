@@ -38,19 +38,24 @@ namespace Microsoft.VisualStudio.Telemetry
         public static readonly string DesignTimeBuildComplete = BuildEventName("DesignTimeBuildComplete");
 
         /// <summary>
-        ///     Indicates that .NET Core SDK version.
+        ///     Indicates the .NET Core SDK version.
         /// </summary>
         public static readonly string SDKVersion = BuildEventName("SDKVersion");
 
         /// <summary>
-        ///     Indicates that the TempPE compilation queue has been processed
+        ///     Indicates that the TempPE compilation queue has been processed.
         /// </summary>
         public static readonly string TempPEProcessQueue = BuildEventName("TempPE/ProcessCompileQueue");
 
         /// <summary>
-        ///     Indicates that the TempPE compilation has occurred on demand from a designer
+        ///     Indicates that the TempPE compilation has occurred on demand from a designer.
         /// </summary>
         public static readonly string TempPECompileOnDemand = BuildEventName("TempPE/CompileOnDemand");
+
+        /// <summary>
+        ///     Indicates that the summary of a project's dependencies is being reported during project unload.
+        /// </summary>
+        public static readonly string ProjectUnloadDependencies = BuildEventName("ProjectUnload/Dependencies");
 
         private static string BuildEventName(string eventName)
         {

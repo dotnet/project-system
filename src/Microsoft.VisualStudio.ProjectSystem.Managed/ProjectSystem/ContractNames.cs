@@ -3,7 +3,7 @@
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    /// Contract names to use for CPS exports/imports. (Ported over from 
+    /// Contract names to use for CPS exports/imports. (Ported over from
     /// Microsoft.VisualStudio.ProjectSystem.ExportContractNames)
     /// </summary>
     internal static class ContractNames

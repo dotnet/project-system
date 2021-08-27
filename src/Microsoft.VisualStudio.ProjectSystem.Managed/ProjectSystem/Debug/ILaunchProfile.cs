@@ -9,14 +9,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
     /// </summary>
     public interface ILaunchProfile
     {
-        string Name { get; }
-        string CommandName { get; }
-        string ExecutablePath { get; }
-        string CommandLineArgs { get; }
-        string WorkingDirectory { get; }
+        string? Name { get; }
+        string? CommandName { get; }
+        string? ExecutablePath { get; }
+        string? CommandLineArgs { get; }
+        string? WorkingDirectory { get; }
         bool LaunchBrowser { get; }
-        string LaunchUrl { get; }
-        ImmutableDictionary<string, string> EnvironmentVariables { get; } // TODO-NULLABLE in some contexts this is null
-        ImmutableDictionary<string, object> OtherSettings { get; }        // TODO-NULLABLE in some contexts this is null
+        string? LaunchUrl { get; }
+        ImmutableDictionary<string, string>? EnvironmentVariables { get; }
+        ImmutableDictionary<string, object>? OtherSettings { get; }
     }
 }

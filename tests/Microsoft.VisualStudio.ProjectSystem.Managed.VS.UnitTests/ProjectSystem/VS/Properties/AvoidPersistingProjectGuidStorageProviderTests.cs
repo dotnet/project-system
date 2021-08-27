@@ -79,7 +79,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
             Assert.Equal(Guid.Empty, result);
         }
 
-
         [Theory]
         [InlineData(
 @"

@@ -13,7 +13,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     {
         protected readonly IProjectProperties DelegatedProperties;
 
-        public DelegatedProjectPropertiesBase(IProjectProperties properties)
+        protected DelegatedProjectPropertiesBase(IProjectProperties properties)
         {
             Requires.NotNull(properties, nameof(properties));
 

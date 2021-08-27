@@ -71,7 +71,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                                                  CellStyle As DataGridViewCellStyle,
                                                  valueTypeConverter As TypeConverter,
                                                  formattedTypeConverter As TypeConverter) As Object
-            If Not TypeOf FormattedValue Is String Then
+            If TypeOf FormattedValue IsNot String Then
                 Debug.Fail("Unknown formatted value type!")
                 Throw Common.CreateArgumentException(NameOf(FormattedValue))
             End If
@@ -111,7 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return New Size(CInt(preferredStringSize.Width + 40), CInt(preferredStringSize.Height))
         End Function
 
-
         ''' <summary>
         ''' Paint the value column
         ''' </summary>
@@ -128,7 +127,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         ''' <param name="paintParts"></param>
         Protected Overrides Sub Paint(graphics As Graphics, clipBounds As Rectangle, cellBounds As Rectangle, rowIndex As Integer, cellState As DataGridViewElementStates, value As Object, formattedValue As Object, errorText As String, cellStyle As DataGridViewCellStyle, advancedBorderStyle As DataGridViewAdvancedBorderStyle, paintParts As DataGridViewPaintParts)
             MyBase.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle, paintParts)
-
 
             Dim DrawForeColor As Color
             Dim DrawBackColor As Color
@@ -163,7 +161,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Else
                 StringBounds = cellBounds
             End If
-
 
             ' Draw the formatted value
             If formattedValue IsNot Nothing Then
@@ -275,7 +272,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _serviceProvider = Value
             End Set
         End Property
-
 
         Private ReadOnly Property UITypeEditor As UITypeEditor
             Get

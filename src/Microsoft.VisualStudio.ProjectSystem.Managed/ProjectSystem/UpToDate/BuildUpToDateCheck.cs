@@ -48,10 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private readonly ITelemetryService _telemetryService;
         private readonly IFileSystem _fileSystem;
 
-        // Temporarily disable support for Additional Dependent Files
-        // TODO - pending to fix https://github.com/dotnet/project-system/issues/6227
-        private readonly bool _enableAdditionalDependentFile = false;
-
         private readonly object _stateLock = new object();
 
         private State _state = State.Empty;
@@ -109,7 +105,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 _projectItemSchemaService.SourceBlock.SyncLinkOptions(),
                 _configuredProject.Services.ProjectSubscription.ProjectCatalogSource.SourceBlock.SyncLinkOptions(),
                 target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectSubscriptionUpdate, IProjectSubscriptionUpdate, IProjectSnapshot, IProjectItemSchema, IProjectCatalogSnapshot>>>(OnChanged, _configuredProject.UnconfiguredProject),
-                linkOptions: DataflowOption.PropagateCompletion);
+                linkOptions: DataflowOption.PropagateCompletion,
+                cancellationToken: cancellationToken);
 
             return Task.CompletedTask;
         }
@@ -240,10 +237,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     return log.Fail("Outputs", "The set of project items was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastItemsChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
 
+#if FALSE // https://github.com/dotnet/project-system/issues/6227
+
                 if (_enableAdditionalDependentFile && earliestOutputTime < state.LastAdditionalDependentFileTimesChangedAtUtc)
                 {
                     return log.Fail("Outputs", "The set of AdditionalDependentFileTimes was changed more recently ({0}) than the earliest output '{1}' ({2}), not up to date.", state.LastAdditionalDependentFileTimesChangedAtUtc, earliestOutputPath, earliestOutputTime);
                 }
+#endif
 
                 foreach ((string input, bool isRequired) in inputs)
                 {
@@ -322,7 +322,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedAnalyzerReferencePaths.Count != 0)
+                if (!state.ResolvedAnalyzerReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedAnalyzerReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedAnalyzerReferencePaths.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.ResolvedCompilationReferencePaths.Count != 0)
+                if (!state.ResolvedCompilationReferencePaths.IsEmpty)
                 {
                     log.Verbose("Adding " + ResolvedCompilationReference.SchemaName + " inputs:");
                     foreach (string input in state.ResolvedCompilationReferencePaths)
@@ -342,7 +342,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs:");
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -351,6 +351,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         yield return (Path: input, IsRequired: true);
                     }
                 }
+
+#if FALSE // https://github.com/dotnet/project-system/issues/6227
 
                 if (_enableAdditionalDependentFile && state.AdditionalDependentFileTimes.Count != 0)
                 {
@@ -361,11 +363,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                         yield return (Path: input, IsRequired: false);
                     }
                 }
+#endif
             }
 
             IEnumerable<string> CollectDefaultOutputs()
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs:");
 
@@ -376,7 +379,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(DefaultSetName, out ImmutableHashSet<string>? upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs:");
 
@@ -390,7 +393,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<(string Path, bool IsRequired)> CollectSetInputs(string setName)
             {
-                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckInputItems))
+                if (state.UpToDateCheckInputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckInputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckInput.SchemaName + " inputs in set '{0}':", setName);
                     foreach (string input in upToDateCheckInputItems.Select(_configuredProject.UnconfiguredProject.MakeRooted))
@@ -403,7 +406,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             IEnumerable<string> CollectSetOutputs(string setName)
             {
-                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckOutputItems))
+                if (state.UpToDateCheckOutputItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckOutputItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckOutput.SchemaName + " outputs in set '{0}':", setName);
 
@@ -414,7 +417,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     }
                 }
 
-                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string> upToDateCheckBuiltItems))
+                if (state.UpToDateCheckBuiltItemsBySetName.TryGetValue(setName, out ImmutableHashSet<string>? upToDateCheckBuiltItems))
                 {
                     log.Verbose("Adding " + UpToDateCheckBuilt.SchemaName + " outputs in set '{0}':", setName);
 
@@ -436,7 +439,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             // here if the project actually produced a marker and we only check it against references that
             // actually produced a marker.
 
-            if (string.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem) || !state.CopyReferenceInputs.Any())
+            if (Strings.IsNullOrWhiteSpace(state.CopyUpToDateMarkerItem) || !state.CopyReferenceInputs.Any())
             {
                 return true;
             }
@@ -669,6 +672,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         }
 
         /// <summary>For unit testing only.</summary>
+#pragma warning disable RS0043 // Do not call 'GetTestAccessor()'
         internal TestAccessor TestAccess => new TestAccessor(this);
+#pragma warning restore RS0043
     }
 }

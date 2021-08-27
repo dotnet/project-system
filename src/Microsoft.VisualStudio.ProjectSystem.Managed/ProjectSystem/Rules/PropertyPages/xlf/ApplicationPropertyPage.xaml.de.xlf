@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="de" original="../ApplicationPropertyPage.xaml">
     <body>
       <trans-unit id="Category|General|Description">
-        <source>General</source>
-        <target state="translated">Allgemein</target>
+        <source>General settings for the application.</source>
+        <target state="translated">Allgemeine Einstellungen für die Anwendung.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
-        <source>Resources</source>
-        <target state="translated">Ressourcen</target>
+        <source>Resource settings for the application.</source>
+        <target state="translated">Ressourceneinstellungen für die Anwendung.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
@@ -22,9 +22,19 @@
         <target state="translated">Ressourcen</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="translated">Hiermit wird der Einstiegspunkt definiert, der beim Laden der Anwendung aufgerufen werden soll. Im Allgemeinen wird dies entweder auf das Hauptformular in Ihrer Anwendung oder auf die Main-Prozedur festgelegt, die beim Starten der Anwendung ausgeführt werden soll. Klassenbibliotheken definieren keinen Einstiegspunkt.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
         <target state="translated">Startobjekt</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="translated">Hiermit wird die .NET-Version angegeben, die von der Anwendung als Ziel verwendet wird. Diese Option kann unterschiedliche Werte aufweisen, je nachdem, welche .NET-Versionen auf Ihrem Computer installiert sind.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
@@ -32,9 +42,19 @@
         <target state="translated">Zielframework</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifest|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">Hiermit wird eine Option zum Generieren von Manifesten ausgewählt, wenn die Anwendung unter Windows Vista oder höher mit aktivierter Benutzerkontensteuerung (UAC) ausgeführt wird. Zu den Optionen gehören ein Standardmanifest, kein Manifest oder ein benutzerdefiniertes Manifest, das von Ihrem Projekt bereitgestellt wird. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
         <source>Manifest</source>
         <target state="translated">Manifest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|Description">
+        <source>Specifies the type of application to build.</source>
+        <target state="translated">Hiermit wird der Typ der zu erstellenden Anwendung angegeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
@@ -68,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
-        <source>General</source>
-        <target state="translated">Allgemein</target>
+        <source>Specifies the project's application settings and properties.</source>
+        <target state="translated">Hiermit werden die Anwendungseinstellungen und Eigenschaften des Projekts angegeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
@@ -77,9 +97,19 @@
         <target state="translated">Anwendung</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|Description">
+        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">Hiermit wird die ICO-Datei festgelegt, die als Programmsymbol verwendet werden soll. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
         <target state="translated">Symbol</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|Description">
+        <source>Specifies the name of the output file that will hold the assembly manifest.</source>
+        <target state="translated">Hiermit wird der Name der Ausgabedatei angegeben, die das Assemblymanifest enthält.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
@@ -87,9 +117,19 @@
         <target state="translated">Assemblyname</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|Description">
+        <source>Specifies the base namespace for files added to the project.</source>
+        <target state="translated">Hiermit wird der Basisnamespace für Dateien angegeben, die dem Projekt hinzugefügt werden.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
         <target state="translated">Standardnamespace</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">Hiermit wird eine Ressourcendatei für das Projekt angegeben. Hinweis: Sie müssen das Symbol und das Manifest oder eine Ressourcendatei angeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

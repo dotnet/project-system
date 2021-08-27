@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -17,16 +16,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: true,
                 isImplicit: false,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.False(model.Implicit);
@@ -34,12 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.Application, model.Icon);
             Assert.Equal(KnownMonikers.Application, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
 
@@ -49,16 +49,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: false,
                 isImplicit: false,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ProjectReference.SchemaName, model.SchemaName);
             Assert.False(model.Resolved);
             Assert.False(model.Implicit);
@@ -66,12 +66,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.Application, model.Icon);
             Assert.Equal(KnownMonikers.Application, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.UnresolvedDependencyFlags +
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
 
@@ -81,30 +82,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             var properties = ImmutableStringDictionary<string>.EmptyOrdinal.Add("myProp", "myVal");
 
             var model = new ProjectDependencyModel(
-                "c:\\myPath.dll",
-                "myOriginalItemSpec",
+                "c:\\ResolvedPath\\MyProject.dll",
+                "Project\\MyProject.csproj",
                 isResolved: true,
                 isImplicit: true,
                 properties: properties);
 
             Assert.Equal(ProjectRuleHandler.ProviderTypeString, model.ProviderType);
-            Assert.Equal("c:\\myPath.dll", model.Path);
-            Assert.Equal("myOriginalItemSpec", model.OriginalItemSpec);
-            Assert.Equal("myPath", model.Caption);
+            Assert.Equal("c:\\ResolvedPath\\MyProject.dll", model.Path);
+            Assert.Equal("Project\\MyProject.csproj", model.OriginalItemSpec);
+            Assert.Equal("MyProject", model.Caption);
             Assert.Equal(ResolvedProjectReference.SchemaName, model.SchemaName);
             Assert.True(model.Resolved);
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.ApplicationPrivate, model.Icon);
-            Assert.Equal(ManagedImageMonikers.ApplicationPrivate, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.ApplicationPrivate, model.Icon);
+            Assert.Equal(KnownMonikers.ApplicationPrivate, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.ApplicationWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRemove +
-                ProjectTreeFlags.Create("$ID:myPath"),
+                ProjectTreeFlags.Create("$ID:MyProject"),
                 model.Flags);
         }
     }

@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="zh-Hans" original="../ApplicationPropertyPage.xaml">
     <body>
       <trans-unit id="Category|General|Description">
-        <source>General</source>
-        <target state="translated">常规</target>
+        <source>General settings for the application.</source>
+        <target state="translated">应用程序的常规设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
-        <source>Resources</source>
-        <target state="translated">资源</target>
+        <source>Resource settings for the application.</source>
+        <target state="translated">应用程序的资源设置。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|DisplayName">
@@ -22,9 +22,19 @@
         <target state="translated">资源</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|StartupObject|Description">
+        <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
+        <target state="translated">定义在加载应用程序时要调用的入口点。通常，此项设置为应用程序中的主窗体或应用程序启动时运行的 "Main" 过程。类库不定义入口点。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|DisplayName">
         <source>Startup object</source>
         <target state="translated">启动对象</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="translated">指定应用程序面向的 .NET 版本。根据计算机上安装的 .NET 版本，此选项可能具有不同的值。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetFrameworkMoniker|DisplayName">
@@ -32,9 +42,19 @@
         <target state="translated">目标框架</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumProperty|ApplicationManifest|Description">
+        <source>Selects a manifest generation option when the application runs on Windows Vista or later under User Account Control (UAC). Options include a default manifest, no manifest, or a custom manifest provided by your project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">当应用程序在 Windows Vista 或更高版本的用户帐户控制(UAC)下运行时，选择清单生成选项。选项包括默认清单、无清单或由项目提供的自定义清单。请注意，必须指定图标和清单，或者指定一个资源文件。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifest|DisplayName">
         <source>Manifest</source>
         <target state="translated">清单</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|OutputType|Description">
+        <source>Specifies the type of application to build.</source>
+        <target state="translated">指定要生成的应用程序的类型。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|OutputType|DisplayName">
@@ -68,8 +88,8 @@
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|Description">
-        <source>General</source>
-        <target state="translated">常规</target>
+        <source>Specifies the project's application settings and properties.</source>
+        <target state="translated">指定项目的应用程序设置和属性。</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|Application|DisplayName">
@@ -77,9 +97,19 @@
         <target state="translated">应用程序</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|ApplicationIcon|Description">
+        <source>Sets the .ico file that you want to use as your program icon. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">设置要用作程序图标的 .ico 文件。请注意，必须指定图标和清单，或者指定一个资源文件。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|ApplicationIcon|DisplayName">
         <source>Icon</source>
         <target state="translated">图标</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyName|Description">
+        <source>Specifies the name of the output file that will hold the assembly manifest.</source>
+        <target state="translated">指定将包含程序集清单的输出文件的名称。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|AssemblyName|DisplayName">
@@ -87,9 +117,19 @@
         <target state="translated">程序集名称</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|RootNamespace|Description">
+        <source>Specifies the base namespace for files added to the project.</source>
+        <target state="translated">指定添加到项目中的文件的基命名空间。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|RootNamespace|DisplayName">
         <source>Default namespace</source>
         <target state="translated">默认命名空间</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|Win32Resource|Description">
+        <source>Specifies a resource file for the project. Note you must specify the icon and manifest -or- a resource file.</source>
+        <target state="translated">指定项目的资源文件。请注意，必须指定图标和清单，或者指定一个资源文件。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|DisplayName">

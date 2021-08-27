@@ -96,7 +96,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Friend Const LVSCW_AUTOSIZE As Integer = -1
         Friend Const LVSCW_AUTOSIZE_USEHEADER As Integer = -2
 
-
         Friend Class ConnectionPointCookie
             Private _connectionPoint As IConnectionPoint
             Private _connectionPoint2 As ComTypes.IConnectionPoint
@@ -106,7 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Private ReadOnly _eventInterface As Type
 #End If
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie"]/*' />
             ' <devdoc>
             ' Creates a connection point to of the given interface type.
@@ -115,7 +113,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Friend Sub New([source] As Object, sink As Object, eventInterface As Type)
                 MyClass.New([source], sink, eventInterface, True)
             End Sub 'New
-
 
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.ConnectionPointCookie1"]/*' />
             ' <devdoc>
@@ -172,7 +169,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
                     ex = New InvalidCastException("The source object does not expose IConnectionPointContainer.")
                 End If
 
-
                 If throwException AndAlso (_connectionPoint Is Nothing OrElse _cookie = 0) Then
                     If ex Is Nothing Then
                         Throw New ArgumentException(String.Format("Could not create connection point for event interface '{0}'", eventInterface.Name))
@@ -187,7 +183,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 #End If
             End Sub 'New
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect"]/*' />
             ' <devdoc>
             ' Disconnect the current connection point.  If the object is not connected,
@@ -196,7 +191,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Friend Overloads Sub Disconnect()
                 Disconnect(False)
             End Sub 'Disconnect
-
 
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Disconnect1"]/*' />
             ' <devdoc>
@@ -228,7 +222,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
                 End If
             End Sub 'Disconnect
 
-
             ' <include file='doc\NativeMethods.uex' path='docs/doc[@for="NativeMethods.ConnectionPointCookie.Finalize"]/*' />
             ' <internalonly/>
             Protected Overrides Sub Finalize()
@@ -256,7 +249,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
             Friend cbData As UInteger
             Friend pbData As IntPtr
         End Structure
-
 
         <DllImport("crypt32.dll", CharSet:=CharSet.Unicode, SetLastError:=True)>
         Friend Shared Function PFXImportCertStore(<[In]> blob As IntPtr, <[In]> password As String, <[In]> flags As CryptFlags) As IntPtr
@@ -314,7 +306,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         Friend Shared Function CertCloseStore(<[In]> CertStore As IntPtr, Flags As CertStoreClose) As <MarshalAs(UnmanagedType.Bool)> Boolean
         End Function
 
-
         <Flags>
         Friend Enum CertStoreClose
             ' Fields
@@ -325,7 +316,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         <PreserveSig> Friend Declare Function _
              SetParent _
                  Lib "user32" (hwnd As IntPtr, hWndParent As IntPtr) As IntPtr
-
 
         <PreserveSig> Friend Declare Function _
             GetParent _
@@ -365,7 +355,6 @@ Namespace Microsoft.VisualStudio.Editors.Interop
         <PreserveSig> Friend Declare Auto Function _
             GetNextDlgTabItem _
                 Lib "user32" (hDlg As IntPtr, hCtl As IntPtr, bPrevious As Boolean) As IntPtr
-
 
         <PreserveSig>
         Friend Declare Auto Function GetWindow Lib "user32" (Hwnd As IntPtr, uCmd As UInteger) As IntPtr
@@ -503,17 +492,17 @@ Namespace Microsoft.VisualStudio.Editors.Interop
 
     <StructLayout(LayoutKind.Sequential)>
     Friend Class HDITEM2
-        Public mask As Integer = 0
-        Public cxy As Integer = 0
+        Public mask As Integer
+        Public cxy As Integer
         Public pszTextPtr As IntPtr
-        Public hbm As IntPtr = IntPtr.Zero
-        Public cchTextMax As Integer = 0
-        Public fmt As Integer = 0
-        Public lParam As IntPtr = IntPtr.Zero
-        Public iImage As Integer = 0
-        Public iOrder As Integer = 0
-        Public type As Integer = 0
-        Public pvFilter As IntPtr = IntPtr.Zero
+        Public hbm As IntPtr
+        Public cchTextMax As Integer
+        Public fmt As Integer
+        Public lParam As IntPtr
+        Public iImage As Integer
+        Public iOrder As Integer
+        Public type As Integer
+        Public pvFilter As IntPtr
     End Class
 
 End Namespace

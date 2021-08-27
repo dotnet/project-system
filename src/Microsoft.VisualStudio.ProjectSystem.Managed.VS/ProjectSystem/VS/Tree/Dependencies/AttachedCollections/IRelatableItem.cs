@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.Composition;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedCollections
 {
@@ -18,7 +17,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
     /// Enough state must be available on items for their <see cref="IRelation"/>s to create parent and child items.
     /// </para>
     /// </remarks>
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Extension, Cardinality = ImportCardinality.ZeroOrMore)]
     public interface IRelatableItem
     {
         /// <summary>

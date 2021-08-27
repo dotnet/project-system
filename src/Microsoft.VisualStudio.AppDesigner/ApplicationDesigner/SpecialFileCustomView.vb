@@ -20,7 +20,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         'The SpecialFileCustomViewProvider which created this class instance
         Private _viewProvider As SpecialFileCustomViewProvider
 
-
         ''' <summary>
         ''' Communicates to this class the SpecialFileCustomViewProvider which created it.
         '''   Used to access the special file ID, etc.

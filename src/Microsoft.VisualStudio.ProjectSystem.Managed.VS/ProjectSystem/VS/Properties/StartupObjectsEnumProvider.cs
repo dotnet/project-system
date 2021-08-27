@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<ICollection<IEnumValue>> GetListedValuesAsync()
         {
-            Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath, _unconfiguredProject.FullPath));
+            Project project = _workspace.CurrentSolution.Projects.First(p => PathHelper.IsSamePath(p.FilePath!, _unconfiguredProject.FullPath));
             Compilation? compilation = await project.GetCompilationAsync();
 
             IEntryPointFinderService? entryPointFinderService = project.LanguageServices.GetService<IEntryPointFinderService>();

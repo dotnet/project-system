@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.AttachedColl
 
         protected override bool HasContainedItems(FrameworkReferenceItem parent)
         {
-            return _frameworkContentCache.GetContents(parent.Framework).Length != 0;
+            return !_frameworkContentCache.GetContents(parent.Framework).IsEmpty;
         }
 
         protected override void UpdateContainsCollection(FrameworkReferenceItem parent, AggregateContainsRelationCollectionSpan span)

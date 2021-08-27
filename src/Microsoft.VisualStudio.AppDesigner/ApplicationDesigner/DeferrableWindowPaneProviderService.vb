@@ -6,7 +6,6 @@ Imports Microsoft.VisualStudio.Shell.Design
 Imports Microsoft.VisualStudio.Shell.Design.Serialization
 Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
-
     ' <devdoc>
     '     This class provides a Window pane provider service that can
     '     create a ApplicationDesignerWindowPane

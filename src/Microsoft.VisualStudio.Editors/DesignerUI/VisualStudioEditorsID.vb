@@ -18,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors
             ' Constants for menu command IDs and GUIDs. 
             ' *** These must match the constants in designerui\VisualStudioEditorsID.h *****
 
-
             ' *********************************************************************
             ' Menu IDs (0x01??)
             ' *********************************************************************
@@ -29,11 +28,9 @@ Namespace Microsoft.VisualStudio.Editors
             Public Const IDM_VS_TOOLBAR_Resources As Integer = &H211
             Public Const IDM_VS_TOOLBAR_Resources_ResW As Integer = &H212
 
-
             ' *********************************************************************
             ' Command Group IDs (0x1???)
             ' *********************************************************************
-
 
             ' *********************************************************************
             ' Command IDs (0x2???)
@@ -84,8 +81,6 @@ Namespace Microsoft.VisualStudio.Editors
 
             ' *********************************************************************
 
-
-
             'Some common stuff
             Public Shared ReadOnly GuidVSStd97 As New Guid("5efc7975-14bc-11cf-9b2b-00aa00573819")
             Public Shared ReadOnly GuidVSStd2K As New Guid("1496A755-94DE-11D0-8C3F-00C04FC2AAE2")
@@ -113,7 +108,6 @@ Namespace Microsoft.VisualStudio.Editors
             Public Const CmdIdEditLabel As Integer = 338
             Public Const ECMD_CANCEL As Integer = 103
 
-
             Public Shared ReadOnly CommandIDVSStd97cmdidCut As New CommandID(GuidVSStd97, CmdIdCut)
             Public Shared ReadOnly CommandIDVSStd97cmdidCopy As New CommandID(GuidVSStd97, CmdIdCopy)
             Public Shared ReadOnly CommandIDVSStd97cmdidPaste As New CommandID(GuidVSStd97, CmdIdPaste)
@@ -139,7 +133,6 @@ Namespace Microsoft.VisualStudio.Editors
             '  and must be returned from the editor factory.
             Public Shared ReadOnly GUID_SETTINGSDESIGNER_CommandUI As New Guid("515231ad-c9dc-4aa3-808f-e1b65e72081c")
             Public Const GUID_SETTINGSDESIGNER_CommandUIString As String = "515231ad-c9dc-4aa3-808f-e1b65e72081c"
-
 
             Private Shared ReadOnly s_GUID_MS_VS_Editors_CommandId As New Guid("E4B9BB05-1963-4774-8CFC-518359E3FCE3")
 

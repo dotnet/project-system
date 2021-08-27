@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
         [ImportMany]
         public OrderPrecedenceImportCollection<Action<string, BuildOptions, BuildOptions>> CommandLineNotifications { get; }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));

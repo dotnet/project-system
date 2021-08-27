@@ -111,6 +111,7 @@
                           UserSourceItems;
                           SupportAvailableItemName;
                           IntegratedConsoleDebugging;
+                          DisableBuiltInDebuggerServices;
                           PersistDesignTimeDataOutOfProject;" />
 
     <!-- COM references are not supported in .NET Core before 3.0 -->
@@ -177,58 +178,11 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SpecialFolder.xaml">
-      <Context>File;ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)Resource.BrowseObject.xaml">
-      <Context>BrowseObject</Context>
-    </PropertyPageSchema>
-
-    <!-- Project related settings -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)AppDesigner.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CompilerCommandLineArgs.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)LanguageService.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- NuGet Restore Properties -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)NuGetRestore.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- Up-to-date check -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ResolvedCompilationReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CopyUpToDateMarker.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckInput.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckOutput.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)UpToDateCheckBuilt.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ConfigurationGeneral.xaml">
       <Context>Project;ProjectSubscriptionService</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DebuggerGeneral.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)DebuggerGeneral.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -237,6 +191,10 @@
     </PropertyPageSchema>
 
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)BuildPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)PackagePropertyPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
@@ -256,23 +214,18 @@
       <Context>BrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)GeneralConfiguredBrowseObject.xaml">
       <Context>ConfiguredBrowseObject</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectDebugger.xaml">
+    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ProjectDebugger.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
 
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SourceControl.xaml">
-      <Context>Invisible</Context>
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)SigningPropertyPage.xaml">
+      <Context>Project</Context>
     </PropertyPageSchema>
-
-    <!-- .editorconfig files -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)PotentialEditorConfigFiles.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
+    
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedReferenceSchemas)' == 'true'">
@@ -302,20 +255,6 @@
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ResolvedFrameworkReference.xaml">
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
-
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedFrameworkReference.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-
-    <!-- Package downloads -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageDownload.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
-    
-    <!-- Central Package Versions -->
-    <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)CollectedPackageVersion.xaml">
-      <Context>ProjectSubscriptionService</Context>
-    </PropertyPageSchema>
     
     <!-- Project references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectReference.xaml">
@@ -344,11 +283,6 @@
       <Context>ProjectSubscriptionService;BrowseObject</Context>
     </PropertyPageSchema>
 
-    <!-- Tool references -->
-    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)DotNetCliToolReference.xaml">
-      <Context>ProjectSubscriptionService;BrowseObject</Context>
-    </PropertyPageSchema>
-
     <!-- Analyzer references -->
     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)AnalyzerReference.xaml">
       <Context>Project;ProjectSubscriptionService;BrowseObject</Context>
@@ -362,9 +296,6 @@
   <!-- List of external files that trigger re-evaluation & design-time builds when they are added or removed, or edited -->
   <ItemGroup>
     
-    <!-- NuGet assets file -->
-    <AdditionalDesignTimeBuildInput Include="$(ProjectAssetsFile)" ContentSensitive="true" />   
-  
     <!-- Potential Editor config locations, we only want to trigger design-time builds on removal/addition and not edits  -->
     <AdditionalDesignTimeBuildInput Include="@(PotentialEditorConfigFiles)" ContentSensitive="false" />   
   
@@ -396,6 +327,27 @@
   <Target Name="CollectSDKReferencesDesignTime" />
   <Target Name="CollectResolvedSDKReferencesDesignTime" />
   <Target Name="ResolveFrameworkReferences" />
+
+  <Target
+    Name="ResolveProjectReferencesDesignTime2"
+    Returns="@(_ProjectReferencesFromRAR2);@(_ProjectReferencesWithoutOutputAssembly)"
+    DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+    <!-- This is similar to ResolveProjectReferencesDesignTime, except it also returns projects that do not get
+         resolved (hence do not appear in ReferencePath) because ReferenceOutputAssembly is set to false. -->
+    <ItemGroup>
+      <!-- We need to do this here because we only want project references which have passed through RAR and have
+           not been unresolved due to violating some multi-targeting rule which means we need to pull the project
+           references out of the referencepath item because they will only exist there if they were correctly
+           resolved. -->
+      <_ProjectReferencesFromRAR2 Include="@(ReferencePath->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))">
+        <OriginalItemSpec>%(ReferencePath.ProjectReferenceOriginalItemSpec)</OriginalItemSpec>
+      </_ProjectReferencesFromRAR2>
+
+      <_ProjectReferencesWithoutOutputAssembly Include="@(ProjectReference->WithMetadataValue('ReferenceOutputAssembly', 'false'))">
+        <OriginalItemSpec>%(ProjectReference.Identity)</OriginalItemSpec>
+      </_ProjectReferencesWithoutOutputAssembly>
+    </ItemGroup>
+  </Target>
 
   <Target
     Name="ResolveFrameworkReferencesDesignTime"

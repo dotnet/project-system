@@ -1,7 +1,5 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
-Imports System.Diagnostics.CodeAnalysis
-
 Imports Microsoft.VisualStudio.Shell
 
 Imports VSLangProj80
@@ -20,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'Disallow creation
         End Sub
 
-        <SuppressMessage("Microsoft.Usage", "CA2233:OperationsShouldNotOverflow", MessageId:="PropertyId-10063")>
         Public Shared Function IsHidden(PropertyId As Integer) As Boolean
 
             If VSProductSKU.IsExpress Then
@@ -65,6 +62,5 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
         End Function
 
     End Class
-
 
 End Namespace

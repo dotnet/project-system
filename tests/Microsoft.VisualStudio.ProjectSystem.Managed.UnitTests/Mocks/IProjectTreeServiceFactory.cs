@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         public static IProjectTreeService ImplementCurrentTree(Func<IProjectTreeServiceState?> action)
         {
             var mock = new Mock<IProjectTreeService>();
-            mock.SetupGet<IProjectTreeServiceState?>(s => s.CurrentTree)
+            mock.SetupGet(s => s.CurrentTree)
                 .Returns(action);
 
             return mock.Object;

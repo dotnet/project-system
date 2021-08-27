@@ -1,6 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.Drawing
+Imports System.IO
 Imports System.Reflection
 Imports System.Windows.Forms
 
@@ -225,7 +226,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return Nothing
         End Function
 
-
         ''' <summary>
         ''' Get whatever type name the user selected
         ''' </summary>
@@ -291,7 +291,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End If
         End Sub
 
-
         ''' <summary>
         ''' Try to validate the current type name, giving the user a chance to cancel the close
         ''' if validation fails
@@ -347,7 +346,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 ' Let's report the error and keep the dialog open!
                 ReportError(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ERR_InvalidTypeName_1Arg, TypeName))
                 Return False
-            Catch ex As IO.FileLoadException
+            Catch ex As FileLoadException
                 ' The type resolution may throw an argument exception if the type name contains an invalid assembly name 
                 ' (i.e. Foo,,)
                 ' Let's report the error and keep the dialog open!
@@ -498,7 +497,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             TYPE_NODE
         End Enum
 
-
         Private Class TypeTVNode
             Inherits TreeNode
 
@@ -540,7 +538,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                     Return Nodes.ContainsKey(DUMMY_ITEM_TEXT)
                 End Get
             End Property
-
 
             Public ReadOnly Property IsNameSpaceNode As Boolean
                 Get

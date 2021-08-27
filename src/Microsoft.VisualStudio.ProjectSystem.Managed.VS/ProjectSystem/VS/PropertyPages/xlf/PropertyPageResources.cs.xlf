@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationMode">
-        <source>Authentication mode:</source>
-        <target state="translated">Režim ověřování:</target>
+        <source>Au_thentication mode:</source>
+        <target state="translated">Režim _ověřování:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FindBtn">
-        <source>Find...</source>
-        <target state="translated">Najít:</target>
+        <source>_Find...</source>
+        <target state="translated">_Najít...</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
-        <source>Use remote m_achine:</source>
-        <target state="translated">Použít vzdál_ený počítač:</target>
+        <source>_Use remote machine:</source>
+        <target state="translated">Po_užít vzdálený počítač:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -138,38 +138,38 @@
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
-        <source>Add</source>
-        <target state="translated">Přidat</target>
+        <source>_Add</source>
+        <target state="translated">_Přidat</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
-        <source>Application arguments:</source>
-        <target state="translated">Argumenty aplikace:</target>
+        <source>Application ar_guments:</source>
+        <target state="translated">A_rgumenty aplikace:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
-        <source>Browse...</source>
-        <target state="translated">Procházet...</target>
+        <source>_Browse...</source>
+        <target state="translated">_Procházet...</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
-        <source>Delete</source>
-        <target state="translated">Odstranit</target>
+        <source>_Delete</source>
+        <target state="translated">_Odstranit</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
-        <source>Environment variables:</source>
-        <target state="translated">Proměnné prostředí:</target>
+        <source>Environ_ment variables:</source>
+        <target state="translated">Pro_měnné prostředí:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable:</source>
-        <target state="translated">Spustitelný soubor:</target>
+        <source>_Executable:</source>
+        <target state="translated">Spustit_elný soubor:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
-        <source>Launch:</source>
-        <target state="translated">Spustit:</target>
+        <source>_Launch:</source>
+        <target state="translated">_Spustit:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -183,18 +183,18 @@
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">
-        <source>New...</source>
-        <target state="translated">Nový...</target>
+        <source>_New...</source>
+        <target state="translated">_Nový...</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
-        <source>Profile:</source>
-        <target state="translated">Profil:</target>
+        <source>_Profile:</source>
+        <target state="translated">_Profil:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
-        <source>Remove</source>
-        <target state="translated">Odebrat</target>
+        <source>_Remove</source>
+        <target state="translated">Odeb_rat</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -203,8 +203,8 @@
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
-        <source>Working directory:</source>
-        <target state="translated">Pracovní adresář:</target>
+        <source>_Working directory:</source>
+        <target state="translated">Pra_covní adresář:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -248,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
-        <source>Enable native code debugging</source>
-        <target state="translated">Povolit ladění nativního kódu</target>
+        <source>Enable nati_ve code debugging</source>
+        <target state="translated">Po_volit ladění nativního kódu</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -258,8 +258,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
-        <source>Enable SQL Server debugging</source>
-        <target state="translated">Povolit ladění SQL Serveru</target>
+        <source>Enable _SQL Server debugging</source>
+        <target state="translated">Povolit ladění _SQL Serveru</target>
         <note />
       </trans-unit>
     </body>

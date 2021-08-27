@@ -67,9 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             }
 
             if (parent == null)
-#pragma warning disable IDE0016 // Use 'throw' expression
                 throw FormatException(ProjectTreeFormatError.MultipleRoots, "Encountered another project root, when tree can only have one.");
-#pragma warning restore IDE0016 // Use 'throw' expression
 
             MutableProjectTree tree = ReadProjectItem();
             tree.Parent = parent;
@@ -108,7 +106,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             if (_tokenizer.SkipIf(TokenType.CarriageReturn))
             {   // If we read '\r', it must be followed by a '\n'
-
                 _tokenizer.Skip(TokenType.NewLine);
                 return true;
             }
@@ -126,7 +123,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadProjectItemProperties(MutableProjectItemTree tree)
         {   // Parse "Root (visibility: visible, flags: {ProjectRoot}), FilePath: "C:\My Project\MyFile.txt", Icon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}, ExpandedIcon: {1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}
-
             ReadCaption(tree);
             ReadProperties(tree);
             ReadFields(tree);
@@ -141,7 +137,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadProperties(MutableProjectItemTree tree)
         {   // Parses "(visibility: visible, flags: {ProjectRoot})"
-
             // Properties section is optional
             if (!_tokenizer.SkipIf(TokenType.LeftParenthesis))
                 return;
@@ -188,7 +183,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadVisibility(MutableProjectItemTree tree)
         {   // Parse 'visible' in 'visibility:visible' or 'invisible' in 'visibility:invisible"
-
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
             string visibility = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
@@ -204,7 +198,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadCapabilities(MutableProjectItemTree tree)
         {   // Parse '{ProjectRoot Folder}'
-
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValueBlock);
             tokenizer.Skip(TokenType.LeftBrace);
 
@@ -222,7 +215,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadFlag(MutableProjectItemTree tree)
         {   // Parses 'AppDesigner' in '{AppDesigner Folder}'
-
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValue);
 
             string flag = tokenizer.ReadIdentifier(IdentifierParseOptions.Required);
@@ -231,7 +223,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadFields(MutableProjectItemTree tree)
         {   // Parses ', FilePath: "C:\Temp\Foo"'
-
             // This section is optional
             while (_tokenizer.SkipIf(TokenType.Comma))
             {
@@ -293,7 +284,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadDisplayOrder(MutableProjectItemTree tree)
         {   // Parses '1`
-
             Tokenizer tokenizer = Tokenizer(Delimiters.PropertyValue);
 
             string identifier = tokenizer.ReadIdentifier(IdentifierParseOptions.None);
@@ -303,13 +293,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadItemName(MutableProjectItemTree tree)
         {   // Parses '"test.fs"'
-
             tree.Item.ItemName = ReadQuotedPropertyValue();
         }
 
         private void ReadFilePath(MutableProjectItemTree tree)
         {   // Parses '"C:\Temp\Foo"'
-
             tree.FilePath = ReadQuotedPropertyValue();
         }
 
@@ -332,7 +320,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private string ReadQuotedPropertyValue()
         {   // Parses '"C:\Temp"'
-
             Tokenizer tokenizer = Tokenizer(Delimiters.QuotedPropertyValue);
 
             tokenizer.Skip(TokenType.Quote);
@@ -346,7 +333,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
         private void ReadIcon(MutableProjectTree tree, bool expandedIcon)
         {   // Parses '{1B5CF1ED-9525-42B4-85F0-2CB50530ECA9 1}'
-
             Tokenizer tokenizer = Tokenizer(Delimiters.BracedPropertyValueBlock);
             tokenizer.Skip(TokenType.LeftBrace);
 

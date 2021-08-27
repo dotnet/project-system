@@ -11,7 +11,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
 {
     /// <summary>
     /// <see cref="VSProject"/> imports <see cref="VSLangProj.VSProject"/> provided by CPS
-    /// and wraps it into an object that implements both <see cref="VSLangProj.VSProject"/> and 
+    /// and wraps it into an object that implements both <see cref="VSLangProj.VSProject"/> and
     /// <see cref="VSLangProj.ProjectProperties"/>. This enables us to provide
     /// ProjectProperties to the Project Property Pages and maintain Backward Compatibility.
     /// </summary>
@@ -26,14 +26,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation
     {
         private readonly VSLangProj.VSProject _vsProject;
         private readonly IProjectThreadingService _threadingService;
-        private readonly ActiveConfiguredProject<ProjectProperties> _projectProperties;
+        private readonly IActiveConfiguredValue<ProjectProperties> _projectProperties;
         private readonly BuildManager _buildManager;
 
         [ImportingConstructor]
         internal VSProject(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ProjectProperties> projectProperties,
+            IActiveConfiguredValue<ProjectProperties> projectProperties,
             UnconfiguredProject project,
             BuildManager buildManager)
         {

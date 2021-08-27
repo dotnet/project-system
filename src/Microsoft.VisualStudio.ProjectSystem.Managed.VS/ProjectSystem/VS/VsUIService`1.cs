@@ -4,7 +4,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 
@@ -34,15 +33,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             get
             {
+
                 // We always verify that we're on the UI thread regardless 
                 // of whether we've already retrieved the service to always
                 // enforce this.
-                if (_joinableTaskContext.IsOnMainThread)
-                {
-                    return _value.Value;
-                }
+                _joinableTaskContext.VerifyIsOnMainThread();
 
-                throw new COMException("This method must be called on the UI thread.", HResult.WrongThread);
+                return _value.Value;
             }
         }
 

@@ -15,7 +15,6 @@ Imports Microsoft.VSDesigner
 
 Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
-
     ''' <summary>
     ''' Designer loader for the Resource Editor.  Handles serialization and services.
     ''' </summary>
@@ -63,7 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Sub
 
-
         ''' <summary>
         ''' This must be overloaded to return the assembly-qualified name of the base component that is 
         '''   being designed by this editor.  This information is required by the managed VSIP classes.
@@ -71,7 +69,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Protected Overrides Function GetBaseComponentClassName() As String
             Return GetType(ResourceEditorRootComponent).AssemblyQualifiedName
         End Function
-
 
         ''' <summary>
         ''' Depersists the state of the component tree (root component and any
@@ -202,7 +199,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End If
         End Function
 
-
         ''' <summary>
         ''' This method is called immediately after the first time
         '''   BeginLoad is invoked.  This is an appropriate place to
@@ -229,7 +225,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 "We just made the EditorState service available.  Why isn't it there?")
         End Sub
 
-
         ''' <summary>
         ''' Overrides base Dispose.
         ''' </summary>
@@ -243,7 +238,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             MyBase.Dispose()
         End Sub
-
 
         ''' <summary>
         ''' Called when the document's window is activated or deactivated

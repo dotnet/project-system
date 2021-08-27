@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.ConnectionPoint
                 _sinks.Add(_nextCookie, sink);
                 pdwCookie = _nextCookie;
                 _source.OnSinkAdded(sink);
-                _nextCookie += 1;
+                _nextCookie++;
                 return;
             }
 

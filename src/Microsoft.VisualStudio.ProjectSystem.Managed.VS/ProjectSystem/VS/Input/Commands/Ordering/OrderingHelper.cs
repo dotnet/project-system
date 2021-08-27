@@ -274,7 +274,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Gets a collection a project tree's children. 
+        /// Gets a collection a project tree's children.
         /// The children will only have a valid display order, and the collection will be in order by their display order.
         /// </summary>
         private static ImmutableArray<IProjectTree> GetChildren(IProjectTree projectTree)
@@ -429,7 +429,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Move project elements based on the given project tree, reference project tree and move action. 
+        /// Move project elements based on the given project tree, reference project tree and move action.
         /// Will modify the project if successful, but not save; only dirty.
         /// </summary>
         private static bool TryMove(Project project, IProjectTree projectTree, IProjectTree? referenceProjectTree, MoveAction moveAction)
@@ -460,7 +460,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         }
 
         /// <summary>
-        /// Move project elements based on the given project tree and move action. 
+        /// Move project elements based on the given project tree and move action.
         /// Will modify the project if successful, but not save; only dirty.
         /// </summary>
         private static bool TryMove(Project project, IProjectTree projectTree, MoveAction moveAction)

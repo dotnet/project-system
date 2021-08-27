@@ -4,7 +4,6 @@ Imports System.ComponentModel
 Imports System.ComponentModel.Design.Serialization
 Imports System.IO
 
-
 Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
     'CONSIDER: Use GenericComponentSerializationService/Store
@@ -40,7 +39,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             'We don't need the service provider, we ignore it.
         End Sub
 
-
         ''' <summary>
         ''' This method creates a new SerializationStore.  The serialization store can 
         '''  be passed to any of the various Serialize methods to build up serialization 
@@ -50,7 +48,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Overrides Function CreateStore() As SerializationStore
             Return New PropertyPageSerializationStore()
         End Function
-
 
         ''' <summary>
         ''' This method loads a SerializationStore and from the given
@@ -65,7 +62,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Return PropertyPageSerializationStore.Load(Stream)
         End Function
 
-
         ''' <summary>
         ''' This method serializes the given object to the store.  The store 
         '''   can be used to serialize more than one object by calling this method 
@@ -77,7 +73,7 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             Requires.NotNull(Store, NameOf(Store))
             Requires.NotNull(Value, NameOf(Value))
 
-            If Not TypeOf Value Is PropPageDesignerRootComponent Then
+            If TypeOf Value IsNot PropPageDesignerRootComponent Then
                 Throw AppDesCommon.CreateArgumentException(NameOf(Value))
             End If
             Dim Component As PropPageDesignerRootComponent = DirectCast(Value, PropPageDesignerRootComponent)
@@ -93,9 +89,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         Public Overrides Sub SerializeAbsolute(store As SerializationStore, value As Object)
             Serialize(store, value)
         End Sub
-
-
-
 
         ''' <summary>
         ''' This method serializes the given member on the given object.  This method 
@@ -124,7 +117,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             RFStore.AddMember(OwningResource, Member)
         End Sub
 
-
         ''' <summary>
         ''' This method serializes the given member on the given object, 
         '''   but attempts to do so in such a way as to serialize only the 
@@ -145,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
             SerializeMember(Store, OwningObject, Member)
         End Sub
 
-
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
         '''     objects contained within it.  If a container is provided, objects 
@@ -163,7 +154,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Return RFStore.Deserialize()
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store to produce a collection of 
@@ -184,7 +174,6 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
 
             Return RFStore.Deserialize(Container)
         End Function
-
 
         ''' <summary>
         '''     This method deserializes the given store, but rather than produce 
@@ -213,6 +202,5 @@ Namespace Microsoft.VisualStudio.Editors.PropPageDesigner
         End Sub
 
     End Class
-
 
 End Namespace

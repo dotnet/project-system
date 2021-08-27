@@ -242,7 +242,6 @@ Project (flags: {ProjectRoot}), FilePath: ""C:\Project\Project.csproj""
         [Fact]
         public async Task GetFileAsync_WhenRootMarkedWithDisableAddItemFolder_ReturnsNull()
         {   // Mimics an extension turning on DisableAddItem flag for our parent
-
             var tree = ProjectTreeParser.Parse(@"
 Project (flags: {ProjectRoot DisableAddItemFolder}), FilePath: ""C:\Project\Project.csproj""
 ");

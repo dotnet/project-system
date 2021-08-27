@@ -9,7 +9,6 @@ Imports Microsoft.VisualStudio.Designer.Interfaces
 Imports Microsoft.VisualStudio.Editors.Common
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
     ''' <summary>
@@ -62,7 +61,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
     Friend MustInherit Class AccessModifierCombobox
         Implements IDisposable
 
-        Private _isDisposed As Boolean = False
+        Private _isDisposed As Boolean
         Private ReadOnly _rootDesigner As BaseRootDesigner
         Private ReadOnly _projectItem As EnvDTE.ProjectItem
         Private ReadOnly _serviceProvider As IServiceProvider
@@ -177,7 +176,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
         ''' </summary>
         Friend Class DesignerMenuCommandForwarder
 
-
             '
             ' Map from command ID to LIFO list of command handlers. The item at the head of the list is the item 
             ' that is currently registered with the shell's MenuCommandService
@@ -264,7 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
 
                 Debug.Assert(list.Count > 0, "We just added a menu command to the list - how come it is empty!")
             End Sub
-
 
             ''' <summary>
             ''' Remove a menu command forwarder from our internal LIFO queue. 
@@ -523,7 +520,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return False
             End If
 
-
             'If the current custom tool is set to a (non-empty) single file generator that we don't
             '  recognize, then disable the combobox.  Otherwise the user might accidentally change
             '  it and won't easily be able to get back the original value.  This is an advanced 
@@ -567,7 +563,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 Return ShellUtil.VsHierarchyFromDTEProject(_serviceProvider, _projectItem.ContainingProject)
             End Get
         End Property
-
 
 #Region "IDisposable"
 

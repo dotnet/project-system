@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.OperationProgress;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceProjectContextHost
     {
         /// <summary>
-        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a 
+        ///     Responsible for lifetime of a <see cref="IWorkspaceProjectContext"/> and applying changes to a
         ///     project to the context via the <see cref="IApplyChangesToWorkspaceContext"/> service.
         /// </summary>
         internal class WorkspaceProjectContextHostInstance : OnceInitializedOnceDisposedUnderLockAsync, IMultiLifetimeInstance
@@ -24,6 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             private readonly IUnconfiguredProjectTasksService _tasksService;
             private readonly IWorkspaceProjectContextProvider _workspaceProjectContextProvider;
             private readonly IActiveEditorContextTracker _activeWorkspaceProjectContextTracker;
+            private readonly IActiveConfiguredProjectProvider _activeConfiguredProjectProvider;
             private readonly ExportFactory<IApplyChangesToWorkspaceContext> _applyChangesToWorkspaceContextFactory;
             private readonly IDataProgressTrackerService _dataProgressTrackerService;
 
@@ -39,6 +41,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                                                        IProjectSubscriptionService projectSubscriptionService,
                                                        IWorkspaceProjectContextProvider workspaceProjectContextProvider,
                                                        IActiveEditorContextTracker activeWorkspaceProjectContextTracker,
+                                                       IActiveConfiguredProjectProvider activeConfiguredProjectProvider,
                                                        ExportFactory<IApplyChangesToWorkspaceContext> applyChangesToWorkspaceContextFactory,
                                                        IDataProgressTrackerService dataProgressTrackerService)
                 : base(threadingService.JoinableTaskContext)
@@ -48,6 +51,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 _tasksService = tasksService;
                 _workspaceProjectContextProvider = workspaceProjectContextProvider;
                 _activeWorkspaceProjectContextTracker = activeWorkspaceProjectContextTracker;
+                _activeConfiguredProjectProvider = activeConfiguredProjectProvider;
                 _applyChangesToWorkspaceContextFactory = applyChangesToWorkspaceContextFactory;
                 _dataProgressTrackerService = dataProgressTrackerService;
             }
@@ -77,23 +81,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                     _applyChangesToWorkspaceContext,
                     _evaluationProgressRegistration,
                     _projectBuildProgressRegistration,
-                    
-                    // We avoid suppressing version updates, so that progress tracker doesn't
-                    // think we're still "in progress" in the case of an empty change
-                    _projectSubscriptionService.ProjectRuleSource.SourceBlock.LinkToAsyncAction(
-                        target: e => OnProjectChangedAsync(e, evaluation: true),
-                        _project.UnconfiguredProject,
-                        ProjectFaultSeverity.LimitedFunctionality,
-                        suppressVersionOnlyUpdates: false,
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectEvaluationRules()),
 
-                    _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.LinkToAsyncAction(
-                        target: e => OnProjectChangedAsync(e, evaluation: false),
-                        _project.UnconfiguredProject,
-                        ProjectFaultSeverity.LimitedFunctionality,
-                        suppressVersionOnlyUpdates: false,
-                        ruleNames: _applyChangesToWorkspaceContext.Value.GetProjectBuildRules())
+                    ProjectDataSources.SyncLinkTo(
+                        _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
+                        _projectSubscriptionService.ProjectRuleSource.SourceBlock.SyncLinkOptions(GetProjectEvaluationOptions()),
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
+                                OnProjectChangedAsync(e, evaluation: true),
+                                _project.UnconfiguredProject,
+                                ProjectFaultSeverity.LimitedFunctionality),
+                            linkOptions: DataflowOption.PropagateCompletion,
+                            cancellationToken: cancellationToken),
+
+                    ProjectDataSources.SyncLinkTo(
+                        _activeConfiguredProjectProvider.ActiveConfiguredProjectBlock.SyncLinkOptions(),
+                        _projectSubscriptionService.ProjectBuildRuleSource.SourceBlock.SyncLinkOptions(GetProjectBuildOptions()),
+                            target: DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<ConfiguredProject, IProjectSubscriptionUpdate>>>(e =>
+                                OnProjectChangedAsync(e, evaluation: false),
+                                _project.UnconfiguredProject,
+                                ProjectFaultSeverity.LimitedFunctionality),
+                            linkOptions: DataflowOption.PropagateCompletion,
+                            cancellationToken: cancellationToken),
+
                 };
+            }
+
+            private StandardRuleDataflowLinkOptions GetProjectEvaluationOptions()
+            {
+                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectEvaluationRules());
+            }
+
+            private StandardRuleDataflowLinkOptions GetProjectBuildOptions()
+            {
+                return DataflowOption.WithRuleNames(_applyChangesToWorkspaceContext!.Value.GetProjectBuildRules());
             }
 
             protected override async Task DisposeCoreUnderLockAsync(bool initialized)
@@ -142,28 +161,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
                 }
             }
 
-            internal Task OnProjectChangedAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation)
+            internal Task OnProjectChangedAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation)
             {
                 return ExecuteUnderLockAsync(ct => ApplyProjectChangesUnderLockAsync(update, evaluation, ct), _tasksService.UnloadCancellationToken);
             }
 
-            private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, bool evaluation, CancellationToken cancellationToken)
+            private async Task ApplyProjectChangesUnderLockAsync(IProjectVersionedValue<(ConfiguredProject project, IProjectSubscriptionUpdate subscription)> update, bool evaluation, CancellationToken cancellationToken)
             {
                 IWorkspaceProjectContext context = _contextAccessor!.Context;
+                IProjectVersionedValue<IProjectSubscriptionUpdate> subscription = update.Derive(u => u.subscription);
+                bool isActiveEditorContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
+                bool isActiveConfiguration = update.Value.project == _project;
+
+                var state = new ContextState(isActiveEditorContext, isActiveConfiguration);
 
                 context.StartBatch();
 
                 try
                 {
-                    bool isActiveContext = _activeWorkspaceProjectContextTracker.IsActiveEditorContext(_contextAccessor.ContextId);
-
                     if (evaluation)
                     {
-                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(update, isActiveContext, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectEvaluationAsync(subscription, state, cancellationToken);
                     }
                     else
                     {
-                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(update, isActiveContext, cancellationToken);
+                        await _applyChangesToWorkspaceContext!.Value.ApplyProjectBuildAsync(subscription, state, cancellationToken);
                     }
                 }
                 finally
@@ -172,8 +194,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
                     NotifyOutputDataCalculated(update.DataSourceVersions, evaluation);
                 }
-
-                await _applyChangesToWorkspaceContext.Value.ApplyProjectEndBatchAsync(update, cancellationToken);
             }
 
             private void NotifyOutputDataCalculated(IImmutableDictionary<NamedIdentity, IComparable> dataSourceVersions, bool evaluation)

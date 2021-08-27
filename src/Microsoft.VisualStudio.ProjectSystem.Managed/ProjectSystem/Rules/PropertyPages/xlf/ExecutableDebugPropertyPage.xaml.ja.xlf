@@ -2,6 +2,11 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../ExecutableDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|NativeDebugging|Description">
+        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging.</source>
+        <target state="translated">マネージドおよびネイティブ コードのデバッグを同時に有効にします。これは、混合モード デバッグとも呼ばれます。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
         <target state="translated">ネイティブ コードのデバッグを有効にする</target>
@@ -50,6 +55,16 @@
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
         <target state="translated">コマンド ライン引数</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|Description">
+        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
+        <target state="translated">プロセスを実行する前に設定する環境変数。変数はコンマ (,) で区切られ、変数名と値は等号 (=) で区切られます。例: var1=value1,var2=value2,var3=value3。変数内に表示されるコンマと等号は、スラッシュ (/) を使用してエスケープできます。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
+        <source>Environment variables</source>
+        <target state="translated">環境変数</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ExecutablePath|Description">

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks.Dataflow;
 using Microsoft.VisualStudio.Shell;
@@ -129,12 +128,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
             }
         }
 
-        private void PostToOutput(string[] file)
+        private void PublishFiles(string[] files)
         {
             _version++;
-            ImmutableDictionary<NamedIdentity, IComparable> dataSources = ImmutableDictionary<NamedIdentity, IComparable>.Empty.Add(DataSourceKey, DataSourceVersion);
-
-            _broadcastBlock.Post(new ProjectVersionedValue<string[]>(file, dataSources));
+            _broadcastBlock.Post(new ProjectVersionedValue<string[]>(
+                files,
+                Empty.ProjectValueVersions.Add(DataSourceKey, _version)));
         }
 
         protected override void Dispose(bool disposing)
@@ -171,7 +170,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
 
         public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
         {
-            PostToOutput(rgpszFile);
+            PublishFiles(rgpszFile);
 
             return HResult.OK;
         }

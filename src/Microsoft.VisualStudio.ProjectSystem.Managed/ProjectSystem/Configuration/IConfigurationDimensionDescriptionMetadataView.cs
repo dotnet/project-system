@@ -15,7 +15,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         string[] DimensionName { get; }
 
-
         /// <summary>
         /// Whether it is a dimension to calculate configuration groups.
         /// This must match <see cref="ConfigurationDimensionDescriptionAttribute.IsVariantDimension"/>.

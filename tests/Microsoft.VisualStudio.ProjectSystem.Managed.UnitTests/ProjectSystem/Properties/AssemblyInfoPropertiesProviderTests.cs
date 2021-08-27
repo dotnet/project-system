@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         public void GetProperties_NotNull()
         {
             var provider = new TestProjectFileOrAssemblyInfoPropertiesProvider();
-            var properties = provider.GetProperties(null, null, null);
+            var properties = provider.GetProperties("file", null, null);
             Assert.NotNull(properties);
         }
 
@@ -137,6 +137,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
@@ -159,6 +160,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
@@ -188,6 +190,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             await properties.SetPropertyValueAsync(propertyName, propertyValue);
@@ -206,6 +209,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             var propertyValues = new Dictionary<string, string?>();
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: propertyValues);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
 
@@ -229,6 +233,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
@@ -243,6 +248,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             var provider = CreateProviderForProjectFileValidation(code, propertyName, propertyValueInProjectFile, out Workspace workspace);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetUnevaluatedPropertyValueAsync(propertyName);
@@ -284,6 +290,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 null;
             var provider = CreateProviderForSourceFileValidation(code, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
@@ -311,6 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, additionalProps: additionalProps);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             var propertyValue = await properties.GetEvaluatedPropertyValueAsync(propertyName);
@@ -358,6 +366,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             string code = "";
             var provider = CreateProviderForProjectFileValidation(code, propertyName, existingPropertyValue, out Workspace workspace, interceptingProvider);
             var projectFilePath = workspace.CurrentSolution.Projects.First().FilePath;
+            Assumes.NotNull(projectFilePath);
 
             var properties = provider.GetProperties(projectFilePath, null, null);
             await properties.SetPropertyValueAsync(propertyName, propertyValueToSet);

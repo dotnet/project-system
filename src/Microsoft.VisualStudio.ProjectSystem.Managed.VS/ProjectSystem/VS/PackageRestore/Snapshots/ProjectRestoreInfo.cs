@@ -5,7 +5,7 @@ using NuGet.SolutionRestoreManager;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     /// <summary>
-    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo2"/> that will be passed to 
+    ///     Concrete implementation of <see cref="IVsProjectRestoreInfo2"/> that will be passed to
     ///     <see cref="IVsSolutionRestoreService3.NominateProjectAsync(string, IVsProjectRestoreInfo2, System.Threading.CancellationToken)"/>.
     /// </summary>
     internal class ProjectRestoreInfo : IVsProjectRestoreInfo2

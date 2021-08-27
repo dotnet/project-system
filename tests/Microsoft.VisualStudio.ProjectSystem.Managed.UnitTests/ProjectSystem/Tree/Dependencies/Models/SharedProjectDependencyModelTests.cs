@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Xunit;
 
@@ -34,14 +33,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.SharedProject, model.Icon);
             Assert.Equal(KnownMonikers.SharedProject, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.True(model.Flags.Contains(DependencyTreeFlags.SharedProjectDependency));
             Assert.False(model.Flags.Contains(DependencyTreeFlags.SupportsRuleProperties));
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
         }
@@ -69,12 +69,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
             Assert.Equal(KnownMonikers.SharedProject, model.Icon);
             Assert.Equal(KnownMonikers.SharedProject, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
-                DependencyTreeFlags.GenericUnresolvedDependencyFlags -
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.UnresolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties,
                 model.Flags);
         }
@@ -100,14 +101,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             Assert.True(model.Implicit);
             Assert.Equal(properties, model.Properties);
             Assert.Equal(ProjectReference.PrimaryDataSourceItemType, model.SchemaItemType);
-            Assert.Equal(ManagedImageMonikers.SharedProjectPrivate, model.Icon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectPrivate, model.ExpandedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedIcon);
-            Assert.Equal(ManagedImageMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectPrivate, model.Icon);
+            Assert.Equal(KnownMonikers.SharedProjectPrivate, model.ExpandedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedIcon);
+            Assert.Equal(KnownMonikers.SharedProjectWarning, model.UnresolvedExpandedIcon);
             Assert.Equal(
                 DependencyTreeFlags.ProjectDependency +
                 DependencyTreeFlags.SharedProjectDependency +
-                DependencyTreeFlags.GenericResolvedDependencyFlags -
+                DependencyTreeFlags.SupportsBrowse +
+                DependencyTreeFlags.ResolvedDependencyFlags -
                 DependencyTreeFlags.SupportsRuleProperties -
                 DependencyTreeFlags.SupportsRemove,
                 model.Flags);

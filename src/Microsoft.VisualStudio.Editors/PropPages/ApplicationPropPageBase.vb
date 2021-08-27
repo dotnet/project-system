@@ -3,6 +3,7 @@
 Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports System.IO
 Imports System.Windows.Forms
 
 Imports EnvDTE
@@ -39,9 +40,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             m_DefaultIcon = SystemIcons.Application
         End Sub
 
-
 #Region "Application icon support"
-
 
         ''' <summary>
         ''' Retrieves the last set value for the Icon (as a path)
@@ -51,7 +50,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Return _lastIconImage
             End Get
         End Property
-
 
         ''' <summary>
         ''' Obtains the icon path from the textbox
@@ -75,7 +73,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             value = ApplicationIconText
             Return True
         End Function
-
 
         ''' <summary>
         ''' Populates the given application icon combobox with appropriate entries
@@ -126,7 +123,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Adds an icon entry to the application icon combobox in its correct place
         ''' </summary>
@@ -135,7 +131,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             'By default, add the icon to the end of the combobox's dropdown list
             ApplicationIconCombobox.Items.Add(IconRelativePath)
         End Sub
-
 
         ''' <summary>
         ''' Adds the given filename to the project.
@@ -146,7 +141,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             '  which causes it to get deployed.  That is the desired behavior.
             Return AddFileToProject(DTEProject.ProjectItems, IconFileName, True)
         End Function
-
 
         ''' <summary>
         ''' Allows the user to browse for an icon, and then adds it to the project and
@@ -234,7 +228,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         ''' <summary>
         ''' Update the image displayed for the currently-selected application icon
         ''' </summary>
@@ -269,7 +262,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End If
         End Sub
 
-
         Private Function SetIconImagePath(path As String, ApplicationIconCombobox As ComboBox, ApplicationIconPictureBox As PictureBox, AddToProject As Boolean) As Boolean
             If path IsNot Nothing AndAlso path.Equals(_lastIconImage, StringComparison.Ordinal) Then
                 'PERF: Nothing to do if nothing has changed
@@ -300,8 +292,8 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 '  which we don't want.  Make a copy of the file as a memory stream and use that to
                 '  create the Image.
                 Try
-                    Dim IconContents As Byte() = IO.File.ReadAllBytes(path)
-                    Dim IconStream As New IO.MemoryStream(IconContents, 0, IconContents.Length)
+                    Dim IconContents As Byte() = File.ReadAllBytes(path)
+                    Dim IconStream As New MemoryStream(IconContents, 0, IconContents.Length)
                     ApplicationIconPictureBox.Image = IconToImage(New Icon(IconStream), ApplicationIconPictureBox.ClientSize)
                 Catch ex As Exception When ReportWithoutCrash(ex, NameOf(SetIconImagePath), NameOf(ApplicationPropPageBase))
                     'This could mean a bad icon file, I/O problems, etc.  At any rate, it doesn't make sense to
@@ -357,7 +349,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
 
         End Function
 
-
         ''' <summary>
         ''' Converts an icon to a bitmap of the correct size
         ''' </summary>
@@ -394,7 +385,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             End Using
         End Function
 
-
         ''' <summary>
         ''' Given a ProjectItem, adds that item to the icon combobox if it's an .ico file.  Also
         '''   adds any .ico files underneath it recursively.
@@ -415,7 +405,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 Next
             Next
         End Sub
-
 
         ''' <summary>
         ''' Returns true if the text is the special "Browse" text for the icon combobox
@@ -500,7 +489,6 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
                 m_fInsideInit = fInsideInitPrevious
             End Try
         End Sub
-
 
         ''' <summary>
         ''' Given a ProjectItem, adds that item to the manifest combobox if it's an .manifest file.  Also

@@ -72,7 +72,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Sub
 #End Region
 
-
 #Region "IDataGridViewEditingControl implementation"
         ''' <summary>
         ''' Set the datagridview instance I'm showing in
@@ -238,7 +237,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Property
 #End Region
 
-
 #Region "Service provider stuff"
         Private _serviceProvider As IServiceProvider
         Friend Property ServiceProvider As IServiceProvider
@@ -260,7 +258,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return MyBase.GetService(service)
         End Function
 #End Region
-
 
         Protected Overrides Function FormatValue(ValueToFormat As Object) As String
             If ValueToFormat IsNot Nothing AndAlso ValueToFormat.GetType().Equals(GetType(SerializableConnectionString)) Then

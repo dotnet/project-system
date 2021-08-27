@@ -13,14 +13,14 @@ namespace Microsoft.VisualStudio.ProjectSystem
         private readonly UnconfiguredProject _project;
         private readonly IProjectTreeService _treeService;
         private readonly Lazy<IFileSystem> _fileSystem;
-        private readonly ActiveConfiguredProject<ConfiguredImports> _configuredImports;
+        private readonly IActiveConfiguredValue<ConfiguredImports> _configuredImports;
 
         [ImportingConstructor]
         public PhysicalProjectTreeStorage(
             UnconfiguredProject project,
             [Import(ExportContractNames.ProjectTreeProviders.PhysicalProjectTreeService)]IProjectTreeService treeService,
             Lazy<IFileSystem> fileSystem,
-            ActiveConfiguredProject<ConfiguredImports> configuredImports)
+            IActiveConfiguredValue<ConfiguredImports> configuredImports)
         {
             _project = project;
             _treeService = treeService;
@@ -45,7 +45,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             string fullPath = _project.MakeRooted(path);
 
-            using (_fileSystem.Value.Create(fullPath)) { }
+            using (_fileSystem.Value.Create(fullPath))
+            {
+            }
 
             await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
 

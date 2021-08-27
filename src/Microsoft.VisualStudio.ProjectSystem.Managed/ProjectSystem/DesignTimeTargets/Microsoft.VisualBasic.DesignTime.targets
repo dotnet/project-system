@@ -27,10 +27,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.ProjectItemsSchema.xaml;"/>
+     <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)ProjectItemsSchema.VisualBasic.xaml;"/>
 
       <!-- Namespace Import List-->
-      <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)VisualBasic.NamespaceImport.xaml">
+      <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)VisualBasic.NamespaceImport.xaml">
         <Context>ProjectSubscriptionService</Context>
       </PropertyPageSchema>
 
@@ -38,8 +38,11 @@
                           VB;
                           Managed;
                           ClassDesigner;
-                          PreventAutomaticMyApplication;
                           SharedProjectReferences;" />
+
+      <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+
+      <ProjectCapability Include="EnableMyApplication" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' And '$(UseWindowsForms)' == 'true' And '$(TargetFrameworkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)','5.0'))"/>
   </ItemGroup>
 
   <ItemGroup Condition="'$(DefineCommonManagedItemSchemas)' == 'true'">

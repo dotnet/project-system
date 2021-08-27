@@ -130,7 +130,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
         End Sub
 
-
         ''' <summary>
         ''' WndProc for the DesignerToolbarPanel
         ''' </summary>
@@ -145,7 +144,7 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
                 '  back to the last child control which had it.
                 If Parent IsNot Nothing Then
                     Dim c As Control = Parent
-                    While c IsNot Nothing AndAlso Not TypeOf c Is ContainerControl
+                    While c IsNot Nothing AndAlso TypeOf c IsNot ContainerControl
                         c = c.Parent
                     End While
                     If c IsNot Nothing Then
@@ -158,7 +157,6 @@ Namespace Microsoft.VisualStudio.Editors.DesignerFramework
             End If
             MyBase.WndProc(m)
         End Sub
-
 
 #Region "IVsToolWindowToolbar implementation"
 

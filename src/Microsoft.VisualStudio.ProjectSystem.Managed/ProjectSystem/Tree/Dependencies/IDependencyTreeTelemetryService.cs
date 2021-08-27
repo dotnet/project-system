@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 {
@@ -14,28 +15,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
     internal interface IDependencyTreeTelemetryService
     {
         /// <summary>
-        /// Gets a value indicating whether this telemetry service is active.
-        /// If not, then it will remain inactive and no methods need be called on it.
-        /// Note that an instance may become inactive during its lifetime.
-        /// </summary>
-        bool IsActive { get; }
-
-        /// <summary>
         /// Initialize telemetry state with the set of target frameworks and rules we expect to observe.
         /// </summary>
-        void InitializeTargetFrameworkRules(ImmutableArray<ITargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);
+        void InitializeTargetFrameworkRules(ImmutableArray<TargetFramework> targetFrameworks, IReadOnlyCollection<string> rules);
 
         /// <summary>
         /// Indicate that a set of rules has been observed in either an Evaluation or Design Time pass.
         /// This information is used when firing tree update telemetry events to indicate whether all rules
         /// have been observed.
         /// </summary>
-        void ObserveTargetFrameworkRules(ITargetFramework targetFramework, IEnumerable<string> rules);
+        void ObserveTargetFrameworkRules(TargetFramework targetFramework, IEnumerable<string> rules);
 
         /// <summary>
         /// Fire telemetry when dependency tree completes an update
         /// </summary>
         /// <param name="hasUnresolvedDependency">indicates if the snapshot used for the update had any unresolved dependencies</param>
-        Task ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+        ValueTask ObserveTreeUpdateCompletedAsync(bool hasUnresolvedDependency);
+
+        /// <summary>
+        /// Provides an updated dependency snapshot so that telemetry may be reported about the
+        /// state of the project's dependencies.
+        /// </summary>
+        /// <param name="dependenciesSnapshot">The dependency snapshot.</param>
+        void ObserveSnapshot(DependenciesSnapshot dependenciesSnapshot);
     }
 }

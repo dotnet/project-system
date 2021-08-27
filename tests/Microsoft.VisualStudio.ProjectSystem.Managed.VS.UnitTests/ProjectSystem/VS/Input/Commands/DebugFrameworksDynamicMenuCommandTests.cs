@@ -344,7 +344,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands
 
         private static DebugFrameworksDynamicMenuCommand CreateInstance(IStartupProjectHelper startupProjectHelper)
         {
-
             return new DebugFrameworksDynamicMenuCommand(startupProjectHelper, new JoinableTaskContext());
 #pragma warning restore VSSDK005 // Avoid instantiating JoinableTaskContext
         }

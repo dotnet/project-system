@@ -105,7 +105,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
         End Function
 
-
         ''' <summary>
         ''' Given the original size of an image, plus the maximum desired scaled size, returns the proper
         '''   size to draw an image.  The returned size will be no large than the maximum size given, and
@@ -138,7 +137,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return ScaledSize
         End Function
-
 
         ''' <summary>
         ''' Given a suggested filename (with no path), converts that filename into a legal filename by replacing
@@ -194,7 +192,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return SuggestedFileName
         End Function
 
-
         ''' <summary>
         ''' Makes sure that a particular string value is not Nothing.
         ''' </summary>
@@ -207,7 +204,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return StringValue
             End If
         End Function
-
 
         ''' <summary>
         ''' Given a file path to a text file, tries to determine the encoding used by that file.
@@ -261,7 +257,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             'Nothing else matches.  Our best guess at this point is plain old Ansi (in particular, with the system's codepage).
             Return SystemAnsiEncoding
         End Function
-
 
         ''' <summary>
         ''' Given a file name and path, analyzes the file to see if it's likely a UTF-8 file.
@@ -349,7 +344,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Function
 
-
         ''' <summary>
         ''' Given a stream representation of a file, determine whether or not it is a .wav file in
         '''   a format supported by the Fx.
@@ -372,7 +366,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Data.Read(Bytes, 0, CInt(Data.Length))
             Return IsWavSoundFile(Bytes)
         End Function
-
 
         ''' <summary>
         ''' Given a byte representation of a file, determine whether or not it is a .wav file in
@@ -455,7 +448,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             End Try
         End Function
 
-
         ''' <summary>
         ''' Given two bytes, creates an Int16 out of them.
         ''' </summary>
@@ -465,7 +457,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Function BytesToInt16(ch0 As Byte, ch1 As Byte) As Short
             Return CShort(ch1) Or CShort(CInt(ch0) << 8)
         End Function
-
 
         ''' <summary>
         ''' Given a set of four bytes (as used in the mmio functions), returns as Int32
@@ -484,7 +475,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return Result
         End Function
 
-
         ''' <summary>
         ''' Given a length in bytes, turns it into either an "x Bytes" or "x.x KB" display, depending on the
         '''   actual length.
@@ -501,7 +491,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 Return String.Format(My.Resources.Microsoft_VisualStudio_Editors_Designer.GetString(My.Resources.Microsoft_VisualStudio_Editors_Designer.RSE_FileSizeFormatBytes_1Arg, LengthInBytes))
             End If
         End Function
-
 
         ''' <summary>
         ''' Creates a new exception with the given message and help link.
@@ -524,7 +513,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
             Return ex
         End Function
 
-
         ''' <summary>
         ''' Given a path and filename, looks up that file on disk and returns its filename (w/o directory)
         '''   in the actual case on the hard drive).  If the file isn't found, it returns the filename
@@ -544,7 +532,6 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
 
             Return Path.GetFileName(FilePath)
         End Function
-
 
         ''' <summary>
         ''' Given a resource ID for a font name and size, creates a font based on those specifications and returns it.  Returns

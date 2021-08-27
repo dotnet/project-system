@@ -25,7 +25,6 @@ Namespace Microsoft.VisualStudio.Editors.XmlToSchema
         Public Sub RunFinished() Implements IWizard.RunFinished
         End Sub
 
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Public Sub RunStarted(automationObject As Object,
                               replacementsDictionary As Dictionary(Of String, String),
                               runKind As WizardRunKind,

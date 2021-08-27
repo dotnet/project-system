@@ -32,9 +32,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Implements IVsRunningDocTableEvents4
         Implements IPropertyPageSiteOwner
 
-
-
-
 #Region " Windows Form Designer generated code "
 
         Public Sub New()
@@ -317,7 +314,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Set
         End Property
 
-
         ''' <summary>
         ''' Should be called to let the project designer know it's shutting down and should no longer try
         '''   to activate child pages
@@ -326,7 +322,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Common.Switches.TracePDFocus(TraceLevel.Info, "NotifyShuttingDown")
             _okayToActivatePanelsOnFocus = False
         End Sub
-
 
         ''' <summary>
         ''' Helper to determine if the docdata (designated by DocCookie) is dirty
@@ -525,7 +520,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return PropertyPages
         End Function
 
-
 #If 0 Then
         ''' <summary>
         ''' Get the max property page size based on the reported page infos
@@ -552,8 +546,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Get
         End Property
 #End If
-
-
 
         Private Function GetProjectBrowseObject() As Object
             If _projectObject Is Nothing Then
@@ -586,7 +578,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return Common.DTEUtils.GetActiveConfiguration(DTEProject, VsCfgProvider)
         End Function
 
-
         Public Property ActiveView As Guid
             Get
                 If _activePanelIndex < 0 OrElse _activePanelIndex >= _designerPanels.Length OrElse _designerPanels(_activePanelIndex) Is Nothing Then
@@ -614,7 +605,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 ShowTab(_activePanelIndex)
             End Set
         End Property
-
 
         ''' <summary>
         ''' Determines if the given tab should be added to the designer, and if so, returns
@@ -649,7 +639,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 End If
             End If
         End Sub
-
 
         ''' <summary>
         ''' Adds the tab buttons for the App Designer
@@ -978,7 +967,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return True
         End Function
 
-
         ''' <summary>
         ''' Show the requested tab
         ''' </summary>
@@ -1184,7 +1172,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Buttons, Icon, DefaultButton, HelpLink)
         End Function
 
-
         ''' <summary>
         ''' Displays a message box using the Visual Studio-approved manner.
         ''' </summary>
@@ -1198,7 +1185,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Debug.Assert(_serviceProvider IsNot Nothing)
             AppDesDesignerFramework.DesignerMessageBox.Show(_serviceProvider, ex, _messageBoxCaption, HelpLink:=HelpLink)
         End Sub
-
 
         ''' <summary>
         ''' Moves to the next or previous tab in the project designer
@@ -1255,7 +1241,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             MyBase.OnThemeChanged()
         End Sub
 
-
         ''' <summary>
         ''' WndProc for the project designer.
         ''' </summary>
@@ -1303,7 +1288,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             MyBase.WndProc(m)
         End Sub
 
-
         ''' <summary>
         ''' Calls when the application designer window pane has completely initialized the application designer view (the
         '''   ApplicationDesignerWindowPane controls initialization and population of the view).
@@ -1324,7 +1308,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             _okayToActivatePanelsOnFocus = True
         End Sub
 
-
         ''' <summary>
         ''' Returns true if initialization is complete for the project designer.  This is used
         '''   by ApplicationDesignerPanel to delay any window frame activations until after
@@ -1335,7 +1318,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 Return _initializationComplete
             End Get
         End Property
-
 
 #Region "Dirty indicators"
 
@@ -1352,7 +1334,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _refreshDirtyIndicatorsQueued = True
             End If
         End Sub
-
 
         ''' <summary>
         ''' Used by DelayRefreshDirtyIndicators, do not call directly.  Updates the dirty
@@ -1392,7 +1373,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             End Try
         End Sub
 
-
         ''' <summary>
         ''' Returns true if the project file is dirty
         ''' </summary>
@@ -1423,7 +1403,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
             Return False
         End Function
-
 
         ''' <summary>
         ''' Gets the cookie for the project file
@@ -1456,7 +1435,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             Return 0
         End Function
 
-
         ''' <summary>
         ''' Sets the frame's dirty indicator.  This causes an asterisk to appear or disappear
         '''   from the project designer's MDI tab title (i.e., represents the project designer's dirty 
@@ -1478,7 +1456,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         End Sub
 
 #End Region
-
 
 #Region "IVsSelectionEvents"
 
@@ -1568,12 +1545,9 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #End Region
 
-
 #Region "IVsRunningDocTableEvents"
 
-
         'We sync these events to be notified of when our DocData might have been dirtied/undirtied
-
 
         ''' <summary>
         ''' Start listening to IVsRunningDocTableEvents events
@@ -1585,7 +1559,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 VSErrorHandler.ThrowOnFailure(rdt.AdviseRunningDocTableEvents(Me, _rdtEventsCookie))
             End If
         End Sub
-
 
         ''' <summary>
         ''' Stop listening to IVsRunningDocTableEvents events
@@ -1600,7 +1573,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _rdtEventsCookie = 0
             End If
         End Sub
-
 
         ''' <summary>
         ''' Fires after an attribute of a document in the RDT is changed.
@@ -1741,7 +1713,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
 
 #End Region
 
-
         ''' <summary>
         ''' Gets the locale ID from the shell
         ''' </summary>
@@ -1756,7 +1727,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
             'Fallback
             Return NativeMethods.GetUserDefaultLCID()
         End Function
-
 
 #Region "Debug tracing for OnLayout/Size events..."
 

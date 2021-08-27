@@ -14,6 +14,15 @@
                 SourceOfDefaultValue="AfterContext"
                 SourceType="TargetResults" />
   </Rule.DataSource>
+  
+  <StringProperty Name="BrowsePath"
+                  ReadOnly="True"
+                  Visible="False">
+    <StringProperty.DataSource>
+      <DataSource PersistedName="TargetingPackPath"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 
   <StringProperty Name="OriginalItemSpec"
                   ReadOnly="True"

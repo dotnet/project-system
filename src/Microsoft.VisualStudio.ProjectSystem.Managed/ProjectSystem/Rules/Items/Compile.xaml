@@ -67,6 +67,14 @@
     </StringProperty.Metadata>
   </StringProperty>
 
+  <StringProperty Name="NuGetPackageId"
+                  Visible="false">
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
   <StringProperty Name="SubType"
                   Visible="false">
     <StringProperty.DataSource>

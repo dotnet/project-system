@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="AuthenticationMode">
-        <source>Authentication mode:</source>
-        <target state="translated">Режим проверки подлинности:</target>
+        <source>Au_thentication mode:</source>
+        <target state="translated">Р_ежим проверки подлинности:</target>
         <note />
       </trans-unit>
       <trans-unit id="DebugPropertyPageTitle">
@@ -48,8 +48,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FindBtn">
-        <source>Find...</source>
-        <target state="translated">Найти...</target>
+        <source>_Find...</source>
+        <target state="translated">_Найти…</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHostName">
@@ -108,8 +108,8 @@
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebug">
-        <source>Use remote m_achine:</source>
-        <target state="translated">Использовать удаленный к_омпьютер:</target>
+        <source>_Use remote machine:</source>
+        <target state="translated">_Использовать удаленный компьютер:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoteDebugMachineWatermark">
@@ -138,38 +138,38 @@
         <note />
       </trans-unit>
       <trans-unit id="AddBtn">
-        <source>Add</source>
-        <target state="translated">Добавить</target>
+        <source>_Add</source>
+        <target state="translated">Д_обавить</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationArguments">
-        <source>Application arguments:</source>
-        <target state="translated">Аргументы приложения:</target>
+        <source>Application ar_guments:</source>
+        <target state="translated">Аргументы прилож_ения:</target>
         <note />
       </trans-unit>
       <trans-unit id="BrowseBtn">
-        <source>Browse...</source>
-        <target state="translated">Обзор...</target>
+        <source>_Browse...</source>
+        <target state="translated">_Обзор…</target>
         <note />
       </trans-unit>
       <trans-unit id="DeleteBtn">
-        <source>Delete</source>
-        <target state="translated">Удалить</target>
+        <source>_Delete</source>
+        <target state="translated">_Удалить</target>
         <note />
       </trans-unit>
       <trans-unit id="EnvironmentVariables">
-        <source>Environment variables:</source>
-        <target state="translated">Переменные среды:</target>
+        <source>Environ_ment variables:</source>
+        <target state="translated">Пер_еменные среды:</target>
         <note />
       </trans-unit>
       <trans-unit id="Executable">
-        <source>Executable:</source>
-        <target state="translated">Исполняемый объект:</target>
+        <source>_Executable:</source>
+        <target state="translated">_Исполняемый файл:</target>
         <note />
       </trans-unit>
       <trans-unit id="Launch">
-        <source>Launch:</source>
-        <target state="translated">Запустить:</target>
+        <source>_Launch:</source>
+        <target state="translated">_Запустить:</target>
         <note />
       </trans-unit>
       <trans-unit id="LaunchURL">
@@ -183,18 +183,18 @@
         <note />
       </trans-unit>
       <trans-unit id="NewBtn">
-        <source>New...</source>
-        <target state="translated">Создать...</target>
+        <source>_New...</source>
+        <target state="translated">_Создать…</target>
         <note />
       </trans-unit>
       <trans-unit id="Profile">
-        <source>Profile:</source>
-        <target state="translated">Профиль:</target>
+        <source>_Profile:</source>
+        <target state="translated">_Профиль:</target>
         <note />
       </trans-unit>
       <trans-unit id="RemoveBtn">
-        <source>Remove</source>
-        <target state="translated">Удалить</target>
+        <source>_Remove</source>
+        <target state="translated">_Удалить</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueHeader">
@@ -203,8 +203,8 @@
         <note />
       </trans-unit>
       <trans-unit id="WorkingDirectory">
-        <source>Working directory:</source>
-        <target state="translated">Рабочий каталог:</target>
+        <source>_Working directory:</source>
+        <target state="translated">_Рабочий каталог:</target>
         <note />
       </trans-unit>
       <trans-unit id="CancelBtn">
@@ -248,8 +248,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkNativeCodeDebuggingText">
-        <source>Enable native code debugging</source>
-        <target state="translated">Включить отладку машинного кода</target>
+        <source>Enable nati_ve code debugging</source>
+        <target state="translated">Включить отладку в _машинном коде</target>
         <note />
       </trans-unit>
       <trans-unit id="chkRemoteDebugEnabledHelpText">
@@ -258,8 +258,8 @@
         <note />
       </trans-unit>
       <trans-unit id="chkSqlCodeDebuggingText">
-        <source>Enable SQL Server debugging</source>
-        <target state="translated">Включить отладку SQL Server</target>
+        <source>Enable _SQL Server debugging</source>
+        <target state="translated">Включить отл_адку SQL Server</target>
         <note />
       </trans-unit>
     </body>

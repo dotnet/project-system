@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsIn = "/foo /bar";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(false, exeIn, argsIn, out string? finalExePath, out string? finalArguments);
             Assert.Equal(finalExePath, exeIn);
             Assert.Equal(finalArguments, argsIn);
 
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string argsInWithEscapes = "/foo /bar ^ < > &";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, argsInWithEscapes, out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\" /foo /bar ^^ ^< ^> ^& & pause\"", finalArguments);
 
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string exeIn = @"c:\foo\bar.exe";
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string cmdExePath = Path.Combine(Environment.SystemDirectory, "cmd.exe");
 
             // empty string args
-            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, null, out string finalExePath, out string? finalArguments);
+            ProjectLaunchTargetsProvider.GetExeAndArguments(true, exeIn, "", out string? finalExePath, out string? finalArguments);
             Assert.Equal(cmdExePath, finalExePath);
             Assert.Equal("/c \"\"c:\\foo\\bar.exe\"  & pause\"", finalArguments);
         }
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Single(targets);
             Assert.EndsWith(@"\cmd.exe", targets[0].Executable, StringComparison.OrdinalIgnoreCase);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
+            Assert.Equal(DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment, targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.True(targets[0].Environment.ContainsKey("var1"));
             Assert.Equal("/c \"\"c:\\program files\\dotnet\\dotnet.exe\" exec \"c:\\test\\project\\bin\\project.dll\" --someArgs & pause\"", targets[0].Arguments);
@@ -151,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var targets = await debugger.QueryDebugTargetsAsync(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, activeProfile);
             Assert.Single(targets);
             Assert.Equal("c:\\program files\\dotnet\\dotnet.exe", targets[0].Executable);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling), targets[0].LaunchOptions);
+            Assert.Equal(DebugLaunchOptions.NoDebug | DebugLaunchOptions.Profiling, targets[0].LaunchOptions);
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             Assert.Single(targets);
             Assert.Equal(activeProfile.ExecutablePath, targets[0].Executable);
             Assert.Equal(DebugLaunchOperation.CreateProcess, targets[0].LaunchOperation);
-            Assert.Equal((DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment), targets[0].LaunchOptions);
+            Assert.Equal(DebugLaunchOptions.NoDebug | DebugLaunchOptions.MergeEnvironment, targets[0].LaunchOptions);
             Assert.Equal(DebuggerEngines.ManagedCoreEngine, targets[0].LaunchDebugEngineGuid);
             Assert.Equal("--someArgs", targets[0].Arguments);
         }
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             var activeProfile = new LaunchProfile() { Name = "Name", CommandName = "Project" };
 
-            await Assert.ThrowsAsync<Exception>(() =>
+            await Assert.ThrowsAsync<ProjectNotRunnableDirectlyException>(() =>
             {
                 return debugger.QueryDebugTargetsForDebugLaunchAsync(0, activeProfile);
             });
@@ -542,7 +542,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assert.Throws<Exception>(() =>
             {
-                debugger.ValidateSettings(executable, workingDir, profileName);
+                debugger.ValidateSettings(executable!, workingDir!, profileName);
             });
         }
 
@@ -556,7 +556,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assert.Throws<Exception>(() =>
             {
-                debugger.ValidateSettings(executable, workingDir, profileName);
+                debugger.ValidateSettings(executable, workingDir!, profileName);
             });
         }
 
@@ -569,7 +569,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var profileName = "run";
             _mockFS.WriteAllText(executable, "");
 
-            debugger.ValidateSettings(executable, workingDir, profileName);
+            debugger.ValidateSettings(executable, workingDir!, profileName);
             Assert.True(true);
         }
 
@@ -679,7 +679,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService = Mock.Of<IRemoteDebuggerAuthenticationService>();
 
-            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject, tokenReplacer, fileSystem, environment, activeDebugFramework, properties, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
+            return new ProjectLaunchTargetsProvider(unconfiguredProjectVsServices, configuredProject!, tokenReplacer, fileSystem!, environment, activeDebugFramework, properties!, threadingService, IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger), remoteDebuggerAuthenticationService);
         }
     }
 }

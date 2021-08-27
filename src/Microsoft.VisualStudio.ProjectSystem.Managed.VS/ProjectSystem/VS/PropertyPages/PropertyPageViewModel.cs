@@ -13,11 +13,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         public UnconfiguredProject? Project { get; set; }
 
         /// <summary>
-        /// Since calls to ignore events can be nested, a downstream call could change the outer 
-        /// value.  To guard against this, IgnoreEvents returns true if the count is > 0 and there is no setter. 
+        /// Since calls to ignore events can be nested, a downstream call could change the outer
+        /// value.  To guard against this, IgnoreEvents returns true if the count is > 0 and there is no setter.
         /// PushIgnoreEvents\PopIgnoreEvents  are used instead to control the count.
         /// </summary>
-        private int _ignoreEventsNestingCount = 0;
+        private int _ignoreEventsNestingCount;
 
         public bool IgnoreEvents => _ignoreEventsNestingCount > 0;
 
@@ -76,7 +76,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// </summary>
         public virtual void ViewModelDetached()
         {
-
         }
     }
 }

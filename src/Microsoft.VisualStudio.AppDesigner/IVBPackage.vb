@@ -5,11 +5,9 @@ Imports System.ComponentModel.Design
 Imports Microsoft.VisualStudio.Editors.AppDesInterop
 Imports Microsoft.VisualStudio.Shell.Interop
 
-
 Namespace Microsoft.VisualStudio.Editors
 
     Public Interface IVBPackage
-
 
         Function GetLastShownApplicationDesignerTab(projectHierarchy As IVsHierarchy) As Integer
 
@@ -20,7 +18,6 @@ Namespace Microsoft.VisualStudio.Editors
         ReadOnly Property MenuCommandService As IMenuCommandService
 
     End Interface
-
 
     Public Class VBPackageUtils
 

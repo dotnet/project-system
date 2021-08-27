@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, bool isActiveContext, IProjectLogger logger)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));

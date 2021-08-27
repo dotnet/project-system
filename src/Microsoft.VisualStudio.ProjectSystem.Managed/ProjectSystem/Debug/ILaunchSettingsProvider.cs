@@ -23,9 +23,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         ILaunchProfile? ActiveProfile { get; }
 
         /// <summary>
-        /// Replaces the current set of profiles with the contents of profiles. If changes were
-        /// made, the file will be checked out and updated. If the active profile is different, the
-        /// active profile property is updated.
+        /// Replaces the current set of profiles with the contents of <paramref name="profiles"/>.
+        /// If changes were made, the file will be checked out and updated. Note that the
+        /// active profile in <paramref name="profiles"/> is ignored; to change the active
+        /// profile use <see cref="SetActiveProfileAsync(string)"/> instead.
         /// </summary>
         Task UpdateAndSaveSettingsAsync(ILaunchSettings profiles);
 
@@ -36,10 +37,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task<ILaunchSettings> WaitForFirstSnapshot(int timeout);
 
         /// <summary>
-        /// Adds the given profile to the list and saves to disk. If a profile with the same 
+        /// Adds the given profile to the list and saves to disk. If a profile with the same
         /// name exists (case sensitive), it will be replaced with the new profile. If addToFront is
         /// true the profile will be the first one in the list. This is useful since quite often callers want
-        /// their just added profile to be listed first in the start menu. 
+        /// their just added profile to be listed first in the start menu.
         /// </summary>
         Task AddOrUpdateProfileAsync(ILaunchProfile profile, bool addToFront);
 
@@ -49,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         Task RemoveProfileAsync(string profileName);
 
         /// <summary>
-        /// Adds or updates the global settings represented by settingName. Saves the 
+        /// Adds or updates the global settings represented by settingName. Saves the
         /// updated settings to disk. Note that the settings object must be serializable.
         /// </summary>
         Task AddOrUpdateGlobalSettingAsync(string settingName, object settingContent);

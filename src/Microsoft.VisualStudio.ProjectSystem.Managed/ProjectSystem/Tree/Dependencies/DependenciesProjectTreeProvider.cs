@@ -12,12 +12,12 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.Composition;
+using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.References;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Threading.Tasks;
@@ -103,15 +103,34 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
 
         public override string? GetPath(IProjectTree node)
         {
-            // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
-            // while other dependency types (e.g. analyzers) do.
-            //
-            // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
-            // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
-            // and allows fast lookup. So in general we want to return null here unless there is a compelling
-            // requirement to use the path.
+            // If the node's FilePath is null, we are going to return null regardless of whether
+            // this node belongs to the dependencies tree or not, so avoid extra work by retuning
+            // immediately here.
+            if (node.FilePath == null)
+            {
+                return null;
+            }
 
-            return node.FilePath;
+            // Walk up from node through all its ancestors.
+            for (IProjectTree? step = node; step != null; step = step.Parent)
+            {
+                if (step.Flags.Contains(DependencyTreeFlags.DependenciesRootNode))
+                {
+                    // This node is contained within the Dependencies tree.
+                    //
+                    // node.FilePath can be null. Some dependency types (e.g. packages) do not require a file path,
+                    // while other dependency types (e.g. analyzers) do.
+                    //
+                    // Returning null from a root graft causes CPS to use the "pseudo path" for the item, which has
+                    // form ">123" where the number is the item's identity. This is a short string (low memory overhead)
+                    // and allows fast lookup. So in general we want to return null here unless there is a compelling
+                    // requirement to use the path.
+
+                    return node.FilePath;
+                }
+            }
+
+            return null;
         }
 
         public override IProjectTree? FindByPath(IProjectTree root, string path)
@@ -142,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         /// <remarks>
         /// Delete and Remove commands are handled via IVsHierarchyDeleteHandler3, not by
         /// IAsyncCommandGroupHandler and first asks us we CanRemove nodes. If yes then RemoveAsync is called.
-        /// We can remove only nodes that are standard and based on project items, i.e. nodes that 
-        /// are created by default IProjectDependenciesSubTreeProvider implementations and have 
-        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain 
+        /// We can remove only nodes that are standard and based on project items, i.e. nodes that
+        /// are created by default IProjectDependenciesSubTreeProvider implementations and have
+        /// DependencyNode.GenericDependencyFlags flags and IRule with Context != null, in order to obtain
         /// node's itemSpec. ItemSpec then used to remove a project item having same Include.
         /// </remarks>
         public override async Task RemoveAsync(IImmutableSet<IProjectTree> nodes, DeleteOptions deleteOptions = DeleteOptions.None)
@@ -226,17 +245,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
 #pragma warning disable RS0030 // symbol LoadedProject is banned
             using (UnconfiguredProjectAsynchronousTasksService.LoadedProject())
-#pragma warning restore RS0030 // symbol LoadedProject is banned
+#pragma warning restore RS0030
             {
+#pragma warning disable RS0030 // https://github.com/dotnet/roslyn-analyzers/issues/3295
                 base.Initialize();
+#pragma warning restore RS0030
 
                 // this.IsApplicable may take a project lock, so we can't do it inline with this method
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
 #pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
                 UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
-#pragma warning restore RS0030 // symbol LoadedProjectAsync is banned
-                    async delegate
+#pragma warning restore RS0030
+                async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
                         UnconfiguredProjectAsynchronousTasksService
@@ -267,7 +288,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                                 skipIntermediateInputData: true);
                             _snapshotEventListener = _dependenciesSnapshotProvider.SnapshotChangedSource.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
                         }
-
                     },
                     registerFaultHandler: true);
             }
@@ -277,8 +297,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 var values = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = Resources.DependenciesNodeName,
-                    Icon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
-                    ExpandedIcon = ManagedImageMonikers.ReferenceGroup.ToProjectSystemType(),
+                    Icon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
+                    ExpandedIcon = KnownMonikers.ReferenceGroup.ToProjectSystemType(),
                     Flags = ProjectTreeFlags.Create(ProjectTreeFlags.Common.BubbleUp)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.ReferencesFolder)
                           + ProjectTreeFlags.Create(ProjectTreeFlags.Common.VirtualFolder)
@@ -357,10 +377,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 {
                     dependenciesNode = await viewProvider.BuildTreeAsync(dependenciesNode, snapshot, cancellationToken);
 
-                    if (_treeTelemetryService.IsActive)
-                    {
-                        await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
-                    }
+                    await _treeTelemetryService.ObserveTreeUpdateCompletedAsync(snapshot.MaximumVisibleDiagnosticLevel != DiagnosticLevel.None);
                 }
 
                 return new TreeUpdateResult(dependenciesNode);
@@ -419,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 flags: flags);
         }
 
-        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, ITargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
+        public async Task<IRule?> GetBrowseObjectRuleAsync(IDependency dependency, TargetFramework targetFramework, IProjectCatalogSnapshot? catalogs)
         {
             Requires.NotNull(dependency, nameof(dependency));
 

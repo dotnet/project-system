@@ -10,7 +10,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class AnalyzerDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.AnalyzerDependency);
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            resolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse,
+            unresolved: DependencyTreeFlags.AnalyzerDependency + DependencyTreeFlags.SupportsBrowse);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.CodeInformation,

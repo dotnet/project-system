@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             var result = filter.FilterTreeItemByTemplateDir(ref guid, templateDir, out int filterResult);
 
             Assert.Equal(0, result);
-            Assert.Equal(shouldBeFiltered, (filterResult == 1));
+            Assert.Equal(shouldBeFiltered, filterResult == 1);
         }
 
         [Theory]
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             var result = filter.FilterTreeItemByTemplateDir(ref guid, templateDir, out int filterResult);
 
             Assert.Equal(0, result);
-            Assert.Equal(shouldBeFiltered, (filterResult == 1));
+            Assert.Equal(shouldBeFiltered, filterResult == 1);
         }
 
         [Theory]
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.WindowsForms
             var result = filter.FilterListItemByTemplateFile(ref guid, templateDir, out int filterResult);
 
             Assert.Equal(0, result);
-            Assert.Equal(shouldBeFiltered, (filterResult == 1));
+            Assert.Equal(shouldBeFiltered, filterResult == 1);
         }
     }
 }

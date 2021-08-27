@@ -2,74 +2,89 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="tr" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|NativeDebugging|Description">
+        <source>Enables debugging for managed and native code together, also known as mixed-mode debugging. </source>
+        <target state="translated">Yönetilen ve yerel kod için birlikte hata ayıklamayı (karma mod hata ayıklama olarak da bilinir) etkinleştirir. </target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
         <source>Enable native code debugging</source>
-        <target state="new">Enable native code debugging</target>
+        <target state="translated">Yerel kod üzerinde hata ayıklamayı etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|Description">
         <source>Indicates that the debugger should attach to a process on a remote machine.</source>
-        <target state="new">Indicates that the debugger should attach to a process on a remote machine.</target>
+        <target state="translated">Hata ayıklayıcının uzak makinedeki bir işleme eklenmesi gerektiğini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RemoteDebugEnabled|DisplayName">
         <source>Use remote machine</source>
-        <target state="new">Use remote machine</target>
+        <target state="translated">Uzak makine kullan</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
-        <target state="new">Enable SQL Server debugging</target>
+        <target state="translated">SQL Server hata ayıklamasını etkinleştir</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
         <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">Uzak makineye bağlanırken kullanılacak kimlik doğrulaması düzeni. Yalnızca 'Uzak makine kullan' etkin olduğunda uygulanabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
         <source>Authentication mode</source>
-        <target state="new">Authentication mode</target>
+        <target state="translated">Kimlik doğrulaması modu</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|Description">
         <source>Properties associated with launching and debugging the project output.</source>
-        <target state="new">Properties associated with launching and debugging the project output.</target>
+        <target state="translated">Proje çıkışını başlatma ve hata ayıklama ile ilişkili özellikler.</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ProjectDebugPropertyPage|DisplayName">
         <source>Project</source>
-        <target state="new">Project</target>
+        <target state="translated">Proje</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|Description">
         <source>Command line arguments to pass to the executable.</source>
-        <target state="new">Command line arguments to pass to the executable.</target>
+        <target state="translated">Yürütülebilir dosyaya geçirilecek komut satırı bağımsız değişkenleri.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CommandLineArguments|DisplayName">
         <source>Command line arguments</source>
-        <target state="new">Command line arguments</target>
+        <target state="translated">Komut satırı bağımsız değişkenleri</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|Description">
+        <source>The environment variables to set prior to running the process. Variables are separated by a comma (,) and variables names and values are separated with an equal sign (=). Example: var1=value1,var2=value2,var3=value3. Commas and equal signs appearing within a variable can be escaped using a forward slash (/).</source>
+        <target state="translated">İşlemi çalıştırmadan önce ayarlanacak ortam değişkenleri. Bağımız değişkenler virgülle (,), değişken adları ve değerleri eşittir işaretiyle (=) ayrılır. Örnek: değişken1=değer1,değişken2=değer2,değişken3=değer3. Bağımsız değişkenlerdeki virgül ve eşittir işaretleri için kaçış karakteri olarak eğik çizgi (/) kullanabilirsiniz.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|EnvironmentVariables|DisplayName">
+        <source>Environment variables</source>
+        <target state="translated">Ortam değişkenleri</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
         <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="new">The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</target>
+        <target state="translated">Uzak makinenin 'ad:bağlantı noktası' biçimindeki adı ve bağlantı noktası numarası. Yalnızca 'Uzak makine kullan' etkin olduğunda uygulanabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">
         <source>Remote machine name</source>
-        <target state="new">Remote machine name</target>
+        <target state="translated">Uzak makine adı</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|Description">
         <source>Path to the working directory where the process will be started.</source>
-        <target state="new">Path to the working directory where the process will be started.</target>
+        <target state="translated">İşlemin başlatılacağı çalışma dizininin yolu.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WorkingDirectory|DisplayName">
         <source>Working directory</source>
-        <target state="new">Working directory</target>
+        <target state="translated">Çalışma dizini</target>
         <note />
       </trans-unit>
     </body>

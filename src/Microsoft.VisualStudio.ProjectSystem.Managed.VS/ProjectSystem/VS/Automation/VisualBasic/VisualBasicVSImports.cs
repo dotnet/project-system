@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
     {
         private const string ImportItemTypeName = "Import";
 
-        private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
+        private readonly IActiveConfiguredValue<ConfiguredProject> _activeConfiguredProject;
         private readonly IProjectThreadingService _threadingService;
         private readonly IProjectAccessor _projectAccessor;
         private readonly VSLangProj.VSProject _vsProject;
@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Automation.VisualBasic
         public VisualBasicVSImports(
             [Import(ExportContractNames.VsTypes.CpsVSProject)] VSLangProj.VSProject vsProject,
             IProjectThreadingService threadingService,
-            ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
+            IActiveConfiguredValue<ConfiguredProject> activeConfiguredProject,
             IProjectAccessor projectAccessor,
             IUnconfiguredProjectVsServices unconfiguredProjectVSServices,
             VisualBasicNamespaceImportsList importsList)

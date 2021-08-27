@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             IProjectRuleSnapshot frameworkReferences = update.GetSnapshotOrEmpty(CollectedFrameworkReference.SchemaName);
             IProjectRuleSnapshot packageDownloads = update.GetSnapshotOrEmpty(CollectedPackageDownload.SchemaName);
             IProjectRuleSnapshot projectReferences = update.GetSnapshotOrEmpty(ProjectReference.SchemaName);
-            IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(PackageReference.SchemaName);
+            IProjectRuleSnapshot packageReferences = update.GetSnapshotOrEmpty(CollectedPackageReference.SchemaName);
             IProjectRuleSnapshot packageVersions = update.GetSnapshotOrEmpty(CollectedPackageVersion.SchemaName);
             IProjectRuleSnapshot toolReferences = update.GetSnapshotOrEmpty(DotNetCliToolReference.SchemaName);
 

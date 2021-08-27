@@ -28,7 +28,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         '  is passed to GetManifestBitmap
         Public ReadOnly StandardTransparentColor As Color = Color.Lime
 
-
         ' The maximal amount of files that can be added at one shot. (copied from other VS features)
         Private Const VSDPLMAXFILES As Integer = 200
 
@@ -148,7 +147,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return DirectCast(GetManifestImage(BitmapID), Bitmap)
         End Function
 
-
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
         ''' </summary>
@@ -167,7 +165,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' Retrieves a transparent copy of a given bitmap from the manifest resources.
         ''' </summary>
@@ -177,7 +174,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function GetManifestBitmapTransparent(BitmapID As String) As Bitmap
             Return GetManifestBitmapTransparent(BitmapID, StandardTransparentColor)
         End Function
-
 
         ''' <summary>
         ''' Retrieves a given image from the manifest resources.
@@ -245,7 +241,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End Get
         End Property
 
-
         ''' <summary>
         ''' Logical implies.  Often useful in Debug.Assert's.  Essentially, it is to be
         '''   read as "a being true implies that b is true".  Therefore, the function returns
@@ -255,7 +250,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
         Public Function Implies(a As Boolean, b As Boolean) As Boolean
             Return Not (a And Not b)
         End Function
-
 
         ''' <summary>
         ''' Retrieves the error message from an exception in a manner appropriate for the build.  For release, simply
@@ -275,7 +269,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return ex.Message
 #End If
         End Function
-
 
         ''' <summary>
         ''' Attempts to create a string representation of an object, for debug purposes.  Under retail,
@@ -357,7 +350,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return False
         End Function
 
-
         ''' <summary>
         ''' If the given string is Nothing, return "", else return the original string.
         ''' </summary>
@@ -370,7 +362,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' If the given string is "", return Nothing, else return the original string.
         ''' </summary>
@@ -382,7 +373,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return Str
             End If
         End Function
-
 
         ''' <summary>
         ''' Does the same as System.IO.Path.GetFullPath(), except that if the filename
@@ -399,7 +389,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             'If we hit an exception we want to be tolerant of, just return the original path
             Return Path
         End Function
-
 
         ''' <summary>
         ''' Given two namespace (either or both of which might be empty), combine them together into a single
@@ -424,7 +413,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Namespace1 & "." & Namespace2
         End Function
 
-
         ''' <summary>
         ''' Given a class name, prepends the given namespace, if any.  If the class given is empty,
         '''   returns empty.
@@ -441,7 +429,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return NothingToEmptyString(ClassName)
             End If
         End Function
-
 
         ''' <summary>
         ''' Given a fully-qualified namespace, and a root namespace, removes the root namespace
@@ -476,7 +463,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return FullyQualifiedNamespace
         End Function
-
 
         ''' <summary>
         ''' Given a single filter text and a set of extensions, creates a single filter entry
@@ -518,7 +504,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Filter.Append(")|")
             For i = 0 To Extensions.Length - 1
                 If i <> 0 Then
-                    Filter.Append(";")
+                    Filter.Append(";"c)
                 End If
 
                 Dim Extension As String = Extensions(i)
@@ -531,7 +517,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             Return Filter.ToString()
         End Function
 
-
         ''' <summary>
         ''' Returns a localized "All Files (*.*)|*.*" dialog filter string.  Can be used with CombineDialogFilters.
         ''' </summary>
@@ -540,7 +525,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             '  We only want:  All Files|*.*
             Return My.Resources.Microsoft_VisualStudio_Editors_Designer.CMN_AllFilesFilter & "|*.*"
         End Function
-
 
         ''' <summary>
         ''' Give a set of filter lines for file dialogs (e.g., by using CreateSingleDialogFilter), combines them all into a single filter.
@@ -552,7 +536,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
             For Each Filter As String In Filters
                 If Filter <> "" Then
                     If CombinedFilter.Length <> 0 Then
-                        CombinedFilter.Append("|")
+                        CombinedFilter.Append("|"c)
                     End If
                     CombinedFilter.Append(Filter)
                 End If
@@ -560,7 +544,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return CombinedFilter.ToString()
         End Function
-
 
         ''' <summary>
         ''' A better IIf
@@ -575,7 +558,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return FalseExpression
             End If
         End Function
-
 
         ''' <summary>
         ''' Set the drop-down width of a combobox wide enough to show the text of all entries in it
@@ -975,7 +957,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
         End Function
 
-
         ''' <summary>
         ''' Check whether the screen reader is running
         ''' </summary>
@@ -1025,7 +1006,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return mappedBitmap
         End Function
-
 
         ''' <summary>
         ''' Sets the checked state of the checkbox to a determinate checked or unchecked value
@@ -1077,7 +1057,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Debug.Fail("Could not get IVsUIShell from service provider. Can't set specific error message.")
             End If
         End Sub
-
 
         ''' <summary>
         ''' Sets focus to the first (or last) control inside of a parent HWND.
@@ -1174,7 +1153,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
             End If
 
             Debug.Assert(RootNamespace = "" OrElse IsVbProject(Hierarchy), "Only VB projects should have a root namespace property!")
-
 
             Dim CustomToolNamespace As String = ""
             Dim objDefaultNamespace As Object = Nothing
@@ -1370,68 +1348,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         End Function
 
-
-#Region "SQM data point helpers"
-        Friend Class SQMData
-
-            Private Sub New()
-                ' Non-creatable class
-            End Sub
-
-            'A list of known editor guids
-            ' Each property page will be reported back to SQM with the 1-based index in which it is present 
-            ' in this list. All unknown entries will be reported as &hFF
-            '
-            ' Add more entries to the end of this list. Do *not* put any new entries in the middle of the list!
-            Private Shared ReadOnly s_sqmOrder() As Guid = {
-                KnownPropertyPageGuids.GuidApplicationPage_VB,
-                KnownPropertyPageGuids.GuidApplicationPage_CS,
-                KnownPropertyPageGuids.GuidApplicationPage_JS,
-                KnownPropertyPageGuids.GuidCompilePage_VB,
-                KnownPropertyPageGuids.GuidBuildPage_CS,
-                KnownPropertyPageGuids.GuidBuildPage_JS,
-                KnownPropertyPageGuids.GuidBuildEventsPage,
-                KnownPropertyPageGuids.GuidDebugPage,
-                KnownPropertyPageGuids.GuidReferencesPage_VB,
-                GetType(SettingsDesigner.SettingsDesignerEditorFactory).GUID,
-                GetType(ResourceEditor.ResourceEditorFactory).GUID,
-                KnownPropertyPageGuids.GuidReferencePathsPage,
-                KnownPropertyPageGuids.GuidSigningPage,
-                KnownPropertyPageGuids.GuidSecurityPage,
-                KnownPropertyPageGuids.GuidPublishPage,
-                KnownPropertyPageGuids.GuidDatabasePage_SQL,
-                KnownPropertyPageGuids.GuidFxCopPage,
-                KnownPropertyPageGuids.GuidDeployPage,
-                KnownPropertyPageGuids.GuidDevicesPage_VSD,
-                KnownPropertyPageGuids.GuidDebugPage_VSD,
-                KnownPropertyPageGuids.GuidApplicationPage_VB_WPF,
-                KnownPropertyPageGuids.GuidSecurityPage_WPF,
-                KnownPropertyPageGuids.GuidMyExtensionsPage,
-                KnownPropertyPageGuids.GuidOfficePublishPage,
-                KnownPropertyPageGuids.GuidServicesPage,
-                KnownPropertyPageGuids.GuidWAPWebPage
-            }
-
-            Public Const UNKNOWN_PAGE As Byte = &HFF
-            Public Const DEFAULT_PAGE As Byte = 0
-
-            ''' <summary>
-            ''' Map a known property page or designer id to a unique unsigned char in order
-            ''' to report back to SQM what the values are...
-            ''' </summary>
-            ''' <param name="guid"></param>
-            Friend Shared Function PageGuidToId(guid As Guid) As Byte
-                For i As Integer = 0 To s_sqmOrder.Length - 1
-                    If s_sqmOrder(i).Equals(guid) Then
-                        Return CByte(i + 1)
-                    End If
-                Next
-                Return UNKNOWN_PAGE
-            End Function
-
-        End Class
-#End Region
-
 #Region "Wrapper that allows indirect calls into the static helpers in order to help unit test our code"
 
         Private s_instance As New Helper
@@ -1531,6 +1447,24 @@ Namespace Microsoft.VisualStudio.Editors.Common
         End Function
 
         ''' <summary>
+        ''' Determines whether the project associated with the given hierarchy is targeting .NET Framework
+        ''' </summary>
+        ''' <param name="hierarchy">Hierarchy object.</param>
+        ''' <returns>Value indicating whether the project associated with the given hierarchy is targeting .NET Framework.</returns>
+        Friend Function IsTargetingDotNetFramework(hierarchy As IVsHierarchy) As Boolean
+
+            Dim frameworkName As FrameworkName = Nothing
+            If TryGetTargetFrameworkMoniker(hierarchy, frameworkName) Then
+                ' Verify that we are targeting .NET
+                Return String.Equals(frameworkName.Identifier, ".NETFramework", StringComparison.OrdinalIgnoreCase)
+
+            End If
+
+            Return False
+
+        End Function
+
+        ''' <summary>
         ''' Determines whether the project associated with the given hierarchy is targeting .NET Core
         ''' </summary>
         ''' <param name="hierarchy">Hierarchy object.</param>
@@ -1574,7 +1508,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return False
             End If
 
-            If Not TypeOf propertyValue Is String Then
+            If TypeOf propertyValue IsNot String Then
                 Return False
             End If
 
@@ -1598,7 +1532,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 Return False
             End If
 
-            If Not TypeOf propertyValue Is Boolean Then
+            If TypeOf propertyValue IsNot Boolean Then
                 Return False
             End If
 
@@ -1673,7 +1607,6 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
             Return CType(zone, Security.SecurityZone)
         End Function
-
 
 #Region "Telemetry"
         Public Class TelemetryLogger

@@ -16,7 +16,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Private ReadOnly _errorText As String    'Error text, if given
         Private ReadOnly _exception As Exception 'Error exception, if given
 
-
         ''' <summary>
         ''' Constructor
         ''' </summary>
@@ -32,7 +31,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
         Public Sub New(Exception As Exception)
             _exception = Exception
         End Sub
-
 
         ''' <summary>
         ''' Returns the view control (if already created)
@@ -65,7 +63,6 @@ Namespace Microsoft.VisualStudio.Editors.ApplicationDesigner
                 _view = Nothing
             End If
         End Sub
-
 
 #Region "Dispose/IDisposable"
 

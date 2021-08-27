@@ -1,7 +1,7 @@
 ﻿' Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 Imports System.ComponentModel.Design
-
+Imports System.IO
 Imports Microsoft.VisualStudio.Editors.Interop
 Imports Microsoft.VisualStudio.Shell.Interop
 
@@ -71,7 +71,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Return View
         End Function
 
-
         ''' <summary>
         ''' Our supported technologies
         ''' </summary>
@@ -112,7 +111,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
         End Property
 #End Region
 
-
         ''' <summary>
         ''' Show context menu
         ''' </summary>
@@ -145,7 +143,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             Ns = ProjectUtils.GeneratedSettingsClassNamespace(Hierarchy, ProjectUtils.ItemId(Hierarchy, Item), True)
             Return ProjectUtils.FullyQualifiedClassName(Ns, GeneratedClassName(Hierarchy, ItemId, Settings, ProjectUtils.FileName(Item)))
         End Function
-
 
         ''' <summary>
         ''' Helper method to determine the generated class name...
@@ -197,7 +194,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                             ' No settings class provided - let's crack open the .settings file... 
                             '
                             Settings = New DesignTimeSettings()
-                            Using Reader As New IO.StreamReader(FullPath)
+                            Using Reader As New StreamReader(FullPath)
                                 SettingsSerializer.Deserialize(Settings, Reader, True)
                             End Using
                         End If
@@ -369,7 +366,6 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             If path = "" Then
                 Return
             End If
-
 
             ' The path passed in to us is the path to the current active user.config file..
             Dim currentApplicationVersionDirectoryInfo As New IO.DirectoryInfo(path)

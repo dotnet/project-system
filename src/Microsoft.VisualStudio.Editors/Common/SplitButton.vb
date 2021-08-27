@@ -20,7 +20,7 @@ Namespace Microsoft.VisualStudio.Editors.Common
 
         Private _state As PushButtonState = PushButtonState.Normal
         Private ReadOnly _pushButtonWidth As Integer = 14
-        Private _dropDownRectangle As New Rectangle
+        Private _dropDownRectangle As Rectangle
         Private _showCustomContextMenuWasHandled As Boolean
 
         Public Event ShowCustomContextMenu(e As ShowCustomContextMenuEventArgs)

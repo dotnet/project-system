@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio
     internal static class ComparableExtensions
     {
         /// <summary>
-        ///     Returns a value indicating whether the current instance is later than the 
+        ///     Returns a value indicating whether the current instance is later than the
         ///     specified <see cref="IComparable"/> instance.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio
         }
 
         /// <summary>
-        ///     Returns a value indicating whether the current instance is later than or 
+        ///     Returns a value indicating whether the current instance is later than or
         ///     equal to the specified <see cref="IComparable"/> instance.
         /// </summary>
         /// <exception cref="ArgumentNullException">
@@ -45,10 +45,10 @@ namespace Microsoft.VisualStudio
             Requires.NotNull(comparable, nameof(comparable));
 
             return source.CompareTo(comparable) >= 0;
-
         }
+
         /// <summary>
-        ///     Returns a value indicating whether the current instance is earlier than the 
+        ///     Returns a value indicating whether the current instance is earlier than the
         ///     specified <see cref="IComparable"/> instance.
         /// </summary>
         /// <exception cref="ArgumentNullException">

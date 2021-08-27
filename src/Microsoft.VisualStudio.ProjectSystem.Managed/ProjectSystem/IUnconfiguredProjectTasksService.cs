@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS;
 namespace Microsoft.VisualStudio.ProjectSystem
 {
     /// <summary>
-    ///     Provides methods for that assist in managing project-related background tasks. This interface replaces 
+    ///     Provides methods for that assist in managing project-related background tasks. This interface replaces
     ///     <see cref="IProjectAsyncLoadDashboard"/> usage.
     /// </summary>
     [ProjectSystemContract(ProjectSystemContractScope.UnconfiguredProject, ProjectSystemContractProvider.Private)]
@@ -18,13 +18,22 @@ namespace Microsoft.VisualStudio.ProjectSystem
         ///     Gets a token that is cancelled when the project has started to unload.
         /// </summary>
         /// <remarks>
-        ///     NOTE: This token is cancelled before <see cref="LoadedProjectAsync"/> actions 
+        ///     NOTE: This token is cancelled before <see cref="LoadedProjectAsync"/> actions
         ///     have been completed, so callers can bail early if needed.
         /// </remarks>
         CancellationToken UnloadCancellationToken { get; }
 
         /// <summary>
-        ///     Gets a task that completes when the host recognizes that the project is loaded, 
+        ///     Gets a task that completes when the host recognizes that the solution is loaded,
+        ///     or is cancelled if the project is unloaded before that occurs.
+        /// </summary>
+        /// <exception cref="OperationCanceledException">
+        ///     Thrown if the project was unloaded before the solution finished loading.
+        /// </exception>
+        Task SolutionLoadedInHost { get; }
+
+        /// <summary>
+        ///     Gets a task that completes when the host recognizes that the project is loaded,
         ///     or is cancelled if the project is unloaded before that occurs.
         /// </summary>
         /// <remarks>
@@ -76,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<T> LoadedProjectAsync<T>(Func<Task<T>> action);
 
         /// <summary>
-        ///     Provides protection for an operation that the project will not be considered loaded in the host before 
+        ///     Provides protection for an operation that the project will not be considered loaded in the host before
         ///     the completion of some task.
         /// </summary>
         /// <typeparam name="T">
@@ -91,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         Task<T> PrioritizedProjectLoadedInHostAsync<T>(Func<Task<T>> action);
 
         /// <summary>
-        ///     Provides protection for an operation that the project will not be considered loaded in the host before 
+        ///     Provides protection for an operation that the project will not be considered loaded in the host before
         ///     the completion of some task.
         /// </summary>
         /// <param name="action">

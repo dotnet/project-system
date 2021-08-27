@@ -40,14 +40,13 @@ namespace Microsoft.VisualStudio.ProjectSystem
             var instance = CreateInstance();
 
             bool result = false;
-            await instance.ExecuteUnderLockAsync(ct => 
+            await instance.ExecuteUnderLockAsync(ct =>
             {
                 cancellationTokenSource.Cancel();
 
                 result = ct.IsCancellationRequested;
 
                 return Task.CompletedTask;
-
             }, cancellationTokenSource.Token);
 
             Assert.True(result);
@@ -68,7 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 result = ct.IsCancellationRequested;
 
                 return Task.FromResult<string?>(null);
-
             }, cancellationTokenSource.Token);
 
             Assert.True(result);
@@ -139,14 +137,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 firstEntered.Set();
                 await firstRelease;
-
             }, CancellationToken.None);
 
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.CompletedTask;
-
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -167,14 +163,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await firstRelease;
 
                 return string.Empty;
-
             }, CancellationToken.None);
 
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.FromResult<string?>(null);
-
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -193,14 +187,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 firstEntered.Set();
                 await firstRelease;
-
             }, CancellationToken.None);
 
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.FromResult<string?>(null);
-
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -221,14 +213,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await firstRelease;
 
                 return string.Empty;
-
             }, CancellationToken.None);
 
             Task secondAction() => Task.Run(() => instance.ExecuteUnderLockAsync((ct) =>
             {
                 secondEntered.Set();
                 return Task.CompletedTask;
-
             }, CancellationToken.None));
 
             await AssertNoOverlap(firstAction, secondAction, firstEntered, firstRelease, secondEntered);
@@ -293,7 +283,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
             {
                 firstEntered.Set();
                 await firstRelease.WaitAsync();
-
             }, CancellationToken.None);
 
             instance = CreateInstance(() =>
@@ -322,7 +311,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 await firstRelease.WaitAsync();
 
                 return string.Empty;
-
             }, CancellationToken.None);
 
             instance = CreateInstance(() =>
@@ -405,7 +393,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             private readonly Func<Task> _disposed;
 
-            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed) 
+            public ConcreteOnceInitializedOnceDisposedUnderLockAsync(JoinableTaskContextNode joinableTaskContextNode, Func<Task>? disposed)
                 : base(joinableTaskContextNode)
             {
                 disposed ??= () => Task.CompletedTask;

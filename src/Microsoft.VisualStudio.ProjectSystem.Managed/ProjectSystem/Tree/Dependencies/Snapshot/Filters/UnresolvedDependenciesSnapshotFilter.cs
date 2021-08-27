@@ -8,8 +8,8 @@ using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Snapshot.Filters
 {
     /// <summary>
-    /// Prohibits the unresolved dependency rule (evaluation) from overriding the corresponding 
-    /// resolved rule (design-time build) in the snapshot. 
+    /// Prohibits the unresolved dependency rule (evaluation) from overriding the corresponding
+    /// resolved rule (design-time build) in the snapshot.
     /// </summary>
     /// <remarks>
     /// Once resolved, a dependency cannot revert to unresolved state. It will only appear as

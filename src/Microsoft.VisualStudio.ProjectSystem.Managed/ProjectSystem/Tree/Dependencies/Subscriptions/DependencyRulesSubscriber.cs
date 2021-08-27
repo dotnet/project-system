@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
@@ -103,21 +104,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
         protected override void Handle(
             AggregateCrossTargetProjectContext currentAggregateContext,
-            ITargetFramework targetFrameworkToUpdate,
+            TargetFramework targetFrameworkToUpdate,
             EventData e)
         {
             IProjectSubscriptionUpdate projectUpdate = e.Item1;
             IProjectCatalogSnapshot catalogSnapshot = e.Item2;
 
-            // Broken design time builds sometimes cause updates with no project changes and sometimes
-            // cause updates with a project change that has no difference.
-            // We handle the former case here, and the latter case is handled in the CommandLineItemHandler.
+            // Broken design-time builds can produce updates containing no rule data.
+            // Later code assumes that the requested rules are available.
+            // If we see no rule data, return now.
             if (projectUpdate.ProjectChanges.Count == 0)
-            {
-                return;
-            }
-
-            if (!projectUpdate.ProjectChanges.Any(x => x.Value.Difference.AnyChanges))
             {
                 return;
             }
@@ -128,7 +124,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
             // Give each handler a chance to register dependency changes.
             foreach (Lazy<IDependenciesRuleHandler, IOrderPrecedenceMetadataView> handler in _handlers)
             {
-                handler.Value.Handle(projectUpdate.ProjectChanges, targetFrameworkToUpdate, changesBuilder);
+                IProjectChangeDescription evaluation = projectUpdate.ProjectChanges[handler.Value.EvaluatedRuleName];
+                IProjectChangeDescription? build = projectUpdate.ProjectChanges.GetValueOrDefault(handler.Value.ResolvedRuleName);
+
+                handler.Value.Handle(evaluation, build, targetFrameworkToUpdate, changesBuilder);
             }
 
             IDependenciesChanges? changes = changesBuilder.TryBuildChanges();

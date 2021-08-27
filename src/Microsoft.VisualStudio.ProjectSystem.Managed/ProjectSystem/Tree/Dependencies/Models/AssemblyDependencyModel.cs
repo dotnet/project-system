@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
-using Microsoft.VisualStudio.ProjectSystem.VS;
 using Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies;
 using Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.RuleHandlers;
 
@@ -12,7 +11,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
 {
     internal class AssemblyDependencyModel : DependencyModel
     {
-        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(add: DependencyTreeFlags.AssemblyDependency);
+        private static readonly DependencyFlagCache s_flagCache = new DependencyFlagCache(
+            resolved: DependencyTreeFlags.AssemblyDependency + DependencyTreeFlags.SupportsBrowse,
+            unresolved: DependencyTreeFlags.AssemblyDependency);
 
         private static readonly DependencyIconSet s_iconSet = new DependencyIconSet(
             icon: KnownMonikers.Reference,
@@ -21,8 +22,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Models
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
         private static readonly DependencyIconSet s_implicitIconSet = new DependencyIconSet(
-            icon: ManagedImageMonikers.ReferencePrivate,
-            expandedIcon: ManagedImageMonikers.ReferencePrivate,
+            icon: KnownMonikers.ReferencePrivate,
+            expandedIcon: KnownMonikers.ReferencePrivate,
             unresolvedIcon: KnownMonikers.ReferenceWarning,
             unresolvedExpandedIcon: KnownMonikers.ReferenceWarning);
 
