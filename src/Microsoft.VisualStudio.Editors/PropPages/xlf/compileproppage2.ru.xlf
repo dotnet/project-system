@@ -94,7 +94,7 @@
       </trans-unit>
       <trans-unit id="Prefer32BitCheckBox.Text">
         <source>&amp;Prefer 32-bit</source>
-        <target state="translated">&amp;Предпочитать 32-разрядн.</target>
+        <target state="translated">&amp;Предпочтительна 32-разрядная версия</target>
         <note />
       </trans-unit>
     </body>

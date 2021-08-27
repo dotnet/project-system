@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">允许使用 "unsafe" 关键字编译的代码。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="new">Unsafe code</target>
+        <target state="translated">不安全代码</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
+        <target state="translated">在整数算术产生超出范围的值时引发异常。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="new">Produce identical compilation output for identical inputs.</target>
+        <target state="translated">为相同的输入生成相同的编译输出。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <target state="translated">启用编译器优化，实现更小、更快、更高效的输出。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">配置生成之前和之后运行的自定义事件。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">事件</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -189,7 +189,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
+        <target state="translated">向 Microsoft 发送内部编译器错误 (ICE) 报告。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -229,12 +229,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">指定何种条件下将执行生成后事件。</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">何时运行生成后事件</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -459,37 +459,37 @@
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
         <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">阻止编译器生成一个或多个警告的能力。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
         <source>Suppress specific warnings</source>
-        <target state="new">Suppress specific warnings</target>
+        <target state="translated">取消显示警告</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">指定生成完成后运行的命令。如果生成失败，则不运行。请使用“调用”来调用 .bat 文件。非零退出代码将导致生成失败。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">生成后事件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">指定生成开始前运行的命令。如果项目是最新的，则不运行。非零退出代码将在生成运行前导致生成失败。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">预生成事件</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
         <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">将指定的警告视为错误。使用逗号(",")或分号(";")来分隔多个警告编号。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|DisplayName">
@@ -499,12 +499,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
         <source>Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <target state="translated">不将指定的警告视为错误。请使用逗号(",")或分号(";")分隔多个警告编号。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
         <source>Exclude specific warnings as errors</source>
-        <target state="new">Exclude specific warnings as errors</target>
+        <target state="translated">不将指定的警告视为错误</target>
         <note />
       </trans-unit>
     </body>

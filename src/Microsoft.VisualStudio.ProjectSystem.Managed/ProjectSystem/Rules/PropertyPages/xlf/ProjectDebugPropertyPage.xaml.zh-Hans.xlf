@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|HotReloadEnabled|Description">
         <source>Apply code changes to the running application.</source>
-        <target state="new">Apply code changes to the running application.</target>
+        <target state="translated">将代码更改应用于运行中的应用程序。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
         <source>Enable Hot Reload</source>
-        <target state="new">Enable Hot Reload</target>
+        <target state="translated">启用热重载</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">

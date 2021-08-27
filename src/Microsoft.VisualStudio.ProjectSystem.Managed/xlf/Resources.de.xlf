@@ -93,7 +93,7 @@ Dieses Projekt wurde unter Verwendung des falschen Projekttyps geladen, wahrsche
       </trans-unit>
       <trans-unit id="Property_NoneValue">
         <source>(None)</source>
-        <target state="new">(None)</target>
+        <target state="translated">(Keine)</target>
         <note>Special value to show in the project property pages when a property has no value.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">
