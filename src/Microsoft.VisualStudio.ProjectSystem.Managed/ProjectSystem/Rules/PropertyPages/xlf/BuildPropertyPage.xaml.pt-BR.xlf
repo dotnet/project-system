@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">Permite que o código que usa a palavra-chave 'não seguro' seja compilado.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="new">Unsafe code</target>
+        <target state="translated">Código não seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
+        <target state="translated">Gerar exceções quando a aritmética de inteiro produzir valores fora do intervalo.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="new">Produce identical compilation output for identical inputs.</target>
+        <target state="translated">Produzir uma saída de compilação idêntica para entradas idênticas.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -64,7 +64,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <target state="translated">Habilitar otimizações do compilador para uma saída menor, mais rápida e mais eficiente.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -139,12 +139,12 @@
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">Configura eventos personalizados que são executados antes e depois do build.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">Eventos</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -189,7 +189,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
+        <target state="translated">Enviar relatórios de erro interno do compilador (ICE) para a Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -229,12 +229,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">Especifica sob qual condição o evento de pós-build será executado.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">Quando executar o evento pós-build</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -449,7 +449,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="needs-review-translation">Por que não consigo selecionar a versão da linguagem C#?</target>
+        <target state="new">The version of the language available to code in this project.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
@@ -469,22 +469,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">Especifica os comandos que são executados após a conclusão do build. Não será executado se o build falhar. Use 'call' para invocar arquivos .bat. Um código de saída diferente de zero causará falha no build.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">Evento Pós-build</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">Especifica os comandos que são executados antes do início do build. Não será executado se o projeto estiver atualizado. Um código de saída diferente de zero causará falha no build antes de sua execução.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">Evento Pré-build</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">

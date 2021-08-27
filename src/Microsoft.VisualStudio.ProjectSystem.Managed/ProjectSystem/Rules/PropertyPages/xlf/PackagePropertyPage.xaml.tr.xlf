@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="needs-review-translation">Paket kökünden simge dosyasına giden göreli yol. Bu özelliği ayarlamanın yanı sıra, dosyanın pakete dahil olduğundan emin olmanız gerekir. Görüntü dosyası boyutu 1 MB ile sınırlıdır. Desteklenen bazı dosya biçimleri: JPEG ve PNG. 128x128 görüntü çözünürlüğü önerilir.</target>
+        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="needs-review-translation">Simge dosyası</target>
+        <target state="new">Icon</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
