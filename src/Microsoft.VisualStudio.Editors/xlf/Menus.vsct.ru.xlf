@@ -334,7 +334,7 @@
       </trans-unit>
       <trans-unit id="cmdidRESXAdd|ButtonText">
         <source>&amp;Add</source>
-        <target state="translated">До&amp;бавить</target>
+        <target state="translated">Д&amp;обавить</target>
         <note />
       </trans-unit>
       <trans-unit id="cmdidRESXAdd|MenuText">

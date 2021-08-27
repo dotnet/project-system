@@ -93,7 +93,7 @@ Esse projeto foi carregado usando o tipo de projeto errado, provavelmente como r
       </trans-unit>
       <trans-unit id="Property_NoneValue">
         <source>(None)</source>
-        <target state="new">(None)</target>
+        <target state="translated">(Nenhum)</target>
         <note>Special value to show in the project property pages when a property has no value.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">

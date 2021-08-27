@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="btnAdvanced.Text">
         <source>A&amp;dvanced...</source>
-        <target state="translated">До&amp;полнительно...</target>
+        <target state="translated">Д&amp;ополнительно...</target>
         <note />
       </trans-unit>
       <trans-unit id="chkDefineDebug.Text">

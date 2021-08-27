@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="needs-review-translation">Relativní cesta z kořenu balíčku k souboru ikony. Kromě nastavení této vlastnosti bude nutné se ujistit, že je soubor součástí balíčku. Velikost souboru obrázku je omezená na 1 MB. Mezi podporované formáty souborů patří JPEG a PNG. Doporučené rozlišení obrázku je 128x128.</target>
+        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="needs-review-translation">Soubor ikony</target>
+        <target state="new">Icon</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
