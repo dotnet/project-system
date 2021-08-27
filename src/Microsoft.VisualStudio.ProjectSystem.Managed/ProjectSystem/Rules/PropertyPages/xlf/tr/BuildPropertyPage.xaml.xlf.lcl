@@ -12,19 +12,25 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['unsafe' anahtar sözcüğünü kullanan kodun derlenmesine izin verir.]]></Val>
+            <Val><![CDATA['güvenli olmayan' anahtar sözcüğü kullanan kodun derlenmesine izin verin.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allow unsafe code]]></Val>
+          <Val><![CDATA[Unsafe code]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Güvenli olmayan koda izin ver]]></Val>
+            <Val><![CDATA[Güvenli olmayan kod]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allow unsafe code]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -39,10 +45,13 @@
       </Item>
       <Item ItemId=";BoolProperty|CheckForOverflowUnderflow|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          <Val><![CDATA[Throw exceptions when integer arithmetic produces out of range values.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Veri türünün aralığı dışında bir değerle sonuçlanan ve checked veya unchecked anahtar sözcüğünün kapsamında olmayan tamsayı aritmetiğinin bir çalışma zamanı özel durumuna neden olup olmadığını belirtir.]]></Val>
+            <Val><![CDATA[Tamsayı aritmetiği aralık dışında değerler oluşturduğunda özel durumları atın.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -84,10 +93,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Deterministic|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          <Val><![CDATA[Produce identical compilation output for identical inputs.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Derleyicinin aynı girişler için aynı bütünleştirilmiş kodları üretmesi gerekip gerekmediğini gösterir.]]></Val>
+            <Val><![CDATA[Aynı girdiler için aynı derleme çıktıları oluşturun.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -120,10 +132,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Optimize|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          <Val><![CDATA[Enable compiler optimizations for smaller, faster, and more efficient output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Çıkış dosyanızı daha küçük, daha hızlı ve daha etkili yapmak için derleyici tarafından gerçekleştirilen iyileştirmeleri etkinleştirir veya devre dışı bırakır.]]></Val>
+            <Val><![CDATA[Daha küçük, daha hızlı ve daha verimli çıktılar için derleyici iyileştirmelerini etkinleştirin.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -223,12 +238,18 @@
       <Item ItemId=";Category|Events|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Configures custom events that run before and after build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derlemeden önce ve sonra çalıştırılan özel olayları yapılandırır.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Events|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Events]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Olaylar]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -309,10 +330,13 @@
       </Item>
       <Item ItemId=";EnumProperty|ErrorReport|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          <Val><![CDATA[Send internal compiler error (ICE) reports to Microsoft.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Derleyici iç hatası (ICE) raporlarının Microsoft'a ne zaman gönderildiğini denetler.]]></Val>
+            <Val><![CDATA[İç derleyici hatası (ICE) raporlarını Microsoft'a gönderin.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -382,12 +406,18 @@
       <Item ItemId=";EnumProperty|RunPostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies under which condition the post-build event will be executed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme sonrası olayının hangi koşulda yürütüleceğini belirtir.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|RunPostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When to run the post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme sonrası olayının çalıştırılacağı zaman]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -766,7 +796,7 @@
       <Item ItemId=";StringProperty|NoWarn|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Derleyicinin bir veya daha fazla uyarı oluşturulabilmesini engeller. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -778,7 +808,7 @@
       <Item ItemId=";StringProperty|NoWarn|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Suppress specific warnings]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Uyarıları Gizle]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -790,31 +820,43 @@
       <Item ItemId=";StringProperty|PostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme tamamlandıktan sonra çalıştırılan komutları belirtir. Derleme başarısız olursa çalıştırmayın. Bat dosyalarını çağırmak için “Çağrı” işlevini kullanın. Sıfır olmayan bir çıkış kodu derlemeyi başarısız kılar.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme sonrası olayı]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme başlamadan önce çalıştırılan komutları belirtir. Proje güncelse çalıştırmayın. Sıfır olmayan bir çıkış kodu derlemeyi çalıştırılmadan önce başarısız kılar.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Pre-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme öncesi olayı]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|WarningsAsErrors|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Belirtilen uyarıları hata olarak değerlendirir. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -838,7 +880,7 @@
       <Item ItemId=";StringProperty|WarningsNotAsErrors|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Belirtilen uyarıları hata olarak değerlendirmenin dışında tutar. Birden çok uyarı numarasını virgül (',') veya noktalı virgül (';') ile ayırın.]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -850,7 +892,7 @@
       <Item ItemId=";StringProperty|WarningsNotAsErrors|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Exclude specific warnings as errors]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Belirli uyarıları hata olarak değerlendirilme dışında tut]]></Val>
           </Tgt>
           <Prev Cat="Text">
