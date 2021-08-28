@@ -190,6 +190,10 @@
       <Context>Project</Context>
     </PropertyPageSchema>
 
+    <PropertyPageSchema Include="$(ManagedXamlResourcesDirectory)CodeAnalysisPropertyPage.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
     <PropertyPageSchema Include="$(ManagedXamlNeutralResourcesDirectory)ConfigurationGeneralPage.xaml">
       <Context>Project</Context>
     </PropertyPageSchema>
