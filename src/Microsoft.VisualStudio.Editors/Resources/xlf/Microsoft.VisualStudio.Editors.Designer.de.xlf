@@ -483,7 +483,7 @@ Wenn diese Einstellung geändert wird, werden die Einstellungen in allen Konfigu
       </trans-unit>
       <trans-unit id="PropPage_InvalidURL">
         <source>The URL is invalid. Please enter a valid URL like "http://www.microsoft.com/"</source>
-        <target state="translated">Die URL ist ungültig. Geben Sie eine gültige URL (beispielsweise "http://www.microsoft.com/de/de/default.aspx") ein.</target>
+        <target state="translated">Die URL ist ungültig. Geben Sie eine gültige URL (beispielsweise "http://www.microsoft.com/") ein.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropPage_WorkingDirError">
