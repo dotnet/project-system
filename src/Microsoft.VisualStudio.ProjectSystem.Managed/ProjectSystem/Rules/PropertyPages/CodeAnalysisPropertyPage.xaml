@@ -25,41 +25,25 @@
                 DisplayName="Run on build"
                 Description="Always run code analysis on build."
                 HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
-                Category="AllAnalyzers">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="analyzer;code analyzer;analysis;code analysis" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
+                Category="AllAnalyzers" />
 
   <BoolProperty Name="RunAnalyzersDuringLiveAnalysis"
                 DisplayName="Run on live analysis"
                 Description="Run code analysis live in the editor as you type."
                 HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
-                Category="AllAnalyzers">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="analyzer;code analyzer;analysis;code analysis" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
+                Category="AllAnalyzers" />
 
   <BoolProperty Name="EnforceCodeStyleInBuild"
                 DisplayName="Enforce code style on build (experimental)"
                 Description="Produce diagnostics about code style on build."
                 HelpUrl="https://docs.microsoft.com/visualstudio/ide/code-styles-and-code-cleanup"
-                Category="NetAnalyzers">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="style;code style" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
+                Category="NetAnalyzers" />
 
   <BoolProperty Name="EnableNETAnalyzers"
                 DisplayName="Enable .NET analyzers"
                 Description="Run .NET analyzers to help with API usage."
                 HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/install-net-analyzers"
-                Category="NetAnalyzers">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="dotnet analyzers;analysis;code analysis" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
+                Category="NetAnalyzers" />
 
   <EnumProperty Name="AnalysisLevel"
                 DisplayName="Analysis level"
@@ -70,9 +54,6 @@
       <DataSource HasConfigurationCondition="False"
                   Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
-    <EnumProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="analysis level" />
-    </EnumProperty.Metadata>
     <EnumValue Name="none"
                DisplayName="None" />
     <EnumValue Name="preview"
