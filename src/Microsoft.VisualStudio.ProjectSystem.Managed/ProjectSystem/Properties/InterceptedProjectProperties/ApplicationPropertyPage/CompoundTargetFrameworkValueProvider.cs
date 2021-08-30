@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return string.Empty;
             }
 
-            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, storedValue, defaultProperties);
+            return storedValue;
         }
 
         public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return string.Empty;
             }
 
-            return await base.OnGetUnevaluatedPropertyValueAsync(propertyName, storedValue, defaultProperties);
+            return storedValue;
         }
 
         private static async Task<ComplexTargetFramework> GetStoredComplexTargetFrameworkAsync(ConfigurationGeneral configuration)
