@@ -50,10 +50,6 @@
                 Description="The set of analyzers that should be run in the project."
                 HelpUrl="https://docs.microsoft.com/dotnet/fundamentals/code-analysis/overview"
                 Category="NetAnalyzers">
-    <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  Persistence="ProjectFileWithInterception" />
-    </EnumProperty.DataSource>
     <EnumValue Name="none"
                DisplayName="None" />
     <EnumValue Name="preview"
