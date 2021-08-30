@@ -53,7 +53,7 @@
 
   <BoolProperty Name="EnableNETAnalyzers"
                 DisplayName="Enable .NET analyzers"
-                Description="Run .NET analyzers to help with API useage."
+                Description="Run .NET analyzers to help with API usage."
                 HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/install-net-analyzers"
                 Category="NetAnalyzers">
     <BoolProperty.Metadata>
