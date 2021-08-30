@@ -731,7 +731,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             IActiveDebugFrameworkServices? activeDebugFramework = null,
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
-            IVsDebugger10? debugger = null)
+            IVsDebugger10? debugger = null,
+            IDebuggerSettings? debuggerSettings = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
@@ -754,7 +755,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
-                new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()));
+                new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()),
+                new Lazy<IDebuggerSettings>(() => debuggerSettings ?? IDebuggerSettingsFactory.Create()));
         }
     }
 }
