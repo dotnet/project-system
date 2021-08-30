@@ -81,8 +81,8 @@
   </EnumProperty>
 
   <BoolProperty Name="ImplicitUsings"
-                DisplayName="Global usings"
-                Description="Enable default global usings."
+                DisplayName="Implicit global usings"
+                Description="Enable implicit global usings to be declared by the project SDK."
                 Category="General">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"

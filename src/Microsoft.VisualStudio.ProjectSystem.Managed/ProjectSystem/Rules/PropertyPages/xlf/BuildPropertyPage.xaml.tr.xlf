@@ -63,13 +63,13 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
-        <source>Enable default global usings.</source>
-        <target state="new">Enable default global usings.</target>
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
-        <source>Global usings</source>
-        <target state="new">Global usings</target>
+        <source>Implicit global usings</source>
+        <target state="new">Implicit global usings</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
