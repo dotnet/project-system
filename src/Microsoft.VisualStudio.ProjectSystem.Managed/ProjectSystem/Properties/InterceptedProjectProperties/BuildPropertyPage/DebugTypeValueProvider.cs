@@ -7,18 +7,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider("DebugType", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class DebugTypeValueProvider : InterceptingPropertyValueProviderBase
     {
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string value = await base.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
+            string value = evaluatedPropertyValue == "pdbonly"
+                ? "full"
+                : evaluatedPropertyValue;
 
-            return value == "pdbonly" ? "full" : value;
+            return Task.FromResult(value);
         }
 
-        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string value = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
+            string value = unevaluatedPropertyValue == "pdbonly"
+                ? "full"
+                : unevaluatedPropertyValue;
 
-            return value == "pdbonly" ? "full" : value;
+            return Task.FromResult(value);
         }
     }
 }

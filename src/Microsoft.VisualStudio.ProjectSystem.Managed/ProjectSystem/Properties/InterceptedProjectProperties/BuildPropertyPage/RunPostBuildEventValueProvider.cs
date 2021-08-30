@@ -14,28 +14,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
     [ExportInterceptingPropertyValueProvider(ConfigurationGeneralBrowseObject.RunPostBuildEventProperty, ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class RunPostBuildEventValueProvider : InterceptingPropertyValueProviderBase
     {
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string value = await base.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
-
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(evaluatedPropertyValue))
             {
-                value = ConfigurationGeneralBrowseObject.RunPostBuildEventValues.OnBuildSuccess;
+                return Task.FromResult(ConfigurationGeneralBrowseObject.RunPostBuildEventValues.OnBuildSuccess);
             }
 
-            return value;
+            return Task.FromResult(evaluatedPropertyValue);
         }
 
-        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string value = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
-
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(unevaluatedPropertyValue))
             {
-                value = ConfigurationGeneralBrowseObject.RunPostBuildEventValues.OnBuildSuccess;
+                return Task.FromResult(ConfigurationGeneralBrowseObject.RunPostBuildEventValues.OnBuildSuccess);
             }
 
-            return value;
+            return Task.FromResult(unevaluatedPropertyValue);
         }
     }
 }
