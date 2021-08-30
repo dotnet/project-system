@@ -3,61 +3,64 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Properties
 {
     [ExportInterceptingPropertyValueProvider("ImplicitUsings", ExportInterceptingPropertyValueProviderFile.ProjectFile)]
     internal sealed class ImplicitUsingsValueProvider : InterceptingPropertyValueProviderBase
     {
-        public override async Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
-        {
-            string value = await base.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
+        private static readonly Task<string?> s_enableStringTaskResult = Task.FromResult<string?>("enable");
+        private static readonly Task<string?> s_disableStringTaskResult = Task.FromResult<string?>("disable");
 
-            return ToBooleanString(value);
+        public override Task<string> OnGetEvaluatedPropertyValueAsync(string propertyName, string evaluatedPropertyValue, IProjectProperties defaultProperties)
+        {
+            return ToBooleanStringAsync(evaluatedPropertyValue);
         }
 
-        public override async Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
+        public override Task<string> OnGetUnevaluatedPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties)
         {
-            string value = await base.OnGetUnevaluatedPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties);
-
-            return ToBooleanString(value);
+            return ToBooleanStringAsync(unevaluatedPropertyValue);
         }
 
-        public override async Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
+        public override Task<string?> OnSetPropertyValueAsync(string propertyName, string unevaluatedPropertyValue, IProjectProperties defaultProperties, IReadOnlyDictionary<string, string>? dimensionalConditions = null)
         {
-            string? value = await base.OnSetPropertyValueAsync(propertyName, unevaluatedPropertyValue, defaultProperties, dimensionalConditions);
-
-            return FromBooleanString(value);
+            return FromBooleanStringAsync(unevaluatedPropertyValue);
         }
 
-        private static string ToBooleanString(string value)
+        private static Task<string> ToBooleanStringAsync(string value)
         {
             if (StringComparer.OrdinalIgnoreCase.Equals(value, "enable"))
             {
-                return bool.TrueString;
+                return TaskResult.TrueString;
             }
 
             if (StringComparer.OrdinalIgnoreCase.Equals(value, "disable"))
             {
-                return bool.FalseString;
+                return TaskResult.FalseString;
             }
 
-            return value;
+            return Task.FromResult(value);
         }
 
-        private static string? FromBooleanString(string? value)
+        private static Task<string?> FromBooleanStringAsync(string? value)
         {
             if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.TrueString))
             {
-                return "enable";
+                return s_enableStringTaskResult;
             }
 
             if (StringComparer.OrdinalIgnoreCase.Equals(value, bool.FalseString))
             {
-                return "disable";
+                return s_disableStringTaskResult;
             }
 
-            return value;
+            if (value is null)
+            {
+                return TaskResult.Null<string>();
+            }
+
+            return Task.FromResult<string?>(value);
         }
     }
 }
