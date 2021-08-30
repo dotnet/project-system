@@ -4,7 +4,7 @@
       Description="Settings"
       DisplayName="Settings"
       PageTemplate="generic"
-      Order="700"
+      Order="1200"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>

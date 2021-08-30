@@ -4,7 +4,7 @@
       Description="Settings"
       DisplayName="Code Analysis"
       PageTemplate="generic"
-      Order="800"
+      Order="500"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.Categories>

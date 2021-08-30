@@ -4,7 +4,7 @@
       Description="Resources"
       DisplayName="Resources"
       PageTemplate="generic"
-      Order="600"
+      Order="1100"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
