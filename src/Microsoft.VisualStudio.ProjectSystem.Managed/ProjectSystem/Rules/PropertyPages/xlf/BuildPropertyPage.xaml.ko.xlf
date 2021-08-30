@@ -62,6 +62,21 @@
         <target state="translated">설명서 파일</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="new">Implicit global usings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="new">implicit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="translated">더 작고 빠르며 더 효율적인 출력을 위해 컴파일러 최적화를 사용하도록 설정합니다.</target>
