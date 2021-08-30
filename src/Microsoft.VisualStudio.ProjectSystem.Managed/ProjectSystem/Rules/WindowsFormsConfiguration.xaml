@@ -13,7 +13,7 @@
       https://github.com/dotnet/designs/blob/main/accepted/2021/winforms/streamline-application-bootstrap.md#msbuild-properties
       -->
 
-    <StringProperty Name="ApplicationFont"
+    <StringProperty Name="ApplicationDefaultFont"
                   ReadOnly="True"
                   Visible="False" />
 
