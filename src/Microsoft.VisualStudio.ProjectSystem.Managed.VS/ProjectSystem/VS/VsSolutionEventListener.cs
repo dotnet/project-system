@@ -103,6 +103,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         public int OnAfterCloseSolution(object pUnkReserved)
         {
             _loadedInHost = new TaskCompletionSource();
+
             return HResult.OK;
         }
 
