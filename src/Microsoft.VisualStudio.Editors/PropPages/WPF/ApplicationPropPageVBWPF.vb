@@ -1255,9 +1255,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages.WPF
         ''' <param name="list"></param>
         Private Sub FindXamlPageFiles(projectItems As ProjectItems, list As List(Of ProjectItem))
             For Each projectItem As ProjectItem In projectItems
-#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                 If IO.Path.GetExtension(projectItem.FileNames(1)).Equals(".xaml", StringComparison.OrdinalIgnoreCase) Then
-#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
                     'We only want .xaml files with BuildAction="Page"
                     Dim CurrentBuildAction As String = DTEUtils.GetBuildActionAsString(projectItem)
                     If CurrentBuildAction IsNot Nothing AndAlso BUILDACTION_PAGE.Equals(CurrentBuildAction, StringComparison.OrdinalIgnoreCase) Then
