@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
         {
             _enabled = false;
 
-            _missingWorkloadRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
+            _missingWorkloadRegistrationService.UnregisterProjectConfiguration(_projectGuid, _project);
 
             return Task.CompletedTask;
         }
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
             _projectGuid = await _project.UnconfiguredProject.GetProjectGuidAsync();
             _joinedDataSources = ProjectDataSources.JoinUpstreamDataSources(JoinableFactory, _projectFaultHandlerService, _projectSubscriptionService.ProjectSource, _workloadDescriptorDataSource);
 
-            _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project.ProjectConfiguration);
+            _missingWorkloadRegistrationService.RegisterProjectConfiguration(_projectGuid, _project);
 
             Action<IProjectVersionedValue<ValueTuple<IProjectSnapshot, ISet<WorkloadDescriptor>>>> action = OnWorkloadDescriptorsComputed;
 
@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 }
             }
 
-            _missingWorkloadRegistrationService.RegisterMissingWorkloads(_projectGuid, _project.ProjectConfiguration, pair.Value.workloadDescriptors);
+            _missingWorkloadRegistrationService.RegisterMissingWorkloads(_projectGuid, _project, pair.Value.workloadDescriptors);
         }
     }
 }

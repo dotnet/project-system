@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Workloads;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -12,10 +14,12 @@ namespace Microsoft.VisualStudio.ProjectSystem
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IMissingWorkloadRegistrationService
     {
-        void RegisterMissingWorkloads(Guid projectGuid, ProjectConfiguration projectConfiguration, ISet<WorkloadDescriptor> workloadDescriptors);
+        Task InitializeAsync(CancellationToken cancellationToken = default);
 
-        void RegisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration);
+        void RegisterMissingWorkloads(Guid projectGuid, ConfiguredProject project, ISet<WorkloadDescriptor> workloadDescriptors);
 
-        void UnregisterProjectConfiguration(Guid projectGuid, ProjectConfiguration projectConfiguration);
+        void RegisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
+
+        void UnregisterProjectConfiguration(Guid projectGuid, ConfiguredProject project);
     }
 }
