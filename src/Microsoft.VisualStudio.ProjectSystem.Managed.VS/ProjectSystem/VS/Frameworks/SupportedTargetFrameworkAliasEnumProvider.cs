@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Frameworks
         public SupportedTargetFrameworkAliasEnumProvider(
             ConfiguredProject project,
             IProjectSubscriptionService subscriptionService)
-            : base(project, synchronousDisposal: true, registerDataSource: false)
+            : base(project, synchronousDisposal: false, registerDataSource: false)
         {
             _subscriptionService = subscriptionService;
 

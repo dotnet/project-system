@@ -7,6 +7,8 @@ The `IBuildUpToDateCheckProvider` interface (from CPS) has two members:
 - `IsUpToDateCheckEnabledAsync`, which is serviced by `IProjectSystemOptions.GetFastUpToDateLoggingLevelAsync`
 - `IsUpToDateAsync` which performs the checks described below
 
+We implement the derived `IBuildUpToDateCheckProvider2` version of the interface, which gives us access to the set of global properties used in the build. A build may use global properties to exlude certain "kinds" of inputs and outputs if necessary.
+
 ## What is checked
 
 There are several checks which must all pass. 
@@ -68,6 +70,15 @@ For each `_copiedOutputFiles` source/destination
 - :heavy_check_mark: ...the source must exist
 - :heavy_check_mark: ...the destination must exist
 - :heavy_check_mark: ...the destination must be older or the same age as the source
+
+## Persistence
+
+Our up-to-date check persists data to the `.vs` folder, in a binary file such as `.vs/MySolution/v17/.futdcache.v1`.
+
+This file contains, per project:
+
+1. A hash of the items in the project, so that we can tell whether the items have changed since the last time we loaded the project. If not, we can consider the project up-to-date on solution open, which can save a lot of time for the user's first build/test/debug operations.
+2. The time at which the last set of items was observed to have changed. This is also important on solution open, to correctly handle the first up-to-date check of a project.
 
 ## Implementation
 

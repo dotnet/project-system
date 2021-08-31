@@ -202,6 +202,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int UpToDateCheckBuiltRule;
         }
 
+        /// <summary>
+        ///     Contains rules for the Windows Forms designer component.
+        /// </summary>
+        private static class WindowsFormsConfigurationRules
+        {
+            [ExportRule(nameof(WindowsFormsConfiguration), PropertyPageContexts.Project)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int WindowsFormsConfigurationRule;
+        }
+
         private static class OptionalWorkloadRules
         {
             /// <summary>

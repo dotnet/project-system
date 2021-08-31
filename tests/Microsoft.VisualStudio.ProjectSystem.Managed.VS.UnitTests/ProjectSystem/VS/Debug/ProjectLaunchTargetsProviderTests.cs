@@ -732,16 +732,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
             IVsDebugger10? debugger = null,
-            IProjectHotReloadAgent? projectHotReloadAgent = null,
-            IHotReloadDiagnosticOutputService? hotReloadDiagnosticOutputService = null)
+            IDebuggerSettings? debuggerSettings = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
-            projectHotReloadAgent ??= IProjectHotReloadAgentFactory.Create();
-            hotReloadDiagnosticOutputService ??= IHotReloadDiagnosticOutputServiceFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
@@ -758,8 +755,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
-                projectHotReloadAgent,
-                new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadDiagnosticOutputService));
+                new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()),
+                new Lazy<IDebuggerSettings>(() => debuggerSettings ?? IDebuggerSettingsFactory.Create()));
         }
     }
 }

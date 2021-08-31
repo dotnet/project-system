@@ -128,13 +128,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
-        <source>The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="translated">Paket kökünden simge dosyasına giden göreli yol. Bu özelliği ayarlamanın yanı sıra, dosyanın pakete dahil olduğundan emin olmanız gerekir. Görüntü dosyası boyutu 1 MB ile sınırlıdır. Desteklenen bazı dosya biçimleri: JPEG ve PNG. 128x128 görüntü çözünürlüğü önerilir.</target>
+        <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
+        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
-        <source>Icon file</source>
-        <target state="translated">Simge dosyası</target>
+        <source>Icon</source>
+        <target state="new">Icon</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
@@ -170,6 +170,16 @@
       <trans-unit id="StringProperty|PackageProjectUrl|DisplayName">
         <source>Project URL</source>
         <target state="translated">Proje URL'si</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReadmeFile|Description">
+        <source>The README document for the package. Must be a Markdown (.md) file.</source>
+        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
+        <source>README</source>
+        <target state="new">README</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">

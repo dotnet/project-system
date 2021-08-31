@@ -170,6 +170,31 @@ If the text within this editor should be displayed with a monospace (fixed width
 </StringProperty>
 ```
 
+### Password Strings
+
+A `PasswordBox` control can be used for string properties by specifying `EditorType="PasswordString"`.
+
+### Evaluated-preview-only Strings
+
+If you wish for a property to only display a non-editable preview of its evaluated values, you can use the `ShowEvaluatedPreviewOnly` editor metadata.
+
+We use this on the `LangVersion` property, for example, as this value is intentionally non-editable, yet we want to allow the user to see the evaluated values. This value is specified by SDK targets, and so there is no useful unevaluated value to display for this property.
+
+```xml
+<StringProperty Name="LangVersion"
+                DisplayName="Language version"
+                Description="The version of the language available to code in this project."
+                ReadOnly="true">
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="String">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="ShowEvaluatedPreviewOnly" Value="True" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+</StringProperty>
+```
+
 ### Custom Editors
 
 If a non-standard editor is required for a given property, one may be provided via MEF.
@@ -341,23 +366,48 @@ The click handler is exported via:
 [ExportMetadata("CommandName", "MyCommandName")]
 internal sealed class MyCommandActionHandler : ILinkActionHandler
 {
-    public void Handle(ProjectContext projectContext, IReadOnlyDictionary<string, string> editorMetadata)
+    public void Handle(UnconfiguredProject project, IReadOnlyDictionary<string, string> editorMetadata)
     {
         // Handle command invocation
     }
 }
 ```
 
-## File and Directory Properties
+## File Properties
 
-When a property's value represents a file or directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file` or `directory` respectively. `folder` is an equivalent alternative to `directory`.
+When a property's value represents a file path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `file`.
 
 ```xml
 <StringProperty Subtype="file"
                 ...>
 ```
 
-This will produce an editor that comprises a text box and _Browse_ button, which launches a file or directory picker dialog.
+This will produce an editor that comprises a text box and _Browse_ button, which launches a file picker dialog.
+
+To control the set of file extensions the user is allowed to select, add metadata resembling the following:
+
+```xml
+  <StringProperty.ValueEditors>
+    <ValueEditor EditorType="FilePath">
+      <ValueEditor.Metadata>
+        <NameValuePair Name="FileTypeFilter" Value="Image files (*.png,*.jpg,*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*" />
+      </ValueEditor.Metadata>
+    </ValueEditor>
+  </StringProperty.ValueEditors>
+```
+
+The format of the `FileTypeFilter` property is important, and invalid values will cause an exception when _Browse_ is clicked. Be sure to test your values. For information on this format, read [this documentation](https://docs.microsoft.com/dotnet/api/microsoft.win32.filedialog.filter?view=net-5.0).
+
+## Directory Properties
+
+When a property's value represents a directory path, it should be modelled as a `StringProperty` with its `Subtype` attribute set to `directory` (`folder` is also accepted, and is equivalent to `directory`).
+
+```xml
+<StringProperty Subtype="folder"
+                ...>
+```
+
+This will produce an editor that comprises a text box and _Browse_ button, which launches a directory picker dialog.
 
 ## Synthetic Properties
 

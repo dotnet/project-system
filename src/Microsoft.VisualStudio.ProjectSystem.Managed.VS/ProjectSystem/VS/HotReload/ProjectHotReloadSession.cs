@@ -12,7 +12,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     internal class ProjectHotReloadSession : IManagedHotReloadAgent, IProjectHotReloadSession
     {
-        private readonly string _id;
         private readonly string _runtimeVersion;
         private readonly Lazy<IHotReloadAgentManagerClient> _hotReloadAgentManagerClient;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadOutputService;
@@ -23,14 +22,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private IDeltaApplier? _deltaApplier;
 
         public ProjectHotReloadSession(
-            string id,
+            string name,
             string runtimeVersion,
             Lazy<IHotReloadAgentManagerClient> hotReloadAgentManagerClient,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadOutputService,
             Lazy<IManagedDeltaApplierCreator> deltaApplierCreator,
             IProjectHotReloadSessionCallback callback)
         {
-            _id = id;
+            Name = name;
             _runtimeVersion = runtimeVersion;
             _hotReloadAgentManagerClient = hotReloadAgentManagerClient;
             _hotReloadOutputService = hotReloadOutputService;
@@ -39,6 +38,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         }
 
         // IProjectHotReloadSession
+
+        public string Name { get; }
 
         public async Task ApplyChangesAsync(CancellationToken cancellationToken)
         {
@@ -74,15 +75,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return false;
         }
 
-        public async Task StartSessionAsync(CancellationToken cancellationToken)
+        // TODO: remove when Web Tools is no longer calling this method.
+        public Task StartSessionAsync(CancellationToken cancellationToken)
         {
-            if (!_sessionActive)
+            return StartSessionAsync(runningUnderDebugger: false, cancellationToken);
+        }
+
+        public async Task StartSessionAsync(bool runningUnderDebugger, CancellationToken cancellationToken)
+        {
+            if (_sessionActive)
             {
-                await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, cancellationToken);
-                await WriteToOutputWindowAsync(VSResources.HotReloadStartSession);
-                _sessionActive = true;
-                EnsureDeltaApplierforSession();
+                throw new InvalidOperationException("Attempting to start a Hot Reload session that is already running.");
             }
+
+            HotReloadAgentFlags flags = runningUnderDebugger ? HotReloadAgentFlags.IsDebuggedProcess : HotReloadAgentFlags.None;
+            await _hotReloadAgentManagerClient.Value.AgentStartedAsync(this, flags, cancellationToken);
+            await WriteToOutputWindowAsync(VSResources.HotReloadStartSession);
+            _sessionActive = true;
+            EnsureDeltaApplierforSession();
         }
 
         public async Task StopSessionAsync(CancellationToken cancellationToken)
@@ -185,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         private Task WriteToOutputWindowAsync(string message)
         {
-            return _hotReloadOutputService.Value.WriteLineAsync($"{_id}: {message}");
+            return _hotReloadOutputService.Value.WriteLineAsync($"{Name}: {message}");
         }
 
         private void EnsureDeltaApplierforSession()

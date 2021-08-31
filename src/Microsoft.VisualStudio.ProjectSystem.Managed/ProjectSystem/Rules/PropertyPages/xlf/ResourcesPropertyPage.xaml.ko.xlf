@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ko" original="../ResourcesPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|ResourcesPropertyPage|Description">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|ResourcesPropertyPage|DisplayName">
+        <source>Resources</source>
+        <target state="new">Resources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|CreateOrOpenAssemblyResources|DisplayName">
+        <source>Create or open assembly resources</source>
+        <target state="new">Create or open assembly resources</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|Description">
+        <source>The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
+        <target state="new">The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|DisplayName">
+        <source>Ignored</source>
+        <target state="new">Ignored</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

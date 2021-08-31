@@ -6,7 +6,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 {
     internal sealed partial class BuildUpToDateCheck
     {
-        internal sealed class ItemComparer : IEqualityComparer<(string path, string? link, CopyType copyType)>
+        internal sealed class ItemComparer : IEqualityComparer<(string path, string? targetPath, CopyType copyType)>
         {
             public static readonly ItemComparer Instance = new();
 
@@ -15,14 +15,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             }
 
             public bool Equals(
-                (string path, string? link, CopyType copyType) x,
-                (string path, string? link, CopyType copyType) y)
+                (string path, string? targetPath, CopyType copyType) x,
+                (string path, string? targetPath, CopyType copyType) y)
             {
                 return StringComparers.Paths.Equals(x.path, y.path);
             }
 
             public int GetHashCode(
-                (string path, string? link, CopyType copyType) obj)
+                (string path, string? targetPath, CopyType copyType) obj)
             {
                 return StringComparers.Paths.GetHashCode(obj.path);
             }

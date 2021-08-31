@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -17,20 +18,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
     internal partial class WorkspaceProjectContextProvider : IWorkspaceProjectContextProvider
     {
         private readonly UnconfiguredProject _project;
-        private readonly IProjectThreadingService _threadingService;
         private readonly IProjectFaultHandlerService _faultHandlerService;
         private readonly ISafeProjectGuidService _projectGuidService;
         private readonly Lazy<IWorkspaceProjectContextFactory> _workspaceProjectContextFactory;
 
         [ImportingConstructor]
         public WorkspaceProjectContextProvider(UnconfiguredProject project,
-                                               IProjectThreadingService threadingService,
                                                ISafeProjectGuidService projectGuidService,
                                                IProjectFaultHandlerService faultHandlerService,
                                                Lazy<IWorkspaceProjectContextFactory> workspaceProjectContextFactory)        // From Roslyn, so lazy
         {
             _project = project;
-            _threadingService = threadingService;
             _faultHandlerService = faultHandlerService;
             _workspaceProjectContextFactory = workspaceProjectContextFactory;
             _projectGuidService = projectGuidService;
@@ -69,22 +67,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         private async Task<IWorkspaceProjectContext?> CreateProjectContextHandlingFaultAsync(ProjectContextInitData data, object? hostObject)
         {
-            // TODO: https://github.com/dotnet/project-system/issues/353.
-            await _threadingService.SwitchToUIThread();
-
             try
             {
                 // Call into Roslyn to init language service for this project
-#pragma warning disable 612,618
-                IWorkspaceProjectContext context = _workspaceProjectContextFactory.Value.CreateProjectContext(
+                IWorkspaceProjectContext context = await _workspaceProjectContextFactory.Value.CreateProjectContextAsync(
                                                                                     data.LanguageName,
                                                                                     data.WorkspaceProjectContextId,
                                                                                     data.ProjectFilePath,
                                                                                     data.ProjectGuid,
                                                                                     hostObject,
                                                                                     data.BinOutputPath,
-                                                                                    data.AssemblyName);
-#pragma warning restore 612,618
+                                                                                    data.AssemblyName,
+                                                                                    CancellationToken.None);
 
                 context.LastDesignTimeBuildSucceeded = false;  // By default, turn off diagnostics until the first design time build succeeds for this project.
 
