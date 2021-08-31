@@ -22,7 +22,7 @@ Its only logic is to call the back-end for property data when it is first constr
 
 ## Data Access
 
-When first constructed, the editor uses an instance of `IPropertyDataAccess` to communicate with the back-end and ultimately produce a [`PropertyContext`](#Property-Context) object. This context contains the set of properties to display. This occurs via CPS's _Project Query API_.
+When first constructed, the editor uses an instance of `IPropertyDataAccess` to communicate with the back-end and ultimately produce a [`PropertyContext`](#property-context) object. This context contains the set of properties to display. This occurs via CPS's _Project Query API_.
 
 ## Property Context
 
@@ -50,17 +50,17 @@ The metadata of a property is immutable and will not change over time. It is mod
 1. `DisplayName` the name of the property to display to the user. Localized.
 1. `Page` the page on which the property resides.
 1. `Category` the category within the page on which the property resides.
-1. `DependsOn` an optional list of property identifiers upon which this property is expected to depend. See [property dependencies](property-specification.md#Property-Dependencies).
+1. `DependsOn` an optional list of property identifiers upon which this property is expected to depend. See [property dependencies](property-specification.md#property-dependencies).
 1. `Description` an optional description to display to the user. Localized.
 1. `Priority` an integer that controls the order of the property within the UI.
-1. `Editor` the property editor to use for the property. See [property editors](property-specification.md#Property-Editors).
+1. `Editor` the property editor to use for the property. See [property editors](property-specification.md#property-editors).
 1. `EditorMetadata` a map of key/value pairs that is passed to the editor and which may modify the editor's behavior.
-1. `SupportsPerConfigurationValues` whether the property may be configured or not. See [property configurations](#Property-Configurations).
+1. `SupportsPerConfigurationValues` whether the property may be configured or not. See [property configurations](#property-configurations).
 1. `SearchTerms` an optional list of additional search terms for which the property should be displayed. Useful for synonyms, common misspellings, etc.
 1. `HelpUrl` an optional URL for documentation about the property.
 1. `VisibilityCondition` an optional expression that controls when the property is visible or hidden from view. See [visibility conditions](visibility-conditions.md).
 
-This metadata comes from XAML rule files deployed with the project system. For information on authoring such metadata, see [specifying metadata](specifying-metadata.md).
+This metadata comes from XAML rule files deployed with the project system.
 
 ### State
 

@@ -120,7 +120,7 @@ Specifies whether `CoreCompile` should skip compiler execution.
 | _true_                | CoreCompile will not call the Csc.exe or Vbc.exe executables.|
 | _false_ or empty ('') | CoreCompile will call the Csc.exe or Vbc.exe executables.|
 
-This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs_(bool)) property.
+This property is helpful when used with the [ProvideCommandLineArgs](#providecommandlineargs-(bool)) property.
 
 ##### __Example__
 ``` XML

@@ -29,9 +29,9 @@ Here is a complex example of a string property that demonstrates the majority of
 
 Breaking this down:
 
-- The outer element specifies the _property type_ (see [Property Types](#Property-Types))
+- The outer element specifies the _property type_ (see [Property Types](#property-types))
 - The property defines some metadata values
-  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#Property-Dependencies))
+  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#property-dependencies))
   - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility Conditions](visibility-conditions.md))
 
 ## Property Types
