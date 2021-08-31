@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider5, IProjectConfigurationDimensionsProviderInternal
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProviderInternal
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -51,29 +51,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         {
             Requires.NotNull(project, nameof(project));
 
-            string? propertyValue = await GetPropertyValueAsync(project);
+            ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
 
-            if (Strings.IsNullOrEmpty(propertyValue))
+            Assumes.NotNull(configuredProject);
+
+            return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
             {
-                return ImmutableArray<string>.Empty;
-            }
-            else
-            {
-                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
-            }
-
-            async Task<string?> GetPropertyValueAsync(UnconfiguredProject project)
-            {
-                ConfiguredProject? configuredProject = await project.GetSuggestedConfiguredProjectAsync();
-
-                Assumes.NotNull(configuredProject);
-
-                return await ProjectAccessor.OpenProjectForReadAsync(configuredProject, evaluatedProject =>
-                {
-                    // Need evaluated property to get inherited properties defines in props or targets.
-                    return evaluatedProject.GetProperty(PropertyName)?.EvaluatedValue;
-                });
-            }
+                // Need evaluated property to get inherited properties defines in props or targets.
+                return GetOrderedPropertyValues(evaluatedProject);
+            });
         }
 
         /// <summary>
@@ -82,7 +68,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// <param name="project"><see cref="Project"/>.</param>
         /// <returns>Collection of values for the dimension.</returns>
         /// <remarks>
-        /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
+        /// From <see cref="IProjectConfigurationDimensionsProvider5"/>.
         /// </remarks>
         private ImmutableArray<string> GetOrderedPropertyValues(Project project)
         {
@@ -117,14 +103,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
-                return ImmutableArray<KeyValuePair<string, string>>.Empty;
+                return Enumerable.Empty<KeyValuePair<string, string>>();
             }
             else
             {
                 // First value is the default one.
-                var defaultValues = PooledArray<KeyValuePair<string, string>>.GetInstance();
-                defaultValues.Add(new KeyValuePair<string, string>(DimensionName, values[0]));
-                return defaultValues.ToImmutableAndFree();
+                KeyValuePair<string, string>[]? dimensionValues = new[] { new KeyValuePair<string, string>(DimensionName, values[0]) };
+                return dimensionValues.AsEnumerable();
             }
         }
 
@@ -145,13 +130,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             ImmutableArray<string> values = await GetOrderedPropertyValuesAsync(project);
             if (values.IsEmpty)
             {
-                return ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Empty;
+                return Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
             }
             else
             {
-                var dimensionValues = PooledArray<KeyValuePair<string, IEnumerable<string>>>.GetInstance();
-                dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
-                return dimensionValues.ToImmutableAndFree();
+                KeyValuePair<string, IEnumerable<string>>[]? dimensionValues = new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
+                return dimensionValues.AsEnumerable();
             }
         }
 
@@ -230,26 +214,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
         }
 
-        public virtual async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(Project project)
+        public virtual Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(Project project)
         {
             Requires.NotNull(project, nameof(project));
 
             ImmutableArray<string> values = GetOrderedPropertyValues(project);
             if (values.IsEmpty)
             {
-                return ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Empty;
+                return Task.FromResult(Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>());
             }
             else
             {
-                var dimensionValues = PooledArray<KeyValuePair<string, IEnumerable<string>>>.GetInstance();
-                dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
-                return dimensionValues.ToImmutableAndFree();
+                KeyValuePair<string, IEnumerable<string>>[]? dimensionValues = new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
+                return Task.FromResult(dimensionValues.AsEnumerable());
             }
         }
 
-        public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project, string solutionConfiguration)
+        public Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project, string solutionConfiguration)
         {
-            return await GetBestGuessDefaultValuesForDimensionsAsync(project);
+            return GetBestGuessDefaultValuesForDimensionsAsync(project);
         }
 
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)

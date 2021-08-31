@@ -11,26 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     public class StartupProjectRegistrarTests
     {
         [Fact]
-        public void Dispose_WhenNotInitialized_DoesNotThrow()
-        {
-            var registrar = CreateInstance();
-
-            registrar.Dispose();
-
-            Assert.True(registrar.IsDisposed);
-        }
-
-        [Fact]
-        public async Task Disposed_WhenInitialized_DoesNotThrow()
-        {
-            var registrar = await CreateInitializedInstanceAsync();
-
-            registrar.Dispose();
-
-            Assert.True(registrar.IsDisposed);
-        }
-
-        [Fact]
         public async Task DisposeAsync_WhenNotInitialized_DoesNotThrow()
         {
             var registrar = CreateInstance();
