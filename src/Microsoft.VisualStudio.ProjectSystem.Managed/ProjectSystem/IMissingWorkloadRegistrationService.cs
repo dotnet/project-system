@@ -11,7 +11,6 @@ namespace Microsoft.VisualStudio.ProjectSystem
     /// <summary>
     ///     Tracks the set of missing workload packs the .NET projects in a solution.
     /// </summary>
-    [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private)]
     internal interface IMissingWorkloadRegistrationService
     {
         Task InitializeAsync(CancellationToken cancellationToken = default);
