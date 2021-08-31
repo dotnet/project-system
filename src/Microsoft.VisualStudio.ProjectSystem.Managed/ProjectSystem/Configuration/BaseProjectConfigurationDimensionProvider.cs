@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.Build;
 
@@ -14,7 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
     /// <summary>
     /// Base project configuration dimension provider
     /// </summary>
-    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProviderInternal
+    internal abstract class BaseProjectConfigurationDimensionProvider : IProjectConfigurationDimensionsProvider5, IProjectConfigurationDimensionsProviderInternal
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseProjectConfigurationDimensionProvider"/> class.
@@ -72,6 +73,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     // Need evaluated property to get inherited properties defines in props or targets.
                     return evaluatedProject.GetProperty(PropertyName)?.EvaluatedValue;
                 });
+            }
+        }
+
+        /// <summary>
+        /// Gets the property values for the dimension.
+        /// </summary>
+        /// <param name="project"><see cref="Project"/>.</param>
+        /// <returns>Collection of values for the dimension.</returns>
+        /// <remarks>
+        /// From <see cref="IProjectConfigurationDimensionsProvider"/>.
+        /// </remarks>
+        private ImmutableArray<string> GetOrderedPropertyValues(Project project)
+        {
+            Requires.NotNull(project, nameof(project));
+
+            string? propertyValue = project.GetProperty(PropertyName)?.EvaluatedValue;
+
+            if (Strings.IsNullOrEmpty(propertyValue))
+            {
+                return ImmutableArray<string>.Empty;
+            }
+            else
+            {
+                return BuildUtilities.GetPropertyValues(propertyValue).ToImmutableArray();
             }
         }
 
@@ -203,6 +228,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
                     });
                 });
             }
+        }
+
+        public virtual async Task<IEnumerable<KeyValuePair<string, IEnumerable<string>>>> GetProjectConfigurationDimensionsAsync(Project project)
+        {
+            Requires.NotNull(project, nameof(project));
+
+            ImmutableArray<string> values = GetOrderedPropertyValues(project);
+            if (values.IsEmpty)
+            {
+                return ImmutableArray<KeyValuePair<string, IEnumerable<string>>>.Empty;
+            }
+            else
+            {
+                var dimensionValues = PooledArray<KeyValuePair<string, IEnumerable<string>>>.GetInstance();
+                dimensionValues.Add(new KeyValuePair<string, IEnumerable<string>>(DimensionName, values));
+                return dimensionValues.ToImmutableAndFree();
+            }
+        }
+
+        public async Task<IEnumerable<KeyValuePair<string, string>>> GetBestGuessDefaultValuesForDimensionsAsync(UnconfiguredProject project, string solutionConfiguration)
+        {
+            return await GetBestGuessDefaultValuesForDimensionsAsync(project);
         }
 
         private async Task<string?> FindDefaultValueFromDimensionPropertyAsync(UnconfiguredProject project)
