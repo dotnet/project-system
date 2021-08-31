@@ -8,7 +8,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 {
     [Guid("0273C280-1882-4ED0-9308-52914672E3AA")]
     [ExcludeFromCodeCoverage]
-    [ProvideObject(typeof(DebugPropertyPage), RegisterUsing = RegistrationMethod.CodeBase)]
+    [ProvideObject(typeof(DebugPropertyPage), RegisterUsing = RegistrationMethod.Assembly)]
     internal class DebugPropertyPage : WpfBasedPropertyPage
     {
         internal static readonly string PageName = PropertyPageResources.DebugPropertyPageTitle;

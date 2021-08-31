@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="it" original="../DebugPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|DebugPropertyPage|Description">
+        <source>Debug</source>
+        <target state="translated">Debug</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|DebugPropertyPage|DisplayName">
+        <source>Debug</source>
+        <target state="translated">Debug</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
+        <target state="translated">La gestione dei profili di avvio è stata spostata in una finestra di dialogo dedicata. È possibile accedervi tramite il collegamento sottostante.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">Ignorato</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">argomenti;riga di comando;directory di lavoro;variabili di ambiente;IIS;browser;URL;autenticazione;repository remoto</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
+        <source>Open debug launch profiles UI</source>
+        <target state="translated">Aprire interfaccia utente profili di avvio debug</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">argomenti;riga di comando;directory di lavoro;variabili di ambiente;IIS;browser;URL;autenticazione;repository remoto</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

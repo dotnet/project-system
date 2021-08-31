@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Build;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -23,7 +24,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 
         /// <summary>
         ///     Returns an enumerable of project build rules that should passed to
-        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, ContextState, CancellationToken)"/>.
+        ///     <see cref="ApplyProjectBuildAsync(IProjectVersionedValue{IProjectSubscriptionUpdate}, IProjectBuildSnapshot, ContextState, CancellationToken)"/>.
         /// </summary>
         IEnumerable<string> GetProjectBuildRules();
 
@@ -82,6 +83,29 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     to the project snapshot state. The cancellation token should only be cancelled with the
         ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
         /// </remarks>
-        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
+        Task ApplyProjectBuildAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, IProjectBuildSnapshot buildSnapshot, ContextState state, CancellationToken cancellationToken);
+
+        /// <summary>
+        ///     Applies source items changes to the underlying <see cref="IWorkspaceProjectContext"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="update"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <see cref="Initialize(IWorkspaceProjectContext)"/> has not been called.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        ///     The <see cref="IApplyChangesToWorkspaceContext"/> has been disposed of.
+        /// </exception>
+        /// <exception cref="OperationCanceledException">
+        ///     The result is awaited and <paramref name="cancellationToken"/> is cancelled.
+        /// </exception>
+        /// <remarks>
+        ///     Note: Cancelling the <paramref name="cancellationToken"/> may result in the underlying
+        ///     <see cref="IWorkspaceProjectContext"/> to be left in an inconsistent state with respect
+        ///     to the project snapshot state. The cancellation token should only be cancelled with the
+        ///     intention that the <see cref="IWorkspaceProjectContext"/> will be immediately disposed.
+        /// </remarks>
+        Task ApplySourceItemsAsync(IProjectVersionedValue<IProjectSubscriptionUpdate> update, ContextState state, CancellationToken cancellationToken);
     }
 }

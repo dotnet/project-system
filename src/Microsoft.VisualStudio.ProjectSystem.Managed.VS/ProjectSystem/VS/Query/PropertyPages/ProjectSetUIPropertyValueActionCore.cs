@@ -20,7 +20,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal class ProjectSetUIPropertyValueActionCore
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
         private readonly string _pageName;
         private readonly string _propertyName;
         private readonly IEnumerable<(string dimension, string value)> _dimensions;
@@ -31,21 +30,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <summary>
         /// Creates a <see cref="ProjectSetUIPropertyValueActionCore"/>.
         /// </summary>
-        /// <param name="queryCacheProvider">Provides access to a <see cref="UnconfiguredProject"/>'s known configurations and <see cref="IRule"/>s.</param>
         /// <param name="pageName">The name of the page containing the property.</param>
         /// <param name="propertyName">The name of the property to update.</param>
         /// <param name="dimensions">The dimension names and values indicating which project configurations should be updated with the new value.</param>
         /// <param name="setValueAsync">A delegate that, given the <see cref="IProperty"/> to update, actually sets the value.</param>
         public ProjectSetUIPropertyValueActionCore(
-            IPropertyPageQueryCacheProvider queryCacheProvider,
             string pageName,
             string propertyName,
             IEnumerable<(string dimension, string value)> dimensions,
             Func<IProperty, Task> setValueAsync)
         {
-            (pageName, propertyName) = DebugUtilities.ConvertDebugPageAndPropertyToRealPageAndProperty(pageName, propertyName);
-
-            _queryCacheProvider = queryCacheProvider;
             _pageName = pageName;
             _propertyName = propertyName;
             _dimensions = dimensions;
@@ -72,17 +66,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 {
                     bool configurationDependent = property.IsConfigurationDependent();
                     projectRules = new List<IRule>();
-                    IPropertyPageQueryCache propertyPageCache = _queryCacheProvider.CreateCache(project);
+                    IProjectState projectState = new PropertyPageProjectState(project);
                     if (configurationDependent)
                     {
                         // The property is configuration-dependent; we need to collect the bound rules for
                         // all matching configurations.
-                        if (await propertyPageCache.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
+                        if (await projectState.GetKnownConfigurationsAsync() is IImmutableSet<ProjectConfiguration> knownConfigurations)
                         {
                             foreach (ProjectConfiguration knownConfiguration in knownConfigurations)
                             {
                                 if (knownConfiguration.MatchesDimensions(_dimensions)
-                                    && await propertyPageCache.BindToRule(knownConfiguration, _pageName) is IRule boundRule)
+                                    && await projectState.BindToRuleAsync(knownConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                                 {
                                     projectRules.Add(boundRule);
                                 }
@@ -93,8 +87,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     {
                         // The property is configuration-independent; we only need the bound rule for a single
                         // configuration.
-                        if (await propertyPageCache.GetSuggestedConfigurationAsync() is ProjectConfiguration suggestedConfiguration
-                            && await propertyPageCache.BindToRule(suggestedConfiguration, _pageName) is IRule boundRule)
+                        if (await projectState.GetSuggestedConfigurationAsync() is ProjectConfiguration suggestedConfiguration
+                            && await projectState.BindToRuleAsync(suggestedConfiguration, _pageName, QueryProjectPropertiesContext.ProjectFile) is IRule boundRule)
                         {
                             projectRules.Add(boundRule);
                         }
@@ -110,8 +104,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         /// <see cref="UnconfiguredProject"/> targeted by the query.
         /// </summary>
         /// <param name="targetProject">The project to update.</param>
-        public async Task ExecuteAsync(UnconfiguredProject targetProject)
+        /// <returns>
+        /// <see langword="true"/> if at least one property was actually updated; <see langword="false"/>
+        /// otherwise.
+        /// </returns>
+        public async Task<bool> ExecuteAsync(UnconfiguredProject targetProject)
         {
+            bool valueSet = false;
             if (_rules.TryGetValue(targetProject.FullPath, out List<IRule> boundRules))
             {
                 foreach (IRule boundRule in boundRules)
@@ -119,9 +118,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     if (boundRule.GetProperty(_propertyName) is IProperty property)
                     {
                         await _setValueAsync(property);
+
+                        valueSet = true;
                     }
                 }
             }
+
+            return valueSet;
         }
 
         /// <summary>

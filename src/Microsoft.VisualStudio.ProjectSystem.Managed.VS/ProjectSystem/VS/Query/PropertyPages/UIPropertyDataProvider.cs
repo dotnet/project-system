@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// Responsible for populating <see cref="IPropertyPage.Properties"/>. Can also retrieve a <see cref="IUIProperty"/>
     /// based on its ID.
+    /// Note this is almost identical to the <see cref="LaunchProfileUIPropertyDataProvider"/>; the only reason we have
+    /// both is that <see cref="RelationshipQueryDataProviderAttribute"/> cannot be applied multiple times to the same
+    /// type, so we can't have one type that handles multiple relationships.
     /// </remarks>
     [QueryDataProvider(UIPropertyType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(PropertyPageType.TypeName, PropertyPageType.PropertiesPropertyName)]
@@ -26,23 +29,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     [Export(typeof(IQueryByRelationshipDataProvider))]
     internal class UIPropertyDataProvider : QueryDataProviderBase, IQueryByIdDataProvider, IQueryByRelationshipDataProvider
     {
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
-
         [ImportingConstructor]
-        public UIPropertyDataProvider(IProjectServiceAccessor projectServiceAccessor, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public UIPropertyDataProvider(IProjectServiceAccessor projectServiceAccessor)
             : base(projectServiceAccessor)
         {
-            _queryCacheProvider = queryCacheProvider;
         }
 
         public IQueryDataProducer<IReadOnlyCollection<EntityIdentity>, IEntityValue> CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new UIPropertyByIdProducer((IUIPropertyPropertiesAvailableStatus)properties, ProjectService, _queryCacheProvider);
+            return new UIPropertyByIdProducer((IUIPropertyPropertiesAvailableStatus)properties, ProjectService);
         }
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new UIPropertyFromPropertyPageDataProducer((IUIPropertyPropertiesAvailableStatus)properties);
+            return new UIPropertyFromRuleDataProducer((IUIPropertyPropertiesAvailableStatus)properties);
         }
     }
 }

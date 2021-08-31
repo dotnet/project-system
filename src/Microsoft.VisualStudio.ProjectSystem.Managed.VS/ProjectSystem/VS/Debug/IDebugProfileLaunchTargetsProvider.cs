@@ -29,11 +29,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called just prior to launch to allow the provider to do additional work.
         /// </summary>
+        /// <remarks>
+        /// Note that if <see cref="IDebugProfileLaunchTargetsProvider4"/> is also implemented, <see cref="IDebugProfileLaunchTargetsProvider4.OnBeforeLaunchAsync(DebugLaunchOptions, ILaunchProfile, IReadOnlyList{IDebugLaunchSettings})"/>
+        /// will be called instead of this.
+        /// </remarks>
         Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
 
         /// <summary>
         /// Called right after launch to allow the provider to do additional work.
         /// </summary>
+        /// <remarks>
+        /// Note that if <see cref="IDebugProfileLaunchTargetsProvider4"/> is also implemented, <see cref="IDebugProfileLaunchTargetsProvider4.OnAfterLaunchAsync(DebugLaunchOptions, ILaunchProfile, IReadOnlyList{Shell.Interop.VsDebugTargetProcessInfo})"/>
+        /// will be called instead of this.
+        /// </remarks>
         Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile);
     }
 }

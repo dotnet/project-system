@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Threading;
-using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.IAsyncServiceProvider;
+using IOleAsyncServiceProvider = Microsoft.VisualStudio.Shell.Interop.COMAsyncServiceProvider.IAsyncServiceProvider;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 {
@@ -70,23 +70,23 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.LanguageServices
 
         private async Task<IVsContainedLanguageFactory?> GetContainedLanguageFactoryAsync()
         {
-            Guid languageServiceId = await GetLanguageServiceId();
+            Guid languageServiceId = await GetLanguageServiceIdAsync();
             if (languageServiceId == Guid.Empty)
                 return null;
 
             IOleAsyncServiceProvider serviceProvider = await _serviceProvider.GetValueAsync();
 
-            object service = await serviceProvider.QueryServiceAsync(ref languageServiceId);
+            object? service = await serviceProvider.QueryServiceAsync(languageServiceId);
 
             // NOTE: While this type is implemented in Roslyn, we force the cast on 
             // the UI thread because they are free to change this to an STA object
             // which would result in an RPC call from a background thread.
             await _projectVsServices.ThreadingService.SwitchToUIThread();
 
-            return (IVsContainedLanguageFactory)service;
+            return service as IVsContainedLanguageFactory;
         }
 
-        private async Task<Guid> GetLanguageServiceId()
+        private async Task<Guid> GetLanguageServiceIdAsync()
         {
             ConfigurationGeneral properties = await _projectVsServices.ActiveConfiguredProjectProperties.GetConfigurationGeneralPropertiesAsync();
 

@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.Threading
@@ -18,7 +19,17 @@ namespace Microsoft.VisualStudio.Threading
         ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with the result of <see langword="true"/>.
         /// </summary>
         public static Task<bool> True => TplExtensions.TrueTask;
-        
+
+        /// <summary>
+        ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with result of the boolean false string.
+        /// </summary>
+        public static Task<string> FalseString => Task.FromResult(bool.FalseString);
+
+        /// <summary>
+        ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with result of the boolean true string.
+        /// </summary>
+        public static Task<string> TrueString => Task.FromResult(bool.TrueString);
+
         /// <summary>
         ///     Represents a <see cref="Task{TResult}"/> that's completed successfully with result of the empty string.
         /// </summary>
@@ -32,6 +43,16 @@ namespace Microsoft.VisualStudio.Threading
         private static class NullTaskResult<T> where T : class
         {
             public static readonly Task<T?> Instance = Task.FromResult<T?>(null);
+        }
+
+        /// <summary>
+        ///     Returns a <see cref="Task{TResult}"/> whose value is an empty enumerable of type <typeparamref name="T" />.
+        /// </summary>
+        public static Task<IEnumerable<T>> EmptyEnumerable<T>() => EmptyEnumerableTaskResult<T>.Instance;
+
+        private static class EmptyEnumerableTaskResult<T>
+        {
+            public static readonly Task<IEnumerable<T>> Instance = Task.FromResult(System.Linq.Enumerable.Empty<T>());
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions
 
                 // Conflate rapid snapshot updates by debouncing events over a short window.
                 // This reduces the frequency of tree updates with minimal perceived latency.
-                _debounce.ScheduleAsyncTask(
+                _ = _debounce.ScheduleAsyncTask(
                     ct =>
                     {
                         if (ct.IsCancellationRequested || _isDisposed != 0)

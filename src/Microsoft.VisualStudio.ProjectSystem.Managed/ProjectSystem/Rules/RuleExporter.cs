@@ -25,13 +25,40 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             public static int SourceControlRule;
 
             /// <summary>
-            ///     Represents the design-time build items containing the supported (possible) target frameworks
+            ///     Represents the evaluation items containing the supported (possible) target frameworks
             ///     for a project.
             /// </summary>
             [ExportRule(nameof(SupportedTargetFrameworkAlias), PropertyPageContexts.ProjectSubscriptionService)]
             [AppliesTo(ProjectCapability.DotNet)]
             [Order(Order.Default)]
             public static int SupportedTargetFrameworkAliasRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) target frameworks
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SupportedTargetFramework), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SupportedTargetFrameworkRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) target platforms
+            ///     for a project.
+            /// </summary>
+            [ExportRule(nameof(SdkSupportedTargetPlatformIdentifier), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SdkSupportedTargetPlatformIdentifierRule;
+
+            /// <summary>
+            ///     Represents the evaluation items containing the supported (possible) target platforms
+            ///     versions for a project.
+            /// </summary>
+            [ExportRule(nameof(SdkSupportedTargetPlatformVersion), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SdkSupportedTargetPlatformVersionRule;
 
             /// <summary>
             ///     Represents the evaluation properties containing the general configuration for a project.
@@ -173,6 +200,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Rules
             [AppliesTo(ProjectCapability.DotNet + "+ !" + ProjectCapabilities.SharedAssetsProject)]
             [Order(Order.Default)]
             public static int UpToDateCheckBuiltRule;
+        }
+
+        /// <summary>
+        ///     Contains rules for the Windows Forms designer component.
+        /// </summary>
+        private static class WindowsFormsConfigurationRules
+        {
+            [ExportRule(nameof(WindowsFormsConfiguration), PropertyPageContexts.Project)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int WindowsFormsConfigurationRule;
+        }
+
+        private static class OptionalWorkloadRules
+        {
+            /// <summary>
+            ///     Represents the evaluation items representing optional workloads.
+            /// </summary>
+            [ExportRule(nameof(SuggestedWorkload), PropertyPageContexts.ProjectSubscriptionService)]
+            [AppliesTo(ProjectCapability.DotNet)]
+            [Order(Order.Default)]
+            public static int SuggestedWorkloadRule;
         }
     }
 }

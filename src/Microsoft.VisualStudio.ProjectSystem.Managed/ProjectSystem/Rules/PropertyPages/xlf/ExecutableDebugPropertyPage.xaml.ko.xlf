@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="needs-review-translation">관리형 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)할 수 있도록 설정합니다.</target>
+        <target state="translated">관리 코드와 네이티브 코드를 함께 디버깅(혼합 모드 디버깅)을 사용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
+        <target state="translated">SQL 스크립트와 저장 프로시저 디버깅을 사용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
@@ -32,9 +32,19 @@
         <target state="translated">SQL Server 디버깅 사용</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="new">Enable WebView2 debugging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
-        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">원격 머신에 연결할 때 사용할 인증 체계입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
+        <source>The authentication scheme to use when connecting to the remote machine.</source>
+        <target state="translated">원격 머신에 연결할 때 사용할 인증 체계입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -83,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
-        <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다. '원격 머신 사용'이 사용하도록 설정된 경우에만 적용 가능합니다.</target>
+        <source>The name and port number of the remote machine in 'name:port' format.</source>
+        <target state="translated">'name:port' 형식으로 된 원격 머신의 이름과 포트 번호입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

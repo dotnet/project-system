@@ -18,6 +18,18 @@
     <Category Name="Output"
               Description="Configures the output options for the build process."
               DisplayName="Output" />
+
+    <Category Name="Events"
+              Description="Configures custom events that run before and after build."
+              DisplayName="Events" />
+
+    <Category Name="StrongNaming"
+              Description="Configures strong name signing of build outputs."
+              DisplayName="Strong naming" />
+    
+    <Category Name="Advanced"
+              DisplayName="Advanced"
+              Description="Advanced settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -53,6 +65,11 @@
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-csharp-lang-version-or-greater "8.0")</NameValuePair.Value>
+      </NameValuePair>
+    </EnumProperty.Metadata>
     <EnumValue Name="disable"
                DisplayName="Disable" />
     <EnumValue Name="enable"
@@ -63,11 +80,57 @@
                DisplayName="Annotations" />
   </EnumProperty>
 
+  <BoolProperty Name="ImplicitUsings"
+                DisplayName="Implicit global usings"
+                Description="Enable implicit global usings to be declared by the project SDK."
+                Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="implicit" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-csharp-lang-version-or-greater "10")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="Prefer32Bit"
+                DisplayName="Prefer 32-bit"
+                Description="Run in 32-bit mode on systems that support both 32-bit and 64-bit applications."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166468"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Build::PlatformTarget" />
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <!-- Visibility based on: https://github.com/dotnet/msbuild/blob/9bcc06cbe19ae2482ab18eab90a82fd079b26897/src/Tasks/Microsoft.NETFramework.CurrentVersion.props#L87 -->
+        <NameValuePair.Value>
+          (and
+            (has-net-framework)
+            (has-evaluated-value "Build" "PlatformTarget" "AnyCPU")
+            (or
+              (has-evaluated-value "Application" "OutputType" "Exe")
+              (has-evaluated-value "Application" "OutputType" "WinExe")
+              (has-evaluated-value "Application" "OutputType" "AppContainerExe")
+            )
+          )
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <!-- Localization Notice: 'unsafe' is used as a keyword in the description and should not be translated -->
   <BoolProperty Name="AllowUnsafeBlocks"
-                DisplayName="Allow unsafe code"
-                Description="Allows code that uses the 'unsafe' keyword to compile."
+                DisplayName="Unsafe code"
+                Description="Allow code that uses the 'unsafe' keyword to compile."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2146797"
                 Category="General">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
     <BoolProperty.Metadata>
       <NameValuePair Name="SearchTerms" Value="pointers" />
     </BoolProperty.Metadata>
@@ -75,7 +138,7 @@
 
   <BoolProperty Name="Optimize"
                 DisplayName="Optimize code"
-                Description="Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient."
+                Description="Enable compiler optimizations for smaller, faster, and more efficient output."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147080"
                 Category="General">
     <BoolProperty.Metadata>
@@ -83,77 +146,32 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <StringProperty Name="LangVersion"
-                  DisplayName="Language version"
-                  Description="Why can't I select the C# language version?">
-    <StringProperty.DataSource>
-      <DataSource PersistedName="LangVersion"
-                  Persistence="ProjectFileWithInterception"
-                  HasConfigurationCondition="False" />
-    </StringProperty.DataSource>
-    <StringProperty.ValueEditors>
-      <ValueEditor EditorType="LinkAction">
-        <ValueEditor.Metadata>
-          <NameValuePair Name="Action" Value="URL" />
-          <NameValuePair Name="URL" Value="https://aka.ms/csharp-versions" />
-        </ValueEditor.Metadata>
-      </ValueEditor>
-    </StringProperty.ValueEditors>
-  </StringProperty>
-
-  <!-- TODO create fwlink for this HelpUrl -->
-  <BoolProperty Name="CheckForOverflowUnderflow"
-                DisplayName="Check for arithmetic overflow"
-                Description="Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/checked-compiler-option"
-                Category="General">
-    <BoolProperty.Metadata>
-      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
-    </BoolProperty.Metadata>
-  </BoolProperty>
-
-  <!-- TODO create fwlink for this HelpUrl -->
-  <BoolProperty Name="Deterministic"
-                DisplayName="Deterministic"
-                Description="Indicates whether the compiler should produce identical assemblies for identical inputs."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/deterministic-compiler-option"
-                Category="General" />
-  
-  <!-- TODO create fwlink for this HelpUrl -->
-  <EnumProperty Name="ErrorReport"
-                DisplayName="Internal compiler error reporting"
-                Description="Controls when internal compiler error (ICE) reports are sent to Microsoft."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errorreport-compiler-option"
+  <!-- TODO create fwlink for this HelpUrl, and find or create a better documentation source -->
+  <EnumProperty Name="DebugType"
+                DisplayName="Debug symbols"
+                Description="Specifies the kind of debug symbols produced during build."
+                HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
                 Category="General">
     <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False" />
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception" />
     </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="debug type" />
+    </EnumProperty.Metadata>
     <EnumValue Name="none"
-               DisplayName="Never send" />
-    <EnumValue Name="prompt"
-               DisplayName="Prompt before sending" />
-    <EnumValue Name="queue"
-               DisplayName="Queue" />
-    <EnumValue Name="send"
-               DisplayName="Send" />
-  </EnumProperty>
-  
-  <!-- TODO create fwlink for this HelpUrl -->
-  <EnumProperty Name="FileAlignment"
-                DisplayName="File alignment"
-                Description="Specifies, in bytes, where to align the sections of the output file."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/filealign-compiler-option"
-                Category="General">
-    <EnumValue Name="512"
-               DisplayName="512" />
-    <EnumValue Name="1024"
-               DisplayName="1024" />
-    <EnumValue Name="2048"
-               DisplayName="2048" />
-    <EnumValue Name="4096"
-               DisplayName="4096" />
-    <EnumValue Name="8192"
-               DisplayName="8192" />
+               DisplayName="No symbols are emitted" />
+    <!--
+    Note that 'pdbonly' is the same as 'full'.
+    <EnumValue Name="pdbonly"
+               DisplayName="PDB Only" />
+    -->
+    <EnumValue Name="full"
+               DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable"
+               DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded"
+               DisplayName="Embedded in DLL/EXE, portable across platforms" />
   </EnumProperty>
 
   <EnumProperty Name="WarningLevel"
@@ -176,49 +194,43 @@
   </EnumProperty>
 
   <StringProperty Name="NoWarn"
-                  DisplayName="Suppress warnings"
-                  Description="Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  DisplayName="Suppress specific warnings"
+                  Description="Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147300"
                   Category="ErrorsAndWarnings" />
 
-  <EnumProperty Name="TreatWarningsAsErrors"
+  <BoolProperty Name="TreatWarningsAsErrors"
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
                 DisplayName="Treat warnings as errors"
-                Description="Used to specify which warnings are treated as errors."
+                Description="Instruct the compiler to treat warnings as errors."
                 Category="ErrorsAndWarnings" >
-    
-    <EnumProperty.DataSource>
+    <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception" />
-    </EnumProperty.DataSource>
-    
-    <EnumValue Name="false"
-               DisplayName="None" />
-    <EnumValue Name="true"
-               DisplayName="All" />
-  </EnumProperty>
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <StringProperty Name="WarningsAsErrors"
                   DisplayName="Treat specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "false")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" false)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
 
   <StringProperty Name="WarningsNotAsErrors"
-                  DisplayName="Exempt specific warnings from being treated as errors"
+                  DisplayName="Exclude specific warnings as errors"
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147301"
-                  Description="Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
+                  Description="Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';')."
                   Category="ErrorsAndWarnings">
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Build::TreatWarningsAsErrors" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" "true")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "TreatWarningsAsErrors" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -243,15 +255,29 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <!-- TODO create fwlink for this HelpUrl -->
-  <BoolProperty Name="GenerateDocumentationFile"
-                DisplayName="Documentation file"
-                Description="Generate a file containing API documentation."
-                HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/codedoc"
+  <BoolProperty Name="ProduceReferenceAssembly"
+                DisplayName="Reference assembly"
+                Description="Produce a reference assembly containing the public API of the project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166115"
                 Category="Output">
     <BoolProperty.DataSource>
       <DataSource HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="GenerateDocumentationFile"
+                DisplayName="Documentation file"
+                Description="Generate a file containing API documentation."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165772"
+                Category="Output">
+    <BoolProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-project-capability "GenerateDocumentationFile")</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
   </BoolProperty>
 
   <!-- TODO consider removing this property from the UI altogether -->
@@ -266,9 +292,178 @@
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Build" "GenerateDocumentationFile")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Build" "GenerateDocumentationFile" true)</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <StringProperty Name="PreBuildEvent"
+                  DisplayName="Pre-build event"
+                  Description="Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165773"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="PostBuildEvent"
+                  DisplayName="Post-build event"
+                  Description="Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build."
+                  HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165773"
+                  Category="Events">
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="MultiLineString">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="UseMonospaceFont" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <EnumProperty Name="RunPostBuildEvent"
+                DisplayName="When to run the post-build event"
+                Description="Specifies under which condition the post-build event will be executed."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165773"
+                Category="Events">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  PersistedName="RunPostBuildEvent"
+                  Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="AfterContext" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="Always"
+               DisplayName="Always" />
+    <EnumValue Name="OnBuildSuccess"
+               DisplayName="When the build succeeds"
+               IsDefault="True" />
+    <EnumValue Name="OnOutputUpdated"
+               DisplayName="When the output is updated" />
+  </EnumProperty>
+
+  <BoolProperty Name="SignAssembly"
+                Description="Sign the output assembly to give it a strong name."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147136"
+                DisplayName="Sign the assembly"
+                Category="StrongNaming">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="AssemblyOriginatorKeyFile"
+                  DisplayName="Strong name key file"
+                  Category="StrongNaming"
+                  Subtype="file">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "SignAssembly" true)</NameValuePair.Value>
+      </NameValuePair>
+    </StringProperty.Metadata>
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="DelaySign"
+                Description="Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147243"
+                DisplayName="Delay sign only"
+                Category="StrongNaming">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Build" "SignAssembly" true)</NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  SourceOfDefaultValue="BeforeContext"
+                  HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <StringProperty Name="LangVersion"
+                  DisplayName="Language version"
+                  Description="The version of the language available to code in this project."
+                  HelpUrl="https://aka.ms/csharp-versions"
+                  ReadOnly="true"
+                  Category="Advanced">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="String">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="ShowEvaluatedPreviewOnly" Value="True" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <BoolProperty Name="CheckForOverflowUnderflow"
+                DisplayName="Check for arithmetic overflow"
+                Description="Throw exceptions when integer arithmetic produces out of range values."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166113"
+                Category="Advanced">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="checked;unchecked" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="Deterministic"
+                DisplayName="Deterministic"
+                Description="Produce identical compilation output for identical inputs."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165770"
+                Category="Advanced" />
+
+  <EnumProperty Name="ErrorReport"
+                DisplayName="Internal compiler error reporting"
+                Description="Send internal compiler error (ICE) reports to Microsoft."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165771"
+                Category="Advanced">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False" />
+    </EnumProperty.DataSource>
+    <EnumValue Name="none"
+               DisplayName="Never send" />
+    <EnumValue Name="prompt"
+               DisplayName="Prompt before sending" />
+    <EnumValue Name="queue"
+               DisplayName="Queue" />
+    <EnumValue Name="send"
+               DisplayName="Send" />
+  </EnumProperty>
+
+  <EnumProperty Name="FileAlignment"
+                DisplayName="File alignment"
+                Description="Specifies, in bytes, where to align the sections of the output file."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166114"
+                Category="Advanced">
+    <EnumValue Name="512"
+               DisplayName="512" />
+    <EnumValue Name="1024"
+               DisplayName="1024" />
+    <EnumValue Name="2048"
+               DisplayName="2048" />
+    <EnumValue Name="4096"
+               DisplayName="4096" />
+    <EnumValue Name="8192"
+               DisplayName="8192" />
+  </EnumProperty>
 
 </Rule>

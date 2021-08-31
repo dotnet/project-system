@@ -2,8 +2,9 @@
 <Project>
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="'$(IsTestProject)' == 'true'">true</BannedSymbolsOptOut>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <!-- Framework -->
     <Reference Include="PresentationCore" />
@@ -14,7 +15,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
-    
+
     <!-- Toolset -->
     <PackageReference Include="Nerdbank.Streams"                    ExcludeAssets="All" />
     <PackageReference Include="System.IO.Pipelines"                 ExcludeAssets="All" />
@@ -22,33 +23,33 @@
     <PackageReference Include="MicroBuild.Core.Sentinel"            ExcludeAssets="All" />
     <PackageReference Include="MicroBuild.Plugins.SwixBuild"        ExcludeAssets="All"/>
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" />
-    <PackageReference Include="XliffTasks" />
-    <PackageReference Include="RoslynTools.SignTool" />
+    <PackageReference Include="XliffTasks"                          PrivateAssets="All" />
+    <PackageReference Include="RoslynTools.SignTool"                PrivateAssets="All" />
     <PackageReference Include="RoslynTools.RepoToolset"             ExcludeAssets="all" />
     <PackageReference Include="Codecov"                             ExcludeAssets="all" />
     <PackageReference Include="OpenCover"                           ExcludeAssets="all" />
     <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb"      ExcludeAssets="all" />
-    
+
     <!-- CPS -->
-    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Query" />
     <PackageReference Include="Microsoft.VisualStudio.Validation" />
     <PackageReference Include="Microsoft.VisualStudio.Threading" />
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.Analyzers" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem.SDK.Tools" />
 
     <!-- VS MEF -->
     <PackageReference Include="Microsoft.VisualStudio.Composition" />
-    
+
     <!-- Roslyn -->
     <PackageReference Include="Microsoft.VisualStudio.LanguageServices" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="Microsoft.CSharp" />
-    
+
     <!-- Analyzers-->
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
     <!-- Framework packages -->
@@ -93,7 +94,6 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime'
-           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.TextManager.Interop.12.1.DesignTime'
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
@@ -114,6 +114,7 @@
            or '%(FileName)' == 'EnvDTE80'
            or '%(FileName)' == 'EnvDTE90'
            or '%(FileName)' == 'EnvDTE100'
+           or '%(Filename)' == 'Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime'
            or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.1.DesignTime'
            or '%(FileName)' == 'Microsoft.Internal.VisualStudio.Shell.Interop.14.2.DesignTime'">
         <EmbedInteropTypes>false</EmbedInteropTypes>

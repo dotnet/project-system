@@ -16,7 +16,7 @@ In a XAML rule file, a visibility condition is specified as metadata on the prop
 <StringProperty ...>
   <StringProperty.Metadata>
     <NameValuePair Name="VisibilityCondition">
-      <NameValuePair.Value>(eq "Foo" (evaluated "MyPage" "MyProperty"))</NameValuePair.Value>
+      <NameValuePair.Value>(has-evaluated-value "MyPage" "MyProperty" "Foo")</NameValuePair.Value>
     </NameValuePair>
   </StringProperty.Metadata>
 </StringProperty>
@@ -55,10 +55,10 @@ These expressions compose nicely. An expression may be an argument to another fu
 
 To be useful in the context of the Project Properties UI, these expressions must be able to query the state of properties directly. Functions are included for doing so.
 
-The following expression returns the evaluated value of _MyProperty_ on _MyPage_:
+The following expression returns the unevaluated value of _MyProperty_ on _MyPage_:
 
 ```lisp
-(evaluated "MyPage" "MyProperty")
+(unevaluated "MyPage" "MyProperty")
 ```
 
 If _MyProperty_ is a boolean property, then this expression stands alone as a visibility condition and will cause the targeted property to only be visible when _MyProperty_ is true. However if _MyProperty_ has non-boolean type then further comparison is required.
@@ -66,7 +66,7 @@ If _MyProperty_ is a boolean property, then this expression stands alone as a vi
 For example, if _MyProperty_ is an enum property, the following expression may be used:
 
 ```lisp
-(eq "MyEnumValue" (evaluated "MyPage" "MyProperty"))
+(eq "MyEnumValue" (unevaluated "MyPage" "MyProperty"))
 ```
 
 Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
@@ -75,26 +75,35 @@ Now, the property will only be visible if _MyProperty_ has value _MyEnumValue_.
 
 The following table details the default set of visibility expression functions:
 
-| Function               | Arity    | Description                                                                                     |
-|------------------------|----------|-------------------------------------------------------------------------------------------------|
-| `add`                  | Variadic | Adds integer arguments                                                                          |
-| `concat`               | Variadic | Concatenates string arguments                                                                   |
-| `eq`                   | 2        | Computes `arg0 == arg1`                                                                         |
-| `ne`                   | 2        | Computes `arg0 != arg1`                                                                         |
-| `lt`                   | 2        | Computes `arg0 <  arg1`                                                                         |
-| `lte`                  | 2        | Computes `arg0 <= arg1`                                                                         |
-| `gt`                   | 2        | Computes `arg0 >  arg1`                                                                         |
-| `gte`                  | 2        | Computes `arg0 >= arg1`                                                                         |
-| `and`                  | Variadic | Computes logical AND of arguments                                                               |
-| `or`                   | Variadic | Computes logical OR of arguments                                                                |
-| `xor`                  | 2        | Computes exclusive logical OR of arguments                                                      |
-| `not`                  | 1        | Computes logical NOT of argument                                                                |
-| `evaluated`            | 2        | Returns the evaluated value of property on page `arg0` with name `arg1`                         |
-| `unevaluated`          | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
-| `has-evaluated-value`  | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
-| `is-codespaces-client` | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
+| Function                 | Arity    | Description                                                                                     |
+|--------------------------|----------|-------------------------------------------------------------------------------------------------|
+| `add`                    | Variadic | Adds integer arguments                                                                          |
+| `concat`                 | Variadic | Concatenates string arguments                                                                   |
+| `eq`                     | 2        | Computes `arg0 == arg1`                                                                         |
+| `ne`                     | 2        | Computes `arg0 != arg1`                                                                         |
+| `lt`                     | 2        | Computes `arg0 <  arg1`                                                                         |
+| `lte`                    | 2        | Computes `arg0 <= arg1`                                                                         |
+| `gt`                     | 2        | Computes `arg0 >  arg1`                                                                         |
+| `gte`                    | 2        | Computes `arg0 >= arg1`                                                                         |
+| `and`                    | Variadic | Computes logical AND of arguments                                                               |
+| `or`                     | Variadic | Computes logical OR of arguments                                                                |
+| `xor`                    | 2        | Computes exclusive logical OR of arguments                                                      |
+| `not`                    | 1        | Computes logical NOT of argument                                                                |
+| `unevaluated`            | 2        | Returns the unevaluated value of property on page `arg0` with name `arg1`                       |
+| `has-evaluated-value`    | 3        | Returns true if property on page `arg0` with name `arg1` has an evaluated value matching `arg2` |
+| `is-codespaces-client`   | 0        | Returns true if the Project Properties UI is running in a Codespaces client                     |
+| `has-project-capability` | 1        | Returns true if the project has the specified capability.                                       |
+| `has-net-framework`                    | 0 | Returns true if the project targets .NET Framework in at least one configuration. |
+| `has-net-core-app`                     | 0 | Returns true if the project targets .NET Core or .NET 5+ in at least one configuration. |
+| `has-net-framework-version-or-greater` | 1 | Returns true if the project targets .NET Framework at the specified version or above in at least one configuration. |
+| `has-net-core-app-version-or-greater`  | 1 | Returns true if the project targets .NET Core or .NET 5+ at the specified version or above in at least one configuration. |
+| `has-csharp-lang-version-or-greater`   | 1 | Returns true if this is a C# project and the language level is `latest`, `preview` or above the specified version. |
 
 These functions are defined in class `VisibilityConditionEvaluator`.
+
+Note that there is no `evaluated` function. A property may have multiple evaluated values, and as such it's not possible to reliably return a single value. Use `has-evaluated-value` instead.
+
+Functions that take a version number should be passed strings containing decimal values. Any leading `v` character is omitted. For example `"v5.0""` and `"1.2.3"` are both valid values.
 
 ## Adding Functions
 

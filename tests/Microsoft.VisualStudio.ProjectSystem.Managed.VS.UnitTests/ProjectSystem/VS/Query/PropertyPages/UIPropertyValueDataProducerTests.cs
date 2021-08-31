@@ -138,10 +138,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             var defaultConfiguration = ProjectConfigurationFactory.Create("Alpha|Beta");
             var otherConfiguration = ProjectConfigurationFactory.Create("Delta|Gamma");
-            var cache = IPropertyPageQueryCacheFactory.Create(
+            var cache = IProjectStateFactory.Create(
                 projectConfigurations: ImmutableHashSet<ProjectConfiguration>.Empty.Add(defaultConfiguration).Add(otherConfiguration),
                 defaultConfiguration: defaultConfiguration,
-                bindToRule: (config, schemaName) => IRuleFactory.Create(
+                bindToRule: (config, schemaName, context) => IRuleFactory.Create(
                     name: "ParentName",
                     properties: new[] { IPropertyFactory.Create("MyProperty") }));
 
@@ -155,9 +155,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             var propertyName = "MyProperty";
             var requestedProperties = PropertiesAvailableStatusFactory.CreateUIPropertyValuePropertiesAvailableStatus();
             var results = await UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
+                IQueryExecutionContextFactory.Create(),
                 parent,
                 cache,
                 schema,
+                propertiesContext: QueryProjectPropertiesContext.ProjectFile,
                 propertyName,
                 requestedProperties);
 

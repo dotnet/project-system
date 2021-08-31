@@ -813,7 +813,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// Functions which actually does the save of the settings. Persists the changes to the launch settings
         /// file and configures IIS if needed.
         /// </summary>
-        public virtual async Task SaveLaunchSettings()
+        public virtual async Task SaveLaunchSettingsAsync()
         {
             ILaunchSettingsProvider provider = GetDebugProfileProvider();
             if (EnvironmentVariables?.Count > 0 && SelectedDebugProfile != null)
@@ -954,14 +954,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             {
                 ILaunchSettingsProvider profileProvider = GetDebugProfileProvider();
                 _debugProfileProviderLink = profileProvider.SourceBlock.LinkToAsyncAction(
-                    OnLaunchSettingsChanged,
+                    OnLaunchSettingsChangedAsync,
                     Project);
 
                 InitializeUIProviders();
             }
         }
 
-        private async Task OnLaunchSettingsChanged(ILaunchSettings profiles)
+        private async Task OnLaunchSettingsChangedAsync(ILaunchSettings profiles)
         {
             if (_firstSnapshotCompleteSource == null)
             {
@@ -1003,14 +1003,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
         /// <summary>
         /// Called when then the user saves the form.
         /// </summary>
-        public override async Task<int> Save()
+        public override async Task<int> SaveAsync()
         {
             if (HasErrors)
             {
                 throw new Exception(PropertyPageResources.ErrorsMustBeCorrectedPriorToSaving);
             }
 
-            await SaveLaunchSettings();
+            await SaveLaunchSettingsAsync();
 
             return HResult.OK;
         }

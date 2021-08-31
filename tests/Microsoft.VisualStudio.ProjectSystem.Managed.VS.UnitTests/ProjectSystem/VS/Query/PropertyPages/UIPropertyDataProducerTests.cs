@@ -17,13 +17,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus();
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "parent", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty { Name = "MyProperty" };
             var order = 42;
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(parentEntity, cache, property, order, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, property, order, properties);
 
             Assert.Equal(expected: "MyProperty", actual: result.Id[ProjectModelIdentityKeys.UIPropertyName]);
         }
@@ -33,9 +34,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeAllProperties: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Name = "A",
@@ -43,17 +44,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 Description = "This is the description for Page A",
                 HelpUrl = "https://mypage",
                 Category = "general",
+                Visible = false,
                 DataSource = new DataSource { HasConfigurationCondition = false }
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "A", actual: result.Name);
             Assert.Equal(expected: "Page A", actual: result.DisplayName);
             Assert.Equal(expected: "This is the description for Page A", actual: result.Description);
             Assert.True(result.ConfigurationIndependent);
             Assert.Equal(expected: "general", actual: result.CategoryName);
+            Assert.False(result.IsVisible);
             Assert.Equal(expected: 42, actual: result.Order);
             Assert.Equal(expected: "string", actual: result.Type);
         }
@@ -63,9 +66,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus();
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Name = "A"
@@ -75,7 +78,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             rule.Properties.Add(property);
             rule.EndInit();
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.IsType<PropertyProviderState>(((IEntityValueFromProvider)result).ProviderState);
         }
@@ -85,8 +88,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeAllProperties: true);
 
+            var context = IQueryExecutionContextFactory.Create();
             var parentEntity = IEntityWithIdFactory.Create(key: "Parent", value: "ParentRule");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var rule = new Rule();
             rule.BeginInit();
             rule.Properties.AddRange(new[]
@@ -96,9 +100,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 new TestProperty { Name = "Gamma" },
             });
             rule.EndInit();
-            var debugChildRules = new List<Rule>();
 
-            var result = UIPropertyDataProducer.CreateUIPropertyValues(parentEntity, cache, rule, debugChildRules, properties);
+            var result = UIPropertyDataProducer.CreateUIPropertyValues(context, parentEntity, cache, QueryProjectPropertiesContext.ProjectFile, rule, properties);
 
             Assert.Collection(result, new Action<IEntityValue>[]
             {
@@ -119,15 +122,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new List<NameValuePair>()
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.SearchTerms);
         }
@@ -137,9 +140,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new()
@@ -148,7 +151,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.SearchTerms);
         }
@@ -158,9 +161,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeSearchTerms: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new()
@@ -169,7 +172,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                 }
             };
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.SearchTerms);
         }
@@ -179,16 +182,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new List<NameValuePair>()
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.DependsOn);
         }
@@ -198,9 +201,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new()
@@ -210,7 +213,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "", actual: result.DependsOn);
         }
@@ -220,9 +223,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeDependsOn: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new()
@@ -232,7 +235,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "Alpha;Beta;Gamma", actual: result.DependsOn);
         }
@@ -242,9 +245,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeVisibilityCondition: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
 
             var property = new TestProperty
             {
@@ -252,7 +255,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: string.Empty, actual: result.VisibilityCondition);
         }
@@ -264,9 +267,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             var properties = PropertiesAvailableStatusFactory.CreateUIPropertyPropertiesAvailableStatus(includeVisibilityCondition: true);
 
-            var runtimeModel = IEntityRuntimeModelFactory.Create();
+            var context = IQueryExecutionContextFactory.Create();
             var id = new EntityIdentity(key: "PropertyName", value: "A");
-            var cache = IPropertyPageQueryCacheFactory.Create();
+            var cache = IProjectStateFactory.Create();
             var property = new TestProperty
             {
                 Metadata = new()
@@ -276,7 +279,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             };
             InitializeFakeRuleForProperty(property);
 
-            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(runtimeModel, id, cache, property, order: 42, properties);
+            var result = (UIPropertyValue)UIPropertyDataProducer.CreateUIPropertyValue(context, id, cache, QueryProjectPropertiesContext.ProjectFile, property, order: 42, requestedProperties: properties);
 
             Assert.Equal(expected: "true or false", actual: result.VisibilityCondition);
         }

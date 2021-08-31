@@ -2,7 +2,7 @@
 
 using System;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
 {
@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     A <see cref="ContextState"/> describing the state of the <see cref="IWorkspaceProjectContext"/>.
         /// </param>
         /// <param name="logger">
-        ///     The <see cref="IProjectLogger"/> for logging to the log.
+        ///     The <see cref="IProjectDiagnosticOutputService"/> for logging to the log.
         /// </param>
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="version"/> is <see langword="null"/>.
@@ -46,6 +46,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         ///     </para>
         ///     <paramref name="logger"/> is <see langword="null"/>.
         /// </exception>
-        void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger);
+        void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger);
     }
 }

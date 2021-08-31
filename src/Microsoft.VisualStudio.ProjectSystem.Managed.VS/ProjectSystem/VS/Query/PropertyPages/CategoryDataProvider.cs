@@ -18,6 +18,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// <remarks>
     /// Responsible for populating <see cref="IPropertyPage.Categories"/>. Can also retrieve a <see cref="ICategory"/>
     /// based on its ID.
+    /// Note this is almost identical to the <see cref="LaunchProfileCategoryDataProvider"/>; the only reason we have
+    /// both is that <see cref="RelationshipQueryDataProviderAttribute"/> cannot be applied multiple times to the same
+    /// type, so we can't have one type that handles multiple relationships.
     /// </remarks>
     [QueryDataProvider(CategoryType.TypeName, ProjectModel.ModelName)]
     [RelationshipQueryDataProvider(PropertyPageType.TypeName, PropertyPageType.CategoriesPropertyName)]
@@ -39,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         IQueryDataProducer<IEntityValue, IEntityValue> IQueryByRelationshipDataProvider.CreateQueryDataSource(IPropertiesAvailableStatus properties)
         {
-            return new CategoryFromPropertyPageDataProducer((ICategoryPropertiesAvailableStatus)properties);
+            return new CategoryFromRuleDataProducer((ICategoryPropertiesAvailableStatus)properties);
         }
     }
 }

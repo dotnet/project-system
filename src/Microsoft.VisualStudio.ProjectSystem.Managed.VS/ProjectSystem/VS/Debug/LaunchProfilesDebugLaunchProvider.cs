@@ -140,23 +140,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private class LaunchCompleteCallback : IVsDebuggerLaunchCompletionCallback
         {
             private readonly DebugLaunchOptions _launchOptions;
-            private readonly IDebugProfileLaunchTargetsProvider? _targetProfile;
+            private readonly IDebugProfileLaunchTargetsProvider? _targetsProvider;
             private readonly ILaunchProfile _activeProfile;
             private readonly IProjectThreadingService _threadingService;
 
-            public LaunchCompleteCallback(IProjectThreadingService threadingService, DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetProfile, ILaunchProfile activeProfile)
+            public LaunchCompleteCallback(IProjectThreadingService threadingService, DebugLaunchOptions launchOptions, IDebugProfileLaunchTargetsProvider? targetsProvider, ILaunchProfile activeProfile)
             {
                 _threadingService = threadingService;
                 _launchOptions = launchOptions;
-                _targetProfile = targetProfile;
+                _targetsProvider = targetsProvider;
                 _activeProfile = activeProfile;
             }
 
             public void OnComplete(int hr, uint debugTargetCount, VsDebugTargetProcessInfo[] processInfoArray)
             {
-                if (_targetProfile != null)
+                if (_targetsProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
                 {
-                    _threadingService.ExecuteSynchronously(() => _targetProfile.OnAfterLaunchAsync(_launchOptions, _activeProfile));
+                    _threadingService.ExecuteSynchronously(() => targetsProvider4.OnAfterLaunchAsync(_launchOptions, _activeProfile, processInfoArray));
+                }
+                else if (_targetsProvider is not null)
+                {
+                    _threadingService.ExecuteSynchronously(() => _targetsProvider.OnAfterLaunchAsync(_launchOptions, _activeProfile));
                 }
             }
         };
@@ -172,13 +176,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
             Assumes.NotNull(activeProfile);
 
-            IDebugProfileLaunchTargetsProvider? targetProfile = GetLaunchTargetsProvider(activeProfile);
-            if (targetProfile != null)
+            IDebugProfileLaunchTargetsProvider? targetProvider = GetLaunchTargetsProvider(activeProfile);
+            if (targetProvider is IDebugProfileLaunchTargetsProvider4 targetsProvider4)
             {
-                await targetProfile.OnBeforeLaunchAsync(launchOptions, activeProfile);
+                await targetsProvider4.OnBeforeLaunchAsync(launchOptions, activeProfile, targets);
+            }
+            else if (targetProvider is not null)
+            {
+                await targetProvider.OnBeforeLaunchAsync(launchOptions, activeProfile);
             }
 
-            await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProfile, activeProfile), targets.ToArray());
+            await DoLaunchAsync(new LaunchCompleteCallback(ThreadingService, launchOptions, targetProvider, activeProfile), targets.ToArray());
         }
 
         /// <summary>
@@ -186,12 +194,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         protected async Task DoLaunchAsync(IVsDebuggerLaunchCompletionCallback cb, params IDebugLaunchSettings[] launchSettings)
         {
-            VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
-            if (launchSettingsNative.Length == 0)
+            if (launchSettings.Length == 0)
             {
                 cb.OnComplete(0, 0, null);
                 return;
             }
+
+            VsDebugTargetInfo4[] launchSettingsNative = launchSettings.Select(GetDebuggerStruct4).ToArray();
 
             try
             {
@@ -231,10 +240,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 guidLaunchDebugEngine = info.LaunchDebugEngineGuid
             };
 
-            var guids = new List<Guid>(1)
+            var guids = new List<Guid>(1 + info.AdditionalDebugEngines?.Count ?? 0)
             {
                 info.LaunchDebugEngineGuid
             };
+
             if (info.AdditionalDebugEngines != null)
             {
                 guids.AddRange(info.AdditionalDebugEngines);
@@ -249,7 +259,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             debugInfo.guidPortSupplier = info.PortSupplierGuid;
             debugInfo.bstrPortName = info.PortName;
             debugInfo.bstrOptions = info.Options;
-            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? 1 : 0;
+            debugInfo.fSendToOutputWindow = info.SendToOutputWindow ? true : false;
             debugInfo.dwProcessId = unchecked((uint)info.ProcessId);
             debugInfo.pUnknown = info.Unknown;
             debugInfo.guidProcessLanguage = info.ProcessLanguageGuid;
@@ -260,9 +270,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             {
                 var processStartupInfo = new VsDebugStartupInfo
                 {
-                    hStdInput = unchecked((uint)info.StandardInputHandle.ToInt32()),
-                    hStdOutput = unchecked((uint)info.StandardOutputHandle.ToInt32()),
-                    hStdError = unchecked((uint)info.StandardErrorHandle.ToInt32()),
+                    hStdInput = unchecked(info.StandardInputHandle),
+                    hStdOutput = unchecked(info.StandardOutputHandle),
+                    hStdError = unchecked(info.StandardErrorHandle),
                     flags = (uint)__DSI_FLAGS.DSI_USESTDHANDLES,
                 };
                 debugInfo.pStartupInfo = Marshal.AllocCoTaskMem(Marshal.SizeOf(processStartupInfo));
@@ -330,7 +340,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </remarks>
         private static byte[] GetGuidBytes(IList<Guid> guids)
         {
-            int sizeOfGuid = Guid.Empty.ToByteArray().Length;
+            const int sizeOfGuid = 16;
             byte[] bytes = new byte[guids.Count * sizeOfGuid];
             for (int i = 0; i < guids.Count; i++)
             {

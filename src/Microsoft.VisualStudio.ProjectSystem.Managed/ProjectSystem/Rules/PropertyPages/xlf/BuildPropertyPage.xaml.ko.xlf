@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="ko" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">'unsafe' 키워드를 사용하는 코드를 컴파일할 수 있도록 허용합니다.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="translated">'안전하지 않음' 키워드를 사용하는 코드를 컴파일할 수 있도록 허용합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">안전하지 않은 코드 허용</target>
+        <source>Unsafe code</source>
+        <target state="translated">안전하지 않은 코드</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">데이터 형식의 범위를 벗어나고 checked 또는 unchecked 키워드의 범위 내에 없는 값을 생성하는 정수 산술이 런타임 예외를 발생시키는지 여부를 지정합니다.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="translated">정수 연산에서 범위를 벗어난 값을 생성하는 경우 예외를 Throw합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -32,9 +32,19 @@
         <target state="translated">선택됨;선택 취소됨</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="translated">프라이빗 키에 대한 액세스가 제한된 경우 지연된 서명을 사용합니다. 빌드 중에는 퍼블릭 키가 사용되며, 프라이빗 키 정보 추가는 어셈블리가 전달될 때까지 지연됩니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">서명만 연기</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">컴파일러가 동일한 입력에 대해 동일한 어셈블리를 생성해야 하는지 여부를 나타냅니다.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="translated">동일한 입력에 대해 동일한 컴파일 출력을 생성합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -52,9 +62,24 @@
         <target state="translated">설명서 파일</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="new">Implicit global usings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="new">implicit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">출력 파일을 더 작고, 더 빠르며, 더 효율적으로 만들기 위해 컴파일러에서 수행한 최적화를 활성화하거나 비활성화합니다.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="translated">더 작고 빠르며 더 효율적인 출력을 위해 컴파일러 최적화를 사용하도록 설정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -67,6 +92,56 @@
         <target state="translated">최적화하다;최적화</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="translated">프로젝트의 공용 API를 포함하는 참조 어셈블리를 생성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="translated">참조 어셈블리</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="translated">출력 어셈블리에 서명하여 강력한 이름을 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">어셈블리 서명</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
+        <source>Instruct the compiler to treat warnings as errors.</source>
+        <target state="translated">컴파일러에서 경고를 오류로 처리하도록 지시합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
+        <source>Treat warnings as errors</source>
+        <target state="translated">경고를 오류로 처리</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="new">Advanced settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">빌드 프로세스의 오류 및 경고 옵션을 구성합니다.</target>
@@ -75,6 +150,16 @@
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
         <source>Errors and warnings</source>
         <target state="translated">오류 및 경고</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|Description">
+        <source>Configures custom events that run before and after build.</source>
+        <target state="translated">빌드 전후에 실행되는 사용자 지정 이벤트를 구성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|DisplayName">
+        <source>Events</source>
+        <target state="translated">이벤트</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -92,9 +177,34 @@
         <target state="translated">출력</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|StrongNaming|Description">
+        <source>Configures strong name signing of build outputs.</source>
+        <target state="translated">빌드 출력의 강력한 이름 서명을 구성합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|DisplayName">
+        <source>Strong naming</source>
+        <target state="translated">강력한 이름 지정</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="translated">빌드하는 동안 생성된 디버그 기호의 종류를 지정합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">디버그 기호</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="translated">디버그 형식</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">ICE(내부 컴파일러 오류) 보고서가 Microsoft로 전송되는 경우를 제어합니다.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="translated">ICE(내부 컴파일러 오류) 보고서를 Microsoft에 보냅니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -132,14 +242,14 @@
         <target state="translated">플랫폼 대상</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
-        <source>Used to specify which warnings are treated as errors.</source>
-        <target state="translated">어느 경고를 오류로 처리할지 지정하는 데 사용됩니다.</target>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
+        <source>Specifies under which condition the post-build event will be executed.</source>
+        <target state="translated">빌드 후 이벤트가 실행될 조건을 지정합니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
-        <source>Treat warnings as errors</source>
-        <target state="translated">경고를 오류로 처리</target>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>When to run the post-build event</source>
+        <target state="translated">빌드 후 이벤트를 실행하는 경우</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -150,6 +260,26 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">경고 수준</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="translated">DLL/EXE에 포함됨, 플랫폼 간에 이동 가능</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="translated">PDB 파일, 현재 플랫폼</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="translated">내보낸 기호 없음</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="translated">PDB 파일, 플랫폼 간에 이동 가능</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
@@ -232,14 +362,19 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|TreatWarningsAsErrors.false|DisplayName">
-        <source>None</source>
-        <target state="translated">없음</target>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|TreatWarningsAsErrors.true|DisplayName">
-        <source>All</source>
-        <target state="translated">모두</target>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="new">When the build succeeds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="new">When the output is updated</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -280,6 +415,11 @@
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">빌드</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">강력한 이름 키 파일</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
@@ -323,8 +463,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
-        <source>Why can't I select the C# language version?</source>
-        <target state="translated">C# 언어 버전을 선택할 수 없는 이유는 무엇인가요?</target>
+        <source>The version of the language available to code in this project.</source>
+        <target state="new">The version of the language available to code in this project.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
@@ -333,17 +473,37 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">하나 이상의 경고를 생성하는 컴파일러의 기능을 차단합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress warnings</source>
+        <source>Suppress specific warnings</source>
         <target state="translated">경고 표시 안 함</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|Description">
+        <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
+        <target state="translated">빌드가 완료된 후 실행되는 명령을 지정합니다. 빌드가 실패하면 실행되지 않습니다. .bat 파일을 호출하려면 '호출'을 사용하세요. 0이 아닌 종료 코드는 빌드에 실패합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post-build event</source>
+        <target state="translated">빌드 후 이벤트</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|Description">
+        <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
+        <target state="translated">빌드가 시작되기 전에 실행되는 명령을 지정합니다. 프로젝트가 최신 상태이면 실행되지 않습니다. 0이 아닌 종료 코드는 실행되기 전에 빌드에 실패합니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre-build event</source>
+        <target state="translated">빌드 전 이벤트</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
-        <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">지정된 경고를 오류로 처리합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
@@ -353,13 +513,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
-        <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">지정된 경고가 오류로 처리되지 않도록 합니다. 여러 개의 경고 번호는 쉼표(',') 또는 세미콜론(';')으로 구분합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
-        <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <source>Exclude specific warnings as errors</source>
+        <target state="translated">특정 경고가 오류로 처리되지 않도록 함</target>
         <note />
       </trans-unit>
     </body>

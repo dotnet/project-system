@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="pl" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
+        <source>Add binding redirects automatically to App.config.</source>
+        <target state="new">Add binding redirects automatically to App.config.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-generate binding redirects</source>
+        <target state="new">Auto-generate binding redirects</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|Description">
+        <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
+        <target state="translated">Zezwalaj na publikowanie poza programem Visual Studio, na przykład za pomocą polecenia „dotnet publish”.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|IsPublishable|DisplayName">
+        <source>Publishing</source>
+        <target state="translated">Publikowanie</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
         <source>Build this project for multiple target frameworks.</source>
         <target state="translated">Kompiluj ten projekt dla wielu platform docelowych.</target>
@@ -10,6 +30,26 @@
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
         <source>Target multiple frameworks</source>
         <target state="translated">Przeznaczone dla wielu platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|Description">
+        <source>Enable WPF for this project.</source>
+        <target state="translated">Włącz funkcję WPF dla tego projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|DisplayName">
+        <source>Windows Presentation Foundation</source>
+        <target state="translated">Platforma Windows Presentation Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|Description">
+        <source>Enable Windows Forms for this project.</source>
+        <target state="translated">Włącz Windows Forms dla tego projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|DisplayName">
+        <source>Windows Forms</source>
+        <target state="translated">Windows Forms</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -22,6 +62,16 @@
         <target state="translated">Ogólne</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Packaging|Description">
+        <source>Packaging settings for the application.</source>
+        <target state="translated">Ustawienia pakietu dla aplikacji.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Packaging|DisplayName">
+        <source>Packaging</source>
+        <target state="translated">Pakowanie</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|Resources|Description">
         <source>Resource settings for the application.</source>
         <target state="translated">Ustawienia zasobów dla aplikacji.</target>
@@ -30,6 +80,21 @@
       <trans-unit id="Category|Resources|DisplayName">
         <source>Resources</source>
         <target state="translated">Zasoby</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="translated">Określa wersję platformy .NET, dla której aplikacja jest przeznaczona. Ta opcja może mieć różne wartości w zależności od tego, które wersje platformy .NET są zainstalowane na komputerze.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|DisplayName">
+        <source>Target framework</source>
+        <target state="translated">Struktura docelowa</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
@@ -42,14 +107,49 @@
         <target state="translated">Obiekt startowy</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
-        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">Określa wersję platformy .NET, dla której aplikacja jest przeznaczona. Ta opcja może mieć różne wartości w zależności od tego, które wersje platformy .NET są zainstalowane na komputerze.</target>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
+        <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
+        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
-        <source>Target framework</source>
-        <target state="translated">Struktura docelowa</target>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
+        <source>Supported OS version</source>
+        <target state="new">Supported OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
+        <source>Specifies the operating system that this project will target.</source>
+        <target state="new">Specifies the operating system that this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
+        <source>Target OS</source>
+        <target state="new">Target OS</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
+        <source>Specifies the version of the operating system this project will target.</source>
+        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
+        <source>Target OS version</source>
+        <target state="new">Target OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">
@@ -185,6 +285,11 @@
       <trans-unit id="StringProperty|TargetFrameworks|DisplayName">
         <source>Target frameworks</source>
         <target state="translated">Platformy docelowe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|TargetFrameworks|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|Win32Resource|Description">

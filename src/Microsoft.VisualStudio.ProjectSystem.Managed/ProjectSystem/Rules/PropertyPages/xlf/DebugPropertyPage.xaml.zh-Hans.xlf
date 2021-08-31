@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../DebugPropertyPage.xaml">
+    <body>
+      <trans-unit id="Rule|DebugPropertyPage|Description">
+        <source>Debug</source>
+        <target state="translated">调试</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|DebugPropertyPage|DisplayName">
+        <source>Debug</source>
+        <target state="translated">调试</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
+        <target state="translated">启动配置文件的管理已移至专用对话框。可通过下面的链接访问它。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
+        <source>Ignored</source>
+        <target state="translated">已忽略</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">参数; 命令行; 工作目录; 环境变量; IIS; 浏览器; URL; 身份认证; 远程</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
+        <source>Open debug launch profiles UI</source>
+        <target state="translated">打开调试启动配置文件 UI</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">参数; 命令行; 工作目录; 环境变量; IIS; 浏览器; URL; 身份认证; 远程</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

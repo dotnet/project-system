@@ -10,11 +10,18 @@
 
   <Rule.Metadata>
     <sys:String x:Key="CommandName">Executable</sys:String>
+    
+    <!-- KnownImageIds.ImageCatalogGuid -->
+    <sys:Guid x:Key="ImageMonikerGuid">AE27A6B0-E345-4288-96DF-5EAF394EE369</sys:Guid>
+    
+    <!-- KnownImageIds.Execute -->
+    <sys:Int32 x:Key="ImageMonikerId">1173</sys:Int32>
   </Rule.Metadata>
 
   <Rule.DataSource>
-    <DataSource Persistence="ProjectFileWithInterception"
-                HasConfigurationCondition="False" />
+    <DataSource Persistence="LaunchProfile"
+                HasConfigurationCondition="False"
+                ItemType="LaunchProfile"/>
   </Rule.DataSource>
 
   <StringProperty Name="ExecutablePath"
@@ -37,12 +44,26 @@
 
   <StringProperty Name="RemoteDebugMachine"
                   DisplayName="Remote machine name"
-                  Description="The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled."/>
+                  Description="The name and port number of the remote machine in 'name:port' format.">
+    <StringProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Executable" "RemoteDebugEnabled" true)</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Executable::RemoteDebugMachine" />
+    </StringProperty.Metadata>
+  </StringProperty>
 
   <DynamicEnumProperty Name="AuthenticationMode"
                        DisplayName="Authentication mode"
-                       Description="The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled."
-                       EnumProvider="AuthenticationModeEnumProvider" />
+                       Description="The authentication scheme to use when connecting to the remote machine."
+                       EnumProvider="AuthenticationModeEnumProvider">
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-evaluated-value "Executable" "RemoteDebugEnabled" true)</NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="DependsOn" Value="Executable::RemoteDebugMachine" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
 
   <StringProperty Name="EnvironmentVariables"
                   DisplayName="Environment variables"
@@ -56,4 +77,7 @@
                 DisplayName="Enable SQL Server debugging"
                 Description="Enable debugging of SQL scripts and stored procedures." />
 
+  <BoolProperty Name="WebView2Debugging"
+                DisplayName="Enable WebView2 debugging"
+                Description="Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component." />
 </Rule>

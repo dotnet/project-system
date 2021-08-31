@@ -2,9 +2,19 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ru" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|HotReloadEnabled|Description">
+        <source>Apply code changes to the running application.</source>
+        <target state="new">Apply code changes to the running application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
+        <source>Enable Hot Reload</source>
+        <target state="new">Enable Hot Reload</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
-        <target state="needs-review-translation">Включает совместную отладку управляемого и машинного кода, известную также как отладка в смешанном режиме.</target>
+        <target state="translated">Включение совместной отладки управляемого и машинного кода (смешанный режим отладки).</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|DisplayName">
@@ -24,7 +34,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|Description">
         <source>Enable debugging of SQL scripts and stored procedures.</source>
-        <target state="new">Enable debugging of SQL scripts and stored procedures.</target>
+        <target state="translated">Включение отладки скриптов SQL и хранимых процедур.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
@@ -32,9 +42,19 @@
         <target state="translated">Включить отладку SQL Server</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="new">Enable WebView2 debugging</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">
-        <source>The authentication scheme to use when connecting to the remote machine. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">Схема проверки подлинности, используемая для подключения к удаленному компьютеру. Применяется, только если включено "Использование удаленного компьютера".</target>
+        <source>The authentication scheme to use when connecting to the remote machine.</source>
+        <target state="translated">Схема проверки подлинности, используемая для подключения к удаленному компьютеру.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|DisplayName">
@@ -73,8 +93,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|Description">
-        <source>The name and port number of the remote machine in 'name:port' format. Only applicable when 'Use remote machine' is enabled.</source>
-        <target state="translated">Имя и номер порта удаленного компьютера в формате "имя:порт". Применяется, только если включено "Использование удаленного компьютера".</target>
+        <source>The name and port number of the remote machine in 'name:port' format.</source>
+        <target state="translated">Имя и номер порта удаленного компьютера в формате "имя:порт".</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|RemoteDebugMachine|DisplayName">

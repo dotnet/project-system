@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -17,29 +18,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class PropertyPageDataProducer
     {
-        public static IEntityValue CreatePropertyPageValue(IEntityValue parent, IPropertyPageQueryCache cache, Rule rule, List<Rule>? debugChildRules, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(rule, nameof(rule));
 
-            string name = rule.PageTemplate == "debuggerParent"
-                ? DebugUtilities.ConvertRealPageNameToDebugPageName(rule.Name)
-                : rule.Name;
-
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
-                new KeyValuePair<string, string>[]
-                {
-                    new(ProjectModelIdentityKeys.PropertyPageName, name)
-                });
+                createKeys());
 
-            return CreatePropertyPageValue(parent.EntityRuntime, identity, cache, rule, debugChildRules, requestedProperties);
+            return CreatePropertyPageValue(queryExecutionContext, identity, cache, propertiesContext, rule, requestedProperties);
+
+            IEnumerable<KeyValuePair<string, string>> createKeys()
+            {
+                yield return new(ProjectModelIdentityKeys.PropertyPageName, rule.Name);
+
+                if (propertiesContext.ItemType is not null)
+                {
+                    yield return new(ProjectModelIdentityKeys.SourceItemType, propertiesContext.ItemType);
+                }
+
+                if (propertiesContext.ItemName is not null)
+                {
+                    yield return new(ProjectModelIdentityKeys.SourceItemName, propertiesContext.ItemName);
+                }
+            }
         }
 
-        public static IEntityValue CreatePropertyPageValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, IPropertyPageQueryCache cache, Rule rule, List<Rule>? debugChildRules, IPropertyPagePropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreatePropertyPageValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, IProjectState cache, QueryProjectPropertiesContext propertiesContext, Rule rule, IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(rule, nameof(rule));
-            var newPropertyPage = new PropertyPageValue(runtimeModel, id, new PropertyPagePropertiesAvailableStatus());
+            var newPropertyPage = new PropertyPageValue(queryExecutionContext.EntityRuntime, id, new PropertyPagePropertiesAvailableStatus());
 
             if (requestedProperties.Name)
             {
@@ -58,52 +67,45 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Kind)
             {
-                newPropertyPage.Kind = rule.PageTemplate == "debuggerParent"
-                    ? "generic"
-                    : rule.PageTemplate;
+                newPropertyPage.Kind = rule.PageTemplate;
             }
 
-            ((IEntityValueFromProvider)newPropertyPage).ProviderState = debugChildRules is not null
-                ? new PropertyPageProviderState(cache, rule, debugChildRules)
-                : new PropertyPageProviderState(cache, rule);
+            ((IEntityValueFromProvider)newPropertyPage).ProviderState = new ContextAndRuleProviderState(cache, propertiesContext, rule);
 
             return newPropertyPage;
         }
 
         public static async Task<IEntityValue?> CreatePropertyPageValueAsync(
-            IEntityRuntimeModel runtimeModel,
+            IQueryExecutionContext queryExecutionContext,
             EntityIdentity id,
             IProjectService2 projectService,
-            IPropertyPageQueryCacheProvider queryCacheProvider,
-            string projectPath,
+            QueryProjectPropertiesContext propertiesContext,
             string propertyPageName,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
-            propertyPageName = DebugUtilities.ConvertDebugPageNameToRealPageName(propertyPageName);
-
-            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule
-                && !rule.PropertyPagesHidden)
+            if (projectService.GetLoadedProject(propertiesContext.File) is UnconfiguredProject project)
             {
-                List<Rule>? debugChildRules = null;
-                if (rule.PageTemplate == "debuggerParent")
-                {
-                    debugChildRules = DebugUtilities.GetDebugChildRules(projectCatalog).ToList();
-                }
+                // TODO: Go through the IProjectState to get this
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
 
-                var propertyPageQueryCache = queryCacheProvider.CreateCache(project);
-                IEntityValue propertyPageValue = CreatePropertyPageValue(runtimeModel, id, propertyPageQueryCache, rule, debugChildRules, requestedProperties);
-                return propertyPageValue;
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule
+                    && !rule.PropertyPagesHidden)
+                {
+                    IProjectState projectState = new PropertyPageProjectState(project);
+                    IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, id, projectState, propertiesContext, rule, requestedProperties);
+                    return propertyPageValue;
+                }
             }
 
             return null;
         }
 
         public static async Task<IEnumerable<IEntityValue>> CreatePropertyPageValuesAsync(
+            IQueryExecutionContext queryExecutionContext,
             IEntityValue parent,
             UnconfiguredProject project,
-            IPropertyPageQueryCacheProvider queryCacheProvider,
             IPropertyPagePropertiesAvailableStatus requestedProperties)
         {
             if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)
@@ -115,37 +117,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             IEnumerable<IEntityValue> createPropertyPageValuesAsync()
             {
-                Rule? parentDebuggerPageRule = null;
-                
-                var propertyPageQueryContext = queryCacheProvider.CreateCache(project);
+                IProjectState projectState = new PropertyPageProjectState(project);
+                QueryProjectPropertiesContext propertiesContext = new QueryProjectPropertiesContext(isProjectFile: true, project.FullPath, itemType: null, itemName: null);
                 foreach (string schemaName in projectCatalog.GetProjectLevelPropertyPagesSchemas())
                 {
                     if (projectCatalog.GetSchema(schemaName) is Rule rule
                         && !rule.PropertyPagesHidden)
                     {
-                        if (rule.PageTemplate == "debuggerParent")
-                        {
-                            parentDebuggerPageRule = rule;
-                        }
-                        else if (rule.PageTemplate == "commandNameBasedDebugger")
-                        {
-                            // Don't do anything here; we don't want a separate page for this Rule.
-                            // Rather, its categories and properties will be returned as though
-                            // they were part of the top-level debug page.
-                        }
-                        else
-                        {
-                            IEntityValue propertyPageValue = CreatePropertyPageValue(parent, propertyPageQueryContext, rule, debugChildRules: null, requestedProperties);
-                            yield return propertyPageValue;
-                        }
+                        IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, parent, projectState, propertiesContext, rule, requestedProperties: requestedProperties);
+                        yield return propertyPageValue;
                     }
-                }
-
-                if (parentDebuggerPageRule is not null)
-                {
-                    List<Rule> childDebuggerPageRules = DebugUtilities.GetDebugChildRules(projectCatalog).ToList();
-                    IEntityValue propertyPageValue = CreatePropertyPageValue(parent, propertyPageQueryContext, parentDebuggerPageRule, debugChildRules: childDebuggerPageRules, requestedProperties);
-                    yield return propertyPageValue;
                 }
             }
         }

@@ -196,9 +196,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             var currentNodes = new HashSet<IProjectTree>(capacity: groupedByProviderType.Count);
 
             bool isActiveTarget = targetedSnapshot.TargetFramework.Equals(activeTarget);
+
             foreach ((string providerType, List<IDependency> dependencies) in groupedByProviderType)
             {
-                IDependencyViewModel? subTreeViewModel = _viewModelFactory.CreateGroupNodeViewModel(
+                (IDependencyViewModel? subTreeViewModel, ProjectTreeFlags? subtreeFlag) = _viewModelFactory.CreateGroupNodeViewModel(
                     providerType,
                     targetedSnapshot.GetMaximumVisibleDiagnosticLevelForProvider(providerType));
 
@@ -209,7 +210,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     continue;
                 }
 
-                IProjectTree? subTreeNode = rootNode.FindChildWithCaption(subTreeViewModel.Caption);
+                IProjectTree? subTreeNode = subtreeFlag != null
+                    ? rootNode.FindChildWithFlags(subtreeFlag.Value)
+                    : rootNode.FindChildWithCaption(subTreeViewModel.Caption);
+
                 bool isNewSubTreeNode = subTreeNode == null;
 
                 ProjectTreeFlags excludedFlags = targetedSnapshot.TargetFramework.Equals(TargetFramework.Any)
@@ -341,26 +345,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 return UpdateTreeNode();
             }
 
-            ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);
-
             return isProjectItem
                 ? CreateProjectItemTreeNode()
                 : CreateProjectTreeNode();
 
             IProjectTree CreateProjectTreeNode()
             {
+                (string caption, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, ProjectTreeFlags flags) = FilterValues();
+
                 return _treeServices.CreateTree(
-                    caption: viewModel.Caption,
+                    caption: caption,
                     filePath: viewModel.FilePath,
                     browseObjectProperties: browseObjectProperties,
-                    icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    icon: icon,
+                    expandedIcon: expandedIcon,
                     visible: true,
-                    flags: filteredFlags);
+                    flags: flags);
             }
 
             IProjectTree CreateProjectItemTreeNode()
             {
+                (string caption, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, ProjectTreeFlags flags) = FilterValues();
+               
                 var itemContext = ProjectPropertiesContext.GetContext(
                     _commonServices.Project,
                     file: viewModel.FilePath,
@@ -368,27 +374,46 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     itemName: viewModel.FilePath);
 
                 return _treeServices.CreateTree(
-                    caption: viewModel.Caption,
+                    caption: caption,
                     itemContext: itemContext,
                     browseObjectProperties: browseObjectProperties,
-                    icon: viewModel.Icon.ToProjectSystemType(),
-                    expandedIcon: viewModel.ExpandedIcon.ToProjectSystemType(),
+                    icon: icon,
+                    expandedIcon: expandedIcon,
                     visible: true,
-                    flags: filteredFlags);
+                    flags: flags);
             }
 
             IProjectTree UpdateTreeNode()
             {
+                (string caption, ProjectImageMoniker icon, ProjectImageMoniker expandedIcon, ProjectTreeFlags flags) = FilterValues();
+
+                return node.SetProperties(
+                    caption: caption,
+                    browseObjectProperties: browseObjectProperties,
+                    icon: icon,
+                    expandedIcon: expandedIcon,
+                    flags: flags);
+            }
+
+            (string Caption, ProjectImageMoniker Icon, ProjectImageMoniker ExpandedIcon, ProjectTreeFlags Flags) FilterValues()
+            {
+                ProjectTreeFlags filteredFlags = FilterFlags(viewModel.Flags);
+
+                if (_projectTreePropertiesProviders.Count == 0)
+                {
+                    return (viewModel.Caption, viewModel.Icon.ToProjectSystemType(), viewModel.ExpandedIcon.ToProjectSystemType(), filteredFlags);
+                }
+
                 var updatedNodeParentContext = new ProjectTreeCustomizablePropertyContext
                 {
                     ExistsOnDisk = false,
-                    ParentNodeFlags = node!.Parent?.Flags ?? default
+                    ParentNodeFlags = node?.Parent?.Flags ?? default
                 };
 
                 var updatedValues = new ReferencesProjectTreeCustomizablePropertyValues
                 {
                     Caption = viewModel.Caption,
-                    Flags = viewModel.Flags,
+                    Flags = filteredFlags,
                     Icon = viewModel.Icon.ToProjectSystemType(),
                     ExpandedIcon = viewModel.ExpandedIcon.ToProjectSystemType()
                 };
@@ -398,27 +423,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     provider.Value.CalculatePropertyValues(updatedNodeParentContext, updatedValues);
                 }
 
-                return node.SetProperties(
-                    caption: updatedValues.Caption,
-                    browseObjectProperties: browseObjectProperties,
-                    icon: updatedValues.Icon,
-                    expandedIcon: updatedValues.ExpandedIcon,
-                    flags: updatedValues.Flags);
-            }
+                return (updatedValues.Caption, updatedValues.Icon, updatedValues.ExpandedIcon, updatedValues.Flags);
 
-            ProjectTreeFlags FilterFlags(ProjectTreeFlags flags)
-            {
-                if (additionalFlags.HasValue)
+                ProjectTreeFlags FilterFlags(ProjectTreeFlags flags)
                 {
-                    flags = flags.Union(additionalFlags.Value);
-                }
+                    if (additionalFlags.HasValue)
+                    {
+                        flags = flags.Union(additionalFlags.Value);
+                    }
 
-                if (excludedFlags.HasValue)
-                {
-                    flags = flags.Except(excludedFlags.Value);
-                }
+                    if (excludedFlags.HasValue)
+                    {
+                        flags = flags.Except(excludedFlags.Value);
+                    }
 
-                return flags;
+                    return flags;
+                }
             }
         }
 

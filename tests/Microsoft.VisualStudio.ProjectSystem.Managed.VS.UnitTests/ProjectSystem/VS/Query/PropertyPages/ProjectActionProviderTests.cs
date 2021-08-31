@@ -1,5 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -7,26 +8,26 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Xunit;
 
-namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
+namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
     public class ProjectActionProviderTests
     {
         private class TestProperty : BaseProperty { }
 
-        [Fact]
-        public async Task WhenNoDimensionsAreGiven_ThenThePropertyIsSetInAllConfigurations()
+        // Creates a ConfiguredProject with a given ProjectConfiguration, and a method to
+        // call when a property is set in that configuration.
+        private static ConfiguredProject CreateConfiguredProject(ProjectConfiguration configuration, Action<string, object?> setValueCallback)
         {
-            var project = UnconfiguredProjectFactory.Create(
-                fullPath: @"C:\alpha\beta\MyProject.csproj",
-                configuredProject: ConfiguredProjectFactory.Create(
-                    services: ConfiguredProjectServicesFactory.Create(
-                        IPropertyPagesCatalogProviderFactory.Create(new()
+            return ConfiguredProjectFactory.Create(
+                projectConfiguration: configuration,
+                services: ConfiguredProjectServicesFactory.Create(
+                    IPropertyPagesCatalogProviderFactory.Create(new()
+                    {
                         {
+                            "Project",
+                            IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
                             {
-                                "Project",
-                                IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
-                                {
-                                    { "MyPage", IRuleFactory.Create(new Rule
+                                    { "MyPage", IRuleFactory.CreateFromRule(new Rule
                                         {
                                             Name = "MyPage",
                                             Properties = new()
@@ -35,43 +36,67 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
                                                 {
                                                     Name = "MyProperty",
                                                     DataSource = new() { HasConfigurationCondition = true }
+                                                },
+                                                new TestProperty
+                                                {
+                                                    Name = "MyOtherProperty",
+                                                    DataSource = new() { HasConfigurationCondition = true }
                                                 }
                                             }
+                                        },
+                                        properties: new[]
+                                        {
+                                            IPropertyFactory.Create(
+                                                "MyProperty",
+                                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
+                                                setValue: v => setValueCallback("MyProperty", v)),
+                                            IPropertyFactory.Create(
+                                                "MyOtherProperty",
+                                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
+                                                setValue: v => setValueCallback("MyOtherProperty", v))
                                         })
                                     }
-                                })
-                            }
-                        }))));
+                            })
+                        }
+                    })));
+        }
 
-            var projectConfigurations = GetConfigurations();
+        private static UnconfiguredProject CreateUnconfiguredProject(ImmutableHashSet<ProjectConfiguration> projectConfigurations, IEnumerable<ConfiguredProject> configuredProjects)
+        {
+            var threadingService = IProjectThreadingServiceFactory.Create();
+            var project = UnconfiguredProjectFactory.Create(
+                fullPath: @"C:\alpha\beta\MyProject.csproj",
+                configuredProjects: configuredProjects,
+                unconfiguredProjectServices: UnconfiguredProjectServicesFactory.Create(
+                    threadingService: threadingService,
+                    projectService: IProjectServiceFactory.Create(
+                        services: ProjectServicesFactory.Create(
+                            threadingService: threadingService)),
+                    projectConfigurationsService: IProjectConfigurationsServiceFactory.ImplementGetKnownProjectConfigurationsAsync(projectConfigurations)));
+            return project;
+        }
 
+        [Fact]
+        public async Task WhenNoDimensionsAreGiven_ThenThePropertyIsSetInAllConfigurations()
+        {
             var affectedConfigs = new List<string>();
+            var projectConfigurations = GetConfigurations();
+            var configuredProjects = projectConfigurations.Select(config => CreateConfiguredProject(config, (p, v) => affectedConfigs.Add(config.Name)));
+            var project = CreateUnconfiguredProject(projectConfigurations, configuredProjects);
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
-                    projectConfigurations,
-                    bindToRule: (config, schemaName) => IRuleFactory.Create(
-                        name: "MyPage",
-                        properties: new[]
-                        {
-                            IPropertyFactory.Create(
-                                "MyProperty",
-                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
-                                setValue: o => affectedConfigs.Add(config.Name))
-                        })));
             var emptyTargetDimensions = Enumerable.Empty<(string dimension, string value)>();
 
             var coreActionExecutor = new ProjectSetUIPropertyValueActionCore(
-                queryCacheProvider,
                 pageName: "MyPage",
                 propertyName: "MyProperty",
                 emptyTargetDimensions,
                 prop => prop.SetValueAsync("new value"));
 
             await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(project);
             coreActionExecutor.OnAfterExecutingBatch();
 
+            Assert.True(propertyUpdated);
             Assert.Equal(expected: 4, actual: affectedConfigs.Count);
             foreach (var configuration in projectConfigurations)
             {
@@ -82,48 +107,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
         [Fact]
         public async Task WhenDimensionsAreGiven_ThenThePropertyIsOnlySetInTheMatchingConfigurations()
         {
-            var project = UnconfiguredProjectFactory.Create(
-                fullPath: @"C:\alpha\beta\MyProject.csproj",
-                configuredProject: ConfiguredProjectFactory.Create(
-                    services: ConfiguredProjectServicesFactory.Create(
-                        IPropertyPagesCatalogProviderFactory.Create(new()
-                        {
-                            {
-                                "Project",
-                                IPropertyPagesCatalogFactory.Create(new Dictionary<string, ProjectSystem.Properties.IRule>()
-                                {
-                                    { "MyPage", IRuleFactory.Create(new Rule
-                                        {
-                                            Name = "MyPage",
-                                            Properties = new()
-                                            {
-                                                new TestProperty
-                                                {
-                                                    Name = "MyProperty",
-                                                    DataSource = new() { HasConfigurationCondition = true }
-                                                }
-                                            }
-                                        })
-                                    }
-                                })
-                            }
-                        }))));
-            var projectConfigurations = GetConfigurations();
-
             var affectedConfigs = new List<string>();
+            var projectConfigurations = GetConfigurations();
+            var configuredProjects = projectConfigurations.Select(config => CreateConfiguredProject(config, (p, v) => affectedConfigs.Add(config.Name)));
+            var unconfiguredProject = CreateUnconfiguredProject(projectConfigurations, configuredProjects);
 
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
-                    projectConfigurations,
-                    bindToRule: (config, schemaName) => IRuleFactory.Create(
-                        name: "MyPage",
-                        properties: new[]
-                        {
-                            IPropertyFactory.Create(
-                                "MyProperty",
-                                dataSource: IDataSourceFactory.Create(hasConfigurationCondition: true),
-                                setValue: o => affectedConfigs.Add(config.Name))
-                        })));
             var targetDimensions = new List<(string dimension, string value)>
             {
                 ("Configuration", "Release"),
@@ -131,38 +119,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             };
 
             var coreActionExecutor = new ProjectSetUIPropertyValueActionCore(
-                queryCacheProvider,
                 pageName: "MyPage",
                 propertyName: "MyProperty",
                 targetDimensions,
                 prop => prop.SetValueAsync("new value"));
 
-            await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { unconfiguredProject });
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(unconfiguredProject);
             coreActionExecutor.OnAfterExecutingBatch();
 
+            Assert.True(propertyUpdated);
             Assert.Single(affectedConfigs);
             Assert.Contains("Release|x86", affectedConfigs);
         }
 
+        
+
         [Fact]
         public async Task WhenARuleContainsMultipleProperties_ThenOnlyTheSpecifiedPropertyIsSet()
         {
-            var project = UnconfiguredProjectFactory.Create(fullPath: @"C:\alpha\beta\MyProject.csproj");
+            var affectedProperties = new List<string>();
             var projectConfigurations = GetConfigurations();
+            var configuredProjects = projectConfigurations.Select(config => CreateConfiguredProject(config, (p, v) => affectedProperties.Add(p)));
+            var project = CreateUnconfiguredProject(projectConfigurations, configuredProjects);
 
-            var unrelatedPropertySet = false;
-
-            var queryCacheProvider = IPropertyPageQueryCacheProviderFactory.Create(
-                IPropertyPageQueryCacheFactory.Create(
-                    projectConfigurations,
-                    bindToRule: (config, schemaName) => IRuleFactory.Create(
-                        name: "MyPage",
-                        properties: new[]
-                        {
-                            IPropertyFactory.Create("MyProperty", setValue: o => { }),
-                            IPropertyFactory.Create("NotTheCorrectProperty", setValue: o => unrelatedPropertySet = true)
-                        })));
             var targetDimensions = new List<(string dimension, string value)>
             {
                 ("Configuration", "Release"),
@@ -170,17 +150,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query.PropertyPages
             };
 
             var coreActionExecutor = new ProjectSetUIPropertyValueActionCore(
-                queryCacheProvider,
                 pageName: "MyPage",
                 propertyName: "MyProperty",
                 targetDimensions,
                 prop => prop.SetValueAsync("new value"));
 
             await coreActionExecutor.OnBeforeExecutingBatchAsync(new[] { project });
-            await coreActionExecutor.ExecuteAsync(project);
+            bool propertyUpdated = await coreActionExecutor.ExecuteAsync(project);
             coreActionExecutor.OnAfterExecutingBatch();
 
-            Assert.False(unrelatedPropertySet);
+            Assert.True(propertyUpdated);
+            Assert.Single(affectedProperties);
+            Assert.Contains("MyProperty", affectedProperties);
         }
 
         /// <summary>

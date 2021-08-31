@@ -14,6 +14,9 @@
     <Category Name="Resources"
               DisplayName="Resources"
               Description="Resource settings for the application." />
+    <Category Name="Packaging"
+              DisplayName="Packaging"
+              Description="Packaging settings for the application." />
   </Rule.Categories>
 
   <Rule.DataSource>
@@ -22,38 +25,46 @@
                 HasConfigurationCondition="False" />
   </Rule.DataSource>
 
-  <StringProperty Name="AssemblyName"
-                  DisplayName="Assembly name"
-                  Description="Specifies the name of the output file that will hold the assembly manifest."
-                  Category="General" />
-
-  <StringProperty Name="RootNamespace"
-                  DisplayName="Default namespace"
-                  Description="Specifies the base namespace for files added to the project."
-                  Category="General" />
+  <EnumProperty Name="OutputType"
+                DisplayName="Output type"
+                Description="Specifies the type of application to build."
+                Category="General">
+    <EnumValue Name="Library"
+               DisplayName="Class Library" />
+    <EnumValue Name="Exe"
+               DisplayName="Console Application" />
+    <EnumValue Name="WinExe"
+               DisplayName="Windows Application" />
+  </EnumProperty>
 
   <BoolProperty Name="TargetMultipleFrameworks"
                 DisplayName="Target multiple frameworks"
                 Description="Build this project for multiple target frameworks."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
-                Category="General">
+                Category="General"
+                Visible="False">
     <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                   HasConfigurationCondition="False" />
     </BoolProperty.DataSource>
   </BoolProperty>
 
-  <DynamicEnumProperty Name="TargetFramework"
+  <DynamicEnumProperty Name="InterceptedTargetFramework"
                        DisplayName="Target framework"
                        Description="Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer."
                        HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147236"
                        Category="General"
                        EnumProvider="SupportedTargetFrameworksEnumProvider"
                        MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(not (evaluated "Application" "TargetMultipleFrameworks"))</NameValuePair.Value>
+        <NameValuePair.Value>(not (has-evaluated-value "Application" "TargetMultipleFrameworks" true))</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
@@ -69,8 +80,9 @@
     </StringProperty.DataSource>
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(evaluated "Application" "TargetMultipleFrameworks")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "TargetMultipleFrameworks" true)</NameValuePair.Value>
       </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="TFM" />
       <NameValuePair Name="DependsOn" Value="Application::TargetMultipleFrameworks" />
     </StringProperty.Metadata>
   </StringProperty>
@@ -92,17 +104,115 @@
     </StringProperty.ValueEditors>
   </StringProperty>
 
-  <EnumProperty Name="OutputType"
-                DisplayName="Output type"
-                Description="Specifies the type of application to build."
+  <DynamicEnumProperty Name="TargetPlatformIdentifier"
+                DisplayName="Target OS"
+                Description="Specifies the operating system that this project will target."
+                Category="General"
+                EnumProvider="SdkSupportedTargetPlatformIdentifierEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>(has-net-core-app-version-or-greater "5.0")</NameValuePair.Value>
+      </NameValuePair>
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <DynamicEnumProperty Name="TargetPlatformVersion"
+                DisplayName="Target OS version"
+                Description="Specifies the version of the operating system this project will target."
+                Category="General"
+                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "5.0")
+            (ne (unevaluated "Application" "TargetPlatformIdentifier") ""))
+        </NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <DynamicEnumProperty Name="SupportedOSPlatformVersion"
+                DisplayName="Supported OS version"
+                Description="Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs."
+                Category="General"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2171707"
+                EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+    <DynamicEnumProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-net-core-app-version-or-greater "5.0")
+            (ne (unevaluated "Application" "TargetPlatformIdentifier") ""))
+        </NameValuePair.Value>
+      </NameValuePair>
+      <NameValuePair Name="SearchTerms" Value="platform" />
+      <NameValuePair Name="DependsOn" Value="Application::TargetPlatformIdentifier" />
+    </DynamicEnumProperty.Metadata>
+  </DynamicEnumProperty>
+
+  <BoolProperty Name="UseWindowsForms"
+                DisplayName="Windows Forms"
+                Description="Enable Windows Forms for this project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165974"
                 Category="General">
-    <EnumValue Name="Library"
-               DisplayName="Class Library" />
-    <EnumValue Name="Exe"
-               DisplayName="Console Application" />
-    <EnumValue Name="WinExe"
-               DisplayName="Windows Application" />
-  </EnumProperty>
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "OutputType" "WinExe")
+            (has-net-core-app-version-or-greater "3.0"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="UseWPF"
+                DisplayName="Windows Presentation Foundation"
+                Description="Enable WPF for this project."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2166131"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="DependsOn" Value="Application::OutputType" />
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+          (and
+            (has-evaluated-value "Application" "OutputType" "WinExe")
+            (has-net-core-app-version-or-greater "3.0"))
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="AutoGenerateBindingRedirects"
+                DisplayName="Auto-generate binding redirects"
+                Description="Add binding redirects automatically to App.config."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2164379"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="VisibilityCondition">
+        <NameValuePair.Value>
+        (has-net-framework)
+        </NameValuePair.Value>
+      </NameValuePair>
+    </BoolProperty.Metadata>
+  </BoolProperty>
 
   <DynamicEnumProperty Name="StartupObject"
                        DisplayName="Startup object"
@@ -111,10 +221,25 @@
                        EnumProvider="StartupObjectsEnumProvider">
     <DynamicEnumProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(ne (evaluated "Application" "OutputType") "Library")</NameValuePair.Value>
+        <NameValuePair.Value>(not (has-evaluated-value "Application" "OutputType" "Library"))</NameValuePair.Value>
       </NameValuePair>
     </DynamicEnumProperty.Metadata>
+    <DynamicEnumProperty.ProviderSettings>
+      <!-- We want an explicit item representing the empty value. We can remove this setting
+           when the enum provider starts including it by default. -->
+      <NameValuePair Name="IncludeEmptyValue" Value="true" />
+    </DynamicEnumProperty.ProviderSettings>
   </DynamicEnumProperty>
+
+  <StringProperty Name="AssemblyName"
+                  DisplayName="Assembly name"
+                  Description="Specifies the name of the output file that will hold the assembly manifest."
+                  Category="General" />
+
+  <StringProperty Name="RootNamespace"
+                  DisplayName="Default namespace"
+                  Description="Specifies the base namespace for files added to the project."
+                  Category="General" />
 
   <EnumProperty Name="ResourceSpecificationKind"
                 DisplayName="Resources"
@@ -136,10 +261,21 @@
                   Category="Resources"
                   Description="Sets the .ico file that you want to use as your program icon."
                   Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Icon files (*.ico)|*.ico|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
@@ -156,7 +292,7 @@
     <EnumProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest")</NameValuePair.Value>
       </NameValuePair>
     </EnumProperty.Metadata>
     <EnumValue Name="DefaultManifest"
@@ -182,8 +318,8 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>
           (and 
-            (eq (evaluated "Application" "ApplicationManifestKind") "CustomManifest")
-            (eq (evaluated "Application" "ResourceSpecificationKind") "IconAndManifest"))
+            (has-evaluated-value "Application" "ApplicationManifestKind" "CustomManifest")
+            (has-evaluated-value "Application" "ResourceSpecificationKind" "IconAndManifest"))
         </NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
@@ -193,13 +329,25 @@
                   DisplayName="Resource file"
                   Description="Specifies a resource file for the project."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
-                  Category="Resources"
-                  Subtype="file">
+                  Category="Resources">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Win32 resource files (*.res)|*.res|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
-        <NameValuePair.Value>(eq (evaluated "Application" "ResourceSpecificationKind") "ResourceFile")</NameValuePair.Value>
+        <NameValuePair.Value>(has-evaluated-value "Application" "ResourceSpecificationKind" "ResourceFile")</NameValuePair.Value>
       </NameValuePair>
     </StringProperty.Metadata>
   </StringProperty>
+
+  <BoolProperty Name="IsPublishable"
+                DisplayName="Publishing"
+                Description="Allow publishing outside of Visual Studio, such as via &quot;dotnet publish&quot;."
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2165975"
+                Category="Packaging" />
 </Rule>

@@ -7,9 +7,7 @@
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.dll",
         "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.resources.dll",
         "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll",
-        "bin/Dlls/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.dll",
-        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.Client.resources.dll"
+        "bin/Dlls/*/Microsoft.VisualStudio.ProjectSystem.Managed.VS.resources.dll"
       ]
     },
     {

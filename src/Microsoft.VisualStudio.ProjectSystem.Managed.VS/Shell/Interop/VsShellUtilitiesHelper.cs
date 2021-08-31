@@ -61,5 +61,19 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
             return null;
         }
+
+        public async Task<string?> GetRegistryRootAsync(IVsService<IVsShell> vsShellService)
+        {
+            await _threadingService.SwitchToUIThread();
+
+            IVsShell shell = await vsShellService.GetValueAsync();
+
+            if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out object value)))
+            {
+                return value as string;
+            }
+
+            return null;
+        }
     }
 }

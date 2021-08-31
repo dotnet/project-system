@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
+using Microsoft.VisualStudio.Threading;
 using Moq;
 
 namespace Microsoft.VisualStudio.ProjectSystem
@@ -24,20 +25,28 @@ namespace Microsoft.VisualStudio.ProjectSystem
         /// </param>
         /// <param name="addOrUpdateProfileCallback">An optional method to call when a profile is added or updated.</param>
         /// <param name="removeProfileCallback">An optional methods to call when a profile is removed.</param>
-        public static ILaunchSettingsProvider Create(
+        /// <param name="tryUpdateProfileCallback">An optional method to call when a profile is updated.</param>
+        /// <param name="updateGlobalSettingsCallback">An optional method to call when a global setting is updated.</param>
+        /// <param name="globalSettings">The initial set of global settings to expose through the provider.</param>
+        public static ILaunchSettingsProvider3 Create(
             string? activeProfileName = null,
             IEnumerable<ILaunchProfile>? launchProfiles = null,
             Action<string>? setActiveProfileCallback = null,
             Action<ILaunchSettings>? updateLaunchSettingsCallback = null,
             Func<ImmutableList<ILaunchProfile>, ImmutableList<ILaunchProfile>>? getProfilesCallback = null,
             Action<ILaunchProfile, bool>? addOrUpdateProfileCallback = null,
-            Action<string>? removeProfileCallback = null)
+            Action<string>? removeProfileCallback = null,
+            Action<string, Action<IWritableLaunchProfile>>? tryUpdateProfileCallback = null,
+            Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>? updateGlobalSettingsCallback = null,
+            ImmutableDictionary<string, object>? globalSettings = null)
         {
             var launchSettingsMock = new Mock<ILaunchSettings>();
 
             var initialLaunchProfiles = launchProfiles is not null
                 ? launchProfiles.ToImmutableList()
                 : ImmutableList<ILaunchProfile>.Empty;
+
+            var initialGlobalSettings = globalSettings ?? ImmutableDictionary<string, object>.Empty;
 
             if (getProfilesCallback is not null)
             {
@@ -46,6 +55,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
             else
             {
                 launchSettingsMock.Setup(t => t.Profiles).Returns(initialLaunchProfiles);
+            }
+
+            if (initialGlobalSettings is not null)
+            {
+                launchSettingsMock.Setup(t => t.GlobalSettings).Returns(initialGlobalSettings);
             }
 
             if (activeProfileName != null)
@@ -57,8 +71,9 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             var launchSettings = launchSettingsMock.Object;
 
-            var settingsProviderMock = new Mock<ILaunchSettingsProvider>();
+            var settingsProviderMock = new Mock<ILaunchSettingsProvider3>();
             settingsProviderMock.Setup(t => t.WaitForFirstSnapshot(It.IsAny<int>())).Returns(Task.FromResult<ILaunchSettings?>(launchSettings));
+            settingsProviderMock.SetupGet(t => t.CurrentSnapshot).Returns(launchSettings);
 
             if (setActiveProfileCallback != null)
             {
@@ -96,6 +111,43 @@ namespace Microsoft.VisualStudio.ProjectSystem
                     .Returns<string>(name =>
                     {
                         removeProfileCallback(name);
+                        return Task.CompletedTask;
+                    });
+            }
+
+            var settingsProvider3Mock = settingsProviderMock.As<ILaunchSettingsProvider3>();
+            if (tryUpdateProfileCallback is not null)
+            {
+                settingsProvider3Mock.Setup(t => t.TryUpdateProfileAsync(It.IsAny<string>(), It.IsAny<Action<IWritableLaunchProfile>>()))
+                    .Returns<string, Action<IWritableLaunchProfile>>((name, action) =>
+                    {
+                        tryUpdateProfileCallback(name, action);
+                        return TaskResult.True;
+                    });
+            }
+            else
+            {
+                settingsProvider3Mock.Setup(t => t.TryUpdateProfileAsync(It.IsAny<string>(), It.IsAny<Action<IWritableLaunchProfile>>()))
+                    .Returns<string, Action<IWritableLaunchProfile>>((name, action) =>
+                    {
+                        var profile = new WritableLaunchProfile { Name = name };
+                        action(profile);
+                        return TaskResult.True;
+                    });
+
+            }
+
+            if (updateGlobalSettingsCallback is not null)
+            {
+                settingsProvider3Mock.Setup(t => t.UpdateGlobalSettingsAsync(It.IsAny<Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>>()))
+                    .Returns(updateGlobalSettingsCallback);
+            }
+            else
+            {
+                settingsProvider3Mock.Setup(t => t.UpdateGlobalSettingsAsync(It.IsAny<Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>>()))
+                    .Returns<Func<ImmutableDictionary<string, object>, ImmutableDictionary<string, object?>>>(updateFunc =>
+                    {
+                        _ = updateFunc(ImmutableDictionary<string, object>.Empty);
                         return Task.CompletedTask;
                     });
             }

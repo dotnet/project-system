@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -14,31 +15,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     {
         private readonly IPropertyPagePropertiesAvailableStatus _properties;
         private readonly IProjectService2 _projectService;
-        private readonly IPropertyPageQueryCacheProvider _queryCacheProvider;
 
-        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService, IPropertyPageQueryCacheProvider queryCacheProvider)
+        public PropertyPageByIdDataProducer(IPropertyPagePropertiesAvailableStatus properties, IProjectService2 projectService)
         {
             Requires.NotNull(properties, nameof(properties));
             Requires.NotNull(projectService, nameof(projectService));
-            Requires.NotNull(queryCacheProvider, nameof(queryCacheProvider));
 
             _properties = properties;
             _projectService = projectService;
-            _queryCacheProvider = queryCacheProvider;
         }
 
-        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IEntityRuntimeModel runtimeModel, EntityIdentity id)
+        protected override Task<IEntityValue?> TryCreateEntityOrNullAsync(IQueryExecutionContext queryExecutionContext, EntityIdentity id)
         {
-            if (id.KeysCount == 2
-                && id.TryGetValue(ProjectModelIdentityKeys.ProjectPath, out string projectPath)
-                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string propertyPageName))
+            if (QueryProjectPropertiesContext.TryCreateFromEntityId(id, out QueryProjectPropertiesContext? propertiesContext)
+                && id.TryGetValue(ProjectModelIdentityKeys.PropertyPageName, out string? propertyPageName))
             {
                 return PropertyPageDataProducer.CreatePropertyPageValueAsync(
-                    runtimeModel,
+                    queryExecutionContext,
                     id,
                     _projectService,
-                    _queryCacheProvider,
-                    projectPath,
+                    propertiesContext,
                     propertyPageName,
                     _properties);
             }

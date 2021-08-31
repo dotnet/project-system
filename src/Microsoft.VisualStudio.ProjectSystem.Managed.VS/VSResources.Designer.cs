@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class VSResources {
@@ -93,6 +93,15 @@ namespace Microsoft.VisualStudio {
         internal static string DebugFrameworkMenuText {
             get {
                 return ResourceManager.GetString("DebugFrameworkMenuText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile {0}.
+        /// </summary>
+        internal static string DefaultNewProfileName {
+            get {
+                return ResourceManager.GetString("DefaultNewProfileName", resourceCulture);
             }
         }
         
@@ -223,6 +232,87 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applying updates failed: {0}.
+        /// </summary>
+        internal static string HotReloadApplyUpdatesFailure {
+            get {
+                return ResourceManager.GetString("HotReloadApplyUpdatesFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates applied successfully..
+        /// </summary>
+        internal static string HotReloadApplyUpdatesSuccessful {
+            get {
+                return ResourceManager.GetString("HotReloadApplyUpdatesSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors found in application: .
+        /// </summary>
+        internal static string HotReloadErrorsInApplication {
+            get {
+                return ResourceManager.GetString("HotReloadErrorsInApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload.
+        /// </summary>
+        internal static string HotReloadOutputWindowPaneName {
+            get {
+                return ResourceManager.GetString("HotReloadOutputWindowPaneName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebuilding and restarting the application since the edits can&apos;t be applied dynamically..
+        /// </summary>
+        internal static string HotReloadRestartInProgress {
+            get {
+                return ResourceManager.GetString("HotReloadRestartInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sending updates to running application..
+        /// </summary>
+        internal static string HotReloadSendingUpdates {
+            get {
+                return ResourceManager.GetString("HotReloadSendingUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload session started..
+        /// </summary>
+        internal static string HotReloadStartSession {
+            get {
+                return ResourceManager.GetString("HotReloadStartSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping application..
+        /// </summary>
+        internal static string HotReloadStoppingApplication {
+            get {
+                return ResourceManager.GetString("HotReloadStoppingApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot Reload session complete..
+        /// </summary>
+        internal static string HotReloadStopSession {
+            get {
+                return ResourceManager.GetString("HotReloadStopSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - Import comes fom target file. This import cannot be removed..
         /// </summary>
         internal static string ImportsFromTargetCannotBeDeleted {
@@ -331,6 +421,64 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_AttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_AttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
+        ///{2}
+        ///{3}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorAttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorAttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while stopping the session:
+        ///{1}
+        ///{2}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorStoppingTheSession {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorStoppingTheSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Unable to start Hot Reload session: no active process..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_NoActiveProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_NoActiveProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has already exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessAlreadyExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A project with an Output Type of Class Library cannot be started directly.
         ///
         ///In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project..
@@ -405,6 +553,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Not set).
+        /// </summary>
+        internal static string StartupObjectNotSet {
+            get {
+                return ResourceManager.GetString("StartupObjectNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Control (Windows Forms) Designer.
         /// </summary>
         internal static string UserControlEditor_DisplayName {
@@ -432,7 +589,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/en-us/dotnet/core/migration/..
+        ///   Looks up a localized string similar to Xproj project files are no longer supported. For details on migrating to csproj see https://docs.microsoft.com/dotnet/core/migration/..
         /// </summary>
         internal static string XprojNotSupported {
             get {

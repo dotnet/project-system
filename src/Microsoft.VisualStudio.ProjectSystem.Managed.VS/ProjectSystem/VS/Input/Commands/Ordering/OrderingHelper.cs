@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Performs a move on any items that were added based on the previous includes.
         /// </summary>
-        public static Task Move(ConfiguredProject configuredProject, IProjectAccessor accessor, ImmutableHashSet<string> previousIncludes, IProjectTree target, OrderingMoveAction action)
+        public static Task MoveAsync(ConfiguredProject configuredProject, IProjectAccessor accessor, ImmutableHashSet<string> previousIncludes, IProjectTree target, OrderingMoveAction action)
         {
             Requires.NotNull(configuredProject, nameof(configuredProject));
             Requires.NotNull(accessor, nameof(accessor));
@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         /// <summary>
         /// Get all evaluated includes from a project as an immutable hash set. This includes items that aren't for ordering as well.
         /// </summary>
-        public static Task<ImmutableHashSet<string>> GetAllEvaluatedIncludes(ConfiguredProject configuredProject, IProjectAccessor accessor)
+        public static Task<ImmutableHashSet<string>> GetAllEvaluatedIncludesAsync(ConfiguredProject configuredProject, IProjectAccessor accessor)
         {
             Requires.NotNull(configuredProject, nameof(configuredProject));
             Requires.NotNull(accessor, nameof(accessor));

@@ -12,11 +12,11 @@
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json;
       https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json;
       https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json;
+      https://pkgs.dev.azure.com/dnceng/public/_packaging/nuget-build/nuget/v3/index.json;
     </RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>
-
     <!-- Toolset -->
     <PackageReference Update="Nerdbank.Streams"                                                       Version="2.6.81" />
     <PackageReference Update="System.IO.Pipelines"                                                    Version="5.0.1" />
@@ -36,87 +36,68 @@
     <PackageReference Update="Microsoft.DevDiv.Validation.MediaRecorder"                              Version="15.0.199" />
 
     <!-- VS SDK -->
-    <PackageReference Update="Microsoft.Internal.VisualStudio.Shell.Interop.14.0.DesignTime"          Version="14.3.25407-alpha" />
-    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="16.9.1025" />
-    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="16.6.255"/>
-    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.5.13"/>
-    <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="9.0.21023" />
-    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="16.0.28321-alpha"/>
-    <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="9.0.21023" />
-    <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="16.0.28321-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="1.1.4323" />
-    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="16.9.30701-preview-2-30710-200" />
+    <PackageReference Update="EnvDTE"                                                                 Version="$(VSSDK_GeneralVersion)" />
+    <PackageReference Update="Microsoft.Internal.VisualStudio.Interop"                                Version="17.0.0-previews-2-31423-289"/>
+    <PackageReference Update="Microsoft.VSSDK.BuildTools"                                             Version="17.0.1056-Dev17PIAs-g9dffd635" />
+    <PackageReference Update="Microsoft.VisualStudio.ComponentModelHost"                              Version="17.0.154-preview"/>
+    <PackageReference Update="Microsoft.VisualStudio.Composition"                                     Version="16.9.20"/>
+    <PackageReference Update="Microsoft.VisualStudio.Data.Core"                                       Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.DataDesign.Common"                               Version="17.0.0-preview-2-31223-026"/>
+    <PackageReference Update="Microsoft.VisualStudio.Data.Services"                                   Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.DataTools.Interop"                               Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.Debugger.Contracts"                              Version="17.2.0-beta.21378.1" />
+    <PackageReference Update="Microsoft.VisualStudio.Designer.Interfaces"                             Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.ImageCatalog"                                    Version="17.0.0-previews-2-31421-281" />
+    <PackageReference Update="Microsoft.VisualStudio.Interop"                                         Version="17.0.0-previews-2-31423-289"/>
     <PackageReference Update="Microsoft.VisualStudio.ManagedInterfaces"                               Version="8.0.50728" />
-    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="16.9.67" />
-    <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.3.104" />
+    <PackageReference Update="Microsoft.VisualStudio.RpcContracts"                                    Version="17.0.50-preview-0002-0023" />
+    <PackageReference Update="Microsoft.VisualStudio.Telemetry"                                       Version="16.3.176" />
     <PackageReference Update="Microsoft.VisualStudio.Settings.15.0"                                   Version="16.8.30406.155-pre" />
     <PackageReference Update="Microsoft.VisualStudio.Setup.Configuration.Interop"                     Version="2.3.2262-g94fae01e" />
     <PackageReference Update="Microsoft.VisualStudio.SDK.EmbedInteropTypes"                           Version="15.0.34" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="16.8.30406.155-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="16.8.30406.155-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="16.8.30406.155-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.9.0"                               Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.10.0"                              Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.11.0"                              Version="16.8.30406.65" />    
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.12.1.DesignTime"                   Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.14.0.DesignTime"                   Version="16.8.30406.65" />    
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.0.DesignTime"                   Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime"                   Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.7.DesignTime"                   Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.15.8.DesignTime"                   Version="16.8.30406.65" />
-    <PackageReference Update="Microsoft.VisualStudio.Shell.Interop.16.6.DesignTime"                   Version="16.8.30406.65-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="16.8.30403.137-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="16.9.51" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="16.9.51" />
-    <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="16.9.31019.194" />
-    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="16.9.32" />
-    <PackageReference Update="Microsoft.VisualStudio.VSHelp"                                          Version="16.0.28321-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.WCFReference.Interop"                            Version="9.1.26606-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Workspace.VSIntegration"                         Version="16.7.47-preview-0001" />
-    <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="16.0.28321-alpha" />
-    <PackageReference Update="Microsoft.VSDesigner"                                                   Version="16.0.28321-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.15.0"                                      Version="17.0.0-previews-2-31421-281" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="17.0.0-previews-2-31421-281" />
+    <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.0.0-previews-2-31421-281" />
+    <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.0.26-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.0.26-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.0.0-previews-2-31421-281" />
+    <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.12-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.0.0-preview-2-31223-026" />
+    <PackageReference Update="Microsoft.VSDesigner"                                                   Version="17.0.0-preview-2-31223-026" />
     <PackageReference Update="VsWebSite.Interop"                                                      Version="16.8.30523.219"/>
-    <PackageReference Update="VSLangProj"                                                             Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj2"                                                            Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj80"                                                           Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj90"                                                           Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj100"                                                          Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj110"                                                          Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj158"                                                          Version="16.8.30523.219" />
-    <PackageReference Update="VSLangProj165"                                                          Version="16.5.0" />
-    <PackageReference Update="EnvDTE"                                                                 Version="16.8.30523.219" />
-    <PackageReference Update="EnvDTE80"                                                               Version="16.8.30523.219" />
-    <PackageReference Update="EnvDTE90"                                                               Version="16.8.30523.219" />
 
-    <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
-    <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
-    <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
+    <!-- https://github.com/dotnet/roslyn/issues/53877 -->
+    <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.21" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK"                               Version="16.10.117-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="16.10.117-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="16.10.117-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.788-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.0.788-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.788-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.788-pre" />
 
     <!-- Roslyn -->
-    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="3.10.0-2.21121.14" />
-    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="3.10.0-2.21121.14" />
+    <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-2.21302.13" />
+    <PackageReference Update="Microsoft.CodeAnalysis"                                                 Version="4.0.0-2.21302.13" />
     <PackageReference Update="Microsoft.VisualStudio.IntegrationTest.Utilities"                       Version="2.6.0-beta1-62113-02" />
     <PackageReference Update="Microsoft.CSharp"                                                       Version="4.7.0" />
 
     <!-- Analyzers -->
-    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
     <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
     <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
-    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers"                                  Version="3.3.0" />
-    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.0" />
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.2" />
 
     <!-- NuGet -->
-    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="5.8.0-preview.2.6776" />
-    <PackageReference Update="NuGet.VisualStudio"                                                     Version="5.8.0-preview.2.6776" />
+    <PackageReference Update="NuGet.SolutionRestoreManager.Interop"                                   Version="6.0.0-preview.1.89" />
+    <PackageReference Update="NuGet.VisualStudio"                                                     Version="6.0.0-preview.1.89" />
 
     <!-- Framework packages -->
     <PackageReference Update="Microsoft.IO.Redist"                                                    Version="4.7.1" />
-    
+
+    <!-- Hot Reload -->
+    <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
+
     <!-- 3rd party -->
     <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>
 
@@ -132,11 +113,17 @@
     <!-- Integration Tests -->
     <PackageReference Update="MSTest.TestFramework"                                                   Version="2.1.2" />
     <PackageReference Update="MSTest.TestAdapter"                                                     Version="2.1.2" />
-    <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="16.3.29003.189" />
+    <PackageReference Update="Microsoft.Test.Apex.VisualStudio"                                       Version="17.0.0-preview-2-31221-277" />
     <PackageReference Update="Microsoft.TestPlatform"                                                 Version="16.2.0" />
     <PackageReference Update="Microsoft.DotNet.Test.ProjectTemplates.1.x"                             Version="1.0.0-beta2-20170629-269" />
     <PackageReference Update="Microsoft.DotNet.Common.ProjectTemplates.1.x"                           Version="1.0.0-beta2-20170629-269" />
 
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IncludeVSSDKPackages)' != 'false'">
+    <!-- Avoid double-writes, can remove when https://github.com/NuGet/Home/issues/8343 is fixed -->
+    <PackageReference Include="VSSDK.DTE"                                                             Version="7.0.4"                           ExcludeAssets="All" />
+    <PackageReference Include="VSSDK.TemplateWizardInterface"                                         Version="12.0.4"                          ExcludeAssets="All" />
   </ItemGroup>
 
 </Project>

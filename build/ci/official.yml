@@ -10,7 +10,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEng-MicroBuildVS2019
+  name: VSEngSS-MicroBuild2019
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -28,14 +28,17 @@ steps:
     
 - task: ms-vseng.MicroBuildTasks.32f78468-e895-4f47-962c-58a699361df8.MicroBuildSwixPlugin@1
   displayName: Install Swix Plugin
-  
-- task: NuGetRestore@1
+
+- task: NuGetCommand@2
   displayName: Restore 'Microsoft.DotNet.IBCMerge' package
   inputs:
-    solution: 'build\proj\internal\RestoreIBCMerge.csproj'
-    feed: '8f470c7e-ac49-4afe-a6ee-cf784e438b93'
+    command: restore
+    feedsToUse: config
+    restoreSolution: 'build\proj\internal\RestoreIBCMerge.csproj'
+    nugetConfigPath: 'NuGet.config'
 
-- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /ibc /no-clearnugetcache /configuration $(BuildConfiguration)
+# TODO: Merged PIAs - reset to /ibc once private feeds are removed and Microsoft.DotNet.IBCMerge is reset
+- script: $(Build.SourcesDirectory)\build.cmd /build /test /ci /sign /diagnostic /no-deploy /no-integration /no-ibc /no-clearnugetcache /configuration $(BuildConfiguration)
   displayName: Build ProjectSystem.sln
 
 - task: Ref12.ref12-analyze-task.ref12-analyze-task.Ref12Analyze@0
@@ -86,7 +89,6 @@ steps:
       '**/*.pdb
       **/*.dll
       **/*.exe'
-    indexSources: false
     publishSymbols: true
     SymbolServerType: TeamServices
     SymbolsProduct: 'Roslyn Project System'
@@ -100,19 +102,12 @@ steps:
     ArtifactName: symbols
     publishLocation: Container
   displayName: 'Publish Artifact: symbols'
-
-- task: ms-vscs-artifact.build-tasks.artifactSymbolTask-1.artifactSymbolTask@0
-  displayName: Publish Symbols to Artifact Services (symweb)
-  inputs:
-    symbolServiceURI: 'https://microsoft.artifacts.visualstudio.com/DefaultCollection'
-    requestName: '$(system.teamProject)/$(Build.DefinitionName)/$(Build.BuildNumber)/$(Build.BuildId)'
-    sourcePath: $(Build.ArtifactStagingDirectory)/symbols
-    usePat: false
         
-- task: ms-vseng.MicroBuildTasks.4305a8de-ba66-4d8b-b2d1-0dc4ecbbf5e8.MicroBuildUploadVstsDropFolder@1
+- task: MicroBuildUploadVstsDropFolder@1
   displayName: Upload VSTS Drop
   inputs:
     DropFolder: 'artifacts\$(BuildConfiguration)\VSSetup\Insertion'
+    AccessToken: $(System.AccessToken)
 
 - task: CopyFiles@2
   inputs:

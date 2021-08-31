@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
+using Microsoft.Internal.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.ProjectSystem.LanguageServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
@@ -19,17 +20,31 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
     [Order(Order.Default)]
     internal partial class LanguageServiceErrorListProvider : IVsErrorListProvider
     {
+        internal const string LspPullDiagnosticsFeatureFlagName = "Lsp.PullDiagnostics";
+
         private readonly UnconfiguredProject _project;
         private readonly IActiveWorkspaceProjectContextHost _projectContextHost;
+
+        private readonly AsyncLazy<bool> _isLspPullDiagnosticsEnabled;
 
         /// <remarks>
         /// <see cref="UnconfiguredProject"/> must be imported in the constructor in order for scope of this class' export to be correct.
         /// </remarks>
         [ImportingConstructor]
-        public LanguageServiceErrorListProvider(UnconfiguredProject project, IActiveWorkspaceProjectContextHost projectContextHost)
+        public LanguageServiceErrorListProvider(
+            UnconfiguredProject project,
+            IActiveWorkspaceProjectContextHost projectContextHost,
+            IVsService<SVsFeatureFlags, IVsFeatureFlags> featureFlagsService,
+            JoinableTaskContext joinableTaskContext)
         {
             _project = project;
             _projectContextHost = projectContextHost;
+
+            _isLspPullDiagnosticsEnabled = new AsyncLazy<bool>(async () =>
+            {
+                IVsFeatureFlags? service = await featureFlagsService.GetValueAsync();
+                return service.IsFeatureEnabled(LspPullDiagnosticsFeatureFlagName, defaultValue: false);
+            }, joinableTaskContext.Factory);
         }
 
         public void SuspendRefresh()
@@ -54,7 +69,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
             if (!TryExtractErrorListDetails(error.BuildEventArgs, out ErrorListDetails details) || string.IsNullOrEmpty(details.Code))
                 return AddMessageResult.NotHandled;
 
-            bool handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
+            // When this feature flag is enabled, build diagnostics will be published by CPS and should not be passed to roslyn.
+            bool isLspPullDiagnosticsEnabled = await _isLspPullDiagnosticsEnabled.GetValueAsync();
+            if (isLspPullDiagnosticsEnabled)
+            {
+                return AddMessageResult.NotHandled;
+            }
+
+            bool? handled = await _projectContextHost.OpenContextForWriteAsync(accessor =>
             {
                 var errorReporter = (IVsLanguageServiceBuildErrorReporter2)accessor.HostSpecificErrorReporter;
 
@@ -78,7 +100,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Build
                 return TaskResult.False;
             });
 
-            return handled ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
+            return handled ?? false ? AddMessageResult.HandledAndStopProcessing : AddMessageResult.NotHandled;
         }
 
         public Task ClearMessageFromTargetAsync(string targetName)

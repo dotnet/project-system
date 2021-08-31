@@ -231,7 +231,6 @@ dotnet_diagnostic.CA2200.severity = none
 # Microsoft.NetCore.Analyzers
 dotnet_diagnostic.CA2000.severity = none        # Dispose objects before losing scope (Noisy - replaced with IDE0067, IDE0068, IDE0069)
 dotnet_diagnostic.CA1820.severity = warning
-dotnet_diagnostic.CA5360.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/2683
 
 # Microsoft.CodeQuality.Analyzers
 dotnet_diagnostic.CA1000.severity = none
@@ -274,9 +273,9 @@ dotnet_diagnostic.CA1720.severity = none
 dotnet_diagnostic.CA1721.severity = none
 dotnet_diagnostic.CA1724.severity = none
 dotnet_diagnostic.CA1815.severity = none
+dotnet_diagnostic.CA1819.severity = warning
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA2211.severity = none
-dotnet_diagnostic.CA2213.severity = none        # https://github.com/dotnet/roslyn-analyzers/issues/1796
 dotnet_diagnostic.CA2218.severity = none
 dotnet_diagnostic.CA2222.severity = none
 dotnet_diagnostic.CA2224.severity = none
@@ -385,7 +384,7 @@ dotnet_diagnostic.IDE1006WithoutSuggestion.severity = suggestion
 
 
 # Microsoft.VisualStudio.Threading.Analyzers
-dotnet_diagnostic.VSTHRD200.severity = none     # Naming styles                                 Task Open()                                         Task OpenAsync()
+dotnet_diagnostic.VSTHRD200.severity = error    # Naming styles                                 Task Open()                                         Task OpenAsync()
 dotnet_diagnostic.VSTHRD010.severity = none     # Visual Studio service should be used on main thread explicitly.
 dotnet_diagnostic.VSTHRD103.severity = none     # Call async methods when in an async method.
 dotnet_diagnostic.VSTHRD108.severity = none     # Thread affinity checks should be unconditional.

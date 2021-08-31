@@ -33,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(@"echo ""prebuild output""", actual);
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var actual = systemUnderTest.GetProperty(root);
+            var actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(actual);
         }
 
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
         {
             var expected = "echo $(ProjectDir)";
             var projectProperties = IProjectPropertiesFactory.CreateWithPropertyAndValue("PreBuildEvent", expected);
-            var (success, actual) = await systemUnderTest.TryGetPropertyAsync(projectProperties);
+            var (success, actual) = await systemUnderTest.TryGetUnevaluatedPropertyValueAsync(projectProperties);
             Assert.True(success);
             Assert.Equal(expected, actual);
         }
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 
 </Project>
 ".AsProjectRootElement();
-            var result = systemUnderTest.GetProperty(root);
+            var result = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(result);
         }
 
@@ -143,7 +143,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
   </Target>
 </Project>
 ".AsProjectRootElement();
-            var result = systemUnderTest.GetProperty(root);
+            var result = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Null(result);
         }
 
@@ -627,7 +627,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %DATE%";
-            string? actual = systemUnderTest.GetProperty(root);
+            string? actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(expected, actual);
         }
 
@@ -646,7 +646,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Properties
 ".AsProjectRootElement();
 
             const string expected = "echo %25DATE%";
-            string? actual = systemUnderTest.GetProperty(root);
+            string? actual = systemUnderTest.TryGetValueFromTarget(root);
             Assert.Equal(expected, actual);
         }
 

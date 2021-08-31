@@ -4,6 +4,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
 {
     internal static class LaunchProfileExtensions
     {
+        public const string HotReloadEnabledProperty = "hotReloadEnabled";
         public const string NativeDebuggingProperty = "nativeDebugging";
         public const string SqlDebuggingProperty = "sqlDebugging";
         public const string JSWebView2DebuggingProperty = "jsWebView2Debugging";
@@ -95,6 +96,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             return null;
+        }
+
+        public static bool IsHotReloadEnabled(this ILaunchProfile profile)
+        {
+            if (profile.OtherSettings is not null
+                && profile.OtherSettings.TryGetValue(HotReloadEnabledProperty, out object? value)
+                && value is bool b)
+            {
+                return b;
+            }
+
+            return true;
         }
     }
 }

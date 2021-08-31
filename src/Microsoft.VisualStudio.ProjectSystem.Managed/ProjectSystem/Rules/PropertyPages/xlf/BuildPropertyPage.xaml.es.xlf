@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="es" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">Permite que el código que usa la palabra clave "unsafe" se compile.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="translated">Permite que el código que use la palabra clave "unsafe" se compile.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Permitir código no seguro</target>
+        <source>Unsafe code</source>
+        <target state="translated">Código no seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">Especifica si la aritmética de enteros que genera un valor fuera del intervalo del tipo de datos y que no está en el ámbito de las palabra clave checked o unchecked provocará una excepción en tiempo de ejecución.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="translated">Produce excepciones cuando la aritmética de los enteros genera valores fuera del intervalo.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -32,9 +32,19 @@
         <target state="translated">comprobado;no comprobado</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|Description">
+        <source>Use delayed signing when access to the private key is restricted. The public key will be used during the build, and addition of the private key information deferred until the assembly is handed off.</source>
+        <target state="translated">Use la firma retrasada cuando el acceso a la clave privada esté restringido. La clave pública se usará durante la compilación y la adición de la información de clave privada se aplazará hasta la entrega del ensamblado.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|DelaySign|DisplayName">
+        <source>Delay sign only</source>
+        <target state="translated">Solo retrasar firma</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">Indica si el compilador debe producir ensamblados idénticos para entradas idénticas.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="translated">Genera un resultado de compilación idéntico para entradas idénticas.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -52,9 +62,24 @@
         <target state="translated">Archivo de documentación</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="new">Implicit global usings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="new">implicit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">Habilita o deshabilita las optimizaciones realizadas por el compilador para que el archivo de salida tenga un menor tamaño, y sea más rápido y eficaz.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="translated">Habilita las optimizaciones del compilador para obtener resultados más eficaces, más rápidos y más pequeños.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -67,6 +92,56 @@
         <target state="translated">optimizar;optimización</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="new">Prefer 32-bit</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="translated">Genera un ensamblado de referencia que contiene la API pública del proyecto.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="translated">Ensamblado de referencia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|Description">
+        <source>Sign the output assembly to give it a strong name.</source>
+        <target state="translated">Firme el ensamblado de salida para asignarle un nombre seguro.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|SignAssembly|DisplayName">
+        <source>Sign the assembly</source>
+        <target state="translated">Firmar el ensamblado</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|Description">
+        <source>Instruct the compiler to treat warnings as errors.</source>
+        <target state="translated">Indique al compilador que trate las advertencias como errores.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|TreatWarningsAsErrors|DisplayName">
+        <source>Treat warnings as errors</source>
+        <target state="translated">Tratar advertencias como errores</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="new">Advanced settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">Configura las opciones de error y advertencia del proceso de compilación.</target>
@@ -75,6 +150,16 @@
       <trans-unit id="Category|ErrorsAndWarnings|DisplayName">
         <source>Errors and warnings</source>
         <target state="translated">Errores y advertencias</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|Description">
+        <source>Configures custom events that run before and after build.</source>
+        <target state="translated">Configura los eventos personalizados que se ejecutan antes y después de la compilación.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Events|DisplayName">
+        <source>Events</source>
+        <target state="translated">Eventos</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -92,9 +177,34 @@
         <target state="translated">Salida</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|StrongNaming|Description">
+        <source>Configures strong name signing of build outputs.</source>
+        <target state="translated">Configura la firma con nombre seguro de los resultados de compilación.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|StrongNaming|DisplayName">
+        <source>Strong naming</source>
+        <target state="translated">Asignación de nombre seguro</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="translated">Especifica el tipo de símbolos de depuración que se producen durante la compilación.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="translated">Símbolos de depuración</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="translated">tipo de depuración</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">Controla cuándo se envían a Microsoft los informes de errores internos del compilador (ICE).</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="translated">Envía informes de errores internos del compilador (ICE) a Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -132,14 +242,14 @@
         <target state="translated">Destino de la plataforma</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|TreatWarningsAsErrors|Description">
-        <source>Used to specify which warnings are treated as errors.</source>
-        <target state="translated">Se usa para especificar las advertencias que se tratan como errores.</target>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
+        <source>Specifies under which condition the post-build event will be executed.</source>
+        <target state="translated">Especifica bajo qué condición se ejecutará el evento posterior a la compilación.</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|TreatWarningsAsErrors|DisplayName">
-        <source>Treat warnings as errors</source>
-        <target state="translated">Tratar advertencias como errores</target>
+      <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
+        <source>When to run the post-build event</source>
+        <target state="translated">Cuándo ejecutar el evento posterior a la compilación</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -150,6 +260,26 @@
       <trans-unit id="EnumProperty|WarningLevel|DisplayName">
         <source>Warning level</source>
         <target state="translated">Nivel de advertencia</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="translated">Incrustado en DLL/EXE, portable en distintas plataformas</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="translated">Archivo PDB, plataforma actual</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="translated">No se emitió ningún símbolo</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="translated">Archivo PDB, portable en distintas plataformas</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|ErrorReport.none|DisplayName">
@@ -232,14 +362,19 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|TreatWarningsAsErrors.false|DisplayName">
-        <source>None</source>
-        <target state="translated">Ninguno</target>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|TreatWarningsAsErrors.true|DisplayName">
-        <source>All</source>
-        <target state="translated">Todo</target>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="new">When the build succeeds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="new">When the output is updated</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -280,6 +415,11 @@
       <trans-unit id="Rule|Build|DisplayName">
         <source>Build</source>
         <target state="translated">Compilación</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|AssemblyOriginatorKeyFile|DisplayName">
+        <source>Strong name key file</source>
+        <target state="translated">Archivo de clave de nombre seguro</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|BaseIntermediateOutputPath|Description">
@@ -323,8 +463,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
-        <source>Why can't I select the C# language version?</source>
-        <target state="translated">¿Por qué no puedo seleccionar la versión del lenguaje C#?</target>
+        <source>The version of the language available to code in this project.</source>
+        <target state="new">The version of the language available to code in this project.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
@@ -333,17 +473,37 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|Description">
-        <source>Blocks the compiler's ability to generate one or more warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <source>Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Bloquea la capacidad del compilador para generar una o más advertencias. Separe varios números de advertencia con una coma (",") o punto y coma (";").</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|NoWarn|DisplayName">
-        <source>Suppress warnings</source>
+        <source>Suppress specific warnings</source>
         <target state="translated">Suprimir las advertencias</target>
         <note />
       </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|Description">
+        <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
+        <target state="translated">Especifica los comandos que se ejecutan después de completar la compilación. No se ejecuta si la compilación falla. Utilice "llamar" para invocar archivos .bat. Un código de salida distinto de cero hará que falle la compilación.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
+        <source>Post-build event</source>
+        <target state="translated">Evento de posterior a la compilación</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|Description">
+        <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
+        <target state="translated">Especifica los comandos que se ejecutan antes de que se inicie la compilación. No se ejecuta si el proyecto está actualizado. Un código de salida distinto de cero hará fallar la compilación antes de que se ejecute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
+        <source>Pre-build event</source>
+        <target state="translated">Evento anterior a la compilación</target>
+        <note />
+      </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">
-        <source>Treats the specified warnings as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <source>Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
         <target state="translated">Trata las advertencias especificadas como errores. Separe varios números de advertencia con una coma (",") o punto y coma (";").</target>
         <note />
       </trans-unit>
@@ -353,13 +513,13 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|Description">
-        <source>Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
-        <target state="new">Exempts the specified warnings from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</target>
+        <source>Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').</source>
+        <target state="translated">Exime las advertencias especificadas de que se traten como errores. Separe varios números de advertencia con una coma (",") o con punto y coma (";").</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsNotAsErrors|DisplayName">
-        <source>Exempt specific warnings from being treated as errors</source>
-        <target state="new">Exempt specific warnings from being treated as errors</target>
+        <source>Exclude specific warnings as errors</source>
+        <target state="translated">Excluir advertencias específicas para que no se traten como errores</target>
         <note />
       </trans-unit>
     </body>

@@ -12,17 +12,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         private sealed class Log
         {
             private readonly TextWriter _writer;
-            private readonly LogLevel _requestedLogLevel;
             private readonly Stopwatch _stopwatch;
             private readonly TimestampCache _timestampCache;
             private readonly string _fileName;
             private readonly ITelemetryService _telemetryService;
             private readonly UpToDateCheckConfiguredInput _upToDateCheckConfiguredInput;
 
+            public LogLevel Level { get; }
+
             public Log(TextWriter writer, LogLevel requestedLogLevel, Stopwatch stopwatch, TimestampCache timestampCache, string projectPath, ITelemetryService telemetryService, UpToDateCheckConfiguredInput upToDateCheckConfiguredInput)
             {
                 _writer = writer;
-                _requestedLogLevel = requestedLogLevel;
+                Level = requestedLogLevel;
                 _stopwatch = stopwatch;
                 _timestampCache = timestampCache;
                 _telemetryService = telemetryService;
@@ -32,7 +33,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private void Write(LogLevel level, string message, object arg0)
             {
-                if (level <= _requestedLogLevel)
+                if (level <= Level)
                 {
                     // These are user visible, so we want them in local times so that 
                     // they correspond with dates/times that Explorer, etc shows
@@ -44,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private void Write(LogLevel level, string message, object arg0, object arg1)
             {
-                if (level <= _requestedLogLevel)
+                if (level <= Level)
                 {
                     // These are user visible, so we want them in local times so that 
                     // they correspond with dates/times that Explorer, etc shows
@@ -57,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
 
             private void Write(LogLevel level, string message, params object[] values)
             {
-                if (level <= _requestedLogLevel)
+                if (level <= Level)
                 {
                     // These are user visible, so we want them in local times so that 
                     // they correspond with dates/times that Explorer, etc shows

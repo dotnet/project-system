@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.Frameworks;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
+using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
@@ -17,27 +18,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
     /// </summary>
     internal static class CategoryDataProducer
     {
-        public static IEntityValue CreateCategoryValue(IEntityValue parent, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(parent, nameof(parent));
             Requires.NotNull(category, nameof(category));
-
-            string categoryName = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
 
             var identity = new EntityIdentity(
                 ((IEntityWithId)parent).Id,
                 new KeyValuePair<string, string>[]
                 {
-                    new(ProjectModelIdentityKeys.CategoryName, categoryName)
+                    new(ProjectModelIdentityKeys.CategoryName, category.Name)
                 });
 
-            return CreateCategoryValue(parent.EntityRuntime, identity, rule, category, order, requestedProperties);
+            return CreateCategoryValue(queryExecutionContext, identity, rule, category, order, requestedProperties);
         }
 
-        public static IEntityValue CreateCategoryValue(IEntityRuntimeModel runtimeModel, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEntityValue CreateCategoryValue(IQueryExecutionContext queryExecutionContext, EntityIdentity id, Rule rule, Category category, int order, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             Requires.NotNull(category, nameof(category));
-            var newCategory = new CategoryValue(runtimeModel, id, new CategoryPropertiesAvailableStatus());
+            var newCategory = new CategoryValue(queryExecutionContext.EntityRuntime, id, new CategoryPropertiesAvailableStatus());
 
             if (requestedProperties.DisplayName)
             {
@@ -46,7 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             if (requestedProperties.Name)
             {
-                newCategory.Name = DebugUtilities.GetDebugCategoryNameOrNull(rule, category) ?? category.Name;
+                newCategory.Name = category.Name;
             }
 
             if (requestedProperties.Order)
@@ -59,29 +58,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             return newCategory;
         }
 
-        public static IEnumerable<IEntityValue> CreateCategoryValues(IEntityValue parent, Rule rule, List<Rule> debugChildRules, ICategoryPropertiesAvailableStatus requestedProperties)
+        public static IEnumerable<IEntityValue> CreateCategoryValues(IQueryExecutionContext queryExecutionContext, IEntityValue parent, Rule rule, ICategoryPropertiesAvailableStatus requestedProperties)
         {
             int index = 0;
             foreach (Category category in rule.EvaluatedCategories)
             {
-                IEntityValue categoryValue = CreateCategoryValue(parent, rule, category, index, requestedProperties);
+                IEntityValue categoryValue = CreateCategoryValue(queryExecutionContext, parent, rule, category, index, requestedProperties);
                 yield return categoryValue;
                 index++;
-            }
-
-            foreach (Rule childRule in debugChildRules)
-            {
-                foreach (Category category in childRule.EvaluatedCategories)
-                {
-                    IEntityValue categoryValue = CreateCategoryValue(parent, childRule, category, index, requestedProperties);
-                    yield return categoryValue;
-                    index++;
-                }
             }
         }
 
         public static async Task<IEntityValue?> CreateCategoryValueAsync(
-            IEntityRuntimeModel runtimeModel,
+            IQueryExecutionContext queryExecutionContext,
             EntityIdentity id,
             IProjectService2 projectService,
             string projectPath,
@@ -89,24 +78,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             string categoryName,
             ICategoryPropertiesAvailableStatus requestedProperties)
         {
-            (propertyPageName, categoryName) = DebugUtilities.ConvertDebugPageAndCategoryToRealPageAndCategory(propertyPageName, categoryName);
-
-            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project
-                && await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && projectCatalog.GetSchema(propertyPageName) is Rule rule)
+            if (projectService.GetLoadedProject(projectPath) is UnconfiguredProject project)
             {
-                // We need the category's index in order to populate the "Order" field of the query model.
-                // This requires that we do a linear traversal of the categories, even though we only care
-                // about one.
-                //
-                // TODO: if the "Order" property hasn't been requested, we can skip the linear traversal in
-                // favor of just looking it up by name.
-                foreach ((int index, Category category) in rule.EvaluatedCategories.WithIndices())
+                // TODO: Update this to match what we do in IProjectState.GetMetadataVersionAsync
+                project.GetQueryDataVersion(out string versionKey, out long versionNumber);
+                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+
+                if (await project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
+                    && projectCatalog.GetSchema(propertyPageName) is Rule rule)
                 {
-                    if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
+                    // We need the category's index in order to populate the "Order" field of the query model.
+                    // This requires that we do a linear traversal of the categories, even though we only care
+                    // about one.
+                    //
+                    // TODO: if the "Order" property hasn't been requested, we can skip the linear traversal in
+                    // favor of just looking it up by name.
+                    foreach ((int index, Category category) in rule.EvaluatedCategories.WithIndices())
                     {
-                        IEntityValue categoryValue = CreateCategoryValue(runtimeModel, id, rule, category, index, requestedProperties);
-                        return categoryValue;
+                        if (StringComparers.CategoryNames.Equals(category.Name, categoryName))
+                        {
+                            IEntityValue categoryValue = CreateCategoryValue(queryExecutionContext, id, rule, category, index, requestedProperties);
+                            return categoryValue;
+                        }
                     }
                 }
             }

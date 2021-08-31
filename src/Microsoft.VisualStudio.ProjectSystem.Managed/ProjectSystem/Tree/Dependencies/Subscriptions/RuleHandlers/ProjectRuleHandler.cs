@@ -28,13 +28,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.Subscriptions.R
                 implicitExpandedIcon: KnownMonikers.ApplicationPrivate),
             DependencyTreeFlags.ProjectDependencyGroup);
 
-        public override string ProviderType => ProviderTypeString;
-
-        [ImportingConstructor]
         public ProjectRuleHandler()
             : base(ProjectReference.SchemaName, ResolvedProjectReference.SchemaName)
         {
         }
+
+        public override string ProviderType => ProviderTypeString;
+
+        public override ProjectTreeFlags GroupNodeFlag => DependencyTreeFlags.ProjectDependencyGroup;
 
         public override IDependencyModel CreateRootDependencyNode() => s_groupModel;
 

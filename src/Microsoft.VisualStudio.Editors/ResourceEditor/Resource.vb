@@ -23,13 +23,15 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
     ''' <summary>
     '''  Represents a resource in the .resx file.
     ''' </summary>
-    ''' <remarks> 
-    '''  - TypeDescriptionProvider points the shell to ask our ResourceTypeDescriptionProvider for the properties we want to expose. 
-    '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource 
+    ''' <remarks>
+    '''  - TypeDescriptionProvider points the shell to ask our ResourceTypeDescriptionProvider for the properties we want to expose.
+    '''  - Implements IComponent to be able to push the resource through SelectionService, so that the name of the resource
     '''      appears on the Property Window's drop down list.
+    '''  - KnownType of ResXDataNode is needed for DataContractSerializer to export this type information during serialization.
     ''' </remarks>
     <Serializable>
     <TypeDescriptionProvider(GetType(ResourceTypeDescriptionProvider))>
+    <KnownType(GetType(ResXDataNode))>
     Friend NotInheritable Class Resource
         Implements IComponent
         Implements ISerializable 'This allows us to fully control the serialization process
@@ -2012,9 +2014,9 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
         Private Shared Function IsConvertibleFromToString(Value As Object, ValueTypeName As String, IsResXNullRef As Boolean) As Boolean
             Dim TC As TypeConverter = GetTypeConverter(Value, ValueTypeName, IsResXNullRef)
             If TC IsNot Nothing Then
-                If TC.GetType.Equals(GetType(Windows.Forms.CursorConverter)) Then
+                If TC.GetType.Equals(GetType(System.Windows.Forms.CursorConverter)) Then
                     'The CursorConverter lies to us - says it's convertible from/to string.  But this is only true from the
-                    '  property sheet for the standard cursors that they support from the Windows Forms designer.  If we happen
+                    '  property sheet for the standard cursors that they support from the System.Windows.Forms designer.  If we happen
                     '  upon a custom cursor in the resx file (possible but not likely), this would get us into trouble.
                     Return False
                 End If

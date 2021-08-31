@@ -4,8 +4,8 @@ Imports System.ComponentModel.Design
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
+Imports System.Runtime.Serialization
 Imports System.Runtime.Versioning
 Imports System.Text
 Imports System.Text.RegularExpressions
@@ -1648,22 +1648,38 @@ Namespace Microsoft.VisualStudio.Editors.Common
                 TelemetryService.DefaultSession.PostEvent(userTask)
             End Sub
 
-            Private Const BinaryFormatterEventName As String = EditorsEventNamePrefix + "binaryformatter"
-            Private Const BinaryFormatterPropertyNamePrefix As String = EditorsPropertyNamePrefix + "binaryformatter."
-            Public Enum BinaryFormatterOperation
-                Serialize = 0
-                Deserialize = 1
-            End Enum
-
-            Public Shared Sub LogBinaryFormatterEvent(className As String, operation As BinaryFormatterOperation, <CallerMemberName> Optional functionName As String = Nothing)
-                Dim userTask = New UserTaskEvent(BinaryFormatterEventName, TelemetryResult.Success)
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "functionname") = functionName
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "classname") = className
-                userTask.Properties(BinaryFormatterPropertyNamePrefix + "operation") = operation
-                TelemetryService.DefaultSession.PostEvent(userTask)
-            End Sub
-
         End Class
 #End Region
+
+        Public Class ObjectSerializer
+
+            ' KnownType information is used by DataContractSerializer for serialization of types that it may not know of currently.
+            ' Size is used in Bitmap and has issues being recognized in DataContractSerializer for the unit tests of this class.
+            Private Shared ReadOnly s_knownTypes As Type() = {GetType(Size)}
+
+            Public Shared Sub Serialize(stream As Stream, value As Object)
+                Requires.NotNull(stream, NameOf(stream))
+                Requires.NotNull(value, NameOf(value))
+                Using writer As New BinaryWriter(stream, Encoding.UTF8, leaveOpen:=True)
+                    Dim valueType = value.GetType()
+                    writer.Write(valueType.AssemblyQualifiedName)
+                    writer.Flush()
+                    Call New DataContractSerializer(valueType, s_knownTypes).WriteObject(stream, value)
+                End Using
+            End Sub
+
+            Public Shared Function Deserialize(stream As Stream) As Object
+                Requires.NotNull(stream, NameOf(stream))
+                If stream.Length = 0 Then
+                    Throw New SerializationException("The stream contains no content.")
+                End If
+                Using reader As New BinaryReader(stream, Encoding.UTF8, leaveOpen:=True)
+                    Dim valueType = Type.GetType(reader.ReadString())
+                    Return New DataContractSerializer(valueType, s_knownTypes).ReadObject(stream)
+                End Using
+            End Function
+
+        End Class
+
     End Module
 End Namespace

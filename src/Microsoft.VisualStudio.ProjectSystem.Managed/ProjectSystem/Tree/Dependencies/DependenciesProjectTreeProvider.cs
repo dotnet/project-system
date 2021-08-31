@@ -43,6 +43,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         [ImportMany(ReferencesProjectTreeCustomizablePropertyValues.ContractName)]
         private readonly OrderPrecedenceImportCollection<IProjectTreePropertiesProvider> _projectTreePropertiesProviders;
 
+        [ImportMany("DependencyTreeRemovalActionHandlers")]
+        private readonly OrderPrecedenceImportCollection<IProjectTreeActionHandler> _removalActionHandlers;
+
         [ImportMany]
         private readonly OrderPrecedenceImportCollection<IDependenciesTreeViewProvider> _viewProviders;
 
@@ -77,6 +80,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
         {
             _projectTreePropertiesProviders = new OrderPrecedenceImportCollection<IProjectTreePropertiesProvider>(
                 ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesLast,
+                projectCapabilityCheckProvider: unconfiguredProject);
+
+            _removalActionHandlers = new OrderPrecedenceImportCollection<IProjectTreeActionHandler>(
+                ImportOrderPrecedenceComparer.PreferenceOrder.PreferredComesFirst,
                 projectCapabilityCheckProvider: unconfiguredProject);
 
             _viewProviders = new OrderPrecedenceImportCollection<IDependenciesTreeViewProvider>(
@@ -152,6 +159,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 // We support "Remove" but not "Delete".
                 // We remove the dependency from the project, not delete it from disk.
                 return false;
+            }
+
+            if (_removalActionHandlers.Count != 0)
+            {
+                var context = new ProjectDependencyTreeRemovalActionHandlerContext(this);
+
+                foreach (IProjectTreeActionHandler handler in _removalActionHandlers.ExtensionValues())
+                {
+                    if (!handler.CanRemove(context, nodes, deleteOptions))
+                    {
+                        return false;
+                    }
+                }
             }
 
             return nodes.All(node => node.Flags.Contains(DependencyTreeFlags.SupportsRemove));
@@ -236,6 +256,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                     }
                 }
             });
+
+            if (_removalActionHandlers.Count != 0)
+            {
+                var context = new ProjectDependencyTreeRemovalActionHandlerContext(this);
+
+                foreach (IProjectTreeActionHandler handler in _removalActionHandlers.ExtensionValues())
+                {
+                    await handler.RemoveAsync(context, nodes, deleteOptions);
+                }
+            }
         }
 
         /// <summary>
@@ -255,9 +285,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
 #pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
-                UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
+                JoinableTask task = UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
 #pragma warning restore RS0030
-                async delegate
+                    async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
                         UnconfiguredProjectAsynchronousTasksService
@@ -290,6 +320,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                         }
                     },
                     registerFaultHandler: true);
+
+                _project.Services.FaultHandler.Forget(task.Task, _project);
             }
 
             IProjectTree CreateDependenciesNode()
@@ -555,6 +587,22 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
             public bool IsFolder => false;
             public bool IsNonFileSystemProjectItem => true;
             public IImmutableDictionary<string, string> ProjectTreeSettings => ImmutableDictionary<string, string>.Empty;
+        }
+
+        /// <summary>
+        /// A private implementation of <see cref="IProjectTreeActionHandlerContext"/> for use with
+        /// <see cref="IProjectTreeActionHandler"/> exports.
+        /// </summary>
+        private sealed class ProjectDependencyTreeRemovalActionHandlerContext : IProjectTreeActionHandlerContext
+        {
+            public IProjectTreeProvider TreeProvider { get; }
+
+            public IProjectTreeActionHandler SuccessorHandlerDelegator => null!;
+
+            public ProjectDependencyTreeRemovalActionHandlerContext(IProjectTreeProvider treeProvider)
+            {
+                TreeProvider = treeProvider;
+            }
         }
     }
 }

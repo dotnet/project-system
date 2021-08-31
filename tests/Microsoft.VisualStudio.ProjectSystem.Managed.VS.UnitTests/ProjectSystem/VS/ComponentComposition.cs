@@ -108,7 +108,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                             contractsRequiringAppliesTo.Add(import.ImportDefinition.ContractName, contractTypes);
                         }
 
-                        contractTypes.Add(import.ImportingSiteElementType);
+                        if (null != import.ImportingSiteElementType)
+                        {
+                            contractTypes.Add(import.ImportingSiteElementType);
+                        }
                     }
                 }
             }
@@ -254,9 +257,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// </summary>
         private static bool IsAppliesToRequired(ImportDefinitionBinding import)
         {
-            Type metadataType = import.MetadataType;
             Type appliesToView = typeof(IAppliesToMetadataView);
-            return metadataType != null && appliesToView.IsAssignableFrom(appliesToView);
+            return import.MetadataType != null && appliesToView.IsAssignableFrom(appliesToView);
         }
     }
 }
