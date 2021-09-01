@@ -1,4 +1,9 @@
 {
+  "ignorePatterns": [
+    {
+      "pattern": "^https://devdiv.visualstudio.com"
+    }
+  ],
   "replacementPatterns": [
     {
       "pattern": "^/",
