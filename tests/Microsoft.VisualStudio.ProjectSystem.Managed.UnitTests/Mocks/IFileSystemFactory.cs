@@ -53,9 +53,6 @@ namespace Microsoft.VisualStudio.IO
 
             if (readAllTextFunc is not null)
             {
-                mock.Setup(f => f.ReadAllText(It.IsAny<string>()))
-                    .Returns(readAllTextFunc);
-
                 mock.Setup(f => f.ReadAllTextAsync(It.IsAny<string>()))
                     .Returns((Func<string, Task<string>>)(path => Task.FromResult(readAllTextFunc(path))));
             }

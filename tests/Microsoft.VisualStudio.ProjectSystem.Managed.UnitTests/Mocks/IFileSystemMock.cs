@@ -189,23 +189,9 @@ namespace Microsoft.VisualStudio.IO
             }
         }
 
-        public string ReadAllText(string path)
-        {
-            if (!FileExists(path))
-            {
-                throw new FileNotFoundException();
-            }
-            return Files[path].FileContents!;
-        }
-
         public Task<string> ReadAllTextAsync(string path)
         {
-            if (!Files.TryGetValue(path, out FileData fileData))
-            {
-                throw new FileNotFoundException();
-            }
-
-            return Task.FromResult(fileData.FileContents!);
+            return Task.FromResult(GetFileData(path).FileContents!);
         }
 
         public void WriteAllText(string path, string content)
@@ -288,12 +274,22 @@ namespace Microsoft.VisualStudio.IO
 
         public long FileLength(string filename)
         {
-            return ReadAllText(filename).Length;
+            return GetFileData(filename).FileContents!.Length;
         }
 
         public bool PathExists(string path)
         {
             throw new NotImplementedException();
+        }
+
+        private FileData GetFileData(string path)
+        {
+            if (!Files.TryGetValue(path, out FileData fileData))
+            {
+                throw new FileNotFoundException();
+            }
+
+            return fileData;
         }
     }
 }

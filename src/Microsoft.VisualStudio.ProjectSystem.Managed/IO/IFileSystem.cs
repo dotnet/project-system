@@ -24,7 +24,6 @@ namespace Microsoft.VisualStudio.IO
         bool FileExists(string path);
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
-        string ReadAllText(string path);
         Task<string> ReadAllTextAsync(string path);
         void WriteAllText(string path, string content);
         void WriteAllText(string path, string content, Encoding encoding);

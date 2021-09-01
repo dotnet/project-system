@@ -47,11 +47,6 @@ namespace Microsoft.VisualStudio.IO
             File.Copy(source, destination, overwrite);
         }
 
-        public string ReadAllText(string path)
-        {
-            return File.ReadAllText(path);
-        }
-
         public async Task<string> ReadAllTextAsync(string path)
         {
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
