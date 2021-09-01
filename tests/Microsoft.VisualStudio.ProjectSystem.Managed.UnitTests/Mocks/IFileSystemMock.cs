@@ -51,12 +51,9 @@ namespace Microsoft.VisualStudio.IO
 
         public Dictionary<string, FileData> Files { get; } = new Dictionary<string, FileData>(StringComparer.OrdinalIgnoreCase);
 
-        public Stream Create(string path)
+        public void Create(string path)
         {
-            WriteAllText(path, "");
-
-            // Caller does not check the return value.
-            return null!;
+            _ = WriteAllTextAsync(path, "");
         }
 
         public void AddFile(string path, DateTime? lastWriteTime = null)

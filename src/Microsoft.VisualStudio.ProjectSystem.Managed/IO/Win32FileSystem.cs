@@ -19,9 +19,9 @@ namespace Microsoft.VisualStudio.IO
     {
         private static readonly DateTime s_minFileTime = DateTime.FromFileTimeUtc(0);
 
-        public Stream Create(string path)
+        public void Create(string path)
         {
-            return File.Create(path);
+            File.Create(path).Dispose();
         }
 
         public bool FileExists(string path)

@@ -510,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
-                _fileSystem.WriteAllText(fileName, jsonString);
+                await _fileSystem.WriteAllTextAsync(fileName, jsonString);
 
                 // Update the last write time
                 LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);

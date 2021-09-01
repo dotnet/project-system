@@ -65,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
                 // Make sure it is valid data before we write to the file (will throw on failure, we don't need the returned data)
                 VersionCompatibilityData.DeserializeVersionData(downLoadedVersionData);
-                _fileSystem.WriteAllText(_cacheFilePath, downLoadedVersionData);
+                await _fileSystem.WriteAllTextAsync(_cacheFilePath, downLoadedVersionData);
                 callBackOnSuccess?.Invoke();
             }
             catch

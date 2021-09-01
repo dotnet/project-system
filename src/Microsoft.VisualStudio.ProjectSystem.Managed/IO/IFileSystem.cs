@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.IO
     [ProjectSystemContract(ProjectSystemContractScope.Global, ProjectSystemContractProvider.Private, Cardinality = ImportCardinality.ExactlyOne)]
     internal interface IFileSystem
     {
-        Stream Create(string path);
+        void Create(string path);
 
         bool PathExists(string path);
 

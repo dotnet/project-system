@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
             await provider.UpdateProfilesAsyncTest(null);
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider1 = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider1.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider1.LaunchSettingsFile, JsonString1);
 
             // Change the value of activeDebugProfile to web it should be the active one. Simulates a change
             // on disk doesn't affect active profile
@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
             await provider.UpdateProfilesAsyncTest(null);
             provider.SetNextVersionTest(123);
 
@@ -150,10 +150,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
             await provider.UpdateProfilesAsyncTest(null);
 
-            moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, BadJsonString);
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
             Assert.Empty(provider.CurrentSnapshot.GlobalSettings);
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, BadJsonString);
 
             await provider.UpdateProfilesAsyncTest("Docker");
             Assert.Single(provider.CurrentSnapshot.Profiles);
@@ -178,7 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
             var curProfiles = new Mock<ILaunchSettings>();
             curProfiles.Setup(m => m.Profiles).Returns(() =>
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
             var curProfiles = new Mock<ILaunchSettings>();
             curProfiles.Setup(m => m.Profiles).Returns(() =>
@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
 
             var curProfiles = new Mock<ILaunchSettings>();
             curProfiles.Setup(m => m.Profiles).Returns(() =>
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
             Assert.True(await provider.SettingsFileHasChangedAsyncTest());
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
             Assert.True(await provider.SettingsFileHasChangedAsyncTest());
             provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, BadJsonString);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, BadJsonString);
 
             await Assert.ThrowsAsync<JsonReaderException>(() =>
             {
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
 
             var launchSettings = await provider.ReadSettingsFileFromDiskTestAsync();
 
@@ -331,7 +331,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
 
             // Set the serialization provider
             SetJsonSerializationProviders(provider);
@@ -390,7 +390,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
             provider.SetNextVersionTest(123);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
             // Wait for completion of task
             await provider.LaunchSettingsFile_ChangedTest();
 
@@ -406,7 +406,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             using var provider = GetLaunchSettingsProvider(moqFS);
             string fileName = await provider.GetLaunchSettingsFilePathNoCacheAsync();
             // Write file and generate disk change
-            moqFS.WriteAllText(fileName, JsonString1);
+            await moqFS.WriteAllTextAsync(fileName, JsonString1);
 
             // Set the ignore flag. It should be ignored.
             provider.LastSettingsFileSyncTimeTest = DateTime.MinValue;
@@ -426,17 +426,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var moqFS = new IFileSystemMock();
             using var provider = GetLaunchSettingsProvider(moqFS);
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonString1);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonString1);
             await provider.LaunchSettingsFile_ChangedTest();
             Assert.Equal(4, provider.CurrentSnapshot.Profiles.Count);
 
             // Write new file, but set the timestamp to match
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             provider.LastSettingsFileSyncTimeTest = moqFS.GetLastFileWriteTimeOrMinValueUtc(provider.LaunchSettingsFile);
             Assert.Equal(provider.LaunchSettingsFile_ChangedTest(), Task.CompletedTask);
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 4);
 
-            moqFS.WriteAllText(provider.LaunchSettingsFile, JsonStringWithWebSettings);
+            await moqFS.WriteAllTextAsync(provider.LaunchSettingsFile, JsonStringWithWebSettings);
             await provider.LaunchSettingsFile_ChangedTest();
             AssertEx.CollectionLength(provider.CurrentSnapshot.Profiles, 2);
         }

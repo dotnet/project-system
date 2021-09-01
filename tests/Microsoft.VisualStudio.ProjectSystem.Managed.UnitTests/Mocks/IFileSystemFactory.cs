@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Moq;
 
@@ -24,11 +23,11 @@ namespace Microsoft.VisualStudio.IO
             return Mock.Of<IFileSystem>();
         }
 
-        public static IFileSystem ImplementCreate(Func<string, Stream> action)
+        public static IFileSystem ImplementCreate(Action<string> action)
         {
             var mock = new Mock<IFileSystem>();
             mock.Setup(f => f.Create(It.IsAny<string>()))
-                .Returns(action);
+                .Callback(action);
 
             return mock.Object;
         }
@@ -44,7 +43,6 @@ namespace Microsoft.VisualStudio.IO
 
         public static IFileSystem Create(
             Func<string, bool> existsFunc,
-            Func<string, FileStream>? createFunc = null,
             Func<string, string>? readAllTextFunc = null)
         {
             var mock = new Mock<IFileSystem>();
@@ -55,11 +53,6 @@ namespace Microsoft.VisualStudio.IO
             {
                 mock.Setup(f => f.ReadAllTextAsync(It.IsAny<string>()))
                     .Returns((Func<string, Task<string>>)(path => Task.FromResult(readAllTextFunc(path))));
-            }
-
-            if (createFunc is not null)
-            {
-                mock.Setup(f => f.Create(It.IsAny<string>())).Returns(createFunc);
             }
 
             return mock.Object;
