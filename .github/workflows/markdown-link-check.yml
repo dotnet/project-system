@@ -15,4 +15,4 @@ jobs:
       with:
         use-quiet-mode: 'yes'
         # https://github.com/tcort/markdown-link-check#config-file-format
-        config-file: 'markdown-link-check-config.json'
+        config-file: '.github/workflows/markdown-link-check-config.json'
