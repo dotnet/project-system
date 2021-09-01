@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.References
     internal class ReferenceCleanupService : IProjectSystemReferenceCleanupService2
     {
         private static readonly Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler> s_mapReferenceTypeToHandler =
-            new Dictionary<ProjectSystemReferenceType, AbstractReferenceHandler>
+            new()
             {
                 { ProjectSystemReferenceType.Project, new ProjectReferenceHandler() },
                 { ProjectSystemReferenceType.Package, new PackageReferenceHandler() },
