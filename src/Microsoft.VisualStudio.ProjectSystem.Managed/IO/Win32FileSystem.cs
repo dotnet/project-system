@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -91,11 +90,6 @@ namespace Microsoft.VisualStudio.IO
             return false;
         }
 
-        public long FileLength(string path)
-        {
-            return new FileInfo(path).Length;
-        }
-
         public bool DirectoryExists(string dirPath)
         {
             return Directory.Exists(dirPath);
@@ -106,55 +100,9 @@ namespace Microsoft.VisualStudio.IO
             Directory.CreateDirectory(dirPath);
         }
 
-        public void RemoveDirectory(string path, bool recursive)
-        {
-            Directory.Delete(path, recursive);
-        }
-
-        public void SetDirectoryAttribute(string path, FileAttributes newAttribute)
-        {
-            var di = new DirectoryInfo(path);
-            if ((di.Attributes & newAttribute) != newAttribute)
-            {
-                di.Attributes |= newAttribute;
-            }
-        }
-
-        public string GetCurrentDirectory()
-        {
-            return Directory.GetCurrentDirectory();
-        }
-
-        public void SetCurrentDirectory(string directory)
-        {
-            Directory.SetCurrentDirectory(directory);
-        }
-
         public string GetFullPath(string path)
         {
             return Path.GetFullPath(path);
-        }
-
-        public IEnumerable<string> EnumerateDirectories(string path)
-        {
-            return Directory.EnumerateDirectories(path);
-        }
-
-        public IEnumerable<string> EnumerateDirectories(string path, string searchPattern, SearchOption searchOption)
-        {
-            return Directory.EnumerateDirectories(path, searchPattern, searchOption);
-        }
-
-        public IEnumerable<string> EnumerateFiles(string path, string searchPattern, SearchOption searchOption)
-        {
-            return Directory.EnumerateFiles(path, searchPattern, searchOption);
-        }
-
-        public string GetTempDirectoryOrFileName()
-        {
-            string fileNameWithoutPath = Path.GetRandomFileName();
-
-            return Path.Combine(Path.GetTempPath(), fileNameWithoutPath);
         }
     }
 }
