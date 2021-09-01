@@ -37,19 +37,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// If the cached file exists reads the data and returns it as a string
         /// </summary>
-        public string? ReadCacheFile()
+        public async Task<string?> ReadCacheFileAsync()
         {
             try
             {
                 // If the cached file exists read it
                 if (_fileSystem.FileExists(_cacheFilePath))
                 {
-                    return _fileSystem.ReadAllText(_cacheFilePath);
+                    return await _fileSystem.ReadAllTextAsync(_cacheFilePath);
                 }
             }
             catch (System.IO.IOException)
             {
             }
+
             return null;
         }
 
