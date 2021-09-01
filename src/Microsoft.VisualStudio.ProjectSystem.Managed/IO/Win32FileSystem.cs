@@ -59,6 +59,13 @@ namespace Microsoft.VisualStudio.IO
             File.WriteAllText(path, content);
         }
 
+        public async Task WriteAllTextAsync(string path, string content)
+        {
+            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            using var writer = new StreamWriter(stream);
+            await writer.WriteAsync(content);
+        }
+
         public void WriteAllText(string path, string content, Encoding encoding)
         {
             File.WriteAllText(path, content, encoding);

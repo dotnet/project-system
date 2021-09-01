@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.IO
         void CopyFile(string source, string destination, bool overwrite);
         Task<string> ReadAllTextAsync(string path);
         void WriteAllText(string path, string content);
+        Task WriteAllTextAsync(string path, string content);
         void WriteAllText(string path, string content, Encoding encoding);
         void WriteAllBytes(string path, byte[] bytes);
 

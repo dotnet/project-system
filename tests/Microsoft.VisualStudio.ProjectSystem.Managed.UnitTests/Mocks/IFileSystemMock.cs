@@ -199,6 +199,12 @@ namespace Microsoft.VisualStudio.IO
             WriteAllText(path, content, Encoding.Default);
         }
 
+        public Task WriteAllTextAsync(string path, string content)
+        {
+            WriteAllText(path, content, Encoding.Default);
+            return Task.CompletedTask;
+        }
+
         public void WriteAllText(string path, string content, Encoding encoding)
         {
             if (Files.TryGetValue(path, out FileData data))
