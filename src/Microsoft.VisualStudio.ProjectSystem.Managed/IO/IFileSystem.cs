@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
@@ -25,10 +24,7 @@ namespace Microsoft.VisualStudio.IO
         void RemoveFile(string path);
         void CopyFile(string source, string destination, bool overwrite);
         Task<string> ReadAllTextAsync(string path);
-        void WriteAllText(string path, string content);
         Task WriteAllTextAsync(string path, string content);
-        void WriteAllText(string path, string content, Encoding encoding);
-        void WriteAllBytes(string path, byte[] bytes);
 
         /// <summary>
         ///     Return the date and time, in coordinated universal time (UTC), that the specified file or directory was last written to,

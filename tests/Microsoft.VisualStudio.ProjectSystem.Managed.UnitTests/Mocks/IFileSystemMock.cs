@@ -191,24 +191,13 @@ namespace Microsoft.VisualStudio.IO
             return Task.FromResult(GetFileData(path).FileContents!);
         }
 
-        public void WriteAllText(string path, string content)
-        {
-            WriteAllText(path, content, Encoding.Default);
-        }
-
         public Task WriteAllTextAsync(string path, string content)
-        {
-            WriteAllText(path, content, Encoding.Default);
-            return Task.CompletedTask;
-        }
-
-        public void WriteAllText(string path, string content, Encoding encoding)
         {
             if (Files.TryGetValue(path, out FileData data))
             {
                 // This makes sure each write to the file increases the timestamp
                 data.FileContents = content;
-                data.FileEncoding = encoding;
+                data.FileEncoding = Encoding.Default;
                 data.SetLastWriteTime();
             }
             else
@@ -216,10 +205,12 @@ namespace Microsoft.VisualStudio.IO
                 Files[path] = new FileData
                 {
                     FileContents = content,
-                    FileEncoding = encoding,
+                    FileEncoding = Encoding.Default,
                     LastWriteTimeUtc = DateTime.UtcNow
                 };
             }
+
+            return Task.CompletedTask;
         }
 
         public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
@@ -269,10 +260,6 @@ namespace Microsoft.VisualStudio.IO
         public string GetTempDirectoryOrFileName()
         {
             return _tempFile!;
-        }
-
-        public void WriteAllBytes(string path, byte[] bytes)
-        {
         }
 
         public long FileLength(string filename)

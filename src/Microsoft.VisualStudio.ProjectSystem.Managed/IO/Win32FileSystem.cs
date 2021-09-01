@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.IO
@@ -54,26 +53,11 @@ namespace Microsoft.VisualStudio.IO
             return await reader.ReadToEndAsync();
         }
 
-        public void WriteAllText(string path, string content)
-        {
-            File.WriteAllText(path, content);
-        }
-
         public async Task WriteAllTextAsync(string path, string content)
         {
             using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
             using var writer = new StreamWriter(stream);
             await writer.WriteAsync(content);
-        }
-
-        public void WriteAllText(string path, string content, Encoding encoding)
-        {
-            File.WriteAllText(path, content, encoding);
-        }
-
-        public void WriteAllBytes(string path, byte[] bytes)
-        {
-            File.WriteAllBytes(path, bytes);
         }
 
         public DateTime GetLastFileWriteTimeOrMinValueUtc(string path)
