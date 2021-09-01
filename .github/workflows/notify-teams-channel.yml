@@ -2,7 +2,7 @@ name: notify-teams-channel
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, ready_for_review]
   issues:
     types: [opened, reopened]
 
