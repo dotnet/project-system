@@ -12,3 +12,7 @@ jobs:
 
     - name: Validate Markdown links
       uses: gaurav-nelson/github-action-markdown-link-check@9710f0fec812ce0a3b98bef4c9d842fc1f39d976
+      with:
+        use-quiet-mode: 'yes'
+        # https://github.com/tcort/markdown-link-check#config-file-format
+        config-file: 'markdown-link-check-config.json'
