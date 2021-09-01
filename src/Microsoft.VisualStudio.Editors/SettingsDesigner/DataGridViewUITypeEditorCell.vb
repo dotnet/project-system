@@ -282,6 +282,23 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             End Get
         End Property
 
-    End Class
+        Protected Overrides Function CreateAccessibilityInstance() As AccessibleObject
+            Return New DerivedClass(Me)
+        End Function
 
+        Protected Class DerivedClass
+            Inherits DataGridViewCellAccessibleObject
+
+            Public Sub New(owner As DataGridViewCell)
+                MyBase.New(owner)
+            End Sub
+
+            Public Overrides ReadOnly Property Role As AccessibleRole
+                Get
+                    Return AccessibleRole.Cell
+                End Get
+            End Property
+        End Class
+
+    End Class
 End Namespace
