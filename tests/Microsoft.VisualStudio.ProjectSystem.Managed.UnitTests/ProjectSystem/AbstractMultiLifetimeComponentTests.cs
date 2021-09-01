@@ -160,7 +160,16 @@ namespace Microsoft.VisualStudio.ProjectSystem
         }
 
         [Fact]
-        public async Task Dispose_WhenLoaded_DisposesUnderlyingInstance()
+        public async Task DisposeAsync_WhenNotLoaded_DoesNothing()
+        {
+            var component = CreateInstance();
+            await component.DisposeAsync();
+
+            Assert.True(component.IsDisposed);
+        }
+
+        [Fact]
+        public async Task DisposeAsync_WhenLoaded_DisposesUnderlyingInstance()
         {
             var component = CreateInstance();
 

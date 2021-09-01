@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         }
 
         [Fact]
-        public async Task DisposedAsync_WhenInitialized_DoesNotThrow()
+        public async Task DisposeAsync_WhenInitialized_DoesNotThrow()
         {
             var registrar = await CreateInitializedInstanceAsync();
 

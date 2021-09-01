@@ -187,7 +187,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             void ApplyProjectBuild(IProjectVersionedValue<IProjectSubscriptionUpdate> _, IProjectBuildSnapshot buildSnapshot, ContextState __, CancellationToken cancellationToken)
             {
                 // Dispose the instance underneath us
-                instance!.DisposeAsync();
+                instance!.DisposeAsync().Wait();
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
@@ -195,7 +195,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             void ApplyProjectEvaluation(IProjectVersionedValue<IProjectSubscriptionUpdate> _, ContextState __, CancellationToken cancellationToken)
             {
                 // Dispose the instance underneath us
-                instance!.DisposeAsync();
+                instance!.DisposeAsync().Wait();
 
                 cancellationToken.ThrowIfCancellationRequested();
             }

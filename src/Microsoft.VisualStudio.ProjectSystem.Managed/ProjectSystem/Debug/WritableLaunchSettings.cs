@@ -33,8 +33,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                     else
                     {
                         string jsonString = JsonConvert.SerializeObject(value, Formatting.Indented, jsonSerializerSettings);
-                        object clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
-                        GlobalSettings.Add(key, clonedObject);
+                        object? clonedObject = JsonConvert.DeserializeObject(jsonString, value.GetType());
+                        if (clonedObject is not null)
+                        {
+                            GlobalSettings.Add(key, clonedObject);
+                        }
                     }
                 }
             }

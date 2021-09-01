@@ -429,21 +429,24 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
             var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties) };
             var jsonObject = JObject.Parse(jsonString);
-            foreach ((string key, JToken jToken) in jsonObject)
+            foreach ((string key, JToken? jToken) in jsonObject)
             {
                 if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
                 {
                     Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
                     launchSettingsData.Profiles = FixUpProfilesAndLogErrors(profiles);
                 }
-                else
+                else if (jToken is not null)
                 {
                     // Find the matching json serialization handler for this section
                     Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
                     if (handler != null)
                     {
-                        object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
-                        launchSettingsData.OtherSettings.Add(key, sectionObject);
+                        object? sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
+                        if (sectionObject is not null)
+                        {
+                            launchSettingsData.OtherSettings.Add(key, sectionObject);
+                        }
                     }
                     else
                     {
