@@ -33,6 +33,26 @@
                 HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
                 Category="General" />
 
+  <EnumProperty Name="FSharpPreferNetFrameworkTools"
+              DisplayName="Framework tools"
+              Description="Compiler to use when building the project"
+              Category="General">
+    <EnumValue Name="true"
+             DisplayName=".NET Framework" />
+    <EnumValue Name="false"
+             DisplayName=".NET SDK" />
+  </EnumProperty>
+
+  <EnumProperty Name="FSharpPrefer64BitTools"
+            DisplayName="Perfer 64 bit tools"
+            Description="Use a 64 bit or 32 bit version of the compiler when available"
+            Category="General">
+    <EnumValue Name="false"
+           DisplayName="32 bit compiler" />
+    <EnumValue Name="true"
+           DisplayName="64 bit compiler" />
+  </EnumProperty>
+
   <EnumProperty Name="DebugType"
               DisplayName="Debug symbols"
               Description="Specifies the kind of debug symbols produced during build."
