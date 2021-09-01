@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.IO
 {
@@ -49,6 +50,13 @@ namespace Microsoft.VisualStudio.IO
         public string ReadAllText(string path)
         {
             return File.ReadAllText(path);
+        }
+
+        public async Task<string> ReadAllTextAsync(string path)
+        {
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            using var reader = new StreamReader(stream);
+            return await reader.ReadToEndAsync();
         }
 
         public void WriteAllText(string path, string content)

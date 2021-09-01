@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Microsoft.VisualStudio.IO
 {
@@ -195,6 +196,16 @@ namespace Microsoft.VisualStudio.IO
                 throw new FileNotFoundException();
             }
             return Files[path].FileContents!;
+        }
+
+        public Task<string> ReadAllTextAsync(string path)
+        {
+            if (!Files.TryGetValue(path, out FileData fileData))
+            {
+                throw new FileNotFoundException();
+            }
+
+            return Task.FromResult(fileData.FileContents!);
         }
 
         public void WriteAllText(string path, string content)

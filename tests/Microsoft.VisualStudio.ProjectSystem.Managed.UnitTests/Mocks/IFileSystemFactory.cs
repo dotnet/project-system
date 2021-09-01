@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Moq;
 
 namespace Microsoft.VisualStudio.IO
@@ -49,9 +50,17 @@ namespace Microsoft.VisualStudio.IO
             var mock = new Mock<IFileSystem>();
 
             mock.Setup(f => f.FileExists(It.IsAny<string>())).Returns(existsFunc);
-            mock.Setup(f => f.ReadAllText(It.IsAny<string>())).Returns(readAllTextFunc);
 
-            if (createFunc != null)
+            if (readAllTextFunc is not null)
+            {
+                mock.Setup(f => f.ReadAllText(It.IsAny<string>()))
+                    .Returns(readAllTextFunc);
+
+                mock.Setup(f => f.ReadAllTextAsync(It.IsAny<string>()))
+                    .Returns((Func<string, Task<string>>)(path => Task.FromResult(readAllTextFunc(path))));
+            }
+
+            if (createFunc is not null)
             {
                 mock.Setup(f => f.Create(It.IsAny<string>())).Returns(createFunc);
             }
