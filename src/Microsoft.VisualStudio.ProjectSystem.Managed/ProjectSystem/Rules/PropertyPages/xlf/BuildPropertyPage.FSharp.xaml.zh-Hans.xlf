@@ -53,8 +53,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FSharpPrefer64BitTools|DisplayName">
-        <source>Perfer 64 bit tools</source>
-        <target state="new">Perfer 64 bit tools</target>
+        <source>Prefer 64 bit tools</source>
+        <target state="new">Prefer 64 bit tools</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FSharpPreferNetFrameworkTools|Description">
