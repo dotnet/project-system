@@ -44,7 +44,7 @@
   </EnumProperty>
 
   <EnumProperty Name="FSharpPrefer64BitTools"
-            DisplayName="Perfer 64 bit tools"
+            DisplayName="Prefer 64 bit tools"
             Description="Use a 64 bit or 32 bit version of the compiler when available"
             Category="General">
     <EnumValue Name="false"
