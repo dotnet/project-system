@@ -29,6 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             return _fileSystem.GetLastFileWriteTimeOrMinValueUtc(_cacheFilePath).Add(_cacheExpiration) < DateTime.UtcNow;
         }
 
+        public bool CacheFileExists()
+        {
+            return _fileSystem.FileExists(_cacheFilePath);
+        }
+
         /// <summary>
         /// If the cached file exists reads the data and returns it as a string
         /// </summary>

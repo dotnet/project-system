@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                     await TaskScheduler.Default;
 
                     // First make sure that the cache file exists
-                    if (_versionDataCacheFile != null && _versionDataCacheFile.ReadCacheFile() is null)
+                    if (_versionDataCacheFile != null && !_versionDataCacheFile.CacheFileExists())
                     {
                         await _versionDataCacheFile.TryToUpdateCacheFileAsync();
                     }
