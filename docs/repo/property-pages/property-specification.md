@@ -109,12 +109,12 @@ Here is a complex example of a string property that demonstrates the majority of
 
 Breaking this down:
 
-- The outer element specifies the [property type](#Property-Types) (`StringProperty` in this example).
+- The outer element specifies the [property type](#property-types) (`StringProperty` in this example).
 - `DisplayName` and `Description` are localised values that will appear in the UI.
 - `HelpUrl` is an optional URL that causes a help icon to appear next to the property's name. For Microsoft components, this should be a fwlink, to allow fixing dead links in future.
 - `Category` is an optional string that must match the `Name` of a declared category (see above). If omitted, the property is assigned category `General`.
 - This property defines some optional metadata values:
-  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#Property-Dependencies))
+  - `DependsOn` (optional) lists properties that may influence this property's values (see [Property Dependencies](#property-dependencies))
   - `VisibilityCondition` (optional) holds an expression that the UI will use to determine whether the property should be visible (see [Visibility Conditions](visibility-conditions.md))
 
 ## Property Types
