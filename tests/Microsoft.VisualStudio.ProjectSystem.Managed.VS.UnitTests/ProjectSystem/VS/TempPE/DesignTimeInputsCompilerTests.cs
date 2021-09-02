@@ -29,7 +29,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.TempPE
         private readonly DesignTimeInputsCompiler _manager;
 
         // For tracking compilation events that occur, to verify
-        private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new List<(string, string[])>();
+        private readonly List<(string OutputFileName, string[] SourceFiles)> _compilationResults = new();
         private TaskCompletionSource? _compilationOccurredCompletionSource;
         private int _expectedCompilations;
         private Func<string, ISet<string>, bool> _compilationCallback;
