@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
             try
             {
                 // If the cached file exists read it
-                if (_fileSystem.FileExists(_cacheFilePath))
+                if (CacheFileExists())
                 {
                     return await _fileSystem.ReadAllTextAsync(_cacheFilePath);
                 }
