@@ -423,27 +423,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            string jsonString = _fileSystem.ReadAllText(fileName);
+            string jsonString = await _fileSystem.ReadAllTextAsync(fileName);
 
             // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
             var launchSettingsData = new LaunchSettingsData() { OtherSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties) };
             var jsonObject = JObject.Parse(jsonString);
-            foreach ((string key, JToken jToken) in jsonObject)
+            foreach ((string key, JToken? jToken) in jsonObject)
             {
                 if (key.Equals(ProfilesSectionName, StringComparisons.LaunchSettingsPropertyNames) && jToken is JObject jObject)
                 {
                     Dictionary<string, LaunchProfileData> profiles = LaunchProfileData.DeserializeProfiles(jObject);
                     launchSettingsData.Profiles = FixUpProfilesAndLogErrors(profiles);
                 }
-                else
+                else if (jToken is not null)
                 {
                     // Find the matching json serialization handler for this section
                     Lazy<ILaunchSettingsSerializationProvider, IJsonSection> handler = JsonSerializationProviders.FirstOrDefault(sp => string.Equals(sp.Metadata.JsonSection, key));
                     if (handler != null)
                     {
-                        object sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
-                        launchSettingsData.OtherSettings.Add(key, sectionObject);
+                        object? sectionObject = JsonConvert.DeserializeObject(jToken.ToString(), handler.Metadata.SerializationType);
+                        if (sectionObject is not null)
+                        {
+                            launchSettingsData.OtherSettings.Add(key, sectionObject);
+                        }
                     }
                     else
                     {
@@ -507,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
-                _fileSystem.WriteAllText(fileName, jsonString);
+                await _fileSystem.WriteAllTextAsync(fileName, jsonString);
 
                 // Update the last write time
                 LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);

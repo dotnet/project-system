@@ -27,7 +27,7 @@
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.8.0-5.final" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.11.0" />
     <PackageReference Update="OpenCover"                                                              Version="4.6.519" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
@@ -59,8 +59,8 @@
     <PackageReference Update="Microsoft.VisualStudio.Shell.Design"                                    Version="17.0.0-previews-2-31421-281" />
     <PackageReference Update="Microsoft.VisualStudio.Shell.Framework"                                 Version="17.0.0-previews-2-31421-281" />
     <PackageReference Update="Microsoft.VisualStudio.TemplateWizardInterface"                         Version="17.0.0-preview-2-31223-026" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.0.26-alpha" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.0.26-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading"                                       Version="17.0.39-alpha" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers"                             Version="17.0.39-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.Utilities"                                       Version="17.0.0-previews-2-31421-281" />
     <PackageReference Update="Microsoft.VisualStudio.Validation"                                      Version="17.0.12-alpha" />
     <PackageReference Update="Microsoft.VisualStudio.XmlEditor"                                       Version="17.0.0-preview-2-31223-026" />
@@ -71,10 +71,10 @@
     <PackageReference Include="StreamJsonRpc"                                                         Version="2.8.21" />
 
     <!-- CPS -->
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.788-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.0.788-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.788-pre" />
-    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.788-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem"                                   Version="17.0.1036-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Analyzers"                         Version="17.0.1036-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.Query"                             Version="17.0.1036-pre" />
+    <PackageReference Update="Microsoft.VisualStudio.ProjectSystem.SDK.Tools"                         Version="17.0.1036-pre" />
 
     <!-- Roslyn -->
     <PackageReference Update="Microsoft.VisualStudio.LanguageServices"                                Version="4.0.0-2.21302.13" />
@@ -84,8 +84,8 @@
 
     <!-- Analyzers -->
     <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
-    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.11.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.11.0" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.2" />
 
     <!-- NuGet -->
@@ -99,7 +99,7 @@
     <PackageReference Update="Microsoft.VisualStudio.HotReload.Components"                            Version="6.0.0-preview.6.21380.4" />
 
     <!-- 3rd party -->
-    <PackageReference Update="Newtonsoft.Json"                                                        Version="12.0.2"/>
+    <PackageReference Update="Newtonsoft.Json"                                                        Version="13.0.1"/>
 
     <!-- Tests -->
     <PackageReference Update="Moq"                                                                    Version="4.12.0"/>

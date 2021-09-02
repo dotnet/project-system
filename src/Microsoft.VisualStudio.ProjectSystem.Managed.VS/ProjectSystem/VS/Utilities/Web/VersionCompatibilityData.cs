@@ -46,10 +46,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         [JsonProperty(PropertyName = "openUnsupportedMessage")]
         public string? OpenUnsupportedMessage { get; set; }
 
-        public static Dictionary<Version, VersionCompatibilityData> DeserializeVersionData(string versionDataString)
+        public static Dictionary<Version, VersionCompatibilityData>? DeserializeVersionData(string versionDataString)
         {
             var vsVersionsObject = JObject.Parse(versionDataString);
-            JToken vsVersions = vsVersionsObject.GetValue("vsVersions");
+            
+            JToken? vsVersions = vsVersionsObject.GetValue("vsVersions");
+            
+            if (vsVersions is null)
+            {
+                return null;
+            }
+
             return JsonConvert.DeserializeObject<Dictionary<Version, VersionCompatibilityData>>(vsVersions.ToString());
         }
     }
