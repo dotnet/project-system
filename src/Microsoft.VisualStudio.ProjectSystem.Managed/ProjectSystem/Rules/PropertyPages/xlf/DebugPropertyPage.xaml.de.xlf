@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">Die Verwaltung von Startprofilen ist in ein dediziertes Dialogfeld verschoben. Sie können über den nachstehenden Link auf sie zugreifen.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="needs-review-translation">Die Verwaltung von Startprofilen ist in ein dediziertes Dialogfeld verschoben. Sie können über den nachstehenden Link auf sie zugreifen.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">

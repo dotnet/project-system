@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">Správa profilů spouštění se přesunula do samostatného okna. Přístup k němu získáte přes níže uvedený odkaz.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="needs-review-translation">Správa profilů spouštění se přesunula do samostatného okna. Přístup k němu získáte přes níže uvedený odkaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
