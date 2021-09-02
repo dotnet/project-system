@@ -377,7 +377,8 @@
   <!-- This target is used to collect the SuggestedWorkload items in the project.-->
   <Target Name="CollectSuggestedWorkloads"
           Returns="@(SuggestedWorkload)"
-          DependsOnTargets="GetSuggestedWorkloads" />
+          DependsOnTargets="GetSuggestedWorkloads"
+          Condition="'$(UsingMicrosoftNETSdk)' == 'true'" />
 
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
