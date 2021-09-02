@@ -27,7 +27,7 @@
     <PackageReference Update="RoslynDependencies.ProjectSystem.OptimizationData"                      Version="$(RoslynDependenciesProjectSystemOptimizationDataVersion)" />
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
-    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.8.0-5.final" />
+    <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.11.0" />
     <PackageReference Update="OpenCover"                                                              Version="4.6.519" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
@@ -84,8 +84,8 @@
 
     <!-- Analyzers -->
     <PackageReference Update="Microsoft.CodeAnalysis.Analyzers"                                       Version="3.3.2" />
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.8.0-4.final" />
-    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.8.0-4.final" />
+    <PackageReference Update="Microsoft.CodeAnalysis.CSharp.CodeStyle"                                Version="3.11.0" />
+    <PackageReference Update="Microsoft.CodeAnalysis.VisualBasic.CodeStyle"                           Version="3.11.0" />
     <PackageReference Update="Roslyn.Diagnostics.Analyzers"                                           Version="3.3.2" />
 
     <!-- NuGet -->

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio
 {
@@ -53,8 +52,7 @@ namespace Microsoft.VisualStudio
             return false;
         }
 
-        [return: MaybeNull]
-        public static T FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? FirstOrDefault<T, TArg>(this ImmutableArray<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in source)
             {
@@ -62,7 +60,7 @@ namespace Microsoft.VisualStudio
                     return obj;
             }
 
-            return default!;
+            return default;
         }
     }
 }
