@@ -60,7 +60,7 @@ The metadata of a property is immutable and will not change over time. It is mod
 1. `HelpUrl` an optional URL for documentation about the property.
 1. `VisibilityCondition` an optional expression that controls when the property is visible or hidden from view. See [visibility conditions](visibility-conditions.md).
 
-This metadata comes from XAML rule files deployed with the project system.
+This metadata comes from XAML rule files deployed with the project system. For information on authoring such metadata, see [Property Specification](property-specification.md).
 
 ### State
 
