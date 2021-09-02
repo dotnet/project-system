@@ -423,7 +423,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             string fileName = await GetLaunchSettingsFilePathAsync();
 
-            string jsonString = _fileSystem.ReadAllText(fileName);
+            string jsonString = await _fileSystem.ReadAllTextAsync(fileName);
 
             // Since the sections in the settings file are extensible we iterate through each one and have the appropriate provider
             // serialize their section. Unfortunately, this means the data is string to object which is messy to deal with
@@ -510,7 +510,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
                 string jsonString = JsonConvert.SerializeObject(serializationData, Formatting.Indented, settings);
 
                 IgnoreFileChanges = true;
-                _fileSystem.WriteAllText(fileName, jsonString);
+                await _fileSystem.WriteAllTextAsync(fileName, jsonString);
 
                 // Update the last write time
                 LastSettingsFileSyncTimeUtc = _fileSystem.GetLastFileWriteTimeOrMinValueUtc(fileName);

@@ -37,19 +37,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
         /// <summary>
         /// If the cached file exists reads the data and returns it as a string
         /// </summary>
-        public string? ReadCacheFile()
+        public async Task<string?> ReadCacheFileAsync()
         {
             try
             {
                 // If the cached file exists read it
-                if (_fileSystem.FileExists(_cacheFilePath))
+                if (CacheFileExists())
                 {
-                    return _fileSystem.ReadAllText(_cacheFilePath);
+                    return await _fileSystem.ReadAllTextAsync(_cacheFilePath);
                 }
             }
             catch (System.IO.IOException)
             {
             }
+
             return null;
         }
 
@@ -64,7 +65,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Utilities
 
                 // Make sure it is valid data before we write to the file (will throw on failure, we don't need the returned data)
                 VersionCompatibilityData.DeserializeVersionData(downLoadedVersionData);
-                _fileSystem.WriteAllText(_cacheFilePath, downLoadedVersionData);
+                await _fileSystem.WriteAllTextAsync(_cacheFilePath, downLoadedVersionData);
                 callBackOnSuccess?.Invoke();
             }
             catch
