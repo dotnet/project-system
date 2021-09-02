@@ -108,8 +108,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // do not block package initialization on this
                 _threadHandling.Value.RunAndForget(async () =>
                 {
+                    // Perform file IO on the thread pool
+                    await TaskScheduler.Default;
+
                     // First make sure that the cache file exists
-                    if (_versionDataCacheFile != null && _versionDataCacheFile.ReadCacheFile() is null)
+                    if (_versionDataCacheFile != null && !_versionDataCacheFile.CacheFileExists())
                     {
                         await _versionDataCacheFile.TryToUpdateCacheFileAsync();
                     }
