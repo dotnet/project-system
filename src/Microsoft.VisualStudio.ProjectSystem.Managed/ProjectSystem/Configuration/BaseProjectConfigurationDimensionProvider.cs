@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Build;
+using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.Configuration
 {
@@ -66,9 +67,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
         /// </summary>
         /// <param name="project"><see cref="Project"/>.</param>
         /// <returns>Collection of values for the dimension.</returns>
-        /// <remarks>
-        /// From <see cref="IProjectConfigurationDimensionsProvider5"/>.
-        /// </remarks>
         private ImmutableArray<string> GetOrderedPropertyValues(Project project)
         {
             Requires.NotNull(project, nameof(project));
@@ -107,8 +105,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             else
             {
                 // First value is the default one.
-                KeyValuePair<string, string>[]? dimensionValues = new[] { new KeyValuePair<string, string>(DimensionName, values[0]) };
-                return dimensionValues.AsEnumerable();
+                return new[] { new KeyValuePair<string, string>(DimensionName, values[0]) };
             }
         }
 
@@ -133,8 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             }
             else
             {
-                KeyValuePair<string, IEnumerable<string>>[]? dimensionValues = new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
-                return dimensionValues.AsEnumerable();
+                return new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
             }
         }
 
@@ -220,12 +216,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Configuration
             ImmutableArray<string> values = GetOrderedPropertyValues(project);
             if (values.IsEmpty)
             {
-                return Task.FromResult(Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>());
+                return TaskResult.EmptyEnumerable<KeyValuePair<string, IEnumerable<string>>>();
             }
             else
             {
-                KeyValuePair<string, IEnumerable<string>>[]? dimensionValues = new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
-                return Task.FromResult(dimensionValues.AsEnumerable());
+                IEnumerable<KeyValuePair<string, IEnumerable<string>>> dimensionValues = new[] { new KeyValuePair<string, IEnumerable<string>>(DimensionName, values) };
+                return Task.FromResult(dimensionValues);
             }
         }
 
