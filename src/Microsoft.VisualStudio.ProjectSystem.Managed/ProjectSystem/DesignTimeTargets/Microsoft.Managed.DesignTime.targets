@@ -378,7 +378,7 @@
   <Target Name="CollectSuggestedWorkloads"
           Returns="@(SuggestedWorkload)"
           DependsOnTargets="GetSuggestedWorkloads"
-          Condition="'$(UsingMicrosoftNETSdk)' == 'true'" />
+          Condition="'@(MissingWorkloadPack)' != '' And '$(UsingMicrosoftNETSdk)' == 'true'" />
 
   <!-- Validates that the correct properties have been set for design-time compiles  -->
   <Target Name="_CheckCompileDesignTimePrerequisite">
