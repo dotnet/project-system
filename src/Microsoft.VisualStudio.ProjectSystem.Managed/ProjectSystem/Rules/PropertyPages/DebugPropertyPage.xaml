@@ -15,7 +15,7 @@
 
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.">
+                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
