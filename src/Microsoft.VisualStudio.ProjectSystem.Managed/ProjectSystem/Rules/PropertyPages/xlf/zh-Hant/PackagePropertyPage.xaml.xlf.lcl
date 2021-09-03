@@ -237,19 +237,25 @@
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          <Val><![CDATA[The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[從套件根路徑到圖示檔案的相對路徑。除了設定此屬性之外，您還需要確認檔案已包含在套件中。影像檔大小限制為 1 MB。支援的檔案格式包括 JPEG 及 PNG。建議使用 128x128 的影像解析度。]]></Val>
+            <Val><![CDATA[套件的圖示影像。影像檔案大小限制為 1 MB。支援的檔案格式包括 JPEG 和 PNG。建議使用 128x128 的影像解析度。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Icon file]]></Val>
+          <Val><![CDATA[Icon]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[圖示檔案]]></Val>
+            <Val><![CDATA[圖示]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Icon file]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -312,6 +318,24 @@
           <Val><![CDATA[Project URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[專案 URL]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The README document for the package. Must be a Markdown (.md) file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[套件的讀我檔案文件。必須是 Markdown (.md) 檔案。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[README]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[讀我檔案]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

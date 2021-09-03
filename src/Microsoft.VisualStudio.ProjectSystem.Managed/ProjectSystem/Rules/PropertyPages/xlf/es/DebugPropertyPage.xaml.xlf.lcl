@@ -30,10 +30,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[La administración de los perfiles de inicio se ha trasladado a un diálogo específico. Se puede acceder a él a través del siguiente vínculo.]]></Val>
+            <Val><![CDATA[La administración de perfiles de inicio se ha movido a un cuadro de diálogo dedicado. Se puede acceder a él a través del vínculo siguiente, del menú Depurar de la barra de menús, o bien mediante el comando Destino de depuración de la barra de herramientas estándar.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

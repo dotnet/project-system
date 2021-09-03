@@ -30,10 +30,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[啟動設定檔的管理已移至專用對話方塊。可透過下方連結加以存取。]]></Val>
+            <Val><![CDATA[啟動設定檔的管理已移至專用對話方塊。您可以透過下列連結、透過功能表列中的偵錯功能表，或透過標準工具列上的偵錯目標命令來存取它。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
