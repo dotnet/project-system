@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="pt-BR" original="../CodeAnalysisPropertyPage.xaml">
+    <body>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|Description">
+        <source>Run .NET analyzers to help with API usage.</source>
+        <target state="new">Run .NET analyzers to help with API usage.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnableNETAnalyzers|DisplayName">
+        <source>Enable .NET analyzers</source>
+        <target state="new">Enable .NET analyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|Description">
+        <source>Produce diagnostics about code style on build.</source>
+        <target state="new">Produce diagnostics about code style on build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
+        <source>Enforce code style on build (experimental)</source>
+        <target state="new">Enforce code style on build (experimental)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">
+        <source>Always run code analysis on build.</source>
+        <target state="new">Always run code analysis on build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|DisplayName">
+        <source>Run on build</source>
+        <target state="new">Run on build</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|Description">
+        <source>Run code analysis live in the editor as you type.</source>
+        <target state="new">Run code analysis live in the editor as you type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|DisplayName">
+        <source>Run on live analysis</source>
+        <target state="new">Run on live analysis</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|AllAnalyzers|DisplayName">
+        <source>All analyzers</source>
+        <target state="new">All analyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|NetAnalyzers|DisplayName">
+        <source>.NET analyzers</source>
+        <target state="new">.NET analyzers</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|Description">
+        <source>The set of analyzers that should be run in the project.</source>
+        <target state="new">The set of analyzers that should be run in the project.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|AnalysisLevel|DisplayName">
+        <source>Analysis level</source>
+        <target state="new">Analysis level</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
+        <source>5.0</source>
+        <target state="new">5.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
+        <source>6.0</source>
+        <target state="new">6.0</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
+        <source>Latest</source>
+        <target state="new">Latest</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
+        <source>None</source>
+        <target state="new">None</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
+        <source>Preview</source>
+        <target state="new">Preview</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|Description">
+        <source>Settings</source>
+        <target state="new">Settings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Rule|CodeAnalysisPropertyPage|DisplayName">
+        <source>Code Analysis</source>
+        <target state="new">Code Analysis</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

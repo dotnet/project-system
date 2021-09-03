@@ -4,7 +4,7 @@
       Description="Debug"
       DisplayName="Debug"
       PageTemplate="generic"
-      Order="500"
+      Order="1000"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
