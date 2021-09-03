@@ -1,6 +1,6 @@
 ---
 name: Branch checklist
-about: An outline of the steps needed to create a new branch
+about: An outline of the steps needed to create a new branch (internal use)
 title: Create [BRANCH NAME] branch checklist
 labels: Area-Infrastructure
 assignees: ''
