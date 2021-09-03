@@ -47,14 +47,14 @@ namespace Microsoft.VisualStudio.IO
 
         public async Task<string> ReadAllTextAsync(string path)
         {
-            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true);
             using var reader = new StreamReader(stream);
             return await reader.ReadToEndAsync();
         }
 
         public async Task WriteAllTextAsync(string path, string content)
         {
-            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize: 4096, useAsync: true);
             using var writer = new StreamWriter(stream);
             await writer.WriteAsync(content);
         }
