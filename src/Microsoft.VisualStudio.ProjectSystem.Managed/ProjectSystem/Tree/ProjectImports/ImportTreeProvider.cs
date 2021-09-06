@@ -215,8 +215,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                             IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 node)
                             {
-                                var existingChildByPath = new Dictionary<string, IProjectTree2>(StringComparers.Paths);
-
                                 foreach (IProjectTree2 existingNode in node.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
@@ -229,16 +227,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                             node = (IProjectTree2)child.Remove();
                                         }
                                     }
-                                    else
-                                    {
-                                        existingChildByPath[existingNode.FilePath] = existingNode;
-                                    }
                                 }
 
                                 for (int displayOrder = 0; displayOrder < imports.Count; displayOrder++)
                                 {
                                     IProjectImportSnapshot import = imports[displayOrder];
-                                    if (!existingChildByPath.TryGetValue(import.ProjectPath, out IProjectTree2 child))
+
+                                    // Attempt to find the existing child in the tree, based on file path
+                                    IProjectTree2? child = (IProjectTree2?)node.Children.FirstOrDefault(c => StringComparers.Paths.Equals(c.FilePath, import.ProjectPath));
+
+                                    if (child is null)
                                     {
                                         // No child exists for this import, so add it
                                         bool isImplicit = _projectFileClassifier.IsNonUserEditable(import.ProjectPath);
