@@ -87,12 +87,12 @@
         <target state="new">PDB file, portable across platforms</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.false|DisplayName">
+      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.False|DisplayName">
         <source>.NET SDK</source>
         <target state="new">.NET SDK</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.true|DisplayName">
+      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.True|DisplayName">
         <source>.NET Framework</source>
         <target state="new">.NET Framework</target>
         <note />
