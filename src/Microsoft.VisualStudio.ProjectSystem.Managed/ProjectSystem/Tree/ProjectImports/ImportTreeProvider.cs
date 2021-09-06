@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                 actionBlock,
                                 linkOptions: DataflowOption.PropagateCompletion));
 
-                        JoinUpstreamDataSources(_projectSubscriptionService.ImportTreeSource);
+                        JoinUpstreamDataSources(_projectSubscriptionService.ImportTreeSource, _projectSubscriptionService.ProjectRuleSource);
 
                         return;
 
