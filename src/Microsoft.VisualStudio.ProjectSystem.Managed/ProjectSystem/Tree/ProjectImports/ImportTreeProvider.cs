@@ -216,6 +216,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                             IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 node)
                             {
+                                var captionByProjectPath = GetCaptionByProjectPath();
+
                                 foreach (IProjectTree2 existingNode in node.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
@@ -243,7 +245,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                         bool isImplicit = _projectFileClassifier.IsNonUserEditable(import.ProjectPath);
                                         ProjectTreeFlags flags = isImplicit ? s_projectImportImplicitFlags : s_projectImportFlags;
                                         ProjectImageMoniker icon = isImplicit ? s_nodeImplicitIcon : s_nodeIcon;
-                                        string caption = Path.GetFileName(import.ProjectPath);
+                                        string caption = captionByProjectPath[import.ProjectPath];
 
                                         IProjectTree2 newChild = NewTree(
                                             caption,
@@ -278,6 +280,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                                 IProjectTree2 AddChild(IProjectTree2 child) => (IProjectTree2)node.Add(child).Parent!;
                                 IProjectTree2 ReplaceChild(IProjectTree2 oldChild, IProjectTree2 newChild) => (IProjectTree2)node.Remove(oldChild).Add(newChild).Parent!;
+
+                                Dictionary<string, string> GetCaptionByProjectPath()
+                                {
+                                    var result = imports.ToDictionary(i => i.ProjectPath, i => Path.GetFileName(i.ProjectPath));
+
+                                    var isDuplicateByFileName = new Dictionary<string, bool>(StringComparers.Paths);
+
+                                    foreach ((string _, string fileName) in result)
+                                    {
+                                        isDuplicateByFileName[fileName] = isDuplicateByFileName.ContainsKey(fileName);
+                                    }
+
+                                    foreach (IProjectImportSnapshot import in imports)
+                                    {
+                                        string fileName = result[import.ProjectPath];
+                                        
+                                        if (isDuplicateByFileName[fileName])
+                                        {
+                                            result[import.ProjectPath] = $"{fileName} ({Path.GetDirectoryName(import.ProjectPath)})";
+                                        }
+                                    }
+
+                                    return result;
+                                }
                             }
                         }
                     }
