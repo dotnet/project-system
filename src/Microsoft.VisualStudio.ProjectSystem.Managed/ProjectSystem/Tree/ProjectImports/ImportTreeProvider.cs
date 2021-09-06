@@ -206,27 +206,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                                     IProjectTree updatedTree = SyncNode(
                                         imports: e.Value.Item1.Value,
-                                        tree: (IProjectTree2)currentTree.Value.Tree);
+                                        node: (IProjectTree2)currentTree.Value.Tree);
 
                                     return Task.FromResult(new TreeUpdateResult(updatedTree, e.DataSourceVersions));
                                 });
 
                             return;
 
-                            IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 tree)
+                            IProjectTree2 SyncNode(IReadOnlyList<IProjectImportSnapshot> imports, IProjectTree2 node)
                             {
                                 var existingChildByPath = new Dictionary<string, IProjectTree2>(StringComparers.Paths);
 
-                                foreach (IProjectTree2 existingNode in tree.Children)
+                                foreach (IProjectTree2 existingNode in node.Children)
                                 {
                                     Assumes.NotNullOrEmpty(existingNode.FilePath);
 
                                     if (!imports.Any(import => StringComparers.Paths.Equals(import.ProjectPath, existingNode.FilePath)))
                                     {
                                         // Remove child that's no longer present
-                                        if (tree.TryFind(existingNode.Identity, out IProjectTree? child))
+                                        if (node.TryFind(existingNode.Identity, out IProjectTree? child))
                                         {
-                                            tree = (IProjectTree2)child.Remove();
+                                            node = (IProjectTree2)child.Remove();
                                         }
                                     }
                                     else
@@ -256,12 +256,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                         // Recur down the tree
                                         newChild = SyncNode(import.Imports, newChild);
 
-                                        tree = AddChild(newChild);
+                                        node = AddChild(newChild);
                                     }
                                     else if (child.DisplayOrder != displayOrder)
                                     {
                                         // Child exists but with the wrong display order
-                                        tree = (IProjectTree2)child.SetDisplayOrder(displayOrder).Parent!;
+                                        node = (IProjectTree2)child.SetDisplayOrder(displayOrder).Parent!;
                                     }
                                     else
                                     {
@@ -270,15 +270,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
 
                                         if (!ReferenceEquals(child, newChild))
                                         {
-                                            tree = ReplaceChild(child, newChild);
+                                            node = ReplaceChild(child, newChild);
                                         }
                                     }
                                 }
 
-                                return tree;
+                                return node;
 
-                                IProjectTree2 AddChild(IProjectTree2 child) => (IProjectTree2)tree.Add(child).Parent!;
-                                IProjectTree2 ReplaceChild(IProjectTree2 oldChild, IProjectTree2 newChild) => (IProjectTree2)tree.Remove(oldChild).Add(newChild).Parent!;
+                                IProjectTree2 AddChild(IProjectTree2 child) => (IProjectTree2)node.Add(child).Parent!;
+                                IProjectTree2 ReplaceChild(IProjectTree2 oldChild, IProjectTree2 newChild) => (IProjectTree2)node.Remove(oldChild).Add(newChild).Parent!;
                             }
                         }
                     }
