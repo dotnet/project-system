@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                                     else if (child.DisplayOrder != displayOrder)
                                     {
                                         // Child exists but with the wrong display order
-                                        tree = ReplaceChild(child, child.SetDisplayOrder(displayOrder));
+                                        tree = (IProjectTree2)child.SetDisplayOrder(displayOrder).Parent!;
                                     }
                                     else
                                     {
