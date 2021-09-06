@@ -171,6 +171,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
                             DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<ValueTuple<IProjectImportTreeSnapshot, IProjectSubscriptionUpdate>>>(
                                 SyncTree,
                                 _project,
+                                skipIntermediateInputData: true, // We can skip versions without breaking the tree
                                 nameFormat: "Import Tree Action: {1}");
 
                         _subscriptions.Add(
