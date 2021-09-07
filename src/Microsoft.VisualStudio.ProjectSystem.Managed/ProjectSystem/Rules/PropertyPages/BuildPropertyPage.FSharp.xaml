@@ -37,7 +37,7 @@
 
   <EnumProperty Name="FSharpPreferNetFrameworkTools"
               DisplayName="Framework tools"
-              Description="Compiler to use when building the project."
+              Description="Specifies which compiler to use when building the project."
               Category="General">
     <EnumValue Name="True"
              DisplayName=".NET Framework" />
