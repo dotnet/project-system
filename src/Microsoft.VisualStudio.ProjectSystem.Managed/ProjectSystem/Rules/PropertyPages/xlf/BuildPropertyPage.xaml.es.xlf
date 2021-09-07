@@ -187,6 +187,16 @@
         <target state="translated">Asignación de nombre seguro</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|Description">
+        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
+        <target state="new">Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|PlatformTarget|DisplayName">
+        <source>Platform target</source>
+        <target state="new">Platform target</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
         <target state="translated">Especifica el tipo de símbolos de depuración que se producen durante la compilación.</target>
@@ -230,16 +240,6 @@
       <trans-unit id="EnumProperty|Nullable|DisplayName">
         <source>Nullable</source>
         <target state="translated">Admite valores NULL</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|Description">
-        <source>Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware.</source>
-        <target state="translated">Especifica el procesador al que se va a destinar el archivo de salida. Elija "x86" para cualquier procesador compatible con Intel de 32 bits, "x64" para cualquier procesador compatible con Intel de 64 bits, o bien "Cualquier CPU" para especificar que todos los procesadores son aceptables. "Cualquier CPU" es el valor predeterminado para los proyectos, ya que permite que la aplicación se ejecute en la mayor parte del hardware.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|PlatformTarget|DisplayName">
-        <source>Platform target</source>
-        <target state="translated">Destino de la plataforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
@@ -345,21 +345,6 @@
       <trans-unit id="EnumValue|Nullable.warnings|DisplayName">
         <source>Warnings</source>
         <target state="translated">Advertencias</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.AnyCPU|DisplayName">
-        <source>Any CPU</source>
-        <target state="translated">Cualquier CPU</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x64|DisplayName">
-        <source>x64</source>
-        <target state="translated">x64</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|PlatformTarget.x86|DisplayName">
-        <source>x86</source>
-        <target state="translated">x86</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
