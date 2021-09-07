@@ -60,9 +60,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.ProjectImports
             IProjectThreadingService threadingService,
             UnconfiguredProject project,
             IActiveConfiguredProjectSubscriptionService projectSubscriptionService,
-            IUnconfiguredProjectTasksService unconfiguredProjectTasksService,
-            UnconfiguredProject unconfiguredProject)
-            : base(threadingService, unconfiguredProject, useDisplayOrdering: true)
+            IUnconfiguredProjectTasksService unconfiguredProjectTasksService)
+            : base(threadingService, project, useDisplayOrdering: true)
         {
             _project = project;
             _projectSubscriptionService = projectSubscriptionService;
