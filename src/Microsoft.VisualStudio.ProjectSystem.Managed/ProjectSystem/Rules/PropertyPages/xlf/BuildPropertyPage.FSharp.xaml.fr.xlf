@@ -12,6 +12,16 @@
         <target state="new">Prefer 64 bit tools</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|Description">
+        <source>Prefer .NET Framework version of the compiler when available.</source>
+        <target state="new">Prefer .NET Framework version of the compiler when available.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|DisplayName">
+        <source>Framework tools</source>
+        <target state="new">Framework tools</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
@@ -57,16 +67,6 @@
         <target state="new">debug type</target>
         <note />
       </trans-unit>
-      <trans-unit id="EnumProperty|FSharpPreferNetFrameworkTools|Description">
-        <source>Specifies which compiler to use when building the project.</source>
-        <target state="new">Specifies which compiler to use when building the project.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumProperty|FSharpPreferNetFrameworkTools|DisplayName">
-        <source>Framework tools</source>
-        <target state="new">Framework tools</target>
-        <note />
-      </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
         <target state="new">Embedded in DLL/EXE, portable across platforms</target>
@@ -85,16 +85,6 @@
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
         <target state="new">PDB file, portable across platforms</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.False|DisplayName">
-        <source>.NET SDK</source>
-        <target state="new">.NET SDK</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="EnumValue|FSharpPreferNetFrameworkTools.True|DisplayName">
-        <source>.NET Framework</source>
-        <target state="new">.NET Framework</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|Description">

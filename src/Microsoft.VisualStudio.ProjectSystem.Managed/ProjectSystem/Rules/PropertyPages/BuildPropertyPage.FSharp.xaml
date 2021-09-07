@@ -35,20 +35,16 @@
                 HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
                 Category="General" />
 
-  <EnumProperty Name="FSharpPreferNetFrameworkTools"
+  <BoolProperty Name="FSharpPreferNetFrameworkTools"
               DisplayName="Framework tools"
-              Description="Specifies which compiler to use when building the project."
+              Description="Prefer .NET Framework version of the compiler when available."
               Category="General">
-    <EnumValue Name="True"
-             DisplayName=".NET Framework" />
-    <EnumValue Name="False"
-             DisplayName=".NET SDK" />
-    <EnumProperty.DataSource>
+    <BoolProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
                  SourceOfDefaultValue="AfterContext"
                  HasConfigurationCondition="False" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <BoolProperty Name="FSharpPrefer64BitTools"
             DisplayName="Prefer 64 bit tools"
