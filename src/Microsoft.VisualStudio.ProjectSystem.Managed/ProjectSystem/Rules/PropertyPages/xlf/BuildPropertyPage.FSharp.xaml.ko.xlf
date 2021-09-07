@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FSharpPreferNetFrameworkTools|Description">
-        <source>Compiler to use when building the project.</source>
-        <target state="new">Compiler to use when building the project.</target>
+        <source>Specifies which compiler to use when building the project.</source>
+        <target state="new">Specifies which compiler to use when building the project.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|FSharpPreferNetFrameworkTools|DisplayName">
