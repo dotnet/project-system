@@ -98,7 +98,6 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
-           or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
            or '%(FileName)' == 'VSLangProj110'
            or '%(FileName)' == 'VSLangProj165'
