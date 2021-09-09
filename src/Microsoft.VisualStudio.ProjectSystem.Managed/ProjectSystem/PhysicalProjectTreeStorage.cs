@@ -45,9 +45,7 @@ namespace Microsoft.VisualStudio.ProjectSystem
 
             string fullPath = _project.MakeRooted(path);
 
-            using (_fileSystem.Value.Create(fullPath))
-            {
-            }
+            _fileSystem.Value.Create(fullPath);
 
             await _configuredImports.Value.SourceItemsProvider.AddAsync(fullPath);
 

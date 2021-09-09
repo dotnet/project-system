@@ -93,7 +93,7 @@ This project was loaded using the wrong project type, likely as a result of rena
       </trans-unit>
       <trans-unit id="Property_NoneValue">
         <source>(None)</source>
-        <target state="new">(None)</target>
+        <target state="translated">(無)</target>
         <note>Special value to show in the project property pages when a property has no value.</note>
       </trans-unit>
       <trans-unit id="SdkNodeName">

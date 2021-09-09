@@ -122,7 +122,7 @@ When the user performs a search within Solution Explorer, it is unlikly that the
 
 Extensions that add transitive dependencies to the tree via the above items/relations should also implement [`IDependenciesTreeSearchProvider`][IDependenciesTreeSearchProvider] to support search in Solution Explorer. The implementation should look at the underlying data source and produce any items that match the user's search.
 
-Each search operation runs with an [`IDependenciesTreeProjectSearchContext`][IDependenciesTreeProjectSearchContext] which exposes a `CancellationToken`, the `UnconfiguredProject`, and allows creating a per-target [`IDependenciesTreeProjectTargetSearchContext`][IDependenciesTreeProjectTargetSearchContext] via which results may be submitted.
+Each search operation runs with an [`IDependenciesTreeProjectSearchContext`][IDependenciesTreeProjectSearchContext] which exposes a `CancellationToken`, the `UnconfiguredProject`, and allows creating a per-target [`IDependenciesTreeConfiguredProjectSearchContext`][IDependenciesTreeConfiguredProjectSearchContext] via which results may be submitted.
 
 Implementations should check for cancellation periodically, as a modification to the user's search string or reaching the maximum number of results will both result in cancellation.
 
@@ -160,7 +160,7 @@ The _Web Tools Extensions_ project is a good example of a project flavor that do
 [IRelation]:                                   /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelation.cs "IRelation.cs"
 [IRelatableItem]:                              /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IRelatableItem.cs "IRelatableItem.cs"
 [IDependenciesTreeProjectSearchContext]:       /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectSearchContext.cs "IDependenciesTreeProjectSearchContext.cs"
-[IDependenciesTreeProjectTargetSearchContext]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeProjectTargetSearchContext.cs "IDependenciesTreeProjectTargetSearchContext.cs"
+[IDependenciesTreeConfiguredProjectSearchContext]: /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/IDependenciesTreeConfiguredProjectSearchContext.cs "IDependenciesTreeConfiguredProjectSearchContext.cs"
 [RelatableItemBase]:                           /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelatableItemBase.cs "RelatableItemBase.cs"
 [AttachedCollectionItemBase]:                  /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/AttachedCollectionItemBase.cs "AttachedCollectionItemBase.cs"
 [RelationBase]:                                /src/Microsoft.VisualStudio.ProjectSystem.Managed.VS/ProjectSystem/VS/Tree/Dependencies/AttachedCollections/RelationBase.cs "RelationBase.cs"

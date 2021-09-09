@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">Ajoutez automatiquement des redirections de liaison à App.config.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
+        <target state="translated">Générer automatiquement les redirections de liaison</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
@@ -84,32 +84,17 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <target state="translated">Spécifie la version de .NET ciblée par l'application. Cette option peut avoir des valeurs distinctes, en fonction des versions de .NET installées sur votre ordinateur.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="new">Target framework</target>
+        <target state="translated">Framework cible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="new">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Description">
-        <source>Specifies the minimum runtime version of the selected operating system.</source>
-        <target state="new">Specifies the minimum runtime version of the selected operating system.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|DisplayName">
-        <source>Minimum OS version</source>
-        <target state="new">Minimum OS version</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms">
-        <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
@@ -122,34 +107,49 @@
         <target state="translated">Objet de démarrage</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
+        <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
+        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
+        <source>Supported OS version</source>
+        <target state="new">Supported OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">Spécifie le système d’exploitation ciblé par ce projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">SE cible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">Spécifie la version du système d’exploitation ciblé par ce projet.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">Version du système d’exploitation cible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plateforme</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

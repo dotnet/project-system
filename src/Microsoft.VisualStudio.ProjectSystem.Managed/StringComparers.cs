@@ -21,6 +21,7 @@ namespace Microsoft.VisualStudio
         public static StringComparer RuleNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer CategoryNames => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ConfigurationDimensionNames => StringComparer.Ordinal;
+        public static StringComparer ConfigurationDimensionValues => StringComparer.Ordinal;
         public static StringComparer DependencyProviderTypes => StringComparer.OrdinalIgnoreCase;
         public static StringComparer DependencyTreeIds => StringComparer.OrdinalIgnoreCase;
         public static StringComparer ItemNames => StringComparer.OrdinalIgnoreCase;
@@ -40,6 +41,8 @@ namespace Microsoft.VisualStudio
         public static StringComparer ProjectTreeCaptionIgnoreCase => StringComparer.OrdinalIgnoreCase;
         public static StringComparer LanguageIdentifiers => StringComparer.Ordinal;
         public static StringComparer LanguageIdentifiersIgnoreCase => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer VisualStudioSetupComponentIds => StringComparer.OrdinalIgnoreCase;
+        public static StringComparer WorkloadNames => StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
@@ -57,6 +60,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison PropertyValues => StringComparison.Ordinal;
         public static StringComparison RuleNames => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ConfigurationDimensionNames => StringComparison.Ordinal;
+        public static StringComparison ConfigurationDimensionValues => StringComparison.Ordinal;
         public static StringComparison DependencyProviderTypes => StringComparison.OrdinalIgnoreCase;
         public static StringComparison DependencyTreeIds => StringComparison.OrdinalIgnoreCase;
         public static StringComparison ItemNames => StringComparison.OrdinalIgnoreCase;
@@ -76,5 +80,7 @@ namespace Microsoft.VisualStudio
         public static StringComparison ProjectTreeCaptionIgnoreCase => StringComparison.OrdinalIgnoreCase;
         public static StringComparison LanguageIdentifiers => StringComparison.Ordinal;
         public static StringComparison LanguageIdentifiersIgnoreCase => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison VisualStudioSetupComponentIds => StringComparison.OrdinalIgnoreCase;
+        public static StringComparison WorkloadNames => StringComparison.OrdinalIgnoreCase;
     }
 }

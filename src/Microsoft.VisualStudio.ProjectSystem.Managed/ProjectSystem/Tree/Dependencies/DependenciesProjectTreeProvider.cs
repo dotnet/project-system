@@ -285,9 +285,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                 // which is holding a private lock.  It turns out that doing it asynchronously isn't a problem anyway,
                 // so long as we guard against races with the Dispose method.
 #pragma warning disable RS0030 // symbol LoadedProjectAsync is banned
-                UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
+                JoinableTask task = UnconfiguredProjectAsynchronousTasksService.LoadedProjectAsync(
 #pragma warning restore RS0030
-                async delegate
+                    async delegate
                     {
                         await TaskScheduler.Default.SwitchTo(alwaysYield: true);
                         UnconfiguredProjectAsynchronousTasksService
@@ -320,6 +320,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies
                         }
                     },
                     registerFaultHandler: true);
+
+                _project.Services.FaultHandler.Forget(task.Task, _project);
             }
 
             IProjectTree CreateDependenciesNode()

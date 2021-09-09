@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="de" original="../BuildPropertyPage.FSharp.xaml">
+    <body>
+      <trans-unit id="BoolProperty|Optimize|Description">
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|DisplayName">
+        <source>Optimize code</source>
+        <target state="new">Optimize code</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
+        <source>optimise;optimisation</source>
+        <target state="new">optimise;optimisation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|Description">
+        <source>Enable tail call generation.</source>
+        <target state="new">Enable tail call generation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|DisplayName">
+        <source>Generate tail calls</source>
+        <target state="new">Generate tail calls</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Tailcalls|Metadata|SearchTerms">
+        <source>tailcall</source>
+        <target state="new">tailcall</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Description">
+        <source>Specifies the kind of debug symbols produced during build.</source>
+        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|DisplayName">
+        <source>Debug symbols</source>
+        <target state="new">Debug symbols</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
+        <source>debug type</source>
+        <target state="new">debug type</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
+        <source>Embedded in DLL/EXE, portable across platforms</source>
+        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.full|DisplayName">
+        <source>PDB file, current platform</source>
+        <target state="new">PDB file, current platform</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.none|DisplayName">
+        <source>No symbols are emitted</source>
+        <target state="new">No symbols are emitted</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|DebugType.portable|DisplayName">
+        <source>PDB file, portable across platforms</source>
+        <target state="new">PDB file, portable across platforms</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OtherFlags|Description">
+        <source>Additional compiler flags. Separate flags with whitespace.</source>
+        <target state="new">Additional compiler flags. Separate flags with whitespace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="StringProperty|OtherFlags|DisplayName">
+        <source>Other flags</source>
+        <target state="new">Other flags</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -84,7 +84,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+            await _mockFS.WriteAllTextAsync(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
             var activeProfile = new LaunchProfile { Name = "MyApplication", CommandName = "Project", CommandLineArgs = "--someArgs" };
@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         {
             var debugger = GetDebugTargetsProvider();
 
-            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+            await _mockFS.WriteAllTextAsync(@"c:\program files\dotnet\dotnet.exe", "");
             _mockFS.CreateDirectory(@"c:\test\project");
 
             var activeProfile = new LaunchProfile
@@ -206,8 +206,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider("exe", properties);
 
             // Exe relative, no working dir
-            _mockFS.WriteAllText(@"c:\test\project\bin\test.exe", string.Empty);
-            _mockFS.WriteAllText(@"c:\test\project\test.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"c:\test\project\bin\test.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"c:\test\project\test.exe", string.Empty);
             var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\test.exe" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
             Assert.Single(targets);
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to full working dir
-            _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"c:\Test");
             _mockFS.CreateDirectory(@"c:\WorkingDir");
             var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = ".\\mytest.exe", WorkingDirectory = workingDir };
@@ -247,7 +247,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             var debugger = GetDebugTargetsProvider();
 
             // Exe relative to full working dir
-            _mockFS.WriteAllText(@"c:\WorkingDir\mytest.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"c:\WorkingDir\mytest.exe", string.Empty);
             _mockFS.CreateDirectory(@"c:\WorkingDir");
             var activeProfile = new LaunchProfile { Name = "run", ExecutablePath = "./mytest.exe", WorkingDirectory = @"c:/WorkingDir" };
             var targets = await debugger.QueryDebugTargetsAsync(0, activeProfile);
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_ExeProfileExeRelativeToCurrentDirectory(string exeName)
         {
             var debugger = GetDebugTargetsProvider();
-            _mockFS.WriteAllText(@"c:\CurrentDirectory\myexe.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"c:\CurrentDirectory\myexe.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"c:\CurrentDirectory");
 
             // Exe relative to path
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         public async Task QueryDebugTargetsAsync_ExeProfileExeIsRootedWithNoDrive()
         {
             var debugger = GetDebugTargetsProvider();
-            _mockFS.WriteAllText(@"e:\myexe.exe", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"e:\myexe.exe", string.Empty);
             _mockFS.SetCurrentDirectory(@"e:\CurrentDirectory");
 
             // Exe relative to path
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"C:\library.dll", string.Empty);
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
@@ -396,7 +396,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 {"TargetFrameworkIdentifier", @".NETFramework"}
             };
 
-            _mockFS.WriteAllText(@"C:\library.dll", string.Empty);
+            await _mockFS.WriteAllTextAsync(@"C:\library.dll", string.Empty);
 
             var debugger = GetDebugTargetsProvider("Library", properties);
 
@@ -577,7 +577,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             string? workingDir = null;
             var debugger = GetDebugTargetsProvider();
             var profileName = "run";
-            _mockFS.WriteAllText(executable, "");
+            _mockFS.Create(executable);
 
             debugger.ValidateSettings(executable, workingDir!, profileName);
             Assert.True(true);
@@ -685,10 +685,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private ProjectLaunchTargetsProvider GetDebugTargetsProvider(string outputType = "exe", Dictionary<string, string?>? properties = null, IVsDebugger10? debugger = null, IProjectCapabilitiesScope? scope = null)
         {
-            _mockFS.WriteAllText(@"c:\test\Project\someapp.exe", "");
+            _mockFS.Create(@"c:\test\Project\someapp.exe");
             _mockFS.CreateDirectory(@"c:\test\Project");
             _mockFS.CreateDirectory(@"c:\test\Project\bin\");
-            _mockFS.WriteAllText(@"c:\program files\dotnet\dotnet.exe", "");
+            _mockFS.Create(@"c:\program files\dotnet\dotnet.exe");
 
             var project = UnconfiguredProjectFactory.Create(fullPath: _ProjectFile);
 
@@ -732,16 +732,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties? properties = null,
             IProjectThreadingService? threadingService = null,
             IVsDebugger10? debugger = null,
-            IProjectHotReloadAgent? projectHotReloadAgent = null,
-            IHotReloadDiagnosticOutputService? hotReloadDiagnosticOutputService = null)
+            IDebuggerSettings? debuggerSettings = null)
         {
             environment ??= Mock.Of<IEnvironmentHelper>();
             tokenReplacer ??= IDebugTokenReplacerFactory.Create();
             activeDebugFramework ??= IActiveDebugFrameworkServicesFactory.ImplementGetConfiguredProjectForActiveFrameworkAsync(configuredProject);
             threadingService ??= IProjectThreadingServiceFactory.Create();
             debugger ??= IVsDebugger10Factory.ImplementIsIntegratedConsoleEnabled(enabled: false);
-            projectHotReloadAgent ??= IProjectHotReloadAgentFactory.Create();
-            hotReloadDiagnosticOutputService ??= IHotReloadDiagnosticOutputServiceFactory.Create();
 
             IUnconfiguredProjectVsServices unconfiguredProjectVsServices = IUnconfiguredProjectVsServicesFactory.Implement(() => IVsHierarchyFactory.Create());
 
@@ -758,8 +755,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 threadingService,
                 IVsUIServiceFactory.Create<SVsShellDebugger, IVsDebugger10>(debugger),
                 remoteDebuggerAuthenticationService,
-                projectHotReloadAgent,
-                new Lazy<IHotReloadDiagnosticOutputService>(() => hotReloadDiagnosticOutputService));
+                new Lazy<IProjectHotReloadSessionManager>(() => IProjectHotReloadSessionManagerFactory.Create()),
+                new Lazy<IDebuggerSettings>(() => debuggerSettings ?? IDebuggerSettingsFactory.Create()));
         }
     }
 }

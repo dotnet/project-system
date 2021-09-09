@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">App.config에 바인딩 리디렉션을 자동으로 추가합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
+        <target state="translated">바인딩 리디렉션 자동 생성</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
@@ -84,32 +84,17 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
         <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="new">Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</target>
+        <target state="translated">애플리케이션이 대상으로 지정할 .NET 버전을 지정합니다. 이 옵션은 컴퓨터에 설치된 .NET 버전에 따라 다른 값을 가질 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|DisplayName">
         <source>Target framework</source>
-        <target state="new">Target framework</target>
+        <target state="translated">대상 프레임워크</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms">
         <source>TFM</source>
-        <target state="new">TFM</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Description">
-        <source>Specifies the minimum runtime version of the selected operating system.</source>
-        <target state="new">Specifies the minimum runtime version of the selected operating system.</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|DisplayName">
-        <source>Minimum OS version</source>
-        <target state="new">Minimum OS version</target>
-        <note />
-      </trans-unit>
-      <trans-unit id="DynamicEnumProperty|MinimumPlatformVersion|Metadata|SearchTerms">
-        <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">TFM</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
@@ -122,34 +107,49 @@
         <target state="translated">시작 개체</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
+        <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
+        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
+        <source>Supported OS version</source>
+        <target state="new">Supported OS version</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="new">platform</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">이 프로젝트에서 대상으로 하는 운영 체제를 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">대상 OS</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">플랫폼</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">이 프로젝트에서 대상으로 하는 운영 체제의 버전을 지정합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">대상 OS 버전</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">플랫폼</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

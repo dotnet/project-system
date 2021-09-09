@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="new">Allow code that uses the 'unsafe' keyword to compile.</target>
+        <target state="translated">Povolte kód, který ke kompilaci používá klíčové slovo unsafe.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
         <source>Unsafe code</source>
-        <target state="new">Unsafe code</target>
+        <target state="translated">Nebezpečný kód</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
         <source>Throw exceptions when integer arithmetic produces out of range values.</source>
-        <target state="new">Throw exceptions when integer arithmetic produces out of range values.</target>
+        <target state="translated">Vyvolávat výjimky, když celočíselná aritmetika vytvoří hodnoty mimo rozsah</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
         <source>Produce identical compilation output for identical inputs.</source>
-        <target state="new">Produce identical compilation output for identical inputs.</target>
+        <target state="translated">Vytvoří identický výstup kompilace pro identické vstupy.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -62,9 +62,24 @@
         <target state="translated">Soubor dokumentace</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="new">Implicit global usings</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="new">implicit</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <target state="translated">Povolte optimalizace kompilátoru pro menší, rychlejší a efektivnější výstup.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -117,6 +132,16 @@
         <target state="translated">Zpracovávat upozornění jako chyby</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="new">Advanced settings for the application.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="new">Advanced</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">Konfiguruje možnosti pro chyby a upozornění při procesu sestavení.</target>
@@ -129,12 +154,12 @@
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">Nakonfiguruje vlastní události, které běží před a po sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">Události</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -179,7 +204,7 @@
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
         <source>Send internal compiler error (ICE) reports to Microsoft.</source>
-        <target state="new">Send internal compiler error (ICE) reports to Microsoft.</target>
+        <target state="translated">Odeslat Microsoftu zprávy o interních chybách kompilátoru (ICE)</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -219,12 +244,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">Určuje, pod jakou podmínkou bude událost po sestavení provedena.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">Kdy má být spuštěna událost po sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -337,6 +362,21 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="new">Always</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="new">When the build succeeds</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="new">When the output is updated</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
         <target state="translated">0</target>
@@ -423,8 +463,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
-        <source>Why can't I select the C# language version?</source>
-        <target state="translated">Proč nemůžu vybrat verzi jazyka C#?</target>
+        <source>The version of the language available to code in this project.</source>
+        <target state="new">The version of the language available to code in this project.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
@@ -444,22 +484,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">Určuje příkazy, které jsou spuštěny po dokončení sestavení. Nespustí se, pokud se sestavení nepovedlo. Použijte „cal“ pro vyvolání souborů .bat. Nenulový ukončovací kód povede k selhání sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">Událost po sestavení</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">Určuje příkazy, které se spouštějí před spuštěním sestavení. Nespustí se, pokud je projekt aktuální. Nenulový ukončovací kód povede k selhání sestavení před spuštěním.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">Událost před sestavením</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">

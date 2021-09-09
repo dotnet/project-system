@@ -185,7 +185,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return GetItemsAsync();
             }
 
-            return Task.FromResult(Enumerable.Empty<IProjectItem>());
+            return TaskResult.EmptyEnumerable<IProjectItem>();
         }
 
         public async Task<IEnumerable<IProjectItem>> GetItemsAsync(string itemType, string evaluatedInclude)

@@ -1,0 +1,32 @@
+﻿<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="WindowsFormsConfiguration"
+      DisplayName="WindowsFormsConfiguration"
+      PageTemplate="generic"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile"
+                    SourceOfDefaultValue="AfterContext" />
+    </Rule.DataSource>
+
+    <!-- 
+      The list of properties use by the designer to facilitate WYSIWYG experience.
+      https://github.com/dotnet/designs/blob/main/accepted/2021/winforms/streamline-application-bootstrap.md#msbuild-properties
+      -->
+
+    <StringProperty Name="ApplicationDefaultFont"
+                  ReadOnly="True"
+                  Visible="False" />
+
+    <StringProperty Name="ApplicationHighDpiMode"
+                  ReadOnly="True"
+                  Visible="False" />
+
+    <BoolProperty Name="ApplicationUseCompatibleTextRendering"
+                  ReadOnly="True"
+                  Visible="False" />
+
+    <BoolProperty Name="ApplicationVisualStyles"
+                  ReadOnly="True"
+                  Visible="False" />
+
+</Rule>

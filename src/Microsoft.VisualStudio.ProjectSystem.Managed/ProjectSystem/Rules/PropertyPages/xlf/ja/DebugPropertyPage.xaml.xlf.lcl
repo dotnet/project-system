@@ -30,10 +30,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[起動プロファイルの管理が専用のダイアログに移動しました。以下のリンクからアクセスすることができます。]]></Val>
+            <Val><![CDATA[起動プロファイルの管理は、専用ダイアログに移動しました。このダイアログは、以下のリンク、メニュー バーの [デバッグ]5D; メニュー、または標準ツールバーの [デバッグターゲット]5D; コマンドを介してアクセスできます。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

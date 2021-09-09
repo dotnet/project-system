@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         /// To handle custom settings, we serialize using LaunchProfileData first and then walk the settings
         /// to pick up other settings. Currently limited to boolean, integer, string and dictionary of string
         /// </summary>
-        public static Dictionary<string, LaunchProfileData> DeserializeProfiles(JObject profilesObject)
+        public static Dictionary<string, LaunchProfileData> DeserializeProfiles(JObject? profilesObject)
         {
             var profiles = new Dictionary<string, LaunchProfileData>(StringComparers.LaunchProfileNames);
 
@@ -80,11 +80,21 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
             }
 
             // We walk the profilesObject and serialize each subobject component as either a string, or a dictionary<string,string>
-            foreach ((string key, JToken jToken) in profilesObject)
+            foreach ((string key, JToken? jToken) in profilesObject)
             {
-                // Name of profile is the key, value is it's contents. We have specific serializing of the data based on the 
+                if (jToken is null)
+                {
+                    continue;
+                }
+
+                // Name of profile is the key, value is its contents. We have specific serializing of the data based on the 
                 // JToken type
-                LaunchProfileData profileData = JsonConvert.DeserializeObject<LaunchProfileData>(jToken.ToString());
+                LaunchProfileData? profileData = JsonConvert.DeserializeObject<LaunchProfileData>(jToken.ToString());
+
+                if (profileData is null)
+                {
+                    continue;
+                }
 
                 // Now pick up any custom properties. Handle string, int, boolean
                 var customSettings = new Dictionary<string, object>(StringComparers.LaunchProfileProperties);

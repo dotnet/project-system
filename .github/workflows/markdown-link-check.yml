@@ -1,0 +1,18 @@
+name: markdown-link-check
+on: [push, pull_request]
+
+jobs:
+  markdown-link-check:
+    name: verify
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone the repository
+      uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+    - name: Validate Markdown links
+      uses: gaurav-nelson/github-action-markdown-link-check@9710f0fec812ce0a3b98bef4c9d842fc1f39d976
+      with:
+        use-quiet-mode: 'yes'
+        # https://github.com/tcort/markdown-link-check#config-file-format
+        config-file: '.github/workflows/markdown-link-check-config.json'

@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Updates applied successfully.
+        ///   Looks up a localized string similar to Updates applied successfully..
         /// </summary>
         internal static string HotReloadApplyUpdatesSuccessful {
             get {
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sending updates to running application.
+        ///   Looks up a localized string similar to Sending updates to running application..
         /// </summary>
         internal static string HotReloadSendingUpdates {
             get {
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hot Reload session started.
+        ///   Looks up a localized string similar to Hot Reload session started..
         /// </summary>
         internal static string HotReloadStartSession {
             get {
@@ -295,7 +295,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping application.
+        ///   Looks up a localized string similar to Stopping application..
         /// </summary>
         internal static string HotReloadStoppingApplication {
             get {
@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hot Reload session complete.
+        ///   Looks up a localized string similar to Hot Reload session complete..
         /// </summary>
         internal static string HotReloadStopSession {
             get {
@@ -417,6 +417,64 @@ namespace Microsoft.VisualStudio {
         internal static string PartialSupportedDotNetCoreProject {
             get {
                 return ResourceManager.GetString("PartialSupportedDotNetCoreProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Attaching to process &apos;{1}&apos;..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_AttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_AttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while attaching to process &apos;{1}&apos;:
+        ///{2}
+        ///{3}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorAttachingToProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorAttachingToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Error while stopping the session:
+        ///{1}
+        ///{2}.
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ErrorStoppingTheSession {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ErrorStoppingTheSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Unable to start Hot Reload session: no active process..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_NoActiveProcess {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_NoActiveProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has already exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessAlreadyExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessAlreadyExited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: The process has exited..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_ProcessExited {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_ProcessExited", resourceCulture);
             }
         }
         

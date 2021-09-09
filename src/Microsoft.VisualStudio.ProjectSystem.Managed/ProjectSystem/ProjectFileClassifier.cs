@@ -81,6 +81,11 @@ namespace Microsoft.VisualStudio.ProjectSystem
                 {
                     _nuGetPackageFoldersString = value;
                     _nuGetPackageFolders = value.Split(Delimiter.Semicolon, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int i = 0; i < _nuGetPackageFolders.Length; i++)
+                    {
+                        EnsureTrailingSlash(ref _nuGetPackageFolders[i]);
+                    }
                 }
             }
         }

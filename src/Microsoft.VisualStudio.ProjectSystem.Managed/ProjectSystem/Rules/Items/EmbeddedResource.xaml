@@ -85,6 +85,18 @@
     </StringProperty.DataSource>
   </StringProperty>
 
+  <StringProperty Name="TargetPath"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource PersistenceStyle="Attribute"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+    <StringProperty.Metadata>
+      <NameValuePair Name="DoNotCopyAcrossProjects"
+                     Value="true" />
+    </StringProperty.Metadata>
+  </StringProperty>
+
   <BoolProperty Name="Visible"
                 Visible="false" />
 

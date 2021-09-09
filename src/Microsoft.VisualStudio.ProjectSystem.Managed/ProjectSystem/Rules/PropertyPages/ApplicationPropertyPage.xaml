@@ -143,10 +143,11 @@
     </DynamicEnumProperty.Metadata>
   </DynamicEnumProperty>
 
-  <DynamicEnumProperty Name="MinimumPlatformVersion"
-                DisplayName="Minimum OS version"
-                Description="Specifies the minimum runtime version of the selected operating system."
+  <DynamicEnumProperty Name="SupportedOSPlatformVersion"
+                DisplayName="Supported OS version"
+                Description="Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs."
                 Category="General"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2171707"
                 EnumProvider="SdkSupportedTargetPlatformVersionEnumProvider">
     <DynamicEnumProperty.DataSource>
       <DataSource Persistence="ProjectFileWithInterception"
@@ -260,6 +261,17 @@
                   Category="Resources"
                   Description="Sets the .ico file that you want to use as your program icon."
                   Subtype="file">
+    <StringProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </StringProperty.DataSource>
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Icon files (*.ico)|*.ico|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
@@ -317,8 +329,14 @@
                   DisplayName="Resource file"
                   Description="Specifies a resource file for the project."
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147078"
-                  Category="Resources"
-                  Subtype="file">
+                  Category="Resources">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="FilePath">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="FileTypeFilter" Value="Win32 resource files (*.res)|*.res|All files (*.*)|*.*" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
     <StringProperty.Metadata>
       <NameValuePair Name="DependsOn" Value="Application::ResourceSpecificationKind" />
       <NameValuePair Name="VisibilityCondition">
