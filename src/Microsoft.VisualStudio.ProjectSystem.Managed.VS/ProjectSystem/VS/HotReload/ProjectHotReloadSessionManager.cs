@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
@@ -29,8 +28,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         // another. To ensure consistent and proper behavior we need to serialize access.
         private readonly AsyncSemaphore _semaphore = new(initialCount: 1);
 
+        private readonly Dictionary<int, HotReloadState> _activeSessions = new();
         private HotReloadState? _pendingSessionState = null;
-        private ImmutableDictionary<int, HotReloadState> _activeSessions = ImmutableDictionary<int, HotReloadState>.Empty;
         private int _nextUniqueId = 1;
 
         [ImportingConstructor]
@@ -86,7 +85,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 else
                 {
                     await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
-                    ImmutableInterlocked.TryAdd(ref _activeSessions, processId, _pendingSessionState);
+                    _activeSessions.Add(processId, _pendingSessionState);
                 }
 
                 _pendingSessionState = null;
@@ -194,7 +193,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             try
             {
-                if (ImmutableInterlocked.TryRemove(ref _activeSessions, hotReloadState.Process.Id, out _))
+                if (_activeSessions.Remove(hotReloadState.Process.Id))
                 {
                     await hotReloadState.Session.StopSessionAsync(cancellationToken);
 
