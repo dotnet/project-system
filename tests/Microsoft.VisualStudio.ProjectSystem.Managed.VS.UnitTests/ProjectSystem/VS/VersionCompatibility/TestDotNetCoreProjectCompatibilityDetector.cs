@@ -15,6 +15,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
     {
         private readonly bool _hasNewProjects;
         private readonly bool _usingPreviewSDK;
+        private readonly bool _isCapabilityMatch;
 
         public TestDotNetCoreProjectCompatibilityDetector(Lazy<IProjectServiceAccessor> projectAccessor,
                                                           Lazy<IDialogServices> dialogServices,
@@ -27,15 +28,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                           IVsService<SVsSolution, IVsSolution> vsSolutionService,
                                                           IVsService<SVsAppId, IVsAppId> vsAppIdService,
                                                           IVsService<SVsShell, IVsShell> vsShellService,
-                                                          bool hasNewProjects = false,
-                                                          bool usingPreviewSDK = false) :
-            base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
+                                                          bool hasNewProjects,
+                                                          bool usingPreviewSDK,
+                                                          bool isCapabilityMatch)
+            : base(projectAccessor, dialogServices, threadHandling, vsShellUtilitiesHelper, fileSystem, httpClient, vsUIShellService, settingsManagerService, vsSolutionService, vsAppIdService, vsShellService)
         {
             _hasNewProjects = hasNewProjects;
             _usingPreviewSDK = usingPreviewSDK;
+            _isCapabilityMatch = isCapabilityMatch;
         }
 
         protected override Task<bool> IsPreviewSDKInUseAsync() => Task.FromResult(_usingPreviewSDK);
         protected override bool IsNewlyCreated(UnconfiguredProject project) => _hasNewProjects;
+        protected override bool IsCapabilityMatch(IVsHierarchy hierarchy) => _isCapabilityMatch;
     }
 }
