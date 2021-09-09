@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
@@ -24,10 +23,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         private readonly Lazy<IProjectHotReloadAgent> _projectHotReloadAgent;
         private readonly Lazy<IHotReloadDiagnosticOutputService> _hotReloadDiagnosticOutputService;
 
+        // Protect the state from concurrent access. For example, our Process.Exited event
+        // handler may run on one thread while we're still setting up the session on
+        // another. To ensure consistent and proper behavior we need to serialize access.
+        private readonly AsyncSemaphore _semaphore = new(initialCount: 1);
+
+        private readonly Dictionary<int, HotReloadState> _activeSessions = new();
         private HotReloadState? _pendingSessionState = null;
-
-        private ImmutableDictionary<int, HotReloadState> _activeSessions = ImmutableDictionary<int, HotReloadState>.Empty;
-
         private int _nextUniqueId = 1;
 
         [ImportingConstructor]
@@ -47,6 +49,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger)
         {
+            using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
+
             if (_pendingSessionState is not null)
             {
                 Assumes.NotNull(_pendingSessionState.Session);
@@ -80,8 +84,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
                 }
                 else
                 {
-                    _ = _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
-                    ImmutableInterlocked.TryAdd(ref _activeSessions, processId, _pendingSessionState);
+                    await _pendingSessionState.Session.StartSessionAsync(runningUnderDebugger, cancellationToken: default);
+                    _activeSessions.Add(processId, _pendingSessionState);
                 }
 
                 _pendingSessionState = null;
@@ -90,6 +94,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         public async Task<bool> TryCreatePendingSessionAsync(IDictionary<string, string> environmentVariables)
         {
+            using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
+
             if (await DebugFrameworkSupportsHotReloadAsync()
                 && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
             {
@@ -183,9 +189,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             Assumes.NotNull(hotReloadState.Session);
             Assumes.NotNull(hotReloadState.Process);
 
+            using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
+
             try
             {
-                if (ImmutableInterlocked.TryRemove(ref _activeSessions, hotReloadState.Process.Id, out _))
+                if (_activeSessions.Remove(hotReloadState.Process.Id))
                 {
                     await hotReloadState.Session.StopSessionAsync(cancellationToken);
 
