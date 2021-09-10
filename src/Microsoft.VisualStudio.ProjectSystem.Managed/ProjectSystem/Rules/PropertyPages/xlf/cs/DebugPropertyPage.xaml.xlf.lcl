@@ -30,10 +30,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Správa profilů spouštění se přesunula do samostatného okna. Přístup k němu získáte přes níže uvedený odkaz.]]></Val>
+            <Val><![CDATA[Správa profilů spuštění se přesunula do vyhrazeného dialogového okna. Přístup k němu můžete získat prostřednictvím odkazu níže, nabídky ladění v řádku nabídek nebo prostřednictvím příkazu Cíl ladění na panelu nástrojů Standard.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -48,10 +51,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          <Val><![CDATA[arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[argumenty; příkazový řádek; pracovní adresář; proměnné prostředí]]></Val>
+            <Val><![CDATA[argumenty;příkazový řádek;pracovní adresář;proměnné prostředí;IIS;prohlížeč;adresa URL;ověřování;vzdálené]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -66,10 +72,13 @@
       </Item>
       <Item ItemId=";StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          <Val><![CDATA[arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[argumenty; příkazový řádek; pracovní adresář; proměnné prostředí]]></Val>
+            <Val><![CDATA[argumenty;příkazový řádek;pracovní adresář;proměnné prostředí;IIS;prohlížeč;adresa URL;ověřování;vzdálené]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

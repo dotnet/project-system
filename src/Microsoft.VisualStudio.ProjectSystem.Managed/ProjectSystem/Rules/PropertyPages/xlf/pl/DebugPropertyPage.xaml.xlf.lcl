@@ -30,10 +30,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Zarządzanie profilami uruchamiania zostało przeniesione do dedykowanego okna dialogowego. Dostęp do niego można uzyskać za pomocą poniższego linku.]]></Val>
+            <Val><![CDATA[Zarządzanie profilami uruchamiania zostało przeniesione do dedykowanego okna dialogowego. Dostęp do niego można uzyskać za pomocą poniższego linku, korzystając z menu Debuguj na pasku menu lub za pomocą polecenia Debug Target na standardowym pasku narzędzi.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -48,10 +51,13 @@
       </Item>
       <Item ItemId=";StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          <Val><![CDATA[arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe]]></Val>
+            <Val><![CDATA[argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe; IIS; przeglądarka; adres URL; uwierzytelnianie; zdalne]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -66,10 +72,13 @@
       </Item>
       <Item ItemId=";StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          <Val><![CDATA[arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe]]></Val>
+            <Val><![CDATA[argumenty; wiersz polecenia; katalog roboczy; zmienne środowiskowe; IIS; przeglądarka; adres URL; uwierzytelnianie; zdalne]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[arguments;command line;working directory;environment variables]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
