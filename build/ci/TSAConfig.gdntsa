@@ -1,0 +1,17 @@
+{
+    "codebaseName": "dotnet/project-system",
+    "notificationAliases": [
+        "dotnetdevexproj@microsoft.com"
+    ],
+    "codebaseAdmins": [
+        "REDMOND\\tomescht",
+        "REDMOND\\jjme"
+    ],
+    "instanceUrl": "https://devdiv.visualstudio.com",
+    "projectName": "DevDiv",
+    "areaPath": "DevDiv\\NET Tools\\Project",
+    "iterationPath": "DevDiv\\OneVS",
+    "tools": [
+        "PoliCheck"
+    ]
+}
