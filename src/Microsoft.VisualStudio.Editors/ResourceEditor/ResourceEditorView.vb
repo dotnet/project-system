@@ -3268,7 +3268,7 @@ Namespace Microsoft.VisualStudio.Editors.ResourceEditor
                 If Not String.IsNullOrEmpty(fileExtension) Then
                     Dim isSafe As Boolean = False
 
-                    ' first of all, we check the white list for the resource type. If the extension matches one of them, we won't pop up a warning dialog.
+                    ' first of all, we check the safe list for the resource type. If the extension matches one of them, we won't pop up a warning dialog.
                     Dim safeList As String() = Resource.ResourceTypeEditor.GetSafeFileExtensionList()
                     If safeList IsNot Nothing Then
                         For Each safeExtension As String In safeList
