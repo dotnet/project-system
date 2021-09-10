@@ -28,7 +28,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
-  
+
 - task: PoliCheck@2
   inputs:
     targetType: 'F'
@@ -36,6 +36,10 @@ steps:
     result: 'PoliCheck.xml'
     optionsFC: '1'
     optionsSEV: '1|2|3'
+
+- task: CredScan@3
+  inputs:
+    outputFormat: 'pre'
 
 - task: TSAUpload@2
   inputs:
