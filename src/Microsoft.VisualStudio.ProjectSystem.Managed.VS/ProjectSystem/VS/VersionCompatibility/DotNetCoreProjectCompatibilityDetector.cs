@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Setup.Configuration;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -32,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
+
+        private const string RequiredProjectCapabilities = ProjectCapability.DotNet + " & " + ProjectCapability.PackageReferences;
 
         private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
         private readonly Lazy<IDialogServices> _dialogServices;
@@ -142,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Only check this project if the solution is opened and we haven't already warned at the maximum level. Note that fAdded
             // is true for both add and a reload of an unloaded project
-            if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported)
+            if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported && IsCapabilityMatch(pHierarchy))
             {
                 UnconfiguredProject? project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
@@ -188,6 +191,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             ISettingsManager settings = await _settingsManagerService.GetValueAsync();
 
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
+        }
+
+        // This method is overridden in test code
+        protected virtual bool IsCapabilityMatch(IVsHierarchy hierarchy)
+        {
+            return hierarchy.IsCapabilityMatch(RequiredProjectCapabilities);
         }
 
         private async Task<bool> IsPrereleaseAsync()
@@ -323,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
-            if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
+            if (project.Capabilities.AppliesTo(RequiredProjectCapabilities))
             {
                 Assumes.Present(project.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? activeConfiguredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
