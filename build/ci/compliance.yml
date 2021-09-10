@@ -37,3 +37,7 @@ steps:
     optionsFC: '1'
     optionsSEV: '1|2|3'
 
+- task: TSAUpload@2
+  inputs:
+    GdnPublishTsaOnboard: true
+    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'
