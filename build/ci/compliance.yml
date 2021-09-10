@@ -33,7 +33,7 @@ steps:
   inputs:
     targetType: 'F'
     targetArgument: '$(Build.SourcesDirectory)'
-    result: 'artifacts/PoliCheck.xml'
+    result: 'PoliCheck.xml'
     optionsFC: '1'
-
+    optionsSEV: '1|2|3'
 
