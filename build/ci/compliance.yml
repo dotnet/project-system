@@ -1,0 +1,39 @@
+# Name: DotNet-Project-System-Compliance
+# URL: TBD
+#
+# Responsible for running compliance checks.
+
+#
+# NOTE: triggers for this build are defined in the Web UI instead of here in the YAML file so they
+#       apply to all branches.
+
+resources:
+- repo: self
+  clean: true
+queue:
+  name: VSEngSS-MicroBuild2019
+  demands: Cmd
+  timeoutInMinutes: 90
+variables:
+  BuildConfiguration: Release
+  TeamName: DotNet-Project-System
+  BuildPlatform: any cpu
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+  
+- task: PoliCheck@2
+  inputs:
+    targetType: 'F'
+    targetArgument: '$(Build.SourcesDirectory)'
+    result: 'artifacts/PoliCheck.xml'
+    optionsFC: '1'
+
+
