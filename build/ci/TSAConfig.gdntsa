@@ -1,5 +1,5 @@
 {
-    "codebaseName": "dotnet/project-system",
+    "codebaseName": "dotnet-project-system",
     "notificationAliases": [
         "dotnetdevexproj@microsoft.com"
     ],
