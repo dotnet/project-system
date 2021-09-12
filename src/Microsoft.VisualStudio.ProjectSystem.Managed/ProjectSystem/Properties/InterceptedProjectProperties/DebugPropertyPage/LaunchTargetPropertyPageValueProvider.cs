@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -61,9 +60,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             {
                 _projectThreadingService.RunAndForget(async () =>
                 {
-                    // Infinite timeout means this will not actually be null.
-                    ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-                    Assumes.NotNull(launchSettings);
+                    ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
 
                     IWritableLaunchSettings writableLaunchSettings = launchSettings.ToWritableLaunchSettings();
                     IWritableLaunchProfile? activeProfile = writableLaunchSettings.ActiveProfile;
@@ -83,9 +80,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         private async Task<string> GetPropertyValueAsync()
         {
-            // Infinite timeout means this will not actually be null.
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             string? commandName = launchSettings.ActiveProfile?.CommandName;
             if (commandName == null)

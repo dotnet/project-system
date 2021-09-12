@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.Threading;
@@ -145,8 +144,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<IImmutableSet<string>> GetExistingItemTypesAsync()
         {
-            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(snapshot);
+            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             return snapshot.Profiles.Count > 0
                 ? s_itemTypes
@@ -167,8 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
 
         public async Task<IEnumerable<IProjectItem>> GetItemsAsync()
         {
-            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(snapshot);
+            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             if (snapshot.Profiles.Count == 0)
             {
