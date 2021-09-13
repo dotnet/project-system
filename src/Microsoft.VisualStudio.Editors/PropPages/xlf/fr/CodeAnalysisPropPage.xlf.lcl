@@ -10,7 +10,7 @@
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Xliff Resources" ItemType="0" PsrId="308" Leaf="false">
       <Disp Icon="Str" Disp="true" LocTbl="false" />
-      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[preview]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -19,11 +19,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource1" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource1" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[latest]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[dernière]]></Val>
+            <Val><![CDATA[dernier]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -37,11 +37,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource3" ItemType="0" PsrId="308" Leaf="true">
+      <Item ItemId=";AnalysisLevelComboBox.AutoCompleteCustomSource3" ItemType="0" PsrId="308" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[none]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[aucune]]></Val>
+            <Val><![CDATA[aucun]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
