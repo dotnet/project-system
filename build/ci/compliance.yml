@@ -11,7 +11,7 @@ resources:
 - repo: self
   clean: true
 queue:
-  name: VSEngSS-MicroBuild2019
+  name: VSEngSS-MicroBuild2019-1ES
   demands: Cmd
   timeoutInMinutes: 90
 variables:
@@ -21,25 +21,17 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-
 - task: PoliCheck@2
   inputs:
-    targetType: 'F'
-    targetArgument: '$(Build.SourcesDirectory)'
-    result: 'PoliCheck.xml'
-    optionsFC: '1'
-    optionsSEV: '1|2|3'
+    targetType: 'F'                             # Scan a particular file or folder (recursively)
+    targetArgument: '$(Build.SourcesDirectory)' # Path of file/folder to scan
+    result: 'PoliCheck.xml'                     # Name of the output file
+    optionsFC: '1'                              # Enable scanning of comments
+    optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
 
 - task: CredScan@3
   inputs:
-    outputFormat: 'pre'
+    outputFormat: 'pre' # Ouput in PREFast format so TSAUpload can consume it
 
 - task: TSAUpload@2
   inputs:
