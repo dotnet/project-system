@@ -109,12 +109,28 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<bool> IsDebuggableAsync()
         {
+            var foundStartupProjectProvider = false;
+
             foreach (Lazy<IDebugLaunchProvider> provider in _launchProviders.Values)
             {
-                if (provider.Value is IStartupProjectProvider startupProjectProvider &&
-                    await startupProjectProvider.CanBeStartupProjectAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
+                if (provider.Value is IStartupProjectProvider startupProjectProvider)
                 {
-                    return true;
+                    foundStartupProjectProvider = true;
+                    if (await startupProjectProvider.CanBeStartupProjectAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
+                    {
+                        return true;
+                    }
+                } 
+            }
+
+            if (!foundStartupProjectProvider)
+            {
+                foreach (Lazy<IDebugLaunchProvider> provider in _launchProviders.Values)
+                {
+                    if (await provider.Value.CanLaunchAsync(DebugLaunchOptions.DesignTimeExpressionEvaluation))
+                    {
+                        return true;
+                    }
                 }
             }
 
