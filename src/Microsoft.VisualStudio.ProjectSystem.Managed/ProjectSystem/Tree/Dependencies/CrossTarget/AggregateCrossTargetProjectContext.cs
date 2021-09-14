@@ -27,7 +27,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Tree.Dependencies.CrossTarget
             Requires.Argument(!targetFrameworks.IsDefaultOrEmpty, nameof(targetFrameworks), "Must contain at least one item.");
             Requires.NotNullOrEmpty(configuredProjectByTargetFramework, nameof(configuredProjectByTargetFramework));
             Requires.NotNull(activeTargetFramework, nameof(activeTargetFramework));
-            Requires.Argument(targetFrameworks.Contains(activeTargetFramework), nameof(targetFrameworks), "Must contain 'activeTargetFramework'.");
+            Requires.Argument(targetFrameworks.Contains(activeTargetFramework), nameof(targetFrameworks), $"Must contain 'activeTargetFramework' ({activeTargetFramework.TargetFrameworkAlias}).");
 
             IsCrossTargeting = isCrossTargeting;
             TargetFrameworks = targetFrameworks;
