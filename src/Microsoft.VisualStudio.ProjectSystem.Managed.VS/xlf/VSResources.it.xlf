@@ -54,47 +54,47 @@
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>
-        <target state="new">Applying updates failed: {0}</target>
+        <target state="translated">L'applicazione degli aggiornamenti non è riuscita: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesSuccessful">
         <source>Updates applied successfully.</source>
-        <target state="new">Updates applied successfully.</target>
+        <target state="translated">Gli aggiornamenti sono stati applicati.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
-        <target state="new">Errors found in application: </target>
+        <target state="translated">Errori trovati nell'applicazione: </target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadOutputWindowPaneName">
         <source>Hot Reload</source>
-        <target state="new">Hot Reload</target>
+        <target state="translated">Ricaricamento rapido</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
       </trans-unit>
       <trans-unit id="HotReloadRestartInProgress">
         <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <target state="translated">È in corso la ricompilazione e il riavvio dell'applicazione perché non è possibile applicare le modifiche in modo dinamico.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadSendingUpdates">
         <source>Sending updates to running application.</source>
-        <target state="new">Sending updates to running application.</target>
+        <target state="translated">Invio degli aggiornamenti all'applicazione in esecuzione.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStartSession">
         <source>Hot Reload session started.</source>
-        <target state="new">Hot Reload session started.</target>
+        <target state="translated">Sessione di ricaricamento rapido avviata.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStopSession">
         <source>Hot Reload session complete.</source>
-        <target state="new">Hot Reload session complete.</target>
+        <target state="translated">Sessione di ricaricamento rapido completata.</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStoppingApplication">
         <source>Stopping application.</source>
-        <target state="new">Stopping application.</target>
+        <target state="translated">Arresto dell'applicazione.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
@@ -104,14 +104,14 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>{0}: Attaching to process '{1}'.</source>
-        <target state="new">{0}: Attaching to process '{1}'.</target>
+        <target state="translated">{0}: connessione al processo '{1}'.</target>
         <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
         <source>{0}: Error while attaching to process '{1}':
 {2}
 {3}</source>
-        <target state="new">{0}: Error while attaching to process '{1}':
+        <target state="translated">{0}: errore durante il collegamento al processo '{1}':
 {2}
 {3}</target>
         <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
@@ -120,24 +120,24 @@
         <source>{0}: Error while stopping the session:
 {1}
 {2}</source>
-        <target state="new">{0}: Error while stopping the session:
+        <target state="translated">{0}: errore durante l'arresto della sessione:
 {1}
 {2}</target>
         <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="new">{0}: Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">{0}: impossibile avviare la sessione di ricaricamento rapido: nessun processo attivo.</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>{0}: The process has already exited.</source>
-        <target state="new">{0}: The process has already exited.</target>
+        <target state="translated">{0}: processo già terminato.</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>{0}: The process has exited.</source>
-        <target state="new">{0}: The process has exited.</target>
+        <target state="translated">{0}: il processo è stato terminato.</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

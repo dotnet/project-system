@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
         <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <target state="translated">允許專案 SDK 宣告隱含全域 Using。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
         <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
+        <target state="translated">隱含全域 Using</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
         <source>implicit</source>
-        <target state="new">implicit</target>
+        <target state="translated">隱含</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">在支援 32 位元及 64 位元應用程式的系統上以 32 位元模式執行。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">建議使用 32 位元</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">應用程式的進階設定。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">進階</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -364,17 +364,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">永遠</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">當組建成功時</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">當輸出更新時</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">此專案中程式碼可用的語言版本。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">

@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
         <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <target state="translated">Включить неявные глобальные директивы using, объявляемые пакетом SDK проекта.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
         <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
+        <target state="translated">Неявные глобальные директивы using</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
         <source>implicit</source>
-        <target state="new">implicit</target>
+        <target state="translated">неявный</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">Запускать в 32-разрядном режиме в системах, поддерживающих 32- и 64-разрядные приложения.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">Предпочитать 32-разрядный режим</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">Расширенные параметры приложения.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">Дополнительный</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -364,17 +364,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">Всегда</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">При успешной сборке</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">При обновлении выходных данных</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">Версия языка, доступного для написания кода в этом проекте.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">

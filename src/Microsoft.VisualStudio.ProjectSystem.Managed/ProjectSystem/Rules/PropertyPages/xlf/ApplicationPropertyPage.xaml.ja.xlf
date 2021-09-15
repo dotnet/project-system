@@ -109,17 +109,17 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">プロジェクトが実行される最小 OS バージョンを指定します。指定しない場合、ターゲット OS のバージョン値が暗黙的に指定されます。以前のバージョンを使用する場合、それより新しいバージョンの API にガードを追加するにはコードが必要です。</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">サポートされている OS バージョン</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">プラットフォーム</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">

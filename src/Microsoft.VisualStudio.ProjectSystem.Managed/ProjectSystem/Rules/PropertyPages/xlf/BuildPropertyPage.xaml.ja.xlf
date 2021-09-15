@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
         <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <target state="translated">プロジェクト SDK によって宣言される、暗黙的な global using を有効にします。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
         <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
+        <target state="translated">暗黙的な global using</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
         <source>implicit</source>
-        <target state="new">implicit</target>
+        <target state="translated">暗黙的</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">32 ビット アプリケーションと 64 ビット アプリケーションの両方をサポートするシステムで、32 ビット モードで実行します。</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">32 ビットを優先</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">アプリケーションの詳細設定。</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">詳細</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -364,17 +364,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">常時</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">ビルドに成功したとき</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">出力が更新されたとき</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">このプロジェクトのコードで使用できる言語のバージョン。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
