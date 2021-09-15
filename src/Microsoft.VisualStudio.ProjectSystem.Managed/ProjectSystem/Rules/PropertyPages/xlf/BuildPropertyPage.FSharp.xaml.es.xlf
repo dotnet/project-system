@@ -2,6 +2,26 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="es" original="../BuildPropertyPage.FSharp.xaml">
     <body>
+      <trans-unit id="BoolProperty|FSharpPrefer64BitTools|Description">
+        <source>Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</source>
+        <target state="new">Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|FSharpPrefer64BitTools|DisplayName">
+        <source>Prefer 64 bit tools</source>
+        <target state="new">Prefer 64 bit tools</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|Description">
+        <source>Prefer .NET Framework version of the compiler when available.</source>
+        <target state="new">Prefer .NET Framework version of the compiler when available.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|DisplayName">
+        <source>Framework tools</source>
+        <target state="new">Framework tools</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
         <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>

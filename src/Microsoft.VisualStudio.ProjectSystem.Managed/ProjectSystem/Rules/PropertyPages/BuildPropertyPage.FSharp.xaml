@@ -3,7 +3,9 @@
       OverrideMode="Extend"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
-  <!-- TODO: We need fwlink urls generated for all the help pages -->
+  <!-- TODO (https://github.com/dotnet/fsharp/issues/12102):
+       Missing HelpUrl links need to be added.
+  -->
   <EnumProperty Name="Nullable" Category="General" Visible="False" />
   <BoolProperty Name="AllowUnsafeBlocks" Category="General" Visible="False" />
 
@@ -32,6 +34,28 @@
                 Description="Additional compiler flags. Separate flags with whitespace."
                 HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
                 Category="General" />
+
+  <BoolProperty Name="FSharpPreferNetFrameworkTools"
+              DisplayName="Framework tools"
+              Description="Prefer .NET Framework version of the compiler when available."
+              Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                 SourceOfDefaultValue="AfterContext"
+                 HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="FSharpPrefer64BitTools"
+            DisplayName="Prefer 64 bit tools"
+            Description="Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers."
+            Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                 SourceOfDefaultValue="AfterContext"
+                 HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
 
   <EnumProperty Name="DebugType"
               DisplayName="Debug symbols"
