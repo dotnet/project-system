@@ -113,7 +113,11 @@ Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.Sd
 
 Use the NuGet Package Manager to add the Microsoft.Build.Framework package to your project. This is an optional step, but it will allow the XAML editor to find the [Rule](https://docs.microsoft.com/en-us/dotnet/api/microsoft.build.framework.xamltypes.rule) type (and related types) and provide code completion, tool tips, Go to Definition, and other features while you type.
 
-### Step 3: Define the XAML file
+### Step 3: Add the Microsoft.VisualStudio.ProjectSystem.SDK.Tools package
+
+Use the NuGet Package Manager to add the Microsoft.VisualStudio.ProjectSystem.SDK.Tools package to your project. This is required to correctly embed the XAML rule at build time.
+
+### Step 4: Define the XAML file
 
 Add a new XAML file named "MyLaunchProfile.xaml" to your project. Depending on how the file is created you may end up with a `<Page>` item in your project but this is not what we want as we're not using the file to describe a piece of WPF UI.
 
@@ -131,11 +135,11 @@ Update your project to replace the `<Page>` item with the following:
 </ItemGroup>
 ```
 
-### Step 4: Describe the property page
+### Step 5: Describe the property page
 
 This is the same as Step 4 under "Option 1: XAML file on disk" (above). Please see that step for details.
 
-### Step 5: Register the property page
+### Step 6: Register the property page
 
 Add a class to hold the MEF metadata describing the embedded XAML `Rule`:
 
@@ -164,11 +168,11 @@ Important points:
 - The `context` parameter should always be `PropertyPageContexts.Project`.
 - The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
 
-### Step 6: Add the assembly as MEF asset
+### Step 7: Add the assembly as MEF asset
 
 Using the VSIX Manifest designer, ensure the assembly containing the embedded file is included as a "MefComponent" asset.
 
-### Step 7: Add the assembly to the VS binding path
+### Step 8: Add the assembly to the VS binding path
 
 In order for Visual Studio to properly load the embedded `Rule` it needs to be able to load the containing assembly. This requires that the assembly be on the Visual Studio _binding path_. A full discussion of binding paths is beyond the scope of this document, but this is often accomplished by tagging the class defining your VS package with the `ProvideBindingPath` attribute, e.g.:
 
