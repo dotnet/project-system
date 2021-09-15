@@ -168,11 +168,11 @@ Important points:
 - The `context` parameter should always be `PropertyPageContexts.Project`.
 - The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
 
-### Step 6: Add the assembly as MEF asset
+### Step 7: Add the assembly as MEF asset
 
 Using the VSIX Manifest designer, ensure the assembly containing the embedded file is included as a "MefComponent" asset.
 
-### Step 7: Add the assembly to the VS binding path
+### Step 8: Add the assembly to the VS binding path
 
 In order for Visual Studio to properly load the embedded `Rule` it needs to be able to load the containing assembly. This requires that the assembly be on the Visual Studio _binding path_. A full discussion of binding paths is beyond the scope of this document, but this is often accomplished by tagging the class defining your VS package with the `ProvideBindingPath` attribute, e.g.:
 
