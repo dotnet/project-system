@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
 {
     internal sealed partial class ImplicitlyTriggeredBuildManager
     {

@@ -2,7 +2,7 @@
 
 using Microsoft.VisualStudio.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
 {
     /// <summary>
     /// A MEF exportable interface whereby components may signal start/end of an implicitly triggered build

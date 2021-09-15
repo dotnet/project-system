@@ -2,7 +2,7 @@
 
 using System.ComponentModel.Composition;
 
-namespace Microsoft.VisualStudio.ProjectSystem.Build
+namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
 {
     /// <summary>
     /// Build manager for implicitly triggered builds from commands such as Run/Debug Tests, Start Debugging, etc.
