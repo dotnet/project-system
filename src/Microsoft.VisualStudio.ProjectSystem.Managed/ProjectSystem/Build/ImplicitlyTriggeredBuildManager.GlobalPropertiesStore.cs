@@ -16,49 +16,37 @@ namespace Microsoft.VisualStudio.ProjectSystem.Managed.Build
             private const string FastUpToDateCheckIgnoresKindsGlobalPropertyName = "FastUpToDateCheckIgnoresKinds";
             private const string FastUpToDateCheckIgnoresKindsGlobalPropertyValue = "ImplicitBuild";
 
-            private readonly ImmutableDictionary<string, string>.Builder _properties = ImmutableDictionary.CreateBuilder<string, string>(StringComparer.OrdinalIgnoreCase);
-            private readonly object _gate = new();
+            private readonly ImmutableDictionary<string, string> _regularBuildProperties;
+            private readonly ImmutableDictionary<string, string> _implicitTriggeredBuildProperties;
+
+            private bool _isImplicitlyTriggeredBuild;
 
             public static readonly GlobalPropertiesStore Instance = new();
 
             private GlobalPropertiesStore()
             {
+                _regularBuildProperties = ImmutableDictionary.Create<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                _implicitTriggeredBuildProperties = _regularBuildProperties
+                    .Add(IsImplicitlyTriggeredBuildPropertyName, "true")
+                    .Add(FastUpToDateCheckIgnoresKindsGlobalPropertyName, FastUpToDateCheckIgnoresKindsGlobalPropertyValue);
             }
 
             internal ImmutableDictionary<string, string> GetProperties()
             {
-                lock (_gate)
-                {
-                    return _properties.ToImmutable();
-                }
+                return _isImplicitlyTriggeredBuild
+                    ? _implicitTriggeredBuildProperties
+                    : _regularBuildProperties;
             }
 
             public void OnBuildStart()
             {
-                SetProperty(IsImplicitlyTriggeredBuildPropertyName, "true");
-                SetProperty(FastUpToDateCheckIgnoresKindsGlobalPropertyName, FastUpToDateCheckIgnoresKindsGlobalPropertyValue);
+                _isImplicitlyTriggeredBuild = true;
             }
 
             public void OnBuildEndOrCancel()
             {
-                RemoveProperty(IsImplicitlyTriggeredBuildPropertyName);
-                RemoveProperty(FastUpToDateCheckIgnoresKindsGlobalPropertyName);
-            }
-
-            private void SetProperty(string key, string value)
-            {
-                lock (_gate)
-                {
-                    _properties[key] = value;
-                }
-            }
-
-            private void RemoveProperty(string key)
-            {
-                lock (_gate)
-                {
-                    _properties.Remove(key);
-                }
+                _isImplicitlyTriggeredBuild = false;
             }
         }
     }
