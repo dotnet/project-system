@@ -97,7 +97,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
             if (await DebugFrameworkSupportsHotReloadAsync()
-                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
+                && await DebugFrameworkSupportsStartupHooksAsync())
             {
                 string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
                 HotReloadState state = new(this);
@@ -119,6 +120,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
 
+        /// <summary>
+        /// Checks if the project configuration targeted for debugging/launch meets the
+        /// basic requirements to support Hot Reload. Note that there may be other, specific
+        /// settings that prevent the use of Hot Reload even if the basic requirements are met.
+        /// </summary>
         private async Task<bool> DebugFrameworkSupportsHotReloadAsync()
         {
             ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
@@ -135,6 +141,36 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
         private async Task<string?> GetDebugFrameworkVersionAsync()
         {
+            if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.TargetFrameworkVersionProperty) is string targetFrameworkVersion)
+            {
+                if (targetFrameworkVersion.StartsWith("v", StringComparison.OrdinalIgnoreCase))
+                {
+                    targetFrameworkVersion = targetFrameworkVersion.Substring(startIndex: 1);
+                }
+
+                return targetFrameworkVersion;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns whether or not the project configuration targeted for debugging/launch
+        /// supports startup hooks. These are used to start Hot Reload in the launched
+        /// process.
+        /// </summary>
+        private async Task<bool> DebugFrameworkSupportsStartupHooksAsync()
+        {
+            if (await GetPropertyFromDebugFrameworkAsync(ConfigurationGeneral.StartupHookSupportProperty) is string startupHookSupport)
+            {
+                return !StringComparers.PropertyLiteralValues.Equals(startupHookSupport, "false");
+            }
+
+            return true;
+        }
+
+        private async Task<string?> GetPropertyFromDebugFrameworkAsync(string propertyName)
+        {
             ConfiguredProject? configuredProjectForDebug = await GetConfiguredProjectForDebugAsync();
             if (configuredProjectForDebug is null)
             {
@@ -143,14 +179,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             Assumes.Present(configuredProjectForDebug.Services.ProjectPropertiesProvider);
             IProjectProperties commonProperties = configuredProjectForDebug.Services.ProjectPropertiesProvider.GetCommonProperties();
-            string targetFrameworkVersion = await commonProperties.GetEvaluatedPropertyValueAsync(ConfigurationGeneral.TargetFrameworkVersionProperty);
+            string propertyValue = await commonProperties.GetEvaluatedPropertyValueAsync(propertyName);
 
-            if (targetFrameworkVersion.StartsWith("v", StringComparison.OrdinalIgnoreCase))
-            {
-                targetFrameworkVersion = targetFrameworkVersion.Substring(startIndex: 1);
-            }
-
-            return targetFrameworkVersion;
+            return propertyValue;
         }
 
         private void OnProcessExited(HotReloadState hotReloadState)

@@ -347,4 +347,12 @@
   <StringProperty Name="WinRTReferenceTabs"
                   Visible="False" />
 
+  <StringProperty Name="StartupHookSupport"
+                  Visible="False" >
+    <StringProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                  Persistence="ProjectFile"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
 </Rule>
