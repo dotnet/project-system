@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|HotReloadEnabled|Description">
         <source>Apply code changes to the running application.</source>
-        <target state="new">Apply code changes to the running application.</target>
+        <target state="translated">Zastosuj zmiany w kodzie do uruchomionej aplikacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
         <source>Enable Hot Reload</source>
-        <target state="new">Enable Hot Reload</target>
+        <target state="translated">Włącz funkcję Przeładowywanie na gorąco</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
@@ -44,12 +44,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|Description">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <target state="translated">Włącz debuger języka JavaScript dla narzędzia WebView2 opartego na przeglądarce Microsoft Edge (Chromium). Wymaga składnika Diagnostyka języka JavaScript.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
         <source>Enable WebView2 debugging</source>
-        <target state="new">Enable WebView2 debugging</target>
+        <target state="translated">Włącz debugowanie narzędzia WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">

@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">Agrega redirecciones de enlace de manera automática a App.config.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
+        <target state="translated">Generación automática de redirecciones de enlace</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
@@ -109,47 +109,47 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">Especifica la versión mínima del sistema operativo en la que se ejecutará el proyecto. Cuando no se especifica, el valor de versión del sistema operativo de destino está implícito. El uso de una versión anterior aquí requiere código para agregar restricciones en torno a las API de versión posterior.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">Versión de sistema operativo compatible</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plataforma</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">Especifica el sistema operativo al que se destina este proyecto.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">Sistema operativo de destino</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plataforma</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">Especifica la versión del sistema operativo al que se destina este proyecto.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">Versión del sistema operativo de destino</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">plataforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

@@ -54,47 +54,47 @@
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesFailure">
         <source>Applying updates failed: {0}</source>
-        <target state="new">Applying updates failed: {0}</target>
+        <target state="translated">套用更新失敗: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadApplyUpdatesSuccessful">
         <source>Updates applied successfully.</source>
-        <target state="new">Updates applied successfully.</target>
+        <target state="translated">已成功套用更新。</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadErrorsInApplication">
         <source>Errors found in application: </source>
-        <target state="new">Errors found in application: </target>
+        <target state="translated">在應用程式中發現錯誤: </target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadOutputWindowPaneName">
         <source>Hot Reload</source>
-        <target state="new">Hot Reload</target>
+        <target state="translated">熱重載</target>
         <note>This is the name given to the Output Window pane responsible for displaying messages related to Hot Reload operations.</note>
       </trans-unit>
       <trans-unit id="HotReloadRestartInProgress">
         <source>Rebuilding and restarting the application since the edits can't be applied dynamically.</source>
-        <target state="new">Rebuilding and restarting the application since the edits can't be applied dynamically.</target>
+        <target state="translated">正在重建並重新啟動應用程式，因為無法動態套用編輯。</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadSendingUpdates">
         <source>Sending updates to running application.</source>
-        <target state="new">Sending updates to running application.</target>
+        <target state="translated">正在將更新傳送到執行中的應用程式。</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStartSession">
         <source>Hot Reload session started.</source>
-        <target state="new">Hot Reload session started.</target>
+        <target state="translated">熱重載工作階段已啟動。</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStopSession">
         <source>Hot Reload session complete.</source>
-        <target state="new">Hot Reload session complete.</target>
+        <target state="translated">熱重載工作階段完成。</target>
         <note />
       </trans-unit>
       <trans-unit id="HotReloadStoppingApplication">
         <source>Stopping application.</source>
-        <target state="new">Stopping application.</target>
+        <target state="translated">正在停止應用程式。</target>
         <note />
       </trans-unit>
       <trans-unit id="ImportsFromTargetCannotBeDeleted">
@@ -104,14 +104,14 @@
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_AttachingToProcess">
         <source>{0}: Attaching to process '{1}'.</source>
-        <target state="new">{0}: Attaching to process '{1}'.</target>
+        <target state="translated">{0}: 正在附加至處理序 '{1}'。</target>
         <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID).</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ErrorAttachingToProcess">
         <source>{0}: Error while attaching to process '{1}':
 {2}
 {3}</source>
-        <target state="new">{0}: Error while attaching to process '{1}':
+        <target state="translated">{0}: 附加到處理序 '{1}' 時發生錯誤: 
 {2}
 {3}</target>
         <note>{0} is the Hot Reload session identifier. {1} is the process ID (PID). {2} is the exception type name. {3} is the exception message.</note>
@@ -120,24 +120,24 @@
         <source>{0}: Error while stopping the session:
 {1}
 {2}</source>
-        <target state="new">{0}: Error while stopping the session:
+        <target state="translated">{0}: 停止工作階段時發生錯誤:
 {1}
 {2}</target>
         <note>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_NoActiveProcess">
         <source>{0}: Unable to start Hot Reload session: no active process.</source>
-        <target state="new">{0}: Unable to start Hot Reload session: no active process.</target>
+        <target state="translated">{0}: 無法啟動熱重載工作階段: 沒有作用中的處理序。</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessAlreadyExited">
         <source>{0}: The process has already exited.</source>
-        <target state="new">{0}: The process has already exited.</target>
+        <target state="translated">{0}: 處理序已結束。</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="ProjectHotReloadSessionManager_ProcessExited">
         <source>{0}: The process has exited.</source>
-        <target state="new">{0}: The process has exited.</target>
+        <target state="translated">{0}: 處理序已結束。</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
       <trans-unit id="RenameSymbolFailed">

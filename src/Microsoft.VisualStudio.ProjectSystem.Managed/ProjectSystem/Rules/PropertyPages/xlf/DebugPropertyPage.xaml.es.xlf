@@ -14,7 +14,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
         <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
-        <target state="new">The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</target>
+        <target state="translated">La administración de perfiles de inicio se ha movido a un cuadro de diálogo dedicado. Se puede acceder a él a través del vínculo siguiente, del menú Depurar de la barra de menús, o bien mediante el comando Destino de depuración de la barra de herramientas estándar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
