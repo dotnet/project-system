@@ -147,7 +147,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                 _restoreStarted = true;
                 JoinableTask<bool> joinableTask = JoinableFactory.RunAsync(() =>
                 {
-                    return NominateForRestoreAsync(restoreInfo!, _projectAsynchronousTasksService.UnloadCancellationToken);
+                    return NominateForRestoreAsync(restoreInfo, _projectAsynchronousTasksService.UnloadCancellationToken);
                 });
 
                 SaveNominatedConfiguredVersions(value.ConfiguredInputs);
@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
                     _restoreStarted = false;
                 }
 
-                HintProjectDependentFile(restoreInfo!);
+                HintProjectDependentFile(restoreInfo);
             }
             finally
             {
