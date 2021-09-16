@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
         <source>Allow code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">'unsafe' anahtar sözcüğü kullanan kodun derlenmesine izin verin.</target>
+        <target state="translated">'güvenli olmayan' anahtar sözcüğü kullanan kodun derlenmesine izin verin.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
@@ -64,17 +64,17 @@
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Description">
         <source>Enable implicit global usings to be declared by the project SDK.</source>
-        <target state="new">Enable implicit global usings to be declared by the project SDK.</target>
+        <target state="translated">Proje SDK'sı tarafından bildirilmiş örtük genel kullanımları etkinleştir.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
         <source>Implicit global usings</source>
-        <target state="new">Implicit global usings</target>
+        <target state="translated">Örtük genel kullanımlar</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
         <source>implicit</source>
-        <target state="new">implicit</target>
+        <target state="translated">örtük</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
@@ -94,12 +94,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|Description">
         <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
-        <target state="new">Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</target>
+        <target state="translated">Hem 32 bit hem de 64 bit uygulamaları destekleyen sistemlerde 32 bit modunda çalıştırın.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
         <source>Prefer 32-bit</source>
-        <target state="new">Prefer 32-bit</target>
+        <target state="translated">32 biti tercih et</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
@@ -134,12 +134,12 @@
       </trans-unit>
       <trans-unit id="Category|Advanced|Description">
         <source>Advanced settings for the application.</source>
-        <target state="new">Advanced settings for the application.</target>
+        <target state="translated">Uygulamanın gelişmiş ayarları.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Advanced|DisplayName">
         <source>Advanced</source>
-        <target state="new">Advanced</target>
+        <target state="translated">Gelişmiş</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
@@ -364,17 +364,17 @@
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
         <source>Always</source>
-        <target state="new">Always</target>
+        <target state="translated">Her Zaman</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
         <source>When the build succeeds</source>
-        <target state="new">When the build succeeds</target>
+        <target state="translated">Derleme başarılı olduğunda</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
         <source>When the output is updated</source>
-        <target state="new">When the output is updated</target>
+        <target state="translated">Çıkış güncelleştirildiğinde</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
@@ -464,7 +464,7 @@
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
         <source>The version of the language available to code in this project.</source>
-        <target state="new">The version of the language available to code in this project.</target>
+        <target state="translated">Bu projede kod için kullanılabilen dilin sürümü.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">

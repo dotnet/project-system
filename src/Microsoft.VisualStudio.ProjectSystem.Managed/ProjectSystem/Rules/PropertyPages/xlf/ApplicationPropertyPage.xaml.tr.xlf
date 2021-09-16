@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
         <source>Add binding redirects automatically to App.config.</source>
-        <target state="new">Add binding redirects automatically to App.config.</target>
+        <target state="translated">App.config 'e bağlama yeniden yönlendirmelerini otomatik olarak ekleyin.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
         <source>Auto-generate binding redirects</source>
-        <target state="new">Auto-generate binding redirects</target>
+        <target state="translated">Otomatik olarak, bağlama yeniden yönlendirmeleri oluşturma</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
@@ -109,47 +109,47 @@
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
         <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
-        <target state="new">Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</target>
+        <target state="translated">Projenin çalıştırılacağı en düşük işletim sistemi sürümünü belirtir. Belirtilmediğinde, hedef işletim sistemi sürümü değeri kullanılır. Burada daha önceki bir sürümün kullanılması, daha sonraki sürümün API‘lerine korumalar eklemek için kod gerektirir.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
         <source>Supported OS version</source>
-        <target state="new">Supported OS version</target>
+        <target state="translated">Desteklenen işletim sistemi sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
         <source>Specifies the operating system that this project will target.</source>
-        <target state="new">Specifies the operating system that this project will target.</target>
+        <target state="translated">Bu projenin hedeflediği işletim sistemini belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
         <source>Target OS</source>
-        <target state="new">Target OS</target>
+        <target state="translated">Hedef İşletim Sistemi</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
         <source>Specifies the version of the operating system this project will target.</source>
-        <target state="new">Specifies the version of the operating system this project will target.</target>
+        <target state="translated">Bu projenin hedeflediği işletim sisteminin sürümünü belirtir.</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
         <source>Target OS version</source>
-        <target state="new">Target OS version</target>
+        <target state="translated">Hedef işletim sistemi sürümü</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
         <source>platform</source>
-        <target state="new">platform</target>
+        <target state="translated">platform</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

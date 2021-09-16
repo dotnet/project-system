@@ -34,12 +34,12 @@
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|Description">
         <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
-        <target state="new">Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</target>
+        <target state="translated">Activer le débogueur JavaScript pour WebView2 basé sur Microsoft Edge (chrome). Requiert le composant Diagnostics JavaScript.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
         <source>Enable WebView2 debugging</source>
-        <target state="new">Enable WebView2 debugging</target>
+        <target state="translated">Activer le débogage WebView2</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">

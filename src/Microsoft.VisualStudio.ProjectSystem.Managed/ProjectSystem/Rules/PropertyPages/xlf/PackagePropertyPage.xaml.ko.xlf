@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">패키지의 아이콘 이미지입니다. 이미지 파일 크기는 1MB로 제한됩니다. 지원되는 파일 형식에는 JPEG 및 PNG가 포함됩니다. 128x128의 이미지 해상도를 권장합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">아이콘</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
@@ -174,12 +174,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|Description">
         <source>The README document for the package. Must be a Markdown (.md) file.</source>
-        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
+        <target state="translated">패키지에 대한 추가 정보 문서. Markdown(.md) 파일이어야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
         <source>README</source>
-        <target state="new">README</target>
+        <target state="translated">추가 정보</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">

@@ -129,12 +129,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|Description">
         <source>The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</source>
-        <target state="new">The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.</target>
+        <target state="translated">Paketin simge görüntüsü. Görüntü dosyası boyutu 1 MB ile sınırlıdır. Desteklenen dosya biçimleri JPEG ve PNG'dir. 128x128 görüntü çözünürlüğü önerilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageIcon|DisplayName">
         <source>Icon</source>
-        <target state="new">Icon</target>
+        <target state="translated">Simge</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageId|Description">
@@ -174,12 +174,12 @@
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|Description">
         <source>The README document for the package. Must be a Markdown (.md) file.</source>
-        <target state="new">The README document for the package. Must be a Markdown (.md) file.</target>
+        <target state="translated">Paket için BENİOKU belgesi. Bir Markdown (.md) dosyası olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReadmeFile|DisplayName">
         <source>README</source>
-        <target state="new">README</target>
+        <target state="translated">BENİOKU</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PackageReleaseNotes|Description">
