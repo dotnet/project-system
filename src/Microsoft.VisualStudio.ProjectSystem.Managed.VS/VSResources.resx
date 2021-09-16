@@ -309,4 +309,8 @@ In order to debug this project, add an executable project to this solution which
 {2}</value>
     <comment>{0} is the Hot Reload session identifier. {1} is the exception type name. {2} is the exception message.</comment>
   </data>
+  <data name="ProjectHotReloadSessionManager_StartupHooksDisabled" xml:space="preserve">
+    <value>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</value>
+    <comment>{0} is the project name.</comment>
+  </data>
 </root>

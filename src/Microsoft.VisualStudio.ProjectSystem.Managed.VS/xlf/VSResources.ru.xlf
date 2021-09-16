@@ -140,6 +140,11 @@
         <target state="new">{0}: The process has exited.</target>
         <note>{0} is the Hot Reload session identifier.</note>
       </trans-unit>
+      <trans-unit id="ProjectHotReloadSessionManager_StartupHooksDisabled">
+        <source>{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</source>
+        <target state="new">{0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming.</target>
+        <note>{0} is the project name.</note>
+      </trans-unit>
       <trans-unit id="RenameSymbolFailed">
         <source>Renaming the code element '{0}' failed.</source>
         <target state="translated">Ошибка переименования элемента кода "{0}".</target>
