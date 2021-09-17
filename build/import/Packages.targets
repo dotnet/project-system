@@ -28,7 +28,7 @@
     <PackageReference Update="Microsoft.DotNet.IBCMerge"                                              Version="[$(MicrosoftDotNetIBCMergeVersion)]" />
     <PackageReference Update="Microsoft.DiaSymReader.Pdb2Pdb"                                         Version="$(MicrosoftDiaSymReaderPdb2PdbVersion)" />
     <PackageReference Update="Microsoft.Net.Compilers.Toolset"                                        Version="3.11.0" />
-    <PackageReference Update="OpenCover"                                                              Version="4.6.519" />
+    <PackageReference Update="OpenCover"                                                              Version="4.7.1138-rc" />
     <PackageReference Update="Codecov"                                                                Version="$(CodecovVersion)" />
     <PackageReference Update="MicroBuild.Core"                                                        Version="0.2.0" />
     <PackageReference Update="MicroBuild.Core.Sentinel"                                               Version="1.0.0" />
