@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 
@@ -50,9 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </remarks>
         private async Task<string> GetPropertyValueAsync()
         {
-            // Infinite timeout means this will not actually be null.
-            ILaunchSettings? launchSettings = await _launchSettings.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettings.WaitForFirstSnapshot();
 
             return launchSettings.ActiveProfile?.Name ?? string.Empty;
         }

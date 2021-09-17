@@ -16,7 +16,6 @@ using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModel.Implementation;
 using Microsoft.VisualStudio.ProjectSystem.Query.Providers;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
-using Microsoft.VisualStudio.Threading;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 {
@@ -45,9 +44,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             string desiredProfileName = ValidateIdAndExtractProfileName(id);
 
-            if (await _project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite) is ILaunchSettings launchSettings)
+            if (await _project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)
             {
+                ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
+
                 if (launchSettings is IVersionedLaunchSettings versionedLaunchSettings)
                 {
                     queryExecutionContext.ReportInputDataVersion(_launchSettingsTracker.VersionKey, versionedLaunchSettings.Version);
@@ -92,15 +92,15 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         public async Task<IEnumerable<IEntityValue>> RetrieveAllLaunchProfileEntitiesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, ILaunchProfilePropertiesAvailableStatus requestedProperties)
         {
-            if (await _project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog
-                && await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite) is ILaunchSettings launchSettings)
+            if (await _project.GetProjectLevelPropertyPagesCatalogAsync() is IPropertyPagesCatalog projectCatalog)
             {
-                return createLaunchProfileValues();
+                ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
+                return createLaunchProfileValues(launchSettings);
             }
 
             return Enumerable.Empty<IEntityValue>();
 
-            IEnumerable<IEntityValue> createLaunchProfileValues()
+            IEnumerable<IEntityValue> createLaunchProfileValues(ILaunchSettings launchSettings)
             {
                 Dictionary<string, Rule> debugRules = new();
                 foreach (Rule rule in DebugUtilities.GetDebugChildRules(projectCatalog))
@@ -165,8 +165,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(cancellationToken);
 
             ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
             if (existingProfile is not null)
@@ -209,8 +208,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(cancellationToken);
 
             ProjectSystem.Debug.ILaunchProfile? existingProfile = launchSettings.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, currentProfileName));
             if (existingProfile is not null)
@@ -296,8 +294,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         private async Task<string> GetNewProfileNameAsync(CancellationToken cancellationToken = default)
         {
-            ILaunchSettings? launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite).WithCancellation(cancellationToken);
-            Assumes.NotNull(launchSettings);
+            ILaunchSettings launchSettings = await _launchSettingsProvider.WaitForFirstSnapshot(cancellationToken);
 
             string? newProfileName = null;
             for (int i = 1; newProfileName is null; i++)

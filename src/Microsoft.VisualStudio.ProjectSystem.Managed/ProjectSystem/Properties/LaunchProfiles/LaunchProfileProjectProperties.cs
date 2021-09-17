@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework.XamlTypes;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -131,8 +130,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </remarks>
         public async Task<IEnumerable<string>> GetPropertyNamesAsync()
         {
-            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(snapshot);
+            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
             if (profile is null)
@@ -180,8 +178,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         /// </returns>
         public async Task<string?> GetUnevaluatedPropertyValueAsync(string propertyName)
         {
-            ILaunchSettings? snapshot = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            Assumes.NotNull(snapshot);
+            ILaunchSettings snapshot = await _launchSettingsProvider.WaitForFirstSnapshot();
 
             ILaunchProfile? profile = snapshot.Profiles.FirstOrDefault(p => StringComparers.LaunchProfileNames.Equals(p.Name, _context.ItemName));
             if (profile is null)
@@ -360,8 +357,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
         {
             if (_launchProfileValueProviders.TryGetValue(propertyName, out LaunchProfileValueProviderAndMetadata? launchProfileValueProvider))
             {
-                ILaunchSettings? currentSettings = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-                Assumes.NotNull(currentSettings);
+                ILaunchSettings currentSettings = await _launchSettingsProvider.WaitForFirstSnapshot();
 
                 ImmutableDictionary<string, object>? globalSettings = currentSettings.GlobalSettings;
 

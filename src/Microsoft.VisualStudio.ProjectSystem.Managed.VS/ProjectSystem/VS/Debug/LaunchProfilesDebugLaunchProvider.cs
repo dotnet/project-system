@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Buffers.PooledObjects;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
@@ -73,10 +72,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         private async Task<ILaunchProfile> GetActiveProfileAsync()
         {
-            // Get the active debug profile (timeout of 5s, though in reality is should never take this long as even in error conditions
-            // a snapshot is produced).
-            ILaunchSettings? currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot(Timeout.Infinite);
-            ILaunchProfile? activeProfile = currentProfiles?.ActiveProfile;
+            ILaunchSettings currentProfiles = await _launchSettingsProvider.WaitForFirstSnapshot();
+            ILaunchProfile? activeProfile = currentProfiles.ActiveProfile;
 
             // Should have a profile
             if (activeProfile == null)
