@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Threading;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.CodeAnalysis;
@@ -14,6 +15,7 @@ using Microsoft.VisualStudio.OperationProgress;
 using Microsoft.VisualStudio.ProjectSystem.Waiting;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Solution = Microsoft.CodeAnalysis.Solution;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
@@ -26,6 +28,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private readonly IEnvironmentOptions _environmentOptions;
         private readonly IUnconfiguredProjectVsServices _projectVsServices;
         private readonly IProjectThreadingService _threadingService;
+        private readonly IProjectAsynchronousTasksService _projectAsynchronousTasksService;
         private readonly UnconfiguredProject _unconfiguredProject;
         private readonly IVsUIService<IVsExtensibility, IVsExtensibility3> _extensibility;
         private readonly IVsOnlineServices _vsOnlineServices;
@@ -46,6 +49,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             IRoslynServices roslynServices,
             IWaitIndicator waitService,
             IVsOnlineServices vsOnlineServices,
+            [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
             IProjectThreadingService threadingService,
             IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
             IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
@@ -59,6 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
             _roslynServices = roslynServices;
             _waitService = waitService;
             _vsOnlineServices = vsOnlineServices;
+            _projectAsynchronousTasksService = projectAsynchronousTasksService;
             _threadingService = threadingService;
             _extensibility = extensibility;
             _operationProgressService = operationProgressService;
@@ -117,7 +122,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             _threadingService.RunAndForget(async () =>
             {
-                Solution currentSolution = await PublishLatestSolutionAsync();
+                Solution currentSolution = await PublishLatestSolutionAsync(_projectAsynchronousTasksService.UnloadCancellationToken);
 
                 string renameOperationName = string.Format(CultureInfo.CurrentCulture, VSResources.Renaming_Type_from_0_to_1, oldName, value);
                 WaitIndicatorResult<Solution> indicatorResult = _waitService.Run(
@@ -146,14 +151,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
         private static bool FileChangedExtension(string? oldFilePath, string newFileWithExtension)
             => !StringComparers.Paths.Equals(Path.GetExtension(oldFilePath), Path.GetExtension(newFileWithExtension));
 
-        private async Task<Solution> PublishLatestSolutionAsync()
+        private async Task<Solution> PublishLatestSolutionAsync(CancellationToken cancellationToken)
         {
             // WORKAROUND: We don't yet have a way to wait for the rename changes to propagate 
             // to Roslyn (tracked by https://github.com/dotnet/project-system/issues/3425), so 
             // instead we wait for the IntelliSense stage to finish for the entire solution
             // 
-            IVsOperationProgressStageStatus stageStatus = (await _operationProgressService.GetValueAsync()).GetStageStatus(CommonOperationProgressStageIds.Intellisense);
-            await stageStatus.WaitForCompletionAsync();
+            IVsOperationProgressStatusService operationProgressStatusService = await _operationProgressService.GetValueAsync(cancellationToken);
+            IVsOperationProgressStageStatus stageStatus = operationProgressStatusService.GetStageStatus(CommonOperationProgressStageIds.Intellisense);
+
+            await stageStatus.WaitForCompletionAsync().WithCancellation(cancellationToken);
 
             // The result of that wait, is basically a "new" published Solution, so grab it
             return _workspace.CurrentSolution;
