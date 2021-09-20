@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="Rule|ResourcesPropertyPage|Description">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">リソース</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResourcesPropertyPage|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">リソース</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenAssemblyResources|DisplayName">
         <source>Create or open assembly resources</source>
-        <target state="new">Create or open assembly resources</target>
+        <target state="translated">アセンブリ リソースを作成する/開く</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|Description">
         <source>The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
-        <target state="new">The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <target state="translated">アセンブリ リソースの管理は、プロジェクト プロパティ経由では実行されなくなりました。代わりに、ソリューション エクスプローラーから RESX ファイルを直接開きます。便宜上、以下のリンクからアクセスできます。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">無視されました</target>
         <note />
       </trans-unit>
     </body>

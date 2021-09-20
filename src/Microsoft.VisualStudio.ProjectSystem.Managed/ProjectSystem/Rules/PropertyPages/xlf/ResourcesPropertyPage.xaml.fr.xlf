@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="Rule|ResourcesPropertyPage|Description">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|ResourcesPropertyPage|DisplayName">
         <source>Resources</source>
-        <target state="new">Resources</target>
+        <target state="translated">Ressources</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenAssemblyResources|DisplayName">
         <source>Create or open assembly resources</source>
-        <target state="new">Create or open assembly resources</target>
+        <target state="translated">Créer ou ouvrir des ressources d’assembly</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|Description">
         <source>The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
-        <target state="new">The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <target state="translated">La gestion des ressources d'assemblage ne se fait plus par le biais des propriétés du projet. Au lieu de cela, ouvrez le fichier RESX directement à partir de Solution Explorer. Pour plus de commodité, vous pouvez y accéder via le lien ci-dessous.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|ResourcesPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">Ignoré</target>
         <note />
       </trans-unit>
     </body>

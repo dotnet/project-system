@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="Rule|SettingsPropertyPage|Description">
         <source>Settings</source>
-        <target state="new">Settings</target>
+        <target state="translated">설정</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SettingsPropertyPage|DisplayName">
         <source>Settings</source>
-        <target state="new">Settings</target>
+        <target state="translated">설정</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationSettings|DisplayName">
         <source>Create or open application settings</source>
-        <target state="new">Create or open application settings</target>
+        <target state="translated">애플리케이션 설정 만들기 또는 열기</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|Description">
         <source>The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
-        <target state="new">The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <target state="translated">애플리케이션 설정 관리는 더 이상 프로젝트 속성을 통해 수행되지 않습니다. 대신 솔루션 탐색기 직접 설정 파일을 엽니다. 편의를 위해 아래 링크를 통해 액세스할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">무시됨</target>
         <note />
       </trans-unit>
     </body>
