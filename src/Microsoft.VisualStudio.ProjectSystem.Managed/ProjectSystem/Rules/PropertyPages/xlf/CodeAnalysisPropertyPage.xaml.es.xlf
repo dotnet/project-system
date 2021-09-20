@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="BoolProperty|EnableNETAnalyzers|Description">
         <source>Run .NET analyzers to help with API usage.</source>
-        <target state="new">Run .NET analyzers to help with API usage.</target>
+        <target state="translated">Ejecutar analizadores de .NET para ayudar con el uso de la API.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnableNETAnalyzers|DisplayName">
         <source>Enable .NET analyzers</source>
-        <target state="new">Enable .NET analyzers</target>
+        <target state="translated">Habilitar los analizadores de .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|Description">
         <source>Produce diagnostics about code style on build.</source>
-        <target state="new">Produce diagnostics about code style on build.</target>
+        <target state="translated">Generar diagnósticos sobre el estilo de código durante la compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|EnforceCodeStyleInBuild|DisplayName">
         <source>Enforce code style on build (experimental)</source>
-        <target state="new">Enforce code style on build (experimental)</target>
+        <target state="translated">Aplicar el estilo de código durante la compilación (experimental)</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|Description">
         <source>Always run code analysis on build.</source>
-        <target state="new">Always run code analysis on build.</target>
+        <target state="translated">Ejecutar siempre análisis de código en la compilación.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringBuild|DisplayName">
         <source>Run on build</source>
-        <target state="new">Run on build</target>
+        <target state="translated">Ejecutar durante la compilación</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|Description">
         <source>Run code analysis live in the editor as you type.</source>
-        <target state="new">Run code analysis live in the editor as you type.</target>
+        <target state="translated">Ejecutar análisis de código en directo en el editor mientras escribe.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|RunAnalyzersDuringLiveAnalysis|DisplayName">
         <source>Run on live analysis</source>
-        <target state="new">Run on live analysis</target>
+        <target state="translated">Ejecutar durante el análisis en directo</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|AllAnalyzers|DisplayName">
         <source>All analyzers</source>
-        <target state="new">All analyzers</target>
+        <target state="translated">Todos los analizadores</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|NetAnalyzers|DisplayName">
         <source>.NET analyzers</source>
-        <target state="new">.NET analyzers</target>
+        <target state="translated">Analizadores de .NET</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|AnalysisLevel|Description">
         <source>The set of analyzers that should be run in the project.</source>
-        <target state="new">The set of analyzers that should be run in the project.</target>
+        <target state="translated">Conjunto de analizadores que se deben ejecutar en el proyecto.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|AnalysisLevel|DisplayName">
         <source>Analysis level</source>
-        <target state="new">Analysis level</target>
+        <target state="translated">Nivel de análisis</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.5.0|DisplayName">
         <source>5.0</source>
-        <target state="new">5.0</target>
+        <target state="translated">5.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.6.0|DisplayName">
         <source>6.0</source>
-        <target state="new">6.0</target>
+        <target state="translated">6.0</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.latest|DisplayName">
         <source>Latest</source>
-        <target state="new">Latest</target>
+        <target state="translated">Último</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.none|DisplayName">
         <source>None</source>
-        <target state="new">None</target>
+        <target state="translated">Ninguno</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|AnalysisLevel.preview|DisplayName">
         <source>Preview</source>
-        <target state="new">Preview</target>
+        <target state="translated">Vista previa</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|CodeAnalysisPropertyPage|Description">
         <source>Settings</source>
-        <target state="new">Settings</target>
+        <target state="translated">Configuración</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|CodeAnalysisPropertyPage|DisplayName">
         <source>Code Analysis</source>
-        <target state="new">Code Analysis</target>
+        <target state="translated">Análisis de código</target>
         <note />
       </trans-unit>
     </body>

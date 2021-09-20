@@ -4,97 +4,97 @@
     <body>
       <trans-unit id="BoolProperty|FSharpPrefer64BitTools|Description">
         <source>Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</source>
-        <target state="new">Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers.</target>
+        <target state="translated">Utilisez un compilateur 64 bits sur les systèmes qui prennent en charge les compilateurs 32 bits et 64 bits.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPrefer64BitTools|DisplayName">
         <source>Prefer 64 bit tools</source>
-        <target state="new">Prefer 64 bit tools</target>
+        <target state="translated">Préférer 64 outils de bits</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|Description">
         <source>Prefer .NET Framework version of the compiler when available.</source>
-        <target state="new">Prefer .NET Framework version of the compiler when available.</target>
+        <target state="translated">Préférez .NET Framework version du compilateur, le cas échéant.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|FSharpPreferNetFrameworkTools|DisplayName">
         <source>Framework tools</source>
-        <target state="new">Framework tools</target>
+        <target state="translated">Outils de l’infrastructure</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
         <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
-        <target state="new">Enable compiler optimizations for smaller, faster, and more efficient output.</target>
+        <target state="translated">Activez les optimisations du compilateur pour une sortie plus petite, plus rapide et plus efficace.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
         <source>Optimize code</source>
-        <target state="new">Optimize code</target>
+        <target state="translated">Optimiser le code</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
-        <target state="new">optimise;optimisation</target>
+        <target state="translated">optimiser;optimisation</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Description">
         <source>Enable tail call generation.</source>
-        <target state="new">Enable tail call generation.</target>
+        <target state="translated">Activer la génération d’un appel tail.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|DisplayName">
         <source>Generate tail calls</source>
-        <target state="new">Generate tail calls</target>
+        <target state="translated">Générer des tailcalls</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Tailcalls|Metadata|SearchTerms">
         <source>tailcall</source>
-        <target state="new">tailcall</target>
+        <target state="translated">tailcall</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Description">
         <source>Specifies the kind of debug symbols produced during build.</source>
-        <target state="new">Specifies the kind of debug symbols produced during build.</target>
+        <target state="translated">Spécifie le genre de symboles de débogage produits lors de la génération.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|DisplayName">
         <source>Debug symbols</source>
-        <target state="new">Debug symbols</target>
+        <target state="translated">Symboles de débogage</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|DebugType|Metadata|SearchTerms">
         <source>debug type</source>
-        <target state="new">debug type</target>
+        <target state="translated">type de débogage</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.embedded|DisplayName">
         <source>Embedded in DLL/EXE, portable across platforms</source>
-        <target state="new">Embedded in DLL/EXE, portable across platforms</target>
+        <target state="translated">Incorporé dans DLL/EXE, portable sur toutes les plateformes</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.full|DisplayName">
         <source>PDB file, current platform</source>
-        <target state="new">PDB file, current platform</target>
+        <target state="translated">Fichier PDB, plateforme actuelle</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.none|DisplayName">
         <source>No symbols are emitted</source>
-        <target state="new">No symbols are emitted</target>
+        <target state="translated">Aucun symbole n’est émis</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumValue|DebugType.portable|DisplayName">
         <source>PDB file, portable across platforms</source>
-        <target state="new">PDB file, portable across platforms</target>
+        <target state="translated">Fichier PDB, portable sur toutes les plateformes</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|Description">
         <source>Additional compiler flags. Separate flags with whitespace.</source>
-        <target state="new">Additional compiler flags. Separate flags with whitespace.</target>
+        <target state="translated">Indicateurs de compilateur supplémentaires. Séparez les indicateurs par des espaces blancs.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OtherFlags|DisplayName">
         <source>Other flags</source>
-        <target state="new">Other flags</target>
+        <target state="translated">Autres indicateurs</target>
         <note />
       </trans-unit>
     </body>

@@ -4,27 +4,27 @@
     <body>
       <trans-unit id="Rule|SettingsPropertyPage|Description">
         <source>Settings</source>
-        <target state="new">Settings</target>
+        <target state="translated">设置</target>
         <note />
       </trans-unit>
       <trans-unit id="Rule|SettingsPropertyPage|DisplayName">
         <source>Settings</source>
-        <target state="new">Settings</target>
+        <target state="translated">设置</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|CreateOrOpenApplicationSettings|DisplayName">
         <source>Create or open application settings</source>
-        <target state="new">Create or open application settings</target>
+        <target state="translated">创建或打开应用程序设置</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|Description">
         <source>The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</source>
-        <target state="new">The management of application settings no longer occurs through project properties. Instead, open the settings file directly from Solution Explorer. For convenience, you may access it via the link below.</target>
+        <target state="translated">应用程序设置的管理不再通过项目属性进行。而是改为直接从解决方案资源管理器打开设置文件。为方便起见，可通过以下链接访问它。</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|SettingsPagePlaceholderDescription|DisplayName">
         <source>Ignored</source>
-        <target state="new">Ignored</target>
+        <target state="translated">已忽略</target>
         <note />
       </trans-unit>
     </body>
