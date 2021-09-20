@@ -156,6 +156,7 @@ namespace MyNamespace
             xamlResourceStreamName: "XamlRuleToCode:MyLaunchProfile.xaml",
             context: PropertyPageContexts.Project)]
         [AppliesTo("MyUniqueProjectCapability")]
+        [Order(Order.Default)]
         public static int MyLaunchProfileRule;
     }
 }
@@ -167,6 +168,7 @@ Important points:
 - The `xamlResourceStreamName` parameter specifies the name of the embedded resource. This will be of the form "XamlRuleToCode:<XAMl file name>".
 - The `context` parameter should always be `PropertyPageContexts.Project`.
 - The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
+- The `Order` attribute is also required. Generally `Order.Default` is fine.
 
 ### Step 7: Add the assembly as MEF asset
 
