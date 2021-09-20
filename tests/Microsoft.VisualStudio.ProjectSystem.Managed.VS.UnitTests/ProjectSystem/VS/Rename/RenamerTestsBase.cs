@@ -60,12 +60,13 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                 IRoslynServices roslynServices,
                 IWaitIndicator waitService,
                 IVsOnlineServices vsOnlineServices,
+                [Import(ExportContractNames.Scopes.UnconfiguredProject)] IProjectAsynchronousTasksService projectAsynchronousTasksService,
                 IProjectThreadingService threadingService,
                 IVsUIService<IVsExtensibility, IVsExtensibility3> extensibility,
                 IVsService<SVsOperationProgress, IVsOperationProgressStatusService> operationProgressService,
                 IVsService<SVsSettingsPersistenceManager, ISettingsManager> settingsManagerService) :
                 base(unconfiguredProject, projectVsServices, workspace, environmentOptions, userNotificationServices, roslynServices, waitService,
-                    vsOnlineServices, threadingService, extensibility, operationProgressService, settingsManagerService)
+                    vsOnlineServices, projectAsynchronousTasksService, threadingService, extensibility, operationProgressService, settingsManagerService)
             {
             }
 
@@ -97,6 +98,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
 
             var environmentOptionsFactory = IEnvironmentOptionsFactory.Implement((string category, string page, string property, bool defaultValue) => { return true; });
             var waitIndicator = (new Mock<IWaitIndicator>()).Object;
+            var projectAsynchronousTasksService = IProjectAsynchronousTasksServiceFactory.Create();
             var projectThreadingService = IProjectThreadingServiceFactory.Create();
             var refactorNotifyService = (new Mock<IRefactorNotifyService>()).Object;
             var extensibility = new Mock<IVsUIService<IVsExtensibility, IVsExtensibility3>>().Object;
@@ -116,6 +118,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Rename
                                                               roslynServices,
                                                               waitIndicator,
                                                               vsOnlineServices,
+                                                              projectAsynchronousTasksService,
                                                               projectThreadingService,
                                                               extensibility,
                                                               operationProgressMock,
