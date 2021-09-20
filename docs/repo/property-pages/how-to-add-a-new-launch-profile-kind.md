@@ -156,7 +156,7 @@ namespace MyNamespace
             xamlResourceStreamName: "XamlRuleToCode:MyLaunchProfile.xaml",
             context: PropertyPageContexts.Project)]
         [AppliesTo("MyUniqueProjectCapability")]
-        [Order(Order.Default)]
+        [Order(orderPrecedence: 0)]
         public static int MyLaunchProfileRule;
     }
 }
@@ -168,7 +168,7 @@ Important points:
 - The `xamlResourceStreamName` parameter specifies the name of the embedded resource. This will be of the form "XamlRuleToCode:<XAMl file name>".
 - The `context` parameter should always be `PropertyPageContexts.Project`.
 - The `AppliesTo` attribute is required. The `Rule` will only be available to projects with the matching capability.
-- The `Order` attribute is also required. Generally `Order.Default` is fine.
+- The `Order` attribute is also required. Generally an `orderPrecedence` of "0" is fine as there are limited situations where you would want to have multiple exports with the same `xamlResourceAssemblyName` and `xamlResourceStreamName` and so the order won't matter. Generally this would only be done to override the other metadata, such as the `AppliesTo` attribute, on an existing `ExportPropertyXamlRuleDefinitionAttribute`.
 
 ### Step 7: Add the assembly as MEF asset
 
