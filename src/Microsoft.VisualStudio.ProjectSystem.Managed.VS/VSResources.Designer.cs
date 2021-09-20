@@ -479,6 +479,15 @@ namespace Microsoft.VisualStudio {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}: Hot Reload is not available because startup hooks have been disabled, possibly due to trimming..
+        /// </summary>
+        internal static string ProjectHotReloadSessionManager_StartupHooksDisabled {
+            get {
+                return ResourceManager.GetString("ProjectHotReloadSessionManager_StartupHooksDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A project with an Output Type of Class Library cannot be started directly.
         ///
         ///In order to debug this project, add an executable project to this solution which references the library project. Set the executable project as the startup project..

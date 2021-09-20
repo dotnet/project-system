@@ -97,20 +97,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             using AsyncSemaphore.Releaser semaphoreReleaser = await _semaphore.EnterAsync();
 
             if (await DebugFrameworkSupportsHotReloadAsync()
-                && await GetDebugFrameworkVersionAsync() is string frameworkVersion
-                && await DebugFrameworkSupportsStartupHooksAsync())
+                && await GetDebugFrameworkVersionAsync() is string frameworkVersion)
             {
-                string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
-                HotReloadState state = new(this);
-                IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, frameworkVersion, state);
-
-                if (projectHotReloadSession is not null)
+                if (await DebugFrameworkSupportsStartupHooksAsync())
                 {
-                    state.Session = projectHotReloadSession;
-                    await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
-                    _pendingSessionState = state;
+                    string name = $"{Path.GetFileNameWithoutExtension(_project.FullPath)}:{_nextUniqueId++}";
+                    HotReloadState state = new(this);
+                    IProjectHotReloadSession? projectHotReloadSession = _projectHotReloadAgent.Value.CreateHotReloadSession(name, frameworkVersion, state);
 
-                    return true;
+                    if (projectHotReloadSession is not null)
+                    {
+                        state.Session = projectHotReloadSession;
+                        await projectHotReloadSession.ApplyLaunchVariablesAsync(environmentVariables, default);
+                        _pendingSessionState = state;
+
+                        return true;
+                    }
+                }
+                else
+                {
+                    // If startup hooks are not supported then tell the user why Hot Reload isn't available.
+                    await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_StartupHooksDisabled, Path.GetFileNameWithoutExtension(_project.FullPath)));
                 }
             }
 
