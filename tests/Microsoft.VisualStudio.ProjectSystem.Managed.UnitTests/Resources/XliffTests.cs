@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -18,38 +17,38 @@ namespace Microsoft.VisualStudio.Resources
 
         private static readonly Regex s_acceleratorPattern = new(@"&\w");
 
-        [Theory]
-        [MemberData(nameof(GetXlfFiles))]
-        public void ResourceStringsDoNotContainMultipleAcceleratorMnemonics(string fileName, string path)
+        [Fact]
+        public void ResourceStringsDoNotContainMultipleAcceleratorMnemonics()
         {
-            var settings = new XmlReaderSettings { XmlResolver = null };
-            using var fileStream = File.OpenRead(path);
-            using var reader = XmlReader.Create(fileStream, settings);
-            var root = XDocument.Load(reader).Root;
-
-            var namespaceManager = new XmlNamespaceManager(reader.NameTable);
-            namespaceManager.AddNamespace("x", XliffNamespace);
-
-            var targets = root.XPathSelectElements(@"/x:xliff/x:file/x:body/x:trans-unit/x:target", namespaceManager);
-
-            foreach (var target in targets)
+            foreach (string path in GetXlfFiles())
             {
-                var matches = s_acceleratorPattern.Matches(target.Value);
+                var settings = new XmlReaderSettings { XmlResolver = null };
+                using var fileStream = File.OpenRead(path);
+                using var reader = XmlReader.Create(fileStream, settings);
+                var root = XDocument.Load(reader).Root;
 
-                if (matches.Count > 1)
+                var namespaceManager = new XmlNamespaceManager(reader.NameTable);
+                namespaceManager.AddNamespace("x", XliffNamespace);
+
+                var targets = root.XPathSelectElements(@"/x:xliff/x:file/x:body/x:trans-unit/x:target", namespaceManager);
+
+                foreach (var target in targets)
                 {
-                    throw new Xunit.Sdk.XunitException("Translated string contains multiple accelerator mnemonics: " + target.Value);
+                    var matches = s_acceleratorPattern.Matches(target.Value);
+
+                    if (matches.Count > 1)
+                    {
+                        throw new Xunit.Sdk.XunitException($"Translated string in {Path.GetFileName(path)} contains multiple accelerator mnemonics: {target.Value}");
+                    }
                 }
             }
-        }
 
-        private static IEnumerable<object[]> GetXlfFiles()
-        {
-            var root = RepoUtil.FindRepoRootPath();
+            static IEnumerable<string> GetXlfFiles()
+            {
+                var root = RepoUtil.FindRepoRootPath();
 
-            var xlfFiles = Directory.EnumerateFiles(root, "*.xlf", SearchOption.AllDirectories);
-
-            return xlfFiles.Select(file => new object[] { Path.GetFileName(file), file });
+                return Directory.EnumerateFiles(root, "*.xlf", SearchOption.AllDirectories);
+            }
         }
     }
 }

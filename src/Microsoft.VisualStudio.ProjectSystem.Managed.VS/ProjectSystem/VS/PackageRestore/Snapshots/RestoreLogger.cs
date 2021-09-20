@@ -2,18 +2,17 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
 using NuGet.SolutionRestoreManager;
 
 namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
 {
     internal static class RestoreLogger
     {
-        public static void BeginNominateRestore(IProjectLogger logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
+        public static void BeginNominateRestore(IProjectDiagnosticOutputService logger, string fullPath, IVsProjectRestoreInfo2 projectRestoreInfo)
         {
             if (logger.IsEnabled)
             {
-                using IProjectLoggerBatch batch = logger.BeginBatch();
+                using var batch = new BatchLogger(logger);
                 batch.WriteLine();
                 batch.WriteLine("------------------------------------------");
                 batch.WriteLine($"BEGIN Nominate Restore for {fullPath}");
@@ -29,11 +28,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
         }
 
-        public static void EndNominateRestore(IProjectLogger logger, string fullPath)
+        public static void EndNominateRestore(IProjectDiagnosticOutputService logger, string fullPath)
         {
             if (logger.IsEnabled)
             {
-                using IProjectLoggerBatch batch = logger.BeginBatch();
+                using var batch = new BatchLogger(logger);
                 batch.WriteLine();
                 batch.WriteLine("------------------------------------------");
                 batch.WriteLine($"COMPLETED Nominate Restore for {fullPath}");
@@ -41,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             }
         }
 
-        private static void LogTargetFrameworks(IProjectLoggerBatch logger, IVsTargetFrameworks2 targetFrameworks)
+        private static void LogTargetFrameworks(BatchLogger logger, IVsTargetFrameworks2 targetFrameworks)
         {
             logger.WriteLine($"Target Frameworks ({targetFrameworks.Count})");
             logger.IndentLevel++;
@@ -54,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             logger.IndentLevel--;
         }
 
-        private static void LogTargetFramework(IProjectLoggerBatch logger, IVsTargetFrameworkInfo2 targetFrameworkInfo)
+        private static void LogTargetFramework(BatchLogger logger, IVsTargetFrameworkInfo2 targetFrameworkInfo)
         {
             logger.WriteLine(targetFrameworkInfo.TargetFrameworkMoniker);
             logger.IndentLevel++;
@@ -68,14 +67,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PackageRestore
             logger.IndentLevel--;
         }
 
-        private static void LogProperties(IProjectLoggerBatch logger, string heading, IVsProjectProperties projectProperties)
+        private static void LogProperties(BatchLogger logger, string heading, IVsProjectProperties projectProperties)
         {
             IEnumerable<string> properties = projectProperties.Cast<ProjectProperty>()
                     .Select(prop => $"{prop.Name}:{prop.Value}");
             logger.WriteLine($"{heading} -- ({string.Join(" | ", properties)})");
         }
 
-        private static void LogReferenceItems(IProjectLoggerBatch logger, string heading, IVsReferenceItems references)
+        private static void LogReferenceItems(BatchLogger logger, string heading, IVsReferenceItems references)
         {
             logger.WriteLine(heading);
             logger.IndentLevel++;

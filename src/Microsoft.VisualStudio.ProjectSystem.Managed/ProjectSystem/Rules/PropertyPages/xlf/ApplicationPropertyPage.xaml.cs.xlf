@@ -2,14 +2,24 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="cs" original="../ApplicationPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|Description">
+        <source>Add binding redirects automatically to App.config.</source>
+        <target state="translated">Automaticky přidat přesměrování vazeb do souboru App.config</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|AutoGenerateBindingRedirects|DisplayName">
+        <source>Auto-generate binding redirects</source>
+        <target state="translated">Automaticky generovat přesměrování vazeb</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|Description">
         <source>Allow publishing outside of Visual Studio, such as via "dotnet publish".</source>
-        <target state="new">Allow publishing outside of Visual Studio, such as via "dotnet publish".</target>
+        <target state="translated">Umožňuje publikovat mimo Visual Studio, například prostřednictvím „dotnet publish“.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|IsPublishable|DisplayName">
         <source>Publishing</source>
-        <target state="new">Publishing</target>
+        <target state="translated">Publikování</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|Description">
@@ -20,6 +30,26 @@
       <trans-unit id="BoolProperty|TargetMultipleFrameworks|DisplayName">
         <source>Target multiple frameworks</source>
         <target state="translated">Cílit na více architektur</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|Description">
+        <source>Enable WPF for this project.</source>
+        <target state="translated">Povolí pro tento projekt WPF.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWPF|DisplayName">
+        <source>Windows Presentation Foundation</source>
+        <target state="translated">Windows Presentation Foundation</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|Description">
+        <source>Enable Windows Forms for this project.</source>
+        <target state="translated">Povolí pro tento projekt model Windows Forms.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|UseWindowsForms|DisplayName">
+        <source>Windows Forms</source>
+        <target state="translated">Windows Forms</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|Description">
@@ -34,12 +64,12 @@
       </trans-unit>
       <trans-unit id="Category|Packaging|Description">
         <source>Packaging settings for the application.</source>
-        <target state="new">Packaging settings for the application.</target>
+        <target state="translated">Nastavení balení pro aplikaci.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Packaging|DisplayName">
         <source>Packaging</source>
-        <target state="new">Packaging</target>
+        <target state="translated">Balení</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Resources|Description">
@@ -52,6 +82,21 @@
         <target state="translated">Prostředky</target>
         <note />
       </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Description">
+        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
+        <target state="translated">Určuje verzi rozhraní .NET, na kterou aplikace cílí. Tato možnost může mít různé hodnoty v závislosti na tom, které verze rozhraní .NET jsou na počítači nainstalované.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|DisplayName">
+        <source>Target framework</source>
+        <target state="translated">Cílová architektura</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|InterceptedTargetFramework|Metadata|SearchTerms">
+        <source>TFM</source>
+        <target state="translated">TFM</target>
+        <note />
+      </trans-unit>
       <trans-unit id="DynamicEnumProperty|StartupObject|Description">
         <source>Defines the entry point to be called when the application loads. Generally this is set either to the main form in your application or to the 'Main' procedure that should run when the application starts. Class libraries do not define an entry point.</source>
         <target state="translated">Definuje vstupní bod, který se má volat při načtení aplikace. Obecně je tato možnost nastavena buď na hlavní formulář v aplikaci, nebo na proceduru Main, která se má spustit při spuštění aplikace. Knihovny tříd vstupní bod nedefinují.</target>
@@ -62,19 +107,49 @@
         <target state="translated">Spouštěcí objekt</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|Description">
-        <source>Specifies the version of .NET that the application targets. This option can have different values depending on which versions of .NET are installed on your computer.</source>
-        <target state="translated">Určuje verzi rozhraní .NET, na kterou aplikace cílí. Tato možnost může mít různé hodnoty v závislosti na tom, které verze rozhraní .NET jsou na počítači nainstalované.</target>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Description">
+        <source>Specifies the minimum OS version that the project will run on. When unspecified, the target OS version value is implied. Using an earlier version here requires code to add guards around later version APIs.</source>
+        <target state="translated">Určuje minimální verzi operačního systému, na které se projekt spustí. Není-li zadána, bude zahrnuta hodnota cílové verze operačního systému. Použití starší verze zde vyžaduje kód, který přidá ochranu kolem rozhraní API novější verze.</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|DisplayName">
-        <source>Target framework</source>
-        <target state="translated">Cílová architektura</target>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|DisplayName">
+        <source>Supported OS version</source>
+        <target state="translated">Podporovaná verze operačního systému</target>
         <note />
       </trans-unit>
-      <trans-unit id="DynamicEnumProperty|TargetFramework|Metadata|SearchTerms">
-        <source>TFM</source>
-        <target state="translated">TFM</target>
+      <trans-unit id="DynamicEnumProperty|SupportedOSPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="translated">platforma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Description">
+        <source>Specifies the operating system that this project will target.</source>
+        <target state="translated">Určuje operační systém, na který bude tento projekt cílit.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|DisplayName">
+        <source>Target OS</source>
+        <target state="translated">Cílový operační systém</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformIdentifier|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="translated">platforma</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Description">
+        <source>Specifies the version of the operating system this project will target.</source>
+        <target state="translated">Určuje verzi operačního systému, na kterou bude tento projekt cílit.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|DisplayName">
+        <source>Target OS version</source>
+        <target state="translated">Cílová verze operačního systému</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DynamicEnumProperty|TargetPlatformVersion|Metadata|SearchTerms">
+        <source>platform</source>
+        <target state="translated">platforma</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ApplicationManifestKind|Description">

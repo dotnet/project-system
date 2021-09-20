@@ -162,6 +162,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                           bool isSolutionOpen = false,
                                                                                           bool hasNewProjects = false,
                                                                                           bool usingPreviewSDK = false,
+                                                                                          bool isCapabilityMatch = true,
                                                                                           string targetFrameworkMoniker = ".NETCoreApp,Version=v3.0")
         {
             dialogServices = IDialogServicesFactory.Create();
@@ -194,7 +195,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.VersionCompatibility
                                                                                        vsAppIdService,
                                                                                        vsShellService,
                                                                                        hasNewProjects,
-                                                                                       usingPreviewSDK);
+                                                                                       usingPreviewSDK,
+                                                                                       isCapabilityMatch);
             return compatibilityDetector;
         }
 

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return Task.FromResult<string?>(path);
         }
 
-        protected string? GetDefaultFileAsync(string rootPath)
+        protected string? GetDefaultFile(string rootPath)
         {
             return Path.Combine(rootPath, _fileName);
         }

@@ -53,7 +53,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
         {
             if (CanNavigateTo(node))
             {
-                await NavigateTo(node);
+                await NavigateToAsync(node);
                 return true;
             }
 
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Tree.Dependencies.Commands
                 DependencyTreeFlags.SharedProjectDependency);
         }
 
-        private async Task NavigateTo(IProjectTree node)
+        private async Task NavigateToAsync(IProjectTree node)
         {
             string? browsePath = await DependencyServices.GetBrowsePathAsync(_project, node);
             if (browsePath == null)

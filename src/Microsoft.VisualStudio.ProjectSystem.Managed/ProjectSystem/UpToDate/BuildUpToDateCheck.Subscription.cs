@@ -26,26 +26,25 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
         /// Destruction of the Dataflow subscription happens when the parent component is disposed or unloaded.
         /// </para>
         /// </remarks>
-        private sealed class Subscription : IDisposable
+        private sealed class Subscription : ISubscription
         {
             private readonly IUpToDateCheckConfiguredInputDataSource _inputDataSource;
 
             private readonly ConfiguredProject _configuredProject;
 
             /// <summary>
-            /// Used to synchronise updates to <see cref="_link"/> and <see cref="State"/>.
+            /// Used to synchronise updates to <see cref="_link"/> and <see cref="_disposeTokenSource"/>.
             /// </summary>
             private readonly object _lock = new();
+
+            private readonly IUpToDateCheckHost _host;
 
             /// <summary>
             /// Prevent overlapping requests.
             /// </summary>
             private readonly AsyncSemaphore _semaphore = new(1);
 
-            /// <summary>
-            /// Internal for testing purposes only.
-            /// </summary>
-            internal UpToDateCheckConfiguredInput? State { get; private set; }
+            private int _disposed;
 
             /// <summary>
             /// Gets the time at which the last up-to-date check was made.
@@ -59,7 +58,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// in that compilation. We use this property as a proxy for compilation start time, whereas
             /// the outputs represent compilation end time.
             /// </remarks>
-            internal DateTime LastCheckedAtUtc { get; set; } = DateTime.MinValue;
+            private DateTime _lastCheckedAtUtc = DateTime.MinValue;
 
             /// <summary>
             /// Lazily constructed Dataflow subscription. Set back to <see langword="null"/> in <see cref="Dispose"/>.
@@ -71,13 +70,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
             /// </summary>
             private readonly CancellationTokenSource _disposeTokenSource = new();
 
-            public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject)
+            public Subscription(IUpToDateCheckConfiguredInputDataSource inputDataSource, ConfiguredProject configuredProject, IUpToDateCheckHost host)
             {
                 Requires.NotNull(inputDataSource, nameof(inputDataSource));
                 Requires.NotNull(configuredProject, nameof(configuredProject));
 
                 _inputDataSource = inputDataSource;
                 _configuredProject = configuredProject;
+                _host = host;
             }
 
             public async Task<bool> RunAsync(Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func, CancellationToken cancellationToken)
@@ -89,77 +89,76 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                 // Throws if the subscription has been disposed, or the caller's token cancelled.
                 token.ThrowIfCancellationRequested();
 
-                // Note that we defer subscription until an actual request is made in order to
-                // prevent redundant work/allocation for inactive project configurations.
-                // https://github.com/dotnet/project-system/issues/6327
-                //
-                // We don't pass the cancellation token here as initialization must be atomic.
-                EnsureInitialized();
-
-                token.ThrowIfCancellationRequested();
-
-                // TODO wait for our state to be up to date with that of the project (https://github.com/dotnet/project-system/issues/6185)
-
-                if (State == null)
+                if (!await _host.HasDesignTimeBuildsAsync(token))
                 {
-                    // We have either haven't received data yet, or have been disposed.
+                    // Design time builds aren't available in the host. This can happen when running in command line mode, for example.
+                    // In such a case we will not have the data we need. Presume the project is not up-to-date.
                     return false;
                 }
+
+                EnsureInitialized();
+
+                if (_disposed != 0)
+                {
+                    // We have been disposed
+                    return false;
+                }
+
+                Assumes.NotNull(_link);
 
                 // Prevent overlapping requests
                 using AsyncSemaphore.Releaser _ = await _semaphore.EnterAsync(token);
 
-                bool result = await func(State, LastCheckedAtUtc, token);
+                token.ThrowIfCancellationRequested();
 
-                lock (_lock)
+                IProjectVersionedValue<UpToDateCheckConfiguredInput> state;
+
+                using (_inputDataSource.Join())
                 {
-                    LastCheckedAtUtc = DateTime.UtcNow;
+                    // Wait for our state to be up to date with that of the project
+                    state = await _inputDataSource.SourceBlock.GetLatestVersionAsync(
+                        _configuredProject,
+                        cancellationToken: token);
                 }
+
+                bool result = await func(state.Value, _lastCheckedAtUtc, token);
+
+                _lastCheckedAtUtc = DateTime.UtcNow;
 
                 return result;
             }
 
             public void EnsureInitialized()
             {
-                if (_link != null)
+                if (_link != null || _disposed != 0)
                 {
-                    // Already initialized (or disposed)
+                    // Already initialized or disposed
                     return;
                 }
 
+                // Double check within lock
                 lock (_lock)
                 {
-                    // Double check within lock
-                    if (_link == null)
+                    if (_link == null && _disposed == 0)
                     {
-                        ITargetBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>> actionBlock
-                            = DataflowBlockFactory.CreateActionBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>>(OnChanged, _configuredProject.UnconfiguredProject);
+                        // Link to a null target so that data will flow. The null target drops all values.
+                        // When we need a value we use GetLatestVersionAsync to ensure the UpToDateCheckConfiguredInput
+                        // is in sync with the current configured project.
 
-                        _link = _inputDataSource.SourceBlock.LinkTo(actionBlock, DataflowOption.PropagateCompletion);
+                        ITargetBlock<IProjectVersionedValue<UpToDateCheckConfiguredInput>> target
+                            = DataflowBlock.NullTarget<IProjectVersionedValue<UpToDateCheckConfiguredInput>>();
+
+                        _link = _inputDataSource.SourceBlock.LinkTo(target, DataflowOption.PropagateCompletion);
                     }
-                }
-            }
-
-            internal void OnChanged(IProjectVersionedValue<UpToDateCheckConfiguredInput> e)
-            {
-                lock (_lock)
-                {
-                    if (_disposeTokenSource.IsCancellationRequested)
-                    {
-                        // We've been disposed, so don't update State (which will be null)
-                        return;
-                    }
-
-                    State = e.Value;
                 }
             }
 
             /// <summary>
-            /// Tear down any Dataflow subscription and cancel any ongoing query.
+            /// Cancel any ongoing query and release Dataflow subscription.
             /// </summary>
             public void Dispose()
             {
-                if (_disposeTokenSource.IsCancellationRequested)
+                if (Interlocked.CompareExchange(ref _disposed, 1, 0) != 0)
                 {
                     // Already disposed
                     return;
@@ -170,12 +169,19 @@ namespace Microsoft.VisualStudio.ProjectSystem.UpToDate
                     _link?.Dispose();
                     _link = null;
 
-                    State = null;
-
                     _disposeTokenSource.Cancel();
                     _disposeTokenSource.Dispose();
                 }
             }
+        }
+
+        internal interface ISubscription : IDisposable
+        {
+            void EnsureInitialized();
+
+            Task<bool> RunAsync(
+                Func<UpToDateCheckConfiguredInput, DateTime, CancellationToken, Task<bool>> func,
+                CancellationToken cancellationToken);
         }
     }
 }

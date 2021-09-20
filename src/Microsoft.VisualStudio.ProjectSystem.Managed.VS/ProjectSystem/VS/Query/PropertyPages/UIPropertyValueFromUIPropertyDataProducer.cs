@@ -22,9 +22,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
         protected override Task<IEnumerable<IEntityValue>> CreateValuesAsync(IQueryExecutionContext queryExecutionContext, IEntityValue parent, PropertyProviderState providerState)
         {
-            (string versionKey, long versionNumber) = providerState.ProjectState.GetUnconfiguredProjectVersion();
-            queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
-
             return UIPropertyValueDataProducer.CreateUIPropertyValueValuesAsync(
                 queryExecutionContext,
                 parent,

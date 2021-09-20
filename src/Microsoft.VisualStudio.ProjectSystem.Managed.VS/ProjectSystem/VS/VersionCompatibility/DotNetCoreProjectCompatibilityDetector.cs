@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.ProjectSystem.VS.UI;
 using Microsoft.VisualStudio.ProjectSystem.VS.Utilities;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Setup.Configuration;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
@@ -32,6 +33,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private const string VersionCompatibilityDownloadFwlink = "https://go.microsoft.com/fwlink/?linkid=866798";
         private const string VersionDataFilename = "DotNetVersionCompatibility.json";
         private const int CacheFileValidHours = 24;
+
+        private const string RequiredProjectCapabilities = ProjectCapability.DotNet + " & " + ProjectCapability.PackageReferences;
 
         private readonly Lazy<IProjectServiceAccessor> _projectServiceAccessor;
         private readonly Lazy<IDialogServices> _dialogServices;
@@ -108,8 +111,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                 // do not block package initialization on this
                 _threadHandling.Value.RunAndForget(async () =>
                 {
+                    // Perform file IO on the thread pool
+                    await TaskScheduler.Default;
+
                     // First make sure that the cache file exists
-                    if (_versionDataCacheFile != null && _versionDataCacheFile.ReadCacheFile() is null)
+                    if (_versionDataCacheFile != null && !_versionDataCacheFile.CacheFileExists())
                     {
                         await _versionDataCacheFile.TryToUpdateCacheFileAsync();
                     }
@@ -139,7 +145,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         {
             // Only check this project if the solution is opened and we haven't already warned at the maximum level. Note that fAdded
             // is true for both add and a reload of an unloaded project
-            if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported)
+            if (SolutionOpen && fAdded == 1 && CompatibilityLevelWarnedForCurrentSolution != CompatibilityLevel.NotSupported && IsCapabilityMatch(pHierarchy))
             {
                 UnconfiguredProject? project = pHierarchy.AsUnconfiguredProject();
                 if (project != null)
@@ -149,7 +155,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
                         // Run on the background
                         await TaskScheduler.Default;
 
-                        VersionCompatibilityData compatData = GetVersionCompatibilityData();
+                        VersionCompatibilityData compatData = await GetVersionCompatibilityDataAsync();
 
                         // We need to check if this project has been newly created. Our projects will implement IProjectCreationState -we can 
                         // skip any that don't
@@ -187,6 +193,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             return settings.GetValueOrDefault<bool>(UsePreviewSdkSettingKey);
         }
 
+        // This method is overridden in test code
+        protected virtual bool IsCapabilityMatch(IVsHierarchy hierarchy)
+        {
+            return hierarchy.IsCapabilityMatch(RequiredProjectCapabilities);
+        }
+
         private async Task<bool> IsPrereleaseAsync()
         {
             await _threadHandling.Value.SwitchToUIThread();
@@ -217,7 +229,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             // Run on the background
             await TaskScheduler.Default;
 
-            VersionCompatibilityData compatDataToUse = GetVersionCompatibilityData();
+            VersionCompatibilityData compatDataToUse = await GetVersionCompatibilityDataAsync();
             CompatibilityLevel finalCompatLevel = CompatibilityLevel.Recommended;
             IProjectService projectService = _projectServiceAccessor.Value.GetProjectService();
             IEnumerable<UnconfiguredProject> projects = projectService.LoadedUnconfiguredProjects;
@@ -320,7 +332,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
         private static async Task<CompatibilityLevel> GetProjectCompatibilityAsync(UnconfiguredProject project, VersionCompatibilityData compatData, bool isPreviewSDKInUse)
         {
-            if (project.Capabilities.AppliesTo($"{ProjectCapability.DotNet} & {ProjectCapability.PackageReferences}"))
+            if (project.Capabilities.AppliesTo(RequiredProjectCapabilities))
             {
                 Assumes.Present(project.Services.ActiveConfiguredProjectProvider);
                 ConfiguredProject? activeConfiguredProject = project.Services.ActiveConfiguredProjectProvider.ActiveConfiguredProject;
@@ -424,7 +436,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// less than 24 hours old, it uses that data. Otherwise it downloads from the server. If the download fails it will use the previously cached
         /// file, or if that file doesn't not exist, it uses the data baked into this class
         /// </summary>
-        private VersionCompatibilityData GetVersionCompatibilityData()
+        private async Task<VersionCompatibilityData> GetVersionCompatibilityDataAsync()
         {
             // Do we need to update our cached data? Note that since the download could take a long time like tens of seconds we don't really want to
             // start showing messages to the user well after their project is opened and they are interacting with it. Thus we start a task to update the 
@@ -437,7 +449,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             try
             {
                 // Try the cache file
-                Dictionary<Version, VersionCompatibilityData>? versionCompatData = GetCompatibilityDataFromCacheFile();
+                Dictionary<Version, VersionCompatibilityData>? versionCompatData = await GetCompatibilityDataFromCacheFileAsync();
 
                 // See if the cache file needs refreshing and if so, kick off a task to do so
                 if (_versionDataCacheFile?.CacheFileIsStale() == true)
@@ -491,11 +503,17 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         /// <summary>
         /// If the cached file exists reads the data and returns it
         /// </summary>
-        private Dictionary<Version, VersionCompatibilityData>? GetCompatibilityDataFromCacheFile()
+        private async Task<Dictionary<Version, VersionCompatibilityData>?> GetCompatibilityDataFromCacheFileAsync()
         {
+            if (_versionDataCacheFile is null)
+            {
+                return null;
+            }
+
             try
             {
-                string? data = _versionDataCacheFile?.ReadCacheFile();
+                string? data = await _versionDataCacheFile.ReadCacheFileAsync();
+
                 if (data != null)
                 {
                     return VersionCompatibilityData.DeserializeVersionData(data);
@@ -504,6 +522,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             catch
             {
             }
+
             return null;
         }
 

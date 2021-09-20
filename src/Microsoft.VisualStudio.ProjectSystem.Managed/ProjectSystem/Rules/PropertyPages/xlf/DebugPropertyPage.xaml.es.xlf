@@ -13,8 +13,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Description">
-        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.</source>
-        <target state="translated">La administración de los perfiles de inicio se ha trasladado a un diálogo específico. Se puede acceder a él a través del siguiente vínculo.</target>
+        <source>The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.</source>
+        <target state="translated">La administración de perfiles de inicio se ha movido a un cuadro de diálogo dedicado. Se puede acceder a él a través del vínculo siguiente, del menú Depurar de la barra de menús, o bien mediante el comando Destino de depuración de la barra de herramientas estándar.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|DisplayName">
@@ -23,8 +23,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|DebugPagePlaceholderDescription|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="new">arguments;command line;working directory;environment variables</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">argumentos;línea de comandos;directorio de trabajo;variables de entorno;IIS;explorador;URL;autenticación;remoto</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|DisplayName">
@@ -33,8 +33,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|OpenLaunchProfilesEditor|Metadata|SearchTerms">
-        <source>arguments;command line;working directory;environment variables</source>
-        <target state="new">arguments;command line;working directory;environment variables</target>
+        <source>arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote</source>
+        <target state="translated">argumentos;línea de comandos;directorio de trabajo;variables de entorno;IIS;explorador;URL;autenticación;remoto</target>
         <note />
       </trans-unit>
     </body>

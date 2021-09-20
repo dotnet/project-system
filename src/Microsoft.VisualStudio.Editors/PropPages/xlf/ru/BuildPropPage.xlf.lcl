@@ -14,7 +14,7 @@
         <Str Cat="Text">
           <Val><![CDATA[A&dvanced...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[До&полнительно...]]></Val>
+            <Val><![CDATA[Д&ополнительно...]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

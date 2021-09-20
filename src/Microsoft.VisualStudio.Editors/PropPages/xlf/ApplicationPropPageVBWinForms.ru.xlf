@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="StartupObjectLabel.Text">
         <source>Startup &amp;object:</source>
-        <target state="translated">Автоматически запускаемый &amp;объект:</target>
+        <target state="translated">Объект &amp;запуска:</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationTypeLabel.Text">

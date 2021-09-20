@@ -63,6 +63,33 @@ which is distinct from the other compilation target `MyProject.dll`. This could 
 Items that do not specify a `Set` are included in the default set. Items may be added to multiple sets by separating
 their names with a semicolon (e.g. `Set="Set1;Set2"`).
 
+### Filtering inputs and outputs
+
+It may be desirable for a component within Visual Studio to schedule a build for which only a subset of the up-to-date
+check inputs and outputs should be considered. This can be achieved by adding `Kind` metadata to the relevant items and
+passing the `FastUpToDateCheckIgnoresKinds` global property.
+
+For example:
+
+```xml
+<ItemGroup>
+  <UpToDateCheckInput Include="Source1.cs" Kind="Alpha" />
+  <UpToDateCheckInput Include="Source2.cs" />
+  <UpToDateCheckOutput Include="MyProject1.dll" Kind="Alpha" />
+  <UpToDateCheckOutput Include="MyProject2.dll" />
+</ItemGroup>
+
+<PropertyGroup>
+  <FastUpToDateCheckIgnoresKinds>Alpha</FastUpToDateCheckIgnoresKinds>
+<PropertyGroup>
+```
+
+If the `FastUpToDateCheckIgnoresKinds` property has a value of `Alpha`, then the fast up-to-date check will only
+consider `Source2.cs` and `MyProject2.dll`. If the `FastUpToDateCheckIgnoresKinds` property has a different
+value, or is empty, all four items are considered.
+
+Multiple values may be passed for `FastUpToDateCheckIgnoresKinds`, separated by semicolons (`;`).
+
 ### Copied files
 
 Builds may copy files from a source location to a destination location. Information about these locations should be
@@ -80,6 +107,8 @@ looking only at the timestamps of the source and destination. Sets are used to c
 features do not compose. If both properties are present, `Original` will take effect and `Set` is ignored.
 
 ## Debugging
+
+### SDK-Style projects
 
 By default the up-to-date check does not log anything, though you can infer its decision from your build output summary:
 
@@ -102,6 +131,35 @@ build output.
 - `None` disables log output.
 - `Minimal` produces a single message per out-of-date project.
 - `Info` and `Verbose` provide increasingly detailed information about the inner workings of the check, which are useful for debugging.
+
+### .NET Framework projects
+
+Enabling up-to-date check logging for old-style (non-SDK) projects is a little more manual:
+
+1. Open a "Developer Command Prompt" for the particular version of Visual Studio you are using.
+2. Enter command:
+   ```text
+   vsregedit set "%cd%" HKCU General U2DCheckVerbosity dword 1
+   ```
+3. The message `Set value for U2DCheckVerbosity` should be displayed
+
+Run the same command with a `0` instead of a `1` to disable this logging.
+
+Note that `"%cd%"` evaluates to the current directory. When you first open a Developer Prompt, this path will be correct. To execute this command from arbitrary locations, you'll need to substitute the relevant quoted path, such as `"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise"`, with no trailing `/` or `>` character.
+
+You can change this value while VS is running and it will take effect immediately.
+
+When logging is enabled you'll see messages such as this in build output:
+
+> Project 'MyProject' is not up to date. Input file 'c:\path\myproject\class1.cs' is modified after output file 'C:\Path\MyProject\bin\Debug\MyProject.pdb'.
+
+#### Logging from the experimental hive
+
+If you wish to enable this logging for a particular hive (this is an advanced scenario) then pass the hive's name after the path. For example:
+
+```text
+vsregedit set "%cd%" Exp HKCU General U2DCheckVerbosity dword 1
+```
 
 ## Disabling the Up-to-date Check
 

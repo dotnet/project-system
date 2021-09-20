@@ -3,13 +3,13 @@
   <file datatype="xml" source-language="en" target-language="pl" original="../BuildPropertyPage.xaml">
     <body>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Description">
-        <source>Allows code that uses the 'unsafe' keyword to compile.</source>
-        <target state="translated">Zezwala na kompilowanie kodu korzystającego ze słowa kluczowego „unsafe”.</target>
+        <source>Allow code that uses the 'unsafe' keyword to compile.</source>
+        <target state="translated">Zezwalaj na kompilowanie kodu korzystającego ze słowa kluczowego "unsafe".</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|DisplayName">
-        <source>Allow unsafe code</source>
-        <target state="translated">Zezwalaj na niebezpieczny kod</target>
+        <source>Unsafe code</source>
+        <target state="translated">Niebezpieczny kod</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|AllowUnsafeBlocks|Metadata|SearchTerms">
@@ -18,8 +18,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|Description">
-        <source>Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.</source>
-        <target state="translated">Określa, czy operacje arytmetyczne na liczbach całkowitych, które dają wartość spoza zakresu typu danych, a które nie znajdują się w zakresie zaznaczonego lub niezaznaczonego słowa kluczowego, powoduje wyjątek w czasie wykonywania.</target>
+        <source>Throw exceptions when integer arithmetic produces out of range values.</source>
+        <target state="translated">Zgłaszaj wyjątki, gdy arytmetyczna liczba całkowita h=generuje wartości z poza zakresu.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|CheckForOverflowUnderflow|DisplayName">
@@ -43,8 +43,8 @@
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|Description">
-        <source>Indicates whether the compiler should produce identical assemblies for identical inputs.</source>
-        <target state="translated">Wskazuje, czy kompilator powinien generować identyczne zestawy dla identycznych danych wejściowych.</target>
+        <source>Produce identical compilation output for identical inputs.</source>
+        <target state="translated">Generuj identyczne dane wyjściowe kompilacji dla identycznych danych wejściowych.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Deterministic|DisplayName">
@@ -62,9 +62,24 @@
         <target state="translated">Plik dokumentacji</target>
         <note />
       </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Description">
+        <source>Enable implicit global usings to be declared by the project SDK.</source>
+        <target state="translated">Włącz niejawne użycia globalne, które mają być deklarowane przez zestaw SDK projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|DisplayName">
+        <source>Implicit global usings</source>
+        <target state="translated">Niejawne użycia globalne</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ImplicitUsings|Metadata|SearchTerms">
+        <source>implicit</source>
+        <target state="translated">niejawne</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|Optimize|Description">
-        <source>Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.</source>
-        <target state="translated">Włącza lub wyłącza optymalizacje wykonywane przez kompilator w celu wygenerowania mniejszego, szybszego i bardziej wydajnego pliku wyjściowego.</target>
+        <source>Enable compiler optimizations for smaller, faster, and more efficient output.</source>
+        <target state="translated">Włącz optymalizacje kompilatora dla mniejszych, szybszych i bardziej wydajnych danych wyjściowych.</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|Optimize|DisplayName">
@@ -75,6 +90,26 @@
       <trans-unit id="BoolProperty|Optimize|Metadata|SearchTerms">
         <source>optimise;optimisation</source>
         <target state="translated">optymalizuj;optymalizacja</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|Description">
+        <source>Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.</source>
+        <target state="translated">Uruchamiaj w trybie 32-bitowym w systemach obsługujących aplikacje 32-bitowe i 64-bitowe.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|Prefer32Bit|DisplayName">
+        <source>Prefer 32-bit</source>
+        <target state="translated">Preferuj 32-bitowe</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|Description">
+        <source>Produce a reference assembly containing the public API of the project.</source>
+        <target state="translated">Wygeneruj zestaw odwołań zawierający publiczny interfejs API projektu.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|ProduceReferenceAssembly|DisplayName">
+        <source>Reference assembly</source>
+        <target state="translated">Zestaw odwołań</target>
         <note />
       </trans-unit>
       <trans-unit id="BoolProperty|SignAssembly|Description">
@@ -97,6 +132,16 @@
         <target state="translated">Traktuj ostrzeżenia jako błędy</target>
         <note />
       </trans-unit>
+      <trans-unit id="Category|Advanced|Description">
+        <source>Advanced settings for the application.</source>
+        <target state="translated">Ustawienia zaawansowane aplikacji.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Category|Advanced|DisplayName">
+        <source>Advanced</source>
+        <target state="translated">Zaawansowane</target>
+        <note />
+      </trans-unit>
       <trans-unit id="Category|ErrorsAndWarnings|Description">
         <source>Configures the error and warning options for the build process.</source>
         <target state="translated">Konfiguruje opcje błędów i ostrzeżeń procesu kompilowania.</target>
@@ -109,12 +154,12 @@
       </trans-unit>
       <trans-unit id="Category|Events|Description">
         <source>Configures custom events that run before and after build.</source>
-        <target state="new">Configures custom events that run before and after build.</target>
+        <target state="translated">Konfiguruje zdarzenia niestandardowe uruchamiane przed kompilacją i po niej.</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|Events|DisplayName">
         <source>Events</source>
-        <target state="new">Events</target>
+        <target state="translated">Zdarzenia</target>
         <note />
       </trans-unit>
       <trans-unit id="Category|General|DisplayName">
@@ -158,8 +203,8 @@
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|Description">
-        <source>Controls when internal compiler error (ICE) reports are sent to Microsoft.</source>
-        <target state="translated">Kontroluje, kiedy raporty dotyczące wewnętrznych błędów kompilatora (ICE) są wysyłane do firmy Microsoft.</target>
+        <source>Send internal compiler error (ICE) reports to Microsoft.</source>
+        <target state="translated">Wysyłaj raporty o wewnętrznych błędach kompilatora (ICE) do firmy Microsoft.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|ErrorReport|DisplayName">
@@ -199,12 +244,12 @@
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|Description">
         <source>Specifies under which condition the post-build event will be executed.</source>
-        <target state="new">Specifies under which condition the post-build event will be executed.</target>
+        <target state="translated">Określa warunek, pod jakim zostanie wykonane zdarzenie po kompilacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|RunPostBuildEvent|DisplayName">
         <source>When to run the post-build event</source>
-        <target state="new">When to run the post-build event</target>
+        <target state="translated">Kiedy uruchomić zdarzenie po kompilacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnumProperty|WarningLevel|Description">
@@ -317,6 +362,21 @@
         <target state="translated">x86</target>
         <note />
       </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.Always|DisplayName">
+        <source>Always</source>
+        <target state="translated">Zawsze</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName">
+        <source>When the build succeeds</source>
+        <target state="translated">Gdy kompilacja zakończy się pomyślnie</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName">
+        <source>When the output is updated</source>
+        <target state="translated">Po zaktualizowaniu danych wyjściowych</target>
+        <note />
+      </trans-unit>
       <trans-unit id="EnumValue|WarningLevel.0|DisplayName">
         <source>0</source>
         <target state="translated">0</target>
@@ -403,8 +463,8 @@
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|Description">
-        <source>Why can't I select the C# language version?</source>
-        <target state="translated">Dlaczego nie mogę wybrać wersji języka C#?</target>
+        <source>The version of the language available to code in this project.</source>
+        <target state="translated">Wersja języka dostępna do kodowania w tym projekcie.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|LangVersion|DisplayName">
@@ -424,22 +484,22 @@
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|Description">
         <source>Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</source>
-        <target state="new">Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.</target>
+        <target state="translated">Określa polecenia, które są uruchamiane po zakończeniu kompilacji. Nie jest uruchamiane, jeśli kompilacja zakończy się niepowodzeniem. Użyj elementu „call”, aby wywołać pliki. bat. Niezerowy kod zakończenia spowoduje niepowodzenie kompilacji.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PostBuildEvent|DisplayName">
         <source>Post-build event</source>
-        <target state="new">Post-build event</target>
+        <target state="translated">Zdarzenie po kompilacji</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|Description">
         <source>Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</source>
-        <target state="new">Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.</target>
+        <target state="translated">Określa polecenia, które są uruchamiane przed rozpoczęciem kompilacji. Nie jest uruchamiane, jeśli projekt jest aktualny. Niezerowy kod zakończenia spowoduje niepowodzenie kompilacji przed jej uruchomieniem.</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|PreBuildEvent|DisplayName">
         <source>Pre-build event</source>
-        <target state="new">Pre-build event</target>
+        <target state="translated">Zdarzenie przed kompilacją</target>
         <note />
       </trans-unit>
       <trans-unit id="StringProperty|WarningsAsErrors|Description">

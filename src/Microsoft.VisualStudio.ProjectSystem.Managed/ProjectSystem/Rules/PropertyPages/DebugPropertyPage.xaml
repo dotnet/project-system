@@ -4,9 +4,7 @@
       Description="Debug"
       DisplayName="Debug"
       PageTemplate="generic"
-      Order="500"
-      xmlns:sys="clr-namespace:System;assembly=mscorlib"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Order="1000"
       xmlns="http://schemas.microsoft.com/build/2009/properties">
 
   <Rule.DataSource>
@@ -17,12 +15,12 @@
 
   <StringProperty Name="DebugPagePlaceholderDescription"
                   DisplayName="Ignored"
-                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below.">
+                  Description="The management of launch profiles has moved to a dedicated dialog. It may be accessed via the link below, via the Debug menu in the menu bar, or via the Debug Target command on the Standard tool bar.">
     <StringProperty.Metadata>
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
-      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="Description" />
@@ -35,7 +33,7 @@
       <NameValuePair Name="VisibilityCondition">
         <NameValuePair.Value>(has-project-capability "LaunchProfiles")</NameValuePair.Value>
       </NameValuePair>
-      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables" />
+      <NameValuePair Name="SearchTerms" Value="arguments;command line;working directory;environment variables;IIS;browser;URL;authentication;remote" />
     </StringProperty.Metadata>
     <StringProperty.ValueEditors>
       <ValueEditor EditorType="LinkAction">

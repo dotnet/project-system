@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
                 return propertyValue.ToString();
             }
 
-            return await base.OnGetEvaluatedPropertyValueAsync(propertyName, evaluatedPropertyValue, defaultProperties);
+            return evaluatedPropertyValue;
         }
     }
 }

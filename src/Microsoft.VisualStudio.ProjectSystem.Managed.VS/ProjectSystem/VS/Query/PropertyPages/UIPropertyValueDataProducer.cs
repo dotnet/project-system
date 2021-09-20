@@ -106,10 +106,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
 
             foreach (ProjectConfiguration configuration in configurations)
             {
-                (string versionKey, long versionNumber) = await cache.GetConfiguredProjectVersionAsync(configuration);
-                queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+                if (await cache.GetDataVersionAsync(configuration) is (string versionKey, long versionNumber))
+                {
+                    queryExecutionContext.ReportInputDataVersion(versionKey, versionNumber);
+                }
 
-                if (await cache.BindToRule(configuration, schema.Name, propertiesContext) is IRule rule
+                if (await cache.BindToRuleAsync(configuration, schema.Name, propertiesContext) is IRule rule
                     && rule.GetProperty(propertyName) is ProjectSystem.Properties.IProperty property)
                 {
                     IEntityValue propertyValue = await CreateUIPropertyValueValueAsync(parent, configuration, property, requestedProperties);

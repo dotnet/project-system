@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="ResourcesPropertyPage"
+      Description="Resources"
+      DisplayName="Resources"
+      PageTemplate="generic"
+      Order="1100"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFileWithInterception"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <StringProperty Name="ResourcesPagePlaceholderDescription"
+                  DisplayName="Ignored"
+                  Description="The management of assembly resources no longer occurs through project properties. Instead, open the RESX file directly from Solution Explorer. For convenience, you may access it via the link below.">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="Description" />
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+  <StringProperty Name="CreateOrOpenAssemblyResources"
+                  DisplayName="Create or open assembly resources">
+    <StringProperty.ValueEditors>
+      <ValueEditor EditorType="LinkAction">
+        <ValueEditor.Metadata>
+          <NameValuePair Name="Action" Value="Command" />
+          <NameValuePair Name="Command" Value="CreateOrOpenAssemblyResources" />
+        </ValueEditor.Metadata>
+      </ValueEditor>
+    </StringProperty.ValueEditors>
+  </StringProperty>
+
+</Rule>

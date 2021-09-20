@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
 namespace Microsoft.VisualStudio
@@ -11,8 +10,7 @@ namespace Microsoft.VisualStudio
     internal static class LinqExtensions
     {
         [Pure]
-        [return: MaybeNull]
-        public static T FirstOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? FirstOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             foreach (T obj in source)
             {
@@ -24,8 +22,7 @@ namespace Microsoft.VisualStudio
         }
 
         [Pure]
-        [return: MaybeNull]
-        public static T SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
+        public static T? SingleOrDefault<T, TArg>(this IEnumerable<T> source, Func<T, TArg, bool> predicate, TArg arg)
         {
             using (IEnumerator<T> enumerator = source.GetEnumerator())
             {

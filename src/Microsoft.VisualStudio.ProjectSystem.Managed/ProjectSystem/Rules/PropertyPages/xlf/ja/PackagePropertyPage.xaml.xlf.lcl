@@ -237,19 +237,25 @@
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          <Val><![CDATA[The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[パッケージ ルートからアイコン ファイルへの相対パス。このプロパティを設定することに加えて、ファイルがパッケージに含まれていることを確認する必要があります。画像のファイル サイズは 1 MB に制限されています。サポートされているファイル形式には JPEG と PNG があります。画像の解像度は 128x128 をお勧めします。]]></Val>
+            <Val><![CDATA[パッケージのアイコン画像。画像ファイルのサイズは 1 MB に制限されています。サポートされているファイル形式には、JPEG と PNG が含まれます。128 x 128 の画像解像度をお勧めします。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Icon file]]></Val>
+          <Val><![CDATA[Icon]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[アイコン ファイル]]></Val>
+            <Val><![CDATA[アイコン]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Icon file]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -312,6 +318,24 @@
           <Val><![CDATA[Project URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[プロジェクトの URL]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The README document for the package. Must be a Markdown (.md) file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[パッケージの README ドキュメント。マークダウン (md) ファイルである必要があります。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[README]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[README]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

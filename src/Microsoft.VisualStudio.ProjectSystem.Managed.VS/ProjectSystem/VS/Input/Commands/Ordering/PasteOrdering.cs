@@ -103,10 +103,10 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Input.Commands.Ordering
         {
             Assumes.NotNull(_dropTarget);
 
-            ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludes(_configuredProject.Value, _accessor);
+            ImmutableHashSet<string> previousIncludes = await OrderingHelper.GetAllEvaluatedIncludesAsync(_configuredProject.Value, _accessor);
             PasteItemsResult result = await PasteHandler.PasteItemsAsync(items, effect);
 
-            await OrderingHelper.Move(_configuredProject.Value, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
+            await OrderingHelper.MoveAsync(_configuredProject.Value, _accessor, previousIncludes, _dropTarget, OrderingMoveAction.MoveToTop);
 
             return result;
         }

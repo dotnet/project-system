@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             _project = project;
         }
 
-        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger)
+        public void Handle(IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(added, nameof(added));
@@ -50,7 +50,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void AddToContextIfNotPresent(string fullPath, IProjectLogger logger)
+        private void AddToContextIfNotPresent(string fullPath, IProjectDiagnosticOutputService logger)
         {
             if (!_paths.Contains(fullPath))
             {
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             }
         }
 
-        private void RemoveFromContextIfPresent(string fullPath, IProjectLogger logger)
+        private void RemoveFromContextIfPresent(string fullPath, IProjectDiagnosticOutputService logger)
         {
             if (_paths.Contains(fullPath))
             {

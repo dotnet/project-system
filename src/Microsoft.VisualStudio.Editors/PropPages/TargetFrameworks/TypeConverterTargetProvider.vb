@@ -25,7 +25,7 @@ Namespace Microsoft.VisualStudio.Editors.PropertyPages
             Requires.NotNull(framework, NameOf(framework))
 
             ' CPS-based projects implement a enum property that ends up delegating onto
-            ' SupportedTargetFrameworksEnumProvider, which ends up reading from evaluation
+            ' SupportedTargetFrameworkAliasEnumProvider, which ends up reading from evaluation
             Dim monikers As IEnumerable(Of String) = _converter.GetStandardValues() _
                                                                .Cast(Of String)
 

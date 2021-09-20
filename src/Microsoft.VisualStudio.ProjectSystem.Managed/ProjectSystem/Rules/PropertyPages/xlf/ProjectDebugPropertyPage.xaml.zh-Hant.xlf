@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="zh-Hant" original="../ProjectDebugPropertyPage.xaml">
     <body>
+      <trans-unit id="BoolProperty|HotReloadEnabled|Description">
+        <source>Apply code changes to the running application.</source>
+        <target state="translated">將程式碼變更套用至執行中的應用程式。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|HotReloadEnabled|DisplayName">
+        <source>Enable Hot Reload</source>
+        <target state="translated">啟用熱重新載入</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BoolProperty|NativeDebugging|Description">
         <source>Enable debugging for managed and native code together, also known as mixed-mode debugging.</source>
         <target state="translated">同時為受控碼和機器碼啟用偵錯，也稱為混合模式偵錯。</target>
@@ -30,6 +40,16 @@
       <trans-unit id="BoolProperty|SqlDebugging|DisplayName">
         <source>Enable SQL Server debugging</source>
         <target state="translated">啟用 SQL Server 偵錯</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|Description">
+        <source>Enable JavaScript debugger for Microsoft Edge (Chromium) based WebView2. Requires the JavaScript Diagnostics component.</source>
+        <target state="translated">啟用適用於 Microsoft Edge (Chromium) 型 WebView2 的 JavaScript 偵錯工具。需要 JavaScript 診斷工具</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BoolProperty|WebView2Debugging|DisplayName">
+        <source>Enable WebView2 debugging</source>
+        <target state="translated">啟用 WebView2 偵錯</target>
         <note />
       </trans-unit>
       <trans-unit id="DynamicEnumProperty|AuthenticationMode|Description">

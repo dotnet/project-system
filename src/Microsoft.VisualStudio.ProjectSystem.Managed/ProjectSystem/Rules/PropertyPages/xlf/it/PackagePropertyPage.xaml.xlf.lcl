@@ -237,19 +237,25 @@
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          <Val><![CDATA[The icon image for the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Percorso relativo dalla radice del pacchetto al file icona. Oltre a impostare questa proprietà, è necessario assicurarsi che il file sia incluso nel pacchetto. Le dimensioni del file di immagine sono limitate a 1 MB. I formati di file supportati includono JPEG e PNG. È consigliata una risoluzione dell'immagine di 128x128.]]></Val>
+            <Val><![CDATA[Immagine dell'icona per il pacchetto. Le dimensioni del file immagine sono limitate a 1 MB. I formati di file supportati includono JPEG e PNG. È consigliata una risoluzione dell'immagine di 128 x 128.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The relative path from the package root to the icon file. In addition to setting this property you need to make sure that the file is included in the package. Image file size is limited to 1 MB. Supported file formats include JPEG and PNG. An image resolution of 128x128 is recommended.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PackageIcon|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Icon file]]></Val>
+          <Val><![CDATA[Icon]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[File icona]]></Val>
+            <Val><![CDATA[Icona]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Icon file]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -312,6 +318,24 @@
           <Val><![CDATA[Project URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[URL del progetto]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The README document for the package. Must be a Markdown (.md) file.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Documento LEGGIMI per il pacchetto. Deve essere un file Markdown (con estensione .md).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";StringProperty|PackageReadmeFile|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[README]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[LEGGIMI]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

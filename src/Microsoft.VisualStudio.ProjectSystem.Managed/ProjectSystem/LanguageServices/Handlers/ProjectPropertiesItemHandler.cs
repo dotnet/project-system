@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 
 namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
 {
@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             get { return LanguageService.SchemaName; }
         }
 
-        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectLogger logger)
+        public void Handle(IComparable version, IProjectChangeDescription projectChange, ContextState state, IProjectDiagnosticOutputService logger)
         {
             Requires.NotNull(version, nameof(version));
             Requires.NotNull(projectChange, nameof(projectChange));
@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices.Handlers
             Context.IsPrimary = state.IsActiveConfiguration;
         }
 
-        private bool TryHandleSpecificProperties(string name, string value, IProjectLogger logger)
+        private bool TryHandleSpecificProperties(string name, string value, IProjectDiagnosticOutputService logger)
         {
             // The language service wants both the intermediate (bin\obj) and output (bin\debug)) paths
             // so that it can automatically hook up project-to-project references. It does this by matching the 

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the .NET Foundation under one or more agreements. The .NET Foundation licenses this file to you under the MIT license. See the LICENSE.md file in the project root for more information. -->
+<Rule Name="CodeAnalysisPropertyPage"
+      Description="Settings"
+      DisplayName="Code Analysis"
+      PageTemplate="generic"
+      Order="500"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <Rule.Categories>
+    <Category Name="AllAnalyzers"
+              DisplayName="All analyzers" />
+
+    <Category Name="NetAnalyzers"
+              DisplayName=".NET analyzers" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext"
+                HasConfigurationCondition="False" />
+  </Rule.DataSource>
+
+  <BoolProperty Name="RunAnalyzersDuringBuild"
+                DisplayName="Run on build"
+                Description="Always run code analysis on build."
+                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
+                Category="AllAnalyzers" />
+
+  <BoolProperty Name="RunAnalyzersDuringLiveAnalysis"
+                DisplayName="Run on live analysis"
+                Description="Run code analysis live in the editor as you type."
+                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/disable-code-analysis"
+                Category="AllAnalyzers" />
+
+  <BoolProperty Name="EnforceCodeStyleInBuild"
+                DisplayName="Enforce code style on build (experimental)"
+                Description="Produce diagnostics about code style on build."
+                HelpUrl="https://docs.microsoft.com/visualstudio/ide/code-styles-and-code-cleanup"
+                Category="NetAnalyzers" />
+
+  <BoolProperty Name="EnableNETAnalyzers"
+                DisplayName="Enable .NET analyzers"
+                Description="Run .NET analyzers to help with API usage."
+                HelpUrl="https://docs.microsoft.com/visualstudio/code-quality/install-net-analyzers"
+                Category="NetAnalyzers" />
+
+  <EnumProperty Name="AnalysisLevel"
+                DisplayName="Analysis level"
+                Description="The set of analyzers that should be run in the project."
+                HelpUrl="https://docs.microsoft.com/dotnet/fundamentals/code-analysis/overview"
+                Category="NetAnalyzers">
+    <EnumValue Name="none"
+               DisplayName="None" />
+    <EnumValue Name="preview"
+               DisplayName="Preview" />
+    <EnumValue Name="latest"
+               DisplayName="Latest" />
+    <EnumValue Name="5.0"
+               DisplayName="5.0" />
+    <EnumValue Name="6.0"
+               DisplayName="6.0" />
+  </EnumProperty>
+
+</Rule>

@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             string? appDesignerPath = await GetAppDesignerFolderPathAsync();
             if (appDesignerPath != null)
             {
-                return GetDefaultFileAsync(appDesignerPath);
+                return GetDefaultFile(appDesignerPath);
             }
 
             // Then fallback to project root
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
 
         protected sealed override async Task CreateFileAsync(string path)
         {
-            await EnsureAppDesignerFolder();
+            await EnsureAppDesignerFolderAsync();
 
             await CreateFileCoreAsync(path);
         }
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.SpecialFileProviders
             return base.CreateFileAsync(path);
         }
 
-        private Task EnsureAppDesignerFolder()
+        private Task EnsureAppDesignerFolderAsync()
         {
             return GetAppDesignerFolderPathAsync(createIfNotExists: true);
         }

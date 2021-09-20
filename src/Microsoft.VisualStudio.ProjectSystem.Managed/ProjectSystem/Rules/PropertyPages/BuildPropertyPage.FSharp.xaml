@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Rule Name="Build"
+      OverrideMode="Extend"
+      xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+  <!-- TODO (https://github.com/dotnet/fsharp/issues/12102):
+       Missing HelpUrl links need to be added.
+  -->
+  <EnumProperty Name="Nullable" Category="General" Visible="False" />
+  <BoolProperty Name="AllowUnsafeBlocks" Category="General" Visible="False" />
+
+  <BoolProperty Name="Optimize"
+                DisplayName="Optimize code"
+                Description="Enable compiler optimizations for smaller, faster, and more efficient output."
+                HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
+                Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="optimise;optimisation" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <BoolProperty Name="Tailcalls"
+              DisplayName="Generate tail calls"
+              Description="Enable tail call generation."
+              HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
+              Category="General">
+    <BoolProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="tailcall" />
+    </BoolProperty.Metadata>
+  </BoolProperty>
+
+  <StringProperty Name="OtherFlags"
+                DisplayName="Other flags"
+                Description="Additional compiler flags. Separate flags with whitespace."
+                HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
+                Category="General" />
+
+  <BoolProperty Name="FSharpPreferNetFrameworkTools"
+              DisplayName="Framework tools"
+              Description="Prefer .NET Framework version of the compiler when available."
+              Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                 SourceOfDefaultValue="AfterContext"
+                 HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <BoolProperty Name="FSharpPrefer64BitTools"
+            DisplayName="Prefer 64 bit tools"
+            Description="Use a 64-bit compiler on systems that support both 32-bit and 64-bit compilers."
+            Category="General">
+    <BoolProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                 SourceOfDefaultValue="AfterContext"
+                 HasConfigurationCondition="False" />
+    </BoolProperty.DataSource>
+  </BoolProperty>
+
+  <EnumProperty Name="DebugType"
+              DisplayName="Debug symbols"
+              Description="Specifies the kind of debug symbols produced during build."
+              HelpUrl="https://docs.microsoft.com/dotnet/fsharp/language-reference/compiler-options"
+              Category="General">
+    <EnumProperty.DataSource>
+      <DataSource HasConfigurationCondition="False"
+                Persistence="ProjectFileWithInterception" />
+    </EnumProperty.DataSource>
+    <EnumProperty.Metadata>
+      <NameValuePair Name="SearchTerms" Value="debug type" />
+    </EnumProperty.Metadata>
+    <EnumValue Name="none" DisplayName="No symbols are emitted" />
+    <EnumValue Name="full" DisplayName="PDB file, current platform" />
+    <EnumValue Name="portable" DisplayName="PDB file, portable across platforms" />
+    <EnumValue Name="embedded" DisplayName="Embedded in DLL/EXE, portable across platforms" />
+  </EnumProperty>
+
+  <StringProperty Name="LangVersion" Category="General" Visible="False" />
+
+  <BoolProperty Name="CheckForOverflowUnderflow" Category="General" Visible="False" />
+
+  <EnumProperty Name="ErrorReport" Category="General" Visible="False" />
+  <EnumProperty Name="FileAlignment" Category="General" Visible="False" />
+
+  <BoolProperty Name="ProduceReferenceAssembly" Category="General" Visible="False" />
+
+
+</Rule>

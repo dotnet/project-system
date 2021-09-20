@@ -2,7 +2,6 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.VisualStudio.ProjectSystem.Query.ProjectModelMethods.Actions;
 using Microsoft.VisualStudio.ProjectSystem.Query.QueryExecution;
@@ -21,15 +20,14 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
             _executableStep = executableStep;
         }
 
-        protected override Task ExecuteAsync(ILaunchSettingsProvider launchSettingsProvider, CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(IQueryExecutionContext queryExecutionContext, IEntityValue projectEntity, IProjectLaunchProfileHandler handler, CancellationToken cancellationToken)
         {
-            return launchSettingsProvider.AddOrUpdateProfileAsync(
-                new WritableLaunchProfile
-                {
-                    Name = _executableStep.NewProfileName,
-                    CommandName = _executableStep.CommandName
-                }.ToLaunchProfile(),
-                addToFront: false);
+            EntityIdentity? newLaunchProfileId = await handler.AddLaunchProfileAsync(queryExecutionContext, projectEntity, _executableStep.CommandName, _executableStep.NewProfileName, cancellationToken);
+
+            if (newLaunchProfileId is not null)
+            {
+                AddedLaunchProfiles.Add((projectEntity, newLaunchProfileId));
+            }
         }
     }
 }

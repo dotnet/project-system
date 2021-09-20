@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 using Microsoft.VisualStudio.Mocks;
-using Microsoft.VisualStudio.ProjectSystem.Logging;
+using Microsoft.VisualStudio.ProjectSystem.VS;
 using Moq;
 using Xunit;
 
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task ApplyProjectEvaluationAsync_CallsHandler()
         {
-            (IComparable version, IProjectChangeDescription description, ContextState state, IProjectLogger logger) result = default;
+            (IComparable version, IProjectChangeDescription description, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
             var handler = IEvaluationHandlerFactory.ImplementHandle("RuleName", (version, description, state, logger) =>
             {
@@ -318,7 +318,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
         [Fact]
         public async Task ApplyProjectBuildAsync_ParseCommandLineAndCallsHandler()
         {
-            (IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectLogger logger) result = default;
+            (IComparable version, BuildOptions added, BuildOptions removed, ContextState state, IProjectDiagnosticOutputService logger) result = default;
 
             var handler = ICommandLineHandlerFactory.ImplementHandle((version, added, removed, state, logger) =>
             {
@@ -541,12 +541,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             Assert.True(context.LastDesignTimeBuildSucceeded);
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectDiagnosticOutputService? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             return CreateInitializedInstance(out _, project, commandLineParser, logger, handlers);
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(out IWorkspaceProjectContext context, ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInitializedInstance(out IWorkspaceProjectContext context, ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectDiagnosticOutputService? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             var applyChangesToWorkspace = CreateInstance(project, commandLineParser, logger, handlers);
             context = IWorkspaceProjectContextMockFactory.Create();
@@ -556,7 +556,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             return applyChangesToWorkspace;
         }
 
-        private static ApplyChangesToWorkspaceContext CreateInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectLogger? logger = null, params IWorkspaceContextHandler[] handlers)
+        private static ApplyChangesToWorkspaceContext CreateInstance(ConfiguredProject? project = null, ICommandLineParserService? commandLineParser = null, IProjectDiagnosticOutputService? logger = null, params IWorkspaceContextHandler[] handlers)
         {
             if (project == null)
             {
@@ -566,7 +566,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.LanguageServices
             }
 
             commandLineParser ??= ICommandLineParserServiceFactory.Create();
-            logger ??= IProjectLoggerFactory.Create();
+            logger ??= IProjectDiagnosticOutputServiceFactory.Create();
 
             var factories = handlers.Select(h => ExportFactoryFactory.ImplementCreateValueWithAutoDispose(() => h))
                                     .ToArray();

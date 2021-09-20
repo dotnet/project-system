@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         {
             var jsonObject = JObject.Parse(JsonString1);
 
-            var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
+            var profiles = LaunchProfileData.DeserializeProfiles((JObject?)jsonObject["profiles"]);
             Assert.Equal(4, profiles.Count);
             var profile = profiles["IIS Express"];
             Assert.Equal("IISExpress", profile.CommandName);
@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void LaunchProfileData_DeserializeEmptyProfilesTests()
         {
             var jsonObject = JObject.Parse(JsonString2);
-            var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
+            var profiles = LaunchProfileData.DeserializeProfiles((JObject?)jsonObject["profiles"]);
             Assert.Empty(profiles);
         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.Debug
         public void LaunchProfileData_ToSerializableFormTests()
         {
             var jsonObject = JObject.Parse(JsonString1);
-            var profiles = LaunchProfileData.DeserializeProfiles((JObject)jsonObject["profiles"]);
+            var profiles = LaunchProfileData.DeserializeProfiles((JObject?)jsonObject["profiles"]);
 
             var profile = profiles["IIS Express"];
             var serializableProfile = LaunchProfileData.ToSerializableForm(new LaunchProfile(profile));

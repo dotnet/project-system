@@ -12,19 +12,25 @@
       <Disp Icon="Str" Disp="true" LocTbl="false" />
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          <Val><![CDATA[Allow code that uses the 'unsafe' keyword to compile.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['unsafe' キーワードを使用するコードをコンパイルできるようにします。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allows code that uses the 'unsafe' keyword to compile.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";BoolProperty|AllowUnsafeBlocks|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Allow unsafe code]]></Val>
+          <Val><![CDATA[Unsafe code]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[アンセーフ コードの許可]]></Val>
+            <Val><![CDATA[アンセーフ コード]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Allow unsafe code]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -39,10 +45,13 @@
       </Item>
       <Item ItemId=";BoolProperty|CheckForOverflowUnderflow|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          <Val><![CDATA[Throw exceptions when integer arithmetic produces out of range values.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[データ型の範囲外にあり、選択済みまたは選択解除済みのキーワードの範囲にない値を生成する整数演算で、実行時の例外が発生するかどうかを指定します。]]></Val>
+            <Val><![CDATA[整数演算で範囲外の値が算出された場合に例外を発生させます。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies whether integer arithmetic that results in a value outside the range of the data type, and that is not in the scope of a checked or unchecked keyword, causes a run-time exception.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -84,10 +93,13 @@
       </Item>
       <Item ItemId=";BoolProperty|Deterministic|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          <Val><![CDATA[Produce identical compilation output for identical inputs.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[コンパイラが同一の入力に対して同一のアセンブリを生成する必要があるかどうかを示します。]]></Val>
+            <Val><![CDATA[同一のコンパイル入力に対して同一のコンパイル出力を生成します。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Indicates whether the compiler should produce identical assemblies for identical inputs.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -118,12 +130,42 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BoolProperty|ImplicitUsings|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Enable implicit global usings to be declared by the project SDK.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[プロジェクト SDK によって宣言される、暗黙的な global using を有効にします。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ImplicitUsings|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Implicit global usings]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[暗黙的な global using]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ImplicitUsings|Metadata|SearchTerms" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[implicit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[暗黙的]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";BoolProperty|Optimize|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          <Val><![CDATA[Enable compiler optimizations for smaller, faster, and more efficient output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[コンパイラによって最適化を行うか行わないかを切り替えます。最適化が行われると、出力ファイルのサイズは小さくなり、より高速かつ効果的に処理を行えるようになります。]]></Val>
+            <Val><![CDATA[より小さく、高速で効率的な出力に向けて、コンパイラの最適化を有効にします。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enables or disables optimizations performed by the compiler to make your output file smaller, faster, and more efficient.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -141,6 +183,42 @@
           <Val><![CDATA[optimise;optimisation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[最適化;最適化]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|Prefer32Bit|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Run in 32-bit mode on systems that support both 32-bit and 64-bit applications.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[32 ビット アプリケーションと 64 ビット アプリケーションの両方をサポートするシステムで、32 ビット モードで実行します。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|Prefer32Bit|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Prefer 32-bit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[32 ビットを優先]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Produce a reference assembly containing the public API of the project.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[プロジェクトのパブリック API を含む参照アセンブリを生成します。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BoolProperty|ProduceReferenceAssembly|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Reference assembly]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[参照アセンブリ]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -181,6 +259,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";Category|Advanced|Description" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Advanced settings for the application.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[アプリケーションの詳細設定。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";Category|Advanced|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Advanced]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[詳細]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";Category|ErrorsAndWarnings|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Configures the error and warning options for the build process.]]></Val>
@@ -205,12 +301,18 @@
       <Item ItemId=";Category|Events|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Configures custom events that run before and after build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルドの前後に実行するカスタム イベントを構成します。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";Category|Events|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Events]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[イベント]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -291,10 +393,13 @@
       </Item>
       <Item ItemId=";EnumProperty|ErrorReport|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          <Val><![CDATA[Send internal compiler error (ICE) reports to Microsoft.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[内部コンパイラ エラー (ICE) レポートが Microsoft に送信されるタイミングを制御します。]]></Val>
+            <Val><![CDATA[内部コンパイラ エラー (ICE) レポートを Microsoft に送信します。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Controls when internal compiler error (ICE) reports are sent to Microsoft.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -364,12 +469,18 @@
       <Item ItemId=";EnumProperty|RunPostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies under which condition the post-build event will be executed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルド後のイベントが実行される条件を指定します。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";EnumProperty|RunPostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[When to run the post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルド後のイベントをいつ実行するか]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -571,6 +682,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";EnumValue|RunPostBuildEvent.Always|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Always]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[常時]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|RunPostBuildEvent.OnBuildSuccess|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[When the build succeeds]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルドに成功したとき]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";EnumValue|RunPostBuildEvent.OnOutputUpdated|DisplayName" ItemType="0" PsrId="308" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[When the output is updated]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[出力が更新されたとき]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";EnumValue|WarningLevel.0|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[0]]></Val>
@@ -729,10 +867,13 @@
       </Item>
       <Item ItemId=";StringProperty|LangVersion|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Why can't I select the C# language version?]]></Val>
+          <Val><![CDATA[The version of the language available to code in this project.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[C# 言語バージョンを選択できないのはなぜですか?]]></Val>
+            <Val><![CDATA[このプロジェクトのコードで使用できる言語のバージョン。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Why can't I select the C# language version?]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -748,7 +889,7 @@
       <Item ItemId=";StringProperty|NoWarn|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Blocks the compiler from generating the specified warnings. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[1 つ以上の警告を生成するコンパイラの機能をブロックします。複数の警告番号はコンマ (',') またはセミコロン (';') を使用して区切ります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -760,7 +901,7 @@
       <Item ItemId=";StringProperty|NoWarn|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Suppress specific warnings]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[警告の抑制]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -772,31 +913,43 @@
       <Item ItemId=";StringProperty|PostBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run after the build completes. Does not run if the build failed. Use 'call' to invoke .bat files. A non-zero exit code will fail the build.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルドの完了後に実行されるコマンドを指定します。ビルドに失敗した場合は実行されません。.Bat ファイルを呼び出すには、'call' を使用します。終了コードを 0 以外にすると、ビルドは失敗します。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PostBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Post-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルド後のイベント]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies commands that run before the build starts. Does not run if the project is up-to-date. A non-zero exit code will fail the build before it runs.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルドの開始前に実行されるコマンドを指定します。プロジェクトが最新の場合は実行されません。終了コードを 0 以外にすると、ビルドは実行前に失敗します。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|PreBuildEvent|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Pre-build event]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルド前のイベント]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";StringProperty|WarningsAsErrors|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies which warnings are treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[指定された警告をエラーとして扱います。複数の警告番号はコンマ (',') またはセミコロン (';') を使用して区切ります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -820,7 +973,7 @@
       <Item ItemId=";StringProperty|WarningsNotAsErrors|Description" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies which warnings are excluded from being treated as errors. Separate multiple warning numbers with a comma (',') or semicolon (';').]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[指定された警告がエラーとして扱われないよう適用対象外にします。複数の警告番号はコンマ (',') またはセミコロン (';') を使用して区切ります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
@@ -832,7 +985,7 @@
       <Item ItemId=";StringProperty|WarningsNotAsErrors|DisplayName" ItemType="0" PsrId="308" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Exclude specific warnings as errors]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[特定の警告がエラーとして扱われないよう適用対象外にする]]></Val>
           </Tgt>
           <Prev Cat="Text">

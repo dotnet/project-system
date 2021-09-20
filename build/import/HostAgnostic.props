@@ -2,6 +2,7 @@
 <Project>
   <PropertyGroup>
     <BannedSymbolsOptOut Condition="'$(IsTestProject)' == 'true'">true</BannedSymbolsOptOut>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,7 +50,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.CodeStyle" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" />
     <PackageReference Include="Roslyn.Diagnostics.Analyzers" PrivateAssets="all" Condition="'$(IsTestProject)' != 'true'" />
 
     <!-- Framework packages -->
@@ -98,7 +98,6 @@
            or '%(FileName)' == 'Microsoft.VisualStudio.ProjectSystem.Interop'
            or '%(FileName)' == 'stdole'
            or '%(FileName)' == 'Microsoft.VisualStudio.CommandBars'
-           or '%(FileName)' == 'NuGet.SolutionRestoreManager.Interop'
            or '%(FileName)' == 'NuGet.VisualStudio'
            or '%(FileName)' == 'VSLangProj110'
            or '%(FileName)' == 'VSLangProj165'

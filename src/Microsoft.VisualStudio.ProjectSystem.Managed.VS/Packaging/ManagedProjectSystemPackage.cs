@@ -13,7 +13,7 @@ using Task = System.Threading.Tasks.Task;
 namespace Microsoft.VisualStudio.Packaging
 {
     [Guid(PackageGuid)]
-    [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.CodeBase, UseManagedResourcesOnly = true)]
+    [PackageRegistration(AllowsBackgroundLoading = true, RegisterUsing = RegistrationMethod.Assembly, UseManagedResourcesOnly = true)]
     [ProvideProjectFactory(typeof(XprojProjectFactory), null, "#27", "xproj", "xproj", null)]
     [ProvideAutoLoad(ActivationContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideUIContextRule(ActivationContextGuid,

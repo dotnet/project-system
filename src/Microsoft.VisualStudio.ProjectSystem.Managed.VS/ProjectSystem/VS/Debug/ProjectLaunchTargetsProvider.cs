@@ -11,8 +11,10 @@ using Microsoft.VisualStudio.IO;
 using Microsoft.VisualStudio.ProjectSystem.Debug;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.ProjectSystem.Utilities;
+using Microsoft.VisualStudio.ProjectSystem.VS.HotReload;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Task = System.Threading.Tasks.Task;
@@ -27,7 +29,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
     [Export(typeof(IDebugProfileLaunchTargetsProvider))]
     [AppliesTo(ProjectCapability.LaunchProfiles)]
     [Order(Order.Default)] // The higher the number the higher priority and we want this one last
-    internal class ProjectLaunchTargetsProvider : IDebugProfileLaunchTargetsProvider, IDebugProfileLaunchTargetsProvider2, IDebugProfileLaunchTargetsProvider3
+    internal class ProjectLaunchTargetsProvider :
+        IDebugProfileLaunchTargetsProvider,
+        IDebugProfileLaunchTargetsProvider2,
+        IDebugProfileLaunchTargetsProvider3,
+        IDebugProfileLaunchTargetsProvider4
     {
         private static readonly char[] s_escapedChars = new[] { '^', '<', '>', '&' };
         private readonly ConfiguredProject _project;
@@ -40,6 +46,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         private readonly IProjectThreadingService _threadingService;
         private readonly IVsUIService<IVsDebugger10> _debugger;
         private readonly IRemoteDebuggerAuthenticationService _remoteDebuggerAuthenticationService;
+        private readonly Lazy<IProjectHotReloadSessionManager> _hotReloadSessionManager;
+        private readonly Lazy<IDebuggerSettings> _debuggerSettings;
 
         [ImportingConstructor]
         public ProjectLaunchTargetsProvider(
@@ -52,7 +60,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             ProjectProperties properties,
             IProjectThreadingService threadingService,
             IVsUIService<SVsShellDebugger, IVsDebugger10> debugger,
-            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService)
+            IRemoteDebuggerAuthenticationService remoteDebuggerAuthenticationService,
+            Lazy<IProjectHotReloadSessionManager> hotReloadSessionManager,
+            Lazy<IDebuggerSettings> debuggerSettings)
         {
             _project = project;
             _unconfiguredProjectVsServices = unconfiguredProjectVsServices;
@@ -64,6 +74,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             _threadingService = threadingService;
             _debugger = debugger;
             _remoteDebuggerAuthenticationService = remoteDebuggerAuthenticationService;
+            _hotReloadSessionManager = hotReloadSessionManager;
+            _debuggerSettings = debuggerSettings;
         }
 
         private Task<ConfiguredProject?> GetConfiguredProjectForDebugAsync() =>
@@ -78,12 +90,30 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// <summary>
         /// Called just prior to launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
-        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile) => Task.CompletedTask;
+        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+        {
+            throw new InvalidOperationException($"Wrong overload of {nameof(OnBeforeLaunchAsync)} called.");
+        }
+
+        public Task OnBeforeLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<IDebugLaunchSettings> debugLaunchSettings)
+            => Task.CompletedTask;
 
         /// <summary>
         /// Called just after the launch to do additional work (put up ui, do special configuration etc).
         /// </summary>
-        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile) => Task.CompletedTask;
+        public Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
+        {
+            throw new InvalidOperationException($"Wrong overload of {nameof(OnAfterLaunchAsync)} called.");
+        }
+
+        public async Task OnAfterLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile, IReadOnlyList<VsDebugTargetProcessInfo> processInfos)
+        {
+            await TaskScheduler.Default;
+
+            bool runningUnderDebugger = (launchOptions & DebugLaunchOptions.NoDebug) != DebugLaunchOptions.NoDebug;
+
+            await _hotReloadSessionManager.Value.ActivateSessionAsync((int)processInfos[0].dwProcessId, runningUnderDebugger);
+        }
 
         private Task<bool> IsClassLibraryAsync() => IsOutputTypeAsync(ConfigurationGeneral.OutputTypeValues.Library);
 
@@ -104,8 +134,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
 
         public async Task<bool> CanBeStartupProjectAsync(DebugLaunchOptions launchOptions, ILaunchProfile profile)
         {
-            IReadOnlyList<IDebugLaunchSettings>? launchSettings = await QueryDebugTargetsAsync(launchOptions, profile, validateSettings: false);
-            return launchSettings != null;
+            if (IsRunProjectCommand(profile))
+            {
+                // If the profile uses the "Project" command, check that the project specifies
+                // something we can run.
+
+                ConfiguredProject? configuredProject = await GetConfiguredProjectForDebugAsync();
+                Assumes.NotNull(configuredProject);
+                Assumes.Present(configuredProject.Services.ProjectPropertiesProvider);
+
+                IProjectProperties properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+
+                string? runCommand = await GetTargetCommandAsync(properties, validateSettings: true);
+                if (string.IsNullOrWhiteSpace(runCommand))
+                {
+                    return false;
+                }
+            }
+
+            // Otherwise, the profile must be using the "Executable" command in which case it
+            // can always be a start-up project.
+            return true;
         }
 
         public async Task<IReadOnlyList<IDebugLaunchSettings>> QueryDebugTargetsForDebugLaunchAsync(DebugLaunchOptions launchOptions, ILaunchProfile activeProfile) =>
@@ -126,7 +175,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             // Resolve the tokens in the profile
             ILaunchProfile resolvedProfile = await _tokenReplacer.ReplaceTokensInProfileAsync(activeProfile);
 
-            DebugLaunchSettings? consoleTarget = await GetConsoleTargetForProfile(resolvedProfile, launchOptions, validateSettings);
+            DebugLaunchSettings? consoleTarget = await GetConsoleTargetForProfileAsync(resolvedProfile, launchOptions, validateSettings);
             return consoleTarget == null ? null : new[] { consoleTarget };
         }
 
@@ -201,7 +250,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// of project.
         /// </summary>
         /// <returns><see langword="null"/> if the runnable project information is <see langword="null"/>. Otherwise, the debug launch settings.</returns>
-        private async Task<DebugLaunchSettings?> GetConsoleTargetForProfile(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
+        private async Task<DebugLaunchSettings?> GetConsoleTargetForProfileAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions, bool validateSettings)
         {
             var settings = new DebugLaunchSettings(launchOptions);
 
@@ -338,11 +387,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.AdditionalDebugEngines.Add(DebuggerEngines.SqlEngine);
             }
 
-            if (settings.Environment.Count > 0)
-            {
-                settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
-            }
-
             bool useCmdShell = false;
             if (await IsConsoleAppAsync())
             {
@@ -377,7 +421,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
             }
 
             // WebView2 debugging is only supported for Project and Executable commands
-            if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile))) 
+            if (resolvedProfile.IsJSWebView2DebuggingEnabled() && (IsRunExecutableCommand(resolvedProfile) || IsRunProjectCommand(resolvedProfile)))
             {
                 // If JS Debugger is selected, we would need to change the launch debugger to that one
                 settings.LaunchDebugEngineGuid = DebuggerEngines.JavaScriptForWebView2Engine;
@@ -394,7 +438,38 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
                 settings.Options = JsonConvert.SerializeObject(debuggerLaunchOptions);
             }
 
+            if (await HotReloadShouldBeEnabledAsync(resolvedProfile, launchOptions)
+                && await _hotReloadSessionManager.Value.TryCreatePendingSessionAsync(settings.Environment))
+            {
+                // Enable XAML Hot Reload
+                settings.Environment["ENABLE_XAML_DIAGNOSTICS_SOURCE_INFO"] = "1";
+            }
+
+            if (settings.Environment.Count > 0)
+            {
+                settings.LaunchOptions |= DebugLaunchOptions.MergeEnvironment;
+            }
+
             return settings;
+        }
+
+        private async Task<bool> HotReloadShouldBeEnabledAsync(ILaunchProfile resolvedProfile, DebugLaunchOptions launchOptions)
+        {
+            bool hotReloadEnabledAtProjectLevel = IsRunProjectCommand(resolvedProfile)
+                && resolvedProfile.IsHotReloadEnabled()
+                && !resolvedProfile.IsRemoteDebugEnabled()
+                && (launchOptions & DebugLaunchOptions.Profiling) != DebugLaunchOptions.Profiling;
+
+            if (hotReloadEnabledAtProjectLevel)
+            {
+                bool hotReloadEnabledGlobally = (launchOptions & DebugLaunchOptions.NoDebug) == DebugLaunchOptions.NoDebug
+                    ? await _debuggerSettings.Value.IsNonDebugHotReloadEnabledAsync()
+                    : await _debuggerSettings.Value.IsEncEnabledAsync();
+
+                return hotReloadEnabledGlobally;
+            }
+
+            return false;
         }
 
         private static bool UseCmdShellForConsoleLaunch(ILaunchProfile profile, DebugLaunchOptions options)
@@ -521,9 +596,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Debug
         /// </summary>
         private string? GetFullPathOfExeFromEnvironmentPath(string exeToSearchFor)
         {
-            string pathEnv = _environment.GetEnvironmentVariable("Path");
+            string? pathEnv = _environment.GetEnvironmentVariable("Path");
 
-            if (string.IsNullOrEmpty(pathEnv))
+            if (Strings.IsNullOrEmpty(pathEnv))
             {
                 return null;
             }

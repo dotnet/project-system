@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
 
         protected abstract PropertyPageControl CreatePropertyPageControl();
 
-        protected override async Task OnSetObjects(bool isClosing)
+        protected override async Task OnSetObjectsAsync(bool isClosing)
         {
             if (isClosing)
             {
@@ -42,16 +42,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.PropertyPages
             _control.InitializePropertyPage(_viewModel);
         }
 
-        protected override Task<int> OnApply()
+        protected override Task<int> OnApplyAsync()
         {
-            return _control?.Apply() ?? Task.FromResult((int)HResult.Fail);
+#pragma warning disable VSTHRD110 // Observe result of async calls (https://github.com/microsoft/vs-threading/issues/881)
+            return _control?.ApplyAsync() ?? Task.FromResult((int)HResult.Fail);
+#pragma warning restore VSTHRD110 // Observe result of async calls
         }
 
-        protected override Task OnDeactivate()
+        protected override Task OnDeactivateAsync()
         {
             if (IsDirty)
             {
-                return OnApply();
+                return OnApplyAsync();
             }
 
             return Task.CompletedTask;
