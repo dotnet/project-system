@@ -146,11 +146,10 @@
     </BoolProperty.Metadata>
   </BoolProperty>
 
-  <!-- TODO create fwlink for this HelpUrl, and find or create a better documentation source -->
   <EnumProperty Name="DebugType"
                 DisplayName="Debug symbols"
                 Description="Specifies the kind of debug symbols produced during build."
-                HelpUrl="https://github.com/dotnet/roslyn/blob/main/docs/compilers/CSharp/CommandLine.md"
+                HelpUrl="https://go.microsoft.com/fwlink/?linkid=2173089"
                 Category="General">
     <EnumProperty.DataSource>
       <DataSource HasConfigurationCondition="False"
