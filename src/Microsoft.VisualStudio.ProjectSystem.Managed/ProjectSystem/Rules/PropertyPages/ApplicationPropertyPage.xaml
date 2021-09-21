@@ -12,7 +12,7 @@
               DisplayName="General"
               Description="General settings for the application." />
     <Category Name="Resources"
-              DisplayName="Resources"
+              DisplayName="Win32 Resources"
               Description="Resource settings for the application." />
     <Category Name="Packaging"
               DisplayName="Packaging"
