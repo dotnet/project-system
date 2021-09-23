@@ -45,6 +45,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
+
+            _project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
         }
 
         public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger)
@@ -126,6 +128,20 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         }
 
         private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
+
+        private async Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
+        {
+            _project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
+
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                _ = sessionState.Session?.StopSessionAsync(default);
+            }
+
+            _activeSessions.Clear();
+        }
 
         /// <summary>
         /// Checks if the project configuration targeted for debugging/launch meets the
