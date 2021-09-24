@@ -138,9 +138,11 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 
             foreach (HotReloadState sessionState in _activeSessions.Values)
             {
-                _projectFaultHandlerService.Forget(
-                    sessionState.Session?.StopSessionAsync(default) ?? Task.CompletedTask,
-                    _project);
+                Assumes.NotNull(sessionState.Process);
+                Assumes.NotNull(sessionState.Session);
+
+                sessionState.Process.Exited -= sessionState.OnProcessExited;
+                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
             }
 
             _activeSessions.Clear();
@@ -225,6 +227,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
 
             await StopProjectAsync(hotReloadState, default);
+
+            hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
         }
 
         private IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
