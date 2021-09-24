@@ -96,16 +96,6 @@
     </StringProperty.DataSource>
   </StringProperty>
 
-  <EnumProperty Name="LanguageVersion"
-                Visible="False">
-    <EnumProperty.DataSource>
-      <DataSource HasConfigurationCondition="False"
-                  PersistedName="LangVersion"
-                  Persistence="ProjectFile"
-                  SourceOfDefaultValue="AfterContext" />
-    </EnumProperty.DataSource>
-  </EnumProperty>
-
   <StringProperty Name="LangVersion"
                   Visible="False">
     <StringProperty.DataSource>
