@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     [Export(typeof(IProjectHotReloadSessionManager))]
-    internal class ProjectHotReloadSessionManager : IProjectHotReloadSessionManager
+    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -35,18 +35,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
             UnconfiguredProject project,
+            IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService)
+            : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _projectFaultHandlerService = projectFaultHandlerService;
             _activeDebugFrameworkServices = activeDebugFrameworkServices;
             _projectHotReloadAgent = projectHotReloadAgent;
             _hotReloadDiagnosticOutputService = hotReloadDiagnosticOutputService;
-
-            _project.ProjectUnloading += OnUnconfiguredProjectUnloadingAsync;
         }
 
         public async Task ActivateSessionAsync(int processId, bool runningUnderDebugger)
@@ -127,21 +127,26 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return false;
         }
 
-        private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
-
-        private async Task OnUnconfiguredProjectUnloadingAsync(object? sender, EventArgs args)
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            _project.ProjectUnloading -= OnUnconfiguredProjectUnloadingAsync;
+            return Task.CompletedTask;
+        }
 
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
             using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
 
             foreach (HotReloadState sessionState in _activeSessions.Values)
             {
-                _ = sessionState.Session?.StopSessionAsync(default);
+                _projectFaultHandlerService.Forget(
+                    sessionState.Session?.StopSessionAsync(default) ?? Task.CompletedTask,
+                    _project);
             }
 
             _activeSessions.Clear();
         }
+
+        private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
 
         /// <summary>
         /// Checks if the project configuration targeted for debugging/launch meets the
