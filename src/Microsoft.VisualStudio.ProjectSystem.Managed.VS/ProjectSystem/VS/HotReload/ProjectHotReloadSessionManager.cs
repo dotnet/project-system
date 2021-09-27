@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.Threading;
 namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
 {
     [Export(typeof(IProjectHotReloadSessionManager))]
-    internal class ProjectHotReloadSessionManager : IProjectHotReloadSessionManager
+    internal class ProjectHotReloadSessionManager : OnceInitializedOnceDisposedAsync, IProjectHotReloadSessionManager
     {
         private readonly UnconfiguredProject _project;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
@@ -35,10 +35,12 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
         [ImportingConstructor]
         public ProjectHotReloadSessionManager(
             UnconfiguredProject project,
+            IProjectThreadingService threadingService,
             IProjectFaultHandlerService projectFaultHandlerService,
             IActiveDebugFrameworkServices activeDebugFrameworkServices,
             Lazy<IProjectHotReloadAgent> projectHotReloadAgent,
             Lazy<IHotReloadDiagnosticOutputService> hotReloadDiagnosticOutputService)
+            : base(threadingService.JoinableTaskContext)
         {
             _project = project;
             _projectFaultHandlerService = projectFaultHandlerService;
@@ -125,6 +127,27 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             return false;
         }
 
+        protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        protected override async Task DisposeCoreAsync(bool initialized)
+        {
+            using AsyncSemaphore.Releaser semaphoreRelease = await _semaphore.EnterAsync();
+
+            foreach (HotReloadState sessionState in _activeSessions.Values)
+            {
+                Assumes.NotNull(sessionState.Process);
+                Assumes.NotNull(sessionState.Session);
+
+                sessionState.Process.Exited -= sessionState.OnProcessExited;
+                _projectFaultHandlerService.Forget(sessionState.Session.StopSessionAsync(default), _project);
+            }
+
+            _activeSessions.Clear();
+        }
+
         private Task WriteOutputMessageAsync(string outputMessage) => _hotReloadDiagnosticOutputService.Value.WriteLineAsync(outputMessage);
 
         /// <summary>
@@ -204,6 +227,8 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.HotReload
             await WriteOutputMessageAsync(string.Format(VSResources.ProjectHotReloadSessionManager_ProcessExited, hotReloadState.Session.Name));
 
             await StopProjectAsync(hotReloadState, default);
+
+            hotReloadState.Process.Exited -= hotReloadState.OnProcessExited;
         }
 
         private IDeltaApplier? GetDeltaApplier(HotReloadState hotReloadState)
