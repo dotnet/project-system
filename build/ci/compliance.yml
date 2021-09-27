@@ -25,6 +25,7 @@ steps:
   displayName: Build ProjectSystem.sln
 
 - task: PoliCheck@2
+  displayName: Run PoliCheck
   inputs:
     targetType: 'F'                             # Scan a particular file or folder (recursively)
     targetArgument: '$(Build.SourcesDirectory)' # Path of file/folder to scan
@@ -33,18 +34,32 @@ steps:
     optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
 
 - task: CredScan@3
+  displayName: Run CredScan
   inputs:
     outputFormat: 'pre' # Ouput in PREFast format so TSAUpload can consume it
 
-- task: APIScan@2
+- task: CopyFiles@2
+  displayName: Copy files for APIScan
   inputs:
-    softwareFolder: '$(Build.SourcesDirectory)\artifacts'
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
+    Contents: |
+      *.dll
+      *.pdb
+    TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
+
+- task: APIScan@2
+  displayName: Run APIScan
+  inputs:
+    softwareFolder: '$(Agent.TempDirectory)\APIScanFiles'
     softwareName: 'Dotnet-Project-System'
     softwareVersionNum: '17.0'
     softwareBuildNum: '$(Build.BuildId)'
     symbolsFolder: 'SRV*http://symweb'
+  env:
+    AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
 
 - task: TSAUpload@2
+  displayName: Upload results
   inputs:
     GdnPublishTsaOnboard: true
     GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'
