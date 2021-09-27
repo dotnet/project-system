@@ -13,6 +13,7 @@
     "iterationPath": "DevDiv\\OneVS",
     "tools": [
         "CredScan",
-        "PoliCheck"
+        "PoliCheck",
+        "APIScan"
     ]
 }
