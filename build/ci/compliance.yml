@@ -25,6 +25,7 @@ steps:
   displayName: Build ProjectSystem.sln
 
 - task: PoliCheck@2
+  # Scan for problematic terminology.
   displayName: Run PoliCheck
   inputs:
     targetType: 'F'                             # Scan a particular file or folder (recursively)
@@ -32,34 +33,43 @@ steps:
     result: 'PoliCheck.xml'                     # Name of the output file
     optionsFC: '1'                              # Enable scanning of comments
     optionsSEV: '1|2|3'                         # Scan for severity 1, 2, and 3 issues
+  continueOnError: true
 
 - task: CredScan@3
+  # Scan for credentials accidentally committed to source control.
   displayName: Run CredScan
   inputs:
     outputFormat: 'pre' # Ouput in PREFast format so TSAUpload can consume it
+  continueOnError: true
 
 - task: CopyFiles@2
+  # APIScan can take a long time, so here we copy (mostly) just the product binaries and related .pdbs
+  # in an effort to limit what it needs to work on.
   displayName: Copy files for APIScan
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'
+    SourceFolder: '$(Build.SourcesDirectory)\artifacts\$(BuildConfiguration)\bin\Dlls'  # Limit to (mostly) product binaries
     Contents: |
       *.dll
       *.pdb
     TargetFolder: '$(Agent.TempDirectory)\APIScanFiles'
+  continueOnError: true
 
 - task: APIScan@2
+  # Scan for the use of undocumented APIs.
   displayName: Run APIScan
   inputs:
-    softwareFolder: '$(Agent.TempDirectory)\APIScanFiles'
+    softwareFolder: '$(Agent.TempDirectory)\APIScanFiles' # Only examine the product binaries we previously copied.
     softwareName: 'Dotnet-Project-System'
     softwareVersionNum: '17.0'
     softwareBuildNum: '$(Build.BuildId)'
     symbolsFolder: 'SRV*http://symweb'
   env:
     AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
+  continueOnError: true
 
 - task: TSAUpload@2
-  displayName: Upload results
+  # Scan the output of previous steps and create bugs for any problems.
+  displayName: Upload results and create bugs
   inputs:
     GdnPublishTsaOnboard: true
-    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'
+    GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\build\ci\TSAConfig.gdntsa'  # All relevant settings are in this file.
