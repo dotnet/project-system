@@ -18,6 +18,7 @@ Imports Microsoft.VisualStudio.Editors.PropertyPages
 Imports Microsoft.VisualStudio.Utilities
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Microsoft.VSDesigner.VSDesignerPackage
+Imports Microsoft.VSDesigner
 
 Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
 
@@ -385,7 +386,7 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
             ' Add the "connection string" pseudo type
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameWebReference))
             TypeColumn.Items.Add(_typeNameResolver.PersistedSettingTypeNameToTypeDisplayName(SettingsSerializer.CultureInvariantVirtualTypeNameConnectionString))
-            TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
+
             TypeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, TypeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
 
             ScopeColumn.Width = DpiAwareness.LogicalToDeviceUnits(Handle, ScopeColumn.GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, False) + SystemInformation.VerticalScrollBarWidth + InternalComboBoxPadding)
@@ -411,6 +412,12 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _projectSystemSupportsUserScope = Not ShellUtil.IsWebProject(_hierarchy)
             Else
                 _projectSystemSupportsUserScope = True
+            End If
+
+            ' Do not allow browsing or serializing arbitrary types for .NET scenarios
+            Dim multiTargetService = New MultiTargetService(_hierarchy, VSConstants.VSITEMID_ROOT, False)
+            If (multiTargetService.TargetFrameworkName.Identifier <> ".NETCoreApp") Then
+                TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
             End If
 
             Settings = Designer.Settings
