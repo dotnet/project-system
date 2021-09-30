@@ -414,7 +414,9 @@ Namespace Microsoft.VisualStudio.Editors.SettingsDesigner
                 _projectSystemSupportsUserScope = True
             End If
 
-            ' Do not allow browsing or serializing arbitrary types for .NET scenarios
+            ' Do not allow browsing or serializing arbitrary types for .NET Core scenarios.
+            ' We don't currently have a general mechanism to identify types known to both the
+            ' designer (running on .NET Framework) and the application (running on .NET Core).
             Dim multiTargetService = New MultiTargetService(_hierarchy, VSConstants.VSITEMID_ROOT, False)
             If (multiTargetService.TargetFrameworkName.Identifier <> ".NETCoreApp") Then
                 TypeColumn.Items.Add(My.Resources.Microsoft_VisualStudio_Editors_Designer.SD_ComboBoxItem_BrowseType)
