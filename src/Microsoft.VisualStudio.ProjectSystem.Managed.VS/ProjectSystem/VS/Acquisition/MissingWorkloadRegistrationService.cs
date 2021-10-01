@@ -28,7 +28,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
         private readonly IVsService<IVsSolution> _vsSolutionService;
         private readonly Lazy<IProjectThreadingService> _threadHandling;
         private readonly IProjectFaultHandlerService _projectFaultHandlerService;
-        private readonly IVisualStudioComponentIdTransformer _visualStudioComponentIdTransformer;
         private readonly object _displayPromptLock = new();
 
         private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>>? _projectPathToProjectConfigurationsMap;
@@ -40,8 +39,7 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             IVsService<SVsBrokeredServiceContainer, IBrokeredServiceContainer> serviceBrokerContainer,
             IVsService<SVsSolution, IVsSolution> vsSolutionService,
             Lazy<IProjectThreadingService> threadHandling,
-            IProjectFaultHandlerService projectFaultHandlerService,
-            IVisualStudioComponentIdTransformer visualStudioComponentIdTransformer)
+            IProjectFaultHandlerService projectFaultHandlerService)
         {
             _projectGuidToWorkloadDescriptorsMap = new();
             _projectGuidToProjectConfigurationsMap = new();
@@ -50,7 +48,6 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
             _vsSolutionService = vsSolutionService;
             _threadHandling = threadHandling;
             _projectFaultHandlerService = projectFaultHandlerService;
-            _visualStudioComponentIdTransformer = visualStudioComponentIdTransformer;
         }
 
         private ConcurrentDictionary<string, IConcurrentHashSet<ProjectConfiguration>> ProjectPathToProjectConfigurationsMap
@@ -180,10 +177,9 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS
 
             foreach (var (projectGuid, vsComponents) in _projectGuidToWorkloadDescriptorsMap)
             {
-                var vsComponentIds = vsComponents.Select(workloadDescriptor => workloadDescriptor.VisualStudioComponentId);
-                var transformedVsComponentIds = _visualStudioComponentIdTransformer.TransformVisualStudioComponentIds(vsComponentIds);
+                var vsComponentIds = vsComponents.SelectMany(workloadDescriptor => workloadDescriptor.VisualStudioComponentIds).ToArray();
 
-                vsComponentIdsToRegister[projectGuid] = transformedVsComponentIds;
+                vsComponentIdsToRegister[projectGuid] = vsComponentIds;
             }
 
             return vsComponentIdsToRegister;
