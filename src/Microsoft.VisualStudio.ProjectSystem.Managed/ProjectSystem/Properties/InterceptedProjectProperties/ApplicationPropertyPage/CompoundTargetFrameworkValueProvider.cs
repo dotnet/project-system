@@ -182,10 +182,16 @@ namespace Microsoft.VisualStudio.ProjectSystem.Properties
             // Check if the project requires an explicit platform.
             if (IsNetCore5OrHigher(targetFrameworkAlias) && await IsWindowsPlatformNeededAsync())
             {
-                complexTargetFramework.TargetPlatformIdentifier = "Windows";
+                // Ideally we would set the complexTargetFramework.TargetPlatformIdentifier = "Windows",
+                // but we're in a difficult position right now to retrieve the correct TargetPlatformAlias from GetTargetPlatformAliasAsync below,
+                // reason being it calls for the previous TargetFramework, not the new one that is being set.
+                // Therefore, in the case where we are going from a TargetFramework with no need of platform, like netcoreapp3.1,
+                // to one that does, like net5.0, we would be querying the list of TargetPlatformAlias for netcoreapp3.1 and get an empty list.
+                // I have to revisit this approach, but for now we can pass the TargetPlatformAlias that should be.
+                return targetFrameworkAlias + "-windows" + complexTargetFramework.TargetPlatformVersion;
             }
 
-            if (!string.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier) && complexTargetFramework.TargetPlatformIdentifier != null)
+            if (!Strings.IsNullOrEmpty(complexTargetFramework.TargetPlatformIdentifier))
             {
                 string targetPlatformAlias = await GetTargetPlatformAliasAsync(complexTargetFramework.TargetPlatformIdentifier);
 
