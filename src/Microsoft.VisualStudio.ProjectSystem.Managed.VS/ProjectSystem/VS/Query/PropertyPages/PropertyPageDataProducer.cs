@@ -124,6 +124,18 @@ namespace Microsoft.VisualStudio.ProjectSystem.VS.Query
                     if (projectCatalog.GetSchema(schemaName) is Rule rule
                         && !rule.PropertyPagesHidden)
                     {
+                        if (rule.Name == "RazorGeneral" || rule.Name == "RazorExtension")
+                        {
+                            // Some versions of the .NET SDK include a Razor property page that appears
+                            // in the UI. This page is not intended for display.
+                            //
+                            // We cannot remove this page from existing versions of the SDK, so have to
+                            // explicitly exclude it from query results so that it doesn't appear in any
+                            // UI.
+
+                            continue;
+                        }
+
                         IEntityValue propertyPageValue = CreatePropertyPageValue(queryExecutionContext, parent, projectState, propertiesContext, rule, requestedProperties: requestedProperties);
                         yield return propertyPageValue;
                     }
