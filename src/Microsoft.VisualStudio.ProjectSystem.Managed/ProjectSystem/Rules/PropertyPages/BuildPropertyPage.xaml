@@ -44,18 +44,18 @@
                   HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147079"
                   Category="General" />
 
-  <EnumProperty Name="PlatformTarget"
+  <DynamicEnumProperty Name="PlatformTarget"
                 DisplayName="Platform target"
-                Description="Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware."
+                Description="Specifies the processor to be targeted by the output file. Choose 'x86' for any 32-bit Intel-compatible processor, choose 'x64' for any 64-bit Intel-compatible processor, choose 'ARM32' for any 32-bit ARM compatible processor, choose choose 'ARM64' for any 64-bit ARM compatible processor or choose 'Any CPU' to specify that any processor is acceptable. 'Any CPU' is the default value for projects, because it allows the application to run on the broadest range of hardware."
                 HelpUrl="https://go.microsoft.com/fwlink/?linkid=2147129"
-                Category="General">
-    <EnumValue Name="AnyCPU"
-               DisplayName="Any CPU" />
-    <EnumValue Name="x64"
-               DisplayName="x64" />
-    <EnumValue Name="x86"
-               DisplayName="x86" />
-  </EnumProperty>
+                Category="General"
+                EnumProvider="PlatformTargetEnumProvider"
+                MultipleValuesAllowed="False">
+    <DynamicEnumProperty.DataSource>
+      <DataSource Persistence="ProjectFileWithInterception"
+                  HasConfigurationCondition="False" />
+    </DynamicEnumProperty.DataSource>
+  </DynamicEnumProperty>
 
   <EnumProperty Name="Nullable"
                 DisplayName="Nullable"
